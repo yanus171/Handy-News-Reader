@@ -266,10 +266,10 @@
     <string name="global_filter">Global filter ...</string>
     <string name="global_filter_descr">A filter that apply to every feed. Leave filter text (and regex text) empty to disable</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">otherwise apply to content</string>
-    <string name="rule_text">Rule\'s text</string>
+    <string name="rule_text">a word or a phrase</string>
     <string name="settings_min_update_battery_level">Min. battery level</string>
     <string name="global_marks_as_star_filter_rule_descr">Rule per line</string>
-    <string name="restart_app_apply_changes">The app would be restarted to apply changes</string>
+    <string name="restart_app_apply_changes">The app will be restarted to apply changes</string>
 
 
     <plurals name="number_of_new_entries">
