@@ -352,6 +352,15 @@
     <string name="show_read_checkbox_descr">Wyświetla małą ikonkę sygnalizującą iż artykuł został przeczytany.</string>
     <string name="turnOn">Włącz</string>
 	<string name="brightness_change">Regulacja jasności</string>
+	<string name="tap_zone_size">Rozmiar Stref Aktywnych</string>
+    <string name="tap_zone_size_descr">wysokość lub szerokość wszystkich Stref Aktywnych (mm)</string>
+    <string name="show_new_icon">Ikonka nowego artykułu</string>
+    <string name="show_new_icon_descr">Mały plusik obok nowych (jeszcze nie widzianych) tytułów artykułów.</string>
+    <string name="criticalErrorOccured">Wystąpił błąd krytyczny. Jeśli chciał(a)byś pomóc nam rozwiązać problem, proszę prześlij ten tekst deweloperowi.</string>
+    <string name="criticalErrorSending">Przesyłam informację o błędzie…</string>
+    <string name="copyToClipboard">do schowka</string>
+    <string name="sendEmail">wyślij e-mail</string>
+    <string name="toastAppCrashed">Aplikacja została nieoczekiwanie zamknięta (jeśli chciał(a)byś pomóc nam rozwiązać problem, proszę prześlij ten tekst deweloperowi):</string>
 
 
     <plurals name="number_of_new_entries">
