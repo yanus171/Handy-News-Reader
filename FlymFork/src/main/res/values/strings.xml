@@ -350,16 +350,16 @@
     <string name="show_read_checkbox">Read checkbox</string>
     <string name="show_read_checkbox_descr">Show small checkbox to indicate that article is read</string>
     <string name="turnOn">Turn on</string>
-    <string name="brightness_change">Brightness change</string>
-    <string name="tap_zone_size">Tap zone size</string>
+    <string name="brightness_change">adjust the brightness</string>
+    <string name="tap_zone_size">Tap zones' size</string>
     <string name="tap_zone_size_descr">the height or width of all tap zones in millimeters</string>
     <string name="show_new_icon">New article icon</string>
-    <string name="show_new_icon_descr">Little plus icon on new articles (which had never seen)</string>
-    <string name="criticalErrorOccured">A critical error occurred in thу application. Please send this text to developer</string>
-    <string name="criticalErrorSending">Sending critical error…</string>
-    <string name="copyToClipboard">To clipboard</string>
-    <string name="sendEmail">Send email</string>
-    <string name="toastAppCrashed">The application unexpectedly failed: (Please send a mail to developer)</string>
+    <string name="show_new_icon_descr">a little plus icon on new articles (which had never been seen)</string>
+    <string name="criticalErrorOccured">A critical error occurred in the application. If You would like to help us to solve this issue, please send this text to developer.</string>
+    <string name="criticalErrorSending">Sending information on critical error…</string>
+    <string name="copyToClipboard">to clipboard</string>
+    <string name="sendEmail">send e-mail</string>
+    <string name="toastAppCrashed">The application unexpectedly failed (if You would like to help us to solve this issue, please send this text to developer):</string>
 
 
     <plurals name="number_of_new_entries">
