@@ -432,7 +432,7 @@ public class FeedDataContentProvider extends ContentProvider {
                     String groupId = values.getAsString(FeedColumns.GROUP_ID);
                     cursor = query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupId), MAX_PRIORITY, null, null, null);
                 } else
-                    cursor = query(FeedColumns.CONTENT_URI, MAX_PRIORITY, FeedColumns.GROUP_ID + Constants.DB_IS_NULL, null, null);
+                    cursor = query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, MAX_PRIORITY, FeedColumns.GROUP_ID + Constants.DB_IS_NULL, null, null);
 
                 if (cursor.moveToFirst()) { // normally this is always the case with MAX()
                     values.put(FeedColumns.PRIORITY, cursor.getInt(0) + 1);
