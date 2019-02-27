@@ -83,24 +83,24 @@
             android:key="preload_image_mode"
             android:title="@string/settings_preload_image_mode"/>
 
-        <EditTextPreference
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="max_image_download_count"
             android:inputType="number"
             android:defaultValue="10"
             android:title="@string/settings_max_image_download_count"
             android:summary="@string/settings_max_image_download_count_description"/>
 
-        <EditTextPreference
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="settings_max_image_download_size_kb"
             android:inputType="number"
             android:defaultValue="2048"
             android:title="@string/settings_max_image_download_size_kb"
             android:summary="@string/settings_max_image_download_size_kb_summary"/>
 
-        <EditTextPreference
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="settings_max_single_refresh_traffic_mb"
             android:inputType="number"
-            android:defaultValue="50Mb"
+            android:defaultValue="50"
             android:title="@string/max_single_refresh_traffic_mb"
             android:summary="@string/max_single_refresh_traffic_mb_descr"/>
 
@@ -188,7 +188,7 @@
             android:key="display_entries_fullscreen"
             android:title="@string/settings_display_entries_fullscreen"/>
 
-        <EditTextPreference
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="text_color_brightness"
             android:inputType="number"
             android:title="@string/settings_display_text_color"

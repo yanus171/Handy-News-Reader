@@ -105,7 +105,7 @@ public class PrefUtils {
         try {
             return Integer.parseInt(PrefUtils.getString(PrefUtils.MAX_SINGLE_REFRESH_TRAFFIC, "50"));
         } catch ( NumberFormatException e ) {
-            return 10;
+            return 50;
         }
     }
 
