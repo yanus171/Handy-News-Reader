@@ -46,6 +46,7 @@ package ru.yanus171.feedexfork.parser;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Environment;
@@ -114,72 +115,83 @@ public class OPML {
     private static final String CLOSING = "</body>\n</opml>\n";
 
     //private static final OPMLParser mParser = new OPMLParser();
-    private static boolean mAutoBackupEnabled = true;
+    private static Boolean mAutoBackupEnabled = true;
 
     public static
     void importFromFile(String filename) throws IOException, SAXException {
-        if (GetAutoBackupOPMLFileName().equals(filename))
-            mAutoBackupEnabled = false;  // Do not write the auto backup file while reading it...
+        importFromFile(new FileInputStream(filename));
+    }
+
+    public static void importFromFile(InputStream input) throws IOException, SAXException {
+        SetAutoBackupEnabled(false); // Do not write the auto backup file while reading it...
         final int status = FetcherService.Status().Start( MainApplication.getContext().getString(R.string.importingFromFile) );
         try {
             final OPMLParser parser = new OPMLParser();
-            Xml.parse(new InputStreamReader(new FileInputStream(filename)), parser);
-            parser.mEditor.commit();
+            Xml.parse(new InputStreamReader(input), parser);
+            //parser.mEditor.commit();
         } finally {
-            mAutoBackupEnabled = true;
+            SetAutoBackupEnabled(true);
             FetcherService.Status().End( status );
         }
     }
 
-    public static void importFromFile(InputStream input) throws IOException, SAXException {
-        final OPMLParser parser = new OPMLParser();
-        Xml.parse(new InputStreamReader(input), parser);
-        parser.mEditor.commit();
+    private static void SetAutoBackupEnabled(boolean b) {
+        synchronized (mAutoBackupEnabled) {
+            mAutoBackupEnabled = b;
+        }
     }
 
+    private static boolean IsAutoBackupEnabled() {
+        synchronized (mAutoBackupEnabled) {
+            return mAutoBackupEnabled;
+        }
+    }
 
     public static void exportToFile(String filename) throws IOException {
-        if (GetAutoBackupOPMLFileName().equals(filename) && !mAutoBackupEnabled)
+        if ( GetAutoBackupOPMLFileName().equals(filename) && !IsAutoBackupEnabled() )
             return;
 
-        final int status = FetcherService.Status().Start( "Exporting to file ..." );
+        final Context context = MainApplication.getContext();
+        final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) ); try {
 
-        Cursor cursorGroupsAndRoot = MainApplication.getContext().getContentResolver()
-                .query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, FEEDS_PROJECTION, null, null, null);
+            Cursor cursorGroupsAndRoot = context.getContentResolver()
+                    .query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, FEEDS_PROJECTION, null, null, null);
 
-        StringBuilder builder = new StringBuilder(START);
-        builder.append(System.currentTimeMillis());
-        builder.append(AFTER_DATE);
+            StringBuilder builder = new StringBuilder(START);
+            builder.append(System.currentTimeMillis());
+            builder.append(AFTER_DATE);
+            SaveSettings(builder, "\t\t");
 
-        while (cursorGroupsAndRoot.moveToNext()) {
-            if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
-                builder.append(OUTLINE_TITLE);
-                builder.append(cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
-                builder.append(String.format( ATTR_VALUE, FeedColumns.PRIORITY ));
-                builder.append(GetLong( cursorGroupsAndRoot, 11 ));
-                builder.append(OUTLINE_NORMAL_CLOSING);
-                Cursor cursorFeeds = MainApplication.getContext().getContentResolver()
-                        .query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
-                while (cursorFeeds.moveToNext()) {
-                    ExportFeed(builder, cursorFeeds);
+            while (cursorGroupsAndRoot.moveToNext()) {
+                if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
+                    builder.append(OUTLINE_TITLE);
+                    builder.append(cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
+                    builder.append(String.format(ATTR_VALUE, FeedColumns.PRIORITY));
+                    builder.append(GetLong(cursorGroupsAndRoot, 11));
+                    builder.append(OUTLINE_NORMAL_CLOSING);
+                    Cursor cursorFeeds = context.getContentResolver()
+                            .query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
+                    while (cursorFeeds.moveToNext()) {
+                        ExportFeed(builder, cursorFeeds);
+                    }
+                    cursorFeeds.close();
+
+                    builder.append(OUTLINE_END);
+                } else {
+                    ExportFeed(builder, cursorGroupsAndRoot);
                 }
-                cursorFeeds.close();
-
-                builder.append(OUTLINE_END);
-            } else {
-                ExportFeed(builder, cursorGroupsAndRoot);
             }
+            builder.append(CLOSING);
+
+            cursorGroupsAndRoot.close();
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+            writer.write(builder.toString());
+            writer.close();
+        } finally {
+            FetcherService.Status().End( status );
         }
-        SaveSettings( builder, "\t\t" );
-        builder.append(CLOSING);
-
-        cursorGroupsAndRoot.close();
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-
-        writer.write(builder.toString());
-        writer.close();
-        FetcherService.Status().End( status );
     }
 
     private static String GetLong( final Cursor cursor, final int col ) {
@@ -477,6 +489,7 @@ public class OPML {
                     // throw new ClassNotFoundException("Unknown type: "
                     // + prefClass);
                 }
+                mEditor.apply();
             }
         }
 

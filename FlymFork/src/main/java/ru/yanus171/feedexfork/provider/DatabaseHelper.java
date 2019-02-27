@@ -101,13 +101,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void exportToOPML() {
-        /*try {
-            OPML.exportToFile(OPML.BACKUP_OPML);
-        } catch (Exception ignored) {
-        }*/
-    }
-
     private String createTable(String tableName, String[][] columns) {
         if (tableName == null || columns == null || columns.length == 0) {
             throw new IllegalArgumentException("Invalid parameters for creating table " + tableName);

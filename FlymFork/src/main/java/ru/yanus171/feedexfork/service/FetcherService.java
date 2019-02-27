@@ -784,7 +784,9 @@ public class FetcherService extends IntentService {
             public void run() {
                 int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
-                final Cursor cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID_OPTIONS, null, null, null); try {
+                final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
+                        new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
+                        FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null); try {
                     mIsDeletingOld = true;
                     while ( cursor.moveToNext() ) {
                         long keepDateBorderTime = defaultkeepDateBorderTime;
@@ -795,7 +797,8 @@ public class FetcherService extends IntentService {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        DeleteOldEntries( cursor.getLong( 0 ), keepDateBorderTime );
+                        final long feedID = cursor.getLong( 0 );
+                        DeleteOldEntries( feedID, keepDateBorderTime );
                     }
                 } finally {
                     Status().End( status );
@@ -806,29 +809,13 @@ public class FetcherService extends IntentService {
         }.start();
     }
 
-    private void DeleteOldEntries(long feedID, long keepDateBorderTime) {
+    private void DeleteOldEntries(final long feedID, final long keepDateBorderTime) {
         if (keepDateBorderTime > 0) {
             ContentResolver cr = MainApplication.getContext().getContentResolver();
 
             String where = EntryColumns.DATE + '<' + keepDateBorderTime + Constants.DB_AND + EntryColumns.WHERE_NOT_FAVORITE;
             // Delete the entries, the cache files will be deleted by the content provider
             cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
-
-            /*Status().ChangeProgress(R.string.deleteImages);
-            File[] files = FileUtils.GetImagesFolder().listFiles(new FileFilter() {//NetworkUtils.IMAGE_FOLDER_FILE.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    return (pathname.lastModified() < keepDateBorderTime);
-                }
-            });
-            if ( files != null ) {
-                int i = 0;
-                for( File file: files ) {
-                    i++;
-                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d/%d", i, files.length ) );
-                    file.delete();
-                }
-            }*/
         }
     }
 
