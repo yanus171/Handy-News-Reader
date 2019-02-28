@@ -65,6 +65,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
@@ -152,44 +153,43 @@ public class OPML {
             return;
 
         final Context context = MainApplication.getContext();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) ); try {
-
             Cursor cursorGroupsAndRoot = context.getContentResolver()
                     .query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, FEEDS_PROJECTION, null, null, null);
 
-            StringBuilder builder = new StringBuilder(START);
-            builder.append(System.currentTimeMillis());
-            builder.append(AFTER_DATE);
-            SaveSettings(builder, "\t\t");
+            writer.write( START );
+            writer.write( String.valueOf( System.currentTimeMillis() ) );
+            writer.write( AFTER_DATE);
+            SaveSettings( writer, "\t\t");
 
             while (cursorGroupsAndRoot.moveToNext()) {
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
-                    builder.append(OUTLINE_TITLE);
-                    builder.append(cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
-                    builder.append(String.format(ATTR_VALUE, FeedColumns.PRIORITY));
-                    builder.append(GetLong(cursorGroupsAndRoot, 11));
-                    builder.append(OUTLINE_NORMAL_CLOSING);
+                    writer.write( OUTLINE_TITLE);
+                    writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
+                    writer.write( String.format(ATTR_VALUE, FeedColumns.PRIORITY));
+                    writer.write( GetLong(cursorGroupsAndRoot, 11));
+                    writer.write( OUTLINE_NORMAL_CLOSING);
                     Cursor cursorFeeds = context.getContentResolver()
                             .query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
                     while (cursorFeeds.moveToNext()) {
-                        ExportFeed(builder, cursorFeeds);
+                        ExportFeed(writer, cursorFeeds);
                     }
                     cursorFeeds.close();
 
-                    builder.append(OUTLINE_END);
+                    writer.write( OUTLINE_END);
                 } else {
-                    ExportFeed(builder, cursorGroupsAndRoot);
+                    ExportFeed(writer, cursorGroupsAndRoot);
                 }
             }
-            builder.append(CLOSING);
+            writer.write( CLOSING );
 
             cursorGroupsAndRoot.close();
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
-            writer.write(builder.toString());
-            writer.close();
+            //writer.write(builder.toString());
         } finally {
+            writer.close();
             FetcherService.Status().End( status );
         }
     }
@@ -210,40 +210,40 @@ public class OPML {
             FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS, FeedColumns.LAST_UPDATE, FeedColumns.REAL_LAST_UPDATE,
             FeedColumns.PRIORITY, FeedColumns.FETCH_MODE };
 
-    private static void ExportFeed(StringBuilder builder, Cursor cursor) {
+    private static void ExportFeed(Writer writer, Cursor cursor) throws IOException {
         final String feedID = cursor.getString(0);
-        builder.append("\t");
-        builder.append(OUTLINE_TITLE);
-        builder.append(GetEncoded( cursor ,2) );
-        builder.append(OUTLINE_XMLURL);
-        builder.append(GetEncoded( cursor, 3));
-        builder.append(OUTLINE_RETRIEVE_FULLTEXT);
-        builder.append(GetBoolText( cursor, 4 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST ));
-        builder.append(GetBoolText( cursor, 5 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.IS_AUTO_REFRESH ));
-        builder.append(GetBoolText( cursor, 6 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.IS_IMAGE_AUTO_LOAD ));
-        builder.append(GetBoolText( cursor, 7 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.OPTIONS ));
-        builder.append(GetEncoded( cursor, 8 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.LAST_UPDATE ));
-        builder.append(GetLong( cursor, 9 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.REAL_LAST_UPDATE ));
-        builder.append(GetLong( cursor, 10 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.PRIORITY ));
-        builder.append(GetLong( cursor, 11 ));
-        builder.append(String.format( ATTR_VALUE, FeedColumns.FETCH_MODE ));
-        builder.append(GetLong( cursor, 12 ));
+        writer.write( "\t");
+        writer.write( OUTLINE_TITLE);
+        writer.write(GetEncoded( cursor ,2) );
+        writer.write(OUTLINE_XMLURL);
+        writer.write(GetEncoded( cursor, 3));
+        writer.write(OUTLINE_RETRIEVE_FULLTEXT);
+        writer.write(GetBoolText( cursor, 4 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST ));
+        writer.write(GetBoolText( cursor, 5 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.IS_AUTO_REFRESH ));
+        writer.write(GetBoolText( cursor, 6 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.IS_IMAGE_AUTO_LOAD ));
+        writer.write(GetBoolText( cursor, 7 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.OPTIONS ));
+        writer.write(GetEncoded( cursor, 8 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.LAST_UPDATE ));
+        writer.write(GetLong( cursor, 9 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.REAL_LAST_UPDATE ));
+        writer.write(GetLong( cursor, 10 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.PRIORITY ));
+        writer.write(GetLong( cursor, 11 ));
+        writer.write(String.format( ATTR_VALUE, FeedColumns.FETCH_MODE ));
+        writer.write(GetLong( cursor, 12 ));
 
 
 
-        builder.append(OUTLINE_NORMAL_CLOSING);
+        writer.write(OUTLINE_NORMAL_CLOSING);
 
-        ExportFilters(builder, feedID);
+        ExportFilters(writer, feedID);
         final boolean saveAbstract = !TRUE.equals( GetBoolText( cursor, 4 ) );
-        ExportEntries(builder, feedID, saveAbstract);
-        builder.append(OUTLINE_END);
+        ExportEntries(writer, feedID, saveAbstract);
+        writer.write(OUTLINE_END);
     }
 
 
@@ -258,45 +258,60 @@ public class OPML {
     private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
-            EntryColumns.IS_FAVORITE /*, EntryColumns.MOBILIZED_HTML*/ };
+            EntryColumns.IS_FAVORITE, EntryColumns._ID/*, EntryColumns.MOBILIZED_HTML*/ };
 
-    private static void ExportEntries(StringBuilder builder, String feedID, boolean saveAbstract) {
+//    private static String GetMobilizedText(long entryID ) {
+//        String result = "";
+//        try {
+//            Cursor cur = MainApplication.getContext().getContentResolver()
+//                    .query( EntryColumns.CONTENT_URI( entryID ), new String[]{ EntryColumns.MOBILIZED_HTML }, null, null, null );
+//            if ( cur.moveToFirst() )
+//                result = cur.getString( 0 );
+//        } catch (  Exception ignored ) {
+//            ignored.printStackTrace();
+//        }
+//        return result;
+//    }
+
+    private static void ExportEntries(Writer writer, String feedID, boolean saveAbstract) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
                 .query(ENTRIES_FOR_FEED_CONTENT_URI( feedID ), ENTRIES_PROJECTION, null, null, null);
         if (cur.getCount() != 0) {
             while (cur.moveToNext()) {
-                builder.append("\t");
-                builder.append(String.format( TAG_START, TAG_ENTRY, EntryColumns.TITLE) );
-                builder.append(cur.isNull( 0 ) ? "" : TextUtils.htmlEncode(cur.getString(0)));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.LINK) );
-                builder.append(cur.isNull( 1 ) ? "" : TextUtils.htmlEncode(cur.getString(1)));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.IS_NEW) );
-                builder.append(GetBoolText( cur, 2));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.IS_READ) );
-                builder.append(GetBoolText( cur, 3));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.SCROLL_POS) );
-                builder.append(cur.getString(4));
+                writer.write("\t");
+                writer.write(String.format( TAG_START, TAG_ENTRY, EntryColumns.TITLE) );
+                writer.write(cur.isNull( 0 ) ? "" : TextUtils.htmlEncode(cur.getString(0)));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.LINK) );
+                writer.write(cur.isNull( 1 ) ? "" : TextUtils.htmlEncode(cur.getString(1)));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.IS_NEW) );
+                writer.write(GetBoolText( cur, 2));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.IS_READ) );
+                writer.write(GetBoolText( cur, 3));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.SCROLL_POS) );
+                writer.write(cur.getString(4));
                 if ( saveAbstract ) {
-                    builder.append(String.format(ATTR_VALUE, EntryColumns.ABSTRACT));
-                    builder.append(cur.isNull(5) ? "" : TextUtils.htmlEncode(cur.getString(5)));
+                    writer.write(String.format(ATTR_VALUE, EntryColumns.ABSTRACT));
+                    writer.write(cur.isNull(5) ? "" : TextUtils.htmlEncode(cur.getString(5)));
                 }
-                builder.append(String.format( ATTR_VALUE, EntryColumns.AUTHOR) );
-                builder.append(cur.isNull( 6 ) ? "" : TextUtils.htmlEncode(cur.getString(6)));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.DATE) );
-                builder.append(cur.getString(7));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.FETCH_DATE) );
-                builder.append(cur.getString(8));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.IMAGE_URL) );
-                builder.append(cur.isNull( 9 ) ? "" : TextUtils.htmlEncode(cur.getString(9)));
-                builder.append(String.format( ATTR_VALUE, EntryColumns.IS_FAVORITE) );
-                builder.append(GetBoolText( cur, 10));
-//                if ( !saveAbstract ) {
-//                    builder.append(String.format(ATTR_VALUE, EntryColumns.MOBILIZED_HTML));
-//                    builder.append(cur.isNull(11) ? "" : TextUtils.htmlEncode(cur.getString(11)));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.AUTHOR) );
+                writer.write(cur.isNull( 6 ) ? "" : TextUtils.htmlEncode(cur.getString(6)));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.DATE) );
+                writer.write(cur.getString(7));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.FETCH_DATE) );
+                writer.write(cur.getString(8));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.IMAGE_URL) );
+                writer.write(cur.isNull( 9 ) ? "" : TextUtils.htmlEncode(cur.getString(9)));
+                writer.write(String.format( ATTR_VALUE, EntryColumns.IS_FAVORITE) );
+                writer.write(GetBoolText( cur, 10));
+//                if ( !saveAbstract && cur.getInt(10) == 1 ) {
+//                    //writer.write(String.format(ATTR_VALUE, EntryColumns.MOBILIZED_HTML));
+//                    long entryID  = cur.getLong(11 );
+//                    final String text = GetMobilizedText( entryID );
+//                    writer.write(text == null ? "" : TextUtils.htmlEncode(text));
 //                }
-                builder.append(TAG_CLOSING);
+                writer.write(TAG_CLOSING);
             }
-            builder.append("\t");
+            writer.write("\t");
         }
         cur.close();
     }
@@ -304,25 +319,25 @@ public class OPML {
     private static final String[] FILTERS_PROJECTION = new String[]{FilterColumns.FILTER_TEXT, FilterColumns.IS_REGEX,
             FilterColumns.IS_APPLIED_TO_TITLE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED};
 
-    public static void ExportFilters(StringBuilder builder, String feedID) {
+    public static void ExportFilters(Writer writer, String feedID) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
                 .query(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedID), FILTERS_PROJECTION, null, null, null);
         if (cur.getCount() != 0) {
             while (cur.moveToNext()) {
-                builder.append("\t");
-                builder.append(FILTER_TEXT);
-                builder.append(TextUtils.htmlEncode(cur.getString(0)));
-                builder.append(FILTER_IS_REGEX);
-                builder.append(GetBoolText( cur, 1));
-                builder.append(FILTER_IS_APPLIED_TO_TITLE);
-                builder.append(GetBoolText( cur, 2) );
-                builder.append(FILTER_IS_ACCEPT_RULE);
-                builder.append(GetBoolText( cur, 3) );
-                builder.append(FILTER_IS_MARK_AS_STARRED);
-                builder.append(GetBoolText( cur, 4) );
-                builder.append(FILTER_CLOSING);
+                writer.write("\t");
+                writer.write(FILTER_TEXT);
+                writer.write(TextUtils.htmlEncode(cur.getString(0)));
+                writer.write(FILTER_IS_REGEX);
+                writer.write(GetBoolText( cur, 1));
+                writer.write(FILTER_IS_APPLIED_TO_TITLE);
+                writer.write(GetBoolText( cur, 2) );
+                writer.write(FILTER_IS_ACCEPT_RULE);
+                writer.write(GetBoolText( cur, 3) );
+                writer.write(FILTER_IS_MARK_AS_STARRED);
+                writer.write(GetBoolText( cur, 4) );
+                writer.write(FILTER_CLOSING);
             }
-            builder.append("\t");
+            writer.write("\t");
         }
         cur.close();
     }
@@ -333,7 +348,7 @@ public class OPML {
     private static final String PREF_CLASS_BOOLEAN = "Boolean";
     private static final String PREF_CLASS_STRING = "String";
 
-    static void SaveSettings(StringBuilder result, final String prefix) {
+    static void SaveSettings(Writer writer, final String prefix) throws IOException {
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         for (final Map.Entry<String, ?> entry : settings.getAll().entrySet()) {
             String prefClass = entry.getValue().getClass().getName();
@@ -355,7 +370,7 @@ public class OPML {
                 prefValue = String.valueOf((Float) entry.getValue());
             } else
                 continue;
-            result.append(prefix + String.format( "<%s %s='%s' %s='%s' %s='%s'/>\n", TAG_PREF,
+            writer.write( prefix + String.format( "<%s %s='%s' %s='%s' %s='%s'/>\n", TAG_PREF,
                     ATTR_PREF_CLASSNAME, prefClass,
                     ATTR_PREF_KEY, entry.getKey(),
                     ATTR_PREF_VALUE, TextUtils.htmlEncode( prefValue ) ) );

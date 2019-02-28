@@ -435,5 +435,7 @@
     <string name="max_single_refresh_traffic_mb_descr">Обновление остановится, когда трафик превысит максимальное значение и не WiFi (в МБ)</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
+    <string name="autobackup_interval">Интервал резервного копирования</string>
+    <string name="autobackup_interval_descr">Как часто будет создаваться файл резервной копии лент и статьей</string>
 
 </resources>

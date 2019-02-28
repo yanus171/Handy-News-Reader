@@ -338,6 +338,15 @@
             android:summary="@string/vibrate_on_article_list_entry_swype_summary"
             android:title="@string/vibrate_on_article_list_entry_swype"/>
 
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="1800000"
+            android:entries="@array/settings_intervals"
+            android:entryValues="@array/settings_interval_values"
+            android:inputType="number"
+            android:key="autobackup_interval"
+            android:title="@string/autobackup_interval"
+            android:summary="@string/autobackup_interval_descr"/>
+
         <EditTextPreference
             android:key="content_extract_rules"
             android:inputType="text|textMultiLine"
