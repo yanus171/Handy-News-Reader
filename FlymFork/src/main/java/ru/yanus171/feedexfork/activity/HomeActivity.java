@@ -88,8 +88,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 where + DB_AND  + EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
     }
     private static final String GROUP_NUMBER( final String where ) {
-        return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
-                where + DB_AND + EntryColumns.FEED_ID + " IN ( SELECT " + FeedColumns._ID +  " FROM " + FeedColumns.TABLE_NAME + " AS t1"+ " WHERE " + FeedColumns.GROUP_ID +  " = " + FeedColumns.TABLE_NAME + "." + FeedColumns._ID  + ") " + " )";
+        if ( PrefUtils.getBoolean( "show_group_entries_count", false ) )
+            return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
+                    where + DB_AND + EntryColumns.FEED_ID + " IN ( SELECT " + FeedColumns._ID +  " FROM " +
+                    FeedColumns.TABLE_NAME + " AS t1"+ " WHERE " +
+                    FeedColumns.GROUP_ID +  " = " + FeedColumns.TABLE_NAME + "." + FeedColumns._ID  + ") " + " )";
+        else
+        return "0";
 
     }
     private final String EXPR_NUMBER ( final String where ) {

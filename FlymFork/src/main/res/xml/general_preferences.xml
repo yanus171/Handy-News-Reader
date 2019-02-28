@@ -165,6 +165,12 @@
             android:summary="@string/show_new_icon_descr"
             android:title="@string/show_new_icon"/>
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_group_entries_count"
+            android:title="@string/show_group_entrries_count"
+            android:summary="@string/show_group_entries_count_descr" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

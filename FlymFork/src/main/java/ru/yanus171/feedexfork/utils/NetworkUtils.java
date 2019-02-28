@@ -170,7 +170,7 @@ public class NetworkUtils {
 
             Cursor cursor = MainApplication.getContext().getContentResolver().query(entriesUri, FeedData.EntryColumns.PROJECTION_ID, selection, selectionArgs, null);
 
-            while (cursor.moveToNext()) {
+            while (cursor.moveToNext() && !FetcherService.isCancelRefresh()) {
                 filenameFilter.setEntryId(cursor.getString(0));
 
                 File[] files = FileUtils.GetImagesFolder().listFiles(filenameFilter);
@@ -180,6 +180,8 @@ public class NetworkUtils {
                         i++;
                         FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d/%d", i, files.length ) );
                         file.delete();
+                        if ( FetcherService.isCancelRefresh() )
+                            break;
                     }
                 }
             }
