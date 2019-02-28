@@ -207,6 +207,8 @@ public class FetcherService extends IntentService {
             return;
         }
 
+        mIsWiFi = GetIsWifi();
+
         if ( intent.hasExtra( Constants.FROM_AUTO_BACKUP ) ) {
             if ( Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this) )
                 return;
@@ -277,7 +279,6 @@ public class FetcherService extends IntentService {
                         long keepTime = (long) (GetDefaultKeepTime() * 86400000l);
                         long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
-                        deleteOldEntries(keepDateBorderTime);
 
                         String feedId = intent.getStringExtra(Constants.FEED_ID);
                         String groupId = intent.getStringExtra(Constants.GROUP_ID);
@@ -342,6 +343,7 @@ public class FetcherService extends IntentService {
 
                         mobilizeAllEntries( isFromAutoRefresh );
                         downloadAllImages();
+                        deleteOldEntries(keepDateBorderTime);
 
                 } finally {
                     Status().End( status );
@@ -364,12 +366,15 @@ public class FetcherService extends IntentService {
         return Float.parseFloat(PrefUtils.getString(PrefUtils.KEEP_TIME, "4"));
     }
 
+    private static boolean mIsWiFi = false;
+    private boolean GetIsWifi() {
+        ConnectivityManager cm = (ConnectivityManager) MainApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI );
+    }
     public static boolean isCancelRefresh() {
         synchronized (mCancelRefresh) {
-            ConnectivityManager cm = (ConnectivityManager) MainApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo ni = cm.getActiveNetworkInfo();
-            final boolean wifi = (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI );
-            if ( !wifi && Status().mBytesRecievedLast > PrefUtils.getMaxSingleRefreshTraffic() * 1024 * 1024 )
+            if ( !mIsWiFi && Status().mBytesRecievedLast > PrefUtils.getMaxSingleRefreshTraffic() * 1024 * 1024 )
                 return true;
             if (mCancelRefresh) {
                 MainApplication.getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
@@ -778,35 +783,32 @@ public class FetcherService extends IntentService {
 
 
     private void deleteOldEntries(final long defaultkeepDateBorderTime) {
-    if ( !mIsDeletingOld )
-        new Thread() {
-            @Override
-            public void run() {
-                int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
-                        new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
-                        FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null); try {
-                    mIsDeletingOld = true;
-                    while ( cursor.moveToNext() ) {
-                        long keepDateBorderTime = defaultkeepDateBorderTime;
-                        try {
-                            JSONObject jsonOptions = new JSONObject(cursor.getString(1));
-                            if (jsonOptions.has(CUSTOM_KEEP_TIME))
-                                keepDateBorderTime = System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        final long feedID = cursor.getLong( 0 );
-                        DeleteOldEntries( feedID, keepDateBorderTime );
+        if ( !mIsDeletingOld ) {
+            int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
+                    new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
+                    FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
+            try {
+                mIsDeletingOld = true;
+                while (cursor.moveToNext()) {
+                    long keepDateBorderTime = defaultkeepDateBorderTime;
+                    try {
+                        JSONObject jsonOptions = new JSONObject(cursor.getString(1));
+                        if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                            keepDateBorderTime = System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } finally {
-                    Status().End( status );
-                    cursor.close();
-                    mIsDeletingOld = false;
+                    final long feedID = cursor.getLong(0);
+                    DeleteOldEntries(feedID, keepDateBorderTime);
                 }
+            } finally {
+                Status().End(status);
+                cursor.close();
+                mIsDeletingOld = false;
             }
-        }.start();
+        }
     }
 
     private void DeleteOldEntries(final long feedID, final long keepDateBorderTime) {

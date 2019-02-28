@@ -246,9 +246,6 @@ public class OPML {
         builder.append(OUTLINE_END);
     }
 
-    private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
-            EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
-            EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL, EntryColumns.IS_FAVORITE };
 
 
     private static String GetBoolText(Cursor cur, int col) {
@@ -258,6 +255,10 @@ public class OPML {
         return TRUE.equals( attr.getValue( "", attrName ) );
     }
 
+    private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
+            EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
+            EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
+            EntryColumns.IS_FAVORITE /*, EntryColumns.MOBILIZED_HTML*/ };
 
     private static void ExportEntries(StringBuilder builder, String feedID, boolean saveAbstract) {
         Cursor cur = MainApplication.getContext().getContentResolver()
@@ -289,6 +290,10 @@ public class OPML {
                 builder.append(cur.isNull( 9 ) ? "" : TextUtils.htmlEncode(cur.getString(9)));
                 builder.append(String.format( ATTR_VALUE, EntryColumns.IS_FAVORITE) );
                 builder.append(GetBoolText( cur, 10));
+//                if ( !saveAbstract ) {
+//                    builder.append(String.format(ATTR_VALUE, EntryColumns.MOBILIZED_HTML));
+//                    builder.append(cur.isNull(11) ? "" : TextUtils.htmlEncode(cur.getString(11)));
+//                }
                 builder.append(TAG_CLOSING);
             }
             builder.append("\t");
@@ -461,6 +466,7 @@ public class OPML {
                     values.put(EntryColumns.IS_FAVORITE, GetBool( attributes, EntryColumns.IS_FAVORITE));
                     values.put(EntryColumns.LINK, GetText( attributes, EntryColumns.LINK ));
                     values.put(EntryColumns.ABSTRACT, GetText( attributes, EntryColumns.ABSTRACT));
+                    values.put(EntryColumns.MOBILIZED_HTML, GetText( attributes, EntryColumns.MOBILIZED_HTML));
                     values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
                     values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
                     values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));
