@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.NotificationCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -30,14 +31,17 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 
 public class StatusText implements Observer {
+    static final String SEP = "__";
     private TextView mView;
+    private TextView mErrorView;
     //SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private static int MaxID = 0;
 
-    public StatusText(final TextView view, final Observable observable /*, SwipeRefreshLayout.OnRefreshListener onRefreshListener*/ ) {
+    public StatusText(final TextView view, final TextView errorView, final Observable observable /*, SwipeRefreshLayout.OnRefreshListener onRefreshListener*/ ) {
         //mOnRefreshListener = onRefreshListener;
         observable.addObserver( this );
         mView = view;
+        mErrorView = errorView;
         mView.setVisibility(View.GONE);
         mView.setGravity(Gravity.LEFT | Gravity.TOP);
         mView.setOnClickListener(new View.OnClickListener() {
@@ -50,22 +54,47 @@ public class StatusText implements Observer {
             }
         });
         mView.setLines( 2 );
+
+        mErrorView.setVisibility(View.GONE);
+        mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);
+        mErrorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FetcherObservable status = (FetcherObservable)observable;
+                status.ClearError();
+                v.setVisibility(View.GONE);
+
+            }
+        });
+        mErrorView.setLines( 2 );
     }
     @Override
     public void update(Observable observable, Object data) {
-        final String text = (String)data;
-        mView.post(new Runnable() {
+        String[] list = TextUtils.split( (String)data, SEP );
+        String text = list[0];
+        String error = list[1];
+        mView.post (new Runnable() {
+            private String mError;
+            private String mText;
+
             @Override
             public void run() {
-            if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || text.trim().isEmpty() )
-                mView.setVisibility(View.GONE);
-            else {
-                mView.setText(text);
-                mView.setVisibility(View.VISIBLE);
+                if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || mText.trim().isEmpty() )
+                    mView.setVisibility(View.GONE);
+                else {
+                    mView.setText(mText);
+                    mView.setVisibility(View.VISIBLE);
+                }
+                mErrorView.setText(mError);
+                mErrorView.setVisibility( mError.isEmpty() ? View.GONE : View.VISIBLE );
             }
-            //mOnRefreshListener.refreshSwipeProgress();
+            Runnable init( String text, String error ) {
+                mText = text;
+                mError = error;
+                return this;
             }
-        });
+        }.init(text, error));
+
     }
 
 
@@ -103,8 +132,8 @@ public class StatusText implements Observer {
 
                         //if ( mList.size() > cRowcount )
                         //s = "... " + s;
-                        if ( mErrorText != null && !mErrorText.isEmpty() )
-                            s += " " + mErrorText;
+                        //if ( mErrorText != null && !mErrorText.isEmpty() )
+                        //    s += " " + mErrorText;
                         if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
                             if (!mProgressText.isEmpty())
                                 s += " " + mProgressText;
@@ -115,7 +144,7 @@ public class StatusText implements Observer {
                             if (mBytesRecievedLast > 0)
                                 s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
                         }
-                        notifyObservers(s);
+                        notifyObservers(s + SEP + mErrorText);
                         if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                            ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
                             Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s));
@@ -131,10 +160,15 @@ public class StatusText implements Observer {
                 mList.clear();
                 mProgressText = "";
                 mDBText = "";
-                mErrorText = "";
+                //mErrorText = "";
                 mBytesRecievedLast = 0;
                 //if (mList.isEmpty())
                 //    mBytesRecievedLast = 0;
+            }
+        }
+        public void ClearError() {
+            synchronized ( mList ) {
+                mErrorText = "";
             }
         }
         public int Start( final String text ) {
@@ -168,7 +202,7 @@ public class StatusText implements Observer {
             if ( e != null )
                 e.printStackTrace();
             synchronized ( mList ) {
-                mErrorText = mErrorText == null ? "" : text + "\n" + e.getCause() + "\n" + e.getLocalizedMessage();
+                mErrorText = mErrorText == null ? "" : text + ", " + e.getCause() + ", " + e.getLocalizedMessage();
             }
             UpdateText();
         }
@@ -194,7 +228,7 @@ public class StatusText implements Observer {
                         synchronized (mList) {
                             if ( mList.isEmpty() ) {
                                 mBytesRecievedLast = 0;
-                                notifyObservers("");
+                                notifyObservers(SEP + mErrorText);
                             }
                         }
                     }
@@ -211,7 +245,7 @@ public class StatusText implements Observer {
             Notification.BigTextStyle bigxtstyle =
                     new Notification.BigTextStyle();
             bigxtstyle.bigText(text);
-            bigxtstyle.setBigContentTitle(context.getString(R.string.updating));
+            bigxtstyle.setBigContentTitle(text);
             builder = new Notification.Builder(MainApplication.getContext(), NOTIFICATION_CHANNEL_ID) //
                     .setSmallIcon(R.drawable.refresh) //
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
@@ -221,7 +255,7 @@ public class StatusText implements Observer {
             NotificationCompat.BigTextStyle bigxtstyle =
                     new NotificationCompat.BigTextStyle();
             bigxtstyle.bigText(text);
-            bigxtstyle.setBigContentTitle(context.getString(R.string.updating));
+            bigxtstyle.setBigContentTitle(text);
             android.support.v4.app.NotificationCompat.Builder builder =
                     new android.support.v4.app.NotificationCompat.Builder(MainApplication.getContext()) //
                             .setSmallIcon(R.drawable.refresh) //

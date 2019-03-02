@@ -156,6 +156,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         TapZonePreviewPreference.SetupZoneSizes( rootView );
 
         mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
+                                      (TextView)rootView.findViewById( R.id.errorText ),
                                       FetcherService.Status()/*,
                                       this*/);
         mToggleFullscreenBtn = rootView.findViewById(R.id.toggleFullscreenBtn);

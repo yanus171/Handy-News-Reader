@@ -33,6 +33,16 @@
         android:visibility="visible"
         android:layout_gravity="left|top"
         android:gravity="left|top" />
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="error"
+        android:textColor="#FF0000"
+        android:visibility="visible"
+        android:layout_gravity="left|top"
+        android:gravity="left|top" />
 
     <FrameLayout
         android:layout_width="match_parent"

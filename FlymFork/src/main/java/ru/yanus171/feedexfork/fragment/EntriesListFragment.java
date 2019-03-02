@@ -326,6 +326,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
         new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
+                        (TextView)rootView.findViewById( R.id.errorText ),
                         FetcherService.Status()/*,
                         this*/);
 

@@ -106,6 +106,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -154,7 +155,7 @@ public class FetcherService extends IntentService {
     private final Handler mHandler;
 
     public static StatusText.FetcherObservable Status() {
-        if ( mStatusText == null ) {
+        if (mStatusText == null) {
             mStatusText = new StatusText.FetcherObservable();
         }
         return mStatusText;
@@ -202,30 +203,48 @@ public class FetcherService extends IntentService {
     }
 
     @Override
-    public void onHandleIntent(Intent intent) {
+    public void onHandleIntent(final Intent intent) {
         if (intent == null) { // No intent, we quit
             return;
         }
 
         mIsWiFi = GetIsWifi();
 
-        if ( intent.hasExtra( Constants.FROM_AUTO_BACKUP ) ) {
-            if ( Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this) )
+        if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
+            if (Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this))
                 return;
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification( getString(R.string.exportingToFile) ) );
-            try {
-                OPML.exportToFile( OPML.GetAutoBackupOPMLFileName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                stopForeground( true );
-            }
+            LongOper(R.string.exportingToFile, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        DebugApp.SendException( e, FetcherService.this );
+                    }
+                }
+            });
             return;
+        } else if (intent.hasExtra(Constants.FROM_IMPORT)) {
+            LongOper(R.string.importingFromFile, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        OPML.importFromFile( intent.getStringExtra( Constants.EXTRA_FILENAME ) );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        DebugApp.SendException(e, FetcherService.this);
+                    }
+                }
+            });
         }
+
 
         Status().Clear();
 
-        boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
+        final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
         //boolean isOpenActivity = intent.getBooleanExtra(Constants.OPEN_ACTIVITY, false);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -250,115 +269,128 @@ public class FetcherService extends IntentService {
         if (skipFetch)
             return;
 
-        if ( isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this) )
+        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this))
             return;
 
-            if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
-                mobilizeAllEntries(isFromAutoRefresh);
-                downloadAllImages();
-            } else if ( ACTION_LOAD_LINK.equals(intent.getAction())) {
-                startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification( getString(R.string.loadingLink) ) ); try {
+        if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
+            mobilizeAllEntries(isFromAutoRefresh);
+            downloadAllImages();
+        } else if (ACTION_LOAD_LINK.equals(intent.getAction())) {
+            LongOper(R.string.loadingLink, new Runnable() {
+                @Override
+                public void run() {
                     LoadLink(GetExtrenalLinkFeedID(),
                             intent.getStringExtra(Constants.URL_TO_LOAD),
                             intent.getStringExtra(Constants.TITLE_TO_LOAD),
                             FetcherService.ForceReload.No,
                             true);
                     downloadAllImages();
-                } finally {
-                    stopForeground( true );
                 }
-            } else if (ACTION_DOWNLOAD_IMAGES.equals(intent.getAction())) {
-                downloadAllImages();
-            } else { // == Constants.ACTION_REFRESH_FEEDS
-                startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification( getString(R.string.loading) ) ); try {
+            } );
 
-                    int status = Status().Start(getString(R.string.RefreshFeeds) + ": "); try {
-                        PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-                        mCancelRefresh = false;
+        } else if (ACTION_DOWNLOAD_IMAGES.equals(intent.getAction())) {
+            downloadAllImages();
+        } else { // == Constants.ACTION_REFRESH_FEEDS
+            LongOper(R.string.RefreshFeeds, new Runnable() {
+                @Override
+                public void run() {
+                    long keepTime = (long) (GetDefaultKeepTime() * 86400000l);
+                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
-                        long keepTime = (long) (GetDefaultKeepTime() * 86400000l);
-                        long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
+                    String feedId = intent.getStringExtra(Constants.FEED_ID);
+                    String groupId = intent.getStringExtra(Constants.GROUP_ID);
 
-                        String feedId = intent.getStringExtra(Constants.FEED_ID);
-                        String groupId = intent.getStringExtra(Constants.GROUP_ID);
+                    mMarkAsStarredFoundList.clear();
+                    int newCount = 0;
+                    try {
+                        newCount = (feedId == null ?
+                                refreshFeeds(keepDateBorderTime, groupId, isFromAutoRefresh) :
+                                refreshFeed(feedId, keepDateBorderTime, isFromAutoRefresh));
 
-                        mMarkAsStarredFoundList.clear();
-                        int newCount = 0;
-                        try {
-                            newCount = (feedId == null ?
-                                        refreshFeeds(keepDateBorderTime, groupId, isFromAutoRefresh) :
-                                        refreshFeed(feedId, keepDateBorderTime, isFromAutoRefresh));
+                    } finally {
+                        if (mMarkAsStarredFoundList.size() > 5) {
+                            ArrayList<String> list = new ArrayList<String>();
+                            for (MarkItem item : mMarkAsStarredFoundList)
+                                list.add(item.mCaption);
+                            ShowNotification(TextUtils.join(", ", list),
+                                    R.string.markedAsStarred,
+                                    new Intent(FetcherService.this, HomeActivity.class)
+                                            .setData(EntryColumns.FAVORITES_CONTENT_URI),
+                                    null,
+                                    Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
+                        } else if (mMarkAsStarredFoundList.size() > 0)
+                            for (MarkItem item : mMarkAsStarredFoundList) {
+                                Uri entryUri = getEntryUri(item.mLink, item.mFeedID);
 
-                        } finally {
-                            if (mMarkAsStarredFoundList.size() > 5) {
-                                ArrayList<String> list = new ArrayList<String>();
-                                for (MarkItem item : mMarkAsStarredFoundList)
-                                    list.add(item.mCaption);
-                                ShowNotification(TextUtils.join(", ", list),
+                                int ID = -1;
+                                try {
+                                    if (entryUri != null)
+                                        ID = Integer.parseInt(entryUri.getLastPathSegment());
+                                } catch (Throwable th) {
+
+                                }
+
+                                ShowNotification(item.mCaption,
                                         R.string.markedAsStarred,
-                                        new Intent(FetcherService.this, HomeActivity.class)
-                                                .setData(EntryColumns.FAVORITES_CONTENT_URI),
-                                        null,
-                                        Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
-                            } else if (mMarkAsStarredFoundList.size() > 0)
-                                for (MarkItem item : mMarkAsStarredFoundList) {
-                                    Uri entryUri = getEntryUri(item.mLink, item.mFeedID);
-
-                                    int ID = -1;
-                                    try {
-                                        if ( entryUri != null )
-                                            ID = Integer.parseInt( entryUri.getLastPathSegment() );
-                                    } catch ( Throwable th ) {
-
-                                    }
-
-                                    ShowNotification(item.mCaption,
-                                            R.string.markedAsStarred,
-                                            new Intent(Intent.ACTION_VIEW, entryUri),
-                                            entryUri,
-                                            ID);
-                                }
-                        }
-
-                        if (newCount > 0) {
-                            if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true)) {
-                                Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{Constants.DB_COUNT}, EntryColumns.WHERE_UNREAD, null, null);
-
-                                cursor.moveToFirst();
-                                newCount = cursor.getInt(0); // The number has possibly changed
-                                cursor.close();
-
-                                if (newCount > 0) {
-                                    ShowNotification( getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
-                                                      R.string.flym_feeds,
-                                                      new Intent(this, HomeActivity.class),
-                                                      null,
-                                                      Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
-                                }
-                            } else if (Constants.NOTIF_MGR != null) {
-                                Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                                        new Intent(Intent.ACTION_VIEW, entryUri),
+                                        entryUri,
+                                        ID);
                             }
+                    }
+
+                    if (newCount > 0) {
+                        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true)) {
+                            Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{Constants.DB_COUNT}, EntryColumns.WHERE_UNREAD, null, null);
+
+                            cursor.moveToFirst();
+                            newCount = cursor.getInt(0); // The number has possibly changed
+                            cursor.close();
+
+                            if (newCount > 0) {
+                                ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
+                                        R.string.flym_feeds,
+                                        new Intent(FetcherService.this, HomeActivity.class),
+                                        null,
+                                        Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                            }
+                        } else if (Constants.NOTIF_MGR != null) {
+                            Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
                         }
+                    }
 
-                        mobilizeAllEntries( isFromAutoRefresh );
-                        downloadAllImages();
-                        deleteOldEntries(keepDateBorderTime);
-
-                } finally {
-                    Status().End( status );
+                    mobilizeAllEntries(isFromAutoRefresh);
+                    downloadAllImages();
+                    deleteOldEntries(keepDateBorderTime);
                 }
-
-                PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
-
-
-            } finally {
-                stopForeground( true );
-            }
-
+            } );
         }
-        synchronized ( mCancelRefresh ) {
+    }
+
+    private void LongOper( int textID, Runnable oper ) {
+        LongOper( getString( textID ), oper );
+    }
+
+    private void LongOper( String text, Runnable oper ) {
+        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification(text));
+        int status = Status().Start( text );
+        PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
+        synchronized (mCancelRefresh) {
             mCancelRefresh = false;
+        }
+        try {
+            oper.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Toast.makeText( this, getString( R.string.error ) + ": " + e.getMessage(), Toast.LENGTH_LONG ).show();
+            DebugApp.SendException( e, this );
+        } finally {
+            Status().End(status);
+            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
+            stopForeground(true);
+            synchronized (mCancelRefresh) {
+                mCancelRefresh = false;
+            }
         }
     }
 
@@ -591,6 +623,9 @@ public class FetcherService extends IntentService {
         return success;
     }
 
+    public static Intent GetIntent( String extra ) {
+        return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
+    }
     public static void StartServiceOpenExternalLink( final String url, final String title) {
         FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
                 .setAction( ACTION_LOAD_LINK )

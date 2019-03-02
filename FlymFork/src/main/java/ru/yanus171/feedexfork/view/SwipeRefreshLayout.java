@@ -433,13 +433,6 @@ public class SwipeRefreshLayout extends ViewGroup {
         return handled;
     }
 
-    private void startRefresh() {
-        removeCallbacks(mCancel);
-        mReturnToStartPosition.run();
-        setRefreshing(true);
-        mListener.onRefresh();
-    }
-
     private void updateContentOffsetTop(int targetTop) {
         final int currentTop = mTarget.getTop();
         if (targetTop > mDistanceToTriggerSync) {
@@ -453,6 +446,13 @@ public class SwipeRefreshLayout extends ViewGroup {
     private void setTargetOffsetTopAndBottom(int offset) {
         mTarget.offsetTopAndBottom(offset);
         mCurrentTargetOffsetTop = mTarget.getTop();
+    }
+
+    private void startRefresh() {
+        removeCallbacks(mCancel);
+        mReturnToStartPosition.run();
+        setRefreshing(true);
+        mListener.onRefresh();
     }
 
     private void updatePositionTimeout() {

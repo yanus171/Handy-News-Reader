@@ -87,6 +87,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.AddGoogleNewsActivity;
@@ -96,6 +97,7 @@ import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
@@ -596,27 +598,7 @@ public class EditFeedsListFragment extends ListFragment {
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == REQUEST_PICK_OPML_FILE) {
             if (resultCode == Activity.RESULT_OK) {
-                new WaitDialog(getActivity(), R.string.importingFromFile, new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            OPML.importFromFile(data.getData().getPath()); // Try to read it by its path
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            try { // Try to read it directly as an InputStream (for Google Drive)
-                                OPML.importFromFile(MainApplication.getContext().getContentResolver().openInputStream(data.getData()));
-                            } catch (Exception unused) {
-                                e.printStackTrace();
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        UiUtils.showMessage(getActivity(), R.string.error_feed_import);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }).execute();
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, data.getData().getPath() ) );
             } else {
                 displayCustomFilePicker();
             }
@@ -640,23 +622,9 @@ public class EditFeedsListFragment extends ListFragment {
             builder.setItems(fileNames, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, final int which) {
-                    new Thread(new Runnable() { // To not block the UI
-                        @Override
-                        public void run() {
-                            try {
-                                OPML.importFromFile(Environment.getExternalStorageDirectory().toString() + File.separator
-                                        + fileNames[which]);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        UiUtils.showMessage(getActivity(), R.string.error_feed_import);
-                                    }
-                                });
-                            }
-                        }
-                    }).start();
+                    FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).
+                            putExtra( Constants.EXTRA_FILENAME, Environment.getExternalStorageDirectory().toString() + File.separator
+                                    + fileNames[which]) );
                 }
             });
             builder.show();

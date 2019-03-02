@@ -43,6 +43,7 @@ public class DebugApp {
 	static StringBuilder ErrorLog = new StringBuilder();
 	static boolean DebugMode = true;
 	private static final int c1024 = 1024;
+	public static boolean ShowImmediately = false;
 
 	public class Info {
 		String VersionName;
@@ -113,7 +114,6 @@ public class DebugApp {
 
 			}
 		}
-
 		// --------------------------------------------------------------------------
 		public String GetInformationString() {
 			String ReturnVal = "";
@@ -172,78 +172,82 @@ public class DebugApp {
 			return totalBlocks * blockSize;
 		}
 	}
+	// -------------------------------------------------------------------
+	static public void SendException( Throwable throwable, final Context context) {
+		final StringWriter st = new StringWriter();
+		st.append("UNCAUGHT EXCEPTION\n");
+		st.append("-------------------\n");
+		st.append(GetStackTrace(throwable) + "\n");
+		st.append("-------------------\n");
+		st.append(new DebugApp().new Info().GetInformationString());
+		st.append("-------------------\n");
+		// st.append(CalendarEvent.GetProviderInfo( mContext ));
+		// st.append("-------------------\n");
+
+		PrefUtils.putStringCommit( "crashText", st.toString() );
+
+		Log.e("HandyNewsLog", st.toString());
+
+		try {
+			CreateFileUri("", "crash.txt", st.toString());
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		//SaveExceptionToFile(st.toString());
+		if (DebugMode) {
+			//EventLog.Save();
+		}
+		if (ShowImmediately) {
+			final Throwable finalThrowable = throwable;
+			new Thread() {
+				@Override
+				public void run() {
+					Looper.prepare();
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setMessage(finalThrowable.getMessage() + "\n" + finalThrowable.getLocalizedMessage());
+					builder.setPositiveButton("OK", new Dialog.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+							System.exit(1);
+						}
+					});
+					builder.create().show();
+					Looper.loop();
+				}
+			}.start();
+		} else {
+			final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+			emailIntent.setType("plain/text");
+			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "workyalex@mail.ru" });
+			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HandyNews error stacktrace");
+			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, st.toString());
+			((ClipboardManager) context.getSystemService(android.content.Context.CLIPBOARD_SERVICE))
+					.setText(st.toString());
+			Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
+			context.startActivity(
+					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)));
+		}
+		//if (mOldHandler != null) {
+			// mOldHandler.uncaughtException(thread, throwable);
+		//}
+		//MainService.SetNonNormalExit();
+		System.exit(1);
+	}
 
 	// ****************************************************************************
 	public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-		Thread.UncaughtExceptionHandler mOldHandler = null;
-		public boolean ShowImmediately = false;
+		//Thread.UncaughtExceptionHandler mOldHandler = null;
 		Context mContext = null;
 
 		public UncaughtExceptionHandler(Context context) {
-			mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
+			//mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
 			mContext = context;
 		}
 
-		// -------------------------------------------------------------------
+
+		@Override
 		public void uncaughtException(Thread thread, Throwable throwable) {
-			final StringWriter st = new StringWriter();
-			st.append("UNCAUGHT EXCEPTION\n");
-			st.append("-------------------\n");
-			st.append(GetStackTrace(throwable) + "\n");
-			st.append("-------------------\n");
-			st.append(new Info().GetInformationString());
-			st.append("-------------------\n");
-			// st.append(CalendarEvent.GetProviderInfo( mContext ));
-			// st.append("-------------------\n");
-
-			PrefUtils.putStringCommit( "crashText", st.toString() );
-
-			Log.e("HandyNewsLog", st.toString());
-
-			try {
-				CreateFileUri("", "crash.txt", st.toString());
-			} catch ( Exception e ) {
-				e.printStackTrace();
-			}
-			//SaveExceptionToFile(st.toString());
-			if (DebugMode) {
-				//EventLog.Save();
-			}
-			if (ShowImmediately) {
-				final Throwable finalThrowable = throwable;
-				new Thread() {
-					@Override
-					public void run() {
-						Looper.prepare();
-						AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-						builder.setMessage(finalThrowable.getMessage() + "\n" + finalThrowable.getLocalizedMessage());
-						builder.setPositiveButton("OK", new Dialog.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-								System.exit(1);
-							}
-						});
-						builder.create().show();
-						Looper.loop();
-					}
-				}.start();
-			} else {
-				final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-				emailIntent.setType("plain/text");
-				emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "workyalex@mail.ru" });
-				emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HandyNews error stacktrace");
-				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, st.toString());
-				((ClipboardManager) mContext.getSystemService(android.content.Context.CLIPBOARD_SERVICE))
-						.setText(st.toString());
-				Toast.makeText(mContext, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
-				mContext.startActivity(
-						Intent.createChooser(emailIntent, mContext.getString(R.string.criticalErrorSending)));
-			}
-			if (mOldHandler != null) {
-				// mOldHandler.uncaughtException(thread, throwable);
-			}
-			//MainService.SetNonNormalExit();
-			System.exit(1);
+			SendException( throwable, mContext );
 		}
 	}
 

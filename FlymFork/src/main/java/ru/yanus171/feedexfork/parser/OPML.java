@@ -125,14 +125,12 @@ public class OPML {
 
     public static void importFromFile(InputStream input) throws IOException, SAXException {
         SetAutoBackupEnabled(false); // Do not write the auto backup file while reading it...
-        final int status = FetcherService.Status().Start( MainApplication.getContext().getString(R.string.importingFromFile) );
         try {
             final OPMLParser parser = new OPMLParser();
             Xml.parse(new InputStreamReader(input), parser);
             //parser.mEditor.commit();
         } finally {
             SetAutoBackupEnabled(true);
-            FetcherService.Status().End( status );
         }
     }
 
@@ -154,7 +152,8 @@ public class OPML {
 
         final Context context = MainApplication.getContext();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) ); try {
+        //final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) );
+        try {
             Cursor cursorGroupsAndRoot = context.getContentResolver()
                     .query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, FEEDS_PROJECTION, null, null, null);
 
@@ -190,7 +189,7 @@ public class OPML {
             //writer.write(builder.toString());
         } finally {
             writer.close();
-            FetcherService.Status().End( status );
+            //FetcherService.Status().End( status );
         }
     }
 
@@ -236,8 +235,6 @@ public class OPML {
         writer.write(String.format( ATTR_VALUE, FeedColumns.FETCH_MODE ));
         writer.write(GetLong( cursor, 12 ));
 
-
-
         writer.write(OUTLINE_NORMAL_CLOSING);
 
         ExportFilters(writer, feedID);
@@ -258,7 +255,7 @@ public class OPML {
     private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
-            EntryColumns.IS_FAVORITE, EntryColumns._ID/*, EntryColumns.MOBILIZED_HTML*/ };
+            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID };
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -272,7 +269,6 @@ public class OPML {
 //        }
 //        return result;
 //    }
-
     private static void ExportEntries(Writer writer, String feedID, boolean saveAbstract) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
                 .query(ENTRIES_FOR_FEED_CONTENT_URI( feedID ), ENTRIES_PROJECTION, null, null, null);
@@ -309,6 +305,8 @@ public class OPML {
 //                    final String text = GetMobilizedText( entryID );
 //                    writer.write(text == null ? "" : TextUtils.htmlEncode(text));
 //                }
+                writer.write(String.format( ATTR_VALUE, EntryColumns.GUID) );
+                writer.write(cur.isNull( 12 ) ? "" : TextUtils.htmlEncode(cur.getString(12)));
                 writer.write(TAG_CLOSING);
             }
             writer.write("\t");
@@ -488,6 +486,7 @@ public class OPML {
                     values.put(EntryColumns.SCROLL_POS, GetText( attributes, EntryColumns.SCROLL_POS ));
                     values.put(EntryColumns.AUTHOR, GetText( attributes, EntryColumns.AUTHOR) );
                     values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
+                    values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( mFeedId ), values);

@@ -67,7 +67,7 @@ public class AutoBackupJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         //if (AutoService.isAutoUpdateEnabled() ) {
-            FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class).putExtra( Constants.FROM_AUTO_BACKUP, true ) );
+            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
         //}
         return false;
     }
