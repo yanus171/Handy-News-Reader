@@ -121,7 +121,7 @@ public class FetcherService extends IntentService {
     public static final String ACTION_REFRESH_FEEDS = FeedData.PACKAGE_NAME + ".REFRESH";
     public static final String ACTION_MOBILIZE_FEEDS = FeedData.PACKAGE_NAME + ".MOBILIZE_FEEDS";
     public static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
-    public static final String ACTION_DOWNLOAD_IMAGES = FeedData.PACKAGE_NAME + ".DOWNLOAD_IMAGES";
+    //public static final String ACTION_DOWNLOAD_IMAGES = FeedData.PACKAGE_NAME + ".DOWNLOAD_IMAGES";
 
     private static final int THREAD_NUMBER = 3;
     private static final int MAX_TASK_ATTEMPT = 3;
@@ -288,8 +288,8 @@ public class FetcherService extends IntentService {
                 }
             } );
 
-        } else if (ACTION_DOWNLOAD_IMAGES.equals(intent.getAction())) {
-            downloadAllImages();
+        //} else if (ACTION_DOWNLOAD_IMAGES.equals(intent.getAction())) {
+        //    downloadAllImages();
         } else { // == Constants.ACTION_REFRESH_FEEDS
             LongOper(R.string.RefreshFeeds, new Runnable() {
                 @Override
@@ -1145,10 +1145,10 @@ public class FetcherService extends IntentService {
                     int start = xmlText != null ? xmlText.indexOf(ENCODING) : -1;
 
                     if (start > -1) {
-                        parseXml(
-                                new StringReader(new String(outputStream.toByteArray(),
-                                        xmlText.substring(start + 10, xmlText.indexOf('"', start + 11)))), handler
-                        );
+                        parseXml( new StringReader(new String(outputStream.toByteArray(),
+                                                   xmlText.substring(start + 10,
+                                                                     xmlText.indexOf('"', start + 11)))),
+                                  handler );
                     } else {
                         // use content type
                         if (contentType != null) {

@@ -339,7 +339,7 @@
             android:title="@string/vibrate_on_article_list_entry_swype"/>
 
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-            android:defaultValue="1800000"
+            android:defaultValue="86400000"
             android:entries="@array/settings_intervals"
             android:entryValues="@array/settings_interval_values"
             android:inputType="number"

@@ -72,11 +72,10 @@ public class AutoBackupJobService extends JobService {
         return false;
     }
 
-    private static final String SIXTY_MINUTES = "3600000";
     private static long getTimeIntervalInMSecs() {
         long time = 3600L * 1000 * 24;
         try {
-            time = Math.max(60L * 1000, Long.parseLong(PrefUtils.getString(PrefUtils.REFRESH_INTERVAL, "")));
+            time = Math.max(60L * 1000, Long.parseLong(PrefUtils.getString(PrefUtils.AUTO_BACKUP_INTERVAL, "")));
         } catch (Exception ignored) {
         }
         return time;

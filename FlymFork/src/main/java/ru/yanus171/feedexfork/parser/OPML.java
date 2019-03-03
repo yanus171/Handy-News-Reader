@@ -177,13 +177,20 @@ public class OPML {
                     cursorFeeds.close();
 
                     writer.write( OUTLINE_END);
-                } else {
+                } else
                     ExportFeed(writer, cursorGroupsAndRoot);
-                }
+            }
+            {
+                Cursor cursor = context.getContentResolver().query(FeedColumns.CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
+                if ( cursor.moveToFirst() )
+                    ExportFeed(writer, cursor);
+                cursor.close();
             }
             writer.write( CLOSING );
 
             cursorGroupsAndRoot.close();
+
+
 
 
             //writer.write(builder.toString());
@@ -234,7 +241,6 @@ public class OPML {
         writer.write(GetLong( cursor, 11 ));
         writer.write(String.format( ATTR_VALUE, FeedColumns.FETCH_MODE ));
         writer.write(GetLong( cursor, 12 ));
-
         writer.write(OUTLINE_NORMAL_CLOSING);
 
         ExportFilters(writer, feedID);
