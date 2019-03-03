@@ -79,7 +79,7 @@ public class DrawerAdapter extends BaseAdapter {
 
     private final Context mContext;
     private Cursor mFeedsCursor;
-    private int mAllUnreadNumber, mFavoritesNumber, mAllNumber, mExternalUnreadNumber, mExternalReadNumber;
+    private int mAllUnreadNumber, mFavoritesUnreadNumber, mFavoritesReadNumber, mAllNumber, mExternalUnreadNumber, mExternalReadNumber;
 
     public DrawerAdapter(Context context, Cursor feedCursor) {
         mContext = context;
@@ -143,8 +143,10 @@ public class DrawerAdapter extends BaseAdapter {
                 case 2:
                     holder.titleTxt.setText(R.string.favorites);
                     holder.iconView.setImageResource(R.drawable.cup_with_star);
-                    if (mFavoritesNumber != 0)
-                        holder.unreadTxt.setText(String.valueOf(mFavoritesNumber));
+                    if (mFavoritesUnreadNumber != 0)
+                        holder.unreadTxt.setText(String.valueOf(mFavoritesUnreadNumber));
+                    if (mFavoritesReadNumber != 0)
+                        holder.readTxt.setText(String.valueOf(mFavoritesReadNumber));
                     break;
                 case 3:
                     holder.titleTxt.setText(R.string.externalLinks);
@@ -290,23 +292,25 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     private void updateNumbers() {
-        mAllUnreadNumber = mFavoritesNumber = mAllNumber = mExternalReadNumber = mExternalUnreadNumber = 0;
+        mAllUnreadNumber = mFavoritesUnreadNumber = mFavoritesReadNumber = mAllNumber = mExternalReadNumber = mExternalUnreadNumber = 0;
         Timer timer = new Timer( "updateNumbers()" );
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
         Cursor numbers = mContext.getContentResolver().query(EntryColumns.CONTENT_URI,
                 new String[]{FeedData.ALL_UNREAD_NUMBER,
-                             FeedData.FAVORITES_NUMBER,
+                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.FAVORITES_READ_NUMBER : "0",
+                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
                              FeedData.ALL_NUMBER,
-                             FeedData.EXTERNAL_UNREAD_NUMBER,
+                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
                              PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.EXTERNAL_READ_NUMBER : "0"},
                 null, null, null);
         if (numbers != null) {
             if (numbers.moveToFirst()) {
                 mAllUnreadNumber = numbers.getInt(0);
-                mFavoritesNumber = numbers.getInt(1);
-                mAllNumber = numbers.getInt( 2 );
-                mExternalUnreadNumber = numbers.getInt( 3 );
-                mExternalReadNumber = numbers.getInt( 4 );
+                mFavoritesReadNumber = numbers.getInt(1);
+                mFavoritesUnreadNumber = numbers.getInt(2);
+                mAllNumber = numbers.getInt( 3 );
+                mExternalUnreadNumber = numbers.getInt( 4 );
+                mExternalReadNumber = numbers.getInt( 5 );
             }
             numbers.close();
         }

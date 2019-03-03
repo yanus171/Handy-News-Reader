@@ -166,6 +166,12 @@
             android:title="@string/show_new_icon"/>
 
         <CheckBoxPreference
+            android:key="show_read_article_count"
+            android:defaultValue="false"
+            android:title="@string/show_read_article_count"
+            android:summary="@string/show_read_article_count_descr"/>
+
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="show_group_entries_count"
             android:title="@string/show_group_entrries_count"
@@ -325,12 +331,6 @@
             android:defaultValue="false"
             android:title="@string/show_progress_info"
             android:summary="@string/show_progress_info_descr"/>
-
-        <CheckBoxPreference
-            android:key="show_read_article_count"
-            android:defaultValue="false"
-            android:title="@string/show_read_article_count"
-            android:summary="@string/show_read_article_count_descr"/>
 
         <CheckBoxPreference
             android:defaultValue="true"

@@ -52,11 +52,13 @@ import android.os.Handler;
 
 import java.io.File;
 
+import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
+import ru.yanus171.feedexfork.service.FetcherService;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -82,22 +84,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         // Check if we need to import the backup
         if (new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
-            mHandler.post(new Runnable() { // In order to it after the database is created
-                @Override
-                public void run() {
-                    new Thread(new Runnable() { // To not block the UI
-                        @Override
-                        public void run() {
-                            try {
-                                // Perform an automated import of the backup
-                                OPML.importFromFile(OPML.GetAutoBackupOPMLFileName());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                }
-            });
+            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
         }
     }
 

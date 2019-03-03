@@ -190,7 +190,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
 
         // Ask the permission to import the feeds if there is already one backup
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
@@ -573,18 +574,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_IMPORT_FROM_OPML: {
+
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new Thread(new Runnable() { // To not block the UI
-                        @Override
-                        public void run() {
-                            try {
-                                // Perform an automated import of the backup
-                                OPML.importFromFile(OPML.GetAutoBackupOPMLFileName());
-                            } catch (Exception ignored) {
-                            }
-                        }
-                    }).start();
+                    FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
                 }
                 return;
             }

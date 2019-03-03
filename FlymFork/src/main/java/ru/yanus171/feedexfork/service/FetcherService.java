@@ -233,6 +233,8 @@ public class FetcherService extends IntentService {
                 public void run() {
                     try {
                         OPML.importFromFile( intent.getStringExtra( Constants.EXTRA_FILENAME ) );
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                         DebugApp.SendException(e, FetcherService.this);

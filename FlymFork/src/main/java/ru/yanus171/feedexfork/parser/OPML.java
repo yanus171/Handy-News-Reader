@@ -162,6 +162,13 @@ public class OPML {
             writer.write( AFTER_DATE);
             SaveSettings( writer, "\t\t");
 
+            {
+                Cursor cursor = context.getContentResolver().query(FeedColumns.CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
+                if ( cursor.moveToFirst() )
+                    ExportFeed(writer, cursor);
+                cursor.close();
+            }
+
             while (cursorGroupsAndRoot.moveToNext()) {
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
                     writer.write( OUTLINE_TITLE);
@@ -179,12 +186,6 @@ public class OPML {
                     writer.write( OUTLINE_END);
                 } else
                     ExportFeed(writer, cursorGroupsAndRoot);
-            }
-            {
-                Cursor cursor = context.getContentResolver().query(FeedColumns.CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
-                if ( cursor.moveToFirst() )
-                    ExportFeed(writer, cursor);
-                cursor.close();
             }
             writer.write( CLOSING );
 
@@ -457,13 +458,17 @@ public class OPML {
                     values.put(FeedColumns.PRIORITY, GetText( attributes, FeedColumns.PRIORITY));
                     values.put(FeedColumns.FETCH_MODE, GetText( attributes, FeedColumns.FETCH_MODE));
 
-                    Cursor cursor = cr.query(FeedColumns.CONTENT_URI, null, FeedColumns.URL + Constants.DB_ARG,
-                            new String[]{url}, null);
-                    mFeedId = null;
-                    if (!cursor.moveToFirst()) {
-                        mFeedId = cr.insert(FeedColumns.CONTENT_URI, values).getLastPathSegment();
+                    if ( attributes.getValue( FeedColumns.FETCH_MODE ).equals( String.valueOf( FetcherService.FETCHMODE_EXERNAL_LINK ) ) )
+                        mFeedId = FetcherService.GetExtrenalLinkFeedID();
+                    else {
+                        Cursor cursor = cr.query(FeedColumns.CONTENT_URI, null, FeedColumns.URL + Constants.DB_ARG,
+                                new String[]{url}, null);
+                        mFeedId = null;
+                        if (!cursor.moveToFirst()) {
+                            mFeedId = cr.insert(FeedColumns.CONTENT_URI, values).getLastPathSegment();
+                        }
+                        cursor.close();
                     }
-                    cursor.close();
                 }
             } else if (TAG_FILTER.equals(localName)) {
                 if (mFeedEntered && mFeedId != null) {
