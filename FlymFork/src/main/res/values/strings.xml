@@ -368,6 +368,8 @@
     <string name="show_group_entries_count_descr">may reduce performance</string>
     <string name="autobackup_interval">Auto backup interval</string>
     <string name="autobackup_interval_descr">How often a backup file of the feeds and articles will be created </string>
+    <string name="create_auto_backup">Create auto backup</string>
+    <string name="auto_backup_opml_file_created">Auto backup opml file created:</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

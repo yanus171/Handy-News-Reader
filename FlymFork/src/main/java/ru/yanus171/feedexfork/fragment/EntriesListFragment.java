@@ -670,6 +670,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 return true;
 
             }
+            case R.id.menu_create_auto_backup: {
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
+                return true;
+            }
+
             case R.id.menu_create_test_data: {
                 FetcherService.createTestData();
                 return true;

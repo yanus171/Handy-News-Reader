@@ -438,5 +438,7 @@
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
     <string name="autobackup_interval">Интервал резервного копирования</string>
     <string name="autobackup_interval_descr">Как часто будет создаваться файл резервной копии лент и статьей</string>
+    <string name="create_auto_backup">Создать автоматическую резервную копию</string>
+    <string name="auto_backup_opml_file_created">Создан файл автоматической резервной копии: </string>
 
 </resources>

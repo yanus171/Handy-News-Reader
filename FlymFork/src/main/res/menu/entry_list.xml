@@ -34,6 +34,9 @@
         android:id="@+id/menu_create_test_data"
         android:title="Create test data"/>
     <item
+        android:id="@+id/menu_create_auto_backup"
+        android:title="@string/create_auto_backup"/>
+    <item
         android:id="@+id/menu_search"
         android:icon="@drawable/action_search"
         android:title="@android:string/search_go"

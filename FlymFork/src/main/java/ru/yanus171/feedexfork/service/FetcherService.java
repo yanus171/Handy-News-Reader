@@ -218,6 +218,12 @@ public class FetcherService extends IntentService {
                 public void run() {
                     try {
                         OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText( FetcherService.this, getString(R.string.auto_backup_opml_file_created) + OPML.GetAutoBackupOPMLFileName(), Toast.LENGTH_LONG ).show();
+                            }
+                        });
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

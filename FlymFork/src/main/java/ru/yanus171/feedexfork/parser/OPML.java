@@ -190,14 +190,8 @@ public class OPML {
             writer.write( CLOSING );
 
             cursorGroupsAndRoot.close();
-
-
-
-
-            //writer.write(builder.toString());
         } finally {
             writer.close();
-            //FetcherService.Status().End( status );
         }
     }
 
