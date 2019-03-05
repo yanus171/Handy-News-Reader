@@ -207,7 +207,7 @@ public class FetcherService extends IntentService {
         if (intent == null) { // No intent, we quit
             return;
         }
-        mStatusText.ClearError();
+        Status().ClearError();
         mIsWiFi = GetIsWifi();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
