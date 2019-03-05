@@ -306,7 +306,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes,true);
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes,true, true);
                 }
             }).start();
         }

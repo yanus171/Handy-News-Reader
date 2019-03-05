@@ -202,7 +202,7 @@ public class StatusText implements Observer {
             if ( e != null )
                 e.printStackTrace();
             synchronized ( mList ) {
-                mErrorText = text == null ? "" : text + ", " + e.toString();
+                mErrorText = ( text == null ? "" : text + ", " ) + e.toString();
             }
             UpdateText();
         }
