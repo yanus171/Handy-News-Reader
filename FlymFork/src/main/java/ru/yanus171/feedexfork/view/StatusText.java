@@ -202,7 +202,7 @@ public class StatusText implements Observer {
             if ( e != null )
                 e.printStackTrace();
             synchronized ( mList ) {
-                mErrorText = mErrorText == null ? "" : text + ", " + e.getCause() + ", " + e.getLocalizedMessage();
+                mErrorText = text == null ? "" : text + ", " + e.toString();
             }
             UpdateText();
         }
@@ -228,7 +228,7 @@ public class StatusText implements Observer {
                         synchronized (mList) {
                             if ( mList.isEmpty() ) {
                                 mBytesRecievedLast = 0;
-                                notifyObservers(SEP + mErrorText);
+                                notifyObservers( SEP );
                             }
                         }
                     }

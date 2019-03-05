@@ -207,7 +207,7 @@ public class FetcherService extends IntentService {
         if (intent == null) { // No intent, we quit
             return;
         }
-
+        mStatusText.ClearError();
         mIsWiFi = GetIsWifi();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
@@ -410,9 +410,9 @@ public class FetcherService extends IntentService {
         synchronized (mCancelRefresh) {
             if ( !mIsWiFi && Status().mBytesRecievedLast > PrefUtils.getMaxSingleRefreshTraffic() * 1024 * 1024 )
                 return true;
-            if (mCancelRefresh) {
-                MainApplication.getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
-            }
+            //if (mCancelRefresh) {
+            //    MainApplication.getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
+            //}
             return mCancelRefresh;
         }
     }
