@@ -89,7 +89,7 @@ public class AutoBackupJobService extends JobService {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void initAutoBackup(Context context) {
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            if ( AutoService.GetPendingJobByID( jobScheduler, AUTO_BACKUP_JOB_ID ) == null ) {
+            //if ( AutoService.GetPendingJobByID( jobScheduler, AUTO_BACKUP_JOB_ID ) == null ) {
                 ComponentName serviceComponent = new ComponentName(context, AutoBackupJobService.class);
                 JobInfo.Builder builder =
                         new JobInfo.Builder(AUTO_BACKUP_JOB_ID, serviceComponent)
@@ -103,7 +103,7 @@ public class AutoBackupJobService extends JobService {
                             .setRequiresBatteryNotLow(true);
                 }
                 jobScheduler.schedule(builder.build());
-            }
+            //}
 
     }
 
