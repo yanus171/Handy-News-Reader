@@ -114,16 +114,6 @@ public class AutoService {
         return PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true);
     }
 
-    static long getTimeIntervalInMSecs() {
-
-        long time = 3600L * 1000;
-        try {
-            time = Math.max(60L * 1000, Long.parseLong(PrefUtils.getString(PrefUtils.REFRESH_INTERVAL, SIXTY_MINUTES)));
-        } catch (Exception ignored) {
-        }
-        return time;
-    }
-
 
     static JobInfo GetPendingJobByID(JobScheduler jobScheduler, int ID) {
         if ( Build.VERSION.SDK_INT >= 24 ) {
@@ -135,4 +125,15 @@ public class AutoService {
             return null;
         }
     }
+
+    static  final String LAST = "LAST_";
+    static long getTimeIntervalInMSecs( String key, long defaultValue ) {
+        long time = defaultValue;
+        try {
+            time = Math.max(60L * 1000, Long.parseLong(PrefUtils.getString(key, "")));
+        } catch (Exception ignored) {
+        }
+        return time;
+    }
+
 }

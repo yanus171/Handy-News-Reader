@@ -58,6 +58,10 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
+import static ru.yanus171.feedexfork.service.AutoService.LAST;
+import static ru.yanus171.feedexfork.utils.PrefUtils.AUTO_BACKUP_INTERVAL;
+
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class AutoBackupJobService extends JobService {
     public static final int AUTO_BACKUP_JOB_ID = 3;
 
@@ -72,14 +76,6 @@ public class AutoBackupJobService extends JobService {
         return false;
     }
 
-    private static long getTimeIntervalInMSecs() {
-        long time = 3600L * 1000 * 24;
-        try {
-            time = Math.max(60L * 1000, Long.parseLong(PrefUtils.getString(PrefUtils.AUTO_BACKUP_INTERVAL, "")));
-        } catch (Exception ignored) {
-        }
-        return time;
-    }
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
@@ -88,24 +84,25 @@ public class AutoBackupJobService extends JobService {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void initAutoBackup(Context context) {
+        final long DEFAULT_INTERVAL = 3600L * 1000 * 24;
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            //if ( AutoService.GetPendingJobByID( jobScheduler, AUTO_BACKUP_JOB_ID ) == null ) {
-                ComponentName serviceComponent = new ComponentName(context, AutoBackupJobService.class);
-                JobInfo.Builder builder =
-                        new JobInfo.Builder(AUTO_BACKUP_JOB_ID, serviceComponent)
-                                .setPeriodic(getTimeIntervalInMSecs())
-                                .setRequiresCharging(false)
-                                .setPersisted(true)
-                        //.setRequiresDeviceIdle(true)
-                        ;
-                if (Build.VERSION.SDK_INT >= 26) {
-                    builder.setRequiresStorageNotLow(true)
-                            .setRequiresBatteryNotLow(true);
-                }
-                jobScheduler.schedule(builder.build());
-            //}
-
+        final long currentInterval = AutoService.getTimeIntervalInMSecs(AUTO_BACKUP_INTERVAL, DEFAULT_INTERVAL);
+        final long lastInterval = AutoService.getTimeIntervalInMSecs(LAST + AUTO_BACKUP_INTERVAL, DEFAULT_INTERVAL);
+        if (lastInterval != currentInterval || AutoService.GetPendingJobByID(jobScheduler, AUTO_BACKUP_JOB_ID) == null) {
+            ComponentName serviceComponent = new ComponentName(context, AutoBackupJobService.class);
+            JobInfo.Builder builder =
+                    new JobInfo.Builder(AUTO_BACKUP_JOB_ID, serviceComponent)
+                            .setPeriodic(currentInterval)
+                            .setRequiresCharging(false)
+                            .setPersisted(true)
+                    //.setRequiresDeviceIdle(true)
+                    ;
+            if (Build.VERSION.SDK_INT >= 26) {
+                builder.setRequiresStorageNotLow(true)
+                        .setRequiresBatteryNotLow(true);
+            }
+            jobScheduler.schedule(builder.build() );
+        }
+        PrefUtils.putString( LAST + AUTO_BACKUP_INTERVAL, String.valueOf( currentInterval ) );
     }
-
-
 }

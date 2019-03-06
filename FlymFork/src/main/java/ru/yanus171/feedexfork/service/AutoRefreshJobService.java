@@ -10,6 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import ru.yanus171.feedexfork.utils.PrefUtils;
+
+import static ru.yanus171.feedexfork.service.AutoService.LAST;
+import static ru.yanus171.feedexfork.utils.PrefUtils.AUTO_BACKUP_INTERVAL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
+
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class AutoRefreshJobService extends JobService {
     public static final int AUTO_UPDATE_JOB_ID = 1;
 
@@ -31,12 +38,15 @@ public class AutoRefreshJobService extends JobService {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     static void initAutoRefresh(Context context) {
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        final long DEFAULT_INTERVAL = 3600L * 1000 * 1;
+        final long currentInterval = AutoService.getTimeIntervalInMSecs(REFRESH_INTERVAL, DEFAULT_INTERVAL);
         if (AutoService.isAutoUpdateEnabled() ) {
-            if ( AutoService.GetPendingJobByID( jobScheduler, AUTO_UPDATE_JOB_ID ) == null ) {
+            final long lastInterval = AutoService.getTimeIntervalInMSecs(LAST + REFRESH_INTERVAL, DEFAULT_INTERVAL);
+            if (lastInterval != currentInterval || AutoService.GetPendingJobByID( jobScheduler, AUTO_UPDATE_JOB_ID ) == null ) {
                 ComponentName serviceComponent = new ComponentName(context, AutoRefreshJobService.class);
                 JobInfo.Builder builder =
                         new JobInfo.Builder(AUTO_UPDATE_JOB_ID, serviceComponent)
-                                .setPeriodic(AutoService.getTimeIntervalInMSecs())
+                                .setPeriodic(currentInterval)
                                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                                 .setRequiresCharging(false)
                                 .setPersisted(true)
@@ -46,11 +56,11 @@ public class AutoRefreshJobService extends JobService {
                     builder.setRequiresStorageNotLow(true)
                             .setRequiresBatteryNotLow(true);
                 }
-                jobScheduler.schedule(builder.build());
+                jobScheduler.schedule(builder.build() );
             }
         } else
             jobScheduler.cancel(AUTO_UPDATE_JOB_ID);
-
+        PrefUtils.putString( LAST + REFRESH_INTERVAL, String.valueOf( currentInterval ) );
     }
 
 }
