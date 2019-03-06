@@ -343,7 +343,7 @@
             android:entries="@array/settings_intervals"
             android:entryValues="@array/settings_interval_values"
             android:inputType="number"
-            android:key="autobackup_interval"
+            android:key="autobackup.interval"
             android:title="@string/autobackup_interval"
             android:summary="@string/autobackup_interval_descr"/>
 

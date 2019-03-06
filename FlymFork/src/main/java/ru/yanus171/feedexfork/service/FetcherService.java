@@ -208,7 +208,6 @@ public class FetcherService extends IntentService {
             return;
         }
         Status().ClearError();
-        mIsWiFi = GetIsWifi();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
             if (Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this))
@@ -250,7 +249,7 @@ public class FetcherService extends IntentService {
         }
 
 
-        Status().Clear();
+        mIsWiFi = GetIsWifi();
 
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
         //boolean isOpenActivity = intent.getBooleanExtra(Constants.OPEN_ACTIVITY, false);
@@ -548,6 +547,7 @@ public class FetcherService extends IntentService {
                 int linkPos = entryCursor.getColumnIndex(EntryColumns.LINK);
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
                 int titlePos = entryCursor.getColumnIndex(EntryColumns.TITLE);
+                final int feedId = entryCursor.getColumnIndex(EntryColumns.FEED_ID);
                 HttpURLConnection connection = null;
 
                 try {
@@ -618,9 +618,14 @@ public class FetcherService extends IntentService {
                     }
                 } catch (Exception e) {
                     //Dog.e("Mobilize error", e);
-                    if ( isShowError )
-                        Status().SetError( null, e );
-                    else {
+                    if ( isShowError ) {
+                        String title = "";
+                        Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[]{ FeedColumns.NAME }, null, null, null);
+                        if ( cursor.isNull( 0 ) )
+                            title = cursor.getString( 0 );
+                        cursor.close();
+                        Status().SetError(title + ": ", e);
+                    } else {
                         ContentValues values = new ContentValues();
                         values.put(EntryColumns.MOBILIZED_HTML, e.toString());
                         cr.update( entryUri, values, null, null );
@@ -1201,7 +1206,7 @@ public class FetcherService extends IntentService {
 
                 values.put(FeedColumns.ERROR, getString(R.string.error_feed_error));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
-                FetcherService.Status().SetError(getString(R.string.error_feed_error), e);
+                FetcherService.Status().SetError( cursor.getString(titlePosition) + ": " + getString(R.string.error_feed_error), e);
             }
         } catch(Exception e){
             if (handler == null || (!handler.isDone() && !handler.isCancelled())) {
@@ -1213,7 +1218,7 @@ public class FetcherService extends IntentService {
                 values.put(FeedColumns.ERROR, e.getMessage() != null ? e.getMessage() : getString(R.string.error_feed_process));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
 
-                FetcherService.Status().SetError(e.getMessage(), e);
+                FetcherService.Status().SetError(cursor.getString(titlePosition) + ": " + e.toString(), e);
             }
         } finally{
             /* check and optionally find favicon */
