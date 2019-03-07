@@ -44,12 +44,12 @@
 
 package ru.yanus171.feedexfork.parser;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Xml;
@@ -70,13 +70,12 @@ import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.FileUtils;
-import ru.yanus171.feedexfork.utils.HtmlUtils;
 
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
@@ -173,8 +172,7 @@ public class OPML {
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
                     writer.write( OUTLINE_TITLE);
                     writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
-                    writer.write( String.format(ATTR_VALUE, FeedColumns.PRIORITY));
-                    writer.write( GetLong(cursorGroupsAndRoot, 11));
+                    WriteLongValue(writer, cursorGroupsAndRoot, FeedColumns.PRIORITY, 11);
                     writer.write( OUTLINE_NORMAL_CLOSING);
                     Cursor cursorFeeds = context.getContentResolver()
                             .query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
@@ -220,22 +218,14 @@ public class OPML {
         writer.write(GetEncoded( cursor, 3));
         writer.write(OUTLINE_RETRIEVE_FULLTEXT);
         writer.write(GetBoolText( cursor, 4 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST ));
-        writer.write(GetBoolText( cursor, 5 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.IS_AUTO_REFRESH ));
-        writer.write(GetBoolText( cursor, 6 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.IS_IMAGE_AUTO_LOAD ));
-        writer.write(GetBoolText( cursor, 7 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.OPTIONS ));
-        writer.write(GetEncoded( cursor, 8 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.LAST_UPDATE ));
-        writer.write(GetLong( cursor, 9 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.REAL_LAST_UPDATE ));
-        writer.write(GetLong( cursor, 10 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.PRIORITY ));
-        writer.write(GetLong( cursor, 11 ));
-        writer.write(String.format( ATTR_VALUE, FeedColumns.FETCH_MODE ));
-        writer.write(GetLong( cursor, 12 ));
+        WriteBoolValue(writer, cursor, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, 5);
+        WriteBoolValue(writer, cursor, FeedColumns.IS_AUTO_REFRESH, 6);
+        WriteBoolValue(writer, cursor, FeedColumns.IS_IMAGE_AUTO_LOAD, 7);
+        WriteEncodedText( writer, cursor, FeedColumns.OPTIONS, 8 );
+        WriteLongValue(writer, cursor, FeedColumns.LAST_UPDATE, 9);
+        WriteLongValue(writer, cursor, FeedColumns.REAL_LAST_UPDATE, 10);
+        WriteLongValue(writer, cursor, FeedColumns.PRIORITY, 11);
+        WriteLongValue(writer, cursor, FeedColumns.FETCH_MODE, 12);
         writer.write(OUTLINE_NORMAL_CLOSING);
 
         ExportFilters(writer, feedID);
@@ -278,36 +268,25 @@ public class OPML {
                 writer.write("\t");
                 writer.write(String.format( TAG_START, TAG_ENTRY, EntryColumns.TITLE) );
                 writer.write(cur.isNull( 0 ) ? "" : TextUtils.htmlEncode(cur.getString(0)));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.LINK) );
-                writer.write(cur.isNull( 1 ) ? "" : TextUtils.htmlEncode(cur.getString(1)));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.IS_NEW) );
-                writer.write(GetBoolText( cur, 2));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.IS_READ) );
-                writer.write(GetBoolText( cur, 3));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.SCROLL_POS) );
-                writer.write(cur.getString(4));
+                WriteEncodedText(writer, cur, EntryColumns.LINK, 1);
+                WriteBoolValue(writer, cur, EntryColumns.IS_NEW, 2);
+                WriteBoolValue(writer, cur, EntryColumns.IS_READ, 3);
+                WriteText(writer, cur, EntryColumns.SCROLL_POS, 4);
                 if ( saveAbstract ) {
-                    writer.write(String.format(ATTR_VALUE, EntryColumns.ABSTRACT));
-                    writer.write(cur.isNull(5) ? "" : TextUtils.htmlEncode(cur.getString(5)));
+                    WriteEncodedText(writer, cur, EntryColumns.ABSTRACT, 5);
                 }
-                writer.write(String.format( ATTR_VALUE, EntryColumns.AUTHOR) );
-                writer.write(cur.isNull( 6 ) ? "" : TextUtils.htmlEncode(cur.getString(6)));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.DATE) );
-                writer.write(cur.getString(7));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.FETCH_DATE) );
-                writer.write(cur.getString(8));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.IMAGE_URL) );
-                writer.write(cur.isNull( 9 ) ? "" : TextUtils.htmlEncode(cur.getString(9)));
-                writer.write(String.format( ATTR_VALUE, EntryColumns.IS_FAVORITE) );
-                writer.write(GetBoolText( cur, 10));
+                WriteEncodedText(writer, cur, EntryColumns.AUTHOR, 6);
+                WriteText(writer, cur, EntryColumns.DATE, 7);
+                WriteText(writer, cur, EntryColumns.FETCH_DATE, 8);
+                WriteEncodedText(writer, cur, EntryColumns.IMAGE_URL, 9);
+                WriteBoolValue(writer, cur, EntryColumns.IS_FAVORITE, 10);
 //                if ( !saveAbstract && cur.getInt(10) == 1 ) {
 //                    //writer.write(String.format(ATTR_VALUE, EntryColumns.MOBILIZED_HTML));
 //                    long entryID  = cur.getLong(11 );
 //                    final String text = GetMobilizedText( entryID );
 //                    writer.write(text == null ? "" : TextUtils.htmlEncode(text));
 //                }
-                writer.write(String.format( ATTR_VALUE, EntryColumns.GUID) );
-                writer.write(cur.isNull( 12 ) ? "" : TextUtils.htmlEncode(cur.getString(12)));
+                WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
                 writer.write(TAG_CLOSING);
             }
             writer.write("\t");
@@ -315,10 +294,29 @@ public class OPML {
         cur.close();
     }
 
+    private static void WriteText(Writer writer, Cursor cur, String fieldName, int col) throws IOException {
+        writer.write(String.format(ATTR_VALUE, fieldName));
+        writer.write(cur.isNull(col) ? "" : cur.getString(col));
+    }
+
+    private static void WriteEncodedText(Writer writer, Cursor cur, String fieldName, int col) throws IOException {
+        writer.write(String.format(ATTR_VALUE, fieldName));
+        writer.write(cur.isNull(col) ? "" : TextUtils.htmlEncode(cur.getString(col)));
+    }
+
+    private static void WriteBoolValue(Writer writer, Cursor cur, String fieldName, int col) throws IOException {
+        writer.write(String.format( ATTR_VALUE, fieldName) );
+        writer.write(GetBoolText( cur, col));
+    }
+    private static void WriteLongValue(Writer writer, Cursor cursor, String fieldName, int col) throws IOException {
+        writer.write(String.format(ATTR_VALUE, fieldName));
+        writer.write(GetLong(cursor, col));
+    }
+
     private static final String[] FILTERS_PROJECTION = new String[]{FilterColumns.FILTER_TEXT, FilterColumns.IS_REGEX,
             FilterColumns.IS_APPLIED_TO_TITLE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED};
 
-    public static void ExportFilters(Writer writer, String feedID) throws IOException {
+    private static void ExportFilters(Writer writer, String feedID) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
                 .query(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedID), FILTERS_PROJECTION, null, null, null);
         if (cur.getCount() != 0) {
@@ -347,7 +345,7 @@ public class OPML {
     private static final String PREF_CLASS_BOOLEAN = "Boolean";
     private static final String PREF_CLASS_STRING = "String";
 
-    static void SaveSettings(Writer writer, final String prefix) throws IOException {
+    private static void SaveSettings(Writer writer, final String prefix) throws IOException {
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         for (final Map.Entry<String, ?> entry : settings.getAll().entrySet()) {
             String prefClass = entry.getValue().getClass().getName();
@@ -397,7 +395,8 @@ public class OPML {
         private String mGroupId = null;
         private String mFeedId = null;
 
-        public OPMLParser() {
+        @SuppressLint("CommitPrefEdits")
+        OPMLParser() {
             mEditor = PreferenceManager.getDefaultSharedPreferences( MainApplication.getContext() ).edit();
         }
 
