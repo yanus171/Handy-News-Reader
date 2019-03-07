@@ -554,7 +554,10 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         }
 
         boolean edit = getIntent() != null && getIntent().getAction().equals(Intent.ACTION_EDIT);
-        boolean insert = getIntent() != null && ( getIntent().getAction().equals(Intent.ACTION_INSERT)  || getIntent().getAction().equals(Intent.ACTION_SEND) );
+        boolean insert = getIntent() != null &&
+                ( getIntent().getAction().equals(Intent.ACTION_INSERT ) ||
+                  getIntent().getAction().equals(Intent.ACTION_VIEW ) ||
+                  getIntent().getAction().equals(Intent.ACTION_SEND) );
         menu.findItem(R.id.menu_validate).setVisible(insert);
         menu.findItem(R.id.menu_delete_feed).setVisible(edit && mTabHost.getCurrentTab() == 0 );
 
