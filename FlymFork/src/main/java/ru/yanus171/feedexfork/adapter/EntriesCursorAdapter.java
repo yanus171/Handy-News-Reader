@@ -103,7 +103,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<Uri>();
 
-    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos;
+    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -362,14 +362,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isMobilized = !cursor.isNull(mMobilizedPos);
 
+        int size = (int) (cursor.getFloat( mTextLenPos ) / 1024);
+        String sizeText = size > 0 ? String.format( ", %d KB", size ) : "";
         if (mShowFeedInfo && mFeedNamePos > -1) {
             if (feedName != null) {
-                holder.dateTextView.setText(Html.fromHtml("<font color='#247ab0'>" + feedName + "</font>" + Constants.COMMA_SPACE + StringUtils.getDateTimeString(cursor.getLong(mDatePos))));
+                holder.dateTextView.setText(Html.fromHtml("<font color='#247ab0'>" + feedName + "</font>" + Constants.COMMA_SPACE + StringUtils.getDateTimeString(cursor.getLong(mDatePos))) + sizeText);
             } else {
-                holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)));
+                holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
             }
         } else {
-            holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)));
+            holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
         }
 
         final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
@@ -570,6 +572,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mAbstractPos = cursor.getColumnIndex(EntryColumns.ABSTRACT);
             mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
             mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
+            mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
         }
 
     }
@@ -589,6 +592,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         public LinearLayout textLayout;
         public boolean isRead, isFavorite, isMobilized;
         public long entryID = -1;
+        public TextView contentSizeTextView;
     }
 
     public int GetFirstUnReadPos() {

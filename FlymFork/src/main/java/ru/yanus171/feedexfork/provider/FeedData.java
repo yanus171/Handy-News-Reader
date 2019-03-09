@@ -227,6 +227,8 @@ public class FeedData {
         public static final String SCROLL_POS = "scroll_pos";
         public static final String IS_NEW = "new";
 
+        private static final String TEXT_LEN_EXPR = String.format( "CASE WHEN %s IS NULL THEN length(%s) ELSE length(%s) END AS TEXT_LEN",
+                EntryColumns.MOBILIZED_HTML, EntryColumns.ABSTRACT, EntryColumns.MOBILIZED_HTML );
         public static final String[] PROJECTION_ID = new String[]{EntryColumns._ID};
         public static final String[] PROJECTION_WITHOUT_TEXT =
                 new String[]{EntryColumns._ID,
@@ -244,7 +246,27 @@ public class FeedData {
                              EntryColumns.TITLE,
                              EntryColumns.DATE,
                              String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
-                             FeedColumns.NAME};
+                             FeedColumns.NAME,
+                             TEXT_LEN_EXPR };
+        public static final String[] PROJECTION_WITH_TEXT =
+                new String[]{EntryColumns._ID,
+                        EntryColumns.AUTHOR,
+                        EntryColumns.DATE,
+                        FEED_ID,
+                        EntryColumns.FETCH_DATE,
+                        EntryColumns.GUID,
+                        EntryColumns.IMAGE_URL,
+                        EntryColumns.IS_FAVORITE,
+                        EntryColumns.IS_READ,
+                        EntryColumns.LINK,
+                        EntryColumns.SCROLL_POS,
+                        EntryColumns.IS_NEW,
+                        EntryColumns.TITLE,
+                        EntryColumns.DATE,
+                        EntryColumns.ABSTRACT,
+                        String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
+                        FeedColumns.NAME,
+                        TEXT_LEN_EXPR };
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
         public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';

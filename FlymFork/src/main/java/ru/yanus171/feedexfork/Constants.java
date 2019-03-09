@@ -76,7 +76,7 @@ public final class Constants {
     //public static final String OPEN_ACTIVITY = "open_activity";
     public static final String URL_TO_LOAD = "url_to_load";
     public static final String TITLE_TO_LOAD = "title_to_load";
-
+    public static final String EXTRA_DELETE_OLD = "delete_old";
 
 
     public static final String MIMETYPE_TEXT_PLAIN = "text/plain";

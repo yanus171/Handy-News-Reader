@@ -451,7 +451,7 @@ public class OPML {
                     values.put(FeedColumns.PRIORITY, GetText( attributes, FeedColumns.PRIORITY));
                     values.put(FeedColumns.FETCH_MODE, GetText( attributes, FeedColumns.FETCH_MODE));
 
-                    if ( attributes.getValue( FeedColumns.FETCH_MODE ).equals( String.valueOf( FetcherService.FETCHMODE_EXERNAL_LINK ) ) )
+                    if ( String.valueOf( FetcherService.FETCHMODE_EXERNAL_LINK ).equals( attributes.getValue( FeedColumns.FETCH_MODE ) ) )
                         mFeedId = FetcherService.GetExtrenalLinkFeedID();
                     else {
                         Cursor cursor = cr.query(FeedColumns.CONTENT_URI, null, FeedColumns.URL + Constants.DB_ARG,

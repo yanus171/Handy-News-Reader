@@ -252,6 +252,7 @@ public class FetcherService extends IntentService {
         mIsWiFi = GetIsWifi();
 
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
+        final boolean deleteOld = intent.getBooleanExtra(Constants.EXTRA_DELETE_OLD, true);
         //boolean isOpenActivity = intent.getBooleanExtra(Constants.OPEN_ACTIVITY, false);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -369,7 +370,8 @@ public class FetcherService extends IntentService {
 
                     mobilizeAllEntries(isFromAutoRefresh);
                     downloadAllImages();
-                    deleteOldEntries(keepDateBorderTime);
+                    if ( deleteOld )
+                        deleteOldEntries(keepDateBorderTime);
                 }
             } );
         }

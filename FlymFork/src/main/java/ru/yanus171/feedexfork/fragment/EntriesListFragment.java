@@ -117,7 +117,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
             String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) || mShowTextInEntryList ? Constants.DB_ASC : Constants.DB_DESC;
             String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
-            String[] projection = mShowTextInEntryList ? null : EntryColumns.PROJECTION_WITHOUT_TEXT;
+            String[] projection = mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
             CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, EntryColumns.DATE + entriesOrder);
             cursorLoader.setUpdateThrottle(150);
             return cursorLoader;
