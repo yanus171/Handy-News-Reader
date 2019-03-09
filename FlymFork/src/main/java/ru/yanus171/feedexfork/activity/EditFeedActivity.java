@@ -690,7 +690,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 FetcherService.StartService( new Intent(EditFeedActivity.this, FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.FEED_ID, newFeedUri.getLastPathSegment())
-                        .putExtra( Constants.EXTRA_DELETE_OLD, true ));
+                        .putExtra( Constants.EXTRA_DELETE_OLD, false ));
                 HomeActivity.mNewFeedUri = newFeedUri;
                 setResult(RESULT_OK);
                 finish();

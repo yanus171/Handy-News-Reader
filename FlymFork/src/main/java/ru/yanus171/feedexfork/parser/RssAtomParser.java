@@ -492,7 +492,7 @@ public class RssAtomParser extends DefaultHandler {
                     }
 
                 } else {
-                    cancel();
+                    //cancel();
                 }
                 mDescription = null;
                 mTitle = null;

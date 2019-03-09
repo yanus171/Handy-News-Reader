@@ -841,7 +841,7 @@ public class FetcherService extends IntentService {
     }
 
 
-    private void deleteOldEntries(final long defaultkeepDateBorderTime) {
+    private void deleteOldEntries(final long defaultKeepDateBorderTime) {
         if ( !mIsDeletingOld ) {
             int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
             ContentResolver cr = MainApplication.getContext().getContentResolver();
@@ -851,14 +851,16 @@ public class FetcherService extends IntentService {
             try {
                 mIsDeletingOld = true;
                 while (cursor.moveToNext()) {
-                    long keepDateBorderTime = defaultkeepDateBorderTime;
-                    try {
-                        JSONObject jsonOptions = new JSONObject(cursor.getString(1));
-                        if (jsonOptions.has(CUSTOM_KEEP_TIME))
-                            keepDateBorderTime = System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    long keepDateBorderTime = defaultKeepDateBorderTime;
+                    final String jsonText = cursor.isNull( 1 ) ? "" : cursor.getString(1);
+                    if ( !jsonText.isEmpty() )
+                        try {
+                            JSONObject jsonOptions = new JSONObject(jsonText);
+                            if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                                keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     final long feedID = cursor.getLong(0);
                     DeleteOldEntries(feedID, keepDateBorderTime);
                 }
