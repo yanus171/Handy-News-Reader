@@ -269,10 +269,6 @@
 
     <string name="about_us_content" translatable="true"><![CDATA[
 
-    Это программа основана на \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian, и распростаняется под лицензией GNU GPL.<br/>
-
-    <br/>
-
     <a href=\"https://handynewsreader.blogspot.com/\">Веб сайт</a>  <br/>
     <br/>
     Ссылка на <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a>  <br/>
@@ -307,9 +303,16 @@
     - тап зоны для перехода на следующую/предыдущую страницу при чтении статьи <br/>
     - быстрый переход в полноэкранный режим и обратно, а также показ/скрытие панели действий <br/>
     - многое другое ... <br/>
-
     <br/>
+
+    <b>If you have a problem with app or you have an idea for the new featire you\'d better open an issue on <a href=\"https://github.com/yanus171/Flym/issues\">github issues page</a></b><br/>
+    <br/>
+
     Это приложение НЕ синхронизируется с онлайн читалками лент новостей (например, Feedly)<br/>
+    <br/>
+
+    Это программа основана на \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian, и распростаняется под лицензией GNU GPL.<br/>
+    <br/>
 
     <br/>
     <b>Помочь проекту:</b><br/>

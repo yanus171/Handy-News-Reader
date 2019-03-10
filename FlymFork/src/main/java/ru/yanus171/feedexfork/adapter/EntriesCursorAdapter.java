@@ -152,6 +152,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             else
                 holder.dateTextView = (TextView) view.findViewById(android.R.id.text2);
             holder.mainImgView = (ImageView) view.findViewById(R.id.main_icon);
+            holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = (ImageView) view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = (ImageView) view.findViewById(R.id.mobilized_icon);
             holder.readImgView = (ImageView) view.findViewById(R.id.read_icon);
@@ -341,7 +342,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         String feedName = cursor.getString(mFeedNamePos);
 
         if ( /*!mShowEntryText && */PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
-            holder.mainImgView.setVisibility( View.VISIBLE );
+            holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryID, mainImgUrl);
 
@@ -356,7 +357,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.mainImgView.setImageDrawable(letterDrawable);
             }
         } else
-            holder.mainImgView.setVisibility( View.GONE );
+            holder.mainImgLayout.setVisibility( View.GONE );
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
@@ -583,6 +584,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         public TextView textTextView;
         public TextView dateTextView;
         public ImageView mainImgView;
+        public View mainImgLayout;
         public ImageView starImgView;
         public ImageView mobilizedImgView;
         public ImageView readImgView;
