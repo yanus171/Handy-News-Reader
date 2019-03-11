@@ -358,6 +358,16 @@
     <string name="copyToClipboard">In die Zwischenablage</string>
     <string name="sendEmail">E-Mail senden</string>
     <string name="toastAppCrashed">Die Anwendung wurde unerwartet beendet: (Bitte senden Sie eine E-Mail an den Entwickler)</string>
+    <string name="exportingToFile">Exportiere in Datei...</string>
+    <string name="importingFromFile">Importiere von Datei...</string>
+    <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
+    <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
+    <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
+    <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
+    <string name="autobackup_interval">Auto-Backup-Intervall</string>
+    <string name="autobackup_interval_descr">Wie oft wird ein automatisches Backup der Feeds und Artikel erstellt</string>
+    <string name="create_auto_backup">Automatisches Backup</string>
+    <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
