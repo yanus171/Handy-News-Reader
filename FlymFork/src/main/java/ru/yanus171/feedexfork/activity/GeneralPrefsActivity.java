@@ -48,8 +48,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class GeneralPrefsActivity extends BaseActivity {
@@ -82,6 +82,7 @@ public class GeneralPrefsActivity extends BaseActivity {
         synchronized (HomeActivity.mFeedSetupChanged ) {
             HomeActivity.mFeedSetupChanged = true;
         }
+        AutoJobService.init( this );
         super.onBackPressed();
 
     }

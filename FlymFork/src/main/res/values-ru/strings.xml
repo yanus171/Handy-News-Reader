@@ -154,6 +154,8 @@
     <!-- SETTINGS -->
     <string name="settings_category_refresh">Автоматическое обновление</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
+    <string name="settings_autobackup_enabled">Автоматическое резервное копирование</string>
+    <string name="settings_autobackup_enabled_descr">Периодчиески сохранять OPML файл c данными лент и избранных статей</string>
     <string name="settings_refresh_enabled_description">Включить автоматическое обновление лент
     </string>
     <string name="settings_refresh_interval">Интервал обновления</string>

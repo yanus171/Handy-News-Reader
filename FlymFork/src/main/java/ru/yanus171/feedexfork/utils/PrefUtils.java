@@ -36,12 +36,14 @@ public class PrefUtils {
 
     public static final String IS_REFRESHING = "IS_REFRESHING";
 
-    public static final String AUTO_BACKUP_INTERVAL = "autobackup.interval";
     public static final String REFRESH_INTERVAL = "refresh.interval";
     public static final String REFRESH_ENABLED = "refresh.enabled";
     public static final String REFRESH_ONLY_SELECTED = "refresh.only_selected";
     public static final String REFRESH_ON_OPEN_ENABLED = "refreshonopen.enabled";
     public static final String REFRESH_WIFI_ONLY = "refreshwifionly.enabled";
+
+    public static final String AUTO_BACKUP_INTERVAL = "autobackup.interval";
+    public static final String AUTO_BACKUP_ENABLED = "autobackup.enabled";
 
     public static final String NOTIFICATIONS_ENABLED = "notifications.enabled";
     public static final String NOTIFICATIONS_RINGTONE = "notifications.ringtone";

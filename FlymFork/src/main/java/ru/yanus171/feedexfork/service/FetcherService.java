@@ -210,13 +210,14 @@ public class FetcherService extends IntentService {
         Status().ClearError();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
-            if (Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this))
+            if (Build.VERSION.SDK_INT < 26 && AutoJobService.isBatteryLow(this))
                 return;
             LongOper(R.string.exportingToFile, new Runnable() {
                 @Override
                 public void run() {
                     try {
                         OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
+                        PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -277,7 +278,7 @@ public class FetcherService extends IntentService {
         if (skipFetch)
             return;
 
-        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && AutoService.isBatteryLow(this))
+        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && AutoJobService.isBatteryLow(this))
             return;
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
@@ -372,6 +373,8 @@ public class FetcherService extends IntentService {
                     downloadAllImages();
                     if ( deleteOld )
                         deleteOldEntries(keepDateBorderTime);
+                    if ( isFromAutoRefresh )
+                        PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
                 }
             } );
         }

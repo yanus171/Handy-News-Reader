@@ -338,12 +338,19 @@
             android:summary="@string/vibrate_on_article_list_entry_swype_summary"
             android:title="@string/vibrate_on_article_list_entry_swype"/>
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autobackup.enabled"
+            android:title="@string/settings_autobackup_enabled"
+            android:summary="@string/settings_autobackup_enabled_descr"/>
+
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
             android:defaultValue="86400000"
             android:entries="@array/settings_intervals"
             android:entryValues="@array/settings_interval_values"
             android:inputType="number"
             android:key="autobackup.interval"
+            android:dependency="autobackup.enabled"
             android:title="@string/autobackup_interval"
             android:summary="@string/autobackup_interval_descr"/>
 

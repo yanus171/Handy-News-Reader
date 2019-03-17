@@ -64,8 +64,7 @@ import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.service.AutoBackupJobService;
-import ru.yanus171.feedexfork.service.AutoService;
+import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -180,7 +179,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Timer.Start( LOADER_ID, "HomeActivity.initLoader" );
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
-        AutoService.init(this);
+        AutoJobService.init(this);
 
 
         if (PrefUtils.getBoolean(PrefUtils.REFRESH_ON_OPEN_ENABLED, false)) {
