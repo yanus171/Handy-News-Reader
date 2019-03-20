@@ -678,7 +678,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             private void AddFeed(HashMap<String, String> dataItem) {
                 Uri newFeedUri =
                     FeedDataContentProvider.addFeed(EditFeedActivity.this,
-                        dataItem.get(FEED_SEARCH_URL).replace( "feed/", ""  ),
+                        dataItem.get(FEED_SEARCH_URL),//.replace( "feed/", ""  ),
                         name.isEmpty() ? dataItem.get(FEED_SEARCH_TITLE) : name,
                         mHasGroupCb.isChecked() ? mGroupSpinner.getSelectedItemId() : null,
                         mRetrieveFulltextCb.isChecked(),
