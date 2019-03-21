@@ -48,6 +48,7 @@ import android.app.Activity;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -67,7 +68,8 @@ public class GeneralPrefsFragment extends PreferenceFragment {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             Activity activity = getActivity();
             if (activity != null) {
-                AutoJobService.init(activity);
+                if (Build.VERSION.SDK_INT >= 21 )
+                    AutoJobService.init(activity);
             }
             return true;
         }

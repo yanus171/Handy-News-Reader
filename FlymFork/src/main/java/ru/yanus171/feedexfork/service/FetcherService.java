@@ -52,11 +52,13 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Handler;
 import android.text.Html;
@@ -202,6 +204,22 @@ public class FetcherService extends IntentService {
         MainApplication.getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
     }
 
+    static boolean isBatteryLow(Context context) {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent battery = context.registerReceiver(null, ifilter);
+        int level = battery.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = battery.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        float batteryPct = level / (float)scale * 100;
+
+        long lowLevelPct = 20;
+        try {
+            lowLevelPct = Math.max(50, Long.parseLong(PrefUtils.getString("refresh.min_update_battery_level", 20)) );
+        } catch (Exception ignored) {
+        }
+        return batteryPct < lowLevelPct;
+    }
+
     @Override
     public void onHandleIntent(final Intent intent) {
         if (intent == null) { // No intent, we quit
@@ -210,7 +228,7 @@ public class FetcherService extends IntentService {
         Status().ClearError();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
-            if (Build.VERSION.SDK_INT < 26 && AutoJobService.isBatteryLow(this))
+            if (Build.VERSION.SDK_INT < 26 && isBatteryLow(this))
                 return;
             LongOper(R.string.exportingToFile, new Runnable() {
                 @Override
@@ -278,7 +296,7 @@ public class FetcherService extends IntentService {
         if (skipFetch)
             return;
 
-        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && AutoJobService.isBatteryLow(this))
+        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && isBatteryLow(this))
             return;
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
@@ -373,7 +391,7 @@ public class FetcherService extends IntentService {
                     downloadAllImages();
                     if ( deleteOld )
                         deleteOldEntries(keepDateBorderTime);
-                    if ( isFromAutoRefresh )
+                    if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
                         PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
                 }
             } );

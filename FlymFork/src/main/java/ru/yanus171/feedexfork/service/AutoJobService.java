@@ -76,21 +76,6 @@ public class AutoJobService extends JobService {
     }
     */
 
-    static boolean isBatteryLow(Context context) {
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent battery = context.registerReceiver(null, ifilter);
-        int level = battery.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = battery.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-        float batteryPct = level / (float)scale * 100;
-
-        long lowLevelPct = 20;
-        try {
-            lowLevelPct = Math.max(50, Long.parseLong(PrefUtils.getString("refresh.min_update_battery_level", 20)) );
-        } catch (Exception ignored) {
-        }
-        return batteryPct < lowLevelPct;
-    }
 
     static boolean isAutoUpdateEnabled() {
         return PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true);
@@ -127,8 +112,8 @@ public class AutoJobService extends JobService {
     private static void initAutoJob(Context context, final String keyInterval, final String keyEnabled, final int jobID, boolean requiresNetwork) {
         final long DEFAULT_INTERVAL = 3600L * 1000 * 24;
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        final long currentInterval = AutoJobService.getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
-        final long lastInterval = AutoJobService.getTimeIntervalInMSecs(LAST + keyInterval, DEFAULT_INTERVAL);
+        final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+        final long lastInterval = getTimeIntervalInMSecs(LAST + keyInterval, DEFAULT_INTERVAL);
         final long currentTime = System.currentTimeMillis();
         long lastJobOccured = 0;
         try {
@@ -140,7 +125,7 @@ public class AutoJobService extends JobService {
         if ( PrefUtils.getBoolean( keyEnabled, true )  ) {
             if (lastInterval != currentInterval ||
                     currentTime - lastJobOccured > currentInterval ||
-                    AutoJobService.GetPendingJobByID(jobScheduler, jobID) == null) {
+                    GetPendingJobByID(jobScheduler, jobID) == null) {
                 ComponentName serviceComponent = new ComponentName(context, AutoJobService.class);
                 JobInfo.Builder builder =
                         new JobInfo.Builder(jobID, serviceComponent)
@@ -158,7 +143,7 @@ public class AutoJobService extends JobService {
 
                 jobScheduler.schedule(builder.build());
             }
-        } else if ( AutoJobService.GetPendingJobByID(jobScheduler, jobID ) != null )
+        } else if ( GetPendingJobByID(jobScheduler, jobID ) != null )
             jobScheduler.cancel( jobID );
         PrefUtils.putString( LAST + keyInterval, String.valueOf( currentInterval ) );
     }

@@ -36,6 +36,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -179,7 +180,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Timer.Start( LOADER_ID, "HomeActivity.initLoader" );
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
-        AutoJobService.init(this);
+        if (Build.VERSION.SDK_INT >= 21 )
+            AutoJobService.init(this);
 
 
         if (PrefUtils.getBoolean(PrefUtils.REFRESH_ON_OPEN_ENABLED, false)) {

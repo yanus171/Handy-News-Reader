@@ -678,7 +678,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             private void AddFeed(HashMap<String, String> dataItem) {
                 Uri newFeedUri =
                     FeedDataContentProvider.addFeed(EditFeedActivity.this,
-                        dataItem.get(FEED_SEARCH_URL),//.replace( "feed/", ""  ),
+                        dataItem.get(FEED_SEARCH_URL),
                         name.isEmpty() ? dataItem.get(FEED_SEARCH_TITLE) : name,
                         mHasGroupCb.isChecked() ? mGroupSpinner.getSelectedItemId() : null,
                         mRetrieveFulltextCb.isChecked(),
@@ -751,7 +751,7 @@ class GetFeedSearchResultsLoader extends BaseLoader<ArrayList<HashMap<String, St
                 for (int i = 0; i < entries.length(); i++) {
                     try {
                         JSONObject entry = (JSONObject) entries.get(i);
-                        String url = entry.get(EditFeedActivity.FEED_SEARCH_URL).toString();
+                        String url = entry.get(EditFeedActivity.FEED_SEARCH_URL).toString().replaceFirst( "feed/http", "http"  );
                         if (!url.isEmpty()) {
                             HashMap<String, String> map = new HashMap<>();
                             map.put(EditFeedActivity.FEED_SEARCH_TITLE, Html.fromHtml(entry.get(EditFeedActivity.FEED_SEARCH_TITLE).toString())
