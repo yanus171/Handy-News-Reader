@@ -1375,7 +1375,7 @@ public class FetcherService extends IntentService {
         if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && isBatteryLow())
             return;
 
-        final boolean foreground = ACTION_MOBILIZE_FEEDS.equals(intent.getAction());
+        final boolean foreground = !ACTION_MOBILIZE_FEEDS.equals(intent.getAction());
         if (Build.VERSION.SDK_INT >= 26 && foreground)
             context.startForegroundService(intent);
         else
