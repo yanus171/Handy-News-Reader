@@ -175,11 +175,17 @@ public class AutoJobService extends JobService {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        if ( jobParameters.getJobId() == AUTO_BACKUP_JOB_ID )
-            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
-        else if ( jobParameters.getJobId() == AUTO_UPDATE_JOB_ID )
+        if ( jobParameters.getJobId() == AUTO_BACKUP_JOB_ID ) {
+            ExecuteAutoBackup();
+        } else if ( jobParameters.getJobId() == AUTO_UPDATE_JOB_ID )
             FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_REFRESH ) );
         return false;
+    }
+
+    static void ExecuteAutoBackup() {
+        if ( Build.VERSION.SDK_INT < 26 && FetcherService.isBatteryLow() )
+            return;
+        FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
     }
 
     @Override

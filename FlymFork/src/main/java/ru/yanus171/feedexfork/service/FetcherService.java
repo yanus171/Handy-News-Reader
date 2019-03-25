@@ -61,6 +61,7 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -154,7 +155,7 @@ public class FetcherService extends IntentService {
             Pattern.CASE_INSENSITIVE);
     public static int mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
 
-    private final Handler mHandler;
+    private static Handler mHandler = null;
 
     public static StatusText.FetcherObservable Status() {
         if (mStatusText == null) {
@@ -204,9 +205,10 @@ public class FetcherService extends IntentService {
         MainApplication.getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
     }
 
-    static boolean isBatteryLow(Context context) {
+    static boolean isBatteryLow() {
+
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent battery = context.registerReceiver(null, ifilter);
+        Intent battery = MainApplication.getContext().registerReceiver(null, ifilter);
         int level = battery.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = battery.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
@@ -228,8 +230,6 @@ public class FetcherService extends IntentService {
         Status().ClearError();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
-            if (Build.VERSION.SDK_INT < 26 && isBatteryLow(this))
-                return;
             LongOper(R.string.exportingToFile, new Runnable() {
                 @Override
                 public void run() {
@@ -265,39 +265,14 @@ public class FetcherService extends IntentService {
                     }
                 }
             });
+            return;
         }
 
 
         mIsWiFi = GetIsWifi();
 
-        final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
         final boolean deleteOld = intent.getBooleanExtra(Constants.EXTRA_DELETE_OLD, true);
-        //boolean isOpenActivity = intent.getBooleanExtra(Constants.OPEN_ACTIVITY, false);
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        // Connectivity issue, we quit
-        if (networkInfo == null || networkInfo.getState() != NetworkInfo.State.CONNECTED) {
-            if (ACTION_REFRESH_FEEDS.equals(intent.getAction()) && !isFromAutoRefresh) {
-                // Display a toast in that case
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainApplication.getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            return;
-        }
-
-        boolean skipFetch = isFromAutoRefresh && PrefUtils.getBoolean(PrefUtils.REFRESH_WIFI_ONLY, false)
-                && networkInfo.getType() != ConnectivityManager.TYPE_WIFI;
-        // We need to skip the fetching process, so we quit
-        if (skipFetch)
-            return;
-
-        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && isBatteryLow(this))
-            return;
+        final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
             mobilizeAllEntries(isFromAutoRefresh);
@@ -1001,7 +976,7 @@ public class FetcherService extends IntentService {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification.Builder notifBuilder = new Notification.Builder(MainApplication.getContext()) //
+        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(MainApplication.getContext()) //
                 .setContentIntent(contentIntent) //
                 .setSmallIcon(R.mipmap.ic_launcher) //
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher)) //
@@ -1030,7 +1005,7 @@ public class FetcherService extends IntentService {
         if (Build.VERSION.SDK_INT < 16)
             nf = notifBuilder.setContentText(text).build();
         else
-            nf = new Notification.BigTextStyle(notifBuilder.setContentText(text)).bigText(text).build();
+            nf = new NotificationCompat.BigTextStyle(notifBuilder.setContentText(text)).bigText(text).build();
 
         if (Constants.NOTIF_MGR != null) {
             Constants.NOTIF_MGR.notify(ID, nf);
@@ -1370,8 +1345,38 @@ public class FetcherService extends IntentService {
         }
 
     public static void StartService(Intent intent) {
-        Context context = MainApplication.getContext();
-        if (Build.VERSION.SDK_INT >= 26)
+        final Context context = MainApplication.getContext();
+
+        final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
+        //boolean isOpenActivity = intent.getBooleanExtra(Constants.OPEN_ACTIVITY, false);
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        // Connectivity issue, we quit
+        if (networkInfo == null || networkInfo.getState() != NetworkInfo.State.CONNECTED) {
+            if (ACTION_REFRESH_FEEDS.equals(intent.getAction()) && !isFromAutoRefresh) {
+                // Display a toast in that case
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, R.string.network_error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            return;
+        }
+
+        boolean skipFetch = isFromAutoRefresh && PrefUtils.getBoolean(PrefUtils.REFRESH_WIFI_ONLY, false)
+                && networkInfo.getType() != ConnectivityManager.TYPE_WIFI;
+        // We need to skip the fetching process, so we quit
+        if (skipFetch)
+            return;
+
+        if (isFromAutoRefresh && Build.VERSION.SDK_INT < 26 && isBatteryLow())
+            return;
+
+        final boolean foreground = ACTION_MOBILIZE_FEEDS.equals(intent.getAction());
+        if (Build.VERSION.SDK_INT >= 26 && foreground)
             context.startForegroundService(intent);
         else
             context.startService( intent );

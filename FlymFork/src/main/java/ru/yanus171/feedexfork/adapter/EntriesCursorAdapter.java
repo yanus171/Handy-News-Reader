@@ -73,6 +73,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -352,6 +353,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
             if (mainImgUrl != null) {
                 Glide.with(context).load(mainImgUrl).centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
+                //Glide.with(context).load(mainImgUrl).apply( new RequestOptions().centerCrop().placeholder(letterDrawable).error(letterDrawable) ).into(holder.mainImgView);
             } else {
                 Glide.clear(holder.mainImgView);
                 holder.mainImgView.setImageDrawable(letterDrawable);

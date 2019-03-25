@@ -598,7 +598,8 @@ public class EditFeedsListFragment extends ListFragment {
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == REQUEST_PICK_OPML_FILE) {
             if (resultCode == Activity.RESULT_OK) {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, data.getData().getPath() ) );
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
+                        .putExtra( Constants.EXTRA_FILENAME, data.getData().getPath() ) );
             } else {
                 displayCustomFilePicker();
             }

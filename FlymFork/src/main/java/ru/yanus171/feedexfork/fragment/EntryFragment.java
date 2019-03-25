@@ -819,7 +819,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private void refreshUI(Cursor entryCursor) {
 		try {
 			if (entryCursor != null ) {
-				String feedTitle = entryCursor.isNull(mFeedNamePos) ? entryCursor.getString(mFeedUrlPos) : entryCursor.getString(mFeedNamePos);
+				//String feedTitle = entryCursor.isNull(mFeedNamePos) ? entryCursor.getString(mFeedUrlPos) : entryCursor.getString(mFeedNamePos);
 				EntryActivity activity = (EntryActivity) getActivity();
 				activity.setTitle("");//activity.setTitle(feedTitle);
 
@@ -835,9 +835,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 					// If the service is not started, start it here to avoid an infinite loading
 					if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
-						FetcherService.StartService(new Intent(MainApplication.getContext(),
-																			 FetcherService.class)
-																  .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
+                        FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
+                                                     .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
 					}
 				} else {
 					//--hideSwipeProgress();

@@ -13,8 +13,8 @@ android {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 145
-        versionName '0.7.47'
+        versionCode 147
+        versionName '0.7.49'
     }
     lintOptions {
         checkReleaseBuilds false
@@ -31,9 +31,9 @@ android {
             def appId = variant.applicationId
             def versionName = variant.versionName
             def versionCode = variant.versionCode
-            def flavorName = variant.flavorName // e. g. free
-            def buildType = variant.buildType // e. g. debug
-            def variantName = variant.name // e. g. freeDebug
+            //def flavorName = variant.flavorName // e. g. free
+            //def buildType = variant.buildType // e. g. debug
+            //def variantName = variant.name // e. g. freeDebug
 
             def apkName = appId + '_' + /*variantName + '_' +*/ versionName + '_' + versionCode + '.apk'
             //output.outputFileName  = new File(output.outputFile.parentFile, apkName)
@@ -82,10 +82,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:23.2.1'
-    implementation 'com.android.support:design:23.2.1'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    //implementation 'com.android.support:design:26+'
+    implementation 'com.android.support:design:26.1.0'
     implementation 'org.jsoup:jsoup:+'
     implementation 'com.github.bumptech.glide:glide:3.6.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:+'
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.1'
 }

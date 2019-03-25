@@ -84,7 +84,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         // Check if we need to import the backup
         if (new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
-            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
+            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
+                    .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
         }
     }
 
