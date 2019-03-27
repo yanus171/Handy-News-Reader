@@ -163,7 +163,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
             holder.newImgView = view.findViewById(R.id.new_icon);
 
-            holder.titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18 + PrefUtils.getFontSizeEntryList() );
+            holder.titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
 
             view.setTag(R.id.holder, holder);
 

@@ -56,6 +56,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -614,7 +615,7 @@ public class EditFeedsListFragment extends ListFragment {
         builder.setTitle(R.string.select_file);
 
         try {
-            final String[] fileNames = Environment.getExternalStorageDirectory().list(new FilenameFilter() {
+            final String[] fileNames = FileUtils.GetFolder().list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
                     return new File(dir, filename).isFile();
@@ -624,7 +625,7 @@ public class EditFeedsListFragment extends ListFragment {
                 @Override
                 public void onClick(DialogInterface dialog, final int which) {
                     FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).
-                            putExtra( Constants.EXTRA_FILENAME, Environment.getExternalStorageDirectory().toString() + File.separator
+                            putExtra( Constants.EXTRA_FILENAME, FileUtils.GetFolder().toString() + File.separator
                                     + fileNames[which]) );
                 }
             });
@@ -641,9 +642,11 @@ public class EditFeedsListFragment extends ListFragment {
             // First, try to use a file app
             try {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("text/*");
+
+                intent.setType("*/*");
                 startActivityForResult(intent, REQUEST_PICK_OPML_FILE);
             } catch (Exception unused) { // Else use a custom file selector
+                unused.printStackTrace();
                 displayCustomFilePicker();
             }
         } else {
