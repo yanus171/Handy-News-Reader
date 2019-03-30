@@ -186,7 +186,7 @@ public class AutoJobService extends JobService {
         if ( Build.VERSION.SDK_INT < 26 && FetcherService.isBatteryLow() )
             return;
 
-        if ( PrefUtils.getLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() ) - System.currentTimeMillis() < 1000 * 60 * 60 * 1 )
+        if ( System.currentTimeMillis() - PrefUtils.getLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() ) < 1000 * 60 * 60 * 1 )
             return;
 
         FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
