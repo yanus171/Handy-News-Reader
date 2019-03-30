@@ -233,21 +233,21 @@ public class FetcherService extends IntentService {
             LongOper(R.string.exportingToFile, new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
-                        PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText( MainApplication.getContext(), getString(R.string.auto_backup_opml_file_created) + OPML.GetAutoBackupOPMLFileName(), Toast.LENGTH_LONG ).show();
-                            }
-                        });
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        DebugApp.SendException( e, FetcherService.this );
-                    }
+                try {
+                    OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
+                    PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText( MainApplication.getContext(), getString(R.string.auto_backup_opml_file_created) + OPML.GetAutoBackupOPMLFileName(), Toast.LENGTH_LONG ).show();
+                        }
+                    });
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    DebugApp.SendException( e, FetcherService.this );
+                }
                 }
             });
             return;

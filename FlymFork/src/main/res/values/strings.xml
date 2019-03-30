@@ -375,6 +375,8 @@
     <string name="autobackup_interval_descr">How often a backup file of the feeds and articles will be created </string>
     <string name="create_auto_backup">Create auto backup</string>
     <string name="auto_backup_opml_file_created">Auto backup opml file created:</string>
+    <string name="use_standard_file_manager">Use standard file manager</string>
+    <string name="use_standard_file_manager_descr">otherwise select opml file for import via inner dialog from feedex folder only</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

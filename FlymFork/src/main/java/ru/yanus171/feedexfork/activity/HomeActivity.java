@@ -130,6 +130,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         else
             setContentView(R.layout.activity_home);
 
+        if ( PrefUtils.getLong( PrefUtils.FIRST_LAUNCH_TIME, -1 ) == -1 )
+            PrefUtils.putLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() );
+
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
 
         mTitle = getTitle();

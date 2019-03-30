@@ -100,6 +100,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.FileUtils;
+import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
@@ -639,16 +640,19 @@ public class EditFeedsListFragment extends ListFragment {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
                 || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 
-            // First, try to use a file app
-            try {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            if (PrefUtils.getBoolean("use_standard_file_manager", true)) {
+                // First, try to use a file app
+                try {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 
-                intent.setType("*/*");
-                startActivityForResult(intent, REQUEST_PICK_OPML_FILE);
-            } catch (Exception unused) { // Else use a custom file selector
-                unused.printStackTrace();
+                    intent.setType("*/*");
+                    startActivityForResult(intent, REQUEST_PICK_OPML_FILE);
+                } catch (Exception unused) { // Else use a custom file selector
+                    unused.printStackTrace();
+                    displayCustomFilePicker();
+                }
+            } else
                 displayCustomFilePicker();
-            }
         } else {
             UiUtils.showMessage(getActivity(), R.string.error_external_storage_not_available);
         }

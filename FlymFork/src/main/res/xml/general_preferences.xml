@@ -354,6 +354,12 @@
             android:title="@string/autobackup_interval"
             android:summary="@string/autobackup_interval_descr"/>
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="use_standard_file_manager"
+            android:title="@string/use_standard_file_manager"
+            android:summary="@string/use_standard_file_manager_descr"/>
+
         <EditTextPreference
             android:key="content_extract_rules"
             android:inputType="text|textMultiLine"

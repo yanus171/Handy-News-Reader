@@ -445,5 +445,7 @@
     <string name="autobackup_interval_descr">Как часто будет создаваться файл резервной копии лент и статьей</string>
     <string name="create_auto_backup">Создать автоматическую резервную копию</string>
     <string name="auto_backup_opml_file_created">Создан файл автоматической резервной копии: </string>
+    <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
+    <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
 
 </resources>
