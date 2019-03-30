@@ -37,7 +37,12 @@ public class AutoSummaryListPreference extends android.preference.ListPreference
     }
 
     private CharSequence GetSummary() {
-        return getEntry().toString().replace( "%", "%%" );
+        try {
+            return getEntry().toString().replace("%", "%%");
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     @Override
