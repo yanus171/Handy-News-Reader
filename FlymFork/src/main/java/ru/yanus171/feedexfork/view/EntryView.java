@@ -46,9 +46,6 @@ package ru.yanus171.feedexfork.view;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -77,7 +74,6 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
-import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -114,7 +110,7 @@ public class EntryView extends WebView implements Observer {
     private static final String BUTTON_COLOR = PrefUtils.IsLightTheme() ? "#52A7DF" : "#1A5A81";
     private static final String SUBTITLE_COLOR = PrefUtils.IsLightTheme() ? "#666666" : "#8c8c8c";
     private static final String SUBTITLE_BORDER_COLOR = PrefUtils.IsLightTheme() ? "solid #ddd" : "solid #303030";
-    public static String GetCSS() { return "<head><style type='text/css'> "
+    private static String GetCSS() { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold() + " color: " + GetTextColor() + "; background-color:" + BACKGROUND_COLOR + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
             + "h1, h2 {font-weight: normal; line-height: 130%} "
@@ -164,8 +160,8 @@ public class EntryView extends WebView implements Observer {
     private static final String TITLE_END = "</a></h1>";
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
-    static final String BUTTON_SECTION_START = "<div class='button-section'>";
-    static final String BUTTON_SECTION_END = "</div>";
+    private static final String BUTTON_SECTION_START = "<div class='button-section'>";
+    private static final String BUTTON_SECTION_END = "</div>";
     private static final String BUTTON_START = "<p><input type='button' value='";
     private static final String BUTTON_MIDDLE = "' onclick='";
     private static final String BUTTON_END = "'/></p>";
@@ -179,7 +175,7 @@ public class EntryView extends WebView implements Observer {
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
     public static final ImageDownloadObservable mImageDownloadObservable = new ImageDownloadObservable();
     private EntryViewManager mEntryViewMgr;
-    public static Handler mHandler = null;
+    private static Handler mHandler = null;
     public String mData = "";
     public float mScrollPartY = 0;
 
@@ -455,7 +451,7 @@ public class EntryView extends WebView implements Observer {
         }
     }
 
-    static volatile boolean mNotifyInProcess = false;
+    private static volatile boolean mNotifyInProcess = false;
     public static void NotifyToUpdate( final long entryId) {
         synchronized ( mImageDownloadObservable ) {
             if (mHandler != null && !mNotifyInProcess) {
@@ -538,7 +534,7 @@ public class EntryView extends WebView implements Observer {
     }
 
 
-    public int GetScrollY() {
+    private int GetScrollY() {
         return GetContentHeight() * mScrollPartY != 0 ? ( int )( GetContentHeight() * mScrollPartY ) : 0;
     }
 

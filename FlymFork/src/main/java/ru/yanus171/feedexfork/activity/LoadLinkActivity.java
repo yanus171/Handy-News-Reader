@@ -19,27 +19,12 @@
 
 package ru.yanus171.feedexfork.activity;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import java.util.Date;
-import java.util.regex.Matcher;
-
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.service.FetcherService.ForceReload;
-import ru.yanus171.feedexfork.utils.HtmlUtils;
-import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
-
-import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
 
 public class LoadLinkActivity extends AppCompatActivity {
 
@@ -49,7 +34,7 @@ public class LoadLinkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView( android.R.layout.browser_link_context_header );
-        TextView view = (TextView) findViewById( android.R.id.title );
+        TextView view = findViewById( android.R.id.title );
         view.setText( R.string.loadingLink );
         finish();
     }

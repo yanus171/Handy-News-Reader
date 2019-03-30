@@ -70,8 +70,6 @@ import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -80,6 +78,24 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FETCH_MODE;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.GROUPS_AND_ROOT_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.GROUPS_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.GROUP_ID;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_AUTO_REFRESH;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_GROUP;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_IMAGE_AUTO_LOAD;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.LAST_UPDATE;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.NAME;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.OPTIONS;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.PRIORITY;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.REAL_LAST_UPDATE;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.RETRIEVE_FULLTEXT;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.SHOW_TEXT_IN_ENTRY_LIST;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
 
 public class OPML {
 
@@ -90,7 +106,7 @@ public class OPML {
     private static final String OUTLINE_TITLE = "\t<outline title='";
     private static final String OUTLINE_XMLURL = "' type='rss' xmlUrl='";
     private static final String OUTLINE_RETRIEVE_FULLTEXT = "' retrieveFullText='";
-    private static final String OUTLINE_INLINE_CLOSING = "'/>\n";
+    //private static final String OUTLINE_INLINE_CLOSING = "'/>\n";
     private static final String OUTLINE_NORMAL_CLOSING = "'>\n";
     private static final String OUTLINE_END = "\t</outline>\n";
 
@@ -122,7 +138,7 @@ public class OPML {
         importFromFile(new FileInputStream(filename));
     }
 
-    public static void importFromFile(InputStream input) throws IOException, SAXException {
+    private static void importFromFile(InputStream input) throws IOException, SAXException {
         SetAutoBackupEnabled(false); // Do not write the auto backup file while reading it...
         try {
             final OPMLParser parser = new OPMLParser();
@@ -154,7 +170,7 @@ public class OPML {
         //final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) );
         try {
             Cursor cursorGroupsAndRoot = context.getContentResolver()
-                    .query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, FEEDS_PROJECTION, null, null, null);
+                    .query(GROUPS_AND_ROOT_CONTENT_URI, FEEDS_PROJECTION, null, null, null);
 
             writer.write( START );
             writer.write( String.valueOf( System.currentTimeMillis() ) );
@@ -162,7 +178,7 @@ public class OPML {
             SaveSettings( writer, "\t\t");
 
             {
-                Cursor cursor = context.getContentResolver().query(FeedColumns.CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
+                Cursor cursor = context.getContentResolver().query(CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
                 if ( cursor.moveToFirst() )
                     ExportFeed(writer, cursor);
                 cursor.close();
@@ -172,10 +188,10 @@ public class OPML {
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
                     writer.write( OUTLINE_TITLE);
                     writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
-                    WriteLongValue(writer, cursorGroupsAndRoot, FeedColumns.PRIORITY, 11);
+                    WriteLongValue(writer, cursorGroupsAndRoot, PRIORITY, 11);
                     writer.write( OUTLINE_NORMAL_CLOSING);
                     Cursor cursorFeeds = context.getContentResolver()
-                            .query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
+                            .query(FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
                     while (cursorFeeds.moveToNext()) {
                         ExportFeed(writer, cursorFeeds);
                     }
@@ -204,10 +220,10 @@ public class OPML {
     }
 
 
-    private static final String[] FEEDS_PROJECTION = new String[]{FeedColumns._ID, FeedColumns.IS_GROUP, FeedColumns.NAME,
-            FeedColumns.URL, FeedColumns.RETRIEVE_FULLTEXT, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, FeedColumns.IS_AUTO_REFRESH,
-            FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS, FeedColumns.LAST_UPDATE, FeedColumns.REAL_LAST_UPDATE,
-            FeedColumns.PRIORITY, FeedColumns.FETCH_MODE };
+    private static final String[] FEEDS_PROJECTION = new String[]{_ID, IS_GROUP, NAME,
+            URL, RETRIEVE_FULLTEXT, SHOW_TEXT_IN_ENTRY_LIST, IS_AUTO_REFRESH,
+            IS_IMAGE_AUTO_LOAD, OPTIONS, LAST_UPDATE, REAL_LAST_UPDATE,
+            PRIORITY, FETCH_MODE };
 
     private static void ExportFeed(Writer writer, Cursor cursor) throws IOException {
         final String feedID = cursor.getString(0);
@@ -218,14 +234,14 @@ public class OPML {
         writer.write(GetEncoded( cursor, 3));
         writer.write(OUTLINE_RETRIEVE_FULLTEXT);
         writer.write(GetBoolText( cursor, 4 ));
-        WriteBoolValue(writer, cursor, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, 5);
-        WriteBoolValue(writer, cursor, FeedColumns.IS_AUTO_REFRESH, 6);
-        WriteBoolValue(writer, cursor, FeedColumns.IS_IMAGE_AUTO_LOAD, 7);
-        WriteEncodedText( writer, cursor, FeedColumns.OPTIONS, 8 );
-        WriteLongValue(writer, cursor, FeedColumns.LAST_UPDATE, 9);
-        WriteLongValue(writer, cursor, FeedColumns.REAL_LAST_UPDATE, 10);
-        WriteLongValue(writer, cursor, FeedColumns.PRIORITY, 11);
-        WriteLongValue(writer, cursor, FeedColumns.FETCH_MODE, 12);
+        WriteBoolValue(writer, cursor, SHOW_TEXT_IN_ENTRY_LIST, 5);
+        WriteBoolValue(writer, cursor, IS_AUTO_REFRESH, 6);
+        WriteBoolValue(writer, cursor, IS_IMAGE_AUTO_LOAD, 7);
+        WriteEncodedText( writer, cursor, OPTIONS, 8 );
+        WriteLongValue(writer, cursor, LAST_UPDATE, 9);
+        WriteLongValue(writer, cursor, REAL_LAST_UPDATE, 10);
+        WriteLongValue(writer, cursor, PRIORITY, 11);
+        WriteLongValue(writer, cursor, FETCH_MODE, 12);
         writer.write(OUTLINE_NORMAL_CLOSING);
 
         ExportFilters(writer, feedID);
@@ -355,16 +371,16 @@ public class OPML {
                 prefValue = ((String) entry.getValue()).replace("\n", "\\n");
             } else if (prefClass.contains(PREF_CLASS_BOOLEAN)) {
                 prefClass = PREF_CLASS_BOOLEAN;
-                prefValue = String.valueOf((Boolean) entry.getValue());
+                prefValue = String.valueOf(entry.getValue());
             } else if (prefClass.contains(PREF_CLASS_INTEGER)) {
                 prefClass = PREF_CLASS_INTEGER;
-                prefValue = String.valueOf((Integer) entry.getValue());
+                prefValue = String.valueOf(entry.getValue());
             } else if (prefClass.contains(PREF_CLASS_LONG)) {
                 prefClass = PREF_CLASS_LONG;
-                prefValue = String.valueOf((Long) entry.getValue());
+                prefValue = String.valueOf(entry.getValue());
             } else if (prefClass.contains(PREF_CLASS_FLOAT)) {
                 prefClass = PREF_CLASS_FLOAT;
-                prefValue = String.valueOf((Float) entry.getValue());
+                prefValue = String.valueOf(entry.getValue());
             } else
                 continue;
             writer.write( prefix + String.format( "<%s %s='%s' %s='%s' %s='%s'/>\n", TAG_PREF,
@@ -419,14 +435,14 @@ public class OPML {
                 if (url == null) { // No url => this is a group
                     if (title != null) {
                         ContentValues values = new ContentValues();
-                        values.put(FeedColumns.IS_GROUP, true);
-                        values.put(FeedColumns.NAME, title);
-                        values.put(FeedColumns.PRIORITY, GetText( attributes, FeedColumns.PRIORITY));
+                        values.put(IS_GROUP, true);
+                        values.put(NAME, title);
+                        values.put(PRIORITY, GetText( attributes, PRIORITY));
 
-                        Cursor cursor = cr.query(FeedColumns.GROUPS_CONTENT_URI, null, FeedColumns.NAME + Constants.DB_ARG, new String[]{title}, null);
+                        Cursor cursor = cr.query(GROUPS_CONTENT_URI, null, NAME + Constants.DB_ARG, new String[]{title}, null);
 
                         if (!cursor.moveToFirst()) {
-                            mGroupId = cr.insert(FeedColumns.GROUPS_CONTENT_URI, values).getLastPathSegment();
+                            mGroupId = cr.insert(GROUPS_CONTENT_URI, values).getLastPathSegment();
                         }
                         cursor.close();
                     }
@@ -435,30 +451,30 @@ public class OPML {
                     mFeedEntered = true;
                     ContentValues values = new ContentValues();
 
-                    values.put(FeedColumns.URL, url);
-                    values.put(FeedColumns.NAME, title != null && title.length() > 0 ? title : null);
+                    values.put(URL, url);
+                    values.put(NAME, title != null && title.length() > 0 ? title : null);
                     if (mGroupId != null) {
-                        values.put(FeedColumns.GROUP_ID, mGroupId);
+                        values.put(GROUP_ID, mGroupId);
                     }
 
-                    values.put(FeedColumns.RETRIEVE_FULLTEXT, GetBool( attributes, ATTRIBUTE_RETRIEVE_FULLTEXT));
-                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, GetBool( attributes, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST));
-                    values.put(FeedColumns.IS_AUTO_REFRESH, GetBool( attributes, FeedColumns.IS_AUTO_REFRESH));
-                    values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, GetBool( attributes, FeedColumns.IS_IMAGE_AUTO_LOAD));
-                    values.put(FeedColumns.OPTIONS, GetText( attributes, FeedColumns.OPTIONS));
-                    values.put(FeedColumns.LAST_UPDATE, GetText( attributes, FeedColumns.LAST_UPDATE));
-                    values.put(FeedColumns.REAL_LAST_UPDATE, GetText( attributes, FeedColumns.REAL_LAST_UPDATE));
-                    values.put(FeedColumns.PRIORITY, GetText( attributes, FeedColumns.PRIORITY));
-                    values.put(FeedColumns.FETCH_MODE, GetText( attributes, FeedColumns.FETCH_MODE));
+                    values.put(RETRIEVE_FULLTEXT, GetBool( attributes, ATTRIBUTE_RETRIEVE_FULLTEXT));
+                    values.put(SHOW_TEXT_IN_ENTRY_LIST, GetBool( attributes, SHOW_TEXT_IN_ENTRY_LIST));
+                    values.put(IS_AUTO_REFRESH, GetBool( attributes, IS_AUTO_REFRESH));
+                    values.put(IS_IMAGE_AUTO_LOAD, GetBool( attributes, IS_IMAGE_AUTO_LOAD));
+                    values.put(OPTIONS, GetText( attributes, OPTIONS));
+                    values.put(LAST_UPDATE, GetText( attributes, LAST_UPDATE));
+                    values.put(REAL_LAST_UPDATE, GetText( attributes, REAL_LAST_UPDATE));
+                    values.put(PRIORITY, GetText( attributes, PRIORITY));
+                    values.put(FETCH_MODE, GetText( attributes, FETCH_MODE));
 
-                    if ( String.valueOf( FetcherService.FETCHMODE_EXERNAL_LINK ).equals( attributes.getValue( FeedColumns.FETCH_MODE ) ) )
+                    if ( String.valueOf( FetcherService.FETCHMODE_EXERNAL_LINK ).equals( attributes.getValue( FETCH_MODE ) ) )
                         mFeedId = FetcherService.GetExtrenalLinkFeedID();
                     else {
-                        Cursor cursor = cr.query(FeedColumns.CONTENT_URI, null, FeedColumns.URL + Constants.DB_ARG,
+                        Cursor cursor = cr.query(CONTENT_URI, null, URL + Constants.DB_ARG,
                                 new String[]{url}, null);
                         mFeedId = null;
                         if (!cursor.moveToFirst()) {
-                            mFeedId = cr.insert(FeedColumns.CONTENT_URI, values).getLastPathSegment();
+                            mFeedId = cr.insert(CONTENT_URI, values).getLastPathSegment();
                         }
                         cursor.close();
                     }

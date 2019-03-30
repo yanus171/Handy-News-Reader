@@ -77,16 +77,16 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 
 public class FeedDataContentProvider extends ContentProvider {
 
-    public static final int URI_GROUPED_FEEDS = 1;
-    public static final int URI_GROUPS = 2;
-    public static final int URI_GROUP = 3;
-    public static final int URI_FEEDS_FOR_GROUPS = 4;
-    public static final int URI_FEEDS = 5;
-    public static final int URI_FEED = 6;
-    public static final int URI_FILTERS = 7;
-    public static final int URI_FILTERS_FOR_FEED = 8;
+    private static final int URI_GROUPED_FEEDS = 1;
+    private static final int URI_GROUPS = 2;
+    private static final int URI_GROUP = 3;
+    private static final int URI_FEEDS_FOR_GROUPS = 4;
+    private static final int URI_FEEDS = 5;
+    private static final int URI_FEED = 6;
+    private static final int URI_FILTERS = 7;
+    private static final int URI_FILTERS_FOR_FEED = 8;
     public static final int URI_ENTRIES_FOR_FEED = 9;
-    public static final int URI_ENTRY_FOR_FEED = 10;
+    private static final int URI_ENTRY_FOR_FEED = 10;
     public static final int URI_ENTRIES_FOR_GROUP = 11;
 
     @Nullable
@@ -95,22 +95,22 @@ public class FeedDataContentProvider extends ContentProvider {
         return super.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
     }
 
-    public static final int URI_ENTRY_FOR_GROUP = 12;
+    private static final int URI_ENTRY_FOR_GROUP = 12;
     public static final int URI_ENTRIES = 13;
-    public static final int URI_ENTRY = 14;
+    private static final int URI_ENTRY = 14;
     public static final int URI_UNREAD_ENTRIES = 15;
-    public static final int URI_UNREAD_ENTRIES_ENTRY = 16;
+    private static final int URI_UNREAD_ENTRIES_ENTRY = 16;
     public static final int URI_FAVORITES = 17;
-    public static final int URI_FAVORITES_ENTRY = 18;
-    public static final int URI_TASKS = 19;
-    public static final int URI_TASK = 20;
-    public static final int URI_SEARCH = 21;
-    public static final int URI_SEARCH_ENTRY = 22;
+    private static final int URI_FAVORITES_ENTRY = 18;
+    private static final int URI_TASKS = 19;
+    private static final int URI_TASK = 20;
+    private static final int URI_SEARCH = 21;
+    private static final int URI_SEARCH_ENTRY = 22;
     public static final int URI_UNREAD_ENTRIES_FOR_FEED = 23;
-    public static final int URI_UNREAD_ENTRY_FOR_FEED = 24;
+    private static final int URI_UNREAD_ENTRY_FOR_FEED = 24;
     public static final int URI_UNREAD_ENTRIES_FOR_GROUP = 25;
-    public static final int URI_UNREAD_ENTRY_FOR_GROUP = 26;
-    public static final int URI_GROUPS_AND_ROOT_FEEDS = 27;
+    private static final int URI_UNREAD_ENTRY_FOR_GROUP = 26;
+    private static final int URI_GROUPS_AND_ROOT_FEEDS = 27;
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -477,7 +477,7 @@ public class FeedDataContentProvider extends ContentProvider {
         }
     }
 
-    public static boolean mPriorityManagement = true;
+    private static boolean mPriorityManagement = true;
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (uri == null || values == null) {

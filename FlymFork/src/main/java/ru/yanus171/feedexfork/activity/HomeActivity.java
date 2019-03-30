@@ -137,14 +137,14 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         mTitle = getTitle();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLeftDrawer = findViewById(R.id.left_drawer);
         //mLeftDrawer.setBackgroundColor(ContextCompat.getColor( this, PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background));
 
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerList = findViewById(R.id.drawer_list);
         mDrawerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
@@ -169,7 +169,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             mCurrentDrawerPos = PrefUtils.getInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         if (mDrawerLayout != null) {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 

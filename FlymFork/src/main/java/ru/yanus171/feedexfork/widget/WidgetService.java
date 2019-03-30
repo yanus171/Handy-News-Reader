@@ -46,7 +46,7 @@ public class WidgetService extends RemoteViewsService {
 
 class WidgetFeedsFactory implements RemoteViewsService.RemoteViewsFactory {
     private final int mAppWidgetId, mFontSize;
-    private Context mContext = null;
+    private Context mContext;
     private Cursor mCursor;
     private ThrottledContentObserver mContentObserver;
 

@@ -344,7 +344,7 @@ public class SwipeRefreshLayout extends ViewGroup {
      * @return Whether it is possible for the child view of this layout to
      * scroll up. Override this if the child view is a custom view.
      */
-    public boolean canChildScrollUp() {
+    protected boolean canChildScrollUp() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
             if (mTarget instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) mTarget;

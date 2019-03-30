@@ -123,7 +123,7 @@ public class FetcherService extends IntentService {
 
     public static final String ACTION_REFRESH_FEEDS = FeedData.PACKAGE_NAME + ".REFRESH";
     public static final String ACTION_MOBILIZE_FEEDS = FeedData.PACKAGE_NAME + ".MOBILIZE_FEEDS";
-    public static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
+    private static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
     //public static final String ACTION_DOWNLOAD_IMAGES = FeedData.PACKAGE_NAME + ".DOWNLOAD_IMAGES";
 
     private static final int THREAD_NUMBER = 3;
@@ -142,12 +142,12 @@ public class FetcherService extends IntentService {
     public static final String CUSTOM_KEEP_TIME = "customKeepTime";
 
     public static Boolean mCancelRefresh = false;
-    public static ArrayList<Long> mActiveEntryIDList = new ArrayList<Long>();
-    public static Boolean mIsDownloadImageCursorNeedsRequery = false;
+    private static final ArrayList<Long> mActiveEntryIDList = new ArrayList<>();
+    private static Boolean mIsDownloadImageCursorNeedsRequery = false;
 
-    public static volatile Boolean mIsDeletingOld = false;
+    private static volatile Boolean mIsDeletingOld = false;
 
-    public static final ArrayList<MarkItem> mMarkAsStarredFoundList = new ArrayList<MarkItem>();
+    public static final ArrayList<MarkItem> mMarkAsStarredFoundList = new ArrayList<>();
 
     /* Allow different positions of the "rel" attribute w.r.t. the "href" attribute */
     public static final Pattern FEED_LINK_PATTERN = Pattern.compile(
@@ -297,7 +297,7 @@ public class FetcherService extends IntentService {
             LongOper(R.string.RefreshFeeds, new Runnable() {
                 @Override
                 public void run() {
-                    long keepTime = (long) (GetDefaultKeepTime() * 86400000l);
+                    long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
                     long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
 
@@ -305,7 +305,7 @@ public class FetcherService extends IntentService {
                     String groupId = intent.getStringExtra(Constants.GROUP_ID);
 
                     mMarkAsStarredFoundList.clear();
-                    int newCount = 0;
+                    int newCount;
                     try {
                         newCount = (feedId == null ?
                                 refreshFeeds(keepDateBorderTime, groupId, isFromAutoRefresh) :
@@ -313,7 +313,7 @@ public class FetcherService extends IntentService {
 
                     } finally {
                         if (mMarkAsStarredFoundList.size() > 5) {
-                            ArrayList<String> list = new ArrayList<String>();
+                            ArrayList<String> list = new ArrayList<>();
                             for (MarkItem item : mMarkAsStarredFoundList)
                                 list.add(item.mCaption);
                             ShowNotification(TextUtils.join(", ", list),
@@ -330,7 +330,7 @@ public class FetcherService extends IntentService {
                                 try {
                                     if (entryUri != null)
                                         ID = Integer.parseInt(entryUri.getLastPathSegment());
-                                } catch (Throwable th) {
+                                } catch (Throwable ignored) {
 
                                 }
 
@@ -421,7 +421,7 @@ public class FetcherService extends IntentService {
         }
     }
 
-    public static boolean isEntryIDActive( long id) {
+    private static boolean isEntryIDActive(long id) {
         synchronized (mActiveEntryIDList) {
             return mActiveEntryIDList.contains( id );
         }
@@ -443,7 +443,7 @@ public class FetcherService extends IntentService {
             mActiveEntryIDList.clear();
         }
     }
-    public static boolean isDownloadImageCursorNeedsRequery() {
+    private static boolean isDownloadImageCursorNeedsRequery() {
         synchronized (mIsDownloadImageCursorNeedsRequery) {
             return mIsDownloadImageCursorNeedsRequery;
         }
@@ -563,7 +563,7 @@ public class FetcherService extends IntentService {
 
                     connection = NetworkUtils.setupConnection(link);
 
-                    String mobilizedHtml = "";
+                    String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);
 
                     if (FetcherService.isCancelRefresh())
@@ -653,12 +653,12 @@ public class FetcherService extends IntentService {
     }
 
     public enum ForceReload {Yes, No}
-    public static void OpenLink( Uri entryUri ) {
-        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());
-        Intent intent = new Intent(MainApplication.getContext(), HomeActivity.class);
-        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-        MainApplication.getContext().startActivity( intent );
-    }
+//    public static void OpenLink( Uri entryUri ) {
+//        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());
+//        Intent intent = new Intent(MainApplication.getContext(), HomeActivity.class);
+//        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+//        MainApplication.getContext().startActivity( intent );
+//    }
 
     public static Uri GetEnryUri( final String url ) {
         Timer timer = new Timer( "GetEnryUri" );
@@ -686,7 +686,7 @@ public class FetcherService extends IntentService {
                                              final ForceReload forceReload,
                                              final boolean isCorrectTitle,
                                              final boolean isShowError ) {
-        boolean load = false;
+        boolean load;
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
         int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink)); try {
             Uri entryUri = GetEnryUri( url );
@@ -722,7 +722,7 @@ public class FetcherService extends IntentService {
             }
             if ( load && !FetcherService.isCancelRefresh() )
                 mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()), ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes, true, isCorrectTitle, isShowError);
-            return new Pair<Uri,Boolean>(entryUri, load);
+            return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);
         }
@@ -755,7 +755,7 @@ public class FetcherService extends IntentService {
         return mExtrenalLinkFeedID;
     }
 
-    public static void downloadAllImages() {
+    private static void downloadAllImages() {
         StatusText.FetcherObservable obs = Status();
         int status = obs.Start(MainApplication.getContext().getString(R.string.AllImages)); try {
 

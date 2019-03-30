@@ -78,7 +78,7 @@ public class MainApplication extends Application {
 
     }
 
-    public static void InitLocale() {
+    private static void InitLocale() {
         Locale locale = GetLocale(mContext);
         Locale.setDefault(locale);
         Configuration config = new Configuration();

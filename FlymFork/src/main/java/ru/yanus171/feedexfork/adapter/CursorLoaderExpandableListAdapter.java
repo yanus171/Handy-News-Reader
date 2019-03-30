@@ -39,7 +39,7 @@ import ru.yanus171.feedexfork.Constants;
 /**
  * A fairly simple ExpandableListAdapter that creates views defined in an XML file. You can specify the XML file that defines the appearance of the views.
  */
-public abstract class CursorLoaderExpandableListAdapter extends BaseExpandableListAdapter {
+abstract class CursorLoaderExpandableListAdapter extends BaseExpandableListAdapter {
     private static final String URI_ARG = "uri";
     private final Activity mActivity;
     private final LoaderManager.LoaderCallbacks<Cursor> mChildrenLoaderCallback = new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -122,7 +122,7 @@ public abstract class CursorLoaderExpandableListAdapter extends BaseExpandableLi
      * @param expandedGroupLayout  resource identifier of a layout file that defines the views for expanded groups.
      * @param childLayout          resource identifier of a layout file that defines the views for all children but the last..
      */
-    public CursorLoaderExpandableListAdapter(Activity activity, Uri groupUri, int collapsedGroupLayout, int expandedGroupLayout, int childLayout) {
+    private CursorLoaderExpandableListAdapter(Activity activity, Uri groupUri, int collapsedGroupLayout, int expandedGroupLayout, int childLayout) {
         mActivity = activity;
         mLoaderMgr = activity.getLoaderManager();
         mGroupUri = groupUri;
@@ -142,7 +142,7 @@ public abstract class CursorLoaderExpandableListAdapter extends BaseExpandableLi
      * @param groupLayout resource identifier of a layout file that defines the views for all groups.
      * @param childLayout resource identifier of a layout file that defines the views for all children.
      */
-    public CursorLoaderExpandableListAdapter(Activity activity, Uri groupUri, int groupLayout, int childLayout) {
+    CursorLoaderExpandableListAdapter(Activity activity, Uri groupUri, int groupLayout, int childLayout) {
         this(activity, groupUri, groupLayout, groupLayout, childLayout);
     }
 
@@ -160,7 +160,7 @@ public abstract class CursorLoaderExpandableListAdapter extends BaseExpandableLi
      * @param parent The parent to which the new view is attached to
      * @return the newly created view.
      */
-    public View newChildView(ViewGroup parent) {
+    private View newChildView(ViewGroup parent) {
         return mInflater.inflate(mChildLayout, parent, false);
     }
 
@@ -171,7 +171,7 @@ public abstract class CursorLoaderExpandableListAdapter extends BaseExpandableLi
      * @param parent     The parent to which the new view is attached to
      * @return The newly created view.
      */
-    public View newGroupView(boolean isExpanded, ViewGroup parent) {
+    private View newGroupView(boolean isExpanded, ViewGroup parent) {
         return mInflater.inflate((isExpanded) ? mExpandedGroupLayout : mCollapsedGroupLayout, parent, false);
     }
 
@@ -336,6 +336,6 @@ public abstract class CursorLoaderExpandableListAdapter extends BaseExpandableLi
      *
      * @param data the new cursor
      */
-    public void notifyDataSetChanged(Cursor data) {
+    void notifyDataSetChanged(Cursor data) {
     }
 }

@@ -21,19 +21,16 @@ package ru.yanus171.feedexfork.fragment;
 
 import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -108,7 +105,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     private Handler mHandler = null;
-    public final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
+    private final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
@@ -316,7 +313,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         super.onResume();
     }
 
-    Uri GetUri( int pos ) {
+    private Uri GetUri(int pos) {
         final long id = mEntriesCursorAdapter.getItemId(pos);
         return mEntriesCursorAdapter.EntryUri(id);
     }
@@ -430,7 +427,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         return rootView;
     }
 
-    public void SetListViewAdapter() {
+    private void SetListViewAdapter() {
 
 
         mListView.setAdapter(mEntriesCursorAdapter);
@@ -701,7 +698,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     }
 
 
-    public void markAllAsRead() {
+    private void markAllAsRead() {
         if (mEntriesCursorAdapter != null) {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                     .setActionTextColor(ContextCompat.getColor(getActivity(), R.color.light_theme_color_primary))

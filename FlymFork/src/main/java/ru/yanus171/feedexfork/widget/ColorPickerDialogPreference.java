@@ -73,10 +73,10 @@ public class ColorPickerDialogPreference extends DialogPreference {
 
         view.setBackgroundColor(mColor);
 
-        mRedSeekBar = (SeekBar) view.findViewById(R.id.seekbar_red);
-        mGreenSeekBar = (SeekBar) view.findViewById(R.id.seekbar_green);
-        mBlueSeekBar = (SeekBar) view.findViewById(R.id.seekbar_blue);
-        mTransparencySeekBar = (SeekBar) view.findViewById(R.id.seekbar_transparency);
+        mRedSeekBar = view.findViewById(R.id.seekbar_red);
+        mGreenSeekBar = view.findViewById(R.id.seekbar_green);
+        mBlueSeekBar = view.findViewById(R.id.seekbar_blue);
+        mTransparencySeekBar = view.findViewById(R.id.seekbar_transparency);
 
         int _color = mColor;
 

@@ -48,8 +48,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.text.Html;
-import android.text.TextUtils;
 import android.util.Pair;
 
 
@@ -82,7 +80,7 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 
 public class HTMLParser {
 
-	static final String TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}";
+	private static final String TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}";
 
 	static public int Parse(final String feedID, String feedUrl ) {
 		//if (!TextUtils.isEmpty(content)) {
@@ -130,14 +128,14 @@ public class HTMLParser {
 		FeedFilters filters = new FeedFilters(String.valueOf( feedID ) );
 
 		class Item {
-			public String mUrl;
-			public String mCaption;
-			public Item( String url, String caption ){
+			String mUrl;
+			String mCaption;
+			Item(String url, String caption){
 				mUrl = url;
 				mCaption = caption;
 			}
 		}
-		ArrayList<Item> listItem = new ArrayList<Item>();
+		ArrayList<Item> listItem = new ArrayList<>();
 		String content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false);
 		doc = Jsoup.parse(content);
 		{

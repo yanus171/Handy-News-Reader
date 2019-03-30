@@ -45,9 +45,9 @@ public class FiltersCursorAdapter extends ResourceCursorAdapter {
 
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
-        TextView isAcceptRuleTextView = (TextView) view.findViewById(android.R.id.text1);
-        TextView filterTextTextView = (TextView) view.findViewById(android.R.id.text2);
-        TextView isAppliedToTitleTextView = (TextView) view.findViewById(R.id.text3);
+        TextView isAcceptRuleTextView = view.findViewById(android.R.id.text1);
+        TextView filterTextTextView = view.findViewById(android.R.id.text2);
+        TextView isAppliedToTitleTextView = view.findViewById(R.id.text3);
 
         if (cursor.getPosition() == mSelectedFilter) {
             view.setBackgroundResource(android.R.color.holo_blue_dark);

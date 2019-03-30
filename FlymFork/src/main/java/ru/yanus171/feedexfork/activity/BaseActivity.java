@@ -21,7 +21,6 @@ package ru.yanus171.feedexfork.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 
 import ru.yanus171.feedexfork.Constants;
 
@@ -30,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     //private static final String STATE_IS_NORMAL_FULLSCREEN = "STATE_IS_NORMAL_FULLSCREEN";
     //private static final String STATE_IS_IMMERSIVE_FULLSCREEN = "STATE_IS_IMMERSIVE_FULLSCREEN";
-    protected View mDecorView;
+    View mDecorView;
     //private OnFullScreenListener mOnFullScreenListener;
 
     @Override

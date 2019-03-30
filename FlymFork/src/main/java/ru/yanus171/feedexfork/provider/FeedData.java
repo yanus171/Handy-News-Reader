@@ -56,7 +56,6 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
 import static ru.yanus171.feedexfork.Constants.DB_IS_FALSE;
-import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
@@ -68,7 +67,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 
 public class FeedData {
     public static final String PACKAGE_NAME = "ru.yanus171.feedexfork";
-    public static final String CONTENT = "content://";
+    private static final String CONTENT = "content://";
     public static final String AUTHORITY = PACKAGE_NAME + ".provider.FeedData";
     public static final String CONTENT_AUTHORITY = CONTENT + AUTHORITY;
     public static final String FEEDS_TABLE_WITH_GROUP_PRIORITY = FeedColumns.TABLE_NAME +
@@ -85,10 +84,10 @@ public class FeedData {
     public static final String EXTERNAL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
     public static final String EXTERNAL_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + DB_AND + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
     public static final String EXTERNAL_READ_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_READ + DB_AND + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
-    static final String TYPE_PRIMARY_KEY = "INTEGER PRIMARY KEY AUTOINCREMENT";
-    static final String TYPE_EXTERNAL_ID = "INTEGER(7)";
+    private static final String TYPE_PRIMARY_KEY = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String TYPE_EXTERNAL_ID = "INTEGER(7)";
     static final String TYPE_TEXT = "TEXT";
-    static final String TYPE_TEXT_UNIQUE = "TEXT UNIQUE";
+    private static final String TYPE_TEXT_UNIQUE = "TEXT UNIQUE";
     static final String TYPE_DATE_TIME = "DATETIME";
     static final String TYPE_INT = "INT";
     static final String TYPE_BOOLEAN = "INTEGER(1)";
@@ -267,9 +266,9 @@ public class FeedData {
                         String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                         FeedColumns.NAME,
                         TEXT_LEN_EXPR };
-        public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
+        static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
-        public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
+        static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
         public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ')';
         public static final String WHERE_NEW = "(" + EntryColumns.IS_NEW + DB_IS_NULL + DB_OR + IS_NEW + DB_IS_TRUE  + ")";
 

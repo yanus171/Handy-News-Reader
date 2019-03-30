@@ -31,7 +31,7 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 
 public class StatusText implements Observer {
-    static final String SEP = "__";
+    private static final String SEP = "__";
     private TextView mView;
     private TextView mErrorView;
     //SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
@@ -155,7 +155,7 @@ public class StatusText implements Observer {
                 }
             });
         }
-        public void Clear() {
+        void Clear() {
             synchronized ( mList ) {
                 mList.clear();
                 mProgressText = "";

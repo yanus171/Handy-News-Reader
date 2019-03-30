@@ -56,9 +56,9 @@ public class NetworkUtils {
 
     //public static final File IMAGE_FOLDER_FILE = new File(MainApplication.getContext().getCacheDir(), "images/");
     //public static final String IMAGE_FOLDER = IMAGE_FOLDER_FILE.getAbsolutePath() + '/';
-    public static final String TEMP_PREFIX = "TEMP__";
+    private static final String TEMP_PREFIX = "TEMP__";
     //public static final File FOLDER = new File(Environment.getExternalStorageDirectory(), "feedex/");
-    public static final String ID_SEPARATOR = "__";
+    private static final String ID_SEPARATOR = "__";
 
     private static final String FILE_FAVICON = "/favicon.ico";
     private static final String PROTOCOL_SEPARATOR = "://";
@@ -312,10 +312,10 @@ public class NetworkUtils {
             setEntryId(entryId);
         }
 
-        public PictureFilenameFilter() {
+        PictureFilenameFilter() {
         }
 
-        public void setEntryId(String entryId) {
+        void setEntryId(String entryId) {
             mPattern = Pattern.compile(entryId + REGEX);
         }
 

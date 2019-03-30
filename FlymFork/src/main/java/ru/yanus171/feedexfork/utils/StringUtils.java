@@ -37,7 +37,7 @@ public class StringUtils {
 
     private static final DateFormat TIME_FORMAT = android.text.format.DateFormat.getTimeFormat(MainApplication.getContext());
     private static final int SIX_HOURS = 21600000; // six hours in milliseconds
-    private static DateFormat DATE_SHORT_FORMAT = null;
+    private static DateFormat DATE_SHORT_FORMAT;
 
     static {
         // getBestTimePattern() is only available in API 18 and up (Android 4.3 and better)

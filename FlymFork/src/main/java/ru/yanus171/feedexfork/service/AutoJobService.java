@@ -51,9 +51,6 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Build;
 
 import ru.yanus171.feedexfork.Constants;
@@ -77,9 +74,9 @@ public class AutoJobService extends JobService {
     */
 
 
-    static boolean isAutoUpdateEnabled() {
-        return PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true);
-    }
+//    static boolean isAutoUpdateEnabled() {
+//        return PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true);
+//    }
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -94,7 +91,7 @@ public class AutoJobService extends JobService {
         }
     }
 
-    static  final String LAST = "LAST_";
+    private static  final String LAST = "LAST_";
     private static long getTimeIntervalInMSecs(String key, long defaultValue) {
         long time = defaultValue;
         try {
@@ -105,8 +102,8 @@ public class AutoJobService extends JobService {
     }
 
     public static  final String LAST_JOB_OCCURED = "LAST_JOB_OCCURED_";
-    public static final int AUTO_BACKUP_JOB_ID = 3;
-    public static final int AUTO_UPDATE_JOB_ID = 1;
+    private static final int AUTO_BACKUP_JOB_ID = 3;
+    private static final int AUTO_UPDATE_JOB_ID = 1;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static void initAutoJob(Context context, final String keyInterval, final String keyEnabled, final int jobID, boolean requiresNetwork) {
@@ -182,7 +179,7 @@ public class AutoJobService extends JobService {
         return false;
     }
 
-    static void ExecuteAutoBackup() {
+    private static void ExecuteAutoBackup() {
         if ( Build.VERSION.SDK_INT < 26 && FetcherService.isBatteryLow() )
             return;
 

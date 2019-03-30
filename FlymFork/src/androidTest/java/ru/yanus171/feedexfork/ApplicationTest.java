@@ -54,6 +54,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
         String mobilizedHtml = ArticleTextExtractor.extractContent(connection.getInputStream(), link, "Ch. 654 Dec 04, 2015", ArticleTextExtractor.Mobilize.Yes);
         System.out.println(mobilizedHtml);
+        //noinspection UnusedAssignment
         mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link));
     }
 

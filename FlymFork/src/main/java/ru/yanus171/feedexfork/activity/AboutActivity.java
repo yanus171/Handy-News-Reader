@@ -40,7 +40,7 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -52,10 +52,10 @@ public class AboutActivity extends BaseActivity {
         } catch (NameNotFoundException unused) {
             title = getString( R.string.app_name );
         }
-        TextView titleView = (TextView) findViewById(R.id.about_title);
+        TextView titleView = findViewById(R.id.about_title);
         titleView.setText(title);
 
-        TextView contentView = (TextView) findViewById(R.id.about_content);
+        TextView contentView = findViewById(R.id.about_content);
         //String html = getString(R.string.about_us_content);
         //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
         //    html = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);

@@ -54,7 +54,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
     protected void bindChildView(View view, Context context, Cursor cursor) {
         view.findViewById(R.id.indicator).setVisibility(View.INVISIBLE);
 
-        TextView textView = ((TextView) view.findViewById(android.R.id.text1));
+        TextView textView = view.findViewById(android.R.id.text1);
 
         final long feedId = cursor.getLong(mIdPos);
         Bitmap bitmap = UiUtils.getFaviconBitmap(feedId, cursor, mIconPos);
@@ -70,12 +70,12 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
 
     @Override
     protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
-        ImageView indicatorImage = (ImageView) view.findViewById(R.id.indicator);
+        ImageView indicatorImage = view.findViewById(R.id.indicator);
 
         if (cursor.getInt(mIsGroupPos) == 1) {
             indicatorImage.setVisibility(View.VISIBLE);
 
-            TextView textView = ((TextView) view.findViewById(android.R.id.text1));
+            TextView textView = view.findViewById(android.R.id.text1);
             textView.setEnabled(true);
             textView.setText(cursor.getString(mNamePos));
             textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);

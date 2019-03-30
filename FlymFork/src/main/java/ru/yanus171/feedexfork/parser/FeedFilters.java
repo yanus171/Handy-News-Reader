@@ -86,11 +86,11 @@ class FeedFilters {
     }
 
     private class Rule {
-        public String filterText;
-        public boolean isRegex;
-        public boolean isAppliedToTitle;
-        public boolean isAcceptRule;
-        public boolean isMarkAsStarred = false;
+        String filterText;
+        boolean isRegex;
+        boolean isAppliedToTitle;
+        boolean isAcceptRule;
+        boolean isMarkAsStarred = false;
 
         boolean isMatch(String title, String author, String url, String content) {
             boolean result = false;

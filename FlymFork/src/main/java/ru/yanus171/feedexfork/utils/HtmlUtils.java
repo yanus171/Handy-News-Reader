@@ -194,7 +194,7 @@ public class HtmlUtils {
         return content;
     }
 
-    static String getDownloadImageHtml(String match) {
+    private static String getDownloadImageHtml(String match) {
         return getButtonHtml("downloadImage('" + match + "')" , getString( R.string.downloadOneImage ) );
     }
 

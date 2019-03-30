@@ -60,7 +60,7 @@ public class EntryActivity extends BaseActivity {
         if (savedInstanceState == null) { // Put the data only the first time (the fragment will save its state)
             mEntryFragment.setData(getIntent().getData());
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

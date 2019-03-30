@@ -52,5 +52,5 @@ public abstract class ThrottledContentObserver extends ContentObserver {
         super.onChange(selfChange);
     }
 
-    abstract public void onChangeThrottled();
+    protected abstract void onChangeThrottled();
 }

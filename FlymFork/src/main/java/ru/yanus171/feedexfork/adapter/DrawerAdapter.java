@@ -101,12 +101,12 @@ public class DrawerAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_drawer_list, parent, false);
 
             ViewHolder holder = new ViewHolder();
-            holder.iconView = (ImageView) convertView.findViewById(android.R.id.icon);
-            holder.titleTxt = (TextView) convertView.findViewById(android.R.id.text1);
-            holder.stateTxt = (TextView) convertView.findViewById(android.R.id.text2);
-            holder.unreadTxt = (TextView) convertView.findViewById(R.id.unread_count);
-            holder.readTxt = (TextView) convertView.findViewById(R.id.read_count);
-            holder.autoRefreshIcon = (ImageView) convertView.findViewById(R.id.auto_refresh_icon);
+            holder.iconView = convertView.findViewById(android.R.id.icon);
+            holder.titleTxt = convertView.findViewById(android.R.id.text1);
+            holder.stateTxt = convertView.findViewById(android.R.id.text2);
+            holder.unreadTxt = convertView.findViewById(R.id.unread_count);
+            holder.readTxt = convertView.findViewById(R.id.read_count);
+            holder.autoRefreshIcon = convertView.findViewById(R.id.auto_refresh_icon);
             holder.separator = convertView.findViewById(R.id.separator);
             convertView.setTag(R.id.holder, holder);
         }
@@ -318,13 +318,13 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-        public ImageView iconView;
-        public TextView titleTxt;
-        public TextView stateTxt;
-        public TextView unreadTxt;
-        public TextView readTxt;
-        public ImageView autoRefreshIcon;
+        ImageView iconView;
+        TextView titleTxt;
+        TextView stateTxt;
+        TextView unreadTxt;
+        TextView readTxt;
+        ImageView autoRefreshIcon;
 
-        public View separator;
+        View separator;
     }
 }

@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork.utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -52,15 +53,15 @@ public class PrefUtils {
 
     public static final String LIGHT_THEME = "lighttheme";
     public static final String DISPLAY_IMAGES = "display_images";
-    public static final String FULL_SCREEN_STATUSBAR_VISIBLE = "full_screen_statusbar_visible";
-    public static final String PRELOAD_IMAGE_MODE = "preload_image_mode";
+    //public static final String FULL_SCREEN_STATUSBAR_VISIBLE = "full_screen_statusbar_visible";
+    static final String PRELOAD_IMAGE_MODE = "preload_image_mode";
     public static final String DISPLAY_OLDEST_FIRST = "display_oldest_first";
     public static final String DISPLAY_ENTRIES_FULLSCREEN = "display_entries_fullscreen";
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
     public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
-    public static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
-    public static final String MAX_IMAGE_DOWNLOAD_SIZE = "settings_max_image_download_size_kb";
-    public static final String MAX_SINGLE_REFRESH_TRAFFIC = "settings_max_single_refresh_traffic_mb";
+    private static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
+    private static final String MAX_IMAGE_DOWNLOAD_SIZE = "settings_max_image_download_size_kb";
+    private static final String MAX_SINGLE_REFRESH_TRAFFIC = "settings_max_single_refresh_traffic_mb";
     public static final String ENTRY_MAGRINS = "entry_margins";
     public static final String ENTRY_TEXT_ALIGN_JUSTIFY = "entry_text_align_justify";
     public static final String LANGUAGE = "language";
@@ -114,7 +115,7 @@ public class PrefUtils {
         }
     }
 
-    public static int getImageMaxDownloadSizeInKb() {
+    static int getImageMaxDownloadSizeInKb() {
         try {
             return Integer.parseInt(PrefUtils.getString(PrefUtils.MAX_IMAGE_DOWNLOAD_SIZE, "2048"));
         } catch ( NumberFormatException e ) {
@@ -175,7 +176,8 @@ public class PrefUtils {
         editor.apply();
     }
 
-    public static void putStringCommit(String key, String value) {
+    @SuppressLint("ApplySharedPref")
+    static void putStringCommit(String key, String value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
         editor.putString(key, value);
         editor.commit();
@@ -205,7 +207,8 @@ public class PrefUtils {
         return getBoolean(LIGHT_THEME, false);
     }
 
-    public static void ToogleTheme( Intent intent ) {
+    @SuppressLint("ApplySharedPref")
+    public static void ToogleTheme(Intent intent ) {
         PrefUtils.putBoolean( PrefUtils.LIGHT_THEME, !PrefUtils.IsLightTheme());
         Context context = MainApplication.getContext();
         PreferenceManager.getDefaultSharedPreferences(context).edit().commit(); // to be sure all prefs are written

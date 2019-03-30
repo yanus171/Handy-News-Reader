@@ -1,6 +1,5 @@
 package ru.yanus171.feedexfork.utils;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import ru.yanus171.feedexfork.BuildConfig;

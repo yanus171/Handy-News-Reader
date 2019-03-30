@@ -38,14 +38,14 @@ import ru.yanus171.feedexfork.activity.SendErrorActivity;
 
 //****************************************************************************
 public class DebugApp {
-	static final String TAG = "HandyNews";
+	private static final String TAG = "HandyNews";
 	private static final int cPad = 10;
-	static StringBuilder ErrorLog = new StringBuilder();
-	static boolean DebugMode = true;
+	private static StringBuilder ErrorLog = new StringBuilder();
+	private static boolean DebugMode = true;
 	private static final int c1024 = 1024;
-	public static boolean ShowImmediately = false;
+	private static boolean ShowImmediately = false;
 
-	public class Info {
+	class Info {
 		String VersionName;
 		Integer VersionCode;
 		String PackageName;
@@ -115,7 +115,7 @@ public class DebugApp {
 			}
 		}
 		// --------------------------------------------------------------------------
-		public String GetInformationString() {
+        String GetInformationString() {
 			String ReturnVal = "";
 			ReturnVal += "Version : " + VersionName;
 			ReturnVal += "\n";
@@ -237,7 +237,7 @@ public class DebugApp {
 	// ****************************************************************************
 	public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 		//Thread.UncaughtExceptionHandler mOldHandler = null;
-		Context mContext = null;
+		Context mContext;
 
 		public UncaughtExceptionHandler(Context context) {
 			//mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -275,7 +275,7 @@ public class DebugApp {
 		StringBuilder result = new StringBuilder();
 		result.append("====================================\n");
 		result.append("PREFERENCES\n");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (Map.Entry<String, ?> entry : PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).getAll().entrySet()) {
 			if ( !entry.getKey().startsWith("BalanceReseted") &&
 			     !entry.getKey().startsWith("SMSRemovedList") )
@@ -296,7 +296,7 @@ public class DebugApp {
 	}
 
 	// -------------------------------------------------------------------
-	static String GetStackTrace(Throwable th) {
+	private static String GetStackTrace(Throwable th) {
 		final StringWriter st = new StringWriter();
 		st.append("Stacktrace:\n");
 		PrintWriter out = new PrintWriter(st);
@@ -319,7 +319,7 @@ public class DebugApp {
 		try {
 			process = Runtime.getRuntime().exec("logcat -d ActivityManager:I AppWidgetHostView:I HandyNews:I *:S");
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line = "";
+			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				result.append(line + "\n");
 			}
@@ -330,7 +330,7 @@ public class DebugApp {
 	}
 
 	// ------------------------------------------------------------------------
-	static String GetErrorInfo(String text, Exception e) {
+	private static String GetErrorInfo(String text, Exception e) {
 		String result = "";
 		if (text != null) {
 			result += text + "\n";
@@ -347,11 +347,11 @@ public class DebugApp {
 	}
 
 	// ------------------------------------------------------------------------
-	static void AddErrorToLog(String text, Exception e) {
+	private static void AddErrorToLog(String text, Exception e) {
 		AddErrorToLog(text, e, true);
 	}
 	// ------------------------------------------------------------------------
-	static void AddErrorToLog(String text, Exception e, boolean printStackTrace) {
+	private static void AddErrorToLog(String text, Exception e, boolean printStackTrace) {
 		ErrorLog.append("----------------------\n");
 		ErrorLog.append(GetErrorInfo(text, e));
 		if ( printStackTrace )
@@ -372,7 +372,7 @@ public class DebugApp {
 	}
 
 	 //--------------------------------------------------------------------------------
-	static Uri CreateFileUri(String dir, String fileName, String text) {
+	private static Uri CreateFileUri(String dir, String fileName, String text) {
 
 		Uri result = null;
 		fileName = fileName.replace(",", "_");
@@ -409,7 +409,7 @@ public class DebugApp {
 	}
 
 	// --------------------------------------------------------------------------
-	static long getAvailableInternalMemorySize() {
+	private static long getAvailableInternalMemorySize() {
 		try {
 			File path = Environment.getDataDirectory();
 			StatFs stat = new StatFs(path.getPath());
@@ -430,14 +430,14 @@ public class DebugApp {
 	// --------------------------------------------------------------------------
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	static ArrayList<Long> getAvailableExternalMemorysSizeMB() {
-		ArrayList<Long> result = new ArrayList<Long>();
+		ArrayList<Long> result = new ArrayList<>();
 		for ( File item: MainApplication.getContext().getExternalFilesDirs(null) )
 			result.add( DebugApp.getAvailableExternalMemorySize( item ) / c1024 / c1024 );
 		return result;
 	}
 
 	// --------------------------------------------------------------------------
-	static long getAvailableExternalMemorySize( File path ) {
+	private static long getAvailableExternalMemorySize(File path) {
 		try {
 			//File path = Environment.getExternalStorageDirectory();
 			StatFs stat = new StatFs(path.getPath());
@@ -453,7 +453,7 @@ public class DebugApp {
 	}
 
 	// --------------------------------------------------------------------------
-	static String GetClassName(String fullClassName) {
+	private static String GetClassName(String fullClassName) {
 		String s = fullClassName;
 		return s.substring(s.lastIndexOf(".") + 1);
 	}
@@ -475,7 +475,7 @@ public class DebugApp {
 	}
 
 	// --------------------------------------------------------------------------
-	static void ShowSendErrorActivity(String crashText) {
+	private static void ShowSendErrorActivity(String crashText) {
 		//SaveExceptionToFile(crashText);
 		PrefUtils.putStringCommit("crashText", crashText);
 		// MessageBox.Show(crashText, this);

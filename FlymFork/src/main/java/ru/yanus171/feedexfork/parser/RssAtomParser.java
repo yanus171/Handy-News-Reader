@@ -65,15 +65,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -172,7 +169,7 @@ public class RssAtomParser extends DefaultHandler {
     private String mFeedTitle;
     private boolean mDone = false;
     private boolean mFetchImages = false;
-    private boolean mRetrieveFullText = false;
+    private boolean mRetrieveFullText;
     private boolean mCancelled = false;
     private long mNow = System.currentTimeMillis();
     private StringBuilder mGuid;
@@ -558,7 +555,7 @@ public class RssAtomParser extends DefaultHandler {
         this.mFetchImages = fetchImages;
     }
 
-    public Date parseUpdateDate(String dateStr) {
+    private Date parseUpdateDate(String dateStr) {
         dateStr = improveDateString(dateStr);
         return parseUpdateDate(dateStr, true);
     }
@@ -635,7 +632,7 @@ public class RssAtomParser extends DefaultHandler {
         ContentResolver cr = MainApplication.getContext().getContentResolver();
 
         try {
-            HashSet<Long> entriesId = new HashSet<Long>();
+            HashSet<Long> entriesId = new HashSet<>();
             if (!mInserts.isEmpty()) {
                 ContentProviderResult[] results = cr.applyBatch(FeedData.AUTHORITY, mInserts);
 

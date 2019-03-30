@@ -181,17 +181,17 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private Spinner mKeepTimeSpinner = null;
     private CheckBox mKeepTimeCB = null;
 
-    public void EditFilter() {
+    private void EditFilter() {
         Cursor c = mFiltersCursorAdapter.getCursor();
         if (c.moveToPosition(mFiltersCursorAdapter.getSelectedFilter())) {
             final View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_edit, null);
-            final EditText filterText = (EditText) dialogView.findViewById(R.id.filterText);
-            final CheckBox regexCheckBox = (CheckBox) dialogView.findViewById(R.id.regexCheckBox);
-            final RadioButton applyTitleRadio = (RadioButton) dialogView.findViewById(R.id.applyTitleRadio);
-            final RadioButton applyContentRadio = (RadioButton) dialogView.findViewById(R.id.applyContentRadio);
-            final RadioButton acceptRadio = (RadioButton) dialogView.findViewById(R.id.acceptRadio);
-            final RadioButton markAsStarredRadio = (RadioButton) dialogView.findViewById(R.id.markAsStarredRadio);
-            final RadioButton rejectRadio = (RadioButton) dialogView.findViewById(R.id.rejectRadio);
+            final EditText filterText = dialogView.findViewById(R.id.filterText);
+            final CheckBox regexCheckBox = dialogView.findViewById(R.id.regexCheckBox);
+            final RadioButton applyTitleRadio = dialogView.findViewById(R.id.applyTitleRadio);
+            final RadioButton applyContentRadio = dialogView.findViewById(R.id.applyContentRadio);
+            final RadioButton acceptRadio = dialogView.findViewById(R.id.acceptRadio);
+            final RadioButton markAsStarredRadio = dialogView.findViewById(R.id.markAsStarredRadio);
+            final RadioButton rejectRadio = dialogView.findViewById(R.id.rejectRadio);
 
             filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)));
             regexCheckBox.setChecked(c.getInt(c.getColumnIndex(FilterColumns.IS_REGEX)) == 1);
@@ -258,7 +258,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
         setContentView(R.layout.activity_feed_edit);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -266,17 +266,17 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
         Intent intent = getIntent();
 
-        mTabHost = (TabHost) findViewById(R.id.tabHost);
-        mNameEditText = (EditText) findViewById(R.id.feed_title);
-        mUrlEditText = (EditText) findViewById(R.id.feed_url);
-        mRetrieveFulltextCb = (CheckBox) findViewById(R.id.retrieve_fulltext);
-        mShowTextInEntryListCb = (CheckBox) findViewById(R.id.show_text_in_entry_list);
-        mIsAutoRefreshCb =  (CheckBox) findViewById(R.id.auto_refresh);
-        mIsAutoImageLoadCb =  (CheckBox) findViewById(R.id.auto_image_load);
-        mFiltersListView = (ListView) findViewById(android.R.id.list);
-        mGroupSpinner = (Spinner) findViewById(R.id.spin_group);
+        mTabHost = findViewById(R.id.tabHost);
+        mNameEditText = findViewById(R.id.feed_title);
+        mUrlEditText = findViewById(R.id.feed_url);
+        mRetrieveFulltextCb = findViewById(R.id.retrieve_fulltext);
+        mShowTextInEntryListCb = findViewById(R.id.show_text_in_entry_list);
+        mIsAutoRefreshCb = findViewById(R.id.auto_refresh);
+        mIsAutoImageLoadCb = findViewById(R.id.auto_image_load);
+        mFiltersListView = findViewById(android.R.id.list);
+        mGroupSpinner = findViewById(R.id.spin_group);
 
-        mKeepTimeCB = (CheckBox) findViewById(R.id.cbCustomKeepTime);
+        mKeepTimeCB = findViewById(R.id.cbCustomKeepTime);
         mKeepTimeCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -284,7 +284,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
         });
         mKeepTimeValues = getResources().getStringArray(R.array.settings_keep_time_values);
-        mKeepTimeSpinner = (Spinner) findViewById(R.id.spin_keeptime);
+        mKeepTimeSpinner = findViewById(R.id.spin_keeptime);
         mKeepTimeSpinner.setSelection( 4 );
         for ( int i = 0; i < mKeepTimeValues.length; i ++ )
             if ( Double.parseDouble( mKeepTimeValues[i] ) == FetcherService.GetDefaultKeepTime() ) {
@@ -292,14 +292,14 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 break;
             }
 
-        mHasGroupCb = (CheckBox) findViewById(R.id.has_group);
+        mHasGroupCb = findViewById(R.id.has_group);
         mHasGroupCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 UpdateSpinnerGroup();
             }
         });
-        mLoadTypeRG = (RadioGroup) findViewById(R.id.rgLoadType);
+        mLoadTypeRG = findViewById(R.id.rgLoadType);
         View tabWidget = findViewById(android.R.id.tabs);
 
 
@@ -341,7 +341,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                            0 ) {
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                TextView nameTextView = (TextView) view.findViewById(android.R.id.text1);
+                TextView nameTextView = view.findViewById(android.R.id.text1);
                 nameTextView.setText(cursor.getString(1));
             }
         };

@@ -23,7 +23,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 public class AutoSummaryEditPreference extends android.preference.EditTextPreference {
-    String mSummary;
+    private String mSummary;
     public AutoSummaryEditPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mSummary = (String) getSummary();

@@ -1,7 +1,5 @@
 package ru.yanus171.feedexfork.service;
 
-import android.net.Uri;
-
 public class MarkItem {
     public final String mFeedID;
     public final String mCaption;

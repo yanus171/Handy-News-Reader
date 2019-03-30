@@ -102,7 +102,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowEntryText, mShowUnread;
     private boolean mBackgroundColorLight = false;
 
-    public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<Uri>();
+    public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
     private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
 
@@ -145,20 +145,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         if (view.getTag(R.id.holder) == null) {
             final ViewHolder holder = new ViewHolder();
-            holder.titleTextView = (TextView) view.findViewById(android.R.id.text1);
-            holder.urlTextView = (TextView) view.findViewById(R.id.textUrl);
-            holder.textTextView = (TextView) view.findViewById(R.id.textSource);
+            holder.titleTextView = view.findViewById(android.R.id.text1);
+            holder.urlTextView = view.findViewById(R.id.textUrl);
+            holder.textTextView = view.findViewById(R.id.textSource);
             if ( mShowEntryText )
-                holder.dateTextView = (TextView) view.findViewById(R.id.text2hor);
+                holder.dateTextView = view.findViewById(R.id.text2hor);
             else
-                holder.dateTextView = (TextView) view.findViewById(android.R.id.text2);
-            holder.mainImgView = (ImageView) view.findViewById(R.id.main_icon);
+                holder.dateTextView = view.findViewById(android.R.id.text2);
+            holder.mainImgView = view.findViewById(R.id.main_icon);
             holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
-            holder.starImgView = (ImageView) view.findViewById(R.id.favorite_icon);
-            holder.mobilizedImgView = (ImageView) view.findViewById(R.id.mobilized_icon);
-            holder.readImgView = (ImageView) view.findViewById(R.id.read_icon);
+            holder.starImgView = view.findViewById(R.id.favorite_icon);
+            holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
+            holder.readImgView = view.findViewById(R.id.read_icon);
             holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE ); //
-            holder.textLayout = (LinearLayout)view.findViewById(R.id.textLayout);
+            holder.textLayout = view.findViewById(R.id.textLayout);
             holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
             holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
             holder.newImgView = view.findViewById(R.id.new_icon);
@@ -444,7 +444,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readImgView.setImageResource(holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
     }
 
-    public void toggleReadState(final long id, View view) {
+    private void toggleReadState(final long id, View view) {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
 
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
@@ -480,7 +480,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return ( ( Cursor )lv.getItemAtPosition( position ) ).getString( mTitlePos );
     }
 
-    static public void SetIsRead(final Uri entryUri, final boolean isRead, final int sleepMsec ) {
+    private static void SetIsRead(final Uri entryUri, final boolean isRead, final int sleepMsec) {
         new Thread() {
             @Override
             public void run() {
@@ -506,7 +506,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }*/
 
 
-    public void toggleFavoriteState(final long id, View view) {
+    private void toggleFavoriteState(final long id, View view) {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
 
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
@@ -581,21 +581,23 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private static class ViewHolder {
-        public TextView titleTextView;
-        public TextView urlTextView;
-        public TextView textTextView;
-        public TextView dateTextView;
-        public ImageView mainImgView;
-        public View mainImgLayout;
-        public ImageView starImgView;
-        public ImageView mobilizedImgView;
-        public ImageView readImgView;
-        public View newImgView;
-        public View readToggleSwypeBtnView;
-        public View starToggleSwypeBtnView;
-        public LinearLayout textLayout;
-        public boolean isRead, isFavorite, isMobilized;
-        public long entryID = -1;
+        TextView titleTextView;
+        TextView urlTextView;
+        TextView textTextView;
+        TextView dateTextView;
+        ImageView mainImgView;
+        View mainImgLayout;
+        ImageView starImgView;
+        ImageView mobilizedImgView;
+        ImageView readImgView;
+        View newImgView;
+        View readToggleSwypeBtnView;
+        View starToggleSwypeBtnView;
+        LinearLayout textLayout;
+        boolean isRead;
+        boolean isFavorite;
+        boolean isMobilized;
+        long entryID = -1;
         public TextView contentSizeTextView;
     }
 

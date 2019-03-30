@@ -127,8 +127,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private View mToggleStatusBarVisbleBtn;
     private View mDimFrame;
     private View mStarFrame;
-    public ProgressBar mProgressBar;
-    TextView mLabelClock;
+    private ProgressBar mProgressBar;
+    private TextView mLabelClock;
 
     private StatusText mStatusText = null;
 
@@ -402,7 +402,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1 );
     }
 
-    void HideButtonText(View rootView, int ID, boolean transparent) {
+    private void HideButtonText(View rootView, int ID, boolean transparent) {
         TextView btn = rootView.findViewById(ID);
         if ( transparent )
             btn.setBackgroundColor(Color.TRANSPARENT);
@@ -497,7 +497,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     // -------------------------------------------------------------------------
-    public static int DpToPx( float dp) {
+    private static int DpToPx(float dp) {
         Resources r = MainApplication.getContext().getResources();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
         return (int) px;
@@ -708,7 +708,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return true;
     }
 
-    public void SetIsFavourite(final boolean favorite) {
+    private void SetIsFavourite(final boolean favorite) {
         if ( mFavorite == favorite )
             return;
         mFavorite = favorite;
@@ -732,7 +732,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         Toast.makeText( getContext(), mFavorite ? R.string.entry_marked_favourite : R.string.entry_marked_unfavourite, Toast.LENGTH_LONG ).show();
     }
 
-    void DeleteMobilized() {
+    private void DeleteMobilized() {
         ContentValues values = new ContentValues();
         values.putNull(EntryColumns.MOBILIZED_HTML);
         ContentResolver cr = MainApplication.getContext().getContentResolver();
@@ -740,7 +740,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         cr.update(uri, values, null, null);
     }
 
-    void CloseEntry() {
+    private void CloseEntry() {
         PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
         PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
         getActivity().finish();
@@ -849,7 +849,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     class ReadAndOldWriter implements Runnable {
                         private final boolean mSetAsRead;
                         private final int mPagerPos;
-                        public ReadAndOldWriter(int pagerPos, boolean setAsRead ){
+                        ReadAndOldWriter(int pagerPos, boolean setAsRead){
                             mPagerPos = pagerPos;
                             mSetAsRead = setAsRead;
                         }
@@ -1126,7 +1126,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         private final SparseArray<EntryView> mEntryViews = new SparseArray<>();
 
-        public EntryPagerAdapter() {
+        EntryPagerAdapter() {
         }
 
         @Override
@@ -1203,7 +1203,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return view == object;
         }
 
-        public void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate) {
+        void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate) {
             Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
 
             EntryView view = mEntryViews.get(pagerPos);
@@ -1213,7 +1213,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
 
                 if (newCursor != null && newCursor.moveToFirst()  ) {
-                    String contentText = "";
+                    String contentText;
                     String author = "";
                     long timestamp = 0;
                     String link = "";
@@ -1278,7 +1278,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        public Cursor getCursor(int pagerPos) {
+        Cursor getCursor(int pagerPos) {
             EntryView view = mEntryViews.get(pagerPos);
             if (view != null ) {
                 return (Cursor) view.getTag();
@@ -1286,7 +1286,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return null;
         }
 
-        public void setUpdatedCursor(int pagerPos, Cursor newCursor) {
+        void setUpdatedCursor(int pagerPos, Cursor newCursor) {
             EntryView view = mEntryViews.get(pagerPos);
             if (view != null ) {
                     Cursor previousUpdatedOne = (Cursor) view.getTag();
@@ -1297,7 +1297,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        public void onResume() {
+        void onResume() {
             if (mEntriesIds != null) {
                 EntryView view = mEntryViews.get(mCurrentPagerPos);
                 if (view != null) {
@@ -1306,7 +1306,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        public void onPause() {
+        void onPause() {
             for (int i = 0; i < mEntryViews.size(); i++) {
                 mEntryViews.valueAt(i).onPause();
             }

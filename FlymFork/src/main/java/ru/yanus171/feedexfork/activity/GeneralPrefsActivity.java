@@ -62,7 +62,7 @@ public class GeneralPrefsActivity extends BaseActivity {
 
         setContentView(R.layout.activity_general_prefs);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
