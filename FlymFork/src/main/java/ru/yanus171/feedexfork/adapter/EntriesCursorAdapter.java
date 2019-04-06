@@ -58,7 +58,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -199,7 +198,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         view.getParent().requestDisallowInterceptTouchEvent(true);
 
                         isPress = true;
-                        new Handler().postDelayed(new Runnable() {
+                        UiUtils.RunOnGuiThread( new Runnable() {
                             @Override
                             public void run() {
                                 if (isPress) {

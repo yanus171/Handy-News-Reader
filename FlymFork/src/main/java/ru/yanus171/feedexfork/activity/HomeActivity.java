@@ -38,7 +38,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -116,7 +115,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
     private int mCurrentDrawerPos;
-    private Handler mHandler = null;
     public static Boolean mFeedSetupChanged = false;
 
     @Override
@@ -211,9 +209,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_IMPORT_FROM_OPML);
             }
         }
-
-        mHandler = new Handler();
-        FetcherService.Status().setHandler(mHandler);
 
         timer.End();
     }

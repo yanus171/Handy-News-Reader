@@ -60,7 +60,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
@@ -114,6 +113,7 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
+import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 
@@ -155,8 +155,6 @@ public class FetcherService extends IntentService {
             Pattern.CASE_INSENSITIVE);
     public static int mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
 
-    private static Handler mHandler = null;
-
     public static StatusText.FetcherObservable Status() {
         if (mStatusText == null) {
             mStatusText = new StatusText.FetcherObservable();
@@ -169,7 +167,6 @@ public class FetcherService extends IntentService {
     public FetcherService() {
         super(FetcherService.class.getSimpleName());
         HttpURLConnection.setFollowRedirects(true);
-        mHandler = new Handler();
     }
 
     public static boolean hasMobilizationTask(long entryId) {
@@ -236,7 +233,7 @@ public class FetcherService extends IntentService {
                 try {
                     OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
                     PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
-                    mHandler.post(new Runnable() {
+                    UiUtils.RunOnGuiThread(  new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText( MainApplication.getContext(), getString(R.string.auto_backup_opml_file_created) + OPML.GetAutoBackupOPMLFileName(), Toast.LENGTH_LONG ).show();
@@ -1356,7 +1353,7 @@ public class FetcherService extends IntentService {
         if (networkInfo == null || networkInfo.getState() != NetworkInfo.State.CONNECTED) {
             if (ACTION_REFRESH_FEEDS.equals(intent.getAction()) && !isFromAutoRefresh) {
                 // Display a toast in that case
-                mHandler.post(new Runnable() {
+                UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, R.string.network_error, Toast.LENGTH_SHORT).show();

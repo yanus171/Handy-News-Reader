@@ -30,7 +30,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.BaseColumns;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -104,7 +103,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private Menu mMenu = null;
     private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
-    private Handler mHandler = null;
     private final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -243,7 +241,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     public void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreate" );
 
-        mHandler = new Handler();
         setHasOptionsMenu(true);
 
         Dog.v( "EntriesListFragment.onCreate" );
@@ -482,7 +479,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             }
         }
         if ( wait )
-            mHandler.postDelayed(new Run( pos ), 2000);
+            UiUtils.RunOnGuiThread(  new Run( pos ), 2000);
         else
             new Run( pos ).run();
     }

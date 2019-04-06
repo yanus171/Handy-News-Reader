@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -22,6 +21,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
@@ -99,7 +99,6 @@ public class StatusText implements Observer {
 
 
     public static class FetcherObservable extends Observable {
-        private Handler mHandler = null;
         public volatile int mBytesRecievedLast = 0;
         final LinkedHashMap<Integer,String> mList = new LinkedHashMap<>();
         private String mProgressText = "";
@@ -112,46 +111,34 @@ public class StatusText implements Observer {
             return true;
         }
 
-        public void setHandler(Handler handler) {
-            mHandler = handler;
-        }
         private void UpdateText() {
-            if ( mHandler != null )
-                mHandler.postAtFrontOfQueue(new Runnable() {
+            UiUtils.RunOnGuiThreadInFront(new Runnable() {
                 @Override
                 public void run() {
-                    synchronized ( mList ) {
-                        String s = "";
-                        if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) )
-                            //s += TextUtils.join( " ", mList.entrySet() );
-                            for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
-                                    s += item.getValue() + " ";
+                synchronized ( mList ) {
+                    String s = "";
+                    if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) )
+                        for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
+                                s += item.getValue() + " ";
 
-
-
-
-                        //if ( mList.size() > cRowcount )
-                        //s = "... " + s;
-                        //if ( mErrorText != null && !mErrorText.isEmpty() )
-                        //    s += " " + mErrorText;
-                        if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
-                            if (!mProgressText.isEmpty())
-                                s += " " + mProgressText;
-                            if (!mList.isEmpty() && !mDBText.isEmpty())
-                                s += " " + mDBText;
-                            if (!mList.isEmpty() && FetcherService.mCancelRefresh)
-                                s += "\n cancel Refresh";
-                            if (mBytesRecievedLast > 0)
-                                s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
-                        }
-                        notifyObservers(s + SEP + mErrorText);
-                        if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
-                           ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
-                            Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s));
-                            mLastNotificationUpdateTime = ( new Date() ).getTime();
-                        }
-                        Dog.v("Status Update " + s.replace("\n", " "));
+                    if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
+                        if (!mProgressText.isEmpty())
+                            s += " " + mProgressText;
+                        if (!mList.isEmpty() && !mDBText.isEmpty())
+                            s += " " + mDBText;
+                        if (!mList.isEmpty() && FetcherService.mCancelRefresh)
+                            s += "\n cancel Refresh";
+                        if (mBytesRecievedLast > 0)
+                            s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
                     }
+                    notifyObservers(s + SEP + mErrorText);
+                    if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
+                       ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s));
+                        mLastNotificationUpdateTime = ( new Date() ).getTime();
+                    }
+                    Dog.v("Status Update " + s.replace("\n", " "));
+                }
                 }
             });
         }
@@ -162,8 +149,6 @@ public class StatusText implements Observer {
                 mDBText = "";
                 //mErrorText = "";
                 mBytesRecievedLast = 0;
-                //if (mList.isEmpty())
-                //    mBytesRecievedLast = 0;
             }
         }
         public void ClearError() {
@@ -221,18 +206,17 @@ public class StatusText implements Observer {
             //}
         }
         public void HideByScroll() {
-            if ( mHandler != null )
-                mHandler.post(new Runnable() {
+            UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
-                        synchronized (mList) {
-                            if ( mList.isEmpty() ) {
-                                mBytesRecievedLast = 0;
-                                notifyObservers( SEP );
-                            }
-                        }
+                synchronized (mList) {
+                    if ( mList.isEmpty() ) {
+                        mBytesRecievedLast = 0;
+                        notifyObservers( SEP );
                     }
-                });
+                }
+                }
+            });
         }
     }
 

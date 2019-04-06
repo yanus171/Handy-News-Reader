@@ -24,6 +24,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -36,6 +38,8 @@ import android.widget.Toast;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 
 public class UiUtils {
 
@@ -50,7 +54,7 @@ public class UiUtils {
     }
 
     static public int dpToPixel(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, MainApplication.getContext().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, MainApplication.getContext().getResources().getDisplayMetrics());
     }
     static public int mmToPixel(int mm) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, mm, MainApplication.getContext().getResources().getDisplayMetrics());
@@ -71,7 +75,7 @@ public class UiUtils {
     }
 
     static public void SetFontSize(TextView textView) {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
+        textView.setTextSize(COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
     }
 
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
@@ -111,5 +115,30 @@ public class UiUtils {
         return null;
     }
 
+    private static Handler mHandler = null;
+    public static void RunOnGuiThread( final Runnable r ) {
+        if ( mHandler == null )
+            mHandler  = new Handler(Looper.getMainLooper());
+        synchronized ( mHandler ) {
+            mHandler.post( r );
+        }
+
+    }
+    public static void RunOnGuiThread( final Runnable r, int delay ) {
+        if ( mHandler == null )
+            mHandler  = new Handler(Looper.getMainLooper());
+        synchronized ( mHandler ) {
+            mHandler.postDelayed( r, delay );
+        }
+
+    }
+    public static void RunOnGuiThreadInFront( final Runnable r ) {
+        if ( mHandler == null )
+            mHandler  = new Handler(Looper.getMainLooper());
+        synchronized ( mHandler ) {
+            mHandler.postAtFrontOfQueue( r );
+        }
+
+    }
 
 }

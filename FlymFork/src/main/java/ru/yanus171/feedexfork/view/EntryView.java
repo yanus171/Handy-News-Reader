@@ -52,7 +52,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Handler;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -80,6 +79,7 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
+import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class EntryView extends WebView implements Observer {
 
@@ -175,7 +175,6 @@ public class EntryView extends WebView implements Observer {
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
     public static final ImageDownloadObservable mImageDownloadObservable = new ImageDownloadObservable();
     private EntryViewManager mEntryViewMgr;
-    private static Handler mHandler = null;
     public String mData = "";
     public float mScrollPartY = 0;
 
@@ -290,8 +289,6 @@ public class EntryView extends WebView implements Observer {
 
         Timer timer = new Timer( "EntryView.init" );
 
-        if ( mHandler == null )
-            mHandler = new Handler();
         mImageDownloadObservable.addObserver(this);
         // For scrolling
         setHorizontalScrollBarEnabled(false);
@@ -454,9 +451,9 @@ public class EntryView extends WebView implements Observer {
     private static volatile boolean mNotifyInProcess = false;
     public static void NotifyToUpdate( final long entryId) {
         synchronized ( mImageDownloadObservable ) {
-            if (mHandler != null && !mNotifyInProcess) {
+            if (!mNotifyInProcess) {
                 mNotifyInProcess = true;
-                mHandler.postDelayed(new Runnable() {
+                UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
                         synchronized ( mImageDownloadObservable ) {
