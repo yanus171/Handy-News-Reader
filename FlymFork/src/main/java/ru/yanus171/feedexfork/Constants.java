@@ -62,6 +62,7 @@ public final class Constants {
     public static final String HTML_QUOT = "&quot;";
     public static final String QUOT = "\"";
     public static final String HTML_APOSTROPHE = "&#39;";
+    public static final String HTML_APOS = "&apos;";
     public static final String APOSTROPHE = "'";
     public static final String AMP = "&";
     public static final String AMP_SG = "&amp;";

@@ -192,6 +192,7 @@ public class RssAtomParser extends DefaultHandler {
     private static String unescapeTitle(String title) {
         String result = title.replace(Constants.AMP_SG, Constants.AMP).replaceAll(HTML_TAG_REGEX, "").replace(Constants.HTML_LT, Constants.LT)
                 .replace(Constants.HTML_GT, Constants.GT).replace(Constants.HTML_QUOT, Constants.QUOT)
+                .replace(Constants.HTML_APOS, Constants.APOSTROPHE)
                 .replace(Constants.HTML_APOSTROPHE, Constants.APOSTROPHE);
 
         if (result.contains(AND_SHARP)) {
