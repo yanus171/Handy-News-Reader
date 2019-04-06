@@ -380,24 +380,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public void PageUp() {
         EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
-        if (entryView != null) {
-            if (PrefUtils.getBoolean("page_up_down_90_pct", false))
-                entryView.PageChange(-1);
-            else
-                entryView.pageUp(false);
-        }
+        if (entryView != null)
+            entryView.PageChange(-1);
     }
 
     public void PageDown() {
         EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
         //Toast.makeText(getContext(), "pageDown onclick", Toast.LENGTH_LONG ).show();
-        if (entryView != null) {
-            //Toast.makeText(getContext(), "pageDown onclick not null", Toast.LENGTH_LONG ).show();
-            if ( PrefUtils.getBoolean( "page_up_down_90_pct", false ) )
-                entryView.PageChange(1);
-            else
-                entryView.pageDown(false);
-        }
+        if (entryView != null)
+            entryView.PageChange(1);
     }
 
 

@@ -56,6 +56,8 @@ import android.net.Uri;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -544,10 +546,12 @@ public class EntryView extends WebView implements Observer {
         return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0 ;
     }
 
-    public void PageChange(int delta) {
+    public void PageChange(int delta ) {
         ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
-                (int) (getScrollY() + delta * getHeight() * 0.9));
-        anim.setDuration(350).start();
+                (int) (getScrollY() + delta * getHeight() * ( PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 1.0 ) ));
+        anim.setDuration(450);
+        anim.setInterpolator( new AccelerateDecelerateInterpolator() );
+        anim.start();
     }
 
 
