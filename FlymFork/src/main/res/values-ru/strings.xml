@@ -447,5 +447,7 @@
     <string name="auto_backup_opml_file_created">Создан файл автоматической резервной копии: </string>
     <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
+    <string name="page_up_down_90_pct">Прокрутка страницы 90 %</string>
+    <string name="page_up_down_90_pct_descr">Чтобы оставлять несколько строк с предыдущей страницы, если выключена, то листается страница целиком</string>
 
 </resources>

@@ -257,6 +257,12 @@
             android:summary="@string/auto_unstart_at_bottom_descr"
             android:title="@string/auto_unstart_at_bottom"/>
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="page_up_down_90_pct"
+            android:summary="@string/page_up_down_90_pct_descr"
+            android:title="@string/page_up_down_90_pct"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

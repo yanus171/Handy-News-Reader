@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -380,7 +381,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void PageUp() {
         EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
         if (entryView != null) {
-            entryView.pageUp(false);
+            if (PrefUtils.getBoolean("page_up_down_90_pct", false))
+                entryView.PageChange(-1);
+            else
+                entryView.pageUp(false);
         }
     }
 
@@ -389,9 +393,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //Toast.makeText(getContext(), "pageDown onclick", Toast.LENGTH_LONG ).show();
         if (entryView != null) {
             //Toast.makeText(getContext(), "pageDown onclick not null", Toast.LENGTH_LONG ).show();
-            entryView.pageDown(false);
+            if ( PrefUtils.getBoolean( "page_up_down_90_pct", false ) )
+                entryView.PageChange(1);
+            else
+                entryView.pageDown(false);
         }
     }
+
 
     public void NextEntry() {
         if ( mEntryPager.getCurrentItem() < mEntryPager.getAdapter().getCount() - 1  )

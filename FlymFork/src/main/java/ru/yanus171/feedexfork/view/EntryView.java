@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.view;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -541,6 +542,12 @@ public class EntryView extends WebView implements Observer {
 
     public float GetViewScrollPartY() {
         return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0 ;
+    }
+
+    public void PageChange(int delta) {
+        ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
+                (int) (getScrollY() + delta * getHeight() * 0.9));
+        anim.setDuration(350).start();
     }
 
 
