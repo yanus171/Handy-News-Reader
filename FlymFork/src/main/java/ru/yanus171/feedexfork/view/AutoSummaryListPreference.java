@@ -17,15 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ru.yanus171.feedexfork.view ;
+package ru.yanus171.feedexfork.view;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
-public class AutoSummaryListPreference extends android.preference.ListPreference {
+import java.util.ArrayList;
 
+public class AutoSummaryListPreference extends android.preference.ListPreference {
+    private CharSequence mSummary;
     public AutoSummaryListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mSummary = getSummary();
     }
 
     @Override
@@ -37,12 +41,16 @@ public class AutoSummaryListPreference extends android.preference.ListPreference
     }
 
     private CharSequence GetSummary() {
+        ArrayList<CharSequence> list = new ArrayList<>();
+        if ( mSummary != null  )
+            list.add( mSummary );
         try {
-            return getEntry().toString().replace("%", "%%");
+            if (getEntry() != null)
+                list.add(getEntry().toString().replace("%", "%%"));
         } catch ( Exception e ) {
             e.printStackTrace();
-            return "";
         }
+        return TextUtils.join( "\n", list );
     }
 
     @Override
