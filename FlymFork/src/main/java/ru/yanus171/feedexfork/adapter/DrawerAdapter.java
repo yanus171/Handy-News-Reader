@@ -118,10 +118,12 @@ public class DrawerAdapter extends BaseAdapter {
         holder.titleTxt.setText("");
         holder.titleTxt.setTextColor(NORMAL_TEXT_COLOR);
         holder.titleTxt.setAllCaps(false);
-        holder.titleTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
+        UiUtils.SetFontSize(holder.titleTxt);
         holder.stateTxt.setVisibility(View.GONE);
         holder.unreadTxt.setText("");
+        UiUtils.SetFontSize(holder.unreadTxt);
         holder.readTxt.setText("");
+        UiUtils.SetFontSize(holder.readTxt);
         convertView.setPadding(0, 0, 0, 0);
         holder.separator.setVisibility(View.GONE);
         holder.autoRefreshIcon.setVisibility( View.GONE );

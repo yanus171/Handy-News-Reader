@@ -89,6 +89,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
+import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
@@ -163,7 +164,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
             holder.newImgView = view.findViewById(R.id.new_icon);
 
-            holder.titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
+            UiUtils.SetFontSize(holder.titleTextView);
 
             view.setTag(R.id.holder, holder);
 

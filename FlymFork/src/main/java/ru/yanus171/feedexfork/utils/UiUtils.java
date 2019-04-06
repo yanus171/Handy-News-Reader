@@ -31,6 +31,7 @@ import android.support.v4.util.LongSparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.yanus171.feedexfork.MainApplication;
@@ -67,6 +68,10 @@ public class UiUtils {
 
     static public void toast(@NonNull Context context, @StringRes int messageId) {
         Toast.makeText(context, messageId, Toast.LENGTH_LONG).show();
+    }
+
+    static public void SetFontSize(TextView textView) {
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
     }
 
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
