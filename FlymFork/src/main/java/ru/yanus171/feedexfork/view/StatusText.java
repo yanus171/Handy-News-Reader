@@ -1,7 +1,9 @@
 package ru.yanus171.feedexfork.view;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v7.app.NotificationCompat;
@@ -18,6 +20,7 @@ import java.util.Observer;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -105,6 +108,7 @@ public class StatusText implements Observer {
         private String mErrorText = "";
         private String mDBText = "";
         private long mLastNotificationUpdateTime = ( new Date() ).getTime();
+        private String mNotificationTitle = "";
 
         @Override
         public boolean hasChanged () {
@@ -131,12 +135,15 @@ public class StatusText implements Observer {
                         if (mBytesRecievedLast > 0)
                             s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
                     }
-                    notifyObservers(s + SEP + mErrorText);
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s));
+
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s, mNotificationTitle));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
+                    if ( !mNotificationTitle.isEmpty() )
+                        s = mNotificationTitle + " " + s;
+                    notifyObservers(s + SEP + mErrorText );
                     Dog.v("Status Update " + s.replace("\n", " "));
                 }
                 }
@@ -200,6 +207,12 @@ public class StatusText implements Observer {
             }
             UpdateText();
         }
+        public void SetNotificationTitle(String text) {
+            synchronized ( mList ) {
+                mNotificationTitle = text;
+            }
+            UpdateText();
+        }
         public void AddBytes(int bytes) {
             //synchronized ( mList ) {
                 mBytesRecievedLast += bytes;
@@ -222,30 +235,33 @@ public class StatusText implements Observer {
 
 
 
-    static public Notification GetNotification(String text ) {
-        Context context = MainApplication.getContext();
+    static public Notification GetNotification(final String text, final String title ) {
+        final Context context = MainApplication.getContext();
+        final PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), 0 );
+
         if (Build.VERSION.SDK_INT >= 26 ) {
             Notification.Builder builder;
-            Notification.BigTextStyle bigxtstyle =
+            Notification.BigTextStyle bigTextStyle =
                     new Notification.BigTextStyle();
-            bigxtstyle.bigText(text);
-            bigxtstyle.setBigContentTitle(text);
+            bigTextStyle.bigText(text);
+            bigTextStyle.setBigContentTitle(title);
             builder = new Notification.Builder(MainApplication.getContext(), NOTIFICATION_CHANNEL_ID) //
                     .setSmallIcon(R.drawable.refresh) //
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
-                    .setStyle( bigxtstyle );
+                    .setStyle( bigTextStyle )
+                    .setContentIntent( pIntent );
             return builder.build();
         } else {
-            NotificationCompat.BigTextStyle bigxtstyle =
+            NotificationCompat.BigTextStyle bigTextStyle =
                     new NotificationCompat.BigTextStyle();
-            bigxtstyle.bigText(text);
-            bigxtstyle.setBigContentTitle(text);
+            bigTextStyle.bigText(text);
+            bigTextStyle.setBigContentTitle(title);
             android.support.v4.app.NotificationCompat.Builder builder =
                     new android.support.v4.app.NotificationCompat.Builder(MainApplication.getContext()) //
                             .setSmallIcon(R.drawable.refresh) //
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
-                            .setStyle(bigxtstyle);
-
+                            .setStyle(bigTextStyle)
+                            .setContentIntent( pIntent );
             return builder.build();
         }
     }

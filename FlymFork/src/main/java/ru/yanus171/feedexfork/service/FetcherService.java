@@ -374,9 +374,9 @@ public class FetcherService extends IntentService {
         LongOper( getString( textID ), oper );
     }
 
-    private void LongOper( String text, Runnable oper ) {
-        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification(text));
-        int status = Status().Start( text );
+    private void LongOper( String title, Runnable oper ) {
+        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title));
+        Status().SetNotificationTitle( title );
         PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
         synchronized (mCancelRefresh) {
             mCancelRefresh = false;
@@ -388,7 +388,7 @@ public class FetcherService extends IntentService {
             //Toast.makeText( this, getString( R.string.error ) + ": " + e.getMessage(), Toast.LENGTH_LONG ).show();
             DebugApp.SendException( e, this );
         } finally {
-            Status().End(status);
+            Status().SetNotificationTitle( "" );
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
             stopForeground(true);
             synchronized (mCancelRefresh) {
