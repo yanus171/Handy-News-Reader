@@ -183,7 +183,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 public boolean onTouch(View v, MotionEvent event) {
                     final int minX = 40;
                     final int minY = 20;
-                    final int MIN_X_TO_VIEW_ARTICLE = 30;
+                    final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel( 10 );
                     final ViewHolder holder = (ViewHolder) ( (ViewGroup)v.getParent() ).getTag(R.id.holder);
                     if ( event.getAction() == MotionEvent.ACTION_DOWN) {
                         Dog.v( "onTouch ACTION_DOWN" );
