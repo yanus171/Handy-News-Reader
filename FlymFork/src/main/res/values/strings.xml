@@ -379,6 +379,8 @@
     <string name="use_standard_file_manager_descr">otherwise select opml file for import via inner dialog from feedex folder only</string>
     <string name="page_up_down_90_pct">Page scroll 90 %</string>
     <string name="page_up_down_90_pct_descr">To preserve several lines from previous page, if unchecked the whole page would be scrolled</string>
+    <string name="brightness_gesture">Brightness change gesture</string>
+    <string name="brightness_gesture_descr">If checked sliding up/down in the left article edge changes the brightness</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

@@ -263,6 +263,12 @@
             android:summary="@string/page_up_down_90_pct_descr"
             android:title="@string/page_up_down_90_pct"/>
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="brightness_gesture_enabled"
+            android:summary="@string/brightness_gesture_descr"
+            android:title="@string/brightness_gesture"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

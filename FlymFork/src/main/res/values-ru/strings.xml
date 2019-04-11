@@ -449,5 +449,7 @@
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
     <string name="page_up_down_90_pct">Прокрутка страницы 90 %</string>
     <string name="page_up_down_90_pct_descr">Чтобы оставлять несколько строк с предыдущей страницы, если выключена, то листается страница целиком</string>
+    <string name="brightness_gesture">Изменение яркости жестом</string>
+    <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
 
 </resources>

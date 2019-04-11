@@ -256,53 +256,54 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mLockLandOrientation = PrefUtils.getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
         mDimFrame = rootView.findViewById( R.id.dimFrame );
-        rootView.findViewById(R.id.brightnessSlider).setOnTouchListener(new View.OnTouchListener() {
-            private int paddingX = 0;
-            private int paddingY = 0;
-            private int initialx = 0;
-            private int initialy = 0;
-            private int currentx = 0;
-            private int currenty = 0;
-            private int mInitialAlpha = 0;
+        if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
+            rootView.findViewById(R.id.brightnessSlider).setOnTouchListener(new View.OnTouchListener() {
+                private int paddingX = 0;
+                private int paddingY = 0;
+                private int initialx = 0;
+                private int initialy = 0;
+                private int currentx = 0;
+                private int currenty = 0;
+                private int mInitialAlpha = 0;
 
-            @Override
-            public boolean onTouch(View view1, MotionEvent event) {
+                @Override
+                public boolean onTouch(View view1, MotionEvent event) {
 
-                if ( event.getAction() == MotionEvent.ACTION_DOWN) {
-                    paddingX = 0;
-                    paddingY = 0;
-                    initialx = (int) event.getX();
-                    initialy = (int) event.getY();
-                    currentx = (int) event.getX();
-                    currenty = (int) event.getY();
-                    mInitialAlpha = GetBrightness();
-                    Dog.v( "onTouch ACTION_DOWN" );
-                    return true;
-                } else  if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
+                    if ( event.getAction() == MotionEvent.ACTION_DOWN) {
+                        paddingX = 0;
+                        paddingY = 0;
+                        initialx = (int) event.getX();
+                        initialy = (int) event.getY();
+                        currentx = (int) event.getX();
+                        currenty = (int) event.getY();
+                        mInitialAlpha = GetBrightness();
+                        Dog.v( "onTouch ACTION_DOWN" );
+                        return true;
+                    } else  if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
 
-                    currentx = (int) event.getX();
-                    currenty = (int) event.getY();
-                    paddingX = currentx - initialx;
-                    paddingY = currenty - initialy;
+                        currentx = (int) event.getX();
+                        currenty = (int) event.getY();
+                        paddingX = currentx - initialx;
+                        paddingY = currenty - initialy;
 
-                    if ( Math.abs( paddingY ) > Math.abs( paddingX ) &&
-                            Math.abs( initialy - event.getY() ) > view1.getWidth()  ) {
-                        Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
-                        int currentAlpha = mInitialAlpha + 255 / 1 * paddingY / mDimFrame.getHeight();
-                        if ( currentAlpha > 255 )
-                            currentAlpha = 255;
-                        else if ( currentAlpha < 1 )
-                            currentAlpha = 1;
-                        SetBrightness(currentAlpha);
+                        if ( Math.abs( paddingY ) > Math.abs( paddingX ) &&
+                                Math.abs( initialy - event.getY() ) > view1.getWidth()  ) {
+                            Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
+                            int currentAlpha = mInitialAlpha + 255 / 1 * paddingY / mDimFrame.getHeight();
+                            if ( currentAlpha > 255 )
+                                currentAlpha = 255;
+                            else if ( currentAlpha < 1 )
+                                currentAlpha = 1;
+                            SetBrightness(currentAlpha);
+                        }
+                        return true;
+                    } else  if ( event.getAction() == MotionEvent.ACTION_UP) {
+                        return false;
                     }
-                    return true;
-                } else  if ( event.getAction() == MotionEvent.ACTION_UP) {
+
                     return false;
                 }
-
-                return false;
-            }
-        });
+            });
 
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
         mStarFrame = rootView.findViewById(R.id.frameStar);
@@ -443,7 +444,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onResume();
         mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
-        SetBrightness( PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 ) );
+        if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
+            SetBrightness( PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 ) );
     }
 
     @Override
