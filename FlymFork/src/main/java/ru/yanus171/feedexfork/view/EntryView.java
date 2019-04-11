@@ -548,7 +548,8 @@ public class EntryView extends WebView implements Observer {
 
     public void PageChange(int delta ) {
         ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
-                (int) (getScrollY() + delta * getHeight() * ( PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 1.0 ) ));
+                (int) (getScrollY() + delta * getHeight() *
+                        ( PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98 ) ));
         anim.setDuration(450);
         anim.setInterpolator( new AccelerateDecelerateInterpolator() );
         anim.start();
