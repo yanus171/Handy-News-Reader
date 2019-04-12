@@ -216,6 +216,8 @@
     <!-- SETTINGS -->
     <string name="settings_category_refresh">Automatyczne odświeżanie</string>
     <string name="settings_refresh_enabled">Włącz automatyczne odświeżanie</string>
+    <string name="settings_autobackup_enabled">Włącz automatyczną kopię zapasową</string>
+    <string name="settings_autobackup_enabled_descr">Okresowo zapisuje listę źródeł oraz ulubionych artykułów do pliku .opml</string>
     <string name="settings_refresh_enabled_description">Aktywuj automatyczne odświeżanie kanałów.</string>
     <string name="settings_refresh_interval">Odświeżaj co:</string>
     <string name="settings_category_notifications">Powiadomienia</string>
