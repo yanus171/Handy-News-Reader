@@ -451,5 +451,7 @@
     <string name="page_up_down_90_pct_descr">Чтобы оставлять несколько строк с предыдущей страницы, если выключена, то листается страница целиком</string>
     <string name="brightness_gesture">Изменение яркости жестом</string>
     <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
+    <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
+    <string name="brightness_with_dim_activity_descr">Включите, если иначе измнение яркости не работает</string>
 
 </resources>

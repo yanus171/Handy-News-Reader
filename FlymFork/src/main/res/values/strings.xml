@@ -381,6 +381,8 @@
     <string name="page_up_down_90_pct_descr">To preserve several lines from previous page, if unchecked the whole page would be scrolled</string>
     <string name="brightness_gesture">Brightness change gesture</string>
     <string name="brightness_gesture_descr">If checked sliding up/down in the left article edge changes the brightness</string>
+    <string name="brightness_with_dim_activity">Software overlay</string>
+    <string name="brightness_with_dim_activity_descr">Dim brightness with reduce of  transparency of the window background color. Check it if the brightness change doesnt work</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

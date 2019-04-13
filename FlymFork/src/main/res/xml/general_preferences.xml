@@ -269,6 +269,13 @@
             android:summary="@string/brightness_gesture_descr"
             android:title="@string/brightness_gesture"/>
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="brightness_gesture_enabled"
+            android:key="brightness_with_dim_activity"
+            android:summary="@string/brightness_with_dim_activity_descr"
+            android:title="@string/brightness_with_dim_activity"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

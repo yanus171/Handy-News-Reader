@@ -20,6 +20,7 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -40,9 +41,11 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -64,6 +67,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -95,6 +99,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static android.provider.Settings.System.*;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
@@ -124,8 +129,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private ViewPager mEntryPager;
     public EntryPagerAdapter mEntryPagerAdapter;
 
-    private View mToggleFullscreenBtn;
-    private View mToggleStatusBarVisbleBtn;
+    //private View mToggleFullscreenBtn;
+    //private View mToggleStatusBarVisbleBtn;
     private View mDimFrame;
     private View mStarFrame;
     private ProgressBar mProgressBar;
@@ -160,8 +165,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       (TextView)rootView.findViewById( R.id.errorText ),
                                       FetcherService.Status()/*,
                                       this*/);
-        mToggleFullscreenBtn = rootView.findViewById(R.id.toggleFullscreenBtn);
-        mToggleFullscreenBtn.setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EntryActivity activity = (EntryActivity) getActivity();
@@ -175,8 +179,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mLabelClock = rootView.findViewById(R.id.textClock);
         mLabelClock.setText("");
 
-        mToggleStatusBarVisbleBtn =  rootView.findViewById(R.id.toggleFullScreenStatusBarBtn);
-        mToggleStatusBarVisbleBtn.setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             EntryActivity activity = (EntryActivity) getActivity();
@@ -266,6 +269,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 private int currenty = 0;
                 private int mInitialAlpha = 0;
 
+                @SuppressLint("ClickableViewAccessibility")
                 @Override
                 public boolean onTouch(View view1, MotionEvent event) {
 
@@ -366,8 +370,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     private void SetBrightness(int currentAlpha) {
-        int newColor = Color.argb( currentAlpha, 0,  0,  0 );
-        mDimFrame.setBackgroundColor( newColor );
+        Dog.d( String.format( "SetBrightness currentAlpha=%d", currentAlpha) );
+        if ( PrefUtils.getBoolean( "brightness_with_dim_activity", false ) ) {
+            int newColor = Color.argb( currentAlpha, 0,  0,  0 );
+            mDimFrame.setBackgroundColor( newColor );
+        } else {
+            final int brightness = 255 - currentAlpha;
+            //        if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite( getContext() )) {
+            //            android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
+            //            android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS, currentAlpha);
+            //        }
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.screenBrightness = brightness / (float) 255;
+            getActivity().getWindow().setAttributes(lp);
+            //getActivity().getWindow().addFlags( WindowManager.LayoutParams.FLAGS_CHANGED );
+        }
+
     }
 
 
