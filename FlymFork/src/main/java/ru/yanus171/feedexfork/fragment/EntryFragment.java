@@ -19,8 +19,8 @@
 
 package ru.yanus171.feedexfork.fragment;
 
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -41,11 +41,9 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -70,6 +68,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,7 +98,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.provider.Settings.System.*;
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
@@ -293,11 +292,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         if ( Math.abs( paddingY ) > Math.abs( paddingX ) &&
                                 Math.abs( initialy - event.getY() ) > view1.getWidth()  ) {
                             Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
-                            int currentAlpha = mInitialAlpha + 255 / 1 * paddingY / mDimFrame.getHeight();
+                            int currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.getHeight();
                             if ( currentAlpha > 255 )
                                 currentAlpha = 255;
-                            else if ( currentAlpha < 1 )
-                                currentAlpha = 1;
+                            //else if ( currentAlpha < 1 )
+                            //    currentAlpha = 1;
                             SetBrightness(currentAlpha);
                         }
                         return true;
@@ -319,6 +318,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             private boolean mWasSwipe = false;
             private final int MAX_HEIGHT = UiUtils.mmToPixel( 12 );
             private final int MIN_HEIGHT = UiUtils.mmToPixel( 1 );
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 if ( event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -914,9 +914,24 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         activity.setImmersiveFullScreen(fullScreen);
     }*/
 
-    public void UpdateClock() {
-        mLabelClock.setVisibility( ( ( EntryActivity ) getActivity() ).GetIsStatusBarHidden() ? View.VISIBLE : View.GONE );
-        mLabelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
+    public void UpdateFooter() {
+        EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
+        if (entryView != null) {
+            if ( PrefUtils.getBoolean( "article_text_footer_show_progress", true ) ) {
+                mProgressBar.setVisibility( View.VISIBLE );
+                int webViewHeight = entryView.getMeasuredHeight();
+                int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
+                mProgressBar.setMax(contentHeight - webViewHeight);
+                mProgressBar.setProgress(entryView.getScrollY());
+            } else
+                mProgressBar.setVisibility( View.GONE );
+        }
+
+        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) ) {
+            mLabelClock.setVisibility(((EntryActivity) getActivity()).GetIsStatusBarHidden() ? View.VISIBLE : View.GONE);
+            mLabelClock.setText(new SimpleDateFormat("HH:mm").format(new Date()));
+        } else
+            mLabelClock.setVisibility( View.GONE );
     }
 
     @Override
@@ -1290,8 +1305,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     }
 
-                    UpdateProgress();
-                    UpdateClock();
+                    mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
+                    mLabelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
+                    UpdateFooter();
 
                 }
             }
@@ -1332,16 +1348,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
     }
 
-    public void UpdateProgress() {
-        EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
-        if (entryView != null) {
-            ProgressBar progressBar = mProgressBar;
-            int webViewHeight = entryView.getMeasuredHeight();
-            int height = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
-            progressBar.setMax(height - webViewHeight);
-            progressBar.setProgress(entryView.getScrollY());
-        }
-    }
 
 }
 

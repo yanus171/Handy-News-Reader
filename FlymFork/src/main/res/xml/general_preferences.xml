@@ -276,6 +276,34 @@
             android:summary="@string/brightness_with_dim_activity_descr"
             android:title="@string/brightness_with_dim_activity"/>
 
+        <PreferenceScreen
+            android:title="@string/foolter"
+            android:summary="@string/footer_descr">
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_text_footer_show_clock"
+                android:title="@string/article_text_footer_show_clock"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:defaultValue="0"
+                android:dependency="article_text_footer_show_clock"
+                android:entries="@array/settings_font_sizes"
+                android:entryValues="@array/settings_font_size_values"
+                android:inputType="number"
+                android:key="article_text_footer_show_clock_fontsize"
+                android:title="@string/settings_font_size"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_text_footer_show_progress"
+                android:title="@string/article_text_footer_show_progress"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:key="article_text_footer_progress_height"
+                android:dependency="article_text_footer_show_progress"
+                android:entries="@array/settings_footer_progress_height"
+                android:entryValues="@array/settings_footer_progress_height_values"
+                android:defaultValue="1"
+                android:title="@string/article_text_footer_progress_height"/>
+
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory

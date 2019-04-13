@@ -453,5 +453,9 @@
     <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
     <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
     <string name="brightness_with_dim_activity_descr">Включите, если иначе измнение яркости не работает</string>
-
+    <string name="foolter">Колонтитул…</string>
+    <string name="footer_descr">Часы, процент прочитанного</string>
+    <string name="article_text_footer_show_clock">Часы</string>
+    <string name="article_text_footer_show_progress">Полоса прочитанного</string>
+    <string name="article_text_footer_progress_height">Высота полосы</string>
 </resources>

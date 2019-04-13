@@ -99,6 +99,10 @@ public class PrefUtils {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
     }
 
+    public static int getFontSizeFooterClock() {
+        return Integer.parseInt(PrefUtils.getString("article_text_footer_show_clock_fontsize", "0"));
+    }
+
     public static int getImageDownloadCount() {
         try {
             return Integer.parseInt(PrefUtils.getString(PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT, "10"));
@@ -142,7 +146,15 @@ public class PrefUtils {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.getInt(key, defValue);
     }
-
+    public static int getIntFromText(String key, int defValue) {
+        int result = defValue;
+        try {
+            result = Integer.parseInt( getString( key, String.valueOf( defValue ) ) );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        return result;
+    }
     public static void putInt(String key, int value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
         editor.putInt(key, value);

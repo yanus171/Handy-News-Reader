@@ -57,7 +57,6 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -431,8 +430,7 @@ public class EntryView extends WebView implements Observer {
         FetcherService.Status().HideByScroll();
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
-        mActivity.mEntryFragment.UpdateProgress();
-        mActivity.mEntryFragment.UpdateClock();
+        mActivity.mEntryFragment.UpdateFooter();
         if ( mScrollChangeListener != null )
             mScrollChangeListener.run();
     }

@@ -383,6 +383,11 @@
     <string name="brightness_gesture_descr">If checked sliding up/down in the left article edge changes the brightness</string>
     <string name="brightness_with_dim_activity">Software overlay</string>
     <string name="brightness_with_dim_activity_descr">Dim brightness with reduce of  transparency of the window background color. Check it if the brightness change doesnt work</string>
+    <string name="foolter">Footer…</string>
+    <string name="footer_descr">Clock, progress bar</string>
+    <string name="article_text_footer_show_clock">Clock</string>
+    <string name="article_text_footer_show_progress">Read progress bar</string>
+    <string name="article_text_footer_progress_height">Progress bar height</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

@@ -207,24 +207,23 @@ public class EntryActivity extends BaseActivity {
             else
                 getSupportActionBar().show();
         }
-        if (mEntryFragment != null) {
-            mEntryFragment.UpdateProgress();
-            mEntryFragment.UpdateClock();
-        }
+        if (mEntryFragment != null)
+            mEntryFragment.UpdateFooter();
+
         invalidateOptionsMenu();
     }
 
-    public void setFullScreenWithNavBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE |
-                    //View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-        } else {
-            setFullScreenOld(true);
-        }
-
-    }
+//    public void setFullScreenWithNavBar() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE |
+//                    //View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+//                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//
+//        } else {
+//            setFullScreenOld(true);
+//        }
+//
+//    }
 
     private void setFullScreenOld(boolean fullScreen) {
         if (fullScreen) {
