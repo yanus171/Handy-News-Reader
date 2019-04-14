@@ -377,6 +377,15 @@
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
     <string name="page_up_down_90_pct">Przewijanie o 90% strony</string>
     <string name="page_up_down_90_pct_descr">Zachowuj kilka linijek poprzedniej strony - jeśli odznaczone, będzie przewijana cała strona</string>
+	<string name="brightness_gesture">Gest zmiany poziomu jasności</string>
+    <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
+    <string name="brightness_with_dim_activity">Nakładka programowa</string>
+    <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
+    <string name="foolter">Stopka...</string>
+    <string name="footer_descr">Godzina, pasek postępu</string>
+    <string name="article_text_footer_show_clock">Godzina</string>
+    <string name="article_text_footer_show_progress">Pasek postępu czytania</string>
+    <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
 
 
 
