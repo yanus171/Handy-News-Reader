@@ -41,9 +41,11 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -98,6 +100,9 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS;
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE;
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
@@ -279,7 +284,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         initialy = (int) event.getY();
                         currentx = (int) event.getX();
                         currenty = (int) event.getY();
-                        mInitialAlpha = GetBrightness();
+                        mInitialAlpha = GetAlpha();
                         Dog.v( "onTouch ACTION_DOWN" );
                         return true;
                     } else  if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
@@ -295,8 +300,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             int currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.getHeight();
                             if ( currentAlpha > 255 )
                                 currentAlpha = 255;
-                            //else if ( currentAlpha < 1 )
-                            //    currentAlpha = 1;
+                            else if ( currentAlpha < 1 )
+                                currentAlpha = 1;
                             SetBrightness(currentAlpha);
                         }
                         return true;
@@ -376,10 +381,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mDimFrame.setBackgroundColor( newColor );
         } else {
             final int brightness = 255 - currentAlpha;
-            //        if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite( getContext() )) {
-            //            android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
-            //            android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS, currentAlpha);
-            //        }
+//                    if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite( getContext() )) {
+//                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
+//                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS, currentAlpha);
+//                    }
             WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
             lp.screenBrightness = brightness / (float) 255;
             getActivity().getWindow().setAttributes(lp);
@@ -476,13 +481,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, getCurrentEntryID());
             PrefUtils.putBoolean(STATE_LOCK_LAND_ORIENTATION, mLockLandOrientation);
         }
-        PrefUtils.putInt( PrefUtils.LAST_BRIGHTNESS, GetBrightness());
+        PrefUtils.putInt( PrefUtils.LAST_BRIGHTNESS, GetAlpha());
 
         mEntryPagerAdapter.onPause();
     }
 
-    private int GetBrightness() {
-        return Color.alpha( ( (ColorDrawable)mDimFrame.getBackground() ).getColor() );
+    private int GetAlpha() {
+        if ( PrefUtils.getBoolean( "brightness_with_dim_activity", false ) )
+            return Color.alpha( ( (ColorDrawable)mDimFrame.getBackground() ).getColor() );
+        else
+            return 255 - (int) (255 * getActivity().getWindow().getAttributes().screenBrightness);
     }
 
     /**
