@@ -20,7 +20,6 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -41,11 +40,9 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -70,7 +67,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,6 +80,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -100,9 +97,6 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.provider.Settings.System.SCREEN_BRIGHTNESS;
-import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE;
-import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
@@ -267,10 +261,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             rootView.findViewById(R.id.brightnessSlider).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
-                private int initialx = 0;
-                private int initialy = 0;
-                private int currentx = 0;
-                private int currenty = 0;
+                private int initialX = 0;
+                private int initialY = 0;
+                private int currentX = 0;
+                private int currentY = 0;
                 private int mInitialAlpha = 0;
 
                 @SuppressLint("ClickableViewAccessibility")
@@ -280,22 +274,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     if ( event.getAction() == MotionEvent.ACTION_DOWN) {
                         paddingX = 0;
                         paddingY = 0;
-                        initialx = (int) event.getX();
-                        initialy = (int) event.getY();
-                        currentx = (int) event.getX();
-                        currenty = (int) event.getY();
+                        initialX = (int) event.getX();
+                        initialY = (int) event.getY();
+                        currentX = (int) event.getX();
+                        currentY = (int) event.getY();
                         mInitialAlpha = GetAlpha();
                         Dog.v( "onTouch ACTION_DOWN" );
                         return true;
                     } else  if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
 
-                        currentx = (int) event.getX();
-                        currenty = (int) event.getY();
-                        paddingX = currentx - initialx;
-                        paddingY = currenty - initialy;
+                        currentX = (int) event.getX();
+                        currentY = (int) event.getY();
+                        paddingX = currentX - initialX;
+                        paddingY = currentY - initialY;
 
                         if ( Math.abs( paddingY ) > Math.abs( paddingX ) &&
-                                Math.abs( initialy - event.getY() ) > view1.getWidth()  ) {
+                                Math.abs( initialY - event.getY() ) > view1.getWidth()  ) {
                             Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
                             int currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.getHeight();
                             if ( currentAlpha > 255 )
@@ -544,6 +538,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
         updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
         updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
+        updateMenuWithIcon(menu.findItem(R.id.menu_setting));
 
         EntryActivity activity = (EntryActivity) getActivity();
         menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
@@ -689,6 +684,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_cancel_refresh: {
                     FetcherService.cancelRefresh();
+                    break;
+                }
+                case R.id.menu_setting: {
+                    startActivity(new Intent(getContext(), GeneralPrefsActivity.class));
                     break;
                 }
                 case R.id.menu_open_link: {

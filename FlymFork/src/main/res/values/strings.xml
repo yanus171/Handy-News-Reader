@@ -382,12 +382,13 @@
     <string name="brightness_gesture">Brightness change gesture</string>
     <string name="brightness_gesture_descr">Check this to adjust the brightness by swiping up/down along the left edge of the screen</string>
     <string name="brightness_with_dim_activity">Software overlay</string>
-    <string name="brightness_with_dim_activity_descr">Dim brightness by reducing transparency of the window background color (check it if the brightness change doesn't work)</string>
+    <string name="brightness_with_dim_activity_descr">Dim brightness by reducing transparency of the window background color (check it if the brightness change doesn\'t work)</string>
     <string name="foolter">Footer…</string>
     <string name="footer_descr">Clock, progress bar</string>
     <string name="article_text_footer_show_clock">Clock</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>
+    <string name="settings">Settings</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
