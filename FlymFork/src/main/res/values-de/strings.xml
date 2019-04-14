@@ -216,6 +216,8 @@
     <string name="settings_refresh_enabled">Aktualisierung aktivieren</string>
     <string name="settings_refresh_enabled_description">Aktiviert das automatische Aktualisieren aller Feeds</string>
     <string name="settings_refresh_interval">Aktualisierungsintervall</string>
+    <string name="settings_autobackup_enabled">Automatisches Backup aktivieren</string>
+    <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine .opml-Datei</string>
     <string name="settings_category_notifications">Benachrichtigungen</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Aktiviert Benachrichtigungen bei neuen Artikeln</string>
@@ -368,6 +370,19 @@
     <string name="autobackup_interval_descr">Wie oft wird ein automatisches Backup der Feeds und Artikel erstellt</string>
     <string name="create_auto_backup">Automatisches Backup</string>
     <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
+    <string name="use_standard_file_manager">Standard Dateimanager verwenden</string>
+    <string name="use_standard_file_manager_descr">andernfalls die zu importierende .opml-Datei auswählen - nur außerhalb des feedex-Ordners (über den internen Dialog)</string>
+    <string name="page_up_down_90_pct">Nur 90% weiterblättern</string>
+    <string name="page_up_down_90_pct_descr">Wenn aktiviert, werden die letzten Zeilen der vorherigen Seite zu Beginn der neuen Seite angezeigt</string>
+    <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
+    <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
+    <string name="brightness_with_dim_activity">Software-Overlay</string>
+    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
+    <string name="foolter">Fußzeile…</string>
+    <string name="footer_descr">Uhrzeit, Fortschritt</string>
+    <string name="article_text_footer_show_clock">Uhrzeit</string>
+    <string name="article_text_footer_show_progress">Lese-Fortschrittbalken</string>
+    <string name="article_text_footer_progress_height">Höhe des Fortschrittbalkens</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
