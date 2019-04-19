@@ -1069,22 +1069,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void downloadImage(final String url) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    FetcherService.mCancelRefresh = false;
-                    int status = FetcherService.Status().Start( getString(R.string.downloadImage) ); try {
-                        NetworkUtils.downloadImage(getCurrentEntryID(), url, false);
-                    } catch (IOException e) {
-                        //FetcherService.Status().End( status );
-                        e.printStackTrace();
-                    } finally {
-                        FetcherService.Status().End( status );
-                    }
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FetcherService.mCancelRefresh = false;
+                int status = FetcherService.Status().Start( getString(R.string.downloadImage) ); try {
+                    NetworkUtils.downloadImage(getCurrentEntryID(), url, false);
+                } catch (IOException e) {
+                    //FetcherService.Status().End( status );
+                    e.printStackTrace();
+                } finally {
+                    FetcherService.Status().End( status );
                 }
-            }).start();
-            //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+
+            }
+        }).start();
+        //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
     }
 
     @Override

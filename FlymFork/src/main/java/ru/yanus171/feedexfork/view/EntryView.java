@@ -220,7 +220,7 @@ public class EntryView extends WebView implements Observer {
         getSettings().setSupportZoom( false );
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true)) {
-            contentText = HtmlUtils.replaceImageURLs(contentText, entryId);
+            contentText = HtmlUtils.replaceImageURLs(contentText, entryId, true);
             if (getSettings().getBlockNetworkImage()) {
                 // setBlockNetworkImage(false) calls postSync, which takes time, so we clean up the html first and change the value afterwards
                 loadData("", TEXT_HTML, Constants.UTF8);
@@ -443,27 +443,22 @@ public class EntryView extends WebView implements Observer {
         if ( ( data != null ) && ( (Long)data == mEntryId ) )  {
             if ( GetViewScrollPartY() < mScrollPartY )
                 mScrollPartY = GetViewScrollPartY();
-            mData = HtmlUtils.replaceImageURLs(mData, mEntryId);
+            mData = HtmlUtils.replaceImageURLs(mData, mEntryId, false);
             loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
         //setScrollY( y );
         }
     }
 
-    private static volatile boolean mNotifyInProcess = false;
     public static void NotifyToUpdate( final long entryId) {
         synchronized ( mImageDownloadObservable ) {
-            if (!mNotifyInProcess) {
-                mNotifyInProcess = true;
                 UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
-                        synchronized ( mImageDownloadObservable ) {
-                            mNotifyInProcess = false;
-                            mImageDownloadObservable.notifyObservers(entryId);
-                        }
+                    synchronized ( mImageDownloadObservable ) {
+                        mImageDownloadObservable.notifyObservers(entryId);
+                    }
                     }
                 }, 1000);
-            }
         }
     }
 

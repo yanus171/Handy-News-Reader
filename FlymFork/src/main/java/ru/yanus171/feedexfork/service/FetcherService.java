@@ -866,7 +866,7 @@ public class FetcherService extends IntentService {
     }
 
     private void DeleteOldEntries(final long feedID, final long keepDateBorderTime) {
-        if (keepDateBorderTime > 0) {
+        if (keepDateBorderTime > 0 && !isCancelRefresh() ) {
             ContentResolver cr = MainApplication.getContext().getContentResolver();
 
             String where = EntryColumns.DATE + '<' + keepDateBorderTime + Constants.DB_AND + EntryColumns.WHERE_NOT_FAVORITE;
@@ -1255,6 +1255,7 @@ public class FetcherService extends IntentService {
 
         public static void cancelRefresh () {
             synchronized (mCancelRefresh) {
+                MainApplication.getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
                 mCancelRefresh = true;
             }
         }

@@ -126,7 +126,7 @@ public class HtmlUtils {
         return images;
     }
 
-    public static String replaceImageURLs(String content, final long entryId) {
+    public static String replaceImageURLs(String content, final long entryId, boolean isDownLoadImages) {
         // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
         if (!TextUtils.isEmpty(content)) {
@@ -158,7 +158,8 @@ public class HtmlUtils {
                     } else if (needDownloadPictures) {
                         String imgTagText = matcher.group(0);
                         if ( ( index <= FetcherService.mMaxImageDownloadCount ) || ( FetcherService.mMaxImageDownloadCount == 0 ) ) {
-                            imagesToDl.add(srcText);
+                            if ( isDownLoadImages )
+                                imagesToDl.add(srcText);
                             content = content.replace(imgTagText, //getDownloadImageHtml(srcText) +
                                                                   imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
                                                                             .replaceAll( "alt=\"[^\"]+?\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )
