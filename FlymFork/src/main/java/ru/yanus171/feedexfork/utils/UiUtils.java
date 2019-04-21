@@ -19,11 +19,14 @@
 
 package ru.yanus171.feedexfork.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -31,7 +34,9 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.LongSparseArray;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -140,5 +145,14 @@ public class UiUtils {
         }
 
     }
+
+    public static void HideButtonText(View rootView, int ID, boolean transparent) {
+        TextView btn = rootView.findViewById(ID);
+        if ( transparent )
+            btn.setBackgroundColor(Color.TRANSPARENT);
+        btn.setText("");
+    }
+
+
 
 }

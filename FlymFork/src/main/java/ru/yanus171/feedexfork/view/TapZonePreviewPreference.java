@@ -32,7 +32,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         SetSize( view, R.id.pageUpBtn, MATCH_PARENT, size );
         SetSize( view, R.id.pageDownBtn, MATCH_PARENT, size );
         SetSize( view, R.id.pageDownBtnVert, size, MATCH_PARENT );
-        SetSize( view, R.id.brightnessSlider, size, MATCH_PARENT );
+        //SetSize( view, R.id.brightnessSlider, size, MATCH_PARENT );
         SetSize( view, R.id.toggleFullScreenStatusBarBtn, size, size );
         SetSize( view, R.id.toggleFullscreenBtn, size, size );
     }

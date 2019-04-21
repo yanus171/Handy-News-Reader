@@ -251,7 +251,7 @@
     <string name="settings_widget_background">Tło.</string>
     <string name="settings_widget_background_description">Kolor i przezroczystość tła widżetu.</string>
     <string name="all_feeds">Wszystkie kanały (w tym przyszłe).</string>
-    <string name="settings_display_text_color_description">W ciemnym motywie (0..255)</string>
+    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="downloadImage">Pobieranie obrazków...</string>
     <string name="loadFullText">Wczytywanie pełnej treści...</string>
     <string name="deleteOldEntries">Usuń stare artykuły.</string>

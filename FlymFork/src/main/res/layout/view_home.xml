@@ -3,28 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:showIn="@layout/activity_home">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/view_toolbar" />
-
-        <fragment
-            android:id="@+id/entries_list_fragment"
-            android:name="ru.yanus171.feedexfork.fragment.EntriesListFragment"
-            android:background="@color/dark_background"
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:showIn="@layout/activity_home">
 
-    </LinearLayout>
+            <include layout="@layout/view_toolbar" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_done_all_white_24dp" />
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <fragment
+                    android:id="@+id/entries_list_fragment"
+                    android:name="ru.yanus171.feedexfork.fragment.EntriesListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/dark_background" />
+
+                <include layout="@layout/brightness_slider_layout" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_done_all_white_24dp" />
+
+        <include layout="@layout/dim_frame" />
+
+    </FrameLayout>
 </merge>

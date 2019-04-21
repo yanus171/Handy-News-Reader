@@ -96,7 +96,7 @@ public class EntryView extends WebView implements Observer {
     public Runnable mScrollChangeListener = null;
 
     //private static final String TEXT_COLOR_BRIGHTNESS = PrefUtils.getBoolean(PrefUtils.LIGHT_THEME, false) ? "#000000" : "#C0C0C0";
-    private static String GetTextColor() {return PrefUtils.IsLightTheme() ? "#000000" : getTextColorDarkTheme();}
+    private static String GetTextColor() {return PrefUtils.IsLightTheme() ? getTextColorLightTheme() : getTextColorDarkTheme();}
 
     private static String getTextColorDarkTheme() {
 
@@ -106,6 +106,18 @@ public class EntryView extends WebView implements Observer {
         } catch (NumberFormatException e) {
 
         }
+        return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
+    }
+
+    private static String getTextColorLightTheme() {
+
+        int b = 200;
+        try {
+            b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
+        } catch (NumberFormatException e) {
+
+        }
+        b = 255 - b;
         return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
     }
 

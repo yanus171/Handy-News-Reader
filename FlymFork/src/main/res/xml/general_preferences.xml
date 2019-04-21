@@ -160,7 +160,7 @@
             android:title="@string/show_full_text_indicator"/>
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="show_new_icon"
             android:summary="@string/show_new_icon_descr"
             android:title="@string/show_new_icon"/>
@@ -199,19 +199,6 @@
             android:defaultValue="false"
             android:key="display_entries_fullscreen"
             android:title="@string/settings_display_entries_fullscreen"/>
-
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-            android:key="text_color_brightness"
-            android:inputType="number"
-            android:title="@string/settings_display_text_color"
-            android:summary="@string/settings_display_text_color_description"/>
-
-        <ru.yanus171.feedexfork.view.TapZonePreviewPreference
-            android:key="settings_tap_zones"
-            android:inputType="none"
-            android:dialogLayout="@layout/fragment_entry"
-            android:dialogTitle="@string/settings_tap_zones_dialogtitle"
-            android:title="@string/settings_tapZones"/>
 
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="tap_zone_size"
@@ -262,19 +249,6 @@
             android:key="page_up_down_90_pct"
             android:summary="@string/page_up_down_90_pct_descr"
             android:title="@string/page_up_down_90_pct"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="brightness_gesture_enabled"
-            android:summary="@string/brightness_gesture_descr"
-            android:title="@string/brightness_gesture"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:dependency="brightness_gesture_enabled"
-            android:key="brightness_with_dim_activity"
-            android:summary="@string/brightness_with_dim_activity_descr"
-            android:title="@string/brightness_with_dim_activity"/>
 
         <PreferenceScreen
             android:title="@string/foolter"
@@ -372,6 +346,32 @@
     <PreferenceCategory
         android:layout="@layout/preference_category"
         android:title="@string/settings_additional">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="brightness_gesture_enabled"
+            android:summary="@string/brightness_gesture_descr"
+            android:title="@string/brightness_gesture"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="brightness_gesture_enabled"
+            android:key="brightness_with_dim_activity"
+            android:summary="@string/brightness_with_dim_activity_descr"
+            android:title="@string/brightness_with_dim_activity"/>
+
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="text_color_brightness"
+            android:inputType="number"
+            android:title="@string/settings_display_text_color"
+            android:summary="@string/settings_display_text_color_description"/>
+
+        <ru.yanus171.feedexfork.view.TapZonePreviewPreference
+            android:key="settings_tap_zones"
+            android:inputType="none"
+            android:dialogLayout="@layout/fragment_entry"
+            android:dialogTitle="@string/settings_tap_zones_dialogtitle"
+            android:title="@string/settings_tapZones"/>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

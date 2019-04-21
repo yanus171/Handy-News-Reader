@@ -249,7 +249,7 @@
     <string name="settings_widget_background">后台</string>
     <string name="settings_widget_background_description">小部件背景的颜色和透明度</string>
     <string name="all_feeds">所有feeds (包括未来的)</string>
-    <string name="settings_display_text_color_description">暗黑主题 (0..255)</string>
+    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="downloadImage">正下载图片</string>
     <string name="loadFullText">正载入全文</string>
     <string name="deleteOldEntries">删除旧文章</string>

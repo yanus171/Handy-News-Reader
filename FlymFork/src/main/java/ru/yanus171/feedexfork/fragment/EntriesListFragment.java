@@ -49,13 +49,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -76,7 +74,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
-    private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
+    //private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST = "STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_SHOW_UNREAD = "STATE_SHOW_UNREAD";
@@ -101,7 +99,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
-    private long mListDisplayDate = new Date().getTime();
+    //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     private final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
 
@@ -111,9 +109,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader" );
 
             String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) || mShowTextInEntryList ? Constants.DB_ASC : Constants.DB_DESC;
-            String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
+            //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
             String[] projection = mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
-            CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, EntryColumns.DATE + entriesOrder);
+            CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
             cursorLoader.setUpdateThrottle(150);
             return cursorLoader;
         }
@@ -197,7 +195,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
     }
 
-    private int mNewEntriesNumber, mOldUnreadEntriesNumber = -1;
+    /*private int mNewEntriesNumber, mOldUnreadEntriesNumber = -1;
     private boolean mAutoRefreshDisplayDate = false;
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesNumberLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
@@ -235,7 +233,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         public void onLoaderReset(Loader<Cursor> loader) {
         }
     };
-    private Button mRefreshListBtn;
+    private Button mRefreshListBtn;*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -252,7 +250,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             mOriginalUri = savedInstanceState.getParcelable(STATE_ORIGINAL_URI);
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
-            mListDisplayDate = savedInstanceState.getLong(STATE_LIST_DISPLAY_DATE);
+            //mListDisplayDate = savedInstanceState.getLong(STATE_LIST_DISPLAY_DATE);
             mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
             mShowUnRead = savedInstanceState.getBoolean(STATE_SHOW_UNREAD, PrefUtils.getBoolean( STATE_SHOW_UNREAD, false ));
             Dog.v( String.format( "EntriesListFragment.onCreate mShowUnRead = %b", mShowUnRead ) );
@@ -271,7 +269,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         super.onStart();
         Timer timer = new Timer( "EntriesListFragment.onStart" );
 
-        refreshUI(); // Should not be useful, but it's a security
+        //refreshUI(); // Should not be useful, but it's a security
         //refreshSwipeProgress();
         PrefUtils.registerOnPrefChangeListener(mPrefListener);
 
@@ -287,11 +285,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         if (mCurrentUri != null) {
             // If the list is empty when we are going back here, try with the last display date
-            if (mNewEntriesNumber != 0 && mOldUnreadEntriesNumber == 0) {
-                mListDisplayDate = new Date().getTime();
-            } else {
-                mAutoRefreshDisplayDate = true; // We will try to update the list after if necessary
-            }
+//            if (mNewEntriesNumber != 0 && mOldUnreadEntriesNumber == 0) {
+//                mListDisplayDate = new Date().getTime();
+//            } else {
+//                mAutoRefreshDisplayDate = true; // We will try to update the list after if necessary
+//            }
             restartLoaders();
         }
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
@@ -310,10 +308,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         super.onResume();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     private Uri GetUri(int pos) {
         final long id = mEntriesCursorAdapter.getItemId(pos);
         return mEntriesCursorAdapter.EntryUri(id);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreateView" );
@@ -378,7 +382,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         if ( mListView instanceof ListView )
             UiUtils.addEmptyFooterView(mListView, 90);
 
-        mRefreshListBtn = rootView.findViewById(R.id.refreshListBtn);
+        /*mRefreshListBtn = rootView.findViewById(R.id.refreshListBtn);
         mRefreshListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -390,7 +394,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     restartLoaders();
                 }
             }
-        });
+        });*/
 
         /*mListView.setOnItemClickListener( new AbsListView.OnItemClickListener() {
             @Override
@@ -423,6 +427,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         timer.End();
         return rootView;
     }
+
 
     private void SetListViewAdapter() {
 
@@ -461,7 +466,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             return;
         class Run implements Runnable {
             private int mEntryPos;
-            Run( final int entryPos ) {
+            private Run(final int entryPos) {
                 mEntryPos = entryPos;
             }
             @Override
@@ -529,7 +534,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         outState.putBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST, mOriginalUriShownEntryText);
         outState.putBoolean(STATE_SHOW_FEED_INFO, mShowFeedInfo);
         outState.putBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
-        outState.putLong(STATE_LIST_DISPLAY_DATE, mListDisplayDate);
+        //outState.putLong(STATE_LIST_DISPLAY_DATE, mListDisplayDate);
         outState.putBoolean(STATE_SHOW_UNREAD, mShowUnRead);
 
         super.onSaveInstanceState(outState);
@@ -604,19 +609,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
             case R.id.menu_share_starred: {
                 if (mEntriesCursorAdapter != null) {
-                    String starredList = "";
+                    StringBuilder starredList = new StringBuilder();
                     Cursor cursor = mEntriesCursorAdapter.getCursor();
                     if (cursor != null && !cursor.isClosed()) {
                         int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
                         int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         if (cursor.moveToFirst()) {
                             do {
-                                starredList += cursor.getString(titlePos) + "\n" + cursor.getString(linkPos) + "\n\n";
+                                starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
                             } while (cursor.moveToNext());
                         }
                         startActivity(Intent.createChooser(
                                 new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_favorites_title))
-                                        .putExtra(Intent.EXTRA_TEXT, starredList).setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
+                                        .putExtra(Intent.EXTRA_TEXT, starredList.toString()).setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
                         ));
                     }
                 }
@@ -792,14 +797,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         SetVisibleItemsAsOld();
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
         SetListViewAdapter();
-        if ( mListView instanceof ListView )
+        //if ( mListView instanceof ListView )
             mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
-        mListDisplayDate = new Date().getTime();
+        //mListDisplayDate = new Date().getTime();
         if (mCurrentUri != null) {
             restartLoaders();
         }
 
-        refreshUI();
+        //refreshUI();
 
         timer.End();
     }
@@ -812,19 +817,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesLoader" );
         loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mEntriesLoader);
         Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesNumberLoader" );
-        loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
+        //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
 
         loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mEntriesLoader);
-        loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
+        //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
     }
 
-    private void refreshUI() {
+    /*private void refreshUI() {
         if (mNewEntriesNumber > 0) {
             mRefreshListBtn.setText(getResources().getQuantityString(R.plurals.number_of_new_entries, mNewEntriesNumber, mNewEntriesNumber));
             mRefreshListBtn.setVisibility(View.VISIBLE);
         } else {
             mRefreshListBtn.setVisibility(View.GONE);
         }
-    }
+    }*/
 
 }

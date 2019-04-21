@@ -191,7 +191,7 @@
     <string name="settings_widget_background">Фон</string>
     <string name="settings_widget_background_description">Цвета и прозрачность фона виджета</string>
     <string name="all_feeds">Все ленты (включая будущие)</string>
-    <string name="settings_display_text_color_description">в темной теме (0..255)</string>
+    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="downloadImage">Загрузка картинки</string>
     <string name="loadFullText">Загрузка полного текста</string>
     <string name="deleteOldEntries">Удаление старых статей</string>
@@ -430,6 +430,7 @@
     <string name="show_read_checkbox">Галка прочитанного</string>
     <string name="show_read_checkbox_descr">Показывать галку прочитанного</string>
     <string name="turnOn">Включить</string>
+    <string name="brightness">Яркость</string>
     <string name="brightness_change">Измнение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
     <string name="tap_zone_size_descr">Ширина или высота зон нажатий в миллиметрах</string>

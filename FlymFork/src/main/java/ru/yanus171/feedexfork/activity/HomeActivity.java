@@ -81,6 +81,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
+    private View mDimFrame;
 
     private static final String FEED_NUMBER( final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +

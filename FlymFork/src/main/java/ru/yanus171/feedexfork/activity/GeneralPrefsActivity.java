@@ -66,7 +66,6 @@ public class GeneralPrefsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
     }
 
     @Override

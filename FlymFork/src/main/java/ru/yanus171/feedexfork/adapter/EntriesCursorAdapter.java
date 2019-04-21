@@ -52,7 +52,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -430,7 +429,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setSingleLine();
             holder.mainImgView.setMaxHeight(  );
         }*/
-        holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", false ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
+        holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
     }
 
     private void UpdateStarImgView(ViewHolder holder) {

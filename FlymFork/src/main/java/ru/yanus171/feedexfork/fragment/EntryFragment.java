@@ -34,8 +34,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -64,7 +62,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -127,9 +124,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private ViewPager mEntryPager;
     public EntryPagerAdapter mEntryPagerAdapter;
 
-    //private View mToggleFullscreenBtn;
-    //private View mToggleStatusBarVisbleBtn;
-    private View mDimFrame;
     private View mStarFrame;
     private ProgressBar mProgressBar;
     private TextView mLabelClock;
@@ -244,68 +238,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         //disableSwipe();
 
-        HideButtonText(rootView, R.id.pageDownBtnVert, true);
-        HideButtonText(rootView, R.id.pageDownBtn, true);
-        HideButtonText(rootView, R.id.pageUpBtn, true);
-        HideButtonText(rootView, R.id.brightnessSlider, true);
-        HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true ));
-        HideButtonText(rootView, R.id.toggleFullscreenBtn, !PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true ));
+        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
+        UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
+        UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true ));
+        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true ));
 
 
         rootView.findViewById(R.id.layoutBottom).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
         mLockLandOrientation = PrefUtils.getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
-        mDimFrame = rootView.findViewById( R.id.dimFrame );
-        if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
-            rootView.findViewById(R.id.brightnessSlider).setOnTouchListener(new View.OnTouchListener() {
-                private int paddingX = 0;
-                private int paddingY = 0;
-                private int initialX = 0;
-                private int initialY = 0;
-                private int currentX = 0;
-                private int currentY = 0;
-                private int mInitialAlpha = 0;
-
-                @SuppressLint("ClickableViewAccessibility")
-                @Override
-                public boolean onTouch(View view1, MotionEvent event) {
-
-                    if ( event.getAction() == MotionEvent.ACTION_DOWN) {
-                        paddingX = 0;
-                        paddingY = 0;
-                        initialX = (int) event.getX();
-                        initialY = (int) event.getY();
-                        currentX = (int) event.getX();
-                        currentY = (int) event.getY();
-                        mInitialAlpha = GetAlpha();
-                        Dog.v( "onTouch ACTION_DOWN" );
-                        return true;
-                    } else  if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
-
-                        currentX = (int) event.getX();
-                        currentY = (int) event.getY();
-                        paddingX = currentX - initialX;
-                        paddingY = currentY - initialY;
-
-                        if ( Math.abs( paddingY ) > Math.abs( paddingX ) &&
-                                Math.abs( initialY - event.getY() ) > view1.getWidth()  ) {
-                            Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
-                            int currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.getHeight();
-                            if ( currentAlpha > 255 )
-                                currentAlpha = 255;
-                            else if ( currentAlpha < 1 )
-                                currentAlpha = 1;
-                            SetBrightness(currentAlpha);
-                        }
-                        return true;
-                    } else  if ( event.getAction() == MotionEvent.ACTION_UP) {
-                        return false;
-                    }
-
-                    return false;
-                }
-            });
 
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
         mStarFrame = rootView.findViewById(R.id.frameStar);
@@ -368,24 +311,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mStarFrame.setLayoutParams( new FrameLayout.LayoutParams( FrameLayout.LayoutParams.FILL_PARENT, w));
     }
 
-    private void SetBrightness(int currentAlpha) {
-        Dog.d( String.format( "SetBrightness currentAlpha=%d", currentAlpha) );
-        if ( PrefUtils.getBoolean( "brightness_with_dim_activity", false ) ) {
-            int newColor = Color.argb( currentAlpha, 0,  0,  0 );
-            mDimFrame.setBackgroundColor( newColor );
-        } else {
-            final int brightness = 255 - currentAlpha;
-//                    if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite( getContext() )) {
-//                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
-//                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS, currentAlpha);
-//                    }
-            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-            lp.screenBrightness = brightness / (float) 255;
-            getActivity().getWindow().setAttributes(lp);
-            //getActivity().getWindow().addFlags( WindowManager.LayoutParams.FLAGS_CHANGED );
-        }
-
-    }
 
 
     private void SetOrientation() {
@@ -419,12 +344,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1 );
     }
 
-    private void HideButtonText(View rootView, int ID, boolean transparent) {
-        TextView btn = rootView.findViewById(ID);
-        if ( transparent )
-            btn.setBackgroundColor(Color.TRANSPARENT);
-        btn.setText("");
-    }
 
 
     @Override
@@ -461,8 +380,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onResume();
         mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
-        if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
-            SetBrightness( PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 ) );
     }
 
     @Override
@@ -475,17 +392,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, getCurrentEntryID());
             PrefUtils.putBoolean(STATE_LOCK_LAND_ORIENTATION, mLockLandOrientation);
         }
-        PrefUtils.putInt( PrefUtils.LAST_BRIGHTNESS, GetAlpha());
 
         mEntryPagerAdapter.onPause();
     }
 
-    private int GetAlpha() {
-        if ( PrefUtils.getBoolean( "brightness_with_dim_activity", false ) )
-            return Color.alpha( ( (ColorDrawable)mDimFrame.getBackground() ).getColor() );
-        else
-            return 255 - (int) (255 * getActivity().getWindow().getAttributes().screenBrightness);
-    }
 
     /**
      * Updates a menu item in the dropdown to show it's icon that was declared in XML.
@@ -540,7 +450,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
         updateMenuWithIcon(menu.findItem(R.id.menu_setting));
 
-        EntryActivity activity = (EntryActivity) getActivity();
+        //EntryActivity activity = (EntryActivity) getActivity();
         menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
 
         {
@@ -864,10 +774,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
                                                      .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
 					}
-				} else {
-					//--hideSwipeProgress();
 				}
-				//refreshSwipeProgress();
 
 				// Mark the previous opened article as read
 				//if (entryCursor.getInt(mIsReadPos) != 1) {
@@ -875,7 +782,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     class ReadAndOldWriter implements Runnable {
                         private final boolean mSetAsRead;
                         private final int mPagerPos;
-                        ReadAndOldWriter(int pagerPos, boolean setAsRead){
+                        private ReadAndOldWriter(int pagerPos, boolean setAsRead){
                             mPagerPos = pagerPos;
                             mSetAsRead = setAsRead;
                         }
@@ -935,7 +842,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) ) {
-            mLabelClock.setVisibility(((EntryActivity) getActivity()).GetIsStatusBarHidden() ? View.VISIBLE : View.GONE);
+            mLabelClock.setVisibility(EntryActivity.GetIsStatusBarHidden() ? View.VISIBLE : View.GONE);
             mLabelClock.setText(new SimpleDateFormat("HH:mm").format(new Date()));
         } else
             mLabelClock.setVisibility( View.GONE );
@@ -1051,13 +958,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onStartVideoFullScreen() {
-        BaseActivity activity = (BaseActivity) getActivity();
+        //BaseActivity activity = (BaseActivity) getActivity();
         //activity.setNormalFullScreen(true);
     }
 
     @Override
     public void onEndVideoFullScreen() {
-        BaseActivity activity = (BaseActivity) getActivity();
+        //BaseActivity activity = (BaseActivity) getActivity();
         //activity.setNormalFullScreen(false);
     }
 
