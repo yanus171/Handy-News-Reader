@@ -230,4 +230,9 @@ public class PrefUtils {
         //System.exit(0);
         android.os.Process.killProcess( android.os.Process.myPid() );
     }
+
+    public static int GetTapZoneSize() {
+        return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
+    }
+
 }

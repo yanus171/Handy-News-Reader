@@ -36,8 +36,10 @@ import android.support.v4.util.LongSparseArray;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -153,6 +155,11 @@ public class UiUtils {
         btn.setText("");
     }
 
-
+    public static void SetSize( View parent, int ID, int width, int height ) {
+        View view = parent.findViewById( ID );
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        lp.width = width;
+        lp.height = height;
+    }
 
 }

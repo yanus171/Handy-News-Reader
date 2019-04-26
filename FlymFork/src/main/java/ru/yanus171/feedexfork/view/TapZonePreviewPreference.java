@@ -13,6 +13,8 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
 public final class TapZonePreviewPreference extends DialogPreference {
     public TapZonePreviewPreference(Context context, AttributeSet attrs) {
@@ -28,19 +30,15 @@ public final class TapZonePreviewPreference extends DialogPreference {
     }
 
     public static void SetupZoneSizes(View view) {
-        final int size = UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
+        final int size = GetTapZoneSize();
         SetSize( view, R.id.pageUpBtn, MATCH_PARENT, size );
         SetSize( view, R.id.pageDownBtn, MATCH_PARENT, size );
         SetSize( view, R.id.pageDownBtnVert, size, MATCH_PARENT );
-        //SetSize( view, R.id.brightnessSlider, size, MATCH_PARENT );
+        SetSize( view, R.id.brightnessSlider, size, MATCH_PARENT );
         SetSize( view, R.id.toggleFullScreenStatusBarBtn, size, size );
         SetSize( view, R.id.toggleFullscreenBtn, size, size );
     }
 
-    private static void SetSize( View parent, int ID, int width, int height ) {
-        View view = parent.findViewById( ID );
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) view.getLayoutParams();
-        lp.width = width;
-        lp.height = height;
-    }
+
+
 }

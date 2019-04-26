@@ -34,6 +34,11 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -85,6 +90,7 @@ class Brightness {
         mInfo.setVisibility( View.GONE );
         mCurrentAlpha = PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, mCurrentAlpha );
         UiUtils.HideButtonText( rootView, R.id.brightnessSlider, true );
+        SetSize( rootView, R.id.brightnessSlider, GetTapZoneSize(), MATCH_PARENT );
 
         if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
             rootView.findViewById( R.id.brightnessSlider ).setOnTouchListener(new View.OnTouchListener() {
