@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="settings_intervals">
+        <item>1 минута</item>
+        <item>5 минут</item>
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>2 часа</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+        <item>12 часов</item>
+        <item>1 день</item>
+    </string-array>
+
+    <string-array name="settings_keep_times">
+        <item>1 час</item>
+        <item>12 часов</item>
+        <item>1 день</item>
+        <item>2 дня</item>
+        <item>4 дня</item>
+        <item>1 неделя</item>
+        <item>2 недели</item>
+        <item>1 месяц</item>
+        <item>2 месяца</item>
+        <item>3 месяца</item>
+        <item>Не удалять</item>
+    </string-array>
+
+    <string-array name="settings_preload_image_modes">
+        <item>Никогда</item>
+        <item>Только по Wi-Fi</item>
+        <item>Всегда</item>
+    </string-array>
+
+    <string-array name="settings_volume_buttons_action">
+        <item>По умолчанию</item>
+        <item>След./Предыдущ. статья</item>
+        <item>След./Предыдущ. страница</item>
+    </string-array>
+
+</resources>

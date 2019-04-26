@@ -49,7 +49,7 @@
     • 不可见的全屏页面向上|向下按钮<br/>
     • 为每个Feed设定最大图片下载数<br/>
     • 可取消刷新过程<br/>
-    • ......<br/>
+    • &#8230;<br/>
 
     <br/>
     <b>帮助本项目:</b><br/>
@@ -97,7 +97,7 @@
     <string name="welcome_title">欢迎来到 Handy News Reader. 您想要添加一个Feed吗?</string>
     <string name="never">从不</string>
     <string name="update">更新</string>
-    <string name="updating">正在更新......</string>
+    <string name="updating">正在更新&#8230;</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">设置</string>
     <string name="menu_refresh">刷新</string>
@@ -105,7 +105,7 @@
     <string name="flym_feeds">Handy News Reader Feeds</string>
     <string name="error">错误</string>
     <string name="network_error">未设置网络</string>
-    <string name="loading">载入中......</string>
+    <string name="loading">载入中&#8230;</string>
     <string name="no_result">无结果</string>
     <string name="drawer_open">打开导航抽屉</string>
     <string name="drawer_close">关闭导航抽屉</string>
@@ -139,7 +139,7 @@
     <string name="filter_add_title">添加一条规则</string>
     <string name="filter_delete_title">删除一条规则</string>
     <string name="filter_edit_title">编辑一条规则</string>
-    <string name="filter_is_regex">...是一条正则表达式</string>
+    <string name="filter_is_regex">&#8230;是一条正则表达式</string>
     <string name="filter_apply_to_title">应用至标题或链接地址</string>
     <string name="filter_apply_to_content">应用至内容</string>
     <string name="accept">接收</string>
@@ -333,7 +333,7 @@
     <string name="loadTypeWeb">Web （加载来自页面所有链接）</string>
     <string name="loadTypeRSS">RSS （feed或站点链接或关键词）</string>
     <string name="loadType">加载类型:</string>
-    <string name="global_filter">全局过滤器...</string>
+    <string name="global_filter">全局过滤器&#8230;</string>
     <string name="global_filter_descr">应用于每个Feed的过滤器, 留空筛选文本(和regex文本)以禁用</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">否则应用到内容</string>
     <string name="rule_text">规则文本</string>
@@ -366,70 +366,4 @@
         <item quantity="one">一篇新文章</item>
         <item quantity="other">%d篇新文章.</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1分钟</item>
-        <item>5分钟</item>
-        <item>15分钟</item>
-        <item>30分钟</item>
-        <item>1小时</item>
-        <item>2小时</item>
-        <item>3小时</item>
-        <item>6小时</item>
-        <item>12小时</item>
-        <item>1天</item>
-    </string-array>
-
-    <string-array name="settings_battery_level">
-        <item>50 %</item>
-        <item>40 %</item>
-        <item>30 %</item>
-        <item>20 %</item>
-        <item>15 %</item>
-        <item>10 %</item>
-        <item>5 %</item>
-        <item>3 %</item>
-        <item>0 %</item>
-    </string-array>
-
-
-    <string-array name="settings_keep_times">
-        <item>1小时</item>
-        <item>12小时</item>
-        <item>1天</item>
-        <item>2天</item>
-        <item>4天</item>
-        <item>1周</item>
-        <item>2周</item>
-        <item>1个月</item>
-        <item>2个月</item>
-        <item>3个月</item>
-        <item>永久</item>
-    </string-array>
-    <string-array name="settings_font_sizes">
-        <item>-2</item>
-        <item>-1</item>
-        <item>@string/standard</item>
-        <item>+1</item>
-        <item>+2</item>
-        <item>+3</item>
-        <item>+4</item>
-        <item>+5</item>
-        <item>+6</item>
-        <item>+7</item>
-        <item>+8</item>
-    </string-array>
-
-    <string-array name="settings_volume_buttons_action">
-        <item>默认</item>
-        <item>切换到下一篇|前一篇文章</item>
-        <item>页面上移|下滑 </item>
-    </string-array>
-
-    <string-array name="settings_preload_image_modes">
-        <item>从不</item>
-        <item>仅通过WIFI</item>
-        <item>始终</item>
-    </string-array>
-
 </resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="settings_intervals">
+        <item>1 minuutti</item>
+        <item>5 minuuttia</item>
+        <item>15 minuuttia</item>
+        <item>30 minuuuttia</item>
+        <item>1 tunti</item>
+        <item>2 tuntia</item>
+        <item>3 tuntia</item>
+        <item>6 tuntia</item>
+        <item>12 tuntia</item>
+        <item>1 päivä</item>
+    </string-array>
+
+    <string-array name="settings_keep_times">
+        <item>1 hour</item>
+        <item>12 hours</item>
+        <item>1 päivä</item>
+        <item>2 päivää</item>
+        <item>4 päivää</item>
+        <item>1 viikko</item>
+        <item>2 viikkoa</item>
+        <item>1 kuukausi</item>
+        <item>2 kuukautta</item>
+        <item>3 kuukautta</item>
+        <item>Ikuisesti</item>
+    </string-array>
+
+    <string-array name="settings_preload_image_modes">
+        <item>Ei koskaan</item>
+        <item>Vain Wi-Fi -yhteyden kautta</item>
+        <item>Aina</item>
+    </string-array>
+
+</resources>

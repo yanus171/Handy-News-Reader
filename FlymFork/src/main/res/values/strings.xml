@@ -100,7 +100,7 @@
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="update">Update</string>
-    <string name="updating">Updating...</string>
+    <string name="updating">Updating&#8230;</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
@@ -142,7 +142,7 @@
     <string name="filter_add_title">Add a rule</string>
     <string name="filter_delete_title">Delete a rule</string>
     <string name="filter_edit_title">Edit a rule</string>
-    <string name="filter_is_regex">...is a regular expression</string>
+    <string name="filter_is_regex">&#8230;is a regular expression</string>
     <string name="filter_apply_to_title">Apply to title or link address</string>
     <string name="filter_apply_to_content">Apply to content</string>
     <string name="accept">ACCEPT</string>
@@ -382,7 +382,7 @@
     <string name="loadTypeWeb">Web (load all links from page)</string>
     <string name="loadTypeRSS">RSS (feed or site link or keywords)</string>
     <string name="loadType">Load type:</string>
-    <string name="global_filter">Global filter...</string>
+    <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">otherwise apply to content</string>
     <string name="rule_text">Rule\'s text</string>
@@ -412,69 +412,5 @@
         <item quantity="other">%d new articles.</item>
     </plurals>
 
-    <string-array name="settings_intervals">
-        <item>1 minute</item>
-        <item>5 minutes</item>
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>12 hours</item>
-        <item>1 day</item>
-    </string-array>
-
-    <string-array name="settings_battery_level">
-        <item>50 %</item>
-        <item>40 %</item>
-        <item>30 %</item>
-        <item>20 %</item>
-        <item>15 %</item>
-        <item>10 %</item>
-        <item>5 %</item>
-        <item>3 %</item>
-        <item>0 %</item>
-    </string-array>
-
-
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1 day</item>
-        <item>2 days</item>
-        <item>4 days</item>
-        <item>1 week</item>
-        <item>2 weeks</item>
-        <item>1 month</item>
-        <item>2 months</item>
-        <item>3 months</item>
-        <item>Forever</item>
-    </string-array>
-    <string-array name="settings_font_sizes">
-        <item>-2</item>
-        <item>-1</item>
-        <item>@string/standard</item>
-        <item>+1</item>
-        <item>+2</item>
-        <item>+3</item>
-        <item>+4</item>
-        <item>+5</item>
-        <item>+6</item>
-        <item>+7</item>
-        <item>+8</item>
-    </string-array>
-
-    <string-array name="settings_volume_buttons_action">
-        <item>Default</item>
-        <item>Switch to next | previous article</item>
-        <item>Page up | down</item>
-    </string-array>
-
-    <string-array name="settings_preload_image_modes">
-        <item>Never</item>
-        <item>Only over Wi-Fi</item>
-        <item>Always</item>
-    </string-array>
 
 </resources>
