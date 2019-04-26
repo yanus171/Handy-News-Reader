@@ -279,7 +279,7 @@
     <string name="entry_text_align_justify">Justified text</string>
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
     <string name="article_text_footer_show_clock">Footer-Clock</string>
-    <string name="article_text_footer_show_clock_description">Displays the current time at the lower left corner</string>
+    <string name="article_text_footer_show_clock_description">Displays the current time at the lower left corner in fullscreen mode</string>
     <string name="settings_clock_size">Text size of Footer-Clock</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>

@@ -384,7 +384,7 @@
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
     </plurals>
-    <string name="article_text_footer_show_clock_description">Zeigt die aktuelle Zeit in der linken unteren Ecke an</string>
+    <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
     <string name="brightness">Helligkeit</string>
     <string name="settings">Einstellungen</string>
     <string name="settings_category_advanced">Erweitert</string>
