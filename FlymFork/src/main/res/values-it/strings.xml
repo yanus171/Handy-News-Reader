@@ -141,7 +141,6 @@
     <string name="settings_refresh_enabled_description">Attiva l\'aggiornamento automatico dei feed
     </string>
     <string name="settings_refresh_interval">Intervallo</string>
-    <string name="settings_category_notifications">Notifiche</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi
         articoli

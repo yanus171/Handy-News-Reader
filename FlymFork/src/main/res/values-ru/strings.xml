@@ -159,7 +159,6 @@
     <string name="settings_refresh_enabled_description">Включить автоматическое обновление лент
     </string>
     <string name="settings_refresh_interval">Интервал обновления</string>
-    <string name="settings_category_notifications">Уведомления</string>
     <string name="settings_notifications_enabled">Включить уведомления</string>
     <string name="settings_notifications_enabled_description">Включить уведомления о новых записях
     </string>
@@ -208,7 +207,6 @@
     <string name="settings_content_extract_rules">Правила поиска полных текстов</string>
     <string name="settings_content_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
     <string name="settings_tapZones">Зоны нажатий (предпросмотр)</string>
-    <string name="settings_additional">Дополнительно</string>
     <string name="settings_load_comments">Загружать комментарии</string>
     <string name="settings_load_comments_description">в полных текстах статей</string>
     <string name="settings_tap_zones_description">на экране чтения статьи</string>
@@ -380,7 +378,6 @@
     <string name="rule_text">Текст правила</string>
     <string name="settings_min_update_battery_level">Min уровень батареи</string>
     <string name="global_marks_as_star_filter_rule_descr">Каждое правило на своей строке</string>
-    <string name="restart_app_apply_changes">Приложение будет перезапущено для применения настроек</string>
     <string name="show_read_article_count">Число прочитанных статей лент</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="customKeepTime">Особое время хранения статей</string>
@@ -416,8 +413,6 @@
     <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
     <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
     <string name="brightness_with_dim_activity_descr">Включите, если иначе измнение яркости не работает</string>
-    <string name="foolter">Колонтитул…</string>
-    <string name="footer_descr">Часы, процент прочитанного</string>
     <string name="article_text_footer_show_clock">Часы</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>

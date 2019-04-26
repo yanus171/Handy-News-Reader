@@ -135,7 +135,6 @@
     <string name="settings_refresh_enabled">자동 새로 고침 사용</string>
     <string name="settings_refresh_enabled_description">피드 자동 새로 고침 기능을 사용</string>
     <string name="settings_refresh_interval">새로 고침 간격</string>
-    <string name="settings_category_notifications">알림</string>
     <string name="settings_notifications_enabled">알림 사용</string>
     <string name="settings_notifications_enabled_description">새 항목에 대한 알림을 사용</string>
     <string name="settings_notifications_ringtone">벨소리</string>

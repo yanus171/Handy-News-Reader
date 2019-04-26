@@ -218,7 +218,6 @@
     <string name="settings_refresh_interval">Aktualisierungsintervall</string>
     <string name="settings_autobackup_enabled">Automatisches Backup aktivieren</string>
     <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine .opml-Datei</string>
-    <string name="settings_category_notifications">Benachrichtigungen</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Aktiviert Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
@@ -266,7 +265,6 @@
     <string name="settings_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_tapZones">Tipp-Zonen-Vorschau</string>
-    <string name="settings_additional">Weiteres</string>
     <string name="settings_load_comments">Kommentare laden</string>
     <string name="settings_load_comments_description">im gesamten Artikeltext</string>
     <string name="settings_tap_zones_description">Antipp-Zonen in der Artikelansicht</string>
@@ -378,8 +376,6 @@
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
     <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
-    <string name="foolter">Fußzeile…</string>
-    <string name="footer_descr">Uhrzeit, Fortschritt</string>
     <string name="article_text_footer_show_clock">Uhrzeit</string>
     <string name="article_text_footer_show_progress">Lese-Fortschrittbalken</string>
     <string name="article_text_footer_progress_height">Höhe des Fortschrittbalkens</string>

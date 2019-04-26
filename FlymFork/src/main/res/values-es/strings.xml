@@ -141,7 +141,6 @@
         las fuentes.
     </string>
     <string name="settings_refresh_interval">Intervalo entre actualizaciones</string>
-    <string name="settings_category_notifications">Notificaciones</string>
     <string name="settings_notifications_enabled">Habilitar notificaciones</string>
     <string name="settings_notifications_enabled_description">Habilita las notificaciones de nuevas
         entradas.

@@ -142,7 +142,6 @@
         automàticament.
     </string>
     <string name="settings_refresh_interval">Interval entre actualitzacions</string>
-    <string name="settings_category_notifications">Notificacions</string>
     <string name="settings_notifications_enabled">Activa les notificacions</string>
     <string name="settings_notifications_enabled_description">Notifica les noves entrades.</string>
     <string name="settings_notifications_ringtone">So</string>

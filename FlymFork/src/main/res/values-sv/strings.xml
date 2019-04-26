@@ -131,7 +131,6 @@
     <string name="settings_refresh_enabled">Uppdatera automatiskt</string>
     <string name="settings_refresh_enabled_description">Uppdatera alla feeds automatiskt</string>
     <string name="settings_refresh_interval">Uppdateringsintervall</string>
-    <string name="settings_category_notifications">Påminnelser</string>
     <string name="settings_notifications_enabled">Visa påminnelser</string>
     <string name="settings_notifications_enabled_description">Visa påminnelser då nytt feed innehåll finns</string>
     <string name="settings_notifications_ringtone">Ringsignal</string>

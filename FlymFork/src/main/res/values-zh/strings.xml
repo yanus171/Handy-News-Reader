@@ -218,7 +218,6 @@
     <string name="settings_refresh_enabled">开启自动刷新</string>
     <string name="settings_refresh_enabled_description">开启feeds的自动刷新</string>
     <string name="settings_refresh_interval">刷新间隔</string>
-    <string name="settings_category_notifications">通知</string>
     <string name="settings_notifications_enabled">启用通知</string>
     <string name="settings_notifications_enabled_description">启用新条目通知</string>
     <string name="settings_notifications_ringtone">响铃</string>
@@ -266,7 +265,6 @@
     <string name="settings_content_extract_rules">内容提取规则</string>
     <string name="settings_content_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
     <string name="settings_tapZones">点击区域预览</string>
-    <string name="settings_additional">额外</string>
     <string name="settings_load_comments">载入评论</string>
     <string name="settings_load_comments_description">在文章全文中</string>
     <string name="settings_tap_zones_description">of entry view window</string>

@@ -144,7 +144,6 @@
     <string name="settings_refresh_enabled_description">Active la mise à jour automatique des flux
     </string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
-    <string name="settings_category_notifications">Notifications</string>
     <string name="settings_notifications_enabled">Activer les notifications</string>
     <string name="settings_notifications_enabled_description">Active les notifications en cas de
         nouveaux articles

@@ -137,7 +137,6 @@
     <string name="settings_refresh_enabled">Povoliť automatické načítávanie</string>
     <string name="settings_refresh_enabled_description">Povolí automatické načítavanie článkov</string>
     <string name="settings_refresh_interval">Interval načítavania</string>
-    <string name="settings_category_notifications">Oznámenia</string>
     <string name="settings_notifications_enabled">Povoliť oznámenia</string>
     <string name="settings_notifications_enabled_description">Povolí oznámenie v prípade nových článkov</string>
     <string name="settings_notifications_ringtone">Tón oznámenia</string>

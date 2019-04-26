@@ -136,7 +136,6 @@
     <string name="settings_refresh_enabled">Омогући</string>
     <string name="settings_refresh_enabled_description">Омогући аутоматско освежавање довода</string>
     <string name="settings_refresh_interval">Интервал освежавања</string>
-    <string name="settings_category_notifications">Обавештења</string>
     <string name="settings_notifications_enabled">Омогући</string>
     <string name="settings_notifications_enabled_description">Омогући обавештења о новим уносима</string>
     <string name="settings_notifications_ringtone">Звук</string>

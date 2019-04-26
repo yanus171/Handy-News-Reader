@@ -220,7 +220,6 @@
     <string name="settings_autobackup_enabled_descr">Okresowo zapisuje listę źródeł oraz ulubionych artykułów do pliku .opml</string>
     <string name="settings_refresh_enabled_description">Aktywuj automatyczne odświeżanie kanałów.</string>
     <string name="settings_refresh_interval">Odświeżaj co:</string>
-    <string name="settings_category_notifications">Powiadomienia</string>
     <string name="settings_notifications_enabled">Włącz powiadomienia</string>
     <string name="settings_notifications_enabled_description">Włącz powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_ringtone">Dzwonek</string>
@@ -268,7 +267,6 @@
     <string name="settings_content_extract_rules">Reguły pozyskiwania treści.</string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
     <string name="settings_tapZones">Strefy Aktywne</string>
-    <string name="settings_additional">Dodatkowe</string>
     <string name="settings_load_comments">Wczytuj komentarze</string>
     <string name="settings_load_comments_description">W pełnej treści artykułu</string>
     <string name="settings_tap_zones_description">podczas wyświetlania treści artykułu</string>
@@ -345,7 +343,6 @@
 	<string name="show_read_article_count_descr">Na liście źródeł</string>
 	<string name="customKeepTime">Własny czas przechowywania artykułów</string>
 	<string name="menu_toggle_theme">Zmień motyw</string>
-    <string name="restart_app_apply_changes">Aplikacja zostanie uruchomiona ponownie by zastosować zmiany.</string>
     <string name="auto_unstart_at_bottom">Usuń z Ulubionych po przeczytaniu</string>
     <string name="auto_unstart_at_bottom_descr">Automatycznie usuń artykuł z Ulubionych po przewinięciu do jego końca</string>
 	<string name="show_full_text_indicator">Wskaźnik pełnego tekstu</string>
@@ -381,8 +378,6 @@
     <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
     <string name="brightness_with_dim_activity">Nakładka programowa</string>
     <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
-    <string name="foolter">Stopka&#8230;</string>
-    <string name="footer_descr">Godzina, pasek postępu</string>
     <string name="article_text_footer_show_clock">Godzina</string>
     <string name="article_text_footer_show_progress">Pasek postępu czytania</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
