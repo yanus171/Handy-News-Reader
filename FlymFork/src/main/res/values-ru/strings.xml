@@ -460,4 +460,22 @@
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>
     <string name="settings">Настройки</string>
+    <string name="settings_display_text_color">Яркость текста</string>
+    <string name="criticalErrorOccured">В приложение возникла ошибка. Отошлите, пожалуйста отчет об ошибке разработчику</string>
+    <string name="criticalErrorSending">Отправка отчета об ошибке…</string>
+    <string name="copyToClipboard">Скопировать в буфер</string>
+    <string name="sendEmail">Послать письмо</string>
+    <string name="settings_category_common">Общие настройки</string>
+    <string name="settings_category_common_summary">Язык, Тема</string>
+    <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
+    <string name="settings_category_article_list_summary">Внешний вид списка статей</string>
+    <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>
+    <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
+    <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
+    <string name="settings_category_operation">Операции</string>
+    <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
+    <string name="settings_category_behavior">Уведомления</string>
+    <string name="settings_category_behavior_summary">О появлении новых статей</string>
+    <string name="settings_category_advanced">Дополнительно</string>
+    <string name="settings_category_advanced_summary">Настройки фильтрации, автоматизческих резервных копий и др.</string>
 </resources>
