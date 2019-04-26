@@ -141,7 +141,6 @@
     <string name="settings_refresh_enabled_description">Attiva l\'aggiornamento automatico dei feed
     </string>
     <string name="settings_refresh_interval">Intervallo</string>
-    <string name="settings_category_notifications">Notifiche</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi
         articoli
@@ -179,43 +178,11 @@
     <string name="settings_widget_background_description">Colore e trasparenza dello sfondo del widget
     </string>
     <string name="all_feeds">Tutti i feed (inclusi futuri)</string>
+    <string name="standard">Standard</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1 minuto</item>
-        <item>5 minuti</item>
-        <item>15 minuti</item>
-        <item>30 minuti</item>
-        <item>1 ora</item>
-        <item>2 ore</item>
-        <item>3 ore</item>
-        <item>6 ore</item>
-        <item>12 ore</item>
-        <item>1 giorno</item>
-    </string-array>
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1 giorno</item>
-        <item>2 giorni</item>
-        <item>4 giorni</item>
-        <item>1 settimana</item>
-        <item>2 settimane</item>
-        <item>1 mese</item>
-        <item>2 mesi</item>
-        <item>3 mesi</item>
-        <item>Per sempre</item>
-    </string-array>
-    <string name="standard">Standard</string>
-
-    <string-array name="settings_preload_image_modes">
-        <item>Mai</item>
-        <item>Solo con Wi-Fi</item>
-        <item>Sempre</item>
-    </string-array>
 
 </resources>

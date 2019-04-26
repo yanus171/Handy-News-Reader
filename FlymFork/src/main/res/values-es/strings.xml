@@ -141,7 +141,6 @@
         las fuentes.
     </string>
     <string name="settings_refresh_interval">Intervalo entre actualizaciones</string>
-    <string name="settings_category_notifications">Notificaciones</string>
     <string name="settings_notifications_enabled">Habilitar notificaciones</string>
     <string name="settings_notifications_enabled_description">Habilita las notificaciones de nuevas
         entradas.
@@ -180,43 +179,11 @@
         widget.
     </string>
     <string name="all_feeds">Todas las fuentes (incl. futuras)</string>
+    <string name="standard">Normal</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new entry</item>
         <item quantity="other">%d new entries</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1 minuto</item>
-        <item>5 minutos</item>
-        <item>15 minutos</item>
-        <item>30 minutos</item>
-        <item>1 hora</item>
-        <item>2 horas</item>
-        <item>3 horas</item>
-        <item>6 horas</item>
-        <item>12 horas</item>
-        <item>1 día</item>
-    </string-array>
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1 día</item>
-        <item>2 días</item>
-        <item>4 días</item>
-        <item>1 semana</item>
-        <item>2 semanas</item>
-        <item>1 mes</item>
-        <item>2 meses</item>
-        <item>3 meses</item>
-        <item>Infinito</item>
-    </string-array>
-    <string name="standard">Normal</string>
-
-    <string-array name="settings_preload_image_modes">
-        <item>Never</item>
-        <item>Only over Wi-Fi</item>
-        <item>Always</item>
-    </string-array>
 
 </resources>

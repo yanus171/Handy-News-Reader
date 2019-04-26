@@ -137,7 +137,6 @@
     <string name="settings_refresh_enabled">Povoliť automatické načítávanie</string>
     <string name="settings_refresh_enabled_description">Povolí automatické načítavanie článkov</string>
     <string name="settings_refresh_interval">Interval načítavania</string>
-    <string name="settings_category_notifications">Oznámenia</string>
     <string name="settings_notifications_enabled">Povoliť oznámenia</string>
     <string name="settings_notifications_enabled_description">Povolí oznámenie v prípade nových článkov</string>
     <string name="settings_notifications_ringtone">Tón oznámenia</string>
@@ -166,45 +165,12 @@
     <string name="settings_widget_background">Pozadie</string>
     <string name="settings_widget_background_description">Farba a priehľadnosť pozadia widgetu</string>
     <string name="all_feeds">Všetky zdroje (vrátane budúcich)</string>
+    <string name="standard">Štandardná</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nový článok</item>
         <item quantity="few">%d nové články</item>
         <item quantity="other">%d nových článkov</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1 minúta</item>
-        <item>5 minút</item>
-        <item>15 minút</item>
-        <item>30 minút</item>
-        <item>1 hodina</item>
-        <item>2 hodiny</item>
-        <item>3 hodiny</item>
-        <item>6 hodín</item>
-        <item>12 hodín</item>
-        <item>1 deň</item>
-    </string-array>
-
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1 deň</item>
-        <item>2 dni</item>
-        <item>4 dni</item>
-        <item>1 týžden</item>
-        <item>2 týždne</item>
-        <item>1 mesiac</item>
-        <item>2 mesiace</item>
-        <item>3 mesiace</item>
-        <item>Navždy</item>
-    </string-array>
-    <string name="standard">Štandardná</string>
-
-    <string-array name="settings_preload_image_modes">
-        <item>Nikdy</item>
-        <item>Len cez Wi-Fi</item>
-        <item>Vždy</item>
-    </string-array>
 
 </resources>

@@ -146,7 +146,6 @@
     <string name="settings_refresh_enabled_description">Povolí automatické načítání zdrojů
     </string>
     <string name="settings_refresh_interval">Interval načítání</string>
-    <string name="settings_category_notifications">Oznámení</string>
     <string name="settings_notifications_enabled">Povolit oznámení</string>
     <string name="settings_notifications_enabled_description">Povolí oznámení v případě nových
         článků
@@ -183,44 +182,11 @@
         widgetu
     </string>
     <string name="all_feeds">Všechny zdroje (včetně budoucích)</string>
+    <string name="standard">Standartní</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nový článek</item>
         <item quantity="few">%d nové články</item>
         <item quantity="other">%d nových článků</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1 minuta</item>
-        <item>5 minut</item>
-        <item>15 minut</item>
-        <item>30 minut</item>
-        <item>1 hodina</item>
-        <item>2 hodiny</item>
-        <item>3 hodiny</item>
-        <item>6 hodin</item>
-        <item>12 hodin</item>
-        <item>1 den</item>
-    </string-array>
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1 den</item>
-        <item>2 dny</item>
-        <item>4 dny</item>
-        <item>1 týden</item>
-        <item>2 týdny</item>
-        <item>1 měsíc</item>
-        <item>2 měsíce</item>
-        <item>3 měsíce</item>
-        <item>Navždy</item>
-    </string-array>
-    <string name="standard">Standartní</string>
-
-    <string-array name="settings_preload_image_modes">
-        <item>Nikdy</item>
-        <item>Pouze přes Wi-Fi</item>
-        <item>Vždy</item>
-    </string-array>
-
 </resources>
