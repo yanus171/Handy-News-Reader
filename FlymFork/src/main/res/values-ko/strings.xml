@@ -135,7 +135,6 @@
     <string name="settings_refresh_enabled">자동 새로 고침 사용</string>
     <string name="settings_refresh_enabled_description">피드 자동 새로 고침 기능을 사용</string>
     <string name="settings_refresh_interval">새로 고침 간격</string>
-    <string name="settings_category_notifications">알림</string>
     <string name="settings_notifications_enabled">알림 사용</string>
     <string name="settings_notifications_enabled_description">새 항목에 대한 알림을 사용</string>
     <string name="settings_notifications_ringtone">벨소리</string>
@@ -164,42 +163,10 @@
     <string name="settings_widget_background">배경</string>
     <string name="settings_widget_background_description">위젯 배경의 색 및 투명도</string>
     <string name="all_feeds">모든 피드(앞으로의 피드 포함)</string>
+    <string name="standard">표준 크기</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="other">새 항목 %d개</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1분</item>
-        <item>5분</item>
-        <item>15분</item>
-        <item>30분</item>
-        <item>1시간</item>
-        <item>2시간</item>
-        <item>3시간</item>
-        <item>6시간</item>
-        <item>12시간</item>
-        <item>1일</item>
-    </string-array>
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1일</item>
-        <item>2일</item>
-        <item>4일</item>
-        <item>1주</item>
-        <item>2주</item>
-        <item>1달</item>
-        <item>2달</item>
-        <item>3달</item>
-        <item>계속</item>
-    </string-array>
-    <string name="standard">표준 크기</string>
-
-    <string-array name="settings_preload_image_modes">
-        <item>안 함</item>
-        <item>Wi-Fi를 통해서만</item>
-        <item>언제나</item>
-    </string-array>
 
 </resources>

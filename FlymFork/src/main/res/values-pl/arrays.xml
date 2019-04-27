@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="settings_intervals">
+        <item>1 minuta</item>
+        <item>5 minut</item>
+        <item>15 minut</item>
+        <item>30 minut</item>
+        <item>1 godzina</item>
+        <item>2 godziny</item>
+        <item>3 godziny</item>
+        <item>6 godzin</item>
+        <item>12 godzin</item>
+        <item>1 dzień</item>
+    </string-array>
+
+    <string-array name="settings_keep_times">
+        <item>1 godzina</item>
+        <item>12 godzin</item>
+        <item>1 dzień</item>
+        <item>2 dni</item>
+        <item>4 dni</item>
+        <item>1 tydzień</item>
+        <item>2 tygodnie</item>
+        <item>1 miesiąc</item>
+        <item>2 miesiące</item>
+        <item>3 miesiące</item>
+        <item>na zawsze</item>
+    </string-array>
+
+    <string-array name="settings_volume_buttons_action">
+        <item>Domyślne</item>
+        <item>Następny | poprzedni artykuł</item>
+        <item>Strona w górę | w dół</item>
+    </string-array>
+
+    <string-array name="settings_preload_image_modes">
+        <item>Nigdy</item>
+        <item>Tylko przez Wi-Fi</item>
+        <item>Zawsze</item>
+    </string-array>
+
+</resources>

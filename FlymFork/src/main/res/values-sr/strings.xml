@@ -136,7 +136,6 @@
     <string name="settings_refresh_enabled">Омогући</string>
     <string name="settings_refresh_enabled_description">Омогући аутоматско освежавање довода</string>
     <string name="settings_refresh_interval">Интервал освежавања</string>
-    <string name="settings_category_notifications">Обавештења</string>
     <string name="settings_notifications_enabled">Омогући</string>
     <string name="settings_notifications_enabled_description">Омогући обавештења о новим уносима</string>
     <string name="settings_notifications_ringtone">Звук</string>
@@ -165,44 +164,11 @@
     <string name="settings_widget_background">Позадина</string>
     <string name="settings_widget_background_description">Боја и прозирност позадине виџета</string>
     <string name="all_feeds">Сви (укљ. будуће)</string>
+    <string name="standard">Стандардна</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">%d нови унос</item>
         <item quantity="few">%d нових уноса</item>
         <item quantity="other">%d нових уноса</item>
     </plurals>
-
-    <string-array name="settings_intervals">
-        <item>1 минута</item>
-        <item>5 минута</item>
-        <item>15 минута</item>
-        <item>30 минута</item>
-        <item>1 сат</item>
-        <item>2 сата</item>
-        <item>3 сата</item>
-        <item>6 сати</item>
-        <item>12 сати</item>
-        <item>1 дан</item>
-    </string-array>
-    <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
-        <item>1 дан</item>
-        <item>2 дана</item>
-        <item>4 дана</item>
-        <item>1 седмица</item>
-        <item>2 седмице</item>
-        <item>1 месец</item>
-        <item>2 месеца</item>
-        <item>3 месеца</item>
-        <item>Заувек</item>
-    </string-array>
-    <string name="standard">Стандардна</string>
-
-    <string-array name="settings_preload_image_modes">
-        <item>Никад</item>
-        <item>Само преко бежичног</item>
-        <item>Увек</item>
-    </string-array>
-
 </resources>
