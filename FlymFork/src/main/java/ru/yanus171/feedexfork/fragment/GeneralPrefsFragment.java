@@ -53,15 +53,18 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.AutoJobService;
+import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
-public class GeneralPrefsFragment extends PreferenceFragment {
+public class GeneralPrefsFragment extends PreferenceFragment implements  PreferenceScreen.OnPreferenceClickListener {
 
     private Preference.OnPreferenceChangeListener mOnRefreshChangeListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -115,12 +118,29 @@ public class GeneralPrefsFragment extends PreferenceFragment {
             }
         });
 
+
+        for ( int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++ )
+            if ( getPreferenceScreen().getPreference( i ) instanceof PreferenceScreen  )
+                getPreferenceScreen().getPreference( i ).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        PreferenceScreen screen = (PreferenceScreen) preference;
+                        Brightness br =  ((BaseActivity) getActivity() ).mBrightness;
+                        Brightness.SetBrightness( br.mCurrentAlpha, screen.getDialog().getWindow() );
+                        return true;
+                    }
+                });
+
+
 //        for(  int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++ ) {
 //            Preference pref = getPreferenceScreen().getPreference( i );
 //            if ( pref instanceof PreferenceCategory )
 //                pref.setLayoutResource( PrefUtils.IsLightTheme() ? R.layout.preference_category_light : R.layout.preference_category);
 //        }
+
+
     }
+
 
 
     @Override
@@ -153,5 +173,15 @@ public class GeneralPrefsFragment extends PreferenceFragment {
                 ringtone_preference.setSummary(ringtone.getTitle(MainApplication.getContext()));
             }
         }
+    }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        if ( preference instanceof PreferenceScreen ) {
+            PreferenceScreen screen = (PreferenceScreen) preference;
+            Brightness br =  ((BaseActivity) getActivity() ).mBrightness;
+            Brightness.SetBrightness( br.mCurrentAlpha, screen.getDialog().getWindow() );
+        }
+        return true;
     }
 }
