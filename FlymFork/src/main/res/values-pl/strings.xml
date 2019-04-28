@@ -384,6 +384,8 @@
 
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
+        <item quantity="few">%d nowe artykuły.</item>
+        <item quantity="many">%d nowych artykułów.</item>
         <item quantity="other">%d nowych artykułów.</item>
     </plurals>
 
