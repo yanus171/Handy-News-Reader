@@ -139,7 +139,7 @@ public class RssAtomParser extends DefaultHandler {
     private final Uri mFeedEntriesUri;
     private final String mFeedName;
     private final String mFeedBaseUrl;
-    //private final Date mKeepDateBorder;
+    private final Date mKeepDateBorder;
     private final FeedFilters mFilters;
     private final ArrayList<ContentProviderOperation> mInserts = new ArrayList<>();
     private final ArrayList<ArrayList<String>> mInsertedEntriesImages = new ArrayList<>();
@@ -176,7 +176,7 @@ public class RssAtomParser extends DefaultHandler {
     private StringBuilder mAuthor, mTmpAuthor;
 
     public RssAtomParser(Date realLastUpdateDate, long keepDateBorderTime, final String id, String feedName, String url, boolean retrieveFullText) {
-        //mKeepDateBorder = new Date(keepDateBorderTime);
+        mKeepDateBorder = new Date(keepDateBorderTime);
         mRealLastUpdateDate = realLastUpdateDate;
         mNewRealLastUpdate = realLastUpdateDate.getTime();
         mId = id;
@@ -362,7 +362,7 @@ public class RssAtomParser extends DefaultHandler {
 
                 boolean updateOnly = false;
                 // Old mEntryDate but recent update date => we need to not insert it!
-                if (mEntryUpdateDate != null && mEntryDate != null && (mEntryDate.before(mRealLastUpdateDate)/* || mEntryDate.before(mKeepDateBorder)*/)) {
+                if (mEntryUpdateDate != null && mEntryDate != null && (mEntryDate.before(mRealLastUpdateDate) || mEntryDate.before(mKeepDateBorder))) {
                     updateOnly = true;
                     if (mEntryUpdateDate.after(mEntryDate)) {
                         mEntryDate = mEntryUpdateDate;
@@ -374,7 +374,7 @@ public class RssAtomParser extends DefaultHandler {
                     mEntryUpdateDate = mPreviousEntryUpdateDate;
                 }
 
-                if (mTitle != null && (mEntryDate == null || (mEntryDate.after(mRealLastUpdateDate) /*&& mEntryDate.after(mKeepDateBorder)*/))) {
+                if (mTitle != null && (mEntryDate == null || (mEntryDate.after(mRealLastUpdateDate) && mEntryDate.after(mKeepDateBorder)))) {
                     ContentValues values = new ContentValues();
                     values.put(EntryColumns.SCROLL_POS, 0);
 

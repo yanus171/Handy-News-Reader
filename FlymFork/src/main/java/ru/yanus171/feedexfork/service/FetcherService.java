@@ -295,7 +295,7 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
-                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                    long keepDateBorderTime = keepTime > 0 && deleteOld ? System.currentTimeMillis() - keepTime : 0;
 
 
                     String feedId = intent.getStringExtra(Constants.FEED_ID);
