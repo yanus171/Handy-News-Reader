@@ -435,4 +435,6 @@
     <string name="settings_category_behavior_summary">О появлении новых статей</string>
     <string name="settings_category_advanced">Дополнительно</string>
     <string name="settings_category_advanced_summary">Настройки фильтрации, автоматизческих резервных копий и др.</string>
+    <string name="entry_go_prev">Пред. статья</string>
+    <string name="entry_go_next">След. статья</string>
 </resources>

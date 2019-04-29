@@ -174,8 +174,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            EntryActivity activity = (EntryActivity) getActivity();
-            activity.setFullScreen(!EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden());
+                EntryActivity activity = (EntryActivity) getActivity();
+                activity.setFullScreen(!EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden());
             }
         });
 
@@ -218,6 +218,21 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
 
+
+        rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
+            }
+        });
+
+        rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, false );
+            }
+        });
+
         TextView.OnClickListener listener = new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,11 +253,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         //disableSwipe();
 
+        final boolean tapZonesVisible = PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true );
         UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
         UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true ));
-        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true ));
+        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
 
 
         rootView.findViewById(R.id.layoutBottom).setVisibility(View.VISIBLE);
