@@ -40,8 +40,6 @@ public class AddGoogleNewsActivity extends BaseActivity {
     private static final int[] TOPIC_NAME = new int[]{R.string.google_news_top_stories, R.string.google_news_world, R.string.google_news_business,
             R.string.google_news_technology, R.string.google_news_entertainment, R.string.google_news_sports, R.string.google_news_science, R.string.google_news_health};
 
-    private static final String[] TOPIC_CODES = new String[]{null, "w", "b", "t", "e", "s", "snc", "m"};
-
     private static final int[] CB_IDS = new int[]{R.id.cb_top_stories, R.id.cb_world, R.id.cb_business, R.id.cb_technology, R.id.cb_entertainment,
             R.id.cb_sports, R.id.cb_science, R.id.cb_health};
     private EditText mCustomTopicEditText;
@@ -77,8 +75,8 @@ public class AddGoogleNewsActivity extends BaseActivity {
                 return true;
             case R.id.menu_validate:
                 for (int topic = 0; topic < TOPIC_NAME.length; topic++) {
-                    if (((CheckBox) findViewById(CB_IDS[topic])).isChecked() && TOPIC_CODES[topic] != null) {
-                        String url = "http://news.google.com/news?hl=" + Locale.getDefault().getLanguage() + "&output=rss&topic=" + TOPIC_CODES[topic];
+                    if (((CheckBox) findViewById(CB_IDS[topic])).isChecked()) {
+                        String url = "https://news.google.com/rss/search?hl=" + Locale.getDefault().getLanguage() + "&q=" + getString(TOPIC_NAME[topic]);
                         FeedDataContentProvider.addFeed(this, url, getString(TOPIC_NAME[topic]), null, true, false, false,"");
                     }
                 }
@@ -87,7 +85,7 @@ public class AddGoogleNewsActivity extends BaseActivity {
                 if(!custom_topic.isEmpty())
                 {
                     try {
-                        String url = "http://news.google.com/news?hl=" + Locale.getDefault().getLanguage() + "&output=rss&q=" + URLEncoder.encode(custom_topic, "UTF-8");
+                        String url = "https://news.google.com/rss/search?hl=" + Locale.getDefault().getLanguage() + "&q=" + URLEncoder.encode(custom_topic, "UTF-8");
                         FeedDataContentProvider.addFeed(this, url, custom_topic, null,  true, false, false, "");
                     } catch (UnsupportedEncodingException ignored) {
                     }
