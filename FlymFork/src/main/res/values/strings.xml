@@ -356,7 +356,6 @@
     <string name="actionBarToggle">Toggle action bar</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article\'s list</string>
-    <string name="behaviour">Behavior</string>
     <string name="question_delete_entry">Delete this article?</string>
     <string name="share_all_text">Share whole text</string>
     <string name="group">Group</string>
