@@ -99,14 +99,14 @@ public class ArticleTextExtractor {
         if ( bestMatchElement == null )
             bestMatchElement = doc;
 
-        Collection<Element> metas = getMetas(doc);
-        String ogImage = null;
-        for (Element entry : metas) {
-            if (entry.hasAttr("property") && "og:image".equals(entry.attr("property"))) {
-                ogImage = entry.attr("content");
-                break;
-            }
-        }
+//        Collection<Element> metas = getMetas(doc);
+//        String ogImage = null;
+//        for (Element entry : metas) {
+//            if (entry.hasAttr("property") && "og:image".equals(entry.attr("property"))) {
+//                ogImage = entry.attr("content");
+//                break;
+//            }
+//        }
 
 
         Elements title = bestMatchElement.getElementsByClass("title");
@@ -117,9 +117,9 @@ public class ArticleTextExtractor {
             }
 
         String ret = bestMatchElement.toString();
-        if (ogImage != null && !ret.contains(ogImage)) {
-            ret = "<img src=\"" + ogImage + "\"><br>\n" + ret;
-        }
+        //if (ogImage != null && !ret.contains(ogImage)) {
+        //    ret = "<img src=\"" + ogImage + "\"><br>\n" + ret;
+        //}
 
 
         if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false)) {
