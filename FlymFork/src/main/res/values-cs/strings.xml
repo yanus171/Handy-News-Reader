@@ -187,6 +187,7 @@
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nový článek</item>
         <item quantity="few">%d nové články</item>
+        <item quantity="many">%d nových článků</item>
         <item quantity="other">%d nových článků</item>
     </plurals>
 </resources>
