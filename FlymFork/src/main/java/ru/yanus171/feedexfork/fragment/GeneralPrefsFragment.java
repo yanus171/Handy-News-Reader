@@ -126,8 +126,9 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
                     public boolean onPreferenceClick(Preference preference) {
                         PreferenceScreen screen = (PreferenceScreen) preference;
                         Brightness br =  ((BaseActivity) getActivity() ).mBrightness;
-                        Brightness.SetBrightness( br.mCurrentAlpha, screen.getDialog().getWindow() );
-                        return true;
+                        if ( screen.getDialog() != null )
+                            Brightness.SetBrightness( br.mCurrentAlpha, screen.getDialog().getWindow() );
+                        return false;
                     }
                 });
 

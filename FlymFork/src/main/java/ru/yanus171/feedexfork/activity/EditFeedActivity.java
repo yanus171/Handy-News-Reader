@@ -335,16 +335,16 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         }
 
         ResourceCursorAdapter adapter =
-                new ResourceCursorAdapter( this,
-                                           android.R.layout.simple_spinner_item,
-                                           getContentResolver().query( FeedColumns.GROUPS_CONTENT_URI, new String[] { FeedColumns._ID, FeedColumns.NAME }, null, null, FeedColumns.NAME ),
-                                           0 ) {
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                TextView nameTextView = view.findViewById(android.R.id.text1);
-                nameTextView.setText(cursor.getString(1));
-            }
-        };
+            new ResourceCursorAdapter( this,
+                                       android.R.layout.simple_spinner_item,
+                                       getContentResolver().query( FeedColumns.GROUPS_CONTENT_URI, new String[] { FeedColumns._ID, FeedColumns.NAME }, null, null, FeedColumns.NAME ),
+                                       0 ) {
+                @Override
+                public void bindView(View view, Context context, Cursor cursor) {
+                    TextView nameTextView = view.findViewById(android.R.id.text1);
+                    nameTextView.setText(cursor.getString(1));
+                }
+            };
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mGroupSpinner.setAdapter( adapter );
 
