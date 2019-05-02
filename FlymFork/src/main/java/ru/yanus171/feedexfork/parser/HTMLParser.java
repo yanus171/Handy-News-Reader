@@ -107,7 +107,7 @@ public class HTMLParser {
 			connection = NetworkUtils.setupConnection(feedUrl);
 			doc = Jsoup.parse(connection.getInputStream(), null, "");
 		} catch (Exception e) {
-			FetcherService.Status().SetError( e.getLocalizedMessage(), e );
+			FetcherService.Status().SetError( e.getLocalizedMessage(), feedID, "", e );
 		} finally {
 			if (connection != null)
 				connection.disconnect();

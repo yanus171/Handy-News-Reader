@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
@@ -35,12 +36,14 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 public class StatusText implements Observer {
     private static final String SEP = "__";
+    private String mFeedID = "";
+    private String mEntryID = "";
     private TextView mView;
     private TextView mErrorView;
     //SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private static int MaxID = 0;
 
-    public StatusText(final TextView view, final TextView errorView, final Observable observable /*, SwipeRefreshLayout.OnRefreshListener onRefreshListener*/ ) {
+    public StatusText(final TextView view, final TextView errorView, final Observable observable ) {
         //mOnRefreshListener = onRefreshListener;
         observable.addObserver( this );
         mView = view;
@@ -71,11 +74,30 @@ public class StatusText implements Observer {
         });
         mErrorView.setLines( 2 );
     }
+
+    public void SetFeedID( String feedID ) {
+        mFeedID = feedID;
+        FetcherService.Status().UpdateText();
+    }
+    public void SetFeedID( Uri uri ) {
+        SetFeedID( uri.getPathSegments().size() > 1 ? uri.getPathSegments().get(1) : "" );
+    }
+    public void SetEntryID( String entryID ) {
+        mEntryID = entryID;
+        FetcherService.Status().UpdateText();
+    }
+
+
     @Override
     public void update(Observable observable, Object data) {
         String[] list = TextUtils.split( (String)data, SEP );
         String text = list[0];
-        String error = list[1];
+        final String errorFeedID = list[2];
+        final String errorEntryID = list[3];
+        final String error =
+            errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
+            errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
+
         mView.post (new Runnable() {
             private String mError;
             private String mText;
@@ -109,13 +131,14 @@ public class StatusText implements Observer {
         private String mDBText = "";
         private long mLastNotificationUpdateTime = ( new Date() ).getTime();
         private String mNotificationTitle = "";
-
+        private String mErrorFeedID;
+        private String mErrorEntryID;
         @Override
         public boolean hasChanged () {
             return true;
         }
 
-        private void UpdateText() {
+        void UpdateText() {
             UiUtils.RunOnGuiThreadInFront(new Runnable() {
                 @Override
                 public void run() {
@@ -143,12 +166,17 @@ public class StatusText implements Observer {
                     }
                     if ( !mNotificationTitle.isEmpty() )
                         s = mNotificationTitle + " " + s;
-                    notifyObservers(s + SEP + mErrorText );
+                    NotifyObservers(s, mErrorText, mErrorFeedID, mErrorEntryID);
                     Dog.v("Status Update " + s.replace("\n", " "));
                 }
                 }
             });
         }
+
+        public void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID) {
+            notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID);
+        }
+
         void Clear() {
             synchronized ( mList ) {
                 mList.clear();
@@ -189,11 +217,13 @@ public class StatusText implements Observer {
             }
             UpdateText();
         }
-        public void SetError( String text, Exception e ) {
+        public void SetError( String text, String feedID, String entryID, Exception e ) {
             Dog.e( "Error", e );
             if ( e != null )
                 e.printStackTrace();
             synchronized ( mList ) {
+                mErrorFeedID = feedID;
+                mErrorEntryID = entryID;
                 mErrorText = ( text == null ? "" : text + ", " ) + e.toString();
             }
             UpdateText();
@@ -225,7 +255,7 @@ public class StatusText implements Observer {
                 synchronized (mList) {
                     if ( mList.isEmpty() ) {
                         mBytesRecievedLast = 0;
-                        notifyObservers( SEP );
+                        NotifyObservers( "", "", "", "" );
                     }
                 }
                 }

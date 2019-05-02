@@ -667,7 +667,7 @@ public class RssAtomParser extends DefaultHandler {
             }
 
         } catch (  Exception e ) {
-            FetcherService.Status().SetError( e.getMessage(), e );
+            FetcherService.Status().SetError( e.getMessage(), String.valueOf( mId ), "", e );
             Dog.e("Error", e);
         }
 

@@ -150,6 +150,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             }
         }
     };
+    private StatusText mStatusText = null;
 
     private void UpdateActions() {
         if ( mMenu == null )
@@ -247,6 +248,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         if (savedInstanceState != null) {
             mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
+            mStatusText.SetFeedID( mCurrentUri );
             mOriginalUri = savedInstanceState.getParcelable(STATE_ORIGINAL_URI);
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
@@ -323,10 +325,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         Timer timer = new Timer( "EntriesListFragment.onCreateView" );
 
         View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
-        new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
+
+        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
                         (TextView)rootView.findViewById( R.id.errorText ),
-                        FetcherService.Status()/*,
-                        this*/);
+                        FetcherService.Status());
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
 
@@ -381,43 +383,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         if ( mListView instanceof ListView )
             UiUtils.addEmptyFooterView(mListView, 90);
-
-        /*mRefreshListBtn = rootView.findViewById(R.id.refreshListBtn);
-        mRefreshListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mNewEntriesNumber = 0;
-                mListDisplayDate = new Date().getTime();
-
-                refreshUI();
-                if (mCurrentUri != null) {
-                    restartLoaders();
-                }
-            }
-        });*/
-
-        /*mListView.setOnItemClickListener( new AbsListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                if (id >= 0) { // should not happen, but I had a crash with this on PlayStore...
-                    //startActivity(new Intent(Intent.ACTION_VIEW, EntryColumns.CONTENT_URI(id) ) );
-                    startActivity(new Intent(Intent.ACTION_VIEW,  ContentUris.withAppendedId(mCurrentUri, id)));
-                }
-            }
-        });*/
-
-        /*mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
-                if (id > 0) {
-                    //mListView.setSelection( position );
-
-                    ShowDeleteDialog(EntriesListFragment.this.getActivity(), mEntriesCursorAdapter.GetTitle( mListView, position ), id);
-                    return true;
-                }
-                return false;
-            }
-        });*/
 
         TextView emptyView = new TextView( getContext() );
         emptyView.setText( getString( R.string.no_entries ) );
@@ -805,7 +770,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
         //refreshUI();
-
+        mStatusText.SetFeedID( mCurrentUri );
         timer.End();
     }
 

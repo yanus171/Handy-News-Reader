@@ -619,7 +619,7 @@ public class FetcherService extends IntentService {
                         if ( cursor.isNull( 0 ) )
                             title = cursor.getString( 0 );
                         cursor.close();
-                        Status().SetError(title + ": ", e);
+                        Status().SetError(title + ": ", String.valueOf( feedId ), String.valueOf( entryId ), e);
                     } else {
                         ContentValues values = new ContentValues();
                         values.put(EntryColumns.MOBILIZED_HTML, e.toString());
@@ -1136,7 +1136,7 @@ public class FetcherService extends IntentService {
 
                         int index2 = contentType.indexOf(';', index);
 
-                        parseXml(cursor.getString(urlPosition),
+                        parseXml(//cursor.getString(urlPosition),
                                 inputStream,
                                 Xml.findEncodingByName(index2 > -1 ? contentType.substring(index + 8, index2) : contentType.substring(index + 8)),
                                 handler);
@@ -1203,7 +1203,7 @@ public class FetcherService extends IntentService {
 
                 values.put(FeedColumns.ERROR, getString(R.string.error_feed_error));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
-                FetcherService.Status().SetError( cursor.getString(titlePosition) + ": " + getString(R.string.error_feed_error), e);
+                FetcherService.Status().SetError( cursor.getString(titlePosition) + ": " + getString(R.string.error_feed_error), feedId, "", e);
             }
         } catch(Exception e){
             if (handler == null || (!handler.isDone() && !handler.isCancelled())) {
@@ -1215,7 +1215,8 @@ public class FetcherService extends IntentService {
                 values.put(FeedColumns.ERROR, e.getMessage() != null ? e.getMessage() : getString(R.string.error_feed_process));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
 
-                FetcherService.Status().SetError(cursor.getString(titlePosition) + ": " + e.toString(), e);
+                FetcherService.Status().SetError(cursor.getString(titlePosition) + ": " + e.toString(),
+                        feedId, "", e);
             }
         } finally{
             /* check and optionally find favicon */
@@ -1236,7 +1237,7 @@ public class FetcherService extends IntentService {
         return handler != null ? handler.getNewCount() : 0;
     }
 
-    private static void parseXml (String feedUrl, InputStream in, Xml.Encoding
+    private static void parseXml ( InputStream in, Xml.Encoding
         encoding,
                 ContentHandler contentHandler) throws IOException, SAXException {
             Status().ChangeProgress(R.string.parseXml);

@@ -782,9 +782,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 				activity.invalidateOptionsMenu();
 
+				mStatusText.SetEntryID( String.valueOf( getCurrentEntryID() ) );
 				// Listen the mobilizing task
 
-				if (FetcherService.hasMobilizationTask(getCurrentEntryID())) {
+				if (FetcherService.hasMobilizationTask( getCurrentEntryID() )) {
 					//--showSwipeProgress();
 
 					// If the service is not started, start it here to avoid an infinite loading
@@ -1070,7 +1071,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }
                 }
             } catch ( IllegalStateException e ) {
-                FetcherService.Status().SetError( e.getMessage(), e );
+                FetcherService.Status().SetError( e.getMessage(), "", String.valueOf( getCurrentEntryID() ), e );
                 Dog.e("Error", e);
             }
         }
