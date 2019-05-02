@@ -7,4 +7,4 @@ after_success:
   - pip install transifex-client
   - sudo echo $'[https://www.transifex.com]\napi_hostname = https://api.transifex.com\nhostname = https://www.transifex.com\npassword ='"$TRANSIFEX_API_TOKEN"$'\nusername = api\n' > ~/.transifexrc
   - tx push -s
-  - tx push -t --skip
+  - tx push -t -f --no-interactive
