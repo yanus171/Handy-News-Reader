@@ -279,8 +279,8 @@
     <string name="markAllAsRead">Alle als gelesen markieren</string>
     <string name="settings_remember_last_entry">Letzten Artikel merken</string>
     <string name="settings_remeber_last_entry_description">Beim Start den zuletzt gelesenen Artikel öffnen, ansonsten die Liste ungelesener Artikel</string>
-    <string name="pageUp">Seite hoch / Wischen für Favorit</string>
-    <string name="pageDown">Seite runter</string>
+    <string name="pageUp">Seite zurück, Wischen für Fav.</string>
+    <string name="pageDown">Seite vor</string>
     <string name="fullScreenToggle">Vollbild umschalten</string>
     <string name="auto_refresh_feed">Feed automatisch aktualisieren</string>
     <string name="settings_refresh_only_selected">Nur ausgewählte</string>
@@ -293,7 +293,6 @@
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Schriftgröße in der Artikelliste</string>
     <string name="settings_volume_buttons_action">Funktion der Lautstärketasten</string>
-    <string name="behaviour">Verhalten</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
@@ -399,4 +398,6 @@
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="settings_category_refresh_summary">Automatische Aktualisierung und Aufbewahrungszeit der Artikel</string>
     <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
+    <string name="entry_go_next">Artikel vor</string>
+    <string name="entry_go_prev">Artikel zurück</string>
 </resources>

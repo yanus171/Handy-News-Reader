@@ -293,7 +293,6 @@
     <string name="standard">标准</string>
     <string name="fontsize_entrylist">文章列表的字体大小</string>
     <string name="settings_volume_buttons_action">音量按钮操作</string>
-    <string name="behaviour">行为</string>
     <string name="question_delete_entry">删除这篇文章？</string>
     <string name="share_all_text">分享全文</string>
     <string name="group">组</string>
