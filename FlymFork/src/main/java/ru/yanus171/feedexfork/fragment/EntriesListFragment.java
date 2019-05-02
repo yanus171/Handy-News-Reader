@@ -248,7 +248,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         if (savedInstanceState != null) {
             mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
-            mStatusText.SetFeedID( mCurrentUri );
+            //mStatusText.SetFeedID( mCurrentUri );
             mOriginalUri = savedInstanceState.getParcelable(STATE_ORIGINAL_URI);
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);

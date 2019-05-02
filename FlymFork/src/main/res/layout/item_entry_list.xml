@@ -88,17 +88,18 @@
                             android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
                             android:textIsSelectable="false" />
                         <TextView
-                            android:id="@+id/text2hor"
-                            android:layout_width="match_parent"
+                            android:id="@+id/textDate"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:alpha="0.7"
                             android:drawablePadding="3dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="?attr/colorReadState"
-                            android:text="text2hor"
+                            android:text="date"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -116,6 +117,18 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="?attr/colorReadState"
                             android:text="info"
+                            android:textIsSelectable="false"/>
+                        <TextView
+                            android:id="@+id/textAuthor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.7"
+                            android:drawablePadding="3dp"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorReadState"
+                            android:text="author"
+                            android:paddingLeft="10dp"
                             android:textIsSelectable="false"/>
                     </LinearLayout>
                 </LinearLayout>

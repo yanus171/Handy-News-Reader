@@ -103,7 +103,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
-    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
+    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -136,7 +136,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final Vibrator vibrator = (Vibrator) view.getContext().getSystemService( Context.VIBRATOR_SERVICE );
 
-        view.findViewById(R.id.text2hor).setVisibility(View.GONE);
+        view.findViewById(R.id.textDate).setVisibility(View.GONE);
         view.findViewById(android.R.id.text2).setVisibility(View.GONE);
 
         final String feedId = cursor.getString(mFeedIdPos);
@@ -148,9 +148,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.urlTextView = view.findViewById(R.id.textUrl);
             holder.textTextView = view.findViewById(R.id.textSource);
             if ( mShowEntryText )
-                holder.dateTextView = view.findViewById(R.id.text2hor);
+                holder.dateTextView = view.findViewById(R.id.textDate);
             else
                 holder.dateTextView = view.findViewById(android.R.id.text2);
+            holder.authorTextView = view.findViewById(R.id.textAuthor);
             holder.mainImgView = view.findViewById(R.id.main_icon);
             holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
@@ -375,10 +376,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         } else {
             holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
         }
-
+        holder.authorTextView.setText( cursor.getString( mAuthorPos ) );
         final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
         holder.titleTextView.setEnabled(isUnread);
         holder.dateTextView.setEnabled(isUnread);
+        holder.authorTextView.setEnabled(isUnread);
         holder.urlTextView.setEnabled(isUnread);
 
         final boolean showUrl = PrefUtils.getBoolean( "settings_show_article_url", false ) || feedId.equals( FetcherService.GetExtrenalLinkFeedID() );
@@ -568,6 +570,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mMainImgPos = cursor.getColumnIndex(EntryColumns.IMAGE_URL);
             mDatePos = cursor.getColumnIndex(EntryColumns.DATE);
             mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
+            mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
             mFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
             mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
             mMobilizedPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
@@ -584,6 +587,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView urlTextView;
         TextView textTextView;
         TextView dateTextView;
+        TextView authorTextView;
         ImageView mainImgView;
         View mainImgLayout;
         ImageView starImgView;
