@@ -105,6 +105,7 @@
         <item>Српски</item>
         <item>Svenska</item>
         <item>中国</item>
+        <item>Ελληνικός</item>
     </string-array>
     <string-array name="languageValueList" >
         <item>System</item>
@@ -124,6 +125,7 @@
         <item>sr</item>
         <item>sv</item>
         <item>zh</item>
+        <item>gr</item>
     </string-array>
 
 </resources>

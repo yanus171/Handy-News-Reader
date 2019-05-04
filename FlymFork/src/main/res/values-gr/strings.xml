@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ Copyright (c) 2012-2015 Frederic Julian
+ Copyright (c) 2010-2012 Stefan Handschuh
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+-->
+<resources>
+
+    <!-- GENERAL -->
+    <string name="about_us_content" translatable="true"><![CDATA[
+    <a href=\"https://handynewsreader.blogspot.com/\">Ιστοσελίδα</a>  <br/>
+    <br/>
+    Σύνδεσμος <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a>  <br/>
+    <br/>
+    Σύνδεσμος <a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">φόρουμ XDA</a>  <br/>
+    <br/>
+    <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader question\">email στον προγρμματιστή</a><br/>
+    <br/>
+    Κάποια χαρακτηριστικά που έχουν προστεθεί σε αυτή την εφαρμογή, σε σχέση με το flym στο οποίο βασίζεται:<br/>
+    • Επέκταση των ομάδων ροών<br/>
+    • Αόρατα κουμπιά επόμενης|προηγούμενης σελίδας στη λειτουργία πλήρους οθόνης<br/>
+    • Μέγιστος αριθμός εικόνων ανά ροή που θα κατέβει<br/>
+    • Ικανότητα ακύρωσης ανανέωσης<br/>
+    • …<br/>
+    <br/>
+    <b>Αν έχετε πρόβλημα με την εφαρμογή ή κάποια πρόταση για νέο χαρακτηριστικό στείλτε αναφορά στο <a href=\"https://github.com/yanus171/Flym/issues\">σελίδα αναφορών του github</a></b><br/>
+    <br/>
+    <b>Βοηθήστε το έργο:</b><br/>
+    - <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">βαθμολογίστε </a> την εφαρμογή <br/>
+    - <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">προτείνετε</a>μια ιδέα<br/>
+    <br/>
+    κώδικας του προγράμματος στο<a href=\"https://github.com/yanus171/Flym\">GitHub</a> <br/>
+    <br/>
+    Αυτό είναι ένα ελέυθερο λογισμικό: Μπορείτε να το διανείμετε ή/και να το αλλάξετε υπό την GNU General Public άδεια που έχει εκδοθεί από το Free Software Foundation, στην έκδοση 3 ή (κατ\'επιλογή σας) κάθε επόμενη έκδοση της άδειας. Δείτε http://www.gnu.org/licenses<br/>
+    <br/>
+    Αυτή η εφαρμογή βασίζεται στο \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian, υπό την άδεια GNU GPL.<br/>
+    <br/>
+    <br/>
+    <b>Προγραματιστές:</b><br/>
+    • eighthave<br/>
+    • equiem<br/>
+    • Frédéric Julian<br/>
+    • madx666<br/>
+    • Mikko Huhtala<br/>
+    • Paul Schaub<br/>
+    • RyDroid<br/>
+    • Sergii Pylypenko<br/>
+    • Shapochkin Mihail<br/>
+    • Suyash Bhatt<br/>
+    • Zhaofeng Li<br/>
+    • yanus171<br/>
+    <br/>
+    <b>Μεταφραστές:</b><br/>
+    • Aitor Beriain<br/>
+    • Benjamin Schütte<br/>
+    • Changwoo Ryu<br/>
+    • chenjia404<br/>
+    • Danilo Treffiletti<br/>
+    • Enric Morales<br/>
+    • Jaroslav Lichtblau<br/>
+    • Jozef Jaroščiak<br/>
+    • Matthias Dill<br/>
+    • Mladen Pejaković<br/>
+    • Ronny Steiner<br/>
+    • Thomas Leigh<br/>
+    • από ekarpi<br/>
+    <br/>
+    ]]></string>
+    <string name="app_name">Handy News Reader</string>
+    <string name="about_flym">Σχετικά με την εφαρμογή / Βοήθεια / Επικοινωνία με τον προγραματιστή </string>
+    <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μία ροή;</string>
+    <string name="never">ποτέ</string>
+    <string name="update">Ενημέρωση</string>
+    <string name="updating">Ενημέρωση&#8230;</string>
+    <string name="colon">:\u00A0</string>
+    <string name="menu_settings">Ρυθμίσεις</string>
+    <string name="menu_refresh">Ανανέωση</string>
+    <string name="menu_all_read">Σημείωση όλων ως αναγνωσμένα</string>
+    <string name="flym_feeds">Ροές Handy News Reader</string>
+    <string name="error">Σφάλμα</string>
+    <string name="network_error">Είστε εκτός δικτύου.</string>
+    <string name="loading">Φόρτωση…</string>
+    <string name="no_result">Χωρίς αποτελέσματα</string>
+    <string name="drawer_open">Άνοιγμα συρταριού πλοήγησης </string>
+    <string name="drawer_close">Κλείσιμο συρταριού πλοήγησης</string>
+
+    <!-- FEEDS -->
+    <string name="feeds">Ροές</string>
+    <string name="menu_add_feed">Προσθέστε μία Ροή</string>
+    <string name="no_feeds">Χωρίς Ροές</string>
+    <string name="no_filters">Χωρίς φίλτρα</string>
+    <string name="context_menu_delete">Διαγραφή</string>
+    <string name="edit_feed_title">Επεξεργασία Ροής</string>
+    <string name="new_feed_title">Νέα Ροή</string>
+    <string name="context_menu_edit">Επεξεργασία</string>
+    <string name="menu_add_group">Προσθήκη ομάδας</string>
+    <string name="menu_import">Εισαγωγή από αρχείο OPML</string>
+    <string name="menu_export">Εξαγωγή σε αρχείο OPML</string>
+    <string name="storage_request_explanation">Για να μπορέσετε να εισάγετε ή να εξάγετε τις Ροές σας από/σε αρχείο, πρέπει να επιτρέψετε την πρόσβαση της εφαρμογής στη μνήμη της συσκευής σας.</string>
+    <string name="error_feed_error">Δεν είναι διαθέσιμη η ιστοσελίδα απ\'όπου προέρχεται η  Ροή.</string>
+    <string name="error_feed_process">Αυτή τη Ροή δεν μπορείτε να την επεξεργαστείτε.</string>
+    <string name="error_feed_url_exists">Αυτή η διεύθυνη ήδη υπάρχει.</string>
+    <string name="error_feed_import">Το αρχείο που επιλέξατε δεν μπορεί να εισαχθεί.</string>
+    <string name="error_feed_export">Η εξαγωγή απέτυχε. Ελέγξτε αν έχει προσαρτηθεί εγγράψιμη SD κάρτα.</string>
+    <string name="error_external_storage_not_available">Η εξωτερική θέση αποθήκευσης (π.χ. κάρτα SD) δεν είναι διαθέσιμη.</string>
+    <string name="feed_url">Διεύθυνση URL</string>
+    <string name="optional">(προαιρετικό)</string>
+    <string name="website_or_feed">(Διεύθυνση URL της Ροής ή αναζήτηση λέξης)</string>
+    <string name="tab_feed_title">Ροή</string>
+    <string name="tab_filters_title">Φίλτρο</string>
+    <string name="feed_title">ΤΙΤΛΟΣ</string>
+    <string name="feed_filters">ΚΑΝΟΝΕΣ ΦΙΛΤΡΩΝ</string>
+    <string name="filter_add_title">Προσθέστε κανόνα</string>
+    <string name="filter_delete_title">Διαγράψτε κανόνα</string>
+    <string name="filter_edit_title">Επεξεργαστείτε κανόνα</string>
+    <string name="filter_is_regex">&#8230;είναι κανονική έκφραση</string>
+    <string name="filter_apply_to_title">Εφαρμογή στο τίτλο ή στον σύνδεσμο</string>
+    <string name="filter_apply_to_content">Εφαρμογή στο περιεχόμενο</string>
+    <string name="accept">ΑΠΟΔΟΧΗ</string>
+    <string name="reject">ΑΠΟΡΡΙΨΗ</string>
+    <string name="feed_search">Αναζήτηση Ροής</string>
+    <string name="select_file">Επιλογή αρχείου (γονικός φάκελος SD κάρτας)</string>
+    <string name="question_delete_feed">Θέλετε πραγματικά να διαγράψετε αυτή τη ροή;</string>
+    <string name="question_delete_group">Θέλετε πραγματικά να διαγράψετε αυτή την ομάδα με όλες τις ροές της;</string>
+    <string name="question_delete_filter">Θέλετε πραγματικά να διαγράψετε αυτό το φίλτρο;</string>
+    <string name="add_group_title">Επιλογή ονόματος ομάδας</string>
+    <string name="edit_group_title">Επεξεργασία ονόματος ομάδας</string>
+    <string name="message_exported_to">Εξαγωγή στο %s.</string>
+    <string name="to_group_title">Ενέργεια μετακίνησης Ροής</string>
+    <string name="to_group_message">Θέλετε να τοποθετήσετε αυτή τη ροή μέσα ή έξω από αυτή την ομάδα;</string>
+    <string name="to_group_above">Έξω από την ομάδα</string>
+    <string name="to_group_into">Μέσα στην ομάδα</string>
+    <string name="add_custom_feed">Προσθήκη της δικής σας Ροής ή αναζήτηση μίας</string>
+    <string name="google_news_title">Θέματα Ειδησεων Google</string>
+    <string name="google_news_indicator">Διαλέξτε ένα ή περισσότερα θέματα για να προσθέσετε. Κάποια μπορεί να μη παρέχονται από τη  Google στη γλώσσα σας.</string>
+    <string name="google_news_top_stories">Κορυφαία νέα</string>
+    <string name="google_news_world">Κόσμος</string>
+    <string name="google_news_business">Επιχειρήσεις</string>
+    <string name="google_news_technology">Τεχνολογία</string>
+    <string name="google_news_entertainment">Διασκέδαση</string>
+    <string name="google_news_sports">Αθλητικά</string>
+    <string name="google_news_science">Επιστήμη</string>
+    <string name="google_news_health">Υγεία</string>
+    <string name="google_news_custom_topic">Προσθέστε δικό σας θέμα</string>
+
+    <!-- ENTRIES -->
+    <string name="unread_entries">Αδιάβαστα</string>
+    <string name="all_entries">Όλα τα άρθρα</string>
+    <string name="no_entries">Χωρίς άρθρα</string>
+    <string name="downloadOneImage">Κατέβασμα εικόνας</string>
+    <string name="favorites">Με αστέρι</string>
+    <string name="context_menu_share_starred">Αποστολή άρθρων με αστέρι</string>
+    <string name="menu_star">Αστέρι</string>
+    <string name="menu_unstar">Αφαίρεση αστεριού</string>
+    <string name="menu_share">Αποστολή</string>
+    <string name="menu_full_screen">Πλήρης οθόνη</string>
+    <string name="menu_font_bold">Έντονη γραμματοσειρά</string>
+    <string name="menu_copy_clipboard">Αντιγραφή συνδέσμου</string>
+    <string name="menu_cancel_refresh">Ακύρωση ενημέρωσης</string>
+    <string name="menu_delete_all">Διαγραφή όλων</string>
+    <string name="menu_toogle_unread_all">Μη διαβασμένα|Όλα</string>
+    <string name="menu_load_all_images">Φόρτωμα όλων των εικόνων</string>
+    <string name="menu_mark_as_favorite">Σημείωση ως αγαπημένο</string>
+    <string name="menu_mark_as_unfavorite">Αφαίρεση σημείωσης ως αγαπημένο</string>
+    <string name="menu_mark_as_unread">Σημείωση ως μη διαβασμένο</string>
+    <string name="menu_reload_full_text">Φόρτωση όλου του κειμένου</string>
+    <string name="menu_reload_full_text_without_mobilizer">Φόρτωση όλου του κειμένου χωρίς το θέμα για φορητές συσκευές</string>
+    <string name="share_favorites_title">Handy News Reader: Καταχωρήσεις με αστέρι</string>
+    <string name="copied_clipboard">Ο σύνδεσμος αντιγράφηκε</string>
+    <string name="get_full_text">Φόρτωση όλου του άρθρου.</string>
+    <string name="show_text_in_entry_list">Εμφάνιση αρχικού κειμένου στη λίστα των άρθρων.</string>
+    <string name="original_text">Εμφάνιση αρχικού κειμένου</string>
+    <string name="see_enclosure">Φόρτωση συνημμένου</string>
+    <string name="see_link">Προβολή στο Browser</string>
+    <string name="cant_open_link">Δεν βρέθηκε εφαρμογή για αυτό το σύνδεσμο</string>
+    <string name="open_enclosure">Άνοιγμα συνημμένου</string>
+    <string name="file">Αρχείο</string>
+    <string name="download_and_save">Λήψη και αποθήκευση</string>
+    <string name="open_link">Άνοιγμα συνδέσμου</string>
+    <string name="tip_sentence">Συμβουλή: Σύρετε δεξιά για σημείωση ως διαβασμένο, αριστερά για προσθήκη στα αγαπημένα</string>
+    <string name="undo">Αναίρεση</string>
+    <string name="marked_as_read">Σημείωση ως αναγνωσμένο</string>
+
+    <!-- WIDGET -->
+    <string name="red">Κόκκινο</string>
+    <string name="green">Πράσινο</string>
+    <string name="blue">Μπλε</string>
+    <string name="transparency">Διαφάνεια</string>
+
+    <!-- SETTINGS -->
+    <string name="settings_category_common">Κοινές ρυθμίσεις</string>
+    <string name="settings_category_common_summary">Γλώσσα, θέμα</string>
+    <string name="settings_light_theme">Ανοιχτόχρωμο θέμα</string>
+    <string name="settings_light_theme_description">Χρήση ανοιχτόχρωμου θέματος</string>
+
+    <string name="settings_category_refresh">Αυτόματη ανανέωση</string>
+    <string name="settings_category_refresh_summary">Αυτόματη ανανέωση και χρόνος που θα κρατιούνται τα άρθρα</string>
+    <string name="settings_refresh_enabled">Ενεργοποίηση αυτόματης ανανέωσης</string>
+    <string name="settings_refresh_enabled_description">Ενεργοποίηση αυτόματης ανανέωσης των Ροών</string>
+    <string name="settings_refresh_interval">Χρόνος μεταξύ των ανανεώσεων</string>
+    <string name="settings_min_update_battery_level">Ελάχιστη στάθμη μπαταρίας</string>
+    <string name="settings_refresh_only_selected">Μόνο τα επιλεγμένα</string>
+    <string name="settings_refresh_only_selected_summary">Αυτόματη ανανέωση μόνο των επιλεγμένων Ροών</string>
+    <string name="settings_refresh_on_open">Ανανέωση των Ροών κατά το άνοιγμα</string>
+    <string name="settings_refresh_on_open_description">Ανανέωση όλων των Ροών κατά το άνοιγμα της εφαρμογής</string>
+    <string name="settings_refresh_wifi_only">Ανανέωση μόνο μέσω Wi-Fi</string>
+    <string name="settings_refresh_wifi_only_description">Η αυτόματη ανανέωση θα γίνεται μόνο όταν μία σύνδεση Wi-Fi είναι διαθέσιμη</string>
+    <string name="settings_keep_time">Χρόνος που θα κρατιούνται τα άρθρα</string>
+    <string name="settings_preload_image_mode">Προφορτωμένες εικόνες</string>
+    <string name="settings_max_image_download_count">Μέγιστος αριθμός εικόνων που θα φορτώνονται</string>
+    <string name="settings_max_image_download_count_description">Ανά άρθρο</string>
+    <string name="settings_max_image_download_size_kb">Μέγιστο μέγεθος εικόνας</string>
+    <string name="settings_max_image_download_size_kb_summary">(σε kb). Μη φορτώνετε εικόνες μεγαλύτερες από</string>
+    <string name="max_single_refresh_traffic_mb">Μέγιστη ταχύτητα φόρτωσης</string>
+    <string name="max_single_refresh_traffic_mb_descr">Η ανανέωση θα σταματάει αν η ταχύτητα του δικτύου φτάσει τη μέγιστη τιμή (σε MB) και δεν είστε σε σύνδεση WiFi</string>
+    <string name="settings_load_comments">Φόρτωση σχολίων</string>
+    <string name="settings_load_comments_description">Σε άρθρα\' πλήρες κείμενο</string>
+
+    <string name="settings_category_article_list">Άρθρα\' λίστα</string>
+    <string name="settings_category_article_list_summary">Εμφάνιση των άρθρων\' λίστα</string>
+    <string name="settings_font_size">Μέγεθος γραμματοσειράς</string>
+    <string name="show_article_icon">Να φαίνεται το εικονίδιο του άρθρου</string>
+    <string name="show_article_icon_descr">Απενεργοποιήστε το για περισσότερο χώρο στην οθόνη για κείμενο</string>
+    <string name="show_article_url">Να φαίνεται ο σύνδεσμος του άρθρου</string>
+    <string name="show_article_url_descr">στη λίστα του άρθρου</string>
+    <string name="settings_display_oldest_first">Σειρά των άρθρων</string>
+    <string name="settings_display_oldest_first_description">Πρώτα να φαίνονται τα παλαιότερα</string>
+    <string name="show_mark_all_as_read_button">Κουμπί "Σημείωση όλων ως διαβασμένα"</string>
+    <string name="show_mark_all_as_read_button_summary">Δείχνει το κουμπί "Σημείωση όλων ως διαβασμένα" - αλλιώς θα βρείτε αυτή την επιλογή στο μενού ρυθμίσεων</string>
+    <string name="show_read_checkbox">Πλαίσιο επιλογής "διαβασμένο"</string>
+    <string name="show_read_checkbox_descr">Δείχνει ένα πλαίσιο επιλογής για να δείξει αν το άρθρο είναι διαβασμένο</string>
+    <string name="show_full_text_indicator">Δείκτης πλήρους κειμένου</string>
+    <string name="show_full_text_indicator_descr">Φαίνεται ένα εικονίδιο δισκέτας για την ένδειξη ότι φορτώθηκε όλο το κείμενο του άρθρου</string>
+    <string name="show_new_icon">Εικονίδιο νέου άρθρου</string>
+    <string name="show_new_icon_descr">Ένα μικρό "συν" στα νέα άρθρα</string>
+    <string name="show_read_article_count">Εμφάνιση αριθμού αναγνωσμένων άρθρων</string>
+    <string name="show_read_article_count_descr">Στη λίστα Ροών</string>
+    <string name="show_group_entrries_count">Αρίθμηση άρθρων στην ομάδα</string>
+    <string name="show_group_entries_count_descr">Μπορεί να μειώσει την απόδοση</string>
+
+    <string name="settings_category_article_text">Κείμενο του άρθρου</string>
+    <string name="settings_category_article_text_summary">Εμφάνιση του κείμενου</string>
+    <string name="settings_display_text_color_description">(0..255)</string>
+    <string name="settings_display_images">Προβολή εικόνων</string>
+    <string name="settings_display_images_description">Προβολή εικόνων στα άρθρα</string>
+    <string name="settings_display_entries_fullscreen">Αυτόματη προβολή πλήρους οθόνης</string>
+    <string name="settings_display_entries_fullscreen_description">Προβολή των άρθρων σε πλήρη οθόνη εξαρχής</string>
+    <string name="settings_entry_margins">Περιθώρια</string>
+    <string name="settings_entry_margins_description">Αριστερά | Δεξιά</string>
+    <string name="entry_text_align_justify">Ευθυγράμμιση κειμένου</string>
+    <string name="entry_text_align_justify_description">Διαφορετικά ευθυγράμμιση αριστερά</string>
+    <string name="article_text_footer_show_clock">Υποσέλιδο-Ρολόι</string>
+    <string name="article_text_footer_show_clock_description">Εμφανίζει την ώρα κάτω αριστερά στη προβολή πλήρους οθόνης</string>
+    <string name="settings_clock_size">Μέγεθος Υποσέλιδου-Ρολογιού</string>
+    <string name="article_text_footer_show_progress">Μπάρα προόδου διαβάσματος</string>
+    <string name="article_text_footer_progress_height">Ύψος μπάρας προόδου</string>
+
+    <string name="settings_category_operation">Λειτουργικότητα</string>
+    <string name="settings_category_operation_summary">Ρυθμίσεις λειτουργικότητας</string>
+    <string name="tap_zone_size">Μέγεθος ζώνης αφής</string>
+    <string name="tap_zone_size_descr">Ύψος ή πλάτος όλων των ζωνών αφής σε χιλιοστά</string>
+    <string name="settings_show_tap_zones">Οι ζώνες αφής είναι ορατές</string>
+    <string name="settings_show_tap_zone_description">Ως διαφανή τετράγωνα</string>
+    <string name="settings_tapZones">Προεπισκόπηση ζωνών αφής</string>
+    <string name="settings_volume_buttons_action">Ενέργειες των πλαϊνών κουμπιών έντασης</string>
+    <string name="brightness_gesture">Χειρονομίες αλλαγής φωτεινότητας</string>
+    <string name="brightness_gesture_descr">Επιλέξτε για να ρυθμίζετε την φωτεινότητα σέρνοντας το δάχτυλο πάνω/κάτω στην αριστερή άκρη της οθόνης</string>
+    <string name="brightness_with_dim_activity">Επιτάχυνση λογισμικού</string>
+    <string name="brightness_with_dim_activity_descr">Ρύθμιση φωτεινότητας μειώνοντας τη διαφάνεια του παραθύρου στο φόντο(επιλέξτε αν η αλλαγή φωτεινότητας δεν λειτουργεί)</string>
+
+    <string name="settings_category_behavior">Χρήση \u0026 ειδοποιήσεων</string>
+    <string name="settings_category_behavior_summary">Χρήση ειδοποιήσεων όταν χρησιμοποιείται η εφρμογή</string>
+    <string name="settings_notifications_enabled">Ενεργοποίηση ειδοποιήσεων</string>
+    <string name="settings_notifications_enabled_description">Ενεργοποιεί τις ειδοποιήσεις όταν υπάρχουν νέα άρθρα</string>
+    <string name="settings_notifications_ringtone">Ήχος</string>
+    <string name="settings_notifications_ringtone_none">Κανένας</string>
+    <string name="settings_notifications_vibrate">Δόνηση</string>
+    <string name="settings_notifications_vibrate_description">Δόνηση στα νέα άρθρα</string>
+    <string name="settings_notifications_light">LED ειδοποιήσεων</string>
+    <string name="settings_notifications_light_description">Ανάβει το LED ειδοποιήσεων στα νέα άρθρα</string>
+    <string name="page_up_down_90_pct">Κατέβασμα σελίδας 90%</string>
+    <string name="page_up_down_90_pct_descr">Για να κρατιούνται κάποιες γραμμές από τη προηγούμενη σελίδα - αν δεν είναι επιλεγμένο, θα αλλάζει ολόκληρη η σελίδα</string>
+    <string name="settings_remember_last_entry">Χρήση τελευταίου άρθρου</string>
+    <string name="settings_remeber_last_entry_description">Άνοιγμα στην έναρξη της εφαρμογής του τελευταίου άρθρου που διαβάστηκε αλλιώς εμφάνιση λίστας μη αναγνωσμένων</string>
+    <string name="auto_unstart_at_bottom">Αφαίρεση του αστεριού με το διάβασμα του άρθρου</string>
+    <string name="auto_unstart_at_bottom_descr">Αυτόματη αφαίρεση του άρθρου από τα αγαπημένα όταν φτάσετε στο τέλος του άρθρου</string>
+
+    <string name="settings_category_advanced">Περισσότερα</string>
+    <string name="settings_category_advanced_summary">Περισσότερες επιλογές για αντίγραφα ασφαλείας φίλτρα και άλλα</string>
+
+    <string name="settings_autobackup_enabled">Ενεργοποίηση αυτόματων αντιγράφων ασφαλείας</string>
+    <string name="settings_autobackup_enabled_descr">Περιοδικά αποθηκεύονται οι Ροές σας και τα αγαπημένα σας άρθρα σε ενα αρχείο opml</string>
+    <string name="settings_category_content_presentation">Παρουσίαση περιεχομένου</string>
+    <string name="settings_display_text_color">Φωτεινότητα κειμένου</string>
+    <string name="settings_visible_feeds">Ορατές Ροές</string>
+    <string name="settings_widget_background">Φόντο</string>
+    <string name="settings_widget_background_description">Χρώμα και διαφάνεια widget</string>
+    <string name="all_feeds">Όλες οι ροές (περιλαμβανομένων μελλοντικών)</string>
+    <string name="downloadImage">Λήψη εικόνων</string>
+    <string name="loadFullText">Φόρτωση ολόκληρου του κειμένου</string>
+    <string name="deleteOldEntries">Διαγραφή παλαιών άρθρων</string>
+    <string name="AllImages">Όλες οι εικόνες</string>
+    <string name="EntryImages">Εισαγωγή εικόνων</string>
+    <string name="mobilizeAll">Θέμα φορητών συσκευών</string>
+    <string name="RefreshFeeds">Ανανέωση Ροών</string>
+    <string name="deleteImages">Διαγραφή εικόνων</string>
+    <string name="applyOperations">Εφαρμογή αλλαγών</string>
+    <string name="extractContent">Εξαγωγή περιεχομένου</string>
+    <string name="improveHtmlContent">Βελτίωση περιεχομένου HTML</string>
+    <string name="parseXml">Ανάλυση XML</string>
+    <string name="setupConnection">Ρύθμιση σύνδεσης</string>
+    <string name="settings_content_extract_rules">Εξαγωγή κανόνων περιεχομένου</string>
+    <string name="settings_content_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
+    <string name="settings_tap_zones_description">Καταχώρηση προβολής παραθύρου</string>
+    <string name="settings_tap_zones_dialogtitle">μόνο για πληροφορίες, δεν γίνονται αλλαγές</string>
+    <string name="downloadNext">"Λήψη κειμένου "</string>
+    <string name="loadingLink">Φόρτωση συνδέσμων</string>
+    <string name="loadLink">Διάβασμα τώρ</string>
+    <string name="loadLinkLater">Διάβασμα αργότερα</string>
+    <string name="addFeed">Προσθήκη Ροής</string>
+    <string name="externalLinks">Εξωτερικοί σύνδεσμοι</string>
+    <string name="markAllAsRead">Σημείωση όλων ως αναγνωσμένα</string>
+    <string name="pageUp">προηγούμενη σελίδα</string>
+    <string name="pageDown">επόμενη σελίδα</string>
+    <string name="fullScreenToggle">Ενεργοποίηση/Απενεργοποίηση πλήρους οθόνης</string>
+    <string name="auto_refresh_feed">Αυτόματη ανανέωση Ροών</string>
+    <string name="actionBarToggle">Εναλλαγή γραμμής ενεργειών</string>
+    <string name="standard">Πρότυπο</string>
+    <string name="fontsize_entrylist">Μέγεθος γραμματοσειράς λίστας άρθρων</string>
+    <string name="question_delete_entry">Διαγραφή αυτού του άρθρου</string>
+    <string name="share_all_text">Αποστολή ολόκληρου του κειμένου</string>
+    <string name="group">Ομάδα</string>
+    <string name="auto_image_load">Αυτόματη φόρτωση εικόνων</string>
+    <string name="show_progress_info">Λεπτομερείς πληροφορίες προόδου</string>
+    <string name="show_progress_info_descr">Προβολή με λεπτομέρειες πληροφοριών σχετικά με την τρέχουσα λειτουργία</string>
+    <string name="filter_apply_to_url">Εφαρμογή στο σύνδεσμο</string>
+    <string name="menu_fix_order">Διόρθωση σειράς άρθρων</string>
+    <string name="vibrate_on_article_list_entry_swype">Δόνηση στο σύρσιμο</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Δόνηση στη λίστα των άρθρων και στο κείμενο όταν βάζετε αστέρι</string>
+    <string name="entry_marked_unfavourite">Το άρθρο αφαιρέθηκε από τα αγαπημένα</string>
+    <string name="entry_marked_favourite">Το άρθρο προστέθηκε στα αγαπημένα</string>
+    <string name="new_feed_was_added">Νέα ροή προστέθηκε</string>
+    <string name="entry_marked_unread">Το άρθρο σημειώθηκε ως αδιάβαστο</string>
+    <string name="lock_orientation">Οριζόντιος προσανατολισμός</string>
+    <string name="markAsStarred">Σημείωση με αστέρι</string>
+    <string name="markedAsStarred">Το άρθρο σημειώθηκε με αστέρι: </string>
+    <string name="deleteAllEntries">Διαγραφή όλων των άρθρων χωρίς αστέρι</string>
+    <string name="question">Ερώτηση</string>
+    <string name="reload_full_text_with_tags">Επαναφόρτωση με ετικέτες</string>
+    <string name="filter_hint">Η δράση ενός φίλτρου θα ξεκινήσει εάν ικανοποιηθεί τουλάχιστον μία προϋπόθεση. \'Αποδοχή\' υπερισχύει \'Απόρριψη\'</string>
+    <string name="keyword">Λέξη ή λέξεις κλειδιά</string>
+    <string name="loadTypeWeb">Ιστός (φόρτωση όλων των συνδέσμων από τη σελίδα)</string>
+    <string name="loadTypeRSS">RSS (Ροές ή σύνδεσμος σελίδας ή λέξεις κλειδιά)</string>
+    <string name="loadType">Τύπος φόρτωσης:</string>
+    <string name="global_filter">Γενικό φίλτρο&#8230;</string>
+    <string name="global_filter_descr">Φίλτρο που ενεργεί σε κάθε Ροή, αφήστε το κείμενο κενό για απενεργοποίηση</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">Αλλιώς εφαρμογή στο περιεχόμενο</string>
+    <string name="rule_text">Κείμενο κανόνων</string>
+    <string name="global_marks_as_star_filter_rule_descr">ένας κανόνας ανά γραμμή</string>
+    <string name="customKeepTime">Προσαρμοσμένος χρόνος που θα κρατηθούν τα άρθρα</string>
+    <string name="menu_toggle_theme">Αλλαγή θέματος</string>
+    <string name="turnOn">Ενεργοποίηση</string>
+    <string name="brightness">Φωτεινότητα</string>
+    <string name="brightness_change">Αλλαγή φωτεινότητας</string>
+    <string name="criticalErrorOccured">Ένα σημαντικό σφάλμα συνέβη στην εφαρμογή. Παρακαλω στείλτε αυτό το κείμενο στον προγραματιστή</string>
+    <string name="criticalErrorSending">Αποστολή σημαντικού σφάλματος…</string>
+    <string name="copyToClipboard">Στο πρόχειρο</string>
+    <string name="sendEmail">Αποστολή e-mail</string>
+    <string name="toastAppCrashed">Η εφαρμογή δεν δούλεψε όπως έπρεπε: (παρακαλώ στείλτε email στον προγραματιστή)</string>
+    <string name="exportingToFile">Εξαγωγή σε αρχείο</string>
+    <string name="importingFromFile">Εισαγωγή από αρχείο</string>
+    <string name="autobackup_interval">Χρόνος ανάμεσα στη δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
+    <string name="autobackup_interval_descr">Πόσο συχνά δημιουργείται αρχείο με αντίγραφο ασφαλείας των Ροών σας και των άρθρων</string>
+    <string name="create_auto_backup">Δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
+    <string name="auto_backup_opml_file_created">Δημιουργήθηκε αυτόματα ένα αρχείο opml αντίγραφου ασφαλείας</string>
+    <string name="use_standard_file_manager">Χρήση του προεπιλεγμένου προγράμματος περιήγησης αρχείων</string>
+    <string name="use_standard_file_manager_descr">Αλλιώς επιλέξτε αρχείο opml για εισαγωγή -  μόνο από τον φάκελο feedex (μέσω του εσωτερικού πλαίσιου διαλόγου)</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="entry_go_prev">Προηγούμενη σελίδα</string>
+    <string name="entry_go_next">Επόμενη σελίδα</string>
+
+    <plurals name="number_of_new_entries">
+        <item quantity="one">Ένα νέο άρθρο.</item>
+        <item quantity="other">%d νέα άρθρα.</item>
+    </plurals>
+
+
+</resources>
