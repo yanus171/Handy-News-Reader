@@ -1,9 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <!--
+<?xml version="1.0" encoding="utf-8"?><!--
  Copyright (c) 2012-2015 Frederic Julian
  Copyright (c) 2010-2012 Stefan Handschuh
- modified 2014-2016 Matthias Dill
- modified 2018 Ronny Steiner
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +21,7 @@
  THE SOFTWARE.
 -->
 <resources>
+
     <!-- GENERAL -->
     <string name="about_us_content" translatable="true"><![CDATA[
 
@@ -111,6 +109,7 @@
     <string name="no_result">Kein Ergebnis</string>
     <string name="drawer_open">Navigationsleiste öffnen</string>
     <string name="drawer_close">Navigationsleiste schließen</string>
+
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
     <string name="menu_add_feed">Feed hinzufügen</string>
@@ -169,6 +168,7 @@
     <string name="google_news_science">Wissenschaft</string>
     <string name="google_news_health">Gesundheit</string>
     <string name="google_news_custom_topic">Eigenes Thema</string>
+
     <!-- ENTRIES -->
     <string name="unread_entries">Ungelesene Artikel</string>
     <string name="all_entries">Alle Artikel</string>
@@ -206,18 +206,96 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
+
     <!-- WIDGET -->
     <string name="red">Rot</string>
     <string name="green">Grün</string>
     <string name="blue">Blau</string>
     <string name="transparency">Transparenz</string>
+
     <!-- SETTINGS -->
+    <string name="settings_category_common">Allgemeine Einstellungen</string>
+    <string name="settings_category_common_summary">Sprache, Thema</string>
+    <string name="settings_light_theme">Helles Thema</string>
+    <string name="settings_light_theme_description">Helles Thema nutzen</string>
+
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
+    <string name="settings_category_refresh_summary">Automatische Aktualisierung und Aufbewahrungszeit der Artikel</string>
     <string name="settings_refresh_enabled">Aktualisierung aktivieren</string>
     <string name="settings_refresh_enabled_description">Aktiviert das automatische Aktualisieren aller Feeds</string>
     <string name="settings_refresh_interval">Aktualisierungsintervall</string>
-    <string name="settings_autobackup_enabled">Automatisches Backup aktivieren</string>
-    <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine .opml-Datei</string>
+    <string name="settings_min_update_battery_level">Mindest-Batterieladung</string>
+    <string name="settings_refresh_only_selected">Nur ausgewählte</string>
+    <string name="settings_refresh_only_selected_summary">Nur ausgewählte Feeds automatisch aktualisieren</string>
+    <string name="settings_refresh_on_open">Feeds beim Öffnen aktualisieren</string>
+    <string name="settings_refresh_on_open_description">Aktualisiert alle Feeds beim Öffnen der App</string>
+    <string name="settings_refresh_wifi_only">Nur über WLAN aktualisieren</string>
+    <string name="settings_refresh_wifi_only_description">Die automatische Aktualisierung wird nur bei aktiver WLAN-Verbindung durchgeführt</string>
+    <string name="settings_keep_time">Zeit wie lange Artikel aufgehoben werden</string>
+    <string name="settings_preload_image_mode">Bilder vorab laden</string>
+    <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
+    <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
+    <string name="settings_max_image_download_size_kb">Maximale Bildgröße (kB)</string>
+    <string name="settings_max_image_download_size_kb_summary">Größere Bilder nicht automatisch laden\n</string>
+    <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
+    <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht\n</string>
+    <string name="settings_load_comments">Kommentare laden</string>
+    <string name="settings_load_comments_description">im gesamten Artikeltext</string>
+
+    <string name="settings_category_article_list">Artikelliste</string>
+    <string name="settings_category_article_list_summary">Aussehen der Artikelliste</string>
+    <string name="settings_font_size">Schriftgröße</string>
+    <string name="show_article_icon">Vorschaubild anzeigen</string>
+    <string name="show_article_icon_descr">Abschalten, um Platz in der Liste zu sparen</string>
+    <string name="show_article_url">Artikel-URL anzeigen</string>
+    <string name="show_article_url_descr">in der Artikelliste</string>
+    <string name="settings_display_oldest_first">Anzeigereihenfolge</string>
+    <string name="settings_display_oldest_first_description">Älteste Einträge zuerst anzeigen</string>
+    <string name="show_mark_all_as_read_button">Alles-gelesen-Taste anzeigen</string>
+    <string name="show_mark_all_as_read_button_summary">Wenn deaktiviert, ist diese Option im Menü zu finden.</string>
+    <string name="show_read_checkbox">Gelesen-Markierung</string>
+    <string name="show_read_checkbox_descr">Zeigt ein kleines Kontrollkästchen an, wenn der Artikel gelesen wurde</string>
+    <string name="show_full_text_indicator">Symbol für vollständigen Text</string>
+    <string name="show_full_text_indicator_descr">Zeigt ein kleines Diskettensymbol an, wenn der Artikeltext vollständig geladen wurde</string>
+    <string name="show_new_icon">Symbol für neue Artikel</string>
+    <string name="show_new_icon_descr">Nie gesehene Artikel durch ein kleines Plus-Symbol markieren</string>
+    <string name="show_read_article_count">Anzahl der gelesenen Artikel zeigen</string>
+    <string name="show_read_article_count_descr">in der Feedliste</string>
+    <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
+    <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
+
+    <string name="settings_category_article_text">Artikelinhalt</string>
+    <string name="settings_category_article_text_summary">Aussehen des Artikelinhaltes</string>
+    <string name="settings_display_text_color_description">(0..255)</string>
+    <string name="settings_display_images">Bilder anzeigen</string>
+    <string name="settings_display_images_description">Bilder in den Artikeln anzeigen</string>
+    <string name="settings_display_entries_fullscreen">Artikel im Vollbild anzeigen</string>
+    <string name="settings_display_entries_fullscreen_description">Artikel automatisch im Vollbild anzeigen</string>
+    <string name="settings_entry_margins">Ränder hinzufügen</string>
+    <string name="settings_entry_margins_description">Links und rechts in der Artikelanzeige</string>
+    <string name="entry_text_align_justify">Blocksatz</string>
+    <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
+    <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
+    <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
+    <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
+    <string name="article_text_footer_show_progress">Lese-Fortschrittbalken</string>
+    <string name="article_text_footer_progress_height">Höhe des Fortschrittbalkens</string>
+
+    <string name="settings_category_operation">Bedienung</string>
+    <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
+    <string name="tap_zone_size">Tipp-Zonen-Größe</string>
+    <string name="tap_zone_size_descr">Höhe und Breite der Tipp-Zonen in Millimeter\n</string>
+    <string name="settings_show_tap_zones">Tipp-Zonen anzeigen</string>
+    <string name="settings_show_tap_zone_description">als transparente Quadrate in der Artikelansicht</string>
+    <string name="settings_tapZones">Tipp-Zonen-Vorschau</string>
+    <string name="settings_volume_buttons_action">Funktion der Lautstärketasten</string>
+    <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
+    <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
+    <string name="brightness_with_dim_activity">Software-Overlay</string>
+    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
+
+    <string name="settings_category_behavior">Benachrichtigungen \u0026 Verhalten</string>
+    <string name="settings_category_behavior_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Aktiviert Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
@@ -226,29 +304,24 @@
     <string name="settings_notifications_vibrate_description">Aktiviert das Vibrieren bei neuen Artikeln</string>
     <string name="settings_notifications_light">Benachrichtungslicht</string>
     <string name="settings_notifications_light_description">Aktiviert das Benachrichtungslicht bei neuen Artikeln</string>
+    <string name="page_up_down_90_pct">Nur 90% weiterblättern</string>
+    <string name="page_up_down_90_pct_descr">Wenn aktiviert, werden die letzten Zeilen der vorherigen Seite zu Beginn der neuen Seite angezeigt</string>
+    <string name="settings_remember_last_entry">Letzten Artikel merken</string>
+    <string name="settings_remeber_last_entry_description">Beim Start den zuletzt gelesenen Artikel öffnen, ansonsten die Liste ungelesener Artikel</string>
+    <string name="auto_unstart_at_bottom">Automatisch aus den Favoriten entfernen, wenn gelesen</string>
+    <string name="auto_unstart_at_bottom_descr">Entfernt den Artikel aus den Favoriten, wenn das Artikelende erreicht wurde</string>
+
+    <string name="settings_category_advanced">Erweitert</string>
+    <string name="settings_category_advanced_summary">Zusätzliche Funktionen wie Backup, Filter und mehr</string>
+
+    <string name="settings_autobackup_enabled">Automatisches Backup aktivieren</string>
+    <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine .opml-Datei</string>
     <string name="settings_category_content_presentation">Anzeige der Inhalte</string>
-    <string name="settings_light_theme">Helles Thema</string>
-    <string name="settings_light_theme_description">Helles Thema nutzen</string>
-    <string name="settings_keep_time">Zeit wie lange Artikel aufgehoben werden</string>
-    <string name="settings_display_images">Bilder anzeigen</string>
-    <string name="settings_display_images_description">Bilder in den Artikeln anzeigen</string>
-    <string name="settings_preload_image_mode">Bilder vorab laden</string>
-    <string name="settings_font_size">Schriftgröße</string>
-    <string name="settings_display_oldest_first">Anzeigereihenfolge</string>
-    <string name="settings_display_oldest_first_description">Älteste Einträge zuerst anzeigen</string>
-    <string name="settings_display_entries_fullscreen">Artikel im Vollbild anzeigen</string>
-    <string name="settings_display_entries_fullscreen_description">Artikel automatisch im Vollbild anzeigen</string>
-    <string name="settings_refresh_on_open">Feeds beim Öffnen aktualisieren</string>
-    <string name="settings_refresh_on_open_description">Aktualisiert alle Feeds beim Öffnen der App</string>
-    <string name="settings_refresh_wifi_only">Nur über WLAN aktualisieren</string>
-    <string name="settings_refresh_wifi_only_description">Die automatische Aktualisierung wird nur bei aktiver WLAN-Verbindung durchgeführt</string>
     <string name="settings_display_text_color">Textintensität</string>
-    <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
     <string name="settings_visible_feeds">Sichtbare Feeds</string>
     <string name="settings_widget_background">Hintergrund</string>
     <string name="settings_widget_background_description">Farbe und Transparenz des Widget-Hintergrundes</string>
     <string name="all_feeds">Alle Feeds (auch zukünftige)</string>
-    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="downloadImage">Herunterladen der Bilder</string>
     <string name="loadFullText">Laden des gesamten Textes</string>
     <string name="deleteOldEntries">Alte Artikel löschen</string>
@@ -264,12 +337,8 @@
     <string name="setupConnection">Verbindung einstellen</string>
     <string name="settings_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
-    <string name="settings_tapZones">Tipp-Zonen-Vorschau</string>
-    <string name="settings_load_comments">Kommentare laden</string>
-    <string name="settings_load_comments_description">im gesamten Artikeltext</string>
     <string name="settings_tap_zones_description">Antipp-Zonen in der Artikelansicht</string>
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
-    <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
     <string name="downloadNext">"Nachfolgendes herunterladen "</string>
     <string name="loadingLink">Links laden</string>
     <string name="loadLink">Jetzt Lesen</string>
@@ -277,22 +346,13 @@
     <string name="addFeed">Feed hinzufügen</string>
     <string name="externalLinks">Externe Links</string>
     <string name="markAllAsRead">Alle als gelesen markieren</string>
-    <string name="settings_remember_last_entry">Letzten Artikel merken</string>
-    <string name="settings_remeber_last_entry_description">Beim Start den zuletzt gelesenen Artikel öffnen, ansonsten die Liste ungelesener Artikel</string>
     <string name="pageUp">Seite zurück, Wischen für Fav.</string>
     <string name="pageDown">Seite vor</string>
     <string name="fullScreenToggle">Vollbild umschalten</string>
     <string name="auto_refresh_feed">Feed automatisch aktualisieren</string>
-    <string name="settings_refresh_only_selected">Nur ausgewählte</string>
-    <string name="settings_refresh_only_selected_summary">Nur ausgewählte Feeds automatisch aktualisieren</string>
     <string name="actionBarToggle">Aktionsleiste umschalten</string>
-    <string name="settings_show_tap_zones">Tipp-Zonen anzeigen</string>
-    <string name="settings_show_tap_zone_description">als transparente Quadrate in der Artikelansicht</string>
-    <string name="settings_max_image_download_size_kb">Maximale Bildgröße (kB)</string>
-    <string name="settings_max_image_download_size_kb_summary">Größere Bilder nicht automatisch laden\n</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Schriftgröße in der Artikelliste</string>
-    <string name="settings_volume_buttons_action">Funktion der Lautstärketasten</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
@@ -300,17 +360,9 @@
     <string name="show_progress_info">Detaillierte technische Informationen</string>
     <string name="show_progress_info_descr">Zeigt detaillierte Informationen der aktuellen Vorgänge</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
-    <string name="show_article_url">Artikel-URL anzeigen</string>
-    <string name="show_article_url_descr">in der Artikelliste</string>
-    <string name="show_article_icon">Vorschaubild anzeigen</string>
-    <string name="show_article_icon_descr">Abschalten, um Platz in der Liste zu sparen</string>
     <string name="menu_fix_order">Fix articles\' order</string>
-    <string name="settings_category_article_list">Artikelliste</string>
-    <string name="settings_category_article_text">Artikelinhalt</string>
     <string name="vibrate_on_article_list_entry_swype">Beim Wischen vibrieren</string>
     <string name="vibrate_on_article_list_entry_swype_summary">Beim Wischen eines Eintrages in der Artikelliste und im Artikel zur Markierung als Favorit</string>
-    <string name="show_mark_all_as_read_button">Alles-gelesen-Taste anzeigen</string>
-    <string name="show_mark_all_as_read_button_summary">Wenn deaktiviert, ist diese Option im Menü zu finden.</string>
     <string name="entry_marked_unfavourite">Artikel wurde aus den Favoriten entfernt</string>
     <string name="entry_marked_favourite">Artikel wurde zu den Favoriten hinzugefügt</string>
     <string name="new_feed_was_added">Neuer Feed wurde hinzugefügt</string>
@@ -320,10 +372,6 @@
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
     <string name="deleteAllEntries">Alle Artikel löschen, welche nicht als Favorit markiert sind</string>
     <string name="question">Frage</string>
-    <string name="settings_entry_margins">Ränder hinzufügen</string>
-    <string name="settings_entry_margins_description">Links und rechts in der Artikelanzeige</string>
-    <string name="entry_text_align_justify">Blocksatz</string>
-    <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
     <string name="reload_full_text_with_tags">Mit Tags erneut laden</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
     <string name="keyword">Schlüsselwort(e)</string>
@@ -334,24 +382,12 @@
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">Wenn deaktiviert, auf Inhalt anwenden</string>
     <string name="rule_text">Schlüsselwort(e)/Regeln</string>
-    <string name="settings_min_update_battery_level">Mindest-Batterieladung</string>
     <string name="global_marks_as_star_filter_rule_descr">Ein Schlüsselwort bzw. Ausdruck pro Zeile</string>
-    <string name="show_read_article_count">Anzahl der gelesenen Artikel zeigen</string>
-    <string name="show_read_article_count_descr">in der Feedliste</string>
     <string name="customKeepTime">Benutzerdefinierte Artikel-Aufbewahrzeit</string>
     <string name="menu_toggle_theme">Thema ändern</string>
-    <string name="auto_unstart_at_bottom">Automatisch aus den Favoriten entfernen, wenn gelesen</string>
-    <string name="auto_unstart_at_bottom_descr">Entfernt den Artikel aus den Favoriten, wenn das Artikelende erreicht wurde</string>
-    <string name="show_full_text_indicator">Symbol für vollständigen Text</string>
-    <string name="show_full_text_indicator_descr">Zeigt ein kleines Diskettensymbol an, wenn der Artikeltext vollständig geladen wurde</string>
-    <string name="show_read_checkbox">Gelesen-Markierung</string>
-    <string name="show_read_checkbox_descr">Zeigt ein kleines Kontrollkästchen an, wenn der Artikel gelesen wurde</string>
     <string name="turnOn">Aktivieren</string>
+    <string name="brightness">Helligkeit</string>
     <string name="brightness_change">Helligkeit einstellen</string>
-    <string name="tap_zone_size">Tipp-Zonen-Größe</string>
-    <string name="tap_zone_size_descr">Höhe und Breite der Tipp-Zonen in Millimeter\n</string>
-    <string name="show_new_icon">Symbol für neue Artikel</string>
-    <string name="show_new_icon_descr">Nie gesehene Artikel durch ein kleines Plus-Symbol markieren</string>
     <string name="criticalErrorOccured">Ein schwerwiegender Fehler ist aufgetreten. Bitte senden Sie diesen Text an den Entwickler</string>
     <string name="criticalErrorSending">Fehler senden…</string>
     <string name="copyToClipboard">In die Zwischenablage</string>
@@ -359,45 +395,20 @@
     <string name="toastAppCrashed">Die Anwendung wurde unerwartet beendet: (Bitte senden Sie eine E-Mail an den Entwickler)</string>
     <string name="exportingToFile">Exportiere in Datei&#8230;</string>
     <string name="importingFromFile">Importiere von Datei&#8230;</string>
-    <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
-    <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht\n</string>
-    <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
-    <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
     <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird\n</string>
     <string name="create_auto_backup">Automatisches Backup</string>
     <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard Dateimanager verwenden</string>
     <string name="use_standard_file_manager_descr">andernfalls die zu importierende .opml-Datei auswählen - nur außerhalb des feedex-Ordners (über den internen Dialog)</string>
-    <string name="page_up_down_90_pct">Nur 90% weiterblättern</string>
-    <string name="page_up_down_90_pct_descr">Wenn aktiviert, werden die letzten Zeilen der vorherigen Seite zu Beginn der neuen Seite angezeigt</string>
-    <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
-    <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
-    <string name="brightness_with_dim_activity">Software-Overlay</string>
-    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
-    <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
-    <string name="article_text_footer_show_progress">Lese-Fortschrittbalken</string>
-    <string name="article_text_footer_progress_height">Höhe des Fortschrittbalkens</string>
-
+    <string name="settings">Einstellungen</string>
+    <string name="entry_go_prev">Artikel zurück</string>
+    <string name="entry_go_next">Artikel vor</string>
+ 
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
     </plurals>
-    <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
-    <string name="brightness">Helligkeit</string>
-    <string name="settings">Einstellungen</string>
-    <string name="settings_category_advanced">Erweitert</string>
-    <string name="settings_category_advanced_summary">Zusätzliche Funktionen wie Backup, Filter und mehr</string>
-    <string name="settings_category_article_list_summary">Aussehen der Artikelliste</string>
-    <string name="settings_category_article_text_summary">Aussehen des Artikelinhaltes</string>
-    <string name="settings_category_behavior">Benachrichtigungen \u0026 Verhalten</string>
-    <string name="settings_category_behavior_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
-    <string name="settings_category_common">Allgemeine Einstellungen</string>
-    <string name="settings_category_common_summary">Sprache, Thema</string>
-    <string name="settings_category_operation">Bedienung</string>
-    <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
-    <string name="settings_category_refresh_summary">Automatische Aktualisierung und Aufbewahrungszeit der Artikel</string>
-    <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
-    <string name="entry_go_next">Artikel vor</string>
-    <string name="entry_go_prev">Artikel zurück</string>
+
+
 </resources>
