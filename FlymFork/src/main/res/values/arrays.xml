@@ -14,7 +14,7 @@
         <item>1 day</item>
     </string-array>
 
-    <string-array name="settings_battery_level">
+    <string-array name="settings_battery_level" translatable="false">
         <item>50 %</item>
         <item>40 %</item>
         <item>30 %</item>
@@ -40,7 +40,7 @@
         <item>Forever</item>
     </string-array>
 
-    <string-array name="settings_font_sizes">
+    <string-array name="settings_font_sizes" translatable="false">
         <item>-2</item>
         <item>-1</item>
         <item>@string/standard</item>
