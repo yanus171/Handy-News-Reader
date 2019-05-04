@@ -407,7 +407,7 @@
     <string name="settings">Settings</string>
     <string name="entry_go_prev">Prev page</string>
     <string name="entry_go_next">Next page</string>
-
+ 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
         <item quantity="other">%d new articles.</item>
