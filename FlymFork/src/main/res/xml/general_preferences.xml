@@ -12,6 +12,15 @@
             android:targetPackage="ru.yanus171.feedexfork"/>
     </PreferenceScreen>
 
+    <ListPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="System"
+        android:entries="@array/languageList"
+        android:entryValues="@array/languageValueList"
+        android:key="language"
+        android:title="Language" />
+
     <PreferenceScreen
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,14 +29,6 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_common">
-            <ListPreference
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:defaultValue="System"
-                android:entries="@array/languageList"
-                android:entryValues="@array/languageValueList"
-                android:key="language"
-                android:title="Language" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"

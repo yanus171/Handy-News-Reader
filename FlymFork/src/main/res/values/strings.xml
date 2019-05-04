@@ -218,7 +218,7 @@
 
     <!-- SETTINGS -->
     <string name="settings_category_common">Common settings</string>
-    <string name="settings_category_common_summary">Language, theme</string>
+    <string name="settings_category_common_summary">Theme</string>
     <string name="settings_light_theme">Light theme</string>
     <string name="settings_light_theme_description">Use the light theme</string>
 

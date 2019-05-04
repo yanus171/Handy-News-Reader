@@ -422,7 +422,7 @@
     <string name="copyToClipboard">Скопировать в буфер</string>
     <string name="sendEmail">Послать письмо</string>
     <string name="settings_category_common">Общие настройки</string>
-    <string name="settings_category_common_summary">Язык, Тема</string>
+    <string name="settings_category_common_summary">Тема</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_category_article_list_summary">Внешний вид списка статей</string>
     <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>

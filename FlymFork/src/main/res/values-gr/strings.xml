@@ -202,7 +202,7 @@
 
     <!-- SETTINGS -->
     <string name="settings_category_common">Κοινές ρυθμίσεις</string>
-    <string name="settings_category_common_summary">Γλώσσα, θέμα</string>
+    <string name="settings_category_common_summary">θέμα</string>
     <string name="settings_light_theme">Ανοιχτόχρωμο θέμα</string>
     <string name="settings_light_theme_description">Χρήση ανοιχτόχρωμου θέματος</string>
 
