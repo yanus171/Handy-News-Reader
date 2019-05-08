@@ -370,7 +370,6 @@
     <string name="show_progress_info">Detailed progress technical info</string>
     <string name="show_progress_info_descr">Show detailed info about current operation</string>
     <string name="filter_apply_to_url">Apply to URL</string>
-    <string name="menu_fix_order">Fix articles\' order</string>
     <string name="vibrate_on_article_list_entry_swype">Vibrate on swipe</string>
     <string name="vibrate_on_article_list_entry_swype_summary">On article list entry and in article text window while starring</string>
     <string name="entry_marked_unfavourite">The article was removed from Favorites</string>
