@@ -388,7 +388,6 @@
     <string name="show_progress_info">Подробная информация процесса</string>
     <string name="show_progress_info_descr">Показывать подробную информацию о текущих действиях в процессе загрузки лент</string>
     <string name="filter_apply_to_url">Применить к адресу</string>
-    <string name="menu_fix_order">Починить порядок статей</string>
     <string name="vibrate_on_article_list_entry_swype">Вибрация при свайпе</string>
     <string name="vibrate_on_article_list_entry_swype_summary">элемента списка статей или при чтении статьи для помещения ее в избранныее</string>
     <string name="entry_marked_unfavourite">Статья убрана из избранного</string>
