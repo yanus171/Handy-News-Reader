@@ -355,7 +355,6 @@
     <string name="show_progress_info">Detaillierte technische Informationen</string>
     <string name="show_progress_info_descr">Zeigt detaillierte Informationen der aktuellen Vorgänge</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
-    <string name="menu_fix_order">Fix articles\' order</string>
     <string name="vibrate_on_article_list_entry_swype">Beim Wischen vibrieren</string>
     <string name="vibrate_on_article_list_entry_swype_summary">Beim Wischen eines Eintrages in der Artikelliste und im Artikel zur Markierung als Favorit</string>
     <string name="entry_marked_unfavourite">Artikel wurde aus den Favoriten entfernt</string>
