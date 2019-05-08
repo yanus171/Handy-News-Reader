@@ -346,7 +346,6 @@
     <string name="show_progress_info">Λεπτομερείς πληροφορίες προόδου</string>
     <string name="show_progress_info_descr">Προβολή με λεπτομέρειες πληροφοριών σχετικά με την τρέχουσα λειτουργία</string>
     <string name="filter_apply_to_url">Εφαρμογή στο σύνδεσμο</string>
-    <string name="menu_fix_order">Διόρθωση σειράς άρθρων</string>
     <string name="vibrate_on_article_list_entry_swype">Δόνηση στο σύρσιμο</string>
     <string name="vibrate_on_article_list_entry_swype_summary">Δόνηση στη λίστα των άρθρων και στο κείμενο όταν βάζετε αστέρι</string>
     <string name="entry_marked_unfavourite">Το άρθρο αφαιρέθηκε από τα αγαπημένα</string>
