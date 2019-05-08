@@ -355,7 +355,6 @@
     <string name="show_progress_info">Szczegółowe informacje techniczne o postępie</string>
     <string name="show_progress_info_descr">Pokazuje szczegółowe informacje nt. aktualnie przeprowadzanej operacji</string>
     <string name="filter_apply_to_url">Zastosuj do adresu URL.</string>
-    <string name="menu_fix_order">Napraw kolejność artykułów.</string>
     <string name="vibrate_on_article_list_entry_swype">Wibruj przy przesunięciu w lewo/prawo</string>
     <string name="vibrate_on_article_list_entry_swype_summary">W artykule na liście oraz w tekście artykułu podczas oznaczania gwiazdką</string>
     <string name="entry_marked_unfavourite">Artykuł został usunięty z Ulubionych.</string>
