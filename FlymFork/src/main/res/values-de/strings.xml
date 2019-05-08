@@ -140,11 +140,11 @@
     <string name="tab_feed_title">Feed</string>
     <string name="tab_filters_title">Filter</string>
     <string name="feed_title">TITEL</string>
-    <string name="feed_filters">FILTER-REGELN</string>
+    <string name="feed_filters">FILTERREGELN</string>
     <string name="filter_add_title">Filter hinzufügen</string>
     <string name="filter_delete_title">Filter entfernen</string>
     <string name="filter_edit_title">Filter bearbeiten</string>
-    <string name="filter_is_regex">Reguläre(r) Ausdruck/Ausdrücke</string>
+    <string name="filter_is_regex">&#8230;ist ein regulärer Ausdruck</string>
     <string name="filter_apply_to_title">Auf Titel oder URL anwenden</string>
     <string name="filter_apply_to_content">Auf den Inhalt anwenden</string>
     <string name="accept">ZULASSEN</string>
