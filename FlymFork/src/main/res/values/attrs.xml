@@ -3,4 +3,10 @@
     <attr name="card_color" format="reference"/>
     <attr name="colorReadState" format="color|reference" />
     <attr name="colorPrefBackground" format="color|reference" />
+    <declare-styleable name="ru.yanus171.feedexfork.view.ColorPreference">
+        <attr name="istransparency" format="boolean" />
+        <attr name="text" format="string" />
+        <attr name="backgroundColor" format="string" />
+    </declare-styleable>
+
 </resources>

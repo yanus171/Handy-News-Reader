@@ -1,8 +1,9 @@
 <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/swype_btn_toggle_read"
         android:layout_width="@dimen/entry_img_width"
@@ -25,7 +26,7 @@
         android:visibility="visible"
         android:scaleType="centerCrop"/>
     <FrameLayout
-        android:id="@+id/layout_root"
+        android:id="@+id/layout_ontouch"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout

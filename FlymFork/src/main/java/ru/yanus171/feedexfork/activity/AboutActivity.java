@@ -36,7 +36,6 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UiUtils.setPreferenceTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 

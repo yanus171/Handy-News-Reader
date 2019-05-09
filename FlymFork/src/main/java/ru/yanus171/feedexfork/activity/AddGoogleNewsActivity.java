@@ -46,7 +46,6 @@ public class AddGoogleNewsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UiUtils.setPreferenceTheme(this);
         super.onCreate(savedInstanceState);
 
         setResult(RESULT_CANCELED);

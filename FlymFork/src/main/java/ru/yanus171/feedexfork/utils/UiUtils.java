@@ -27,17 +27,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.LongSparseArray;
+import android.text.util.Linkify;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,11 +57,7 @@ public class UiUtils {
     static private final LongSparseArray<Bitmap> FAVICON_CACHE = new LongSparseArray<>();
 
     static public void setPreferenceTheme(Activity a) {
-        if (PrefUtils.IsLightTheme())
-            a.setTheme(R.style.Theme_Light);
-        else
-            a.setTheme(R.style.Theme_Dark);
-
+        a.setTheme( Theme.GetResID( Theme.STYLE_THEME ) );
     }
 
     static public int dpToPixel(int dp) {
@@ -161,5 +161,55 @@ public class UiUtils {
         lp.width = width;
         lp.height = height;
     }
+
+    // -------------------------------------------------------------------
+    static TextView AddSmallText(LinearLayout layout, int textID) {
+        return AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(textID));
+    }
+    static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
+        TextView result = new TextView(layout.getContext());
+        if (lp != null) {
+            layout.addView(result, lp);
+        } else {
+            layout.addView(result);
+        }
+        result.setAutoLinkMask(Linkify.ALL);
+        result.setLinkTextColor(Color.LTGRAY);
+        result.setText(text);
+        if (Build.VERSION.SDK_INT >= 11)
+            result.setTextIsSelectable(true);
+        result.setFocusable(false);
+        result.setFocusableInTouchMode(true);
+
+        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        result.setGravity(gravity);
+        result.setPadding(10, 0, 10, 0);
+
+        result.setTextColor(color != null ? color.Text : Theme.GetMenuFontColor());
+
+        return result;
+    }
+
+    // -------------------------------------------------------------------
+    static TextView AddText(LinearLayout layout, LinearLayout.LayoutParams lp, String text) {
+        TextView result = new TextView(layout.getContext());
+        if (lp != null) {
+            layout.addView(result, lp);
+        } else {
+            layout.addView(result);
+        }
+        result.setText(text);
+        if (Build.VERSION.SDK_INT >= 11)
+            result.setTextIsSelectable(true);
+        result.setFocusable(false);
+        result.setFocusableInTouchMode(false);
+
+        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        result.setTextColor(Theme.GetMenuFontColor());
+        result.setGravity(Gravity.CENTER);
+        result.setPadding(10, 10, 10, 0);
+        return result;
+    }
+
 
 }

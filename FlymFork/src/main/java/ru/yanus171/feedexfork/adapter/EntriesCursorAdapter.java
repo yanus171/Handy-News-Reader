@@ -50,6 +50,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Vibrator;
@@ -87,6 +88,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
@@ -167,7 +169,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             view.setTag(R.id.holder, holder);
 
-            view.findViewById( R.id.layout_root ).setOnTouchListener( new View.OnTouchListener() {
+            view.findViewById( R.id.layout_ontouch ).setOnTouchListener( new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
                 private int initialx = 0;
@@ -319,11 +321,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
         final int backgroundColor;
-        //if ( mBackgroundColorLight )
-        //    backgroundColor = PrefUtils.IsLightTheme() ?  R.color.light_background_light : R.color.dark_background_ligth;
-        //else
-            backgroundColor = PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background;
-        view.findViewById(R.id.layout_vertval).setBackgroundColor(ContextCompat.getColor( context, backgroundColor ));
+        backgroundColor = Color.parseColor( Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND) );
+        view.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
+        view.findViewById( R.id.layout_root ).setBackgroundColor( backgroundColor );
 
         holder.readToggleSwypeBtnView.setVisibility( View.GONE );
         holder.starToggleSwypeBtnView.setVisibility( View.GONE );
@@ -432,10 +432,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.mainImgView.setMaxHeight(  );
         }*/
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
+
+        {
+            final int color = Color.parseColor( Theme.GetTextColor() );
+            holder.authorTextView.setTextColor( color );
+            holder.dateTextView.setTextColor( color );
+            holder.textTextView.setTextColor( color );
+            holder.titleTextView.setTextColor( color );
+            holder.urlTextView.setTextColor( color );
+            holder.authorTextView.setTextColor( color );
+        }
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
-        int startID = PrefUtils.IsLightTheme() ? R.drawable.star_gray_solid : R.drawable.star_yellow;
+        int startID = Theme.IsLight() ? R.drawable.star_gray_solid : R.drawable.star_yellow;
         if ( holder.isFavorite )
             holder.starImgView.setImageResource(startID );
         holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
@@ -601,7 +611,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isFavorite;
         boolean isMobilized;
         long entryID = -1;
-        public TextView contentSizeTextView;
     }
 
     public int GetFirstUnReadPos() {

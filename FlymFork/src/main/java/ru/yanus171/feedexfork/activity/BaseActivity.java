@@ -25,6 +25,7 @@ import android.view.View;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Brightness;
+import ru.yanus171.feedexfork.utils.UiUtils;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -34,6 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        UiUtils.setPreferenceTheme(this);
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
     }

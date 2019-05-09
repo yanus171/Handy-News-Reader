@@ -236,10 +236,10 @@ public class SwipeRefreshLayout extends ViewGroup {
      * also be the color of the bar that grows in response to a user swipe
      * gesture.
      *
-     * @param colorRes1 Color resource.
-     * @param colorRes2 Color resource.
-     * @param colorRes3 Color resource.
-     * @param colorRes4 Color resource.
+     * @param colorRes1 mColor resource.
+     * @param colorRes2 mColor resource.
+     * @param colorRes3 mColor resource.
+     * @param colorRes4 mColor resource.
      */
     public void setColorScheme(int colorRes1, int colorRes2, int colorRes3, int colorRes4) {
         ensureTarget();

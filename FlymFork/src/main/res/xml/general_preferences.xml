@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="wrap_content"
-                  android:layout_height="wrap_content">
+                  android:layout_height="wrap_content"
+    xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference" >
 
     <PreferenceScreen
         android:title="@string/about_flym">
@@ -29,11 +30,34 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_common">
+
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:defaultValue="Dark"
+                android:entries="@array/themeList"
+                android:entryValues="@array/themeValueList"
+                android:key="theme"
+                android:title="@string/theme" />
+
             <CheckBoxPreference
                 android:defaultValue="false"
-                android:disableDependentsState="true"
-                android:key="lighttheme"
-                android:title="@string/settings_light_theme" />
+                android:key="customColors"
+                android:summary="@string/fontColorsNotFromThemeSummary"
+                android:title="@string/customColors" />
+
+            <!--<CheckBoxPreference-->
+                <!--android:defaultValue="false"-->
+                <!--android:disableDependentsState="true"-->
+                <!--android:key="lighttheme"-->
+                <!--android:title="@string/settings_light_theme" />-->
+
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@android:color/white"
+                android:dependency="customColors"
+                android:key="textColor"
+                android:title="@string/textColor"
+                colorPreference:backgroundColor="@android:color/darker_gray"
+                colorPreference:istransparency="false" />
+
         </PreferenceCategory>
     </PreferenceScreen>
 

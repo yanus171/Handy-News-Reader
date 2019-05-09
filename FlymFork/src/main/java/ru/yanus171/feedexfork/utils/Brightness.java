@@ -92,7 +92,7 @@ public class Brightness {
     }
 //    private int GetAlpha() {
 //        if ( PrefUtils.getBoolean( "brightness_with_dim_activity", false ) )
-//            return Color.alpha( ( (ColorDrawable)mDimFrame.getBackground() ).getColor() );
+//            return mColor.alpha( ( (ColorDrawable)mDimFrame.getBackground() ).getColor() );
 //        else
 //            return 255 - (int) (255 * mActivity.getWindow().getAttributes().screenBrightness);
 //    }

@@ -26,9 +26,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 
 import ru.yanus171.feedexfork.MainApplication;
+
+import static ru.yanus171.feedexfork.utils.Theme.DARK;
+import static ru.yanus171.feedexfork.utils.Theme.LIGHT;
 
 public class PrefUtils {
 
@@ -51,7 +55,8 @@ public class PrefUtils {
     public static final String NOTIFICATIONS_VIBRATE = "notifications.vibrate";
     public static final String NOTIFICATIONS_LIGHT = "notifications.light";
 
-    public static final String LIGHT_THEME = "lighttheme";
+//    public static final String LIGHT_THEME = "lighttheme";
+    public static final String THEME = "theme";
     public static final String DISPLAY_IMAGES = "display_images";
     //public static final String FULL_SCREEN_STATUSBAR_VISIBLE = "full_screen_statusbar_visible";
     static final String PRELOAD_IMAGE_MODE = "preload_image_mode";
@@ -174,12 +179,18 @@ public class PrefUtils {
 
     public static String getString(String key, String defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
-        return settings.getString(key, defValue);
+        String result  = defValue;
+        try {
+            result = settings.getString(key, defValue);
+        } catch (  ClassCastException e ){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public static String getString(String key, int defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
-        return settings.getString(key, MainApplication.getContext().getString(  defValue ));
+        return settings.getString(key, MainApplication.getContext().getString( defValue ));
     }
 
     public static void putString(String key, String value) {
@@ -215,13 +226,15 @@ public class PrefUtils {
         }
     }
 
-    public static boolean IsLightTheme() {
-        return getBoolean(LIGHT_THEME, false);
-    }
+
+//    public static boolean IsLightTheme() {
+//        return getBoolean(LIGHT_THEME, false);
+//    }
 
     @SuppressLint("ApplySharedPref")
     public static void ToogleTheme(Intent intent ) {
-        PrefUtils.putBoolean( PrefUtils.LIGHT_THEME, !PrefUtils.IsLightTheme());
+        final String theme = PrefUtils.getString( PrefUtils.THEME, DARK );
+        PrefUtils.putString( PrefUtils.THEME, theme.equals(Theme.LIGHT) ? DARK : Theme.LIGHT);
         Context context = MainApplication.getContext();
         PreferenceManager.getDefaultSharedPreferences(context).edit().commit(); // to be sure all prefs are written
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -233,6 +246,15 @@ public class PrefUtils {
 
     public static int GetTapZoneSize() {
         return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
+    }
+    // ------------------------------------------------------------------------------------
+    public static int GetPrefColorDefID(String key, int defaultValueID) {
+        if (!Theme.IsCustom() )
+            return Theme.GetColor( key, defaultValueID );
+        else {
+            int result = Color.parseColor(MainApplication.getContext().getString(defaultValueID));
+            return getInt(key, result);
+        }
     }
 
 }

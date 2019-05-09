@@ -407,7 +407,16 @@
     <string name="settings">Settings</string>
     <string name="entry_go_prev">Prev page</string>
     <string name="entry_go_next">Next page</string>
- 
+    <string name="colorSlotSaveLongTapHint">Tip: To save the current color make a long tap on one of the cells</string>
+    <string name="colorSlotSaved">Color was saved to cell</string>
+    <string name="text">Text</string>
+    <string name="background1">Background</string>
+    <string name="textColor">Text color</string>
+
+    <string name="customColors">Custom font colors</string>
+    <string name="fontColorsNotFromThemeSummary">overwise use theme colors</string>
+    <string name="theme">Theme</string>
+
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
         <item quantity="other">%d new articles.</item>

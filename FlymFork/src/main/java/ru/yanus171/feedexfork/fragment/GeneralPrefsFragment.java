@@ -91,11 +91,11 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         preference = findPreference(PrefUtils.REFRESH_INTERVAL);
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
 
-        preference = findPreference(PrefUtils.LIGHT_THEME);
+        preference = findPreference(PrefUtils.THEME);
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PrefUtils.putBoolean(PrefUtils.LIGHT_THEME, Boolean.TRUE.equals(newValue));
+                PrefUtils.putString(PrefUtils.THEME, (String) newValue);
 
                 PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
 

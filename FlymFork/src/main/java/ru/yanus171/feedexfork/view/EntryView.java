@@ -80,52 +80,34 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+
+import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_BACKGROUND;
 
 public class EntryView extends WebView implements Observer {
 
     private static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
-    private static final String BACKGROUND_COLOR = PrefUtils.IsLightTheme() ? "#f6f6f6" : "#181b1f";
-    private static final String QUOTE_BACKGROUND_COLOR = PrefUtils.IsLightTheme() ? "#e6e6e6" : "#383b3f";
-    private static final String QUOTE_LEFT_COLOR = PrefUtils.IsLightTheme() ? "#a6a6a6" : "#686b6f";
+    //private static final String BACKGROUND_COLOR = PrefUtils.IsLightTheme() ? "#f6f6f6" : "#181b1f";
+    //private static final String QUOTE_BACKGROUND_COLOR = PrefUtils.IsLightTheme() ? "#e6e6e6" : "#383b3f";
+    //private static final String QUOTE_LEFT_COLOR = PrefUtils.IsLightTheme() ? "#a6a6a6" : "#686b6f";
 
 
     private long mEntryId = -1;
     public Runnable mScrollChangeListener = null;
 
     //private static final String TEXT_COLOR_BRIGHTNESS = PrefUtils.getBoolean(PrefUtils.LIGHT_THEME, false) ? "#000000" : "#C0C0C0";
-    private static String GetTextColor() {return PrefUtils.IsLightTheme() ? getTextColorLightTheme() : getTextColorDarkTheme();}
 
-    private static String getTextColorDarkTheme() {
-
-        int b = 200;
-        try {
-            b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
-        } catch (NumberFormatException e) {
-
-        }
-        return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
-    }
-
-    private static String getTextColorLightTheme() {
-
-        int b = 200;
-        try {
-            b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
-        } catch (NumberFormatException e) {
-
-        }
-        b = 255 - b;
-        return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
-    }
-
-    private static final String BUTTON_COLOR = PrefUtils.IsLightTheme() ? "#52A7DF" : "#1A5A81";
-    private static final String SUBTITLE_COLOR = PrefUtils.IsLightTheme() ? "#666666" : "#8c8c8c";
-    private static final String SUBTITLE_BORDER_COLOR = PrefUtils.IsLightTheme() ? "solid #ddd" : "solid #303030";
     private static String GetCSS() { return "<head><style type='text/css'> "
-            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold() + " color: " + GetTextColor() + "; background-color:" + BACKGROUND_COLOR + "; line-height: 120%} "
+            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold()
+            + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND ) + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
             + "h1, h2 {font-weight: normal; line-height: 130%} "
             + "h1 {font-size: 170%; text-align:center; margin-bottom: 0.1em} "
@@ -135,15 +117,15 @@ public class EntryView extends WebView implements Observer {
             + "img {display: inline;max-width: 100%;height: auto} "
             + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
             + "pre {white-space: pre-wrap;} "
-            + "blockquote {border-left: thick solid " + QUOTE_LEFT_COLOR + "; background-color:" + QUOTE_BACKGROUND_COLOR + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
+            + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
             + "p {margin: 0.8em 0 0.8em 0} "
-            + "p.subtitle {color: " + SUBTITLE_COLOR + "; border-top:1px " + SUBTITLE_BORDER_COLOR + "; border-bottom:1px " + SUBTITLE_BORDER_COLOR + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
+            + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
             + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
             + ".button-section p {margin: 0.1cm 0 0.2cm 0}"
             + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-            + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + BUTTON_COLOR + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
+            + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR ) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
             + "</style><meta name='viewport' content='width=device-width'/></head>"; }
 
     private static String getFontBold() {
@@ -308,8 +290,7 @@ public class EntryView extends WebView implements Observer {
         setHorizontalScrollBarEnabled(false);
         getSettings().setUseWideViewPort(true);
         // For color
-        setBackgroundColor(Color.parseColor(BACKGROUND_COLOR));
-
+        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND )));
         // Text zoom level from preferences
         int fontSize = PrefUtils.getFontSize();
         if (fontSize != 0) {

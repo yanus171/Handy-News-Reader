@@ -51,13 +51,13 @@ import android.view.MenuItem;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.AutoJobService;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class GeneralPrefsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UiUtils.setPreferenceTheme(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_general_prefs);
@@ -84,6 +84,7 @@ public class GeneralPrefsActivity extends BaseActivity {
         }
         if (Build.VERSION.SDK_INT >= 21 )
             AutoJobService.init( this );
+        Theme.ReInit();
         super.onBackPressed();
 
     }
