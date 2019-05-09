@@ -37,8 +37,8 @@
         <item>Immer</item>
     </string-array>
     <string-array name="themeList">
-        <item>Light</item>
-        <item>Dark</item>
+        <item>Hell</item>
+        <item>Dunkel</item>
     </string-array>
     <string-array name="themeValueList">
         <item>Light</item>
