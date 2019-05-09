@@ -405,7 +405,7 @@
     <string name="textColor">Text color</string>
     <string name="customColors">Custom font colors</string>
     <string name="fontColorsNotFromThemeSummary">overwise use theme colors</string>
-    <string name="theme">Theme</string>
+    <string name="theme">Thema</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
