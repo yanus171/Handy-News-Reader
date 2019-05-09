@@ -1,0 +1,9 @@
+files:
+  - source: /FlymFork/src/main/res/values/strings.xml
+    translation: /FlymFork/src/main/res/values-%two_letters_code%/strings.xml
+    translate_attributes: 0
+    content_segmentation: 0
+  - source: /FlymFork/src/main/res/values/arrays.xml
+    translation: /FlymFork/src/main/res/values-%two_letters_code%/arrays.xml
+    translate_attributes: 0
+    content_segmentation: 0
