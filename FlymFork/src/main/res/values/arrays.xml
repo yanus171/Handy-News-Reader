@@ -71,9 +71,4 @@
         <item>Dark</item>
     </string-array>
 
-    <string-array name="themeValueList" >
-        <item>Light</item>
-        <item>Dark</item>
-    </string-array>
-
 </resources>
