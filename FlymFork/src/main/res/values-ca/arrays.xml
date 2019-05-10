@@ -26,22 +26,4 @@
         <item>3 mesos</item>
         <item>Infinit</item>
     </string-array>
-    <string-array name="settings_volume_buttons_action">
-        <item>Default</item>
-        <item>Switch to next | previous article</item>
-        <item>Page up | down</item>
-    </string-array>
-    <string-array name="settings_preload_image_modes">
-        <item>Never</item>
-        <item>Only over Wi-Fi</item>
-        <item>Always</item>
-    </string-array>
-    <string-array name="themeList">
-        <item>Light</item>
-        <item>Dark</item>
-    </string-array>
-    <string-array name="themeValueList">
-        <item>Light</item>
-        <item>Dark</item>
-    </string-array>
 </resources>
