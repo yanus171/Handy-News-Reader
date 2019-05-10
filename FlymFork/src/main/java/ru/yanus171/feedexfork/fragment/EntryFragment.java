@@ -32,12 +32,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
@@ -88,8 +91,10 @@ import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.ColorPreference;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
@@ -856,6 +861,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
                 mProgressBar.setMax(contentHeight - webViewHeight);
                 mProgressBar.setProgress(entryView.getScrollY());
+                String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
+                if (Build.VERSION.SDK_INT >= 21 )
+                    mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));
             } else
                 mProgressBar.setVisibility( View.GONE );
         }
@@ -863,6 +871,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) ) {
             mLabelClock.setVisibility(EntryActivity.GetIsStatusBarHidden() ? View.VISIBLE : View.GONE);
             mLabelClock.setText(new SimpleDateFormat("HH:mm").format(new Date()));
+            mLabelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
+            mLabelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
         } else
             mLabelClock.setVisibility( View.GONE );
     }

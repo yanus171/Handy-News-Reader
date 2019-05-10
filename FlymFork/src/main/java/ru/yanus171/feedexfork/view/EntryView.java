@@ -107,7 +107,7 @@ public class EntryView extends WebView implements Observer {
 
     private static String GetCSS() { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold()
-            + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND ) + "; line-height: 120%} "
+            + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
             + "h1, h2 {font-weight: normal; line-height: 130%} "
             + "h1 {font-size: 170%; text-align:center; margin-bottom: 0.1em} "
@@ -117,15 +117,15 @@ public class EntryView extends WebView implements Observer {
             + "img {display: inline;max-width: 100%;height: auto} "
             + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
             + "pre {white-space: pre-wrap;} "
-            + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
+            + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR, android.R.color.black ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR, android.R.color.black  ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
             + "p {margin: 0.8em 0 0.8em 0} "
-            + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
+            + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR, android.R.color.black  ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black  ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
             + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
             + ".button-section p {margin: 0.1cm 0 0.2cm 0}"
             + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-            + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR ) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
+            + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
             + "</style><meta name='viewport' content='width=device-width'/></head>"; }
 
     private static String getFontBold() {
@@ -290,7 +290,7 @@ public class EntryView extends WebView implements Observer {
         setHorizontalScrollBarEnabled(false);
         getSettings().setUseWideViewPort(true);
         // For color
-        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND )));
+        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  )));
         // Text zoom level from preferences
         int fontSize = PrefUtils.getFontSize();
         if (fontSize != 0) {

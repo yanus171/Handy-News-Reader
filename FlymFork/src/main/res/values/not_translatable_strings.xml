@@ -3,7 +3,7 @@
     <string name="about_us_copyright" translatable="false"></string>
 
 
-    <string-array name="settings_battery_level_values">
+    <string-array name="settings_battery_level_values" >
         <item>50</item>
         <item>40</item>
         <item>30</item>

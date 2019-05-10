@@ -90,10 +90,12 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.ColorPreference;
 
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getString;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -321,7 +323,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
         final int backgroundColor;
-        backgroundColor = Color.parseColor( Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND) );
+        backgroundColor = Color.parseColor( Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) );
         view.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
         view.findViewById( R.id.layout_root ).setBackgroundColor( backgroundColor );
 
@@ -434,7 +436,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
 
         {
-            final int color = Color.parseColor( Theme.GetTextColor() );
+            final int color = Color.parseColor( isUnread ? Theme.GetTextColor() : view.getContext().getString( R.string.default_read_color ));
             holder.authorTextView.setTextColor( color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );

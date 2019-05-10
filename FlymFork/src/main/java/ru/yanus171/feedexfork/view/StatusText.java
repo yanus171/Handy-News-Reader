@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.NotificationCompat;
@@ -50,6 +51,7 @@ public class StatusText implements Observer {
         mErrorView = errorView;
         mView.setVisibility(View.GONE);
         mView.setGravity(Gravity.LEFT | Gravity.TOP);
+        mView.setBackgroundColor(Color.TRANSPARENT );
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +65,7 @@ public class StatusText implements Observer {
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);
+        mErrorView.setBackgroundColor(Color.TRANSPARENT );
         mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

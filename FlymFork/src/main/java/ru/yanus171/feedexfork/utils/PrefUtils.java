@@ -63,7 +63,7 @@ public class PrefUtils {
     public static final String DISPLAY_OLDEST_FIRST = "display_oldest_first";
     public static final String DISPLAY_ENTRIES_FULLSCREEN = "display_entries_fullscreen";
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
-    public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
+    //public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
     private static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
     private static final String MAX_IMAGE_DOWNLOAD_SIZE = "settings_max_image_download_size_kb";
     private static final String MAX_SINGLE_REFRESH_TRAFFIC = "settings_max_single_refresh_traffic_mb";
@@ -177,6 +177,10 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static boolean contains(String key) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        return settings.contains( key );
+    }
     public static String getString(String key, String defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         String result  = defValue;
@@ -250,7 +254,7 @@ public class PrefUtils {
     // ------------------------------------------------------------------------------------
     public static int GetPrefColorDefID(String key, int defaultValueID) {
         if (!Theme.IsCustom() )
-            return Theme.GetColor( key, defaultValueID );
+            return Theme.GetColorInt( key, defaultValueID );
         else {
             int result = Color.parseColor(MainApplication.getContext().getString(defaultValueID));
             return getInt(key, result);
