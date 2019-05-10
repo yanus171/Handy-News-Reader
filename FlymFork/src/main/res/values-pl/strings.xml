@@ -175,6 +175,7 @@
     <string name="settings_load_comments">Wczytuj komentarze</string>
     <string name="settings_load_comments_description">W pełnej treści artykułu</string>
     <string name="settings_category_article_list">Lista artykułów</string>
+    <string name="settings_category_article_list_summary">Wygląd listy artykułów</string>
     <string name="settings_font_size">Rozmiar tekstu</string>
     <string name="show_article_icon">Pokaż ikonę artykułu</string>
     <string name="show_article_icon_descr">Wyłącz by uzyskać więcej miejsca na ekranie</string>
@@ -195,6 +196,7 @@
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
     <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
     <string name="settings_category_article_text">Tekst artykułu</string>
+    <string name="settings_category_article_text_summary">Wygląd tekstu artykułu</string>
     <string name="settings_display_images">Wyświetlaj obrazki</string>
     <string name="settings_display_images_description">Wyświetlaj obrazki w artykułach.</string>
     <string name="settings_display_entries_fullscreen">Automatyczny tryb pełnoekranowy</string>
@@ -204,8 +206,12 @@
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
     <string name="article_text_footer_show_clock">Godzina</string>
+    <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w lewym dolnym rogu w trybie pełnoekranowym</string>
+    <string name="settings_clock_size">Rozmiar czcionki zegara w stopce</string>
     <string name="article_text_footer_show_progress">Pasek postępu czytania</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
+    <string name="settings_category_operation">Czynności</string>
+    <string name="settings_category_operation_summary">Ustawienia dot. czynności</string>
     <string name="tap_zone_size">Rozmiar Stref Aktywnych</string>
     <string name="tap_zone_size_descr">Szerokość lub wysokość wszystkich Stref Aktywnych w milimetrach</string>
     <string name="settings_show_tap_zones">Strefy Aktywne widoczne</string>
@@ -216,6 +222,8 @@
     <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
     <string name="brightness_with_dim_activity">Nakładka programowa</string>
     <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
+    <string name="settings_category_behavior">Zachowanie powiadomień</string>
+    <string name="settings_category_behavior_summary">Powiadomienia o nowych artykułach oraz zachowanie aplikacji</string>
     <string name="settings_notifications_enabled">Włącz powiadomienia</string>
     <string name="settings_notifications_enabled_description">Włącz powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_ringtone">Dzwonek</string>
@@ -230,6 +238,7 @@
     <string name="settings_remeber_last_entry_description">Otwórz ostatnio wyświetlany artykuł po uruchomieniu - w przeciwnym razie pokaż listę nieprzeczytanych artykułów</string>
     <string name="auto_unstart_at_bottom">Usuń z Ulubionych po przeczytaniu</string>
     <string name="auto_unstart_at_bottom_descr">Automatycznie usuń artykuł z Ulubionych po przewinięciu do jego końca</string>
+    <string name="settings_category_advanced">Zaawansowane</string>
     <string name="settings_autobackup_enabled">Włącz automatyczną kopię zapasową</string>
     <string name="settings_autobackup_enabled_descr">Okresowo zapisuje listę źródeł oraz ulubionych artykułów do pliku .opml</string>
     <string name="settings_category_content_presentation">Prezentacja treści.</string>
