@@ -3,7 +3,7 @@
     <string name="about_us_copyright" translatable="false"></string>
 
 
-    <string-array name="settings_battery_level_values" >
+    <string-array name="settings_battery_level_values" translatable="false">
         <item>50</item>
         <item>40</item>
         <item>30</item>
@@ -87,7 +87,7 @@
         <item>ALWAYS_PRELOAD</item>
     </string-array>
 
-    <string-array name="languageList" >
+    <string-array name="languageList" translatable="false">
         <item>System</item>
         <item>Català</item>
         <item>Český</item>
@@ -107,7 +107,7 @@
         <item>中国</item>
         <item>Ελληνικός</item>
     </string-array>
-    <string-array name="languageValueList" >
+    <string-array name="languageValueList" translatable="false">
         <item>System</item>
         <item>ca</item>
         <item>cs</item>
@@ -126,6 +126,11 @@
         <item>sv</item>
         <item>zh</item>
         <item>el</item>
+    </string-array>
+
+    <string-array name="themeValueList" translatable="false">
+        <item>Light</item>
+        <item>Dark</item>
     </string-array>
 
 </resources>
