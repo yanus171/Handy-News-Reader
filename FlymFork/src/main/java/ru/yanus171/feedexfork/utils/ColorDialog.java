@@ -130,6 +130,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 		TextView result = new TextView(layout.getContext());
 		result.setTypeface(Typeface.DEFAULT_BOLD);
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+		result.setSingleLine();
 		if (isText && isBackground) {
 			result.setText(cTextLetter);
 			result.setGravity(Gravity.CENTER);
@@ -177,7 +178,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 				cell.setOnLongClickListener(new View.OnLongClickListener() {
 					public boolean onLongClick(View v) {
 						SetViewColor(v, GetCurrentColor() );
-						PrefUtils.putString( GetSlotKey(finalRow, finalCol), ColorPreference.ToHex( GetCurrentColor() ));
+						PrefUtils.putString( GetSlotKey(finalRow, finalCol), ColorPreference.ToHex( GetCurrentColor(), IsTransparency ));
 						Toast.makeText(MainApplication.getContext(), R.string.colorSlotSaved, Toast.LENGTH_LONG).show();
 						return true;
 					}
@@ -188,37 +189,39 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 
 	// -------------------------------------------------------------------------
 	private void AddTextBackgroundSwitch(LinearLayout layout) {
-		RadioGroup group = new RadioGroup(Context);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT,
-				RadioGroup.LayoutParams.WRAP_CONTENT);
+        RadioGroup group = new RadioGroup(Context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT,
+                RadioGroup.LayoutParams.WRAP_CONTENT);
 
-		layout.addView(group, lp);
-		group.setOrientation(RadioGroup.HORIZONTAL);
-		group.setGravity(Gravity.CENTER);
-		if (!IsText || !IsBackground) {
-			group.setVisibility(View.GONE);
-		}
+        layout.addView(group, lp);
+        group.setOrientation(RadioGroup.HORIZONTAL);
+        group.setGravity(Gravity.CENTER);
+        if (!IsText || !IsBackground) {
+            group.setVisibility(View.GONE);
+        }
 
-		RadioButton rbTextColor = new RadioButton(Context);
-		rbTextColor.setText(R.string.text);
-		rbTextColor.setId(cTextColorMode);
-		rbTextColor.setTextColor(Theme.GetMenuFontColor());
-		rbTextColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-		// rbTextColor.setPadding(0, 10, 0, 0);
-		if (!IsText) {
-			rbTextColor.setVisibility(View.GONE);
-		}
-		group.addView(rbTextColor, 0, lp);
+        {
+            RadioButton rbTextColor = new RadioButton(Context);
+            rbTextColor.setText(R.string.text);
+            rbTextColor.setId(cTextColorMode);
+            rbTextColor.setTextColor(Theme.GetMenuFontColor());
+            rbTextColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+            // rbTextColor.setPadding(0, 10, 0, 0);
+            if (!IsText)
+                rbTextColor.setVisibility(View.GONE);
+            group.addView(rbTextColor, 0, lp);
+        }
 
-		RadioButton rbBackGroundColor = new RadioButton(Context);
-		group.addView(rbBackGroundColor, 1, lp);
-		rbBackGroundColor.setText(R.string.background1);
-		rbBackGroundColor.setId(cBackgroundColorMode);
-		rbBackGroundColor.setTextColor(Theme.GetMenuFontColor());
-		rbBackGroundColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-		if (!IsBackground) {
-			rbBackGroundColor.setVisibility(View.GONE);
-		}
+        {
+            RadioButton rbBackGroundColor = new RadioButton(Context);
+            group.addView(rbBackGroundColor, 1, lp);
+            rbBackGroundColor.setText(R.string.background1);
+            rbBackGroundColor.setId(cBackgroundColorMode);
+            rbBackGroundColor.setTextColor(Theme.GetMenuFontColor());
+            rbBackGroundColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+            if (!IsBackground)
+                rbBackGroundColor.setVisibility(View.GONE);
+        }
 
 		group.check(cTextColorMode);
 		group.setOnCheckedChangeListener(new OnCheckedChangeListener() {

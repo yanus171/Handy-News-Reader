@@ -36,8 +36,8 @@ public class ColorTB implements Serializable {
 	public ColorTB(String key, int defTextID, int defBackgroundID) {
 		
 		if (!Theme.IsCustom() ) {
-			Text = Theme.GetColor( key, defTextID );
-			Background = Theme.GetColor( ColorPreference.GetBackgroundKey(key), defBackgroundID );
+			Text = Theme.GetColorInt( key, defTextID );
+			Background = Theme.GetColorInt( ColorPreference.GetBackgroundKey(key), defBackgroundID );
 		} else {
 			Text = PrefUtils.GetPrefColorDefID(key, defTextID);
 			Background = PrefUtils.GetPrefColorDefID(ColorPreference.GetBackgroundKey(key), defBackgroundID);

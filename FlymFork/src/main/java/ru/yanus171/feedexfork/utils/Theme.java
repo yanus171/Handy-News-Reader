@@ -93,46 +93,46 @@ public class Theme {
 
 	private static String GetTheme() { return PrefUtils.getString( THEME, DARK ); }
 	public static String GetTextColor() {
-		if ( IsCustom() )
-			return GetColor( TEXT_COLOR );
-		else
-			return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
+		//if ( IsCustom() )
+			return GetColor( TEXT_COLOR, R.string.default_text_color );
+		//else
+		//	return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
 	}
 
 	public static boolean IsLight() {
 		return GetTheme().equals( LIGHT );
 	}
 
-	private static String getTextColorDarkTheme() {
-
-		int b = 200;
-		try {
-			b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
-		} catch (NumberFormatException e) {
-
-		}
-		return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
-	}
-
-	private static String getTextColorLightTheme() {
-
-		int b = 200;
-		try {
-			b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
-		} catch (NumberFormatException e) {
-
-		}
-		b = 255 - b;
-		return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
-	}
+//	private static String getTextColorDarkTheme() {
+//
+//		int b = 200;
+//		try {
+//			b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
+//		} catch (NumberFormatException e) {
+//
+//		}
+//		return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
+//	}
+//
+//	private static String getTextColorLightTheme() {
+//
+//		int b = 200;
+//		try {
+//			b = Integer.parseInt( PrefUtils.getString(PrefUtils.TEXT_COLOR_BRIGHTNESS, "200") );
+//		} catch (NumberFormatException e) {
+//
+//		}
+//		b = 255 - b;
+//		return "#" + Integer.toHexString( Color.argb( 255, b, b, b ) ).substring( 2 );
+//	}
 
 	//-------------------------------------------------------------------
 	public static int GetMenuFontColor() {
-		return GetColor(MENU_FONT_COLOR, R.color.dark_background);
+		return GetColorInt (MENU_FONT_COLOR, R.color.light_theme_color_primary);
 	}
 	//-------------------------------------------------------------------
 	public static int GetMenuBackgroundColor() {
-		return GetColor(MENU_BACKGROUND_COLOR, android.R.color.background_dark);
+		return GetColorInt(MENU_BACKGROUND_COLOR, android.R.color.background_dark);
 	}
 //	static int GetTheme() {
 //		return Theme.GetResID("theme");
@@ -142,7 +142,17 @@ public class Theme {
 		return Theme.GetResID("themeDialog");
 	}
 	//-------------------------------------------------------------------
-	public static int GetColor(String key, int defID) {
+	public static int GetColorInt(String key, int defID) {
+		int result = Color.BLACK;
+		try {
+			result = Color.parseColor(GetColor(key, defID));
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	//-------------------------------------------------------------------
+	public static String GetColor(String key, int defID) {
 		CheckInit();		
 		
 		HashMap<String, String> map = ThemeList.get(mTheme);
@@ -150,16 +160,20 @@ public class Theme {
 		if ( map == null )
 			map = ThemeList.get(DARK);
 		
-		int result = Color.parseColor(MainApplication.getContext().getString(defID));
-		
-		if ( map.containsKey(key) ) 
-			result = Color.parseColor( map.get(key) );
-		
+		String result = MainApplication.getContext().getString(defID);
+
+
+		if ( PrefUtils.contains( key ) && ( !map.containsKey(key) || IsCustom() ) )
+			result = PrefUtils.getString( key, result );
+		else
+			result = map.get(key);
+
 		return result;
 	}
 
+
 	//-------------------------------------------------------------------
-	public static String GetColor(String key) {
+	public static String GetColor(String key, String defaultColor) {
 		CheckInit();
 
 		HashMap<String, String> map = ThemeList.get(mTheme);
@@ -167,15 +181,14 @@ public class Theme {
 		if ( map == null )
 			map = ThemeList.get(DARK);
 
-		String result = "#000000";
-		if ( map.containsKey(key) )
+		String result = defaultColor;
+		if ( IsCustom() || !map.containsKey(key) )
+			result = PrefUtils.getString( key, result );
+		else
 			result = map.get(key);
 
-		if ( IsCustom() )
-			result = PrefUtils.getString( key, result );
 		return result;
 	}
-
 	public static int GetResID( String key ) {
 		CheckInit();
 

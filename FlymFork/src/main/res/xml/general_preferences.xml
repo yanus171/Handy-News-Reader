@@ -51,11 +51,11 @@
                 <!--android:title="@string/settings_light_theme" />-->
 
             <ru.yanus171.feedexfork.view.ColorPreference
-                android:defaultValue="@android:color/white"
+                android:defaultValue="@string/default_text_color"
                 android:dependency="customColors"
                 android:key="textColor"
                 android:title="@string/textColor"
-                colorPreference:backgroundColor="@android:color/darker_gray"
+                colorPreference:backgroundColor="@string/default_text_color_background"
                 colorPreference:istransparency="false" />
 
         </PreferenceCategory>
@@ -153,11 +153,11 @@
                 android:key="fontsize"
                 android:title="@string/settings_font_size"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="text_color_brightness"
-                android:inputType="number"
-                android:title="@string/settings_display_text_color"
-                android:summary="@string/settings_display_text_color_description"/>
+            <!--<ru.yanus171.feedexfork.view.AutoSummaryEditPreference-->
+                <!--android:key="text_color_brightness"-->
+                <!--android:inputType="number"-->
+                <!--android:title="@string/settings_display_text_color"-->
+                <!--android:summary="@string/settings_display_text_color_description"/>-->
 
             <CheckBoxPreference
                 android:defaultValue="true"
@@ -193,6 +193,13 @@
                 android:inputType="number"
                 android:key="article_text_footer_show_clock_fontsize"
                 android:title="@string/settings_clock_size" />
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_article_text_footer_color"
+                android:dependency="article_text_footer_show_clock"
+                android:key="article_text_footer_clock_color"
+                android:title="@string/article_text_footer_clock_color"
+                colorPreference:backgroundColor="@string/transparent_color"
+                colorPreference:istransparency="true" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="article_text_footer_show_progress"
@@ -204,7 +211,12 @@
                 android:entryValues="@array/settings_footer_progress_height_values"
                 android:defaultValue="1"
                 android:title="@string/article_text_footer_progress_height"/>
-
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_article_text_footer_color"
+                android:dependency="article_text_footer_show_progress"
+                android:key="article_text_footer_progress_color"
+                android:title="@string/article_text_footer_progress_color"
+                colorPreference:istransparency="true" />
         </PreferenceCategory>
     </PreferenceScreen>
 

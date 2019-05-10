@@ -71,18 +71,18 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 		return result;
 	}
 
-    public static String ToHex(int color) {
-//        if ( Color.alpha( color ) == 1 )
+    public static String ToHex(int color, boolean isTransparent) {
+        if ( isTransparent )
+            return String.format( "#%02X%02X%02X%02X",
+                    Color.alpha( color ),
+                    Color.red( color ),
+                    Color.green( color ),
+                    Color.blue( color ));
+        else
             return String.format( "#%02X%02X%02X",
                     Color.red( color ),
                     Color.green( color ),
                     Color.blue( color ));
-//        else
-//            return String.format( "#%02X%02X%02X%02X",
-//                Color.alpha( color ),
-//                Color.red( color ),
-//                Color.green( color ),
-//                Color.blue( color ));
     }
 
     // -------------------------------------------------------------------------
@@ -97,8 +97,8 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 			@SuppressLint("CommitPrefEdits")
 			public void onClick(DialogInterface dialog, int which) {
 				// persistInt(colorDialog.mColor.Text);
-				PrefUtils.putString( getKey(), ToHex( colorDialog.mColor.Text ) );
-                PrefUtils.putString( GetBackgroundKey(getKey()), ToHex( colorDialog.mColor.Background ) );
+				PrefUtils.putString( getKey(), ToHex( colorDialog.mColor.Text, IsTransparency ) );
+                PrefUtils.putString( GetBackgroundKey(getKey()), ToHex( colorDialog.mColor.Background, IsTransparency ) );
 				UpdateViewColor();
 				callChangeListener(null);
 			}
@@ -114,12 +114,12 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 
 	// -------------------------------------------------------------------------
 	private int GetPersistedTextColor() {
-		return GetPrefString(getKey(), ToHex( DefaultTextColor ));
+		return GetPrefString(getKey(), ToHex( DefaultTextColor, IsTransparency ));
 	}
 
 	// -------------------------------------------------------------------------
 	private int GetPersistedBackgroundColor() {
-		return GetPrefString(GetBackgroundKey(getKey()), ToHex( DefaultBackgroundColor ));
+		return GetPrefString(GetBackgroundKey(getKey()), ToHex( DefaultBackgroundColor, IsTransparency ));
 	}
 
 	// -------------------------------------------------------------------------
