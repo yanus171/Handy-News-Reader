@@ -125,7 +125,6 @@
     <string name="never">никогда</string>
     <string name="update">Обновление</string>
     <string name="updating">Обновление&#8230;</string>
-    <string name="colon">:\u00A0</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_all_read">Отметить все как прочитанное</string>
@@ -191,9 +190,7 @@
     <string name="to_group_above">Над группой</string>
     <string name="to_group_into">Внутрь группы</string>
     <string name="add_custom_feed">Добавить ленту по адресу или по названию</string>
-    <string name="google_news_title">Google News topics</string>
     <string name="google_news_indicator">Выберите одну или несколько категорий.</string>
-    <string name="google_news_top_stories">Top Stories</string>
     <string name="google_news_world">Мир</string>
     <string name="google_news_business">Бизнес</string>
     <string name="google_news_technology">Технолгии</string>
@@ -233,7 +230,6 @@
     <string name="see_link">Открыть в браузере</string>
     <string name="cant_open_link">Не найдено приложений для открытия этой ссылки</string>
     <string name="open_enclosure">Открыть вложение</string>
-    <string name="file">File</string>
     <string name="download_and_save">Загрузить и сохранить</string>
     <string name="open_link">Открыть ссылку</string>
     <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
@@ -296,7 +292,6 @@
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
     <string name="settings_category_article_text">Текст статьи</string>
     <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>
-    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">Отображать кратинки</string>
     <string name="settings_display_images_description">в тексте статей</string>
     <string name="settings_display_entries_fullscreen">Статьи на полный экран</string>
@@ -328,7 +323,6 @@
     <string name="settings_notifications_enabled_description">Включить уведомления о новых записях
     </string>
     <string name="settings_notifications_ringtone">Звук</string>
-    <string name="settings_notifications_ringtone_none">None</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
     <string name="settings_notifications_vibrate_description">Включить вибрацию при новых записях
     </string>
@@ -419,7 +413,6 @@
     <string name="criticalErrorSending">Отправка отчета об ошибке…</string>
     <string name="copyToClipboard">Скопировать в буфер</string>
     <string name="sendEmail">Послать письмо</string>
-    <string name="toastAppCrashed">The application unexpectedly failed: (Please send a mail to developer)</string>
     <string name="exportingToFile">Экспорт в файл</string>
     <string name="importingFromFile">Импорт из файла</string>
     <string name="autobackup_interval">Интервал резервного копирования</string>
@@ -431,14 +424,6 @@
     <string name="settings">Настройки</string>
     <string name="entry_go_prev">Пред. статья</string>
     <string name="entry_go_next">След. статья</string>
-    <string name="colorSlotSaveLongTapHint">Tip: To save the current color make a long tap on one of the cells</string>
-    <string name="colorSlotSaved">Color was saved to cell</string>
-    <string name="text">Text</string>
-    <string name="background1">Background</string>
-    <string name="textColor">Text color</string>
-    <string name="customColors">Custom font colors</string>
-    <string name="fontColorsNotFromThemeSummary">overwise use theme colors</string>
-    <string name="theme">Theme</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
