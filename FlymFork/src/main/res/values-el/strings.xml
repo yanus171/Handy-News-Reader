@@ -89,13 +89,11 @@
     • από ekarpi<br/>
     <br/>
     ]]></string>
-    <string name="app_name">Handy News Reader</string>
     <string name="about_flym">Σχετικά με την εφαρμογή / Βοήθεια / Επικοινωνία με τον προγραματιστή </string>
     <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μία ροή;</string>
     <string name="never">ποτέ</string>
     <string name="update">Ενημέρωση</string>
     <string name="updating">Ενημέρωση&#8230;</string>
-    <string name="colon">:\u00A0</string>
     <string name="menu_settings">Ρυθμίσεις</string>
     <string name="menu_refresh">Ανανέωση</string>
     <string name="menu_all_read">Σημείωση όλων ως αναγνωσμένα</string>
@@ -256,7 +254,6 @@
     <string name="show_group_entries_count_descr">Μπορεί να μειώσει την απόδοση</string>
     <string name="settings_category_article_text">Κείμενο του άρθρου</string>
     <string name="settings_category_article_text_summary">Εμφάνιση του κείμενου</string>
-    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">Προβολή εικόνων</string>
     <string name="settings_display_images_description">Προβολή εικόνων στα άρθρα</string>
     <string name="settings_display_entries_fullscreen">Αυτόματη προβολή πλήρους οθόνης</string>
@@ -389,14 +386,6 @@
     <string name="settings">Ρυθμίσεις</string>
     <string name="entry_go_prev">Προηγούμενη σελίδα</string>
     <string name="entry_go_next">Επόμενη σελίδα</string>
-    <string name="colorSlotSaveLongTapHint">Tip: To save the current color make a long tap on one of the cells</string>
-    <string name="colorSlotSaved">Color was saved to cell</string>
-    <string name="text">Text</string>
-    <string name="background1">Background</string>
-    <string name="textColor">Text color</string>
-    <string name="customColors">Custom font colors</string>
-    <string name="fontColorsNotFromThemeSummary">overwise use theme colors</string>
-    <string name="theme">Theme</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
