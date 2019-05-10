@@ -230,6 +230,7 @@
     <string name="see_link">Открыть в браузере</string>
     <string name="cant_open_link">Не найдено приложений для открытия этой ссылки</string>
     <string name="open_enclosure">Открыть вложение</string>
+    <string name="file">Файл</string>
     <string name="download_and_save">Загрузить и сохранить</string>
     <string name="open_link">Открыть ссылку</string>
     <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
@@ -413,6 +414,7 @@
     <string name="criticalErrorSending">Отправка отчета об ошибке…</string>
     <string name="copyToClipboard">Скопировать в буфер</string>
     <string name="sendEmail">Послать письмо</string>
+    <string name="toastAppCrashed">Приложение неожиданно завершилось. Пожалуйста отправьте отчет разработчику</string>
     <string name="exportingToFile">Экспорт в файл</string>
     <string name="importingFromFile">Импорт из файла</string>
     <string name="autobackup_interval">Интервал резервного копирования</string>
@@ -424,6 +426,16 @@
     <string name="settings">Настройки</string>
     <string name="entry_go_prev">Пред. статья</string>
     <string name="entry_go_next">След. статья</string>
+    <string name="colorSlotSaveLongTapHint">Совет: Чтобы сохранить текущий цвет, сделайте долгий тап на одну из ячеек</string>
+    <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
+    <string name="text">Текст</string>
+    <string name="background1">Фон</string>
+    <string name="textColor">Цвет текста</string>
+    <string name="customColors">Пользовательские цвета</string>
+    <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
+    <string name="theme">Тема</string>
+    <string name="article_text_footer_clock_color">Цвет часов</string>
+    <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
