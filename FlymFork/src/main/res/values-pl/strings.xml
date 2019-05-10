@@ -239,6 +239,7 @@
     <string name="auto_unstart_at_bottom">Usuń z Ulubionych po przeczytaniu</string>
     <string name="auto_unstart_at_bottom_descr">Automatycznie usuń artykuł z Ulubionych po przewinięciu do jego końca</string>
     <string name="settings_category_advanced">Zaawansowane</string>
+    <string name="settings_category_advanced_summary">Dodatkowe funkcje (takie jak kopia zapasowa, filtry i inne)</string>
     <string name="settings_autobackup_enabled">Włącz automatyczną kopię zapasową</string>
     <string name="settings_autobackup_enabled_descr">Okresowo zapisuje listę źródeł oraz ulubionych artykułów do pliku .opml</string>
     <string name="settings_category_content_presentation">Prezentacja treści.</string>
@@ -310,6 +311,7 @@
     <string name="customKeepTime">Własny czas przechowywania artykułów</string>
     <string name="menu_toggle_theme">Zmień motyw</string>
     <string name="turnOn">Włącz</string>
+    <string name="brightness">Jasność</string>
     <string name="brightness_change">Regulacja jasności</string>
     <string name="criticalErrorOccured">Wystąpił błąd krytyczny - pomóż nam go naprawić przesyłając ten tekst deweloperowi</string>
     <string name="criticalErrorSending">Przesyłanie informacji o błędzie…</string>
@@ -324,6 +326,15 @@
     <string name="auto_backup_opml_file_created">Kopia zapasowa .opml utworzona:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
+    <string name="settings">Ustawienia</string>
+    <string name="entry_go_prev">Poprzednia strona</string>
+    <string name="entry_go_next">Następna strona</string>
+    <string name="colorSlotSaveLongTapHint">Porada: by zachować aktualny kolor, przytrzymaj dłużej na jednej z komórek</string>
+    <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
+    <string name="text">Tekst</string>
+    <string name="background1">Tło</string>
+    <string name="textColor">Kolor tekstu</string>
+    <string name="customColors">Własne kolory czcionki</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
