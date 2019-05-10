@@ -277,8 +277,8 @@
     <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
     <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
-    <string name="article_text_footer_show_progress">Lese-Fortschrittbalken</string>
-    <string name="article_text_footer_progress_height">Höhe des Fortschrittbalkens</string>
+    <string name="article_text_footer_show_progress">Lese-Fortschrittsbalken</string>
+    <string name="article_text_footer_progress_height">Höhe des Fortschrittsbalkens</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
@@ -406,6 +406,8 @@
     <string name="customColors">Eigene Textfarben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
     <string name="theme">Thema</string>
+    <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
+    <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalken</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
