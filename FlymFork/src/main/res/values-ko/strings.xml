@@ -41,7 +41,6 @@
     <string name="error">오류</string>
     <string name="network_error">네트워크가 준비되지 않았습니다</string>
     <string name="loading">읽어들이는 중…</string>
-    <string name="no_result">결과 없음</string>
     <string name="drawer_open">네비게이션 드로어 열기</string>
     <string name="drawer_close">네비게이션 드로어 닫기</string>
     <!-- FEEDS -->
@@ -54,8 +53,6 @@
     <string name="new_feed_title">새 피드</string>
     <string name="context_menu_edit">편집</string>
     <string name="menu_add_group">그룹 추가</string>
-    <string name="menu_import">OPML에서 가져오기</string>
-    <string name="menu_export">OPML로 내보내기</string>
     <string name="error_feed_error">피드 주소에 접근할 수 없습니다.</string>
     <string name="error_feed_process">피드를 처리할 수 없습니다.</string>
     <string name="error_feed_url_exists">그 주소는 이미 있습니다.</string>
@@ -121,7 +118,6 @@
     <string name="file">파일</string>
     <string name="download_and_save">다운로드 및 저장</string>
     <string name="open_link">링크 열기</string>
-    <string name="tip_sentence">Tip: slide left to mark as read</string>
     <!-- WIDGET -->
     <string name="red">빨강</string>
     <string name="green">녹색</string>
