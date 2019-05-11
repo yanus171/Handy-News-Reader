@@ -32,7 +32,6 @@
 <resources>
     <!-- GENERAL -->
     <string name="app_name">Удобное чтение новостей</string>
-    <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
     <string name="welcome_title">Добавить канал?</string>
     <string name="never">никогда</string>
     <string name="update">Обновление</string>
@@ -44,7 +43,6 @@
     <string name="error">Ошибка</string>
     <string name="network_error">Нет подключения к сети</string>
     <string name="loading">Загрузка…</string>
-    <string name="no_result">Нет результатов</string>
     <string name="drawer_open">Открыть меню навигации</string>
     <string name="drawer_close">Закрыть меню навигации</string>
     <!-- FEEDS -->
@@ -57,8 +55,6 @@
     <string name="new_feed_title">Новая лента</string>
     <string name="context_menu_edit">Редактировать</string>
     <string name="menu_add_group">Добавить группу</string>
-    <string name="menu_import">Импорт из OPML-файла</string>
-    <string name="menu_export">Экспорт в OPML-файл</string>
     <string name="storage_request_explanation">Для экспорта/импорта лент в файл необходимо предоставить приложению разрешение на доступ к карте памяти.</string>
     <string name="error_feed_error">Адрес ленты не доступен.</string>
     <string name="error_feed_process">Лента не может быть добавлена.</string>
@@ -128,8 +124,6 @@
     <string name="menu_delete_all">Удалить все</string>
     <string name="menu_toogle_unread_all">Прочитанные|Все</string>
     <string name="menu_load_all_images">Загрузить все картинки</string>
-    <string name="menu_mark_as_favorite">В избранное</string>
-    <string name="menu_mark_as_unfavorite">Убрать из избранного</string>
     <string name="menu_mark_as_unread">Отметить как непрочитанное</string>
     <string name="menu_reload_full_text">Перезагрузить весь текст</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезагрузить без мобилайзера</string>
@@ -145,7 +139,6 @@
     <string name="file">Файл</string>
     <string name="download_and_save">Загрузить и сохранить</string>
     <string name="open_link">Открыть ссылку</string>
-    <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
     <string name="undo">Отменить</string>
     <string name="marked_as_read">Отмечено как прочитанное</string>
     <!-- WIDGET -->
@@ -198,7 +191,6 @@
     <string name="show_full_text_indicator">Индикация полного текста</string>
     <string name="show_full_text_indicator_descr">Показывать иконку маленькой дискеты, если для статьи загружен полный текст</string>
     <string name="show_new_icon">Подкрашивать новые</string>
-    <string name="show_new_icon_descr">Маленькая иконка с полюсом на новых статьях (названия которых еще никогда не были видимы)</string>
     <string name="show_read_article_count">Число прочитанных статей лент</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
@@ -214,8 +206,6 @@
     <string name="entry_text_align_justify">Выравнивать по содержимому</string>
     <string name="entry_text_align_justify_description">иначе по левому краю</string>
     <string name="article_text_footer_show_clock">Часы</string>
-    <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
-    <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>
     <string name="settings_category_operation">Операции</string>
@@ -230,8 +220,6 @@
     <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
     <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
     <string name="brightness_with_dim_activity_descr">Включите, если иначе измнение яркости не работает</string>
-    <string name="settings_category_behavior">Уведомления</string>
-    <string name="settings_category_behavior_summary">О появлении новых статей</string>
     <string name="settings_notifications_enabled">Включить уведомления</string>
     <string name="settings_notifications_enabled_description">Включить уведомления о новых записях
     </string>
@@ -248,7 +236,6 @@
     <string name="auto_unstart_at_bottom">Убирать звезду по прочтении</string>
     <string name="auto_unstart_at_bottom_descr">Автоматически убирать статью из избранного при достижении ее нижнего края</string>
     <string name="settings_category_advanced">Дополнительно</string>
-    <string name="settings_category_advanced_summary">Настройки фильтрации, автоматизческих резервных копий и др.</string>
     <string name="settings_autobackup_enabled">Автоматическое резервное копирование</string>
     <string name="settings_autobackup_enabled_descr">Периодчиески сохранять OPML файл c данными лент и избранных статей</string>
     <string name="settings_category_content_presentation">Представление содержания</string>
@@ -325,8 +312,6 @@
     <string name="criticalErrorOccured">В приложение возникла ошибка. Отошлите, пожалуйста отчет об ошибке разработчику</string>
     <string name="criticalErrorSending">Отправка отчета об ошибке…</string>
     <string name="copyToClipboard">Скопировать в буфер</string>
-    <string name="sendEmail">Послать письмо</string>
-    <string name="toastAppCrashed">Приложение неожиданно завершилось. Пожалуйста отправьте отчет разработчику</string>
     <string name="exportingToFile">Экспорт в файл</string>
     <string name="importingFromFile">Импорт из файла</string>
     <string name="autobackup_interval">Интервал резервного копирования</string>
@@ -336,15 +321,11 @@
     <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
     <string name="settings">Настройки</string>
-    <string name="entry_go_prev">Пред. статья</string>
     <string name="entry_go_next">След. статья</string>
-    <string name="colorSlotSaveLongTapHint">Совет: Чтобы сохранить текущий цвет, сделайте долгий тап на одну из ячеек</string>
-    <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
     <string name="textColor">Цвет текста</string>
     <string name="customColors">Пользовательские цвета</string>
-    <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
     <string name="theme">Тема</string>
     <string name="article_text_footer_clock_color">Цвет часов</string>
     <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
