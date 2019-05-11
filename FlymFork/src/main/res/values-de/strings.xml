@@ -32,7 +32,6 @@
 <resources>
     <!-- GENERAL -->
     <string name="app_name">Handy News Reader</string>
-    <string name="about_flym">Info - Hilfe - Support</string>
     <string name="welcome_title">Willkommen bei Handy News Reader. Möchten Sie einen Feed hinzufügen?</string>
     <string name="never">niemals</string>
     <string name="update">Aktualisierung</string>
@@ -45,7 +44,6 @@
     <string name="error">Fehler</string>
     <string name="network_error">Kein Netzwerk eingerichtet</string>
     <string name="loading">Lade…</string>
-    <string name="no_result">Kein Ergebnis</string>
     <string name="drawer_open">Navigationsleiste öffnen</string>
     <string name="drawer_close">Navigationsleiste schließen</string>
     <!-- FEEDS -->
@@ -58,8 +56,6 @@
     <string name="new_feed_title">Neuer Feed</string>
     <string name="context_menu_edit">Bearbeiten</string>
     <string name="menu_add_group">Gruppe erstellen</string>
-    <string name="menu_import">OPML-Datei importieren</string>
-    <string name="menu_export">OPML-Datei exportieren</string>
     <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
     <string name="error_feed_error">Zugriff auf Feed-Adresse nicht möglich.</string>
     <string name="error_feed_process">Der Feed kann nicht verarbeitet werden.</string>
@@ -123,8 +119,6 @@
     <string name="menu_delete_all">Alle löschen</string>
     <string name="menu_toogle_unread_all">Ungelesen|Alle</string>
     <string name="menu_load_all_images">Alle Bilder laden</string>
-    <string name="menu_mark_as_favorite">Als Favorit markieren</string>
-    <string name="menu_mark_as_unfavorite">Favorit-Markierung entfernen</string>
     <string name="menu_mark_as_unread">Als ungelesen markieren</string>
     <string name="menu_reload_full_text">Gesamten Text neu laden</string>
     <string name="menu_reload_full_text_without_mobilizer">Ohne Mobilizer neu laden</string>
@@ -140,7 +134,6 @@
     <string name="file">Datei</string>
     <string name="download_and_save">Herunterladen und speichern</string>
     <string name="open_link">Link öffnen</string>
-    <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
     <!-- WIDGET -->
@@ -191,7 +184,6 @@
     <string name="show_full_text_indicator">Symbol für vollständigen Text</string>
     <string name="show_full_text_indicator_descr">Zeigt ein kleines Diskettensymbol an, wenn der Artikeltext vollständig geladen wurde</string>
     <string name="show_new_icon">Symbol für neue Artikel</string>
-    <string name="show_new_icon_descr">Nie gesehene Artikel durch ein kleines Plus-Symbol markieren</string>
     <string name="show_read_article_count">Anzahl der gelesenen Artikel zeigen</string>
     <string name="show_read_article_count_descr">in der Feedliste</string>
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
@@ -208,8 +200,6 @@
     <string name="entry_text_align_justify">Blocksatz</string>
     <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
     <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
-    <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
-    <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
     <string name="article_text_footer_show_progress">Lese-Fortschrittsbalken</string>
     <string name="article_text_footer_progress_height">Höhe des Fortschrittsbalkens</string>
     <string name="settings_category_operation">Bedienung</string>
@@ -224,8 +214,6 @@
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
     <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
-    <string name="settings_category_behavior">Benachrichtigungen \u0026 Verhalten</string>
-    <string name="settings_category_behavior_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Aktiviert Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
@@ -241,7 +229,6 @@
     <string name="auto_unstart_at_bottom">Automatisch aus den Favoriten entfernen, wenn gelesen</string>
     <string name="auto_unstart_at_bottom_descr">Entfernt den Artikel aus den Favoriten, wenn das Artikelende erreicht wurde</string>
     <string name="settings_category_advanced">Erweitert</string>
-    <string name="settings_category_advanced_summary">Zusätzliche Funktionen wie Backup, Filter und mehr</string>
     <string name="settings_autobackup_enabled">Automatisches Backup aktivieren</string>
     <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine .opml-Datei</string>
     <string name="settings_category_content_presentation">Anzeige der Inhalte</string>
@@ -318,8 +305,6 @@
     <string name="criticalErrorOccured">Ein schwerwiegender Fehler ist aufgetreten. Bitte senden Sie diesen Text an den Entwickler</string>
     <string name="criticalErrorSending">Fehler senden…</string>
     <string name="copyToClipboard">In die Zwischenablage</string>
-    <string name="sendEmail">E-Mail senden</string>
-    <string name="toastAppCrashed">Die Anwendung wurde unerwartet beendet: (Bitte senden Sie eine E-Mail an den Entwickler)</string>
     <string name="exportingToFile">Exportiere in Datei&#8230;</string>
     <string name="importingFromFile">Importiere von Datei&#8230;</string>
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
@@ -329,15 +314,11 @@
     <string name="use_standard_file_manager">Standard Dateimanager verwenden</string>
     <string name="use_standard_file_manager_descr">andernfalls die zu importierende .opml-Datei auswählen - nur außerhalb des feedex-Ordners (über den internen Dialog)</string>
     <string name="settings">Einstellungen</string>
-    <string name="entry_go_prev">Artikel zurück</string>
     <string name="entry_go_next">Artikel vor</string>
-    <string name="colorSlotSaveLongTapHint">Hinweis: Zum Speichern der aktuellen Farbe, bitte lange auf eines der Farbkästchen tippen</string>
-    <string name="colorSlotSaved">Die Farbe wurde gespeichert</string>
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
     <string name="textColor">Textfarbe</string>
     <string name="customColors">Eigene Textfarben</string>
-    <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
     <string name="theme">Thema</string>
     <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
     <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalkens</string>
