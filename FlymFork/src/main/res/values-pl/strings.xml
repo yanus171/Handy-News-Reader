@@ -31,78 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <a href=\"https://handynewsreader.blogspot.com/\">Website</a>  <br/>
-
-    <br/>
-    Link do <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a>  <br/>
-
-    <br/>
-    Link do <a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">forum XDA</a>  <br/>
-
-    <br/>
-    <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader question\">Wiadomość do dewelopera</a><br/>
-
-    <br/>
-
-    Pośród funkcji dodanych w tym forku znajdują się:<br/>
-    • rozwijalne grupy kanałów<br/>
-    • niewidzialne przyciski przewijania strony w górę/dół w trybie pelnoekranowym<br/>
-    • limit pobieranych zdjęć osobno dla każdego kanału<br/>
-    • możliwość anulowania procesu odświeżania<br/>
-    • …<br/>
-    <br/>
-
-    <b>Jeśli napotkałeś/aś problem z aplikacją lub masz pomysł na nową funkcję, stwórz nowy wątek na <a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b><br/>
-    <br/>
-
-    <b>Aby wspomóc projekt:</b><br/>
-    - <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">oceń </a> aplikację <br/>
-    - <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">zasugeruj</a> pomysł<br/>
-    <br/>
-
-    Źródła na <a href=\"https://github.com/yanus171/Handy-News-Reader/">GitHub</a> <br/>
-    <br/>
-
-    Niniejszy program stanowi wolne oprogramowanie: możesz go rozpowszechniać i/lub modyfikować na warunkach licencji GNU General Public License, opublikowanej przez Free Software Foundation, zarówno w wersji 3, lub (opcjonalnie) dowolnej późniejszej. Patrz http://www.gnu.org/licenses<br/>
-    <br/>
-    Program ten bazuje na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian, na licencji GNU GPL.<br/>
-    <br/>
-
-    <br/>
-    <b>Deweloperzy:</b><br/>
-    • eighthave<br/>
-    • equiem<br/>
-    • Frédéric Julian<br/>
-    • madx666<br/>
-    • Mikko Huhtala<br/>
-    • Paul Schaub<br/>
-    • RyDroid<br/>
-    • Sergii Pylypenko<br/>
-    • Shapochkin Mihail<br/>
-    • Suyash Bhatt<br/>
-    • Zhaofeng Li<br/>
-    • yanus171<br/>
-
-    <br/>
-    <b>Tłumacze:</b><br/>
-    • Aitor Beriain<br/>
-    • Benjamin Schütte<br/>
-    • Changwoo Ryu<br/>
-    • chenjia404<br/>
-    • Danilo Treffiletti<br/>
-    • Enric Morales<br/>
-    • Jaroslav Lichtblau<br/>
-    • Jozef Jaroščiak<br/>
-    • Matthias Dill<br/>
-    • Mladen Pejaković<br/>
-    • Ronny Steiner<br/>
-    • Thomas Leigh<br/>
-    <br/>
-
-
-    ]]></string>
     <string name="app_name">Handy News Reader</string>
-    <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
     <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
     <string name="update">Aktualizuj</string>
@@ -114,7 +43,6 @@
     <string name="error">Błąd</string>
     <string name="network_error">Jesteś off-line.</string>
     <string name="loading">Wczytuję…</string>
-    <string name="no_result">Brak wyników</string>
     <string name="drawer_open">Otwórz panel nawigacyjny</string>
     <string name="drawer_close">Zamknij panel nawigacyjny</string>
     <!-- FEEDS -->
@@ -127,8 +55,6 @@
     <string name="new_feed_title">Nowy kanał</string>
     <string name="context_menu_edit">Edytuj</string>
     <string name="menu_add_group">Dodaj grupę</string>
-    <string name="menu_import">Importuj z pliku .opml</string>
-    <string name="menu_export">Eksportuj do pliku .opml</string>
     <string name="storage_request_explanation">Aby importować lub eksportować kanały z/do pliku, potrzebujesz zezwolić Handy News Reader na dostęp do pamięci.</string>
     <string name="error_feed_error">Witryna kanału nieosiągalna.</string>
     <string name="error_feed_process">Kanał nie może być przetwarzany.</string>
@@ -192,8 +118,6 @@
     <string name="menu_delete_all">Usuń wszystko</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
     <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
-    <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
-    <string name="menu_mark_as_unfavorite">Usuń z Ulubionych</string>
     <string name="menu_mark_as_unread">Oznacz jako nieprzeczytane</string>
     <string name="menu_reload_full_text">Przeładuj pełną treść</string>
     <string name="menu_reload_full_text_without_mobilizer">Przeładuj bez Mobilizera</string>
@@ -209,7 +133,6 @@
     <string name="file">Plik</string>
     <string name="download_and_save">Pobierz i zapisz</string>
     <string name="open_link">Otwórz link</string>
-    <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w lewo</string>
     <string name="undo">Cofnij</string>
     <string name="marked_as_read">Oznaczono jako przeczytane</string>
     <!-- WIDGET -->
@@ -260,7 +183,6 @@
     <string name="show_full_text_indicator">Wskaźnik pełnego tekstu</string>
     <string name="show_full_text_indicator_descr">Wyświetla małą ikonkę dyskietki by wskazać że został wczytany pełny tekst artykułu</string>
     <string name="show_new_icon">Ikonka nowego artykułu</string>
-    <string name="show_new_icon_descr">Mały plusik przy nowych artykułach (które nie były jeszcze widziane)</string>
     <string name="show_read_article_count">Pokaż licznik przeczytanych artykułów</string>
     <string name="show_read_article_count_descr">Na liście źródeł</string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
@@ -276,8 +198,6 @@
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
-    <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w lewym dolnym rogu w trybie pełnoekranowym</string>
-    <string name="settings_clock_size">Rozmiar czcionki zegara w stopce</string>
     <string name="article_text_footer_show_progress">Pasek postępu lektury</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
     <string name="settings_category_operation">Czynności</string>
@@ -292,8 +212,6 @@
     <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
     <string name="brightness_with_dim_activity">Nakładka programowa</string>
     <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
-    <string name="settings_category_behavior">Zachowanie powiadomień</string>
-    <string name="settings_category_behavior_summary">Powiadomienia o nowych artykułach oraz zachowanie aplikacji</string>
     <string name="settings_notifications_enabled">Włącz powiadomienia</string>
     <string name="settings_notifications_enabled_description">Włącz powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_ringtone">Dzwonek</string>
@@ -309,7 +227,6 @@
     <string name="auto_unstart_at_bottom">Usuń z Ulubionych po przeczytaniu</string>
     <string name="auto_unstart_at_bottom_descr">Automatycznie usuń artykuł z Ulubionych po przewinięciu do jego końca</string>
     <string name="settings_category_advanced">Zaawansowane</string>
-    <string name="settings_category_advanced_summary">Dodatkowe funkcje (takie jak kopia zapasowa, filtry i inne)</string>
     <string name="settings_autobackup_enabled">Włącz automatyczną kopię zapasową</string>
     <string name="settings_autobackup_enabled_descr">Okresowo zapisuje listę źródeł oraz ulubionych artykułów do pliku .opml</string>
     <string name="settings_category_content_presentation">Prezentacja treści</string>
@@ -386,8 +303,6 @@
     <string name="criticalErrorOccured">Wystąpił błąd krytyczny - pomóż nam go naprawić przesyłając ten tekst deweloperowi</string>
     <string name="criticalErrorSending">Przesyłanie informacji o błędzie…</string>
     <string name="copyToClipboard">Do schowka</string>
-    <string name="sendEmail">Wyślij e-mail</string>
-    <string name="toastAppCrashed">Aplikacja została nieoczekiwanie zamknięta - pomóż nam naprawić błąd przesyłając e-maila deweloperowi</string>
     <string name="exportingToFile">Eksport do pliku</string>
     <string name="importingFromFile">Import z pliku</string>
     <string name="autobackup_interval">Przedział czasowy automatycznej kopii zapasowej</string>
@@ -397,15 +312,11 @@
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
     <string name="settings">Ustawienia</string>
-    <string name="entry_go_prev">Poprzednia strona</string>
     <string name="entry_go_next">Następna strona</string>
-    <string name="colorSlotSaveLongTapHint">Porada: by zachować aktualny kolor, przytrzymaj dłużej na jednej z komórek</string>
-    <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
     <string name="text">Tekst</string>
     <string name="background1">Tło</string>
     <string name="textColor">Kolor tekstu</string>
     <string name="customColors">Własne kolory czcionki</string>
-    <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
     <string name="theme">Motyw</string>
     <string name="article_text_footer_clock_color">Kolor zegarka</string>
     <string name="article_text_footer_progress_color">Kolor paska postępu</string>
