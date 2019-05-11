@@ -3,7 +3,9 @@ files:
     translation: /FlymFork/src/main/res/values-%two_letters_code%/strings.xml
     translate_attributes: 0
     content_segmentation: 0
+    update_option: update_as_unapproved
   - source: /FlymFork/src/main/res/values/arrays.xml
     translation: /FlymFork/src/main/res/values-%two_letters_code%/arrays.xml
     translate_attributes: 0
     content_segmentation: 0
+    update_option: update_as_unapproved
