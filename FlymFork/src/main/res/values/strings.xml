@@ -41,7 +41,7 @@
     Link to <a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA forum</a>  <br/>
 
     <br/>
-    <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader question\">Mail to developer</a><br/>
+    <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader question\">Mail to the developer</a><br/>
 
     <br/>
 
@@ -53,10 +53,10 @@
     • …<br/>
     <br/>
 
-    <b>If you have a problem with app or you have an idea for the new featire you\'d better open an issue on <a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">github issues page</a></b><br/>
+    <b>If you stumble upon a problem with the app or you have an idea for the new feature you\'d better open an issue on <a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub issues page</a></b><br/>
     <br/>
 
-    <b>To help the project:</b><br/>
+    <b>To support the project:</b><br/>
     - <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">rate </a> the app <br/>
     - <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">suggest</a> an idea<br/>
     <br/>
@@ -66,7 +66,7 @@
 
     This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See http://www.gnu.org/licenses<br/>
     <br/>
-    This app is based on \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian, under the GNU GPL.<br/>
+    This app is based on \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian, under the GNU GPL.<br/>
     <br/>
 
     <br/>
@@ -103,7 +103,7 @@
 
     ]]></string>
     <string name="app_name">Handy News Reader</string>
-    <string name="about_flym">About the app / Help / Contact developer </string>
+    <string name="about_flym">About the app / Help / Contact the developer </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="update">Update</string>
@@ -116,7 +116,7 @@
     <string name="error">Error</string>
     <string name="network_error">You are off-line.</string>
     <string name="loading">Loading…</string>
-    <string name="no_result">No result</string>
+    <string name="no_result">No results</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
@@ -130,8 +130,8 @@
     <string name="new_feed_title">New feed</string>
     <string name="context_menu_edit">Edit</string>
     <string name="menu_add_group">Add a group</string>
-    <string name="menu_import">Import from an OPML file</string>
-    <string name="menu_export">Export to an OPML file</string>
+    <string name="menu_import">Import from an .opml file</string>
+    <string name="menu_export">Export to an .opml file</string>
     <string name="storage_request_explanation">To be able to import or export the feeds from or to a file, you must allow the application to access to the storage memory.</string>
     <string name="error_feed_error">The feed website is unreachable.</string>
     <string name="error_feed_process">The feed can not be processed.</string>
@@ -196,8 +196,8 @@
     <string name="menu_delete_all">Delete all</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
     <string name="menu_load_all_images">Load all images</string>
-    <string name="menu_mark_as_favorite">Mark as favorite</string>
-    <string name="menu_mark_as_unfavorite">Unmark as favorite</string>
+    <string name="menu_mark_as_favorite">Mark as Favorite</string>
+    <string name="menu_mark_as_unfavorite">Unmark as Favorite</string>
     <string name="menu_mark_as_unread">Mark as unread</string>
     <string name="menu_reload_full_text">Reload full text</string>
     <string name="menu_reload_full_text_without_mobilizer">Reload without Mobilizer</string>
@@ -213,7 +213,7 @@
     <string name="file">File</string>
     <string name="download_and_save">Download and save</string>
     <string name="open_link">Open link</string>
-    <string name="tip_sentence">Tip: slide right to mark as read, left to add to favorities</string>
+    <string name="tip_sentence">Tip: swipe right to mark as read, swipe left to add to Favorites</string>
     <string name="undo">Undo</string>
     <string name="marked_as_read">Marked as read</string>
 
@@ -268,7 +268,7 @@
     <string name="show_full_text_indicator">Full text indicator</string>
     <string name="show_full_text_indicator_descr">Show small diskette icon to indicate that article full text was loaded</string>
     <string name="show_new_icon">New article icon</string>
-    <string name="show_new_icon_descr">Little plus icon on new articles (which had never seen)</string>
+    <string name="show_new_icon_descr">Little plus icon on new articles (which had never be seen)</string>
     <string name="show_read_article_count">Show read article count</string>
     <string name="show_read_article_count_descr">In feed list</string>
     <string name="show_group_entrries_count">Group article count</string>
@@ -286,8 +286,8 @@
     <string name="entry_text_align_justify">Justified text</string>
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
     <string name="article_text_footer_show_clock">Footer-Clock</string>
-    <string name="article_text_footer_show_clock_description">Displays the current time at the lower left corner in fullscreen mode</string>
-    <string name="settings_clock_size">Text size of Footer-Clock</string>
+    <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
+    <string name="settings_clock_size">Text size of the Footer-Clock</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>
 
@@ -304,8 +304,8 @@
     <string name="brightness_with_dim_activity">Software overlay</string>
     <string name="brightness_with_dim_activity_descr">Dim brightness by reducing transparency of the window background color (check it if the brightness change doesn\'t work)</string>
 
-    <string name="settings_category_behavior">Notifications \u0026 Behavior</string>
-    <string name="settings_category_behavior_summary">Notifications on new entries and behavior while using this app</string>
+    <string name="settings_category_behavior">Notifications \u0026 behavior</string>
+    <string name="settings_category_behavior_summary">Notifications on new articles and the app's behavior</string>
     <string name="settings_notifications_enabled">Enable notifications</string>
     <string name="settings_notifications_enabled_description">Enable notifications in case of new entries</string>
     <string name="settings_notifications_ringtone">Ringtone</string>
@@ -322,7 +322,7 @@
     <string name="auto_unstart_at_bottom_descr">Auto remove the article from Favorites when the article bottom was reached</string>
 
     <string name="settings_category_advanced">Advanced</string>
-    <string name="settings_category_advanced_summary">Additional features like backup, filters and more</string>
+    <string name="settings_category_advanced_summary">Additional features (such as backup, filters and more)</string>
 
     <string name="settings_autobackup_enabled">Enable automatic backup</string>
     <string name="settings_autobackup_enabled_descr">To periodically save Your feed and favorite articles list into an .opml file</string>
@@ -400,8 +400,8 @@
     <string name="criticalErrorOccured">A critical error occurred in thу application. Please send this text to developer</string>
     <string name="criticalErrorSending">Sending critical error…</string>
     <string name="copyToClipboard">To clipboard</string>
-    <string name="sendEmail">Send e-mail</string>
-    <string name="toastAppCrashed">The application unexpectedly failed: (Please send a mail to developer)</string>
+    <string name="sendEmail">Send email</string>
+    <string name="toastAppCrashed">The application unexpectedly failed: (Please email the developer)</string>
     <string name="exportingToFile">Exporting to file</string>
     <string name="importingFromFile">Importing from file</string>
     <string name="autobackup_interval">Auto backup interval</string>
@@ -411,16 +411,16 @@
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
     <string name="settings">Settings</string>
-    <string name="entry_go_prev">Prev page</string>
+    <string name="entry_go_prev">Previous page</string>
     <string name="entry_go_next">Next page</string>
-    <string name="colorSlotSaveLongTapHint">Tip: To save the current color make a long tap on one of the cells</string>
-    <string name="colorSlotSaved">Color was saved to cell</string>
+    <string name="colorSlotSaveLongTapHint">Tip: to save the current color make a long tap on one of the cells</string>
+    <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
     <string name="background1">Background</string>
     <string name="textColor">Text color</string>
 
     <string name="customColors">Custom font colors</string>
-    <string name="fontColorsNotFromThemeSummary">overwise use theme colors</string>
+    <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>
     <string name="theme">Theme</string>
     <string name="article_text_footer_clock_color">Clock color</string>
     <string name="article_text_footer_progress_color">Progress color</string>
