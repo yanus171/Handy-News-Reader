@@ -107,11 +107,11 @@
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież</string>
     <string name="menu_all_read">Oznacz wszystkie jako przeczytane</string>
-    <string name="flym_feeds">Źródła Handy News Reader.</string>
+    <string name="flym_feeds">Źródła Handy News Reader</string>
     <string name="error">Błąd</string>
     <string name="network_error">Jesteś off-line.</string>
     <string name="loading">Wczytuję…</string>
-    <string name="no_result">Brak wyników.</string>
+    <string name="no_result">Brak wyników</string>
     <string name="drawer_open">Otwórz panel nawigacyjny</string>
     <string name="drawer_close">Zamknij panel nawigacyjny</string>
     <!-- FEEDS -->
