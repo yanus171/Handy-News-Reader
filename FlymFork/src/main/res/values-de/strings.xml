@@ -407,7 +407,7 @@
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
     <string name="theme">Thema</string>
     <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
-    <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalken</string>
+    <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalkens</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
