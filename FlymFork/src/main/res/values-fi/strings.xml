@@ -41,7 +41,6 @@
     <string name="error">Virhe</string>
     <string name="network_error">Ei verkkoyhteyttä</string>
     <string name="loading">Lataa…</string>
-    <string name="no_result">Ei tuloksia</string>
     <string name="drawer_open">Avaa navigointipaneeli</string>
     <string name="drawer_close">Sulje navigointipaneeli</string>
     <!-- FEEDS -->
@@ -54,8 +53,6 @@
     <string name="new_feed_title">Uusi syöte</string>
     <string name="context_menu_edit">Muokkaa</string>
     <string name="menu_add_group">Lisää ryhmä</string>
-    <string name="menu_import">Tuo OPML-tiedosto</string>
-    <string name="menu_export">Vie OPML-tiedosto</string>
     <string name="storage_request_explanation">Voidaksesi tuoda tai viedä tiedoston, sinun täytyy antaa sovellukselle käyttölupa tallennusmuistin sisältöön.</string>
     <string name="error_feed_error">Syötteen verkko-osoitteeseen ei saatu yhteyttä.</string>
     <string name="error_feed_process">Syötettä ei voitu käsitellä.</string>
@@ -129,7 +126,6 @@
     <string name="file">Tiedosto</string>
     <string name="download_and_save">Lataa ja tallenna</string>
     <string name="open_link">Avaa linkki</string>
-    <string name="tip_sentence">Vihje: Pyyhkäise vasemmalle merkitäksesi artikkeli luetuksi.</string>
     <string name="undo">Peru</string>
     <string name="marked_as_read">Merkitty luetuksi</string>
     <!-- WIDGET -->
