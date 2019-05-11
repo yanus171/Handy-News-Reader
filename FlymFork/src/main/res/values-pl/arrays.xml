@@ -24,7 +24,7 @@
         <item>1 miesiąc</item>
         <item>2 miesiące</item>
         <item>3 miesiące</item>
-        <item>na zawsze</item>
+        <item>Na zawsze</item>
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>Domyślne</item>
@@ -35,5 +35,9 @@
         <item>Nigdy</item>
         <item>Tylko przez Wi-Fi</item>
         <item>Zawsze</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Jasny</item>
+        <item>Ciemny</item>
     </string-array>
 </resources>
