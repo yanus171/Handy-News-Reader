@@ -273,6 +273,8 @@
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
+    <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
+    <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
     <string name="article_text_footer_show_progress">Pasek postępu lektury</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
     <string name="settings_category_operation">Czynności</string>
@@ -287,6 +289,8 @@
     <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
     <string name="brightness_with_dim_activity">Nakładka programowa</string>
     <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
+    <string name="settings_category_behavior">Zachowanie powiadomień</string>
+    <string name="settings_category_behavior_summary">Powiadomienia o nowych artykułach oraz zachowanie aplikacji</string>
     <string name="settings_notifications_enabled">Włącz powiadomienia</string>
     <string name="settings_notifications_enabled_description">Włącz powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_ringtone">Dzwonek</string>
@@ -302,6 +306,7 @@
     <string name="auto_unstart_at_bottom">Usuń z Ulubionych po przeczytaniu</string>
     <string name="auto_unstart_at_bottom_descr">Automatycznie usuń artykuł z Ulubionych po przewinięciu do jego końca</string>
     <string name="settings_category_advanced">Zaawansowane</string>
+    <string name="settings_category_advanced_summary">Funkcje dodatkowe (takie jak kopia zapasowa, filtry i inne)</string>
     <string name="settings_autobackup_enabled">Włącz automatyczną kopię zapasową</string>
     <string name="settings_autobackup_enabled_descr">Okresowo zapisuje listę źródeł oraz ulubionych artykułów do pliku .opml</string>
     <string name="settings_category_content_presentation">Prezentacja treści</string>
@@ -389,11 +394,15 @@
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
     <string name="settings">Ustawienia</string>
+    <string name="entry_go_prev">Poprzednia strona</string>
     <string name="entry_go_next">Następna strona</string>
+    <string name="colorSlotSaveLongTapHint">Porada: by zachować aktualny kolor, przytrzymaj jedną z komórek</string>
+    <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
     <string name="text">Tekst</string>
     <string name="background1">Tło</string>
     <string name="textColor">Kolor tekstu</string>
     <string name="customColors">Własne kolory czcionki</string>
+    <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
     <string name="theme">Motyw</string>
     <string name="article_text_footer_clock_color">Kolor zegarka</string>
     <string name="article_text_footer_progress_color">Kolor paska postępu</string>
