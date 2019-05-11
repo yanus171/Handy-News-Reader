@@ -41,7 +41,6 @@
     <string name="error">Errore</string>
     <string name="network_error">Nessuna connessione disponibile</string>
     <string name="loading">Caricamento in corso…</string>
-    <string name="no_result">Nessun risultato</string>
     <string name="drawer_open">Apri pannello di navigazione</string>
     <string name="drawer_close">Chiudi pannello di navigazione</string>
     <!-- FEEDS -->
@@ -54,8 +53,6 @@
     <string name="new_feed_title">Nuovo feed</string>
     <string name="context_menu_edit">Modifica</string>
     <string name="menu_add_group">Aggiungi gruppo</string>
-    <string name="menu_import">Importa OPML</string>
-    <string name="menu_export">Esporta OPML</string>
     <string name="error_feed_error">L\'indirizzo del feed non può essere raggiunto.</string>
     <string name="error_feed_process">Il feed non può essere processato.</string>
     <string name="error_feed_url_exists">L\'indirizzo è già presente.</string>
@@ -125,7 +122,6 @@
     <string name="open_enclosure">Apri allegato</string>
     <string name="download_and_save">Scarica e salva</string>
     <string name="open_link">Apri link</string>
-    <string name="tip_sentence">Suggerimento: fai scorrere a sinistra per segnare come letto</string>
     <!-- WIDGET -->
     <string name="red">Rosso</string>
     <string name="green">Verde</string>
