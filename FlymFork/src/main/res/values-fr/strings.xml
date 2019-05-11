@@ -42,7 +42,6 @@
     <string name="error">Erreur</string>
     <string name="network_error">Pas de connexion disponible</string>
     <string name="loading">Chargement en cours…</string>
-    <string name="no_result">Aucun résultat</string>
     <string name="drawer_open">Ouvrir menu de navigation</string>
     <string name="drawer_close">Fermer menu de navigation</string>
     <!-- FEEDS -->
@@ -55,8 +54,6 @@
     <string name="new_feed_title">Nouveau flux</string>
     <string name="context_menu_edit">Éditer</string>
     <string name="menu_add_group">Ajouter un groupe</string>
-    <string name="menu_import">Importer depuis OPML</string>
-    <string name="menu_export">Exporter vers OPML</string>
     <string name="storage_request_explanation">Pour pouvoir importer ou exporter les flux dans un fichier, vous devez authoriser l\'application à accéder à la mémoire de stockage.</string>
     <string name="error_feed_error">L\'adresse du flux n\'est pas accessible.</string>
     <string name="error_feed_process">Le flux ne peut pas être traité.</string>
@@ -131,7 +128,6 @@
     <string name="file">Fichier</string>
     <string name="download_and_save">Télécharger et sauvegarder</string>
     <string name="open_link">Ouvrir le lien</string>
-    <string name="tip_sentence">Astuce: glisser vers la gauche pour marquer comme lu et</string>
     <string name="undo">Annuler</string>
     <string name="marked_as_read">Marqués comme lus</string>
     <!-- WIDGET -->
