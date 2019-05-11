@@ -31,7 +31,6 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_flym">Σχετικά με την εφαρμογή / Βοήθεια / Επικοινωνία με τον προγραματιστή </string>
     <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μία ροή;</string>
     <string name="never">ποτέ</string>
     <string name="update">Ενημέρωση</string>
@@ -43,7 +42,6 @@
     <string name="error">Σφάλμα</string>
     <string name="network_error">Είστε εκτός δικτύου.</string>
     <string name="loading">Φόρτωση…</string>
-    <string name="no_result">Χωρίς αποτελέσματα</string>
     <string name="drawer_open">Άνοιγμα συρταριού πλοήγησης </string>
     <string name="drawer_close">Κλείσιμο συρταριού πλοήγησης</string>
     <!-- FEEDS -->
@@ -56,8 +54,6 @@
     <string name="new_feed_title">Νέα Ροή</string>
     <string name="context_menu_edit">Επεξεργασία</string>
     <string name="menu_add_group">Προσθήκη ομάδας</string>
-    <string name="menu_import">Εισαγωγή από αρχείο OPML</string>
-    <string name="menu_export">Εξαγωγή σε αρχείο OPML</string>
     <string name="storage_request_explanation">Για να μπορέσετε να εισάγετε ή να εξάγετε τις Ροές σας από/σε αρχείο, πρέπει να επιτρέψετε την πρόσβαση της εφαρμογής στη μνήμη της συσκευής σας.</string>
     <string name="error_feed_error">Δεν είναι διαθέσιμη η ιστοσελίδα απ\'όπου προέρχεται η  Ροή.</string>
     <string name="error_feed_process">Αυτή τη Ροή δεν μπορείτε να την επεξεργαστείτε.</string>
@@ -121,8 +117,6 @@
     <string name="menu_delete_all">Διαγραφή όλων</string>
     <string name="menu_toogle_unread_all">Μη διαβασμένα|Όλα</string>
     <string name="menu_load_all_images">Φόρτωμα όλων των εικόνων</string>
-    <string name="menu_mark_as_favorite">Σημείωση ως αγαπημένο</string>
-    <string name="menu_mark_as_unfavorite">Αφαίρεση σημείωσης ως αγαπημένο</string>
     <string name="menu_mark_as_unread">Σημείωση ως μη διαβασμένο</string>
     <string name="menu_reload_full_text">Φόρτωση όλου του κειμένου</string>
     <string name="menu_reload_full_text_without_mobilizer">Φόρτωση όλου του κειμένου χωρίς το θέμα για φορητές συσκευές</string>
@@ -138,7 +132,6 @@
     <string name="file">Αρχείο</string>
     <string name="download_and_save">Λήψη και αποθήκευση</string>
     <string name="open_link">Άνοιγμα συνδέσμου</string>
-    <string name="tip_sentence">Συμβουλή: Σύρετε δεξιά για σημείωση ως διαβασμένο, αριστερά για προσθήκη στα αγαπημένα</string>
     <string name="undo">Αναίρεση</string>
     <string name="marked_as_read">Σημείωση ως αναγνωσμένο</string>
     <!-- WIDGET -->
@@ -189,7 +182,6 @@
     <string name="show_full_text_indicator">Δείκτης πλήρους κειμένου</string>
     <string name="show_full_text_indicator_descr">Φαίνεται ένα εικονίδιο δισκέτας για την ένδειξη ότι φορτώθηκε όλο το κείμενο του άρθρου</string>
     <string name="show_new_icon">Εικονίδιο νέου άρθρου</string>
-    <string name="show_new_icon_descr">Ένα μικρό \"συν\" στα νέα άρθρα</string>
     <string name="show_read_article_count">Εμφάνιση αριθμού αναγνωσμένων άρθρων</string>
     <string name="show_read_article_count_descr">Στη λίστα Ροών</string>
     <string name="show_group_entrries_count">Αρίθμηση άρθρων στην ομάδα</string>
@@ -205,8 +197,6 @@
     <string name="entry_text_align_justify">Ευθυγράμμιση κειμένου</string>
     <string name="entry_text_align_justify_description">Διαφορετικά ευθυγράμμιση αριστερά</string>
     <string name="article_text_footer_show_clock">Υποσέλιδο-Ρολόι</string>
-    <string name="article_text_footer_show_clock_description">Εμφανίζει την ώρα κάτω αριστερά στη προβολή πλήρους οθόνης</string>
-    <string name="settings_clock_size">Μέγεθος Υποσέλιδου-Ρολογιού</string>
     <string name="article_text_footer_show_progress">Μπάρα προόδου διαβάσματος</string>
     <string name="article_text_footer_progress_height">Ύψος μπάρας προόδου</string>
     <string name="settings_category_operation">Λειτουργικότητα</string>
@@ -221,8 +211,6 @@
     <string name="brightness_gesture_descr">Επιλέξτε για να ρυθμίζετε την φωτεινότητα σέρνοντας το δάχτυλο πάνω/κάτω στην αριστερή άκρη της οθόνης</string>
     <string name="brightness_with_dim_activity">Επιτάχυνση λογισμικού</string>
     <string name="brightness_with_dim_activity_descr">Ρύθμιση φωτεινότητας μειώνοντας τη διαφάνεια του παραθύρου στο φόντο(επιλέξτε αν η αλλαγή φωτεινότητας δεν λειτουργεί)</string>
-    <string name="settings_category_behavior">Χρήση \u0026 ειδοποιήσεων</string>
-    <string name="settings_category_behavior_summary">Χρήση ειδοποιήσεων όταν χρησιμοποιείται η εφρμογή</string>
     <string name="settings_notifications_enabled">Ενεργοποίηση ειδοποιήσεων</string>
     <string name="settings_notifications_enabled_description">Ενεργοποιεί τις ειδοποιήσεις όταν υπάρχουν νέα άρθρα</string>
     <string name="settings_notifications_ringtone">Ήχος</string>
@@ -238,7 +226,6 @@
     <string name="auto_unstart_at_bottom">Αφαίρεση του αστεριού με το διάβασμα του άρθρου</string>
     <string name="auto_unstart_at_bottom_descr">Αυτόματη αφαίρεση του άρθρου από τα αγαπημένα όταν φτάσετε στο τέλος του άρθρου</string>
     <string name="settings_category_advanced">Περισσότερα</string>
-    <string name="settings_category_advanced_summary">Περισσότερες επιλογές για αντίγραφα ασφαλείας φίλτρα και άλλα</string>
     <string name="settings_autobackup_enabled">Ενεργοποίηση αυτόματων αντιγράφων ασφαλείας</string>
     <string name="settings_autobackup_enabled_descr">Περιοδικά αποθηκεύονται οι Ροές σας και τα αγαπημένα σας άρθρα σε ενα αρχείο opml</string>
     <string name="settings_category_content_presentation">Παρουσίαση περιεχομένου</string>
@@ -315,8 +302,6 @@
     <string name="criticalErrorOccured">Ένα σημαντικό σφάλμα συνέβη στην εφαρμογή. Παρακαλω στείλτε αυτό το κείμενο στον προγραματιστή</string>
     <string name="criticalErrorSending">Αποστολή σημαντικού σφάλματος…</string>
     <string name="copyToClipboard">Στο πρόχειρο</string>
-    <string name="sendEmail">Αποστολή e-mail</string>
-    <string name="toastAppCrashed">Η εφαρμογή δεν δούλεψε όπως έπρεπε: (παρακαλώ στείλτε email στον προγραματιστή)</string>
     <string name="exportingToFile">Εξαγωγή σε αρχείο</string>
     <string name="importingFromFile">Εισαγωγή από αρχείο</string>
     <string name="autobackup_interval">Χρόνος ανάμεσα στη δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
@@ -326,7 +311,6 @@
     <string name="use_standard_file_manager">Χρήση του προεπιλεγμένου προγράμματος περιήγησης αρχείων</string>
     <string name="use_standard_file_manager_descr">Αλλιώς επιλέξτε αρχείο opml για εισαγωγή -  μόνο από τον φάκελο feedex (μέσω του εσωτερικού πλαίσιου διαλόγου)</string>
     <string name="settings">Ρυθμίσεις</string>
-    <string name="entry_go_prev">Προηγούμενη σελίδα</string>
     <string name="entry_go_next">Επόμενη σελίδα</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
