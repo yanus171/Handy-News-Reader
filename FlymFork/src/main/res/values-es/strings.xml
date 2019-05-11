@@ -40,7 +40,6 @@
     <string name="flym_feeds">Fuentes de Handy News Reader</string>
     <string name="network_error">No se ha configurado la red</string>
     <string name="loading">Cargando…</string>
-    <string name="no_result">Sin resultados</string>
     <!-- FEEDS -->
     <string name="feeds">Fuentes</string>
     <string name="menu_add_feed">fuente</string>
@@ -51,8 +50,6 @@
     <string name="new_feed_title">Nueva fuente</string>
     <string name="context_menu_edit">Editar</string>
     <string name="menu_add_group">Añadir grupo</string>
-    <string name="menu_import">Importar desde OPML</string>
-    <string name="menu_export">Exportar a OPML</string>
     <string name="error_feed_error">No hay conectividad a la dirección de la fuente.</string>
     <string name="error_feed_process">No se ha podido procesar la fuente.</string>
     <string name="error_feed_url_exists">Ya existe esta dirección.</string>
@@ -108,7 +105,6 @@
     <string name="see_link">Ver en el navegador</string>
     <string name="cant_open_link">No se ha encontrado una aplicación para este enlace.</string>
     <string name="open_enclosure">Open enclosure</string>
-    <string name="tip_sentence">Tip: slide left to mark as read</string>
     <!-- WIDGET -->
     <string name="red">Rojo</string>
     <string name="green">Verde</string>
