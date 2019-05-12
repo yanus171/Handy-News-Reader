@@ -95,10 +95,8 @@
     <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μία ροή;</string>
     <string name="never">ποτέ</string>
     <string name="update">Ενημέρωση</string>
-    <string name="updating">Ενημέρωση&#8230;</string>
     <string name="menu_settings">Ρυθμίσεις</string>
     <string name="menu_refresh">Ανανέωση</string>
-    <string name="menu_all_read">Σημείωση όλων ως αναγνωσμένα</string>
     <string name="flym_feeds">Ροές Handy News Reader</string>
     <string name="error">Σφάλμα</string>
     <string name="network_error">Είστε εκτός δικτύου.</string>
@@ -214,7 +212,6 @@
     <string name="settings_category_refresh">Αυτόματη ανανέωση</string>
     <string name="settings_category_refresh_summary">Αυτόματη ανανέωση και χρόνος που θα κρατιούνται τα άρθρα</string>
     <string name="settings_refresh_enabled">Ενεργοποίηση αυτόματης ανανέωσης</string>
-    <string name="settings_refresh_enabled_description">Ενεργοποίηση αυτόματης ανανέωσης των Ροών</string>
     <string name="settings_refresh_interval">Χρόνος μεταξύ των ανανεώσεων</string>
     <string name="settings_min_update_battery_level">Ελάχιστη στάθμη μπαταρίας</string>
     <string name="settings_refresh_only_selected">Μόνο τα επιλεγμένα</string>
@@ -239,7 +236,6 @@
     <string name="show_article_icon">Να φαίνεται το εικονίδιο του άρθρου</string>
     <string name="show_article_icon_descr">Απενεργοποιήστε το για περισσότερο χώρο στην οθόνη για κείμενο</string>
     <string name="show_article_url">Να φαίνεται ο σύνδεσμος του άρθρου</string>
-    <string name="show_article_url_descr">στη λίστα του άρθρου</string>
     <string name="settings_display_oldest_first">Σειρά των άρθρων</string>
     <string name="settings_display_oldest_first_description">Πρώτα να φαίνονται τα παλαιότερα</string>
     <string name="show_mark_all_as_read_button">Κουμπί \"Σημείωση όλων ως διαβασμένα\"</string>
@@ -259,7 +255,6 @@
     <string name="settings_display_images">Προβολή εικόνων</string>
     <string name="settings_display_images_description">Προβολή εικόνων στα άρθρα</string>
     <string name="settings_display_entries_fullscreen">Αυτόματη προβολή πλήρους οθόνης</string>
-    <string name="settings_display_entries_fullscreen_description">Προβολή των άρθρων σε πλήρη οθόνη εξαρχής</string>
     <string name="settings_entry_margins">Περιθώρια</string>
     <string name="settings_entry_margins_description">Αριστερά | Δεξιά</string>
     <string name="entry_text_align_justify">Ευθυγράμμιση κειμένου</string>
@@ -322,7 +317,6 @@
     <string name="setupConnection">Ρύθμιση σύνδεσης</string>
     <string name="settings_content_extract_rules">Εξαγωγή κανόνων περιεχομένου</string>
     <string name="settings_content_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
-    <string name="settings_tap_zones_description">Καταχώρηση προβολής παραθύρου</string>
     <string name="settings_tap_zones_dialogtitle">μόνο για πληροφορίες, δεν γίνονται αλλαγές</string>
     <string name="downloadNext">"Λήψη κειμένου "</string>
     <string name="loadingLink">Φόρτωση συνδέσμων</string>
@@ -344,7 +338,6 @@
     <string name="auto_image_load">Αυτόματη φόρτωση εικόνων</string>
     <string name="show_progress_info">Λεπτομερείς πληροφορίες προόδου</string>
     <string name="show_progress_info_descr">Προβολή με λεπτομέρειες πληροφοριών σχετικά με την τρέχουσα λειτουργία</string>
-    <string name="filter_apply_to_url">Εφαρμογή στο σύνδεσμο</string>
     <string name="vibrate_on_article_list_entry_swype">Δόνηση στο σύρσιμο</string>
     <string name="vibrate_on_article_list_entry_swype_summary">Δόνηση στη λίστα των άρθρων και στο κείμενο όταν βάζετε αστέρι</string>
     <string name="entry_marked_unfavourite">Το άρθρο αφαιρέθηκε από τα αγαπημένα</string>
