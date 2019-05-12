@@ -279,7 +279,7 @@
     <string name="brightness_gesture">Изменение яркости жестом</string>
     <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
     <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
-    <string name="brightness_with_dim_activity_descr">Включите, если иначе измнение яркости не работает</string>
+    <string name="brightness_with_dim_activity_descr">Включите, если иначе изменение яркости не работает</string>
     <string name="settings_category_behavior">Уведомления</string>
     <string name="settings_category_behavior_summary">О появлении новых статей</string>
     <string name="settings_notifications_enabled">Включить уведомления</string>
