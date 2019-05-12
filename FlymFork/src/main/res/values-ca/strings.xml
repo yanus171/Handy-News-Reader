@@ -37,7 +37,6 @@
     <string name="colon">:u00A0</string>
     <string name="menu_settings">Paràmetres</string>
     <string name="menu_refresh">Refresca</string>
-    <string name="menu_all_read">Marca\'ls tots com a llegits</string>
     <string name="flym_feeds">Canals de Handy News Reader</string>
     <string name="network_error">No hi ha connectivitat</string>
     <string name="loading">S\'està carregant.</string>
@@ -121,9 +120,6 @@
     <string name="settings_light_theme_description">Utilitza el tema clar</string>
     <string name="settings_category_refresh">Actualització automàtica</string>
     <string name="settings_refresh_enabled">Activa les actualitzacions automàtiques</string>
-    <string name="settings_refresh_enabled_description">Descarrega el contingut dels canals
-        automàticament.
-    </string>
     <string name="settings_refresh_interval">Interval entre actualitzacions</string>
     <string name="settings_refresh_on_open">Actualitza els canals a l\'inici</string>
     <string name="settings_refresh_on_open_description">Descarregarà nous continguts dels canals a
