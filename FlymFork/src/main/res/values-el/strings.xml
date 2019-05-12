@@ -89,6 +89,8 @@
     • από ekarpi<br/>
     <br/>
     ]]></string>
+    <string name="app_name">Handy News Reader</string>
+    <string name="about_title_version">έκδοση</string>
     <string name="about_flym">Σχετικά με την εφαρμογή / Βοήθεια / Επικοινωνία με τον προγραματιστή </string>
     <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μία ροή;</string>
     <string name="never">ποτέ</string>
@@ -386,6 +388,16 @@
     <string name="settings">Ρυθμίσεις</string>
     <string name="entry_go_prev">Προηγούμενη σελίδα</string>
     <string name="entry_go_next">Επόμενη σελίδα</string>
+    <string name="colorSlotSaveLongTapHint">Συμβουλή: Για να κρατήσετε αυτό το χρώμα αγγίξτε παρατεταμένα ένα από τα κελιά</string>
+    <string name="colorSlotSaved">Το χρώμα καταχωρήθηκε στο κελί</string>
+    <string name="text">Κείμενο</string>
+    <string name="background1">Φόντο</string>
+    <string name="textColor">Χρώμα κειμένου</string>
+    <string name="customColors">Προσαρμοσμένα χρώματα γραμματοσειράς</string>
+    <string name="fontColorsNotFromThemeSummary">αλλιώς χρησιμοποιήστε τα χρώματα του θέματος</string>
+    <string name="theme">Θέμα</string>
+    <string name="article_text_footer_clock_color">Χρώμα ρολογιού</string>
+    <string name="article_text_footer_progress_color">Χρώμα γραμμής προόδου</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
