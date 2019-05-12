@@ -47,12 +47,12 @@ public class AboutActivity extends BaseActivity {
         PackageManager manager = this.getPackageManager();
         try {
             PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
-            title = getString( R.string.app_name ) + " version " + info.versionName;
+            title = "<big><b>" + getString( R.string.app_name ) + "</b></big><br/>" + getString( R.string.about_title_version ) + " " + info.versionName;
         } catch (NameNotFoundException unused) {
             title = getString( R.string.app_name );
         }
         TextView titleView = findViewById(R.id.about_title);
-        titleView.setText(title);
+        titleView.setText(Html.fromHtml(title));
 
         TextView contentView = findViewById(R.id.about_content);
         //String html = getString(R.string.about_us_content);
