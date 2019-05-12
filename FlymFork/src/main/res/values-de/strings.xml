@@ -44,60 +44,38 @@
     <br/>
     <b><big>Wo Sie uns finden können</big></b>
     <br/>
-    • Auf unserer <b><a href=\"https://handynewsreader.blogspot.com/\">Homepage</a></b> finden Sie Neuigkeiten und Informationen<br/>
-    • Sie können diese App bei <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b> herunterladen<br/>
-    • Sie können diese App bei <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b> herunterladen<br/>
-    • Es gibt auch einen Thread im <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">Forum der Entwicklercommunity XDA</a></b><br/>
-    • Den Quellcode finden Sie bei <b><a href=\"https://github.com/yanus171/Handy-News-Reader\">GitHub</a></b><br/>
+    • Auf unserer <b><a href="https://handynewsreader.blogspot.com/">Homepage</a></b> finden Sie Neuigkeiten und Informationen<br/>
+    • Sie können diese App bei <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b> herunterladen<br/>
+    • Sie können diese App bei <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b> herunterladen<br/>
+    • Es gibt auch einen Thread im <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">Forum der Entwicklercommunity XDA</a></b><br/>
+    • Den Quellcode finden Sie bei <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
     <br/>
     <b><big>Unsere Unterstützung</big></b>
     <br/>
     Wenn Sie einen Fehler in dieser App finden, bitte<br/>
-    • öffnen Sie einen Problemfall auf der <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader problem\">E-Mail an den Entwickler</a></b><br/>
+    • öffnen Sie einen Problemfall auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
+    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">E-Mail an den Entwickler</a></b><br/>
     <br/>
     <b><big>Ihre Unterstützung</big></b>
     <br/>
     Wenn Sie eine Idee für neue Funktionen haben, bitte<br/>
-    • öffnen Sie ein Thema auf der <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">E-Mail an den Entwickler</a></b><br/>
+    • öffnen Sie ein Thema auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
+    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">E-Mail an den Entwickler</a></b><br/>
     <br/>
-    <b>Bitte bewerten Sie diese App bei <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google</a>, wenn Sie sie nützlich finden.</b><br/>
+    <b>Bitte bewerten Sie diese App bei <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google</a>, wenn Sie sie nützlich finden.</b><br/>
     <br/>
     <b><big>Übersetzungen</big></b>
     <br/>
-    Sie können bei der Übersetzung dieser App in Ihre Sprache auf der Plattform <b><a href=\"https://crowdin.com/project/handy-news-reader\">Crowdin</a></b> helfen.<br/>
-    Wenn Sie Ihre Sprache nicht finden, senden Sie bitte eine <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader translation\">E-Mail an den Entwickler</a></b>.<br/>
+    Sie können bei der Übersetzung dieser App in Ihre Sprache auf der Plattform <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> helfen.<br/>
+    Wenn Sie Ihre Sprache nicht finden, senden Sie bitte eine <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader translation">E-Mail an den Entwickler</a></b>.<br/>
     <br/>
     <b><big>Danksagungen</big></b>
     <br/>
     <b>Entwickler:</b><br/>
-    • eighthave<br/>
-    • equiem<br/>
-    • Frédéric Julian<br/>
-    • madx666<br/>
-    • Mikko Huhtala<br/>
-    • Paul Schaub<br/>
-    • RyDroid<br/>
-    • Sergii Pylypenko<br/>
-    • Shapochkin Mihail<br/>
-    • Suyash Bhatt<br/>
-    • Zhaofeng Li<br/>
-    • yanus171<br/>
+    ***developerList***
     <br/>
     <b>Übersetzer:</b><br/>
-    • Aitor Beriain<br/>
-    • Benjamin Schütte<br/>
-    • Changwoo Ryu<br/>
-    • chenjia404<br/>
-    • Danilo Treffiletti<br/>
-    • Enric Morales<br/>
-    • Jaroslav Lichtblau<br/>
-    • Jozef Jaroščiak<br/>
-    • Matthias Dill<br/>
-    • Mladen Pejaković<br/>
-    • Ronny Steiner<br/>
-    • Thomas Leigh<br/>
+    ***translatorList***
     <br/>
     ]]></string>
     <string name="app_name">Handy News Reader</string>
