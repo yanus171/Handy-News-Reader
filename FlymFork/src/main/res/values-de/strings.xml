@@ -84,11 +84,9 @@
     <string name="welcome_title">Willkommen bei Handy News Reader. Möchten Sie einen Feed hinzufügen?</string>
     <string name="never">niemals</string>
     <string name="update">Aktualisierung</string>
-    <string name="updating">Aktualisiere&#8230;</string>
     <string name="colon">:\u00a0</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
-    <string name="menu_all_read">Alle als gelesen markieren</string>
     <string name="flym_feeds">Handy News Reader Feeds</string>
     <string name="error">Fehler</string>
     <string name="network_error">Das Gerät ist offline.</string>
@@ -204,7 +202,6 @@
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
     <string name="settings_category_refresh_summary">Automatische Aktualisierung und Aufbewahrungszeit der Artikel</string>
     <string name="settings_refresh_enabled">Aktualisierung aktivieren</string>
-    <string name="settings_refresh_enabled_description">Aktiviert das automatische Aktualisieren aller Feeds</string>
     <string name="settings_refresh_interval">Aktualisierungsintervall</string>
     <string name="settings_min_update_battery_level">Mindest-Batterieladung</string>
     <string name="settings_refresh_only_selected">Nur ausgewählte</string>
@@ -229,7 +226,6 @@
     <string name="show_article_icon">Vorschaubild anzeigen</string>
     <string name="show_article_icon_descr">Abschalten, um Platz in der Liste zu sparen</string>
     <string name="show_article_url">Artikel-URL anzeigen</string>
-    <string name="show_article_url_descr">in der Artikelliste</string>
     <string name="settings_display_oldest_first">Anzeigereihenfolge</string>
     <string name="settings_display_oldest_first_description">Älteste Einträge zuerst anzeigen</string>
     <string name="show_mark_all_as_read_button">Alles-gelesen-Taste anzeigen</string>
@@ -250,7 +246,6 @@
     <string name="settings_display_images">Bilder anzeigen</string>
     <string name="settings_display_images_description">Bilder in den Artikeln anzeigen</string>
     <string name="settings_display_entries_fullscreen">Artikel im Vollbild anzeigen</string>
-    <string name="settings_display_entries_fullscreen_description">Artikel automatisch im Vollbild anzeigen</string>
     <string name="settings_entry_margins">Ränder hinzufügen</string>
     <string name="settings_entry_margins_description">Links und rechts in der Artikelanzeige</string>
     <string name="entry_text_align_justify">Blocksatz</string>
@@ -313,7 +308,6 @@
     <string name="setupConnection">Verbindung einstellen</string>
     <string name="settings_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
-    <string name="settings_tap_zones_description">Antipp-Zonen in der Artikelansicht</string>
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
     <string name="downloadNext">"Nachfolgendes herunterladen "</string>
     <string name="loadingLink">Links laden</string>
@@ -335,7 +329,6 @@
     <string name="auto_image_load">Bilder automatisch laden</string>
     <string name="show_progress_info">Detaillierte technische Informationen</string>
     <string name="show_progress_info_descr">Zeigt detaillierte Informationen der aktuellen Vorgänge</string>
-    <string name="filter_apply_to_url">Auf URL anwenden</string>
     <string name="vibrate_on_article_list_entry_swype">Beim Wischen vibrieren</string>
     <string name="vibrate_on_article_list_entry_swype_summary">Beim Wischen eines Eintrages in der Artikelliste und im Artikel zur Markierung als Favorit</string>
     <string name="entry_marked_unfavourite">Artikel wurde aus den Favoriten entfernt</string>
