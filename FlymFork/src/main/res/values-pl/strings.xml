@@ -107,11 +107,11 @@
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież</string>
     <string name="menu_all_read">Oznacz wszystkie jako przeczytane</string>
-    <string name="flym_feeds">Źródła Handy News Reader.</string>
+    <string name="flym_feeds">Źródła Handy News Reader</string>
     <string name="error">Błąd</string>
     <string name="network_error">Jesteś off-line.</string>
     <string name="loading">Wczytuję…</string>
-    <string name="no_result">Brak wyników.</string>
+    <string name="no_result">Brak wyników</string>
     <string name="drawer_open">Otwórz panel nawigacyjny</string>
     <string name="drawer_close">Zamknij panel nawigacyjny</string>
     <!-- FEEDS -->
@@ -124,8 +124,8 @@
     <string name="new_feed_title">Nowy kanał</string>
     <string name="context_menu_edit">Edytuj</string>
     <string name="menu_add_group">Dodaj grupę</string>
-    <string name="menu_import">Importuj z pliku OPML.</string>
-    <string name="menu_export">Eksportuj do pliku OPML.</string>
+    <string name="menu_import">Importuj z pliku .opml</string>
+    <string name="menu_export">Eksportuj do pliku .opml</string>
     <string name="storage_request_explanation">Aby importować lub eksportować kanały z/do pliku, potrzebujesz zezwolić Handy News Reader na dostęp do pamięci.</string>
     <string name="error_feed_error">Witryna kanału nieosiągalna.</string>
     <string name="error_feed_process">Kanał nie może być przetwarzany.</string>
@@ -144,8 +144,8 @@
     <string name="filter_delete_title">Usuń regułę</string>
     <string name="filter_edit_title">Edytuj regułę</string>
     <string name="filter_is_regex">&#8230;jest wyrażeniem regularnym</string>
-    <string name="filter_apply_to_title">Stosuj do tytułu lub linku artykułu.</string>
-    <string name="filter_apply_to_content">Stosuj do treści artykułu.</string>
+    <string name="filter_apply_to_title">Stosuj do tytułu lub linku artykułu</string>
+    <string name="filter_apply_to_content">Stosuj do treści artykułu</string>
     <string name="accept">AKCEPTUJ</string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
@@ -189,15 +189,15 @@
     <string name="menu_delete_all">Usuń wszystko</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
     <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
-    <string name="menu_mark_as_favorite">Oznacz jako Ulubione.</string>
-    <string name="menu_mark_as_unfavorite">Usuń z Ulubionych.</string>
+    <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
+    <string name="menu_mark_as_unfavorite">Usuń z Ulubionych</string>
     <string name="menu_mark_as_unread">Oznacz jako nieprzeczytane</string>
     <string name="menu_reload_full_text">Przeładuj pełną treść</string>
     <string name="menu_reload_full_text_without_mobilizer">Przeładuj bez Mobilizera</string>
     <string name="share_favorites_title">Handy News Reader: Ulubione artykuły</string>
     <string name="copied_clipboard">Link skopiowany</string>
     <string name="get_full_text">Pokaż pełny artykuł</string>
-    <string name="show_text_in_entry_list">Pokazuj tekst oryginalny na liście artykułów</string>
+    <string name="show_text_in_entry_list">Pokazuj oryginalny tekst na liście artykułów</string>
     <string name="original_text">Pokaż zajawkę</string>
     <string name="see_enclosure">Wczytaj załącznik</string>
     <string name="see_link">Otwórz w przeglądarce</string>
@@ -206,7 +206,7 @@
     <string name="file">Plik</string>
     <string name="download_and_save">Pobierz i zapisz</string>
     <string name="open_link">Otwórz link</string>
-    <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w lewo.</string>
+    <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w prawo, przesuń w lewo by dodać do Ulubionych</string>
     <string name="undo">Cofnij</string>
     <string name="marked_as_read">Oznaczono jako przeczytane</string>
     <!-- WIDGET -->
