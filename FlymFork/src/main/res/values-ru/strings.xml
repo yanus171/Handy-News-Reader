@@ -120,6 +120,7 @@
 
     ]]></string>
     <string name="app_name">Удобное чтение новостей</string>
+    <string name="about_title_version">версия</string>
     <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
     <string name="welcome_title">Добавить канал?</string>
     <string name="never">никогда</string>
@@ -190,7 +191,9 @@
     <string name="to_group_above">Над группой</string>
     <string name="to_group_into">Внутрь группы</string>
     <string name="add_custom_feed">Добавить ленту по адресу или по названию</string>
+    <string name="google_news_title">Темы новостей Google</string>
     <string name="google_news_indicator">Выберите одну или несколько категорий.</string>
+    <string name="google_news_top_stories">Лучшее</string>
     <string name="google_news_world">Мир</string>
     <string name="google_news_business">Бизнес</string>
     <string name="google_news_technology">Технолгии</string>
@@ -324,6 +327,7 @@
     <string name="settings_notifications_enabled_description">Включить уведомления о новых записях
     </string>
     <string name="settings_notifications_ringtone">Звук</string>
+    <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
     <string name="settings_notifications_vibrate_description">Включить вибрацию при новых записях
     </string>
