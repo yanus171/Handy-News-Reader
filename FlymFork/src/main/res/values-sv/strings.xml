@@ -37,7 +37,6 @@
     <string name="update">Uppdaterad</string>
     <string name="menu_settings">Inställningar</string>
     <string name="menu_refresh">Uppdatera</string>
-    <string name="menu_all_read">Mark som läst</string>
     <string name="flym_feeds">Handy News Reader feeds</string>
     <string name="error">Fel</string>
     <string name="network_error">Nätverket är inte tillgängligt</string>
@@ -136,7 +135,6 @@
     <string name="settings_light_theme_description">Använd det ljusa temat</string>
     <string name="settings_category_refresh">Automatisk uppdatering</string>
     <string name="settings_refresh_enabled">Uppdatera automatiskt</string>
-    <string name="settings_refresh_enabled_description">Uppdatera alla feeds automatiskt</string>
     <string name="settings_refresh_interval">Uppdateringsintervall</string>
     <string name="settings_refresh_on_open">Uppdatera feeds vid start</string>
     <string name="settings_refresh_on_open_description">Uppdatera alla feeds när applikationen öppnas</string>
@@ -150,7 +148,6 @@
     <string name="settings_display_images">Visa bilder</string>
     <string name="settings_display_images_description">Visa bilder i inlägg</string>
     <string name="settings_display_entries_fullscreen">Automatisk helskärm</string>
-    <string name="settings_display_entries_fullscreen_description">Visa inlägg automatiskt i helskärm</string>
     <string name="settings_notifications_enabled">Visa påminnelser</string>
     <string name="settings_notifications_enabled_description">Visa påminnelser då nytt feed innehåll finns</string>
     <string name="settings_notifications_ringtone">Ringsignal</string>
