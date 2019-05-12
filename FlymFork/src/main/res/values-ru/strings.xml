@@ -31,93 +31,52 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <a href=\"https://handynewsreader.blogspot.com/\">Веб сайт</a>  <br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
+   Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
     <br/>
-    Ссылка на <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a>  <br/>
+    Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
     <br/>
-    Ссылка на <a href=\"http://4pda.ru/forum/index.php?showtopic=510993&st=120#entry63119542\">4pda</a>  <br/>
-
+    • сворачивание папок лент новостей<br/>
+    • тап зоны изменения яркости и листания страниц<br/>
+    • ограничения на размер и количество загружаемых изображений<br/>
+    • возможность отмены процесса обновления<br/>
+    • и многое другое<br/>
     <br/>
-    <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader question\">Написать разработчику</a><br/>
-
+    <b><big>Контакты</big></b>
     <br/>
-    <b>Основные функции:</b> <br/>
-    - загрузка RSS лент статей  <br/>
-    - поиск и добавление ленты по ключевому слову <br/>
-    - загрузка оффлайн полнотекстовых версий статей с изображениями <br/>
-    - импорт/экспорт списка каналов из OPML <br/>
-    - фильтр статей по ключевым словам или регулярным выражениям <br/>
-    - полноэкранный режим чтения <br/>
-    - темная и светлая тема <br/>
-
+    • На нашем  <b><a href=\"https://handynewsreader.blogspot.com">сайте</a></b> много информации и новостей о развитии приложения<br/>
+    • Загрузить приложение можно с  <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
+    • или с <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b><br/>
+    • Есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
+    • Исходные тексты на <b><a href=\"https://github.com/yanus171/Handy-News-Reader\">GitHub</a></b><br/>
     <br/>
-    <b>Из доработанного:</b>  <br/>
-    - сворачивание групп лент <br/>
-    - возможность скрытия прочитанных статей канала <br/>
-    - открытие внешних ссылок в приложении (подготовленных для чтения) <br/>
-    - жирный шрифт чтения статей <br/>
-    - ограничение числа загружаемых изображений статьи <br/>
-    - возможность загрузки отдельных изображений статьи <br/>
-    - подробная описание процесса загрузки статей, чтобы понимать, что приложение делает в данный момент <br/>
-    - счетчик потребляемого трафика <br/>
-    - настройка автоматической отметки статей как прочитанных при листании списка <br/>
-    - настройка отображение текста статей в списке статей (эти два пункта полезны для чтения форумов) <br/>
-    - тап зоны для перехода на следующую/предыдущую страницу при чтении статьи <br/>
-    - быстрый переход в полноэкранный режим и обратно, а также показ/скрытие панели действий <br/>
-    - многое другое &#8230; <br/>
+    <b><big>Наша помощь:</big></b>
     <br/>
-
-    <b>If you have a problem with app or you have an idea for the new featire you\'d better open an issue on <a href=\"https://github.com/yanus171/Flym/issues\">github issues page</a></b><br/>
+    Если Вы столкнулись с проблемой, лучше всего<br/>
+    • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub </a></b> or<br/>
+    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader problem\">письмо</a></b><br/>
     <br/>
-
-    Это приложение НЕ синхронизируется с онлайн читалками лент новостей (например, Feedly)<br/>
+    <b><big>Ваша помощь:</big></b>
     <br/>
-
-    Это программа основана на \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian, и распростаняется под лицензией GNU GPL.<br/>
+    Если у Вас есть идея, Вы можете<br/>
+    • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b> or<br/>
+    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">письмо</a></b><br/>
     <br/>
-
+    <b>Если Вам понравилось приложение, оцените его на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a>.</b><br/>
     <br/>
-    <b>Помочь проекту:</b><br/>
-    - <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">оценить</a> приложение<br/>
-    - <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">предложить </a> супер идею
-
-
+    <b><big>Перевод на Ваш язык</big></b>
     <br/>
-    Исходные тексты на <a href=\"https://github.com/yanus171/Flym\">github</a> <br/>
-
-
+    Вы можете помочь перевести приложение с английского на сайте <b><a href=\"https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    Если Ваш язык там еще не добавлен <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader translation\">напишите разработчику</a></b>.<br/>
+    <br/>
+    <b><big>Благодарности</big></b>
     <br/>
     <b>Разработчики:</b><br/>
-    • eighthave<br/>
-    • equiem<br/>
-    • Frédéric Julian<br/>
-    • madx666<br/>
-    • Mikko Huhtala<br/>
-    • Paul Schaub<br/>
-    • RyDroid<br/>
-    • Sergii Pylypenko<br/>+
-    • Shapochkin Mihail<br/>
-    • Suyash Bhatt<br/>
-    • Zhaofeng Li<br/>
-    • yanus171<br/><br/>
-
-    <b>Переводчики:</b><br/>
-    • Aitor Beriain<br/>
-    • Benjamin Schütte<br/>
-    • Changwoo Ryu<br/>
-    • chenjia404<br/>
-    • Danilo Treffiletti<br/>
-    • Enric Morales<br/>
-    • Jaroslav Lichtblau<br/>
-    • Jozef Jaroščiak<br/>
-    • Matthias Dill<br/>
-    • Mladen Pejaković<br/>
-    • SIRSteiner<br/>
-    • Thomas Leigh<br/>
+    ***developerList***
     <br/>
-
-    Эта программа свободна; вы можете перераспространять и/или изменять ее на условиях Стандартной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения; либо версии 3 этой лицензии, либо (по вашему выбору) любой более поздней версии. Подробности на http://www.gnu.org/licenses<br/><br/>.
-
+    <b>Переводчики:</b><br/>
+    ***translatorList***
+    <br/>
     ]]></string>
     <string name="app_name">Удобное чтение новостей</string>
     <string name="about_title_version">версия</string>
