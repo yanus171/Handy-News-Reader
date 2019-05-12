@@ -63,7 +63,10 @@ public class AboutActivity extends BaseActivity {
         //}
         contentView.setMovementMethod( LinkMovementMethod.getInstance() );
         contentView.setClickable(true);
-        contentView.setText(Html.fromHtml(getString(R.string.about_us_content)));
+        final String content = getString(R.string.about_us_content)
+            .replace( "***developerList***", getString( R.string.developerList ) )
+            .replace( "***translatorList***", getString( R.string.translatorList) );
+        contentView.setText(Html.fromHtml(content));
     }
 
     @Override

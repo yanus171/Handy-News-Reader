@@ -133,4 +133,30 @@
         <item>Dark</item>
     </string-array>
 
+    <string name="developerList" translatable="false"><![CDATA[• eighthave<br/>
+    • equiem<br/>
+    • Frédéric Julian<br/>
+    • madx666<br/>
+    • Mikko Huhtala<br/>
+    • Paul Schaub<br/>
+    • RyDroid<br/>
+    • Sergii Pylypenko<br/>
+    • Shapochkin Mihail<br/>
+    • Suyash Bhatt<br/>
+    • Zhaofeng Li<br/>
+    • yanus171<br/>]]></string>
+    <string name="translatorList" translatable="false"><![CDATA[• Aitor Beriain<br/>
+    • Benjamin Schütte<br/>
+    • Changwoo Ryu<br/>
+    • chenjia404<br/>
+    • Danilo Treffiletti<br/>
+    • Enric Morales<br/>
+    • Jaroslav Lichtblau<br/>
+    • Jozef Jaroščiak<br/>
+    • Matthias Dill<br/>
+    • Mladen Pejaković<br/>
+    • Ronny Steiner<br/>
+    • Thomas Leigh<br/>
+    • ekarpi<br/>]]></string>
+
 </resources>
