@@ -18,20 +18,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dip"
                     android:layout_marginBottom="5dip"
-                    android:layout_marginTop="20dip"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher" />
 
                 <TextView
                     android:id="@+id/about_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginTop="5dip"/>
+                    android:layout_marginTop="0dip"
+                    android:layout_marginBottom="0dip"
+                    android:gravity="center" />
 
                 <TextView
                     android:layout_width="wrap_content"
