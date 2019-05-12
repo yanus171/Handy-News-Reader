@@ -32,10 +32,11 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	private static final String cDefaultColor = "#000000";//4294967296L;
 	static final int cColorViewHeight = 50;
 
-	private static final int cPad = 3;
+	private static final int cPad = 5;
 	private static final int cRowCount = 2;
 	private static final int cColumnCount = 8;
 	private static final int cCellWidth = 30;
+	private static final int cTextSize = 15;
 
 	private TextView mlabelRed = null;
 	private TextView mlabelGreen = null;
@@ -79,13 +80,13 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 		LinearLayout layout = new LinearLayout(Context);
 		scrollView.addView(layout);
 		layout.setOrientation(LinearLayout.VERTICAL);
-
+		layout.setPadding(UiUtils.dpToPixel( 20 ),0,UiUtils.dpToPixel( 20 ),0);
 		LinearLayout hLayout = new LinearLayout(Context);
 		hLayout.setOrientation(LinearLayout.HORIZONTAL);
-		hLayout.setPadding( UiUtils.dpToPixel( 5 ), 0, 0, UiUtils.dpToPixel( 5 ));
+		hLayout.setPadding( UiUtils.dpToPixel( 2 ), UiUtils.dpToPixel( 20 ), 0, UiUtils.dpToPixel( 20 ));
 		layout.addView(hLayout);
 
-		mviewDialogColor = CreateDialogColor(hLayout, IsText, IsBackground);
+		mviewDialogColor = CreateDialogColorInDialog(hLayout, IsText, IsBackground);
 
 		AddTextBackgroundSwitch(hLayout);
 
@@ -103,10 +104,10 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 			msbTransparency.setVisibility(View.GONE);
 			mlabelTransparency.setVisibility(View.GONE);
 		}
-		AddColorSeekBar(R.string.red, layout, mlabelRed, msbRed);
-		AddColorSeekBar(R.string.green, layout, mlabelGreen, msbGreen);
-		AddColorSeekBar(R.string.blue, layout, mlabelBlue, msbBlue);
-		AddColorSeekBar(R.string.transparency, layout, mlabelTransparency, msbTransparency);
+		AddColorSeekBar(R.string.red, layout, mlabelRed, msbRed, 20);
+		AddColorSeekBar(R.string.green, layout, mlabelGreen, msbGreen, 10);
+		AddColorSeekBar(R.string.blue, layout, mlabelBlue, msbBlue, 10);
+		AddColorSeekBar(R.string.transparency, layout, mlabelTransparency, msbTransparency, 10);
 		UpdateBars();
 
 		AddHint(layout);
@@ -126,7 +127,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	}
 
 	// -------------------------------------------------------------------------
-	public static TextView CreateDialogColor(ViewGroup layout, boolean isText, boolean isBackground) {
+	public static TextView CreateDialogColorInMenu(ViewGroup layout, boolean isText, boolean isBackground) {
 		TextView result = new TextView(layout.getContext());
 		result.setTypeface(Typeface.DEFAULT_BOLD);
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
@@ -139,13 +140,32 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 		} else {
 			result.setText(" ");
 		}
-		layout.addView(result, cColorViewHeight * 2, LayoutParams.FILL_PARENT);
+		layout.addView(result, cColorViewHeight * 4, LayoutParams.FILL_PARENT);
 		return result;
 	}
 
+
+	// -------------------------------------------------------------------------
+	public static TextView CreateDialogColorInDialog(ViewGroup layout, boolean isText, boolean isBackground) {
+		TextView result = new TextView(layout.getContext());
+		result.setTypeface(Typeface.DEFAULT_BOLD);
+		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+		result.setSingleLine();
+		if (isText && isBackground) {
+			result.setText(cTextLetter);
+			result.setGravity(Gravity.CENTER);
+			//int px = UiUtils.dpToPixel( 5 );
+			//result.setPadding(px, px, px, px);
+		} else {
+			result.setText(" ");
+		}
+		layout.addView(result, cColorViewHeight * 4, LayoutParams.FILL_PARENT);
+		return result;
+	}
 	// -------------------------------------------------------------------------
 	private void AddHint(LinearLayout layout) {
-		UiUtils.AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(R.string.colorSlotSaveLongTapHint));
+		TextView SmallText = UiUtils.AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(R.string.colorSlotSaveLongTapHint));
+		SmallText.setPadding(0,UiUtils.dpToPixel( 25 ),0,0);
 	}
 
 	// -------------------------------------------------------------------------
@@ -196,6 +216,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
         layout.addView(group, lp);
         group.setOrientation(RadioGroup.HORIZONTAL);
         group.setGravity(Gravity.CENTER);
+        group.setPadding(UiUtils.dpToPixel(25),0,0,0);
         if (!IsText || !IsBackground) {
             group.setVisibility(View.GONE);
         }
@@ -205,8 +226,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
             rbTextColor.setText(R.string.text);
             rbTextColor.setId(cTextColorMode);
             rbTextColor.setTextColor(Theme.GetMenuFontColor());
-            rbTextColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-            // rbTextColor.setPadding(0, 10, 0, 0);
+            rbTextColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cTextSize);
             if (!IsText)
                 rbTextColor.setVisibility(View.GONE);
             group.addView(rbTextColor, 0, lp);
@@ -218,7 +238,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
             rbBackGroundColor.setText(R.string.background1);
             rbBackGroundColor.setId(cBackgroundColorMode);
             rbBackGroundColor.setTextColor(Theme.GetMenuFontColor());
-            rbBackGroundColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+            rbBackGroundColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cTextSize);
             if (!IsBackground)
                 rbBackGroundColor.setVisibility(View.GONE);
         }
@@ -340,11 +360,12 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	}
 
 	// -------------------------------------------------------------------------
-    private void AddColorSeekBar(int colorTextResID, LinearLayout layout, TextView labelColor, SeekBar sb) {
+    private void AddColorSeekBar(int colorTextResID, LinearLayout layout, TextView labelColor, SeekBar sb, int pTop) {
 		IsOnProgressChangedEnabled = false;
 		labelColor.setText(colorTextResID);
+		labelColor.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cTextSize);
 		labelColor.setTextColor(Theme.GetMenuFontColor());
-		labelColor.setPadding(10, 0, 0, 0);
+		labelColor.setPadding(0, UiUtils.dpToPixel(pTop), 0, 0);
 		layout.addView(labelColor);
 		sb.setOnSeekBarChangeListener(this);
 		sb.setMax(cMaxColor);
