@@ -84,10 +84,8 @@
     <string name="welcome_title">Добавить канал?</string>
     <string name="never">никогда</string>
     <string name="update">Обновление</string>
-    <string name="updating">Обновление&#8230;</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
-    <string name="menu_all_read">Отметить все как прочитанное</string>
     <string name="flym_feeds">Ленты</string>
     <string name="error">Ошибка</string>
     <string name="network_error">Нет подключения к сети</string>
@@ -211,8 +209,6 @@
     <string name="settings_category_refresh">Автоматическое обновление</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
-    <string name="settings_refresh_enabled_description">Включить автоматическое обновление лент
-    </string>
     <string name="settings_refresh_interval">Интервал обновления</string>
     <string name="settings_min_update_battery_level">Min уровень батареи</string>
     <string name="settings_refresh_only_selected">Только выбранные</string>
@@ -238,7 +234,6 @@
     <string name="show_article_icon">Показывать иконки статей</string>
     <string name="show_article_icon_descr">отключите для экономии места на экране</string>
     <string name="show_article_url">Показывать адрес статьи</string>
-    <string name="show_article_url_descr">в списке статей</string>
     <string name="settings_display_oldest_first">Порядок статей</string>
     <string name="settings_display_oldest_first_description">Старые вначале</string>
     <string name="show_mark_all_as_read_button">Кнопка пометить все как прочитанное</string>
@@ -258,7 +253,6 @@
     <string name="settings_display_images">Отображать кратинки</string>
     <string name="settings_display_images_description">в тексте статей</string>
     <string name="settings_display_entries_fullscreen">Статьи на полный экран</string>
-    <string name="settings_display_entries_fullscreen_description">Открывать текст статьи на полный экран</string>
     <string name="settings_entry_margins">Отступы</string>
     <string name="settings_entry_margins_description">по бокам</string>
     <string name="entry_text_align_justify">Выравнивать по содержимому</string>
@@ -323,7 +317,6 @@
     <string name="setupConnection">Установка соединения</string>
     <string name="settings_content_extract_rules">Правила поиска полных текстов</string>
     <string name="settings_content_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
-    <string name="settings_tap_zones_description">на экране чтения статьи</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
     <string name="downloadNext">"Загрузить следующие "</string>
     <string name="loadingLink">Загрузка ссылки</string>
@@ -345,7 +338,6 @@
     <string name="auto_image_load">Загружать изображения при автоматической загрузке</string>
     <string name="show_progress_info">Подробная информация процесса</string>
     <string name="show_progress_info_descr">Показывать подробную информацию о текущих действиях в процессе загрузки лент</string>
-    <string name="filter_apply_to_url">Применить к адресу</string>
     <string name="vibrate_on_article_list_entry_swype">Вибрация при свайпе</string>
     <string name="vibrate_on_article_list_entry_swype_summary">элемента списка статей или при чтении статьи для помещения ее в избранныее</string>
     <string name="entry_marked_unfavourite">Статья убрана из избранного</string>
