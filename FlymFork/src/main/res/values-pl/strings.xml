@@ -99,11 +99,13 @@
 
     ]]></string>
     <string name="app_name">Handy News Reader</string>
+    <string name="about_title_version">wersja</string>
     <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
     <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
     <string name="update">Aktualizuj</string>
     <string name="updating">Aktualizacja&#8230;</string>
+    <string name="colon">:\u00A0</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież</string>
     <string name="menu_all_read">Oznacz wszystkie jako przeczytane</string>
@@ -264,6 +266,7 @@
     <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
     <string name="settings_category_article_text">Tekst artykułu</string>
     <string name="settings_category_article_text_summary">Wygląd tekstu artykułu</string>
+    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">Wyświetlaj obrazki</string>
     <string name="settings_display_images_description">Wyświetlaj obrazki w artykułach</string>
     <string name="settings_display_entries_fullscreen">Wyświetlaj automatycznie w trybie pełnoekranowym</string>
