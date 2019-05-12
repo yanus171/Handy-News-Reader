@@ -36,4 +36,8 @@
         <item>Μόνο μέσω Wi-Fi</item>
         <item>Πάντα</item>
     </string-array>
+    <string-array name="themeList">
+        <item>Ανοιχτόχρωμο</item>
+        <item>Σκούρο</item>
+    </string-array>
 </resources>
