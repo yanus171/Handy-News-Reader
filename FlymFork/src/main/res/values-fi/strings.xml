@@ -36,7 +36,6 @@
     <string name="update">Päivitetty</string>
     <string name="menu_settings">Asetukset</string>
     <string name="menu_refresh">Päivitä</string>
-    <string name="menu_all_read">Merkitse kaikki luetuiksi</string>
     <string name="flym_feeds">Handy News Reader-syötteet</string>
     <string name="error">Virhe</string>
     <string name="network_error">Ei verkkoyhteyttä</string>
@@ -142,8 +141,6 @@
     <string name="settings_light_theme_description">Käytä vaaleaa teemaa</string>
     <string name="settings_category_refresh">Automaattinen päivitys</string>
     <string name="settings_refresh_enabled">Päivitä automaattisesti</string>
-    <string name="settings_refresh_enabled_description">Päivitä kaikki syötteet automaattisesti
-    </string>
     <string name="settings_refresh_interval">Päivitysväli</string>
     <string name="settings_refresh_on_open">Päivitä käynnistettäessä</string>
     <string name="settings_refresh_on_open_description">Päivitä kaikki syötteet sovelluksen käynnistyessä
@@ -159,7 +156,6 @@
     <string name="settings_display_images">Näytä kuvat</string>
     <string name="settings_display_images_description">Näytä kuvat artikkeleissa</string>
     <string name="settings_display_entries_fullscreen">Automaattinen kokoruututila</string>
-    <string name="settings_display_entries_fullscreen_description">Näytä artikkelit automaattisesti kokoruututilassa</string>
     <string name="settings_notifications_enabled">Näytä ilmoitukset</string>
     <string name="settings_notifications_enabled_description">Näytä ilmoitus kun syötteissä on uusia artikkeleita
     </string>
