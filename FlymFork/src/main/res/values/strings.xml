@@ -44,7 +44,7 @@
     <br/>
     <b><big>Where you can find us</big></b>
     <br/>
-    • Please visit our <b><a href=\"https://handynewsreader.blogspot.com">website</a></b> for news and informations<br/>
+    • Please visit our <b><a href=\"https://handynewsreader.blogspot.com\">website</a></b> for news and informations<br/>
     • You can download this app at <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
     • You can download this app at <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b><br/>
     • There is also a thread at <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA forum</a></b><br/>
@@ -101,7 +101,6 @@
     <br/>
     ]]></string>
     <string name="app_name">Handy News Reader</string>
-    <string name="about_title_version">version</string>
     <string name="about_flym">About the app / Help / Contact the developer </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
