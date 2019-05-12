@@ -110,7 +110,7 @@
     <string name="menu_all_read">Alle als gelesen markieren</string>
     <string name="flym_feeds">Handy News Reader Feeds</string>
     <string name="error">Fehler</string>
-    <string name="network_error">Kein Netzwerk eingerichtet</string>
+    <string name="network_error">Das Gerät ist offline.</string>
     <string name="loading">Lade…</string>
     <string name="no_result">Kein Ergebnis</string>
     <string name="drawer_open">Navigationsleiste öffnen</string>
