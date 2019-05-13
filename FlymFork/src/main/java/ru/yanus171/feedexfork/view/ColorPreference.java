@@ -28,6 +28,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	private int DefaultBackgroundColor;
 	private boolean IsText;
 	private boolean IsBackGround;
+	private boolean IsClock = false;
 
 	// -------------------------------------
 	// ------------------------------------
@@ -57,6 +58,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 		}
 
 		IsTransparency = attrs.getAttributeBooleanValue(NS, "istransparency", false);
+		IsClock = attrs.getAttributeBooleanValue(NS, "isclock", false);
 	}
 
 	// -------------------------------------------------------------------------
@@ -89,7 +91,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	@Override
 	protected void onClick() {
 		final ColorDialog colorDialog = new ColorDialog(getContext(),
-				ColorTB.Create(GetPersistedTextColor(), GetPersistedBackgroundColor()), IsTransparency, IsText, IsBackGround,
+				ColorTB.Create(GetPersistedTextColor(), GetPersistedBackgroundColor()), IsTransparency, IsText, IsBackGround, IsClock,
 				(String) getTitle());
 		AlertDialog.Builder builder = colorDialog.CreateBuilder();
 
@@ -131,7 +133,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	@Override
 	protected View onCreateView(ViewGroup parent) {
 		ViewGroup result = (ViewGroup) super.onCreateView(parent);
-        mviewColor = ColorDialog.CreateDialogColorInMenu( result, IsText, IsBackGround );
+        mviewColor = ColorDialog.CreateDialogColorInMenu( result, IsText, IsBackGround , IsClock);
 //		mviewColor = new TextView(getContext());
 //		mviewColor.setMinimumHeight(cColorViewHeight);
 //		mviewColor.setMinimumWidth(cColorViewHeight);
@@ -150,7 +152,11 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
                 mviewColor.setVisibility( View.GONE );
 		    else {
                 mviewColor.setBackgroundColor(GetPersistedTextColor());
-                if (IsBackGround && IsText) {
+                if (IsClock) {
+					mviewColor.setText(ColorDialog.cClockLetter);
+					mviewColor.setTextColor(GetPersistedTextColor());
+					mviewColor.setBackgroundColor(GetPersistedBackgroundColor());
+				} else if (IsBackGround && IsText) {
                     mviewColor.setText(ColorDialog.cTextLetter);
                     mviewColor.setTextColor(GetPersistedTextColor());
                     mviewColor.setBackgroundColor(GetPersistedBackgroundColor());
