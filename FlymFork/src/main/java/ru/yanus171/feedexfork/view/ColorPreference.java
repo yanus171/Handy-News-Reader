@@ -131,7 +131,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	@Override
 	protected View onCreateView(ViewGroup parent) {
 		ViewGroup result = (ViewGroup) super.onCreateView(parent);
-        mviewColor = ColorDialog.CreateDialogColor( result, IsText, IsBackGround );
+        mviewColor = ColorDialog.CreateDialogColorInMenu( result, IsText, IsBackGround );
 //		mviewColor = new TextView(getContext());
 //		mviewColor.setMinimumHeight(cColorViewHeight);
 //		mviewColor.setMinimumWidth(cColorViewHeight);
