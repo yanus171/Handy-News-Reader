@@ -375,7 +375,7 @@
     <string name="autobackup_interval">Χρόνος ανάμεσα στη δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
     <string name="autobackup_interval_descr">Πόσο συχνά δημιουργείται αρχείο με αντίγραφο ασφαλείας των Ροών σας και των άρθρων</string>
     <string name="create_auto_backup">Δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
-    <string name="auto_backup_opml_file_created">Δημιουργήθηκε αυτόματα ένα αρχείο opml αντίγραφου ασφαλείας</string>
+    <string name="auto_backup_opml_file_created">Δημιουργήθηκε αυτόματα ένα αρχείο opml αντίγραφου ασφαλείας στο:</string>
     <string name="use_standard_file_manager">Χρήση του προεπιλεγμένου προγράμματος περιήγησης αρχείων</string>
     <string name="use_standard_file_manager_descr">Αλλιώς επιλέξτε αρχείο opml για εισαγωγή -  μόνο από τον φάκελο feedex (μέσω του εσωτερικού πλαίσιου διαλόγου)</string>
     <string name="settings">Ρυθμίσεις</string>
