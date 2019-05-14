@@ -56,26 +56,26 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	private int ColorMode;
 	private boolean IsBackground;
 	private boolean IsText;
-	private boolean IsClock;
 	private boolean IsOnProgressChangedEnabled = true;
+	public static String SampleStringShort;
+	public static String SampleStringLong;
 
 	private static final int cTextColorMode = 0;
 	private static final int cBackgroundColorMode = 1;
-	public static final String cTextLetter = "Text";
-	public static final String cClockLetter = "08:15";
 
 	private Context Context = null;
 
 	// -------------------------------------------------------------------------
-	public ColorDialog(Context context, ColorTB color, boolean isTransparency, boolean isText, boolean isBackground, boolean isClock,
-			String title) {
+	public ColorDialog(Context context, ColorTB color, boolean isTransparency, boolean isText, boolean isBackground,
+			String title, String sampleStringShort, String sampleStringLong) {
 		Context = context;
 		mColor = (ColorTB) color.clone();
 		IsTransparency = isTransparency;
 		IsText = isText;
-		IsClock = isClock;
 		IsBackground = isBackground;
 		Title = title;
+		SampleStringShort = sampleStringShort;
+		SampleStringLong = sampleStringLong;
 	}
 
 	// -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 		layout.addView(sampleLayout);
 
 		//mviewDialogColor = CreateDialogColorInDialog(hLayout, IsText, IsBackground);
-		mviewDialogColor = CreateDialogColorInDialog(sampleLayout, IsText, IsBackground, IsClock);
+		mviewDialogColor = CreateDialogColorInDialog(sampleLayout, IsText, IsBackground, SampleStringLong);
 
 		AddTextBackgroundSwitch(layout);
 
@@ -136,52 +136,29 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	}
 
 	// -------------------------------------------------------------------------
-	public static TextView CreateDialogColorInMenu(ViewGroup layout, boolean isText, boolean isBackground, boolean isClock) {
+	public static TextView CreateDialogColorInMenu(ViewGroup layout, String sampleStringShort) {
 		TextView result = new TextView(layout.getContext());
 		result.setTypeface(Typeface.DEFAULT_BOLD);
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
 		result.setSingleLine();
-		if (isClock) {
-			result.setText(cClockLetter);
-			result.setGravity(Gravity.CENTER);
-			int px = UiUtils.dpToPixel( 5 );
-			result.setPadding(px, px, px, px);
-		} else if (isText && isBackground) {
-			result.setText(cTextLetter);
-			result.setGravity(Gravity.CENTER);
-			int px = UiUtils.dpToPixel( 5 );
-			result.setPadding(px, px, px, px);
-		} else {
-			result.setText(" ");
-		}
+        result.setText(sampleStringShort);
+        result.setGravity(Gravity.CENTER);
 		layout.addView(result, cColorViewHeight * 4, LayoutParams.FILL_PARENT);
 		return result;
 	}
 
 
 	// -------------------------------------------------------------------------
-	public static TextView CreateDialogColorInDialog(ViewGroup layout, boolean isText, boolean isBackground, boolean isClock) {
+	public static TextView CreateDialogColorInDialog(ViewGroup layout, boolean isText, boolean isBackground, String sampleStringLong) {
 		TextView result = new TextView(layout.getContext());
 		result.setTypeface(Typeface.DEFAULT);
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 		int px = UiUtils.dpToPixel( 10 );
 		result.setPadding(px, px, px, px);
-		if (isClock) {
-			result.setSingleLine();
-			result.setGravity(Gravity.CENTER);
-			result.setText(cClockLetter);
-			layout.addView(result, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		} else if (isText && isBackground) {
-			result.setSingleLine(false);
-			result.setText(R.string.settings_text_sample);
-			result.setGravity(Gravity.LEFT);
-			layout.addView(result, LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-		} else {
-			result.setSingleLine();
-			result.setText(" ");
-			layout.addView(result, LayoutParams.MATCH_PARENT , 10);
-		}
-		//layout.addView(result, cColorViewHeight * 4, LayoutParams.FILL_PARENT);
+		result.setSingleLine(false);
+		result.setGravity(Gravity.CENTER);
+		result.setText(sampleStringLong);
+		layout.addView(result, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		return result;
 	}
 	// -------------------------------------------------------------------------

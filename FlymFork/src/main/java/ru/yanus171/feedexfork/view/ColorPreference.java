@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.Preference;
 import android.util.AttributeSet;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.ColorTB;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -28,7 +30,8 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	private int DefaultBackgroundColor;
 	private boolean IsText;
 	private boolean IsBackGround;
-	private boolean IsClock = false;
+	private String SampleTextShort;
+	private String SampleTextLong;
 
 	// -------------------------------------
 	// ------------------------------------
@@ -58,10 +61,22 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 		}
 
 		IsTransparency = attrs.getAttributeBooleanValue(NS, "istransparency", false);
-		IsClock = attrs.getAttributeBooleanValue(NS, "isclock", false);
+		SampleTextShort = GetResourceFromString(attrs.getAttributeValue(NS, "sampletextShort"));
+		SampleTextLong = GetResourceFromString(attrs.getAttributeValue(NS, "sampletextLong"));
 	}
 
 	// -------------------------------------------------------------------------
+	private String GetResourceFromString(String str) {
+		String result =" ";
+		if (str.substring(0, 1).equals("@")) {
+			str = str.substring(1, str.length());
+			int resID = getContext().getResources().getIdentifier(str, "string", getContext().getPackageName());
+			str = getContext().getString(resID);
+		}
+		result = str;
+		return result;
+	}
+
 	private int GetDefaultColorFromPrefString(String str) {
 		int result = Color.TRANSPARENT;
 		if (str.substring(0, 1).equals("@")) {
@@ -91,8 +106,8 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	@Override
 	protected void onClick() {
 		final ColorDialog colorDialog = new ColorDialog(getContext(),
-				ColorTB.Create(GetPersistedTextColor(), GetPersistedBackgroundColor()), IsTransparency, IsText, IsBackGround, IsClock,
-				(String) getTitle());
+				ColorTB.Create(GetPersistedTextColor(), GetPersistedBackgroundColor()), IsTransparency, IsText, IsBackGround,
+				(String) getTitle(), SampleTextShort, SampleTextLong);
 		AlertDialog.Builder builder = colorDialog.CreateBuilder();
 
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -133,7 +148,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	@Override
 	protected View onCreateView(ViewGroup parent) {
 		ViewGroup result = (ViewGroup) super.onCreateView(parent);
-        mviewColor = ColorDialog.CreateDialogColorInMenu( result, IsText, IsBackGround , IsClock);
+        mviewColor = ColorDialog.CreateDialogColorInMenu( result, SampleTextShort);
 //		mviewColor = new TextView(getContext());
 //		mviewColor.setMinimumHeight(cColorViewHeight);
 //		mviewColor.setMinimumWidth(cColorViewHeight);
@@ -152,12 +167,8 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
                 mviewColor.setVisibility( View.GONE );
 		    else {
                 mviewColor.setBackgroundColor(GetPersistedTextColor());
-                if (IsClock) {
-					mviewColor.setText(ColorDialog.cClockLetter);
-					mviewColor.setTextColor(GetPersistedTextColor());
-					mviewColor.setBackgroundColor(GetPersistedBackgroundColor());
-				} else if (IsBackGround && IsText) {
-                    mviewColor.setText(ColorDialog.cTextLetter);
+                if (IsBackGround && IsText) {
+                    mviewColor.setText(SampleTextShort);
                     mviewColor.setTextColor(GetPersistedTextColor());
                     mviewColor.setBackgroundColor(GetPersistedBackgroundColor());
                 }
