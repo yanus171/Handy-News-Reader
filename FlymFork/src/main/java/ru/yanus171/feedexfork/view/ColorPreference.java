@@ -67,7 +67,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 
 	// -------------------------------------------------------------------------
 	private String GetResourceFromString(String str) {
-		String result =" ";
+		String result;
 		if (str.substring(0, 1).equals("@")) {
 			str = str.substring(1, str.length());
 			int resID = getContext().getResources().getIdentifier(str, "string", getContext().getPackageName());
@@ -78,7 +78,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 	}
 
 	private int GetDefaultColorFromPrefString(String str) {
-		int result = Color.TRANSPARENT;
+		int result;
 		if (str.substring(0, 1).equals("@")) {
 			str = str.substring(1, str.length());
 			int resID = getContext().getResources().getIdentifier(str, "string", getContext().getPackageName());
