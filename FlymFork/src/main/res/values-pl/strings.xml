@@ -220,6 +220,9 @@
     <string name="settings_light_theme">Jasny motyw</string>
     <string name="settings_light_theme_description">Użyj jasnego motywu</string>
     <string name="settings_color_text_sample_short">"Tekst"</string>
+    <string name="settings_color_text_sample_long">\"Gdy zalecasz się do ładnej dziewczyny, godzina zdaje się sekundą. Gdy siedzisz na rozgrzanych węglach, sekunda zdaje się godziną. Tym właśnie jest względność\".\n(Albert Einstein)</string>
+    <string name="settings_color_clock_sample_short">"08:15"</string>
+    <string name="settings_color_clock_sample_long">"08:16"</string>
     <string name="settings_category_refresh">Automatyczne odświeżanie</string>
     <string name="settings_category_refresh_summary">Automatyczne odświeżanie oraz czas przechowywania artykułów</string>
     <string name="settings_refresh_enabled">Włącz automatyczne odświeżanie</string>
