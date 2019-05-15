@@ -219,6 +219,7 @@
     <string name="settings_category_common_summary">Motyw</string>
     <string name="settings_light_theme">Jasny motyw</string>
     <string name="settings_light_theme_description">Użyj jasnego motywu</string>
+    <string name="settings_color_text_sample_short">"Tekst"</string>
     <string name="settings_category_refresh">Automatyczne odświeżanie</string>
     <string name="settings_category_refresh_summary">Automatyczne odświeżanie oraz czas przechowywania artykułów</string>
     <string name="settings_refresh_enabled">Włącz automatyczne odświeżanie</string>
