@@ -381,6 +381,8 @@
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
     <string name="textColor">Textfarbe</string>
+    <string name="textColorRead">Textfarbe (gelesen)</string>
+    <string name="linkColor">Farbe der Links</string>
     <string name="customColors">Eigene Textfarben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
     <string name="theme">Thema</string>
