@@ -203,6 +203,10 @@
     <string name="settings_category_common_summary">Theme</string>
     <string name="settings_light_theme">Light theme</string>
     <string name="settings_light_theme_description">Use the light theme</string>
+    <string name="settings_color_text_sample_short">"Text"</string>
+    <string name="settings_color_text_sample_long">When you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\n(Albert Einstein)</string>
+    <string name="settings_color_clock_sample_short">"08:15"</string>
+    <string name="settings_color_clock_sample_long">"08:16"</string>
 
     <string name="settings_category_refresh">Automatic refresh</string>
     <string name="settings_category_refresh_summary">Automatic refresh and time to keep of articles</string>

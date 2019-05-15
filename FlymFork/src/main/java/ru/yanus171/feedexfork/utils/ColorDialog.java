@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Layout;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -56,22 +57,25 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	private boolean IsBackground;
 	private boolean IsText;
 	private boolean IsOnProgressChangedEnabled = true;
+	public static String SampleStringShort;
+	public static String SampleStringLong;
 
 	private static final int cTextColorMode = 0;
 	private static final int cBackgroundColorMode = 1;
-	public static final String cTextLetter = "Text";
 
 	private Context Context = null;
 
 	// -------------------------------------------------------------------------
 	public ColorDialog(Context context, ColorTB color, boolean isTransparency, boolean isText, boolean isBackground,
-			String title) {
+			String title, String sampleStringShort, String sampleStringLong) {
 		Context = context;
 		mColor = (ColorTB) color.clone();
 		IsTransparency = isTransparency;
 		IsText = isText;
 		IsBackground = isBackground;
 		Title = title;
+		SampleStringShort = sampleStringShort;
+		SampleStringLong = sampleStringLong;
 	}
 
 	// -------------------------------------------------------------------------
@@ -80,15 +84,20 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 		LinearLayout layout = new LinearLayout(Context);
 		scrollView.addView(layout);
 		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setPadding(UiUtils.dpToPixel( 20 ),0,UiUtils.dpToPixel( 20 ),0);
-		LinearLayout hLayout = new LinearLayout(Context);
-		hLayout.setOrientation(LinearLayout.HORIZONTAL);
-		hLayout.setPadding( UiUtils.dpToPixel( 2 ), UiUtils.dpToPixel( 20 ), 0, UiUtils.dpToPixel( 20 ));
-		layout.addView(hLayout);
+		layout.setGravity(Gravity.CENTER_HORIZONTAL);
+		layout.setPadding(UiUtils.dpToPixel( 20 ),UiUtils.dpToPixel( 20 ),UiUtils.dpToPixel( 20 ),0);
+		//LinearLayout hLayout = new LinearLayout(Context);
+		//hLayout.setOrientation(LinearLayout.HORIZONTAL);
+		//hLayout.setPadding( UiUtils.dpToPixel( 2 ), UiUtils.dpToPixel( 20 ), 0, UiUtils.dpToPixel( 20 ));
+		//layout.addView(hLayout);
+		LinearLayout sampleLayout = new LinearLayout(Context);
+		sampleLayout.setPadding( 0, 0,0,UiUtils.dpToPixel( 20 ));
+		layout.addView(sampleLayout);
 
-		mviewDialogColor = CreateDialogColorInDialog(hLayout, IsText, IsBackground);
+		//mviewDialogColor = CreateDialogColorInDialog(hLayout, IsText, IsBackground);
+		mviewDialogColor = CreateDialogColorInDialog(sampleLayout, IsText, IsBackground, SampleStringLong);
 
-		AddTextBackgroundSwitch(hLayout);
+		AddTextBackgroundSwitch(layout);
 
 		AddColorTable(layout);
 
@@ -127,39 +136,29 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	}
 
 	// -------------------------------------------------------------------------
-	public static TextView CreateDialogColorInMenu(ViewGroup layout, boolean isText, boolean isBackground) {
+	public static TextView CreateDialogColorInMenu(ViewGroup layout, String sampleStringShort) {
 		TextView result = new TextView(layout.getContext());
 		result.setTypeface(Typeface.DEFAULT_BOLD);
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
 		result.setSingleLine();
-		if (isText && isBackground) {
-			result.setText(cTextLetter);
-			result.setGravity(Gravity.CENTER);
-			int px = UiUtils.dpToPixel( 5 );
-			result.setPadding(px, px, px, px);
-		} else {
-			result.setText(" ");
-		}
+        result.setText(sampleStringShort);
+        result.setGravity(Gravity.CENTER);
 		layout.addView(result, cColorViewHeight * 4, LayoutParams.FILL_PARENT);
 		return result;
 	}
 
 
 	// -------------------------------------------------------------------------
-	public static TextView CreateDialogColorInDialog(ViewGroup layout, boolean isText, boolean isBackground) {
+	public static TextView CreateDialogColorInDialog(ViewGroup layout, boolean isText, boolean isBackground, String sampleStringLong) {
 		TextView result = new TextView(layout.getContext());
-		result.setTypeface(Typeface.DEFAULT_BOLD);
-		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
-		result.setSingleLine();
-		if (isText && isBackground) {
-			result.setText(cTextLetter);
-			result.setGravity(Gravity.CENTER);
-			//int px = UiUtils.dpToPixel( 5 );
-			//result.setPadding(px, px, px, px);
-		} else {
-			result.setText(" ");
-		}
-		layout.addView(result, cColorViewHeight * 4, LayoutParams.FILL_PARENT);
+		result.setTypeface(Typeface.DEFAULT);
+		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+		int px = UiUtils.dpToPixel( 10 );
+		result.setPadding(px, px, px, px);
+		result.setSingleLine(false);
+		result.setGravity(Gravity.CENTER);
+		result.setText(sampleStringLong);
+		layout.addView(result, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		return result;
 	}
 	// -------------------------------------------------------------------------
@@ -172,13 +171,13 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	private void AddColorTable(LinearLayout layout) {
 		View[][] colorCell = new View[cRowCount][cColumnCount];
 		LinearLayout[] layoutRow = new LinearLayout[cRowCount];
-
 		for (int row = 0; row < cRowCount; row++) {
 			LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(UiUtils.dpToPixel(cCellWidth), UiUtils.dpToPixel(cCellWidth));
 			layoutRow[row] = new LinearLayout(Context);
 
 			layout.addView(layoutRow[row]);
 			layoutRow[row].setOrientation(LinearLayout.HORIZONTAL);
+			layoutRow[row].setGravity(Gravity.CENTER_HORIZONTAL);
 			for (int col = 0; col < cColumnCount; col++) {
 				colorCell[row][col] = new LinearLayout(layout.getContext());
 				View cell = colorCell[row][col];
@@ -215,14 +214,14 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 
         layout.addView(group, lp);
         group.setOrientation(RadioGroup.HORIZONTAL);
-        group.setGravity(Gravity.CENTER);
-        group.setPadding(UiUtils.dpToPixel(25),0,0,0);
+        group.setPadding(0,0,0,UiUtils.dpToPixel(20));
         if (!IsText || !IsBackground) {
             group.setVisibility(View.GONE);
         }
 
         {
             RadioButton rbTextColor = new RadioButton(Context);
+            rbTextColor.setPadding(0, 0, UiUtils.dpToPixel(40), 0);
             rbTextColor.setText(R.string.text);
             rbTextColor.setId(cTextColorMode);
             rbTextColor.setTextColor(Theme.GetMenuFontColor());

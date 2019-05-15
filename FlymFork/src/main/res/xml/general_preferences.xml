@@ -56,7 +56,9 @@
                 android:key="textColor"
                 android:title="@string/textColor"
                 colorPreference:backgroundColor="@string/default_text_color_background"
-                colorPreference:istransparency="false" />
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_text_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
         </PreferenceCategory>
     </PreferenceScreen>
@@ -199,7 +201,9 @@
                 android:key="article_text_footer_clock_color"
                 android:title="@string/article_text_footer_clock_color"
                 colorPreference:backgroundColor="@string/transparent_color"
-                colorPreference:istransparency="true" />
+                colorPreference:istransparency="true"
+                colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="article_text_footer_show_progress"
@@ -216,7 +220,9 @@
                 android:dependency="article_text_footer_show_progress"
                 android:key="article_text_footer_progress_color"
                 android:title="@string/article_text_footer_progress_color"
-                colorPreference:istransparency="true" />
+                colorPreference:istransparency="true"
+                colorPreference:sampletextShort=" "
+                colorPreference:sampletextLong=" " />
         </PreferenceCategory>
     </PreferenceScreen>
 

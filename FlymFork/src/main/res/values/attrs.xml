@@ -7,6 +7,8 @@
         <attr name="istransparency" format="boolean" />
         <attr name="text" format="string" />
         <attr name="backgroundColor" format="string" />
+        <attr name="sampletextShort" format="string" />
+        <attr name="sampletextLong" format="string" />
     </declare-styleable>
 
 </resources>
