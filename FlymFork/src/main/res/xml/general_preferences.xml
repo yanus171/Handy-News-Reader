@@ -60,6 +60,7 @@
                 colorPreference:sampletextShort="@string/settings_color_text_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
+
         </PreferenceCategory>
     </PreferenceScreen>
 
@@ -135,6 +136,16 @@
                 android:title="@string/show_group_entrries_count"
                 android:summary="@string/show_group_entries_count_descr" />
 
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_read_color"
+                android:dependency="customColors"
+                android:key="textColorRead"
+                android:title="@string/textColorRead"
+                colorPreference:backgroundColor="@string/default_text_color_background"
+                colorPreference:istransparency="true"
+                colorPreference:sampletextShort="@string/settings_color_text_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
+
         </PreferenceCategory>
     </PreferenceScreen>
 
@@ -181,6 +192,15 @@
                 android:key="entry_text_align_justify"
                 android:summary="@string/entry_text_align_justify_description"
                 android:title="@string/entry_text_align_justify"/>
+
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_text_color"
+                colorPreference:backgroundColor="@string/transparent_color"
+                android:key="linkColor"
+                android:title="@string/linkColor"
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_text_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
             <CheckBoxPreference
                 android:defaultValue="true"

@@ -392,6 +392,8 @@
     <string name="text">Text</string>
     <string name="background1">Background</string>
     <string name="textColor">Text color</string>
+    <string name="textColorRead">Text color read</string>
+    <string name="linkColor">Link color</string>
 
     <string name="customColors">Custom font colors</string>
     <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>

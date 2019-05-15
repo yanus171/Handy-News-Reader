@@ -96,6 +96,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getString;
+import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -320,10 +321,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
 
+        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
         final int backgroundColor;
-        backgroundColor = Color.parseColor( Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) );
+        backgroundColor = Color.parseColor( isUnread ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
         view.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
         view.findViewById( R.id.layout_root ).setBackgroundColor( backgroundColor );
 
@@ -379,7 +381,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
         }
         holder.authorTextView.setText( cursor.getString( mAuthorPos ) );
-        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
         holder.titleTextView.setEnabled(isUnread);
         holder.dateTextView.setEnabled(isUnread);
         holder.authorTextView.setEnabled(isUnread);
@@ -436,7 +437,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
 
         {
-            final int color = Color.parseColor( isUnread ? Theme.GetTextColor() : view.getContext().getString( R.string.default_read_color ));
+            final int color = Color.parseColor( isUnread ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
             holder.authorTextView.setTextColor( color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );

@@ -85,6 +85,8 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
@@ -112,7 +114,7 @@ public class EntryView extends WebView implements Observer {
             + "h1, h2 {font-weight: normal; line-height: 130%} "
             + "h1 {font-size: 170%; text-align:center; margin-bottom: 0.1em} "
             + "h2 {font-size: 140%} "
-            + "a {color: #0099CC}"
+            + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) + "}"
             + "h1 a {color: inherit; text-decoration: none}"
             + "img {display: inline;max-width: 100%;height: auto} "
             + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"

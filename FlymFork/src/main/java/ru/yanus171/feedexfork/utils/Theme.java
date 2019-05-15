@@ -21,6 +21,11 @@ public class Theme {
 	static final String LIGHT = "Light";
 	public static final String TEXT_COLOR_BACKGROUND = "textColor_background";
 	public static final String TEXT_COLOR = "textColor";
+	public static final String TEXT_COLOR_READ = "textColorRead";
+	static final String BACKGROUND = "_background";
+	public static final String TEXT_COLOR_READ_BACKGROUND = TEXT_COLOR_READ + BACKGROUND;
+	public static final String LINK_COLOR = "linkColor";
+	public static final String LINK_COLOR_BACKGROUND = LINK_COLOR + BACKGROUND;
 	public static final String QUOTE_BACKGROUND_COLOR = "quote_background_color";
 	public static final String QUOTE_LEFT_COLOR = "quote_left_color";
 	public static final String BUTTON_COLOR = "button_color";
@@ -56,6 +61,7 @@ public class Theme {
 				theme.put(BUTTON_COLOR, "#52A7DF");
 				theme.put(SUBTITLE_COLOR, "#666666");
 				theme.put(SUBTITLE_BORDER_COLOR, "#dddddd");
+
                 //theme.put(ENTRY_LIST_BACKGROUND, "#ffeeeeee");
 				theme.put(STYLE_THEME, String.valueOf( R.style.Theme_Light) );
 
@@ -85,6 +91,8 @@ public class Theme {
 			
 			for ( HashMap<String, String> theme: ThemeList.values() ) {
 				theme.put("notificationBackgroundColor", theme.get(MENU_BACKGROUND_COLOR) );
+				theme.put(TEXT_COLOR_READ, MainApplication.getContext().getString( R.string.default_read_color ));
+				theme.put(LINK_COLOR, MainApplication.getContext().getString( R.string.default_link_color ) );
 			}
 			mTheme = PrefUtils.getString( THEME, DARK);
 		}
