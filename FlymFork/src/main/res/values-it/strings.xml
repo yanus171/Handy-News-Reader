@@ -36,7 +36,6 @@
     <string name="update">Aggiornamento</string>
     <string name="menu_settings">Impostazioni</string>
     <string name="menu_refresh">Aggiorna</string>
-    <string name="menu_all_read">Segna tutti come letti</string>
     <string name="flym_feeds">Feed di Handy News Reader</string>
     <string name="error">Errore</string>
     <string name="network_error">Nessuna connessione disponibile</string>
@@ -136,8 +135,6 @@
     <string name="settings_light_theme_description">Utilizza il tema chiaro</string>
     <string name="settings_category_refresh">Aggiornamento automatico</string>
     <string name="settings_refresh_enabled">Attiva aggiornamento automatico</string>
-    <string name="settings_refresh_enabled_description">Attiva l\'aggiornamento automatico dei feed
-    </string>
     <string name="settings_refresh_interval">Intervallo</string>
     <string name="settings_refresh_on_open">Aggiorna feed all\'apertura</string>
     <string name="settings_refresh_on_open_description">Aggiorna tutti i feed all\'apertura
@@ -155,7 +152,6 @@
     <string name="settings_display_images">Mostra immagini</string>
     <string name="settings_display_images_description">Mostra le immagini degli articoli</string>
     <string name="settings_display_entries_fullscreen">Articoli a tutto schermo in automatico</string>
-    <string name="settings_display_entries_fullscreen_description">Visualizza automaticamente a tutto schermo gli articoli</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi
         articoli
