@@ -36,7 +36,6 @@
     <string name="update">Actualizar</string>
     <string name="menu_settings">Configuración</string>
     <string name="menu_refresh">Actualizar</string>
-    <string name="menu_all_read">Marcar todo como leído</string>
     <string name="flym_feeds">Fuentes de Handy News Reader</string>
     <string name="network_error">No se ha configurado la red</string>
     <string name="loading">Cargando…</string>
@@ -119,9 +118,6 @@
     <string name="settings_light_theme_description">Usar el tema claro</string>
     <string name="settings_category_refresh">Actualización automáticas</string>
     <string name="settings_refresh_enabled">Habilitar actualizaciones automáticas</string>
-    <string name="settings_refresh_enabled_description">Activa las actualizaciones automáticas de
-        las fuentes.
-    </string>
     <string name="settings_refresh_interval">Intervalo entre actualizaciones</string>
     <string name="settings_refresh_on_open">Actualizar las fuentes al inicio</string>
     <string name="settings_refresh_on_open_description">Actualiza las fuentes al iniciar la

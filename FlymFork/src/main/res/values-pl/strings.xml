@@ -104,11 +104,9 @@
     <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
     <string name="update">Aktualizuj</string>
-    <string name="updating">Aktualizacja&#8230;</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież</string>
-    <string name="menu_all_read">Oznacz wszystkie jako przeczytane</string>
     <string name="flym_feeds">Źródła Handy News Reader</string>
     <string name="error">Błąd</string>
     <string name="network_error">Jesteś off-line.</string>
@@ -224,7 +222,6 @@
     <string name="settings_category_refresh">Automatyczne odświeżanie</string>
     <string name="settings_category_refresh_summary">Automatyczne odświeżanie oraz czas przechowywania artykułów</string>
     <string name="settings_refresh_enabled">Włącz automatyczne odświeżanie</string>
-    <string name="settings_refresh_enabled_description">Aktywuj automatyczne odświeżanie kanałów</string>
     <string name="settings_refresh_interval">Odświeżaj co:</string>
     <string name="settings_min_update_battery_level">Min. poziom baterii</string>
     <string name="settings_refresh_only_selected">Tylko wybrane</string>
@@ -249,7 +246,6 @@
     <string name="show_article_icon">Pokaż ikonę artykułu</string>
     <string name="show_article_icon_descr">Wyłącz by uzyskać więcej miejsca na ekranie</string>
     <string name="show_article_url">Pokaż adres URL artykułu</string>
-    <string name="show_article_url_descr">na liście artykułów</string>
     <string name="settings_display_oldest_first">Kolejność artykułów</string>
     <string name="settings_display_oldest_first_description">Najstarsze na początku</string>
     <string name="show_mark_all_as_read_button">Przycisk Oznacz wszystko jako przeczytane</string>
@@ -270,7 +266,6 @@
     <string name="settings_display_images">Wyświetlaj obrazki</string>
     <string name="settings_display_images_description">Wyświetlaj obrazki w artykułach</string>
     <string name="settings_display_entries_fullscreen">Wyświetlaj automatycznie w trybie pełnoekranowym</string>
-    <string name="settings_display_entries_fullscreen_description">Automatycznie wyświetlaj artykuły w trybie pełnoekranowym</string>
     <string name="settings_entry_margins">Marginesy</string>
     <string name="settings_entry_margins_description">Lewy | prawy</string>
     <string name="entry_text_align_justify">Tekst justowany</string>
@@ -333,7 +328,6 @@
     <string name="setupConnection">Ustaw połączenie</string>
     <string name="settings_content_extract_rules">Reguły pozyskiwania treści</string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
-    <string name="settings_tap_zones_description">podczas wyświetlania treści artykułu</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
     <string name="downloadNext">"Pobierz następny"</string>
     <string name="loadingLink">Wczytuję linki</string>
@@ -355,7 +349,6 @@
     <string name="auto_image_load">Automatycznie wczytuj obrazki</string>
     <string name="show_progress_info">Szczegółowe informacje techniczne o postępie</string>
     <string name="show_progress_info_descr">Pokazuje szczegółowe informacje nt. aktualnie przeprowadzanej operacji</string>
-    <string name="filter_apply_to_url">Zastosuj do adresu URL</string>
     <string name="vibrate_on_article_list_entry_swype">Wibruj przy przesunięciu w lewo/prawo</string>
     <string name="vibrate_on_article_list_entry_swype_summary">W artykule na liście oraz w tekście artykułu podczas oznaczania gwiazdką</string>
     <string name="entry_marked_unfavourite">Artykuł został usunięty z Ulubionych</string>

@@ -37,7 +37,6 @@
     <string name="colon">\u00A0:\u00A0</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
-    <string name="menu_all_read">Marquer tout comme lu</string>
     <string name="flym_feeds">Flux Handy News Reader</string>
     <string name="error">Erreur</string>
     <string name="network_error">Pas de connexion disponible</string>
@@ -144,8 +143,6 @@
     <string name="settings_light_theme_description">Utiliser le thème clair</string>
     <string name="settings_category_refresh">Mise à jour automatique</string>
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
-    <string name="settings_refresh_enabled_description">Active la mise à jour automatique des flux
-    </string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
     <string name="settings_refresh_on_open">Mise à jour des flux à l\'ouverture</string>
     <string name="settings_refresh_on_open_description">Met à jour tous les flux à l\'ouverture de
@@ -161,7 +158,6 @@
     <string name="settings_display_oldest_first">Ordre des articles</string>
     <string name="settings_display_oldest_first_description">Affiche les plus vieux en premier</string>
     <string name="settings_display_entries_fullscreen">Plein écran auto</string>
-    <string name="settings_display_entries_fullscreen_description">Affiche automatiquement les articles en plein écran</string>
     <string name="settings_notifications_enabled">Activer les notifications</string>
     <string name="settings_notifications_enabled_description">Active les notifications en cas de
         nouveaux articles

@@ -36,7 +36,6 @@
     <string name="update">업데이트</string>
     <string name="menu_settings">설정</string>
     <string name="menu_refresh">새로 고침</string>
-    <string name="menu_all_read">모두 읽은 것으로 표시</string>
     <string name="flym_feeds">플라임 피드</string>
     <string name="error">오류</string>
     <string name="network_error">네트워크가 준비되지 않았습니다</string>
@@ -132,7 +131,6 @@
     <string name="settings_light_theme_description">밝은 테마를 사용</string>
     <string name="settings_category_refresh">자동 새로 고침</string>
     <string name="settings_refresh_enabled">자동 새로 고침 사용</string>
-    <string name="settings_refresh_enabled_description">피드 자동 새로 고침 기능을 사용</string>
     <string name="settings_refresh_interval">새로 고침 간격</string>
     <string name="settings_refresh_on_open">열면 피드 새로 고침</string>
     <string name="settings_refresh_on_open_description">프로그램을 열면 모든 피드 새로 고침</string>
