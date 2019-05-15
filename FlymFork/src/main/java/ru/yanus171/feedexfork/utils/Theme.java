@@ -161,12 +161,10 @@ public class Theme {
 			map = ThemeList.get(DARK);
 		
 		String result = MainApplication.getContext().getString(defID);
-
-
 		if ( PrefUtils.contains( key ) && ( !map.containsKey(key) || IsCustom() ) )
 			result = PrefUtils.getString( key, result );
-		else
-			result = map.get(key);
+		else if ( map.containsKey( key ) )
+			result = map.get( key);
 
 		return result;
 	}
