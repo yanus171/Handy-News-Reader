@@ -401,6 +401,8 @@
     <string name="text">Tekst</string>
     <string name="background1">Tło</string>
     <string name="textColor">Kolor tekstu</string>
+    <string name="textColorRead">Kolor tekstu</string>
+    <string name="linkColor">Kolor linku</string>
     <string name="customColors">Własne kolory czcionki</string>
     <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
     <string name="theme">Motyw</string>
