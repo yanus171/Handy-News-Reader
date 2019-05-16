@@ -54,20 +54,20 @@
     <br/>
     Wenn Sie einen Fehler in dieser App finden, bitte<br/>
     • öffnen Sie einen Problemfall auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">E-Mail an den Entwickler</a></b><br/>
+    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">E-Mail an den Entwickler</a></b><br/>
     <br/>
     <b><big>Ihre Unterstützung</big></b>
     <br/>
     Wenn Sie eine Idee für neue Funktionen haben, bitte<br/>
     • öffnen Sie ein Thema auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">E-Mail an den Entwickler</a></b><br/>
+    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">E-Mail an den Entwickler</a></b><br/>
     <br/>
     <b>Bitte bewerten Sie diese App bei <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google</a>, wenn Sie sie nützlich finden.</b><br/>
     <br/>
     <b><big>Übersetzungen</big></b>
     <br/>
     Sie können bei der Übersetzung dieser App in Ihre Sprache auf der Plattform <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> helfen.<br/>
-    Wenn Sie Ihre Sprache nicht finden, senden Sie bitte eine <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader translation">E-Mail an den Entwickler</a></b>.<br/>
+    Wenn Sie Ihre Sprache nicht finden, senden Sie bitte eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">E-Mail an den Entwickler</a></b>.<br/>
     <br/>
     <b><big>Danksagungen</big></b>
     <br/>
@@ -381,6 +381,8 @@
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
     <string name="textColor">Textfarbe</string>
+    <string name="textColorRead">Textfarbe (gelesen)</string>
+    <string name="linkColor">Farbe der Links</string>
     <string name="customColors">Eigene Textfarben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
     <string name="theme">Thema</string>
