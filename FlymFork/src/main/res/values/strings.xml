@@ -54,20 +54,20 @@
     <br/>
     If you stumble upon a problem with the app you\'d better<br/>
     • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
-    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">e-mail to the developer</a></b><br/>
+    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">e-mail to the developer</a></b><br/>
     <br/>
     <b><big>Your support</big></b>
     <br/>
     If you have an idea for a new feature you can:<br/>
     • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
-    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">e-mail to the developer</a></b><br/>
+    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail to the developer</a></b><br/>
     <br/>
     <b>If you find this app useful please rate it at <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google</a>.</b><br/>
     <br/>
     <b><big>Translations</big></b>
     <br/>
     You can help in translation to your own language at <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
-    If your language isn\'t available then please send an <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader translation">e-mail to the developer</a></b>.<br/>
+    If your language isn\'t available then please send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail to the developer</a></b>.<br/>
     <br/>
     <b><big>Acknowledgments</big></b>
     <br/>
@@ -203,10 +203,10 @@
     <string name="settings_category_common_summary">Theme</string>
     <string name="settings_light_theme">Light theme</string>
     <string name="settings_light_theme_description">Use the light theme</string>
-    <string name="settings_color_text_sample_short">"Text"</string>
-    <string name="settings_color_text_sample_long">When you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\n(Albert Einstein)</string>
-    <string name="settings_color_clock_sample_short">"08:15"</string>
-    <string name="settings_color_clock_sample_long">"08:16"</string>
+    <string name="settings_color_text_sample_short">Text</string>
+    <string name="settings_color_text_sample_long">\u201cWhen you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\u201d\n(Albert Einstein)</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
 
     <string name="settings_category_refresh">Automatic refresh</string>
     <string name="settings_category_refresh_summary">Automatic refresh and time to keep of articles</string>
