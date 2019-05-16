@@ -115,7 +115,7 @@ public class EntryView extends WebView implements Observer {
             + "h1 {font-size: 170%; text-align:center; margin-bottom: 0.1em} "
             + "h2 {font-size: 140%} "
             + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) + "}"
-            + "h1 a {color: inherit; text-decoration: none}"
+            + "h1 {color: inherit; text-decoration: none}"
             + "img {display: inline;max-width: 100%;height: auto} "
             + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
             + "pre {white-space: pre-wrap;} "
@@ -153,9 +153,9 @@ public class EntryView extends WebView implements Observer {
 
     private static final String BODY_START = "<body>";
     private static final String BODY_END = "</body>";
-    private static final String TITLE_START = "<h1><a href='";
-    private static final String TITLE_MIDDLE = "'>";
-    private static final String TITLE_END = "</a></h1>";
+    private static final String TITLE_START = "<h1>";
+    //private static final String TITLE_MIDDLE = "'>";
+    private static final String TITLE_END = "</h1>";
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
@@ -248,7 +248,7 @@ public class EntryView extends WebView implements Observer {
         if (link == null) {
             link = "";
         }
-        content.append(TITLE_START).append(link).append(TITLE_MIDDLE).append(title).append(TITLE_END).append(SUBTITLE_START);
+        content.append(TITLE_START).append(title).append(TITLE_END).append(SUBTITLE_START);
         Date date = new Date(timestamp);
         Context context = getContext();
         StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
