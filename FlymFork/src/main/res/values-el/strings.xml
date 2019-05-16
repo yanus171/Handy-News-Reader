@@ -209,10 +209,10 @@
     <string name="settings_category_common_summary">Θέμα</string>
     <string name="settings_light_theme">Ανοιχτόχρωμο θέμα</string>
     <string name="settings_light_theme_description">Χρήση ανοιχτόχρωμου θέματος</string>
-    <string name="settings_color_text_sample_short">"Κείμενο"</string>
+    <string name="settings_color_text_sample_short">Κείμενο</string>
     <string name="settings_color_text_sample_long">Όταν φλερτάρει κάποιος μια κοπέλα του φαίνεται ένα δευτερόλεπτο. Όταν κάθεται πάνω σε καλοριφέρ του φαίνεται αιώνας. Αυτό είναι η σχετικότητα.\n(Άλμπερτ Αϊνστάιν)</string>
-    <string name="settings_color_clock_sample_short">"08:15"</string>
-    <string name="settings_color_clock_sample_long">"08:16"</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="settings_category_refresh">Αυτόματη ανανέωση</string>
     <string name="settings_category_refresh_summary">Αυτόματη ανανέωση και χρόνος που θα κρατιούνται τα άρθρα</string>
     <string name="settings_refresh_enabled">Ενεργοποίηση αυτόματης ανανέωσης</string>
