@@ -199,10 +199,10 @@
     <string name="settings_category_common_summary">Thema</string>
     <string name="settings_light_theme">Helles Thema</string>
     <string name="settings_light_theme_description">Helles Thema nutzen</string>
-    <string name="settings_color_text_sample_short">"Text"</string>
-    <string name="settings_color_text_sample_long">Wenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\n(Albert Einstein)</string>
-    <string name="settings_color_clock_sample_short">"08:15"</string>
-    <string name="settings_color_clock_sample_long">"08:16"</string>
+    <string name="settings_color_text_sample_short">Text</string>
+    <string name="settings_color_text_sample_long">\u201cWenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\u201c\n(Albert Einstein)</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
     <string name="settings_category_refresh_summary">Automatische Aktualisierung und Aufbewahrungszeit der Artikel</string>
     <string name="settings_refresh_enabled">Aktualisierung aktivieren</string>
