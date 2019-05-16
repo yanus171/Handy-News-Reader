@@ -152,19 +152,24 @@ public class HtmlUtils {
                 } else {
                     String imgPath = NetworkUtils.getDownloadedImagePath(entryId, srcText);
                     index++;
+                    String imgTagText = matcher.group(0);
                     if (new File(imgPath).exists()) {
-                        content = content.replace(srcText, Constants.FILE_SCHEME + imgPath);
+                        content = content.replace( imgTagText,
+                                        "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >"  +
+                                                   imgTagText.replace( srcText, Constants.FILE_SCHEME + imgPath ) +
+                                                   "</a>" );
 
                     } else if (needDownloadPictures) {
-                        String imgTagText = matcher.group(0);
                         if ( ( index <= FetcherService.mMaxImageDownloadCount ) || ( FetcherService.mMaxImageDownloadCount == 0 ) ) {
                             if ( isDownLoadImages )
                                 imagesToDl.add(srcText);
                             content = content.replace(imgTagText, //getDownloadImageHtml(srcText) +
-                                                                  imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
+                                                        imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
                                                                             .replaceAll( "alt=\"[^\"]+?\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )
                                                                             .replace( "alt=\"\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )
-                                                                            .replace( "<img ", "<img onclick=\"downloadImage('" + srcText + "')\" " ) );
+                                                                            .replace( "<img ", "<img onclick=\"downloadImage('" + srcText + "')\" " ) +
+                                                                  "</a>" );
+
                         } else {
                             String htmlButtons = getDownloadImageHtml(srcText) + "<br/>";
                             if ( index == FetcherService.mMaxImageDownloadCount + 1 )
