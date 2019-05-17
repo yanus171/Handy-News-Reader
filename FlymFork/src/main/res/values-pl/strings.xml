@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licencja i informacje</big></b><br/>
+    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Licencja i informacje</big></b><br/>
     Niniejszy program stanowi wolne oprogramowanie, możesz go rozpowszechniać i/lub modyfikować na zasadach licencji GNU General Public License opublikowanej przez Fundację Wolnego Oprogramowania, w wydaniu 3 licencji, lub (wedle uznania) jakimkolwiek późniejszym. Zobacz https://www.gnu.org/licenses/licenses.pl.html<br/>
     <br/>
     Niniejszy program bazuje na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Pośród funkcji dodanych w tym forku znajdują się:<br/>
@@ -80,7 +80,7 @@
     
  
 about_us_content
-GENERAL]]></string>
+GENERAL"]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
     <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
