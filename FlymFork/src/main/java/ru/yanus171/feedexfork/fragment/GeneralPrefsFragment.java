@@ -65,6 +65,7 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
 public class GeneralPrefsFragment extends PreferenceFragment implements  PreferenceScreen.OnPreferenceClickListener {
+    public static Boolean mSetupChanged = false;
 
     private Preference.OnPreferenceChangeListener mOnRefreshChangeListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -146,7 +147,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
     @Override
     public void onDestroy() {
-        HomeActivity.mFeedSetupChanged = true;
+        mSetupChanged = true;
         super.onDestroy();
     }
 
