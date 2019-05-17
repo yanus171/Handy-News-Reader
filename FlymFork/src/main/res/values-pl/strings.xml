@@ -67,37 +67,11 @@
 
     <br/>
     <b>Deweloperzy:</b><br/>
-    • eighthave<br/>
-    • equiem<br/>
-    • Frédéric Julian<br/>
-    • madx666<br/>
-    • Mikko Huhtala<br/>
-    • Paul Schaub<br/>
-    • RyDroid<br/>
-    • Sergii Pylypenko<br/>
-    • Shapochkin Mihail<br/>
-    • Suyash Bhatt<br/>
-    • Zhaofeng Li<br/>
-    • yanus171<br/>
-
+***developerList***
     <br/>
-    <b>Tłumacze:</b><br/>
-    • Aitor Beriain<br/>
-    • Benjamin Schütte<br/>
-    • Changwoo Ryu<br/>
-    • chenjia404<br/>
-    • Danilo Treffiletti<br/>
-    • Enric Morales<br/>
-    • Jaroslav Lichtblau<br/>
-    • Jozef Jaroščiak<br/>
-    • Matthias Dill<br/>
-    • Mladen Pejaković<br/>
-    • Ronny Steiner<br/>
-    • Thomas Leigh<br/>
-    <br/>
-
-
-    ]]></string>
+    <b>Tłumacze:</b><br/><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">
+***translatorList***
+    <br/>]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
     <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
