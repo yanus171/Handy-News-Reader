@@ -207,12 +207,12 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Κοινές ρυθμίσεις</string>
     <string name="settings_category_common_summary">Θέμα</string>
-    <string name="settings_light_theme">Ανοιχτόχρωμο θέμα</string>
-    <string name="settings_light_theme_description">Χρήση ανοιχτόχρωμου θέματος</string>
+    <string name="theme">Θέμα</string>
+    <string name="customColors">Προσαρμοσμένα χρώματα γραμματοσειράς</string>
+    <string name="fontColorsNotFromThemeSummary">αλλιώς χρησιμοποιήστε τα χρώματα του θέματος</string>
+    <string name="textColor">Χρώμα κειμένου</string>
     <string name="settings_color_text_sample_short">Κείμενο</string>
     <string name="settings_color_text_sample_long">Όταν φλερτάρει κάποιος μια κοπέλα του φαίνεται ένα δευτερόλεπτο. Όταν κάθεται πάνω σε καλοριφέρ του φαίνεται αιώνας. Αυτό είναι η σχετικότητα.\n(Άλμπερτ Αϊνστάιν)</string>
-    <string name="settings_color_clock_sample_short">08:15</string>
-    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="settings_category_refresh">Αυτόματη ανανέωση</string>
     <string name="settings_category_refresh_summary">Αυτόματη ανανέωση και χρόνος που θα κρατιούνται τα άρθρα</string>
     <string name="settings_refresh_enabled">Ενεργοποίηση αυτόματης ανανέωσης</string>
@@ -266,8 +266,12 @@
     <string name="article_text_footer_show_clock">Υποσέλιδο-Ρολόι</string>
     <string name="article_text_footer_show_clock_description">Εμφανίζει την ώρα κάτω αριστερά στη προβολή πλήρους οθόνης</string>
     <string name="settings_clock_size">Μέγεθος Υποσέλιδου - Ρολογιού</string>
+    <string name="article_text_footer_clock_color">Χρώμα ρολογιού</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Μπάρα προόδου διαβάσματος</string>
     <string name="article_text_footer_progress_height">Ύψος μπάρας προόδου</string>
+    <string name="article_text_footer_progress_color">Χρώμα γραμμής προόδου</string>
     <string name="settings_category_operation">Λειτουργικότητα</string>
     <string name="settings_category_operation_summary">Ρυθμίσεις λειτουργικότητας</string>
     <string name="tap_zone_size">Μέγεθος ζώνης αφής</string>
@@ -389,12 +393,6 @@
     <string name="colorSlotSaved">Το χρώμα καταχωρήθηκε στο κελί</string>
     <string name="text">Κείμενο</string>
     <string name="background1">Φόντο</string>
-    <string name="textColor">Χρώμα κειμένου</string>
-    <string name="customColors">Προσαρμοσμένα χρώματα γραμματοσειράς</string>
-    <string name="fontColorsNotFromThemeSummary">αλλιώς χρησιμοποιήστε τα χρώματα του θέματος</string>
-    <string name="theme">Θέμα</string>
-    <string name="article_text_footer_clock_color">Χρώμα ρολογιού</string>
-    <string name="article_text_footer_progress_color">Χρώμα γραμμής προόδου</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
