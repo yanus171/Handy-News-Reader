@@ -263,6 +263,7 @@ GENERAL"]]></string>
     <string name="linkColor">Kolor linku</string>
     <string name="settings_color_link_sample_short">Linki</string>
     <string name="settings_color_link_sample_long">Kolor linków</string>
+    <string name="underline_links">Podkreślaj linki</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
     <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
