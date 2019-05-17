@@ -204,8 +204,10 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Общие настройки</string>
     <string name="settings_category_common_summary">Тема</string>
-    <string name="settings_light_theme">Светлая тема</string>
-    <string name="settings_light_theme_description">Использовать светлую тему</string>
+    <string name="theme">Тема</string>
+    <string name="customColors">Пользовательские цвета</string>
+    <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
+    <string name="textColor">Цвет текста</string>
     <string name="settings_category_refresh">Автоматическое обновление</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
@@ -260,8 +262,10 @@
     <string name="article_text_footer_show_clock">Часы</string>
     <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
     <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
+    <string name="article_text_footer_clock_color">Цвет часов</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>
+    <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
     <string name="settings_category_operation">Операции</string>
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
@@ -385,12 +389,6 @@
     <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
-    <string name="textColor">Цвет текста</string>
-    <string name="customColors">Пользовательские цвета</string>
-    <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
-    <string name="theme">Тема</string>
-    <string name="article_text_footer_clock_color">Цвет часов</string>
-    <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
