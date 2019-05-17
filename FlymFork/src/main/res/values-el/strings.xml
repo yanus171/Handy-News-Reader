@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <a href=\"https://handynewsreader.blogspot.com/\">Ιστοσελίδα</a>  <br/>
+    <string name="about_us_content" translatable="true">"<![CDATA[    <a href=\"https://handynewsreader.blogspot.com/\">Ιστοσελίδα</a>  <br/>
     <br/>
     Σύνδεσμος <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a>  <br/>
     <br/>
@@ -88,7 +88,7 @@
     • Thomas Leigh<br/>
     • από ekarpi<br/>
     <br/>
-    ]]></string>
+    "]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">έκδοση</string>
     <string name="about_flym">Σχετικά με την εφαρμογή / Βοήθεια / Επικοινωνία με τον προγραμματιστή </string>
