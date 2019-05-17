@@ -137,8 +137,6 @@
     <string name="blue">Sininen</string>
     <string name="transparency">Läpinäkyvyys</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">Vaalea teema</string>
-    <string name="settings_light_theme_description">Käytä vaaleaa teemaa</string>
     <string name="settings_category_refresh">Automaattinen päivitys</string>
     <string name="settings_refresh_enabled">Päivitä automaattisesti</string>
     <string name="settings_refresh_interval">Päivitysväli</string>
