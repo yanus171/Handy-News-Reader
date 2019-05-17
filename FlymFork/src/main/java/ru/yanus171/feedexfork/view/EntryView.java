@@ -372,7 +372,7 @@ public class EntryView extends WebView implements Observer {
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                        File extTmpFile = new File(context.getExternalCacheDir(), "tmp_img.jpg");
+                        File extTmpFile = new File(context.getExternalCacheDir(), file.getName());
                         FileUtils.copy(file, extTmpFile);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");

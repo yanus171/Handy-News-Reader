@@ -126,6 +126,11 @@ public class HtmlUtils {
         return images;
     }
 
+    static final String LINK_TAG_END = "</a>";
+
+    private static String GetLinkStartTag(String imgPath) {
+        return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
+    }
     public static String replaceImageURLs(String content, final long entryId, boolean isDownLoadImages) {
         // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
@@ -147,17 +152,18 @@ public class HtmlUtils {
             while ( matcher.find()  ) {
                 String srcText = matcher.group(1);
                 srcText = srcText.replace(" ", URL_SPACE);
+                final String imgTagText = matcher.group(0);
                 if ( srcText.startsWith( Constants.FILE_SCHEME ) ) {
                     content = content.replace( getDownloadImageHtml(srcText), "" );
+                    content = content.replace( imgTagText, GetLinkStartTag( srcText ) + imgTagText + LINK_TAG_END );
                 } else {
-                    String imgPath = NetworkUtils.getDownloadedImagePath(entryId, srcText);
+                    final String imgPath = NetworkUtils.getDownloadedImagePath(entryId, srcText);
                     index++;
-                    String imgTagText = matcher.group(0);
                     if (new File(imgPath).exists()) {
                         content = content.replace( imgTagText,
-                                        "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >"  +
+                                        GetLinkStartTag( imgPath ) +
                                                    imgTagText.replace( srcText, Constants.FILE_SCHEME + imgPath ) +
-                                                   "</a>" );
+                                                   LINK_TAG_END );
 
                     } else if (needDownloadPictures) {
                         if ( ( index <= FetcherService.mMaxImageDownloadCount ) || ( FetcherService.mMaxImageDownloadCount == 0 ) ) {
