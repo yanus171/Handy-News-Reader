@@ -248,6 +248,8 @@ GENERAL"]]></string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
     <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
     <string name="textColorRead">Kolor nieprzeczytanych artykułów</string>
+    <string name="settings_color_text_read_sample_short">Przeczytane</string>
+    <string name="settings_color_text_read_sample_long">Przeczytane artykuły</string>
     <string name="settings_category_article_text">Tekst artykułu</string>
     <string name="settings_category_article_text_summary">Wygląd tekstu artykułu</string>
     <string name="settings_display_text_color_description">(0..255)</string>
@@ -259,6 +261,8 @@ GENERAL"]]></string>
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
     <string name="linkColor">Kolor linku</string>
+    <string name="settings_color_link_sample_short">Linki</string>
+    <string name="settings_color_link_sample_long">Kolor linków</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
     <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
