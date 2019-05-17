@@ -114,7 +114,8 @@ public class EntryView extends WebView implements Observer {
             + "h1, h2 {font-weight: normal; line-height: 130%} "
             + "h1 {font-size: 170%; text-align:center; margin-bottom: 0.1em} "
             + "h2 {font-size: 140%} "
-            + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) + "}"
+            + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) +
+            ( PrefUtils.getBoolean( "underline_links", true ) ? "" : "; text-decoration: none" ) + "}"
             + "h1 {color: inherit; text-decoration: none}"
             + "img {display: inline;max-width: 100%;height: auto} "
             + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
