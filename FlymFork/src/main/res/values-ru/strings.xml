@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
+    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Лицензия</big></b><br/>
    Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
     <br/>
     Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
@@ -77,7 +77,7 @@
     <b>Переводчики:</b><br/>
     ***translatorList***
     <br/>
-    ]]></string>
+    "]]></string>
     <string name="app_name">Удобное чтение новостей</string>
     <string name="about_title_version">версия</string>
     <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
@@ -110,12 +110,12 @@
     <string name="error_feed_process">Лента не может быть добавлена.</string>
     <string name="error_feed_url_exists">Такой адрес уже есть.</string>
     <string name="error_feed_import">Выбранный файл не может быть импортирован.</string>
-    <string name="error_feed_export">Экспорт не удался. Удостоверьтесь, что карта памяти имеет
+    <string name="error_feed_export">"Экспорт не удался. Удостоверьтесь, что карта памяти имеет
         возможность записи.
-    </string>
-    <string name="error_external_storage_not_available">Внешнее хранилище (например, карта памяти)
+    "</string>
+    <string name="error_external_storage_not_available">"Внешнее хранилище (например, карта памяти)
         недоступно.
-    </string>
+    "</string>
     <string name="feed_url">URL-адрес</string>
     <string name="optional">(не обязательно)</string>
     <string name="website_or_feed">(ленты новостей или ключевое слово)</string>
@@ -134,17 +134,17 @@
     <string name="feed_search">Поиск лент</string>
     <string name="select_file">Выбрать файл (корень SD-карты)</string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
-    <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее
+    <string name="question_delete_group">"Вы действительно хотите удалить эту группу и все ее
         ленты??
-    </string>
+    "</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
     <string name="add_group_title">Выберите название группы</string>
     <string name="edit_group_title">Редактировать название группы</string>
     <string name="message_exported_to">Экспортировано в %s.</string>
     <string name="to_group_title">Перенос ленты</string>
-    <string name="to_group_message">Вы можете поместить ленту внутрь этой группы, либо сверху от
+    <string name="to_group_message">"Вы можете поместить ленту внутрь этой группы, либо сверху от
         нее. Что вы хотите сделать?
-    </string>
+    "</string>
     <string name="to_group_above">Над группой</string>
     <string name="to_group_into">Внутрь группы</string>
     <string name="add_custom_feed">Добавить ленту по адресу или по названию</string>
@@ -214,8 +214,8 @@
     <string name="settings_refresh_only_selected">Только выбранные</string>
     <string name="settings_refresh_only_selected_summary">автоматическое обновление только выбранных лент</string>
     <string name="settings_refresh_on_open">Обновлять при запуске</string>
-    <string name="settings_refresh_on_open_description">Обновлять все ленты при запуске приложения
-    </string>
+    <string name="settings_refresh_on_open_description">"Обновлять все ленты при запуске приложения
+    "</string>
     <string name="settings_refresh_wifi_only">Обновлять только по WiFi</string>
     <string name="settings_refresh_wifi_only_description">Автоматическое обновление будет выполняться только при включенном WiFi</string>
     <string name="settings_keep_time">Время хранения новостей</string>
@@ -277,13 +277,13 @@
     <string name="settings_category_behavior">Уведомления</string>
     <string name="settings_category_behavior_summary">О появлении новых статей</string>
     <string name="settings_notifications_enabled">Включить уведомления</string>
-    <string name="settings_notifications_enabled_description">Включить уведомления о новых записях
-    </string>
+    <string name="settings_notifications_enabled_description">"Включить уведомления о новых записях
+    "</string>
     <string name="settings_notifications_ringtone">Звук</string>
     <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
-    <string name="settings_notifications_vibrate_description">Включить вибрацию при новых записях
-    </string>
+    <string name="settings_notifications_vibrate_description">"Включить вибрацию при новых записях
+    "</string>
     <string name="settings_notifications_light">Светодиод</string>
     <string name="settings_notifications_light_description">Мигание светодиода при появлении новых статей</string>
     <string name="page_up_down_90_pct">Прокрутка страницы 90 %</string>
