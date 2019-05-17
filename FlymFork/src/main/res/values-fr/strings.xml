@@ -139,8 +139,6 @@
     <string name="blue">Bleu</string>
     <string name="transparency">Transparence</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">Thème clair</string>
-    <string name="settings_light_theme_description">Utiliser le thème clair</string>
     <string name="settings_category_refresh">Mise à jour automatique</string>
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
