@@ -31,47 +31,56 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    Niniejszy program stanowi wolne oprogramowanie: możesz go rozpowszechniać i/lub modyfikować na zasadach Licencji GNU General Public License, opublikowanej przez Fundację Wolnego Oprogramowania, w wersji 3 lub (opcjonalnie) jakiejkolwiek późniejszej. Zobacz http://www.gnu.org/licenses<br/><br/>
-    Ta aplikacja jest tworzona na podstawie \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian, under the GNU GPL.<br/>
-
-
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licencja i informacje</big></b><br/>
+    Niniejszy program stanowi wolne oprogramowanie, możesz go rozpowszechniać i/lub modyfikować na zasadach licencji GNU General Public License opublikowanej przez Fundację Wolnego Oprogramowania, w wydaniu 3 licencji, lub (wedle uznania) jakimkolwiek późniejszym. Zobacz https://www.gnu.org/licenses/licenses.pl.html<br/>
     <br/>
-
-    <a href=\"https://handynewsreader.blogspot.com/\">Strona internetowa</a>  <br/>
-
+    Niniejszy program bazuje na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Pośród funkcji dodanych w tym forku znajdują się:<br/>
     <br/>
-    Link do <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a>  <br/>
-
-    <br/>
-    Link do <a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">forum XDA</a>  <br/>
-
-    <br/>
-    <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader question\">Napisz do dewelopera</a><br/>
-
-    <br/>
-
-    Pośród funkcji dodanych w tym forku znajdują się:<br/>
     • rozwijalne grupy kanałów<br/>
-    • niewidzialne przyciski przewijania strony w górę|dół w trybie pełnoekranowym<br/>
-    • limit pobieranych obrazków dla poszczególnych kanałów z osobna<br/>
-    • możliwość anulowania procesu odświeżania<br/>
-    • &#8230;<br/>
-
+    • neiwidoczne przyciski przewijania strony w trybie pełnoekranowym<br/>
+    • limit obrazków do pobrania dla każdego kanału z osobna<br/>
+    • możliwość anulowania odświeżania<br/>
+    • i wiele więcej<br/>
     <br/>
-    <b>By wspomóc projekt:</b><br/>
-    - <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">oceń</a> aplikację <br/>
-    - <a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">zasugeruj</a> pomysł
-
+    <b><big>Gdzie możesz nas znaleźć</big></b>
     <br/>
-    Źródła na <a href=\"https://github.com/yanus171/Flym\">GitHub</a> <br/>
-
+    • Zapraszamy do odwiedzenia naszej <b><a href="https://handynewsreader.blogspot.com">strony</a></b> dla nowości i informacji<br/>
+    • Możesz pobrać tą aplikację z <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • Możesz pobrać tą aplikację z <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • Mamy również wątek na <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">forum XDA</a></b><br/>
+    • Pliki źródłowe znajdziesz na <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHubie</a></b><br/>
+    <br/>
+    <b><big>Nasze wsparcie</big></b>
+    <br/>
+    Jeśli napotkasz problem z aplikacją, najlepiej<br/>
+    • utwórz wątek na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubie</a></b> or<br/>
+    • wyślij maila do <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">dewelopera</a></b><br/>
+    <br/>
+    <b><big>Twoje wsparcie</big></b>
+    <br/>
+    Jeśli masz pomysł na nową funkcję, możesz:<br/>
+    • założyć wątek na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubie</a></b> or<br/>
+    • wysłać email do <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">dewelopera</a></b><br/>
+    <br/>
+    <b>Jeśli przydaje Ci się ten program, prosimy wystaw ocenę na <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <br/>
+    <b><big>Tłumaczenia</big></b>
+    <br/>
+    Możesz pomóc przy tłumaczeniu na Twój Własny język na <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    Jeśli Twój język nie jest dostępny, prosimy wyślij <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail do dewelopera</a></b>.<br/>
+    <br/>
+    <b><big>Podziękowania</big></b>
     <br/>
     <b>Deweloperzy:</b><br/>
-***developerList***
+    ***developerList***
     <br/>
-    <b>Tłumacze:</b><br/><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">
-***translatorList***
-    <br/>]]></string>
+    <b>Tłumacze:</b><br/>
+    ***translatorList***
+    <br/>
+    
+ 
+about_us_content
+GENERAL]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
     <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
