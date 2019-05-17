@@ -200,12 +200,12 @@ GENERAL"]]></string>
     <!-- SETTINGS -->
     <string name="settings_category_common">Ustawienia wspólne</string>
     <string name="settings_category_common_summary">Motyw</string>
-    <string name="settings_light_theme">Jasny motyw</string>
-    <string name="settings_light_theme_description">Użyj jasnego motywu</string>
+    <string name="theme">Motyw</string>
+    <string name="customColors">Własne kolory czcionki</string>
+    <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
+    <string name="textColor">Kolor tekstu</string>
     <string name="settings_color_text_sample_short">Tekst</string>
     <string name="settings_color_text_sample_long">\"Gdy zalecasz się do ładnej dziewczyny, godzina zdaje się sekundą. Gdy siedzisz na rozgrzanych węglach, sekunda zdaje się godziną. Tym właśnie jest względność\".\n(Albert Einstein)</string>
-    <string name="settings_color_clock_sample_short">08:15</string>
-    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="settings_category_refresh">Automatyczne odświeżanie</string>
     <string name="settings_category_refresh_summary">Automatyczne odświeżanie oraz czas przechowywania artykułów</string>
     <string name="settings_refresh_enabled">Włącz automatyczne odświeżanie</string>
@@ -247,6 +247,7 @@ GENERAL"]]></string>
     <string name="show_read_article_count_descr">Na liście źródeł</string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
     <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
+    <string name="textColorRead">Kolor nieprzeczytanych artykułów</string>
     <string name="settings_category_article_text">Tekst artykułu</string>
     <string name="settings_category_article_text_summary">Wygląd tekstu artykułu</string>
     <string name="settings_display_text_color_description">(0..255)</string>
@@ -257,11 +258,16 @@ GENERAL"]]></string>
     <string name="settings_entry_margins_description">Lewy | prawy</string>
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
+    <string name="linkColor">Kolor linku</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
     <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
+    <string name="article_text_footer_clock_color">Kolor zegarka</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Pasek postępu lektury</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
+    <string name="article_text_footer_progress_color">Kolor paska postępu</string>
     <string name="settings_category_operation">Czynności</string>
     <string name="settings_category_operation_summary">Ustawienia dot. czynności</string>
     <string name="tap_zone_size">Rozmiar Stref Aktywnych</string>
@@ -383,14 +389,6 @@ GENERAL"]]></string>
     <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
     <string name="text">Tekst</string>
     <string name="background1">Tło</string>
-    <string name="textColor">Kolor tekstu</string>
-    <string name="textColorRead">Kolor nieprzeczytanych artykułów</string>
-    <string name="linkColor">Kolor linku</string>
-    <string name="customColors">Własne kolory czcionki</string>
-    <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
-    <string name="theme">Motyw</string>
-    <string name="article_text_footer_clock_color">Kolor zegarka</string>
-    <string name="article_text_footer_progress_color">Kolor paska postępu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
