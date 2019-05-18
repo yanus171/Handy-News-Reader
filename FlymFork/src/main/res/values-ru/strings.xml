@@ -112,8 +112,7 @@
     <string name="error_feed_import">Выбранный файл не может быть импортирован.</string>
     <string name="error_feed_export">Экспорт не удался. Удостоверьтесь, что карта памяти имеет возможность записи.</string>
     <string name="error_external_storage_not_available">"Внешнее хранилище (например, карта памяти)
-        недоступно.
-    "</string>
+недоступно."</string>
     <string name="feed_url">URL-адрес</string>
     <string name="optional">(не обязательно)</string>
     <string name="website_or_feed">(ленты новостей или ключевое слово)</string>
