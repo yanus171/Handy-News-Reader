@@ -135,9 +135,7 @@
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
     <string name="settings_refresh_on_open">Mise à jour des flux à l\'ouverture</string>
-    <string name="settings_refresh_on_open_description">"Met à jour tous les flux à l'ouverture de
-        l'application
-    "</string>
+    <string name="settings_refresh_on_open_description">Met à jour tous les flux à l\'ouverture de l\'application</string>
     <string name="settings_refresh_wifi_only">Mise à jour en WiFi uniquement</string>
     <string name="settings_refresh_wifi_only_description">La mise à jour auto ne se fera que si le Wifi est activé</string>
     <string name="settings_keep_time">Délai de conservation des flux</string>
@@ -157,9 +155,7 @@
     <string name="settings_category_content_presentation">Présentation des flux</string>
     <string name="settings_visible_feeds">Flux visibles</string>
     <string name="settings_widget_background">Arrière-plan</string>
-    <string name="settings_widget_background_description">"Couleur et transparence de l'arrière-plan
-        du widget
-    "</string>
+    <string name="settings_widget_background_description">Couleur et transparence de l\'arrière-plan du widget</string>
     <string name="all_feeds">Tous les flux (y compris ceux à venir)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
