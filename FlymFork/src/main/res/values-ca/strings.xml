@@ -128,8 +128,7 @@
     <string name="settings_category_content_presentation">Presentació del contingut</string>
     <string name="settings_visible_feeds">Canals visibles</string>
     <string name="settings_widget_background">Fons</string>
-    <string name="settings_widget_background_description">"Color i transparència del fons del giny.
-    "</string>
+    <string name="settings_widget_background_description">Color i transparència del fons del giny</string>
     <string name="all_feeds">Tots els canals (futurs inclosos)</string>
     <string name="standard">Normal</string>
     <plurals name="number_of_new_entries">
