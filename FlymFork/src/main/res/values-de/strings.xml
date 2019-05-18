@@ -258,6 +258,9 @@
     <string name="entry_text_align_justify">Blocksatz</string>
     <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
     <string name="linkColor">Farbe der Links</string>
+    <string name="settings_color_link_sample_short">Links</string>
+    <string name="settings_color_link_sample_long">Farbe der Links</string>
+    <string name="underline_links">Links unterstreichen</string>
     <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
     <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
