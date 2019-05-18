@@ -403,6 +403,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onResume();
         mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
+        if ( GeneralPrefsFragment.mSetupChanged ) {
+            GeneralPrefsFragment.mSetupChanged = false;
+            mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+        }
     }
 
     @Override

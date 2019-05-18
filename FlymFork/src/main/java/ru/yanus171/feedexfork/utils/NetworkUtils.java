@@ -77,11 +77,19 @@ public class NetworkUtils {
     }
 
     public static String getDownloadedImagePath(long entryId, String imgUrl) {
-        return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl.replace(" ", HtmlUtils.URL_SPACE));
+        return getDownloadedImagePath(entryId, "", imgUrl);
+    }
+    private static String getDownloadedImagePath(long entryId, String prefix, String imgUrl) {
+        final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
+        final String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
+
+        return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + prefix + entryId + ID_SEPARATOR +
+               StringUtils.getMd5(imgUrl.replace(" ", HtmlUtils.URL_SPACE)) + fileExtension;
     }
 
     private static String getTempDownloadedImagePath(long entryId, String imgUrl) {
-        return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
+        return getDownloadedImagePath(entryId, TEMP_PREFIX, imgUrl);
+        //return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
     }
 
     public static void downloadImage(final long entryId, String imgUrl, boolean isSizeLimit ) throws IOException {

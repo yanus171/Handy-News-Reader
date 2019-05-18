@@ -95,6 +95,7 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment;
+import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.loader.BaseLoader;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
@@ -504,8 +505,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
                     values.putNull(FeedColumns.ERROR);
 
-                    synchronized (HomeActivity.mFeedSetupChanged ) {
-                        HomeActivity.mFeedSetupChanged = true;
+                    synchronized (GeneralPrefsFragment.mSetupChanged ) {
+                        GeneralPrefsFragment.mSetupChanged = true;
                         cr.update(getIntent().getData(), values, null, null);
                     }
 

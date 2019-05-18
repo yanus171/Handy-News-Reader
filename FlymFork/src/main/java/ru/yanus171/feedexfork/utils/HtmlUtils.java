@@ -126,6 +126,11 @@ public class HtmlUtils {
         return images;
     }
 
+    static final String LINK_TAG_END = "</a>";
+
+    private static String GetLinkStartTag(String imgPath) {
+        return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
+    }
     public static String replaceImageURLs(String content, final long entryId, boolean isDownLoadImages) {
         // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
@@ -147,24 +152,30 @@ public class HtmlUtils {
             while ( matcher.find()  ) {
                 String srcText = matcher.group(1);
                 srcText = srcText.replace(" ", URL_SPACE);
+                final String imgTagText = matcher.group(0);
                 if ( srcText.startsWith( Constants.FILE_SCHEME ) ) {
                     content = content.replace( getDownloadImageHtml(srcText), "" );
+                    content = content.replace( imgTagText, GetLinkStartTag( srcText ) + imgTagText + LINK_TAG_END );
                 } else {
-                    String imgPath = NetworkUtils.getDownloadedImagePath(entryId, srcText);
+                    final String imgPath = NetworkUtils.getDownloadedImagePath(entryId, srcText);
                     index++;
                     if (new File(imgPath).exists()) {
-                        content = content.replace(srcText, Constants.FILE_SCHEME + imgPath);
+                        content = content.replace( imgTagText,
+                                        GetLinkStartTag( imgPath ) +
+                                                   imgTagText.replace( srcText, Constants.FILE_SCHEME + imgPath ) +
+                                                   LINK_TAG_END );
 
                     } else if (needDownloadPictures) {
-                        String imgTagText = matcher.group(0);
                         if ( ( index <= FetcherService.mMaxImageDownloadCount ) || ( FetcherService.mMaxImageDownloadCount == 0 ) ) {
                             if ( isDownLoadImages )
                                 imagesToDl.add(srcText);
                             content = content.replace(imgTagText, //getDownloadImageHtml(srcText) +
-                                                                  imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
+                                                        imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
                                                                             .replaceAll( "alt=\"[^\"]+?\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )
                                                                             .replace( "alt=\"\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )
-                                                                            .replace( "<img ", "<img onclick=\"downloadImage('" + srcText + "')\" " ) );
+                                                                            .replace( "<img ", "<img onclick=\"downloadImage('" + srcText + "')\" " ) +
+                                                                  "</a>" );
+
                         } else {
                             String htmlButtons = getDownloadImageHtml(srcText) + "<br/>";
                             if ( index == FetcherService.mMaxImageDownloadCount + 1 )

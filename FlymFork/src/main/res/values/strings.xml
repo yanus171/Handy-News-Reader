@@ -31,7 +31,7 @@
 
     <!-- GENERAL -->
     <string name="about_us_content" translatable="true"><![CDATA[
-    <b><big>License and informations</big></b><br/>
+    <b><big>License and information</big></b><br/>
     This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See http://www.gnu.org/licenses<br/>
     <br/>
     This app is based on \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Among features added to this fork are:<br/>
@@ -62,7 +62,7 @@
     • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
     • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail to the developer</a></b><br/>
     <br/>
-    <b>If you find this app useful please rate it at <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google</a>.</b><br/>
+    <b>If you find this app useful please rate it at <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
     <br/>
     <b><big>Translations</big></b>
     <br/>
@@ -201,12 +201,12 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Common settings</string>
     <string name="settings_category_common_summary">Theme</string>
-    <string name="settings_light_theme">Light theme</string>
-    <string name="settings_light_theme_description">Use the light theme</string>
+    <string name="theme">Theme</string>
+    <string name="customColors">Custom font colors</string>
+    <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>
+    <string name="textColor">Text color</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWhen you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\u201d\n(Albert Einstein)</string>
-    <string name="settings_color_clock_sample_short">08:15</string>
-    <string name="settings_color_clock_sample_long">08:16</string>
 
     <string name="settings_category_refresh">Automatic refresh</string>
     <string name="settings_category_refresh_summary">Automatic refresh and time to keep of articles</string>
@@ -250,6 +250,10 @@
     <string name="show_read_article_count_descr">In feed list</string>
     <string name="show_group_entrries_count">Group article count</string>
     <string name="show_group_entries_count_descr">may reduce performance</string>
+    <string name="textColorRead">Text color read</string>
+    <string name="textColorRead_descr">Color of articles which have been read</string>
+    <string name="settings_color_text_read_sample_short">Read</string>
+    <string name="settings_color_text_read_sample_long">Read articles</string>
 
     <string name="settings_category_article_text">Article\'s text</string>
     <string name="settings_category_article_text_summary">Appearance of article\'s text</string>
@@ -261,11 +265,23 @@
     <string name="settings_entry_margins_description">Left | right</string>
     <string name="entry_text_align_justify">Justified text</string>
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
+    <string name="linkColor">Link color</string>
+    <string name="linkColor_descr">Color of internet links</string>
+    <string name="settings_color_link_sample_short">Links</string>
+    <string name="settings_color_link_sample_long">Color of links</string>
+    <string name="underline_links">Underline links</string>
     <string name="article_text_footer_show_clock">Footer-Clock</string>
     <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
     <string name="settings_clock_size">Text size of the Footer-Clock</string>
+    <string name="article_text_footer_clock_color">Clock color</string>
+    <string name="article_text_footer_clock_color_descr">Color of the clock in the footer</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
+    <string name="article_text_footer_show_progress_descr">Displays the reading progress of an opened article at the bottom</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>
+    <string name="article_text_footer_progress_color">Progress color</string>
+    <string name="article_text_footer_progress_color_descr">Color of the reading progress bar</string>
 
     <string name="settings_category_operation">Operation</string>
     <string name="settings_category_operation_summary">Operational settings</string>
@@ -391,15 +407,6 @@
     <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
     <string name="background1">Background</string>
-    <string name="textColor">Text color</string>
-    <string name="textColorRead">Text color read</string>
-    <string name="linkColor">Link color</string>
-
-    <string name="customColors">Custom font colors</string>
-    <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>
-    <string name="theme">Theme</string>
-    <string name="article_text_footer_clock_color">Clock color</string>
-    <string name="article_text_footer_progress_color">Progress color</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

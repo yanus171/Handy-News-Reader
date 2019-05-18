@@ -59,12 +59,8 @@
     <string name="error_feed_process">Il feed non può essere processato.</string>
     <string name="error_feed_url_exists">L\'indirizzo è già presente.</string>
     <string name="error_feed_import">Il file selezionato non può essere importato.</string>
-    <string name="error_feed_export">"L'esportazione è fallita. Controllare di avere una scheda SD
-        scrivibile e correttamente montata.
-    "</string>
-    <string name="error_external_storage_not_available">"L'archivio esterno (per esempio la scheda SD)
-        non è disponibile.
-    "</string>
+    <string name="error_feed_export">L\'esportazione è fallita. Controllare di avere una scheda SD scrivibile e correttamente montata</string>
+    <string name="error_external_storage_not_available">L\'archivio esterno (per esempio la scheda SD) non è disponibile</string>
     <string name="feed_url">Indirizzo URL</string>
     <string name="optional">(opzionale)</string>
     <string name="website_or_feed">(sito web o feed)</string>
@@ -88,9 +84,7 @@
     <string name="edit_group_title">Modificare nome del gruppo</string>
     <string name="message_exported_to">Esportato su %s.</string>
     <string name="to_group_title">Azione spostamento feed</string>
-    <string name="to_group_message">"Puoi sia spostare il feed dentro il gruppo sia prima del gruppo.
-        Cosa vuoi fare?
-    "</string>
+    <string name="to_group_message">Puoi sia spostare il feed dentro il gruppo sia prima del gruppo Cosa vuoi fare?</string>
     <string name="to_group_above">Sopra il gruppo</string>
     <string name="to_group_into">Dentro il gruppo</string>
     <string name="add_custom_feed">Aggiungi un feed personale o cercane uno</string>
@@ -135,13 +129,9 @@
     <string name="settings_refresh_enabled">Attiva aggiornamento automatico</string>
     <string name="settings_refresh_interval">Intervallo</string>
     <string name="settings_refresh_on_open">Aggiorna feed all\'apertura</string>
-    <string name="settings_refresh_on_open_description">"Aggiorna tutti i feed all'apertura
-        dell'applicazione
-    "</string>
+    <string name="settings_refresh_on_open_description">Aggiorna tutti i feed all\'apertura dell\'applicazione</string>
     <string name="settings_refresh_wifi_only">Aggiorna solo in WiFi</string>
-    <string name="settings_refresh_wifi_only_description">"L'aggiornamento automatico viene eseguito
-        solo quando si è connessi ad una rete WiFi
-    "</string>
+    <string name="settings_refresh_wifi_only_description">L\'aggiornamento automatico viene eseguito solo quando si è connessi ad una rete WiFi</string>
     <string name="settings_keep_time">Tempo di archiviazione</string>
     <string name="settings_preload_image_mode">Scarica le immagini in anticipo</string>
     <string name="settings_font_size">Dimensione testo</string>
@@ -151,22 +141,17 @@
     <string name="settings_display_images_description">Mostra le immagini degli articoli</string>
     <string name="settings_display_entries_fullscreen">Articoli a tutto schermo in automatico</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
-    <string name="settings_notifications_enabled_description">"Attiva le notifiche all'arrivo di nuovi
-        articoli
-    "</string>
+    <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_ringtone">Suoneria</string>
     <string name="settings_notifications_ringtone_none">Nessuna</string>
     <string name="settings_notifications_vibrate">Vibrazione</string>
-    <string name="settings_notifications_vibrate_description">"Attiva la vibrazione all'arrivo di
-        nuovi articoli
-    "</string>
+    <string name="settings_notifications_vibrate_description">Attiva la vibrazione all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_light">LED</string>
     <string name="settings_notifications_light_description">Accendi il LED di notifica all\'arrivo di nuovi articoli</string>
     <string name="settings_category_content_presentation">Aspetto e contenuti</string>
     <string name="settings_visible_feeds">Feed visibili</string>
     <string name="settings_widget_background">Sfondo</string>
-    <string name="settings_widget_background_description">"Colore e trasparenza dello sfondo del widget
-    "</string>
+    <string name="settings_widget_background_description">Colore e trasparenza dello sfondo del widget</string>
     <string name="all_feeds">Tutti i feed (inclusi futuri)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
