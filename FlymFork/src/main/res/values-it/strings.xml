@@ -59,8 +59,8 @@
     <string name="error_feed_process">Il feed non può essere processato.</string>
     <string name="error_feed_url_exists">L\'indirizzo è già presente.</string>
     <string name="error_feed_import">Il file selezionato non può essere importato.</string>
-    <string name="error_feed_export">L\'esportazione è fallita. Controllare di avere una scheda SD scrivibile e correttamente montata</string>
-    <string name="error_external_storage_not_available">L\'archivio esterno (per esempio la scheda SD) non è disponibile</string>
+    <string name="error_feed_export">L\'esportazione è fallita. Controllare di avere una scheda SD scrivibile e correttamente montata.</string>
+    <string name="error_external_storage_not_available">L\'archivio esterno (per esempio la scheda SD) non è disponibile.</string>
     <string name="feed_url">Indirizzo URL</string>
     <string name="optional">(opzionale)</string>
     <string name="website_or_feed">(sito web o feed)</string>
@@ -84,7 +84,7 @@
     <string name="edit_group_title">Modificare nome del gruppo</string>
     <string name="message_exported_to">Esportato su %s.</string>
     <string name="to_group_title">Azione spostamento feed</string>
-    <string name="to_group_message">Puoi sia spostare il feed dentro il gruppo sia prima del gruppo Cosa vuoi fare?</string>
+    <string name="to_group_message">Puoi sia spostare il feed dentro il gruppo sia prima del gruppo. Cosa vuoi fare?</string>
     <string name="to_group_above">Sopra il gruppo</string>
     <string name="to_group_into">Dentro il gruppo</string>
     <string name="add_custom_feed">Aggiungi un feed personale o cercane uno</string>
