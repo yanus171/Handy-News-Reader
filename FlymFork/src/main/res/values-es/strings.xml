@@ -31,15 +31,20 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_title_version">Versión</string>
+    <string name="about_flym">Acerca / Ayuda / Contacta con el desarrollador</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
     <string name="never">nunca</string>
     <string name="update">Actualizar</string>
     <string name="menu_settings">Configuración</string>
     <string name="menu_refresh">Actualizar</string>
     <string name="flym_feeds">Fuentes de Handy News Reader</string>
+    <string name="error">Error</string>
     <string name="network_error">No se ha configurado la red</string>
     <string name="loading">Cargando…</string>
     <string name="no_result">Sin resultados</string>
+    <string name="drawer_open">Abrir cajón de navegación</string>
+    <string name="drawer_close">Cerrar cajón de navegación</string>
     <!-- FEEDS -->
     <string name="feeds">Fuentes</string>
     <string name="menu_add_feed">fuente</string>
