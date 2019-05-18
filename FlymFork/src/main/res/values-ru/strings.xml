@@ -54,7 +54,7 @@
     <br/>
     Если Вы столкнулись с проблемой, лучше всего<br/>
     • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub </a></b> or<br/>
-    • написать разработчику <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">письмо</a></b><br/>
+    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">письмо</a></b><br/>
     <br/>
     <b><big>Ваша помощь:</big></b>
     <br/>
@@ -276,8 +276,7 @@
     <string name="settings_notifications_ringtone">Звук</string>
     <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
-    <string name="settings_notifications_vibrate_description">"Включить вибрацию при новых записях
-    "</string>
+    <string name="settings_notifications_vibrate_description">Включить вибрацию при новых записях</string>
     <string name="settings_notifications_light">Светодиод</string>
     <string name="settings_notifications_light_description">Мигание светодиода при появлении новых статей</string>
     <string name="page_up_down_90_pct">Прокрутка страницы 90 %</string>
