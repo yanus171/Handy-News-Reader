@@ -54,20 +54,20 @@
     <br/>
     Если Вы столкнулись с проблемой, лучше всего<br/>
     • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub </a></b> or<br/>
-    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader problem\">письмо</a></b><br/>
+    • написать разработчику <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">письмо</a></b><br/>
     <br/>
     <b><big>Ваша помощь:</big></b>
     <br/>
     Если у Вас есть идея, Вы можете<br/>
     • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b> or<br/>
-    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader idea\">письмо</a></b><br/>
+    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea\">письмо</a></b><br/>
     <br/>
     <b>Если Вам понравилось приложение, оцените его на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a>.</b><br/>
     <br/>
     <b><big>Перевод на Ваш язык</big></b>
     <br/>
     Вы можете помочь перевести приложение с английского на сайте <b><a href=\"https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
-    Если Ваш язык там еще не добавлен <b><a href=\"mailto:workyalex@mail.ru?subject=Handy News Reader translation\">напишите разработчику</a></b>.<br/>
+    Если Ваш язык там еще не добавлен <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation\">напишите разработчику</a></b>.<br/>
     <br/>
     <b><big>Благодарности</big></b>
     <br/>
@@ -110,8 +110,12 @@
     <string name="error_feed_process">Лента не может быть добавлена.</string>
     <string name="error_feed_url_exists">Такой адрес уже есть.</string>
     <string name="error_feed_import">Выбранный файл не может быть импортирован.</string>
-    <string name="error_feed_export">Экспорт не удался. Удостоверьтесь, что карта памяти имеет возможность записи</string>
-    <string name="error_external_storage_not_available">Внешнее хранилище (например, карта памяти) недоступно</string>
+    <string name="error_feed_export">"Экспорт не удался. Удостоверьтесь, что карта памяти имеет
+        возможность записи.
+    "</string>
+    <string name="error_external_storage_not_available">"Внешнее хранилище (например, карта памяти)
+        недоступно.
+    "</string>
     <string name="feed_url">URL-адрес</string>
     <string name="optional">(не обязательно)</string>
     <string name="website_or_feed">(ленты новостей или ключевое слово)</string>
@@ -130,13 +134,17 @@
     <string name="feed_search">Поиск лент</string>
     <string name="select_file">Выбрать файл (корень SD-карты)</string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
-    <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее ленты??</string>
+    <string name="question_delete_group">"Вы действительно хотите удалить эту группу и все ее
+        ленты??
+    "</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
     <string name="add_group_title">Выберите название группы</string>
     <string name="edit_group_title">Редактировать название группы</string>
     <string name="message_exported_to">Экспортировано в %s.</string>
     <string name="to_group_title">Перенос ленты</string>
-    <string name="to_group_message">Вы можете поместить ленту внутрь этой группы, либо сверху от нее. Что вы хотите сделать?</string>
+    <string name="to_group_message">"Вы можете поместить ленту внутрь этой группы, либо сверху от
+        нее. Что вы хотите сделать?
+    "</string>
     <string name="to_group_above">Над группой</string>
     <string name="to_group_into">Внутрь группы</string>
     <string name="add_custom_feed">Добавить ленту по адресу или по названию</string>
@@ -208,7 +216,8 @@
     <string name="settings_refresh_only_selected">Только выбранные</string>
     <string name="settings_refresh_only_selected_summary">автоматическое обновление только выбранных лент</string>
     <string name="settings_refresh_on_open">Обновлять при запуске</string>
-    <string name="settings_refresh_on_open_description">Обновлять все ленты при запуске приложения</string>
+    <string name="settings_refresh_on_open_description">"Обновлять все ленты при запуске приложения
+    "</string>
     <string name="settings_refresh_wifi_only">Обновлять только по WiFi</string>
     <string name="settings_refresh_wifi_only_description">Автоматическое обновление будет выполняться только при включенном WiFi</string>
     <string name="settings_keep_time">Время хранения новостей</string>
@@ -272,7 +281,8 @@
     <string name="settings_category_behavior">Уведомления</string>
     <string name="settings_category_behavior_summary">О появлении новых статей</string>
     <string name="settings_notifications_enabled">Включить уведомления</string>
-    <string name="settings_notifications_enabled_description">Включить уведомления о новых записях</string>
+    <string name="settings_notifications_enabled_description">"Включить уведомления о новых записях
+    "</string>
     <string name="settings_notifications_ringtone">Звук</string>
     <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
