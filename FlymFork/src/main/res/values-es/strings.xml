@@ -109,8 +109,6 @@
     <string name="blue">Azul</string>
     <string name="transparency">Transparencia</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">Tema claro</string>
-    <string name="settings_light_theme_description">Usar el tema claro</string>
     <string name="settings_category_refresh">Actualización automáticas</string>
     <string name="settings_refresh_enabled">Habilitar actualizaciones automáticas</string>
     <string name="settings_refresh_interval">Intervalo entre actualizaciones</string>

@@ -60,10 +60,10 @@
     <string name="error_feed_process">Syötettä ei voitu käsitellä.</string>
     <string name="error_feed_url_exists">Osoite on jo olemassa.</string>
     <string name="error_feed_import">Valittua tiedostoa ei voitu tuoda.</string>
-    <string name="error_feed_export">Vienti epäonnistui. Varmista, että SD-kortille voidaan kirjoittaa.
-    </string>
-    <string name="error_external_storage_not_available">Ulkoinen tallenusväline (esim. SD-kortti) ei ole saatavilla.
-    </string>
+    <string name="error_feed_export">"Vienti epäonnistui. Varmista, että SD-kortille voidaan kirjoittaa.
+    "</string>
+    <string name="error_external_storage_not_available">"Ulkoinen tallenusväline (esim. SD-kortti) ei ole saatavilla.
+    "</string>
     <string name="feed_url">URL-osoite</string>
     <string name="optional">(ei välttämätön)</string>
     <string name="website_or_feed">(verkkosivu tai syöte)</string>
@@ -82,15 +82,15 @@
     <string name="feed_search">Hae syötteitä</string>
     <string name="select_file">Valitse tiedosto (SD-juuri)</string>
     <string name="question_delete_feed">Haluatko poistaa tämän syötteen?</string>
-    <string name="question_delete_group">Haluatko poistaa tämän ryhmän ja kaikki siinä olevat syötteet?
-    </string>
+    <string name="question_delete_group">"Haluatko poistaa tämän ryhmän ja kaikki siinä olevat syötteet?
+    "</string>
     <string name="question_delete_filter">Haluatko poistaa tämän säännön?</string>
     <string name="add_group_title">Uusi ryhmä</string>
     <string name="edit_group_title">Muokkaa ryhmän nimeä</string>
     <string name="message_exported_to">Viety tiedostoon %s</string>
     <string name="to_group_title">Syötteen siirtäminen</string>
-    <string name="to_group_message">Voit asettaa tämän syötteen ryhmän sisään tai tasoa ylemmäs. Mitä haluat tehdä?
-    </string>
+    <string name="to_group_message">"Voit asettaa tämän syötteen ryhmän sisään tai tasoa ylemmäs. Mitä haluat tehdä?
+    "</string>
     <string name="to_group_above">Ylemmälle tasolle</string>
     <string name="to_group_into">Ryhmään</string>
     <string name="add_custom_feed">Lisää tai hae syöte</string>
@@ -137,17 +137,15 @@
     <string name="blue">Sininen</string>
     <string name="transparency">Läpinäkyvyys</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">Vaalea teema</string>
-    <string name="settings_light_theme_description">Käytä vaaleaa teemaa</string>
     <string name="settings_category_refresh">Automaattinen päivitys</string>
     <string name="settings_refresh_enabled">Päivitä automaattisesti</string>
     <string name="settings_refresh_interval">Päivitysväli</string>
     <string name="settings_refresh_on_open">Päivitä käynnistettäessä</string>
-    <string name="settings_refresh_on_open_description">Päivitä kaikki syötteet sovelluksen käynnistyessä
-    </string>
+    <string name="settings_refresh_on_open_description">"Päivitä kaikki syötteet sovelluksen käynnistyessä
+    "</string>
     <string name="settings_refresh_wifi_only">Vain Wi-Fi -yhteyden kautta</string>
-    <string name="settings_refresh_wifi_only_description">Syötteet päivitetään automaattisesti ainoastaan kun Wi-Fi -yhteys on käytettävissä
-    </string>
+    <string name="settings_refresh_wifi_only_description">"Syötteet päivitetään automaattisesti ainoastaan kun Wi-Fi -yhteys on käytettävissä
+    "</string>
     <string name="settings_keep_time">Artikkelien säilyttämisaika</string>
     <string name="settings_preload_image_mode">Esilataa kuvat</string>
     <string name="settings_font_size">Kirjasintyypin koko</string>
@@ -157,21 +155,21 @@
     <string name="settings_display_images_description">Näytä kuvat artikkeleissa</string>
     <string name="settings_display_entries_fullscreen">Automaattinen kokoruututila</string>
     <string name="settings_notifications_enabled">Näytä ilmoitukset</string>
-    <string name="settings_notifications_enabled_description">Näytä ilmoitus kun syötteissä on uusia artikkeleita
-    </string>
+    <string name="settings_notifications_enabled_description">"Näytä ilmoitus kun syötteissä on uusia artikkeleita
+    "</string>
     <string name="settings_notifications_ringtone">Soittoääni</string>
-    <string name="settings_notifications_ringtone_none">Ei mitään
-    </string>
+    <string name="settings_notifications_ringtone_none">"Ei mitään
+    "</string>
     <string name="settings_notifications_vibrate">Värinä</string>
-    <string name="settings_notifications_vibrate_description">Aseta uusista artikkeleista ilmoittava värinähälytys
-    </string>
+    <string name="settings_notifications_vibrate_description">"Aseta uusista artikkeleista ilmoittava värinähälytys
+    "</string>
     <string name="settings_notifications_light">Merkkivalo</string>
     <string name="settings_notifications_light_description">Ilmoita merkkivalolla uusista artikkeleista</string>
     <string name="settings_category_content_presentation">Sisällön esittäminen</string>
     <string name="settings_visible_feeds">Näytettävät syötteet</string>
     <string name="settings_widget_background">Tausta</string>
-    <string name="settings_widget_background_description">Widgetin taustan väri ja läpinäkyvyys
-    </string>
+    <string name="settings_widget_background_description">"Widgetin taustan väri ja läpinäkyvyys
+    "</string>
     <string name="all_feeds">Kaikki syötteet (myös tulevat)</string>
     <string name="standard">Normaali</string>
     <plurals name="number_of_new_entries">

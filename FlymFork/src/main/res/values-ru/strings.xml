@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
+    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Лицензия</big></b><br/>
    Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
     <br/>
     Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
@@ -77,7 +77,7 @@
     <b>Переводчики:</b><br/>
     ***translatorList***
     <br/>
-    ]]></string>
+    "]]></string>
     <string name="app_name">Удобное чтение новостей</string>
     <string name="about_title_version">версия</string>
     <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
@@ -196,8 +196,10 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Общие настройки</string>
     <string name="settings_category_common_summary">Тема</string>
-    <string name="settings_light_theme">Светлая тема</string>
-    <string name="settings_light_theme_description">Использовать светлую тему</string>
+    <string name="theme">Тема</string>
+    <string name="customColors">Пользовательские цвета</string>
+    <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
+    <string name="textColor">Цвет текста</string>
     <string name="settings_category_refresh">Автоматическое обновление</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
@@ -251,8 +253,10 @@
     <string name="article_text_footer_show_clock">Часы</string>
     <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
     <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
+    <string name="article_text_footer_clock_color">Цвет часов</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>
+    <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
     <string name="settings_category_operation">Операции</string>
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
@@ -272,8 +276,8 @@
     <string name="settings_notifications_ringtone">Звук</string>
     <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
-    <string name="settings_notifications_vibrate_description">Включить вибрацию при новых записях
-    </string>
+    <string name="settings_notifications_vibrate_description">"Включить вибрацию при новых записях
+    "</string>
     <string name="settings_notifications_light">Светодиод</string>
     <string name="settings_notifications_light_description">Мигание светодиода при появлении новых статей</string>
     <string name="page_up_down_90_pct">Прокрутка страницы 90 %</string>
@@ -375,12 +379,6 @@
     <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
-    <string name="textColor">Цвет текста</string>
-    <string name="customColors">Пользовательские цвета</string>
-    <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
-    <string name="theme">Тема</string>
-    <string name="article_text_footer_clock_color">Цвет часов</string>
-    <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>

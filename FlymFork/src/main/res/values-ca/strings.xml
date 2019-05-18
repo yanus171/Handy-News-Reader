@@ -110,8 +110,6 @@
     <string name="blue">Blau</string>
     <string name="transparency">Transparència</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">Tema clar</string>
-    <string name="settings_light_theme_description">Utilitza el tema clar</string>
     <string name="settings_category_refresh">Actualització automàtica</string>
     <string name="settings_refresh_enabled">Activa les actualitzacions automàtiques</string>
     <string name="settings_refresh_interval">Interval entre actualitzacions</string>

@@ -131,8 +131,6 @@
     <string name="blue">Blå</string>
     <string name="transparency">Transparens</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">Ljust tema</string>
-    <string name="settings_light_theme_description">Använd det ljusa temat</string>
     <string name="settings_category_refresh">Automatisk uppdatering</string>
     <string name="settings_refresh_enabled">Uppdatera automatiskt</string>
     <string name="settings_refresh_interval">Uppdateringsintervall</string>

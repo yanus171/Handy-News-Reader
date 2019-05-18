@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lizenz und Informationen</big></b><br/>
+    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Lizenz und Informationen</big></b><br/>
     Dieses Programm ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version, weitergeben und/oder ändern. Siehe http://www.gnu.org/licenses<br/>
     <br/>
     Diese App basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. Folgende Funktionen wurden inzwischen hinzugefügt:<br/>
@@ -62,7 +62,7 @@
     • öffnen Sie ein Thema auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
     • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">E-Mail an den Entwickler</a></b><br/>
     <br/>
-    <b>Bitte bewerten Sie diese App bei <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google</a>, wenn Sie sie nützlich finden.</b><br/>
+    <b>Bitte bewerten Sie diese App bei <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>, wenn Sie sie nützlich finden.</b><br/>
     <br/>
     <b><big>Übersetzungen</big></b>
     <br/>
@@ -77,7 +77,7 @@
     <b>Übersetzer:</b><br/>
     ***translatorList***
     <br/>
-    ]]></string>
+    "]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Version</string>
     <string name="about_flym">Info - Hilfe - Support</string>
@@ -197,12 +197,12 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Allgemeine Einstellungen</string>
     <string name="settings_category_common_summary">Thema</string>
-    <string name="settings_light_theme">Helles Thema</string>
-    <string name="settings_light_theme_description">Helles Thema nutzen</string>
-    <string name="settings_color_text_sample_short">"Text"</string>
-    <string name="settings_color_text_sample_long">Wenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\n(Albert Einstein)</string>
-    <string name="settings_color_clock_sample_short">"08:15"</string>
-    <string name="settings_color_clock_sample_long">"08:16"</string>
+    <string name="theme">Thema</string>
+    <string name="customColors">Eigene Textfarben</string>
+    <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
+    <string name="textColor">Textfarbe</string>
+    <string name="settings_color_text_sample_short">Text</string>
+    <string name="settings_color_text_sample_long">\u201cWenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\u201c\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
     <string name="settings_category_refresh_summary">Automatische Aktualisierung und Aufbewahrungszeit der Artikel</string>
     <string name="settings_refresh_enabled">Aktualisierung aktivieren</string>
@@ -244,6 +244,10 @@
     <string name="show_read_article_count_descr">in der Feedliste</string>
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
     <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
+    <string name="textColorRead">Textfarbe (gelesen)</string>
+    <string name="textColorRead_descr">Farbe der gelesenen Artikel</string>
+    <string name="settings_color_text_read_sample_short">Text</string>
+    <string name="settings_color_text_read_sample_long">Gelesene Artikel</string>
     <string name="settings_category_article_text">Artikelinhalt</string>
     <string name="settings_category_article_text_summary">Aussehen des Artikelinhaltes</string>
     <string name="settings_display_text_color_description">(0..255)</string>
@@ -254,11 +258,23 @@
     <string name="settings_entry_margins_description">Links und rechts in der Artikelanzeige</string>
     <string name="entry_text_align_justify">Blocksatz</string>
     <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
+    <string name="linkColor">Farbe der Links</string>
+    <string name="linkColor_descr">Farbe der weiterführenden Links</string>
+    <string name="settings_color_link_sample_short">Links</string>
+    <string name="settings_color_link_sample_long">Farbe der Links</string>
+    <string name="underline_links">Links unterstreichen</string>
     <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
     <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
+    <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
+    <string name="article_text_footer_clock_color_descr">Farbe der Uhrzeit in der Fußzeile</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Lese-Fortschrittsbalken</string>
+    <string name="article_text_footer_show_progress_descr">Wenn aktiviert, wird in der Fußzeile der Lesefortschritt des aktuellen Artikels angezeigt</string>
     <string name="article_text_footer_progress_height">Höhe des Fortschrittsbalkens</string>
+    <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalkens</string>
+    <string name="article_text_footer_progress_color_descr">Farbe des Fortschrittsbalkens in der Fußzeile</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
@@ -380,14 +396,6 @@
     <string name="colorSlotSaved">Die Farbe wurde gespeichert</string>
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
-    <string name="textColor">Textfarbe</string>
-    <string name="textColorRead">Textfarbe (gelesen)</string>
-    <string name="linkColor">Farbe der Links</string>
-    <string name="customColors">Eigene Textfarben</string>
-    <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
-    <string name="theme">Thema</string>
-    <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
-    <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalkens</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

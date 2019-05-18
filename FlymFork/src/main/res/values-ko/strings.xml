@@ -127,8 +127,6 @@
     <string name="blue">파랑</string>
     <string name="transparency">투명도</string>
     <!-- SETTINGS -->
-    <string name="settings_light_theme">밝은 테마</string>
-    <string name="settings_light_theme_description">밝은 테마를 사용</string>
     <string name="settings_category_refresh">자동 새로 고침</string>
     <string name="settings_refresh_enabled">자동 새로 고침 사용</string>
     <string name="settings_refresh_interval">새로 고침 간격</string>
