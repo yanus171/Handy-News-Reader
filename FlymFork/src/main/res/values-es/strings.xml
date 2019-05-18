@@ -56,8 +56,8 @@
     <string name="error_feed_process">No se ha podido procesar la fuente.</string>
     <string name="error_feed_url_exists">Ya existe esta dirección.</string>
     <string name="error_feed_import">No se ha podido importar el archivo seleccionado.</string>
-    <string name="error_feed_export">No se ha podido exportar las fuentes. Compruebe los permisos en la tarjeta SD </string>
-    <string name="error_external_storage_not_available">El almacenaje externo no está disponible</string>
+    <string name="error_feed_export">No se ha podido exportar las fuentes. Compruebe los permisos en la tarjeta SD.</string>
+    <string name="error_external_storage_not_available">El almacenaje externo no está disponible.</string>
     <string name="feed_url">Dirección URL</string>
     <string name="optional">(opcional)</string>
     <string name="website_or_feed">(página web o fuente)</string>
