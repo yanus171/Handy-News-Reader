@@ -141,6 +141,7 @@
                 android:dependency="customColors"
                 android:key="textColorRead"
                 android:title="@string/textColorRead"
+                android:summary="@string/textColorRead_descr"
                 colorPreference:backgroundColor="@string/default_text_color_background"
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
@@ -198,6 +199,7 @@
                 colorPreference:backgroundColor="@string/transparent_color"
                 android:key="linkColor"
                 android:title="@string/linkColor"
+                android:summary="@string/linkColor_descr"
                 colorPreference:istransparency="false"
                 colorPreference:sampletextShort="@string/settings_color_link_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
@@ -226,6 +228,7 @@
                 android:dependency="article_text_footer_show_clock"
                 android:key="article_text_footer_clock_color"
                 android:title="@string/article_text_footer_clock_color"
+                android:summary="@string/article_text_footer_clock_color_descr"
                 colorPreference:backgroundColor="@string/transparent_color"
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
@@ -233,7 +236,8 @@
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="article_text_footer_show_progress"
-                android:title="@string/article_text_footer_show_progress"/>
+                android:title="@string/article_text_footer_show_progress"
+                android:summary="@string/article_text_footer_show_progress_descr"/>
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:key="article_text_footer_progress_height"
                 android:dependency="article_text_footer_show_progress"
@@ -246,6 +250,7 @@
                 android:dependency="article_text_footer_show_progress"
                 android:key="article_text_footer_progress_color"
                 android:title="@string/article_text_footer_progress_color"
+                android:summary="@string/article_text_footer_progress_color_descr"
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort=" "
                 colorPreference:sampletextLong=" " />
