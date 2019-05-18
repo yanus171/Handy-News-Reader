@@ -245,6 +245,7 @@
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
     <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
     <string name="textColorRead">Textfarbe (gelesen)</string>
+    <string name="textColorRead_descr">Farbe der gelesenen Artikel</string>
     <string name="settings_color_text_read_sample_short">Text</string>
     <string name="settings_color_text_read_sample_long">Gelesene Artikel</string>
     <string name="settings_category_article_text">Artikelinhalt</string>
@@ -258,6 +259,7 @@
     <string name="entry_text_align_justify">Blocksatz</string>
     <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
     <string name="linkColor">Farbe der Links</string>
+    <string name="linkColor_descr">Farbe der weiterführenden Links</string>
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Farbe der Links</string>
     <string name="underline_links">Links unterstreichen</string>
@@ -265,11 +267,14 @@
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der linken unteren Ecke angezeigt</string>
     <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
     <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
+    <string name="article_text_footer_clock_color_descr">Farbe der Uhrzeit in der Fußzeile</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Lese-Fortschrittsbalken</string>
+    <string name="article_text_footer_show_progress_descr">Wenn aktiviert, wird in der Fußzeile der Lesefortschritt des aktuellen Artikels angezeigt</string>
     <string name="article_text_footer_progress_height">Höhe des Fortschrittsbalkens</string>
     <string name="article_text_footer_progress_color">Farbe des Fortschrittsbalkens</string>
+    <string name="article_text_footer_progress_color_descr">Farbe des Fortschrittsbalkens in der Fußzeile</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
