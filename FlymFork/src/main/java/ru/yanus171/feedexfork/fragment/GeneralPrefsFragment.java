@@ -63,6 +63,7 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.view.ColorPreference;
 
 public class GeneralPrefsFragment extends PreferenceFragment implements  PreferenceScreen.OnPreferenceClickListener {
     public static Boolean mSetupChanged = false;
@@ -120,18 +121,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         });
 
 
-        for ( int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++ )
-            if ( getPreferenceScreen().getPreference( i ) instanceof PreferenceScreen  )
-                getPreferenceScreen().getPreference( i ).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        PreferenceScreen screen = (PreferenceScreen) preference;
-                        Brightness br =  ((BaseActivity) getActivity() ).mBrightness;
-                        if ( screen.getDialog() != null )
-                            Brightness.SetBrightness( br.mCurrentAlpha, screen.getDialog().getWindow() );
-                        return false;
-                    }
-                });
+        ApplyBrightness( getPreferenceScreen(), (BaseActivity) getActivity());
 
 
 //        for(  int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++ ) {
@@ -143,6 +133,24 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
     }
 
+    private static void ApplyBrightness(PreferenceScreen screen, final BaseActivity activity ) {
+        for ( int i = 0; i < screen.getPreferenceCount(); i++ ) {
+            if (screen.getPreference(i) instanceof PreferenceScreen ||
+                    screen.getPreference(i) instanceof ColorPreference)
+                screen.getPreference(i).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        PreferenceScreen screen = (PreferenceScreen) preference;
+                        Brightness br = activity.mBrightness;
+                        if (screen.getDialog() != null)
+                            Brightness.SetBrightness(br.mCurrentAlpha, screen.getDialog().getWindow());
+                        return false;
+                    }
+                });
+            if (screen.getPreference(i) instanceof PreferenceScreen)
+                ApplyBrightness((PreferenceScreen) screen.getPreference(i), activity);
+        }
+    }
 
 
     @Override
