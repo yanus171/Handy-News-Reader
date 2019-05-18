@@ -251,6 +251,7 @@
     <string name="show_group_entrries_count">Group article count</string>
     <string name="show_group_entries_count_descr">may reduce performance</string>
     <string name="textColorRead">Text color read</string>
+    <string name="textColorRead_descr">Color of articles which have been read</string>
     <string name="settings_color_text_read_sample_short">Read</string>
     <string name="settings_color_text_read_sample_long">Read articles</string>
 
@@ -265,18 +266,22 @@
     <string name="entry_text_align_justify">Justified text</string>
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
     <string name="linkColor">Link color</string>
-    <string name="settings_color_link_sample_short">Link</string>
+    <string name="linkColor_descr">Color of internet links</string>
+    <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Color of links</string>
     <string name="underline_links">Underline links</string>
     <string name="article_text_footer_show_clock">Footer-Clock</string>
     <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
     <string name="settings_clock_size">Text size of the Footer-Clock</string>
     <string name="article_text_footer_clock_color">Clock color</string>
+    <string name="article_text_footer_clock_color_descr">Color of the clock in the footer</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
+    <string name="article_text_footer_show_progress_descr">Displays the reading progress of an opened article at the bottom</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>
     <string name="article_text_footer_progress_color">Progress color</string>
+    <string name="article_text_footer_progress_color_descr">Color of the reading progress bar</string>
 
     <string name="settings_category_operation">Operation</string>
     <string name="settings_category_operation_summary">Operational settings</string>
