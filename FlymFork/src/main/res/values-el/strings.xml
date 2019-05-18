@@ -254,6 +254,10 @@
     <string name="show_read_article_count_descr">Στη λίστα Ροών</string>
     <string name="show_group_entrries_count">Αρίθμηση άρθρων στην ομάδα</string>
     <string name="show_group_entries_count_descr">μπορεί να μειώσει την απόδοση</string>
+    <string name="textColorRead">Χρώμα κειμένου διαβασμένων</string>
+    <string name="textColorRead_descr">Το χρώμα των άρθρων που έχουν διαβαστεί</string>
+    <string name="settings_color_text_read_sample_short">Διαβασμένα</string>
+    <string name="settings_color_text_read_sample_long">Διαβασμένα άρθρα</string>
     <string name="settings_category_article_text">Κείμενο του άρθρου</string>
     <string name="settings_category_article_text_summary">Εμφάνιση του κείμενου</string>
     <string name="settings_display_images">Προβολή εικόνων</string>
@@ -263,10 +267,16 @@
     <string name="settings_entry_margins_description">Αριστερά | Δεξιά</string>
     <string name="entry_text_align_justify">Ευθυγράμμιση κειμένου</string>
     <string name="entry_text_align_justify_description">Διαφορετικά ευθυγράμμιση αριστερά</string>
+    <string name="linkColor">Χρώμα συνδέσμου</string>
+    <string name="linkColor_descr">Το χρώμα κειμένου των συνδέσμων</string>
+    <string name="settings_color_link_sample_short">Σύνδεσμοι</string>
+    <string name="settings_color_link_sample_long">Χρώμα συνδέσμων</string>
+    <string name="underline_links">Υπογράμμιση συνδέσμων</string>
     <string name="article_text_footer_show_clock">Υποσέλιδο-Ρολόι</string>
     <string name="article_text_footer_show_clock_description">Εμφανίζει την ώρα κάτω αριστερά στη προβολή πλήρους οθόνης</string>
     <string name="settings_clock_size">Μέγεθος Υποσέλιδου - Ρολογιού</string>
     <string name="article_text_footer_clock_color">Χρώμα ρολογιού</string>
+    <string name="article_text_footer_clock_color_descr">Χρώμα ρολογιού στο υποσέλιδο</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Μπάρα προόδου διαβάσματος</string>
