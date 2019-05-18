@@ -116,9 +116,7 @@
     <string name="settings_refresh_on_open">Actualitza els canals a l\'inici</string>
     <string name="settings_refresh_on_open_description">Descarregarà nous continguts dels canals a l\'inici de l\'aplicació</string>
     <string name="settings_refresh_wifi_only">Actualitza els canals només en Wi-Fi</string>
-    <string name="settings_refresh_wifi_only_description">"Només es descarregaran nous continguts
-        dins d'una connexió Wi-Fi.
-    "</string>
+    <string name="settings_refresh_wifi_only_description">Només es descarregaran nous continguts dins d\'una connexió Wi-Fi</string>
     <string name="settings_keep_time">Temps de conservació d\'entrades</string>
     <string name="settings_font_size">Mida del text</string>
     <string name="settings_display_oldest_first">Entries order</string>
@@ -126,9 +124,7 @@
     <string name="settings_notifications_enabled_description">Notifica les noves entrades.</string>
     <string name="settings_notifications_ringtone">So</string>
     <string name="settings_notifications_vibrate">Vibra</string>
-    <string name="settings_notifications_vibrate_description">"Vibra el terminal al mostrar la
-        notificació.
-    "</string>
+    <string name="settings_notifications_vibrate_description">Vibra el terminal al mostrar la notificació</string>
     <string name="settings_category_content_presentation">Presentació del contingut</string>
     <string name="settings_visible_feeds">Canals visibles</string>
     <string name="settings_widget_background">Fons</string>
