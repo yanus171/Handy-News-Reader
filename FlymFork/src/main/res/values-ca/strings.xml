@@ -57,8 +57,8 @@
     <string name="error_feed_process">No s\'ha pogut processar el canal.</string>
     <string name="error_feed_url_exists">Ja existeix aquesta adreça.</string>
     <string name="error_feed_import">No s\'ha pogut importar el fitxer sel·leccionat.</string>
-    <string name="error_feed_export">No s\'ha pogut exportar el fitxer. Comproveu la memòria externa.</string>
-    <string name="error_external_storage_not_available">The external storage (e.g. SD-card) is not available.</string>
+    <string name="error_feed_export">No s\'ha pogut exportar el fitxer. Comproveu la memòria externa</string>
+    <string name="error_external_storage_not_available">The external storage (e.g. SD-card) is not available</string>
     <string name="feed_url">Adreça URL</string>
     <string name="optional">(opcional)</string>
     <string name="website_or_feed">(lloc web o canal)</string>

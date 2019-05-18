@@ -147,7 +147,8 @@ public class Theme {
 //	}
 	static int GetThemeDialog() {
 		CheckInit();
-		return Theme.GetResID("themeDialog");
+		//return Theme.GetResID("themeDialog");
+		return Theme.GetResID(STYLE_THEME );
 	}
 	//-------------------------------------------------------------------
 	public static int GetColorInt(String key, int defID) {

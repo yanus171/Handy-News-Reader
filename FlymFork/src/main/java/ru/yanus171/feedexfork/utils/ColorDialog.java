@@ -86,15 +86,11 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.CENTER_HORIZONTAL);
 		layout.setPadding(UiUtils.dpToPixel( 20 ),UiUtils.dpToPixel( 20 ),UiUtils.dpToPixel( 20 ),0);
-		//LinearLayout hLayout = new LinearLayout(Context);
-		//hLayout.setOrientation(LinearLayout.HORIZONTAL);
-		//hLayout.setPadding( UiUtils.dpToPixel( 2 ), UiUtils.dpToPixel( 20 ), 0, UiUtils.dpToPixel( 20 ));
-		//layout.addView(hLayout);
+
 		LinearLayout sampleLayout = new LinearLayout(Context);
 		sampleLayout.setPadding( 0, 0,0,UiUtils.dpToPixel( 20 ));
 		layout.addView(sampleLayout);
 
-		//mviewDialogColor = CreateDialogColorInDialog(hLayout, IsText, IsBackground);
 		mviewDialogColor = CreateDialogColorInDialog(sampleLayout, IsText, IsBackground, SampleStringLong);
 
 		AddTextBackgroundSwitch(layout);

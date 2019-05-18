@@ -60,6 +60,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
+import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -116,7 +117,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
     private int mCurrentDrawerPos;
-    public static Boolean mFeedSetupChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +263,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
-        if ( mFeedSetupChanged ) {
+        if ( GeneralPrefsFragment.mSetupChanged ) {
             Timer.Start( LOADER_ID, "HomeActivity.restartLoader LOADER_ID" );
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
@@ -406,7 +406,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Timer.End( LOADER_ID );
         Timer timer = new Timer( "HomeActivity.onLoadFinished" );
-        synchronized (mFeedSetupChanged) {
+        synchronized (GeneralPrefsFragment.mSetupChanged) {
             boolean needSelect = false;
             if (mDrawerAdapter != null ) {
                 mDrawerAdapter.setCursor(cursor);
@@ -416,8 +416,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 // We don't have any menu yet, we need to display it
                 needSelect = true;
             }
-            if ( mFeedSetupChanged ) {
-                mFeedSetupChanged = false;
+            if ( GeneralPrefsFragment.mSetupChanged ) {
+                GeneralPrefsFragment.mSetupChanged = false;
                 needSelect = true;
             }
 
