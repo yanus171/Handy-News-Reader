@@ -1,0 +1,3 @@
+• Tap on image in article text to open it (eg for share)
+• Settings - Articles' list - Text read color
+• Settings - Articles' text - Link color

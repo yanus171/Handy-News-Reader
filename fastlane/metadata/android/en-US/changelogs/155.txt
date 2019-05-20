@@ -1,0 +1,3 @@
+• Settings - common settings - custom font colors, text colors
+• Settings - article text - clock and progress color
+• Greek language
