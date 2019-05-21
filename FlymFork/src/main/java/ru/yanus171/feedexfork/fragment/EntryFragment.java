@@ -127,7 +127,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean mFavorite, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
-    public EntryPagerAdapter mEntryPagerAdapter;
+    public BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame;
     private ProgressBar mProgressBar;
@@ -144,8 +144,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        mEntryPagerAdapter = new EntryPagerAdapter();
-
+        if ( getActivity().getIntent().getBooleanExtra( "NO_DB", false ) )
+            mEntryPagerAdapter = new SingleEntryPagerAdapter();
+        else
+            mEntryPagerAdapter = new EntryPagerAdapter();
 
         super.onCreate(savedInstanceState);
     }
@@ -198,30 +200,31 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mLastPagerPos = mCurrentPagerPos;
         }
 
-        mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-            }
+        if ( mEntryPagerAdapter instanceof EntryPagerAdapter )
+            mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int i, float v, int i2) {
+                }
 
-            @Override
-            public void onPageSelected(int i) {
-                mCurrentPagerPos = i;
-                mEntryPagerAdapter.onPause(); // pause all webviews
-                mEntryPagerAdapter.onResume(); // resume the current webview
+                @Override
+                public void onPageSelected(int i) {
+                    mCurrentPagerPos = i;
+                    mEntryPagerAdapter.onPause(); // pause all webviews
+                    mEntryPagerAdapter.onResume(); // resume the current webview
 
-                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
 
-                CancelStarNotification( getCurrentEntryID() );
+                    CancelStarNotification( getCurrentEntryID() );
 
-                refreshUI(mEntryPagerAdapter.getCursor(i));
-                mLastPagerPos = i;
+                    refreshUI(( ( EntryPagerAdapter )mEntryPagerAdapter ).getCursor(i));
+                    mLastPagerPos = i;
 
-            }
+                }
 
-            @Override
-            public void onPageScrollStateChanged(int i) {
-            }
-        });
+                @Override
+                public void onPageScrollStateChanged(int i) {
+                }
+            });
 
 
         rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
@@ -345,16 +348,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void PageUp() {
-        EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
-        if (entryView != null)
-            entryView.PageChange(-1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1);
     }
 
     public void PageDown() {
-        EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
-        //Toast.makeText(getContext(), "pageDown onclick", Toast.LENGTH_LONG ).show();
-        if (entryView != null)
-            entryView.PageChange(1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1);
     }
 
 
@@ -412,10 +410,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onPause() {
         super.onPause();
-        EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
+        EntryView entryView = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
         if (entryView != null) {
             //PrefUtils.putInt(PrefUtils.LAST_ENTRY_SCROLL_Y, entryView.getScrollY());
-            mEntryPagerAdapter.SaveScrollPos( false );
+            entryView.SaveScrollPos( false );
             PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, getCurrentEntryID());
             PrefUtils.putBoolean(STATE_LOCK_LAND_ORIENTATION, mLockLandOrientation);
         }
@@ -531,7 +529,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
 
                 case R.id.menu_toggle_theme: {
-                    mEntryPagerAdapter.SaveScrollPos( false );
+                    mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos( false );
                     PrefUtils.ToogleTheme(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
                     return true;
                 }
@@ -607,7 +605,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_share_all_text: {
                     if ( mCurrentPagerPos != -1 ) {
-                        Spanned spanned = Html.fromHtml(mEntryPagerAdapter.mEntryViews.get(mCurrentPagerPos).mData);
+                        Spanned spanned = Html.fromHtml(mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData);
                         char[] chars = new char[spanned.length()];
                         TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
                         String plainText = new String(chars);
@@ -733,26 +731,32 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         if (mBaseUri != null) {
-            String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
 
-            // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-            Cursor entriesCursor = MainApplication.getContext().getContentResolver().query(mBaseUri, EntryColumns.PROJECTION_ID,
-                    null, null, EntryColumns.DATE + entriesOrder);
+            if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
+                mEntriesIds = new long[1];
+                mEntriesIds[0] = mInitialEntryId;
+            } else {
+                String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
 
-            if (entriesCursor != null && entriesCursor.getCount() > 0) {
-                mEntriesIds = new long[entriesCursor.getCount()];
-                int i = 0;
-                while (entriesCursor.moveToNext()) {
-                    mEntriesIds[i] = entriesCursor.getLong(0);
-                    if (mEntriesIds[i] == mInitialEntryId) {
-                        mCurrentPagerPos = i; // To immediately display the good entry
-                        mLastPagerPos = i;
-                        CancelStarNotification( getCurrentEntryID() );
+                // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
+                Cursor entriesCursor = MainApplication.getContext().getContentResolver().query(mBaseUri, EntryColumns.PROJECTION_ID,
+                        null, null, EntryColumns.DATE + entriesOrder);
+
+                if (entriesCursor != null && entriesCursor.getCount() > 0) {
+                    mEntriesIds = new long[entriesCursor.getCount()];
+                    int i = 0;
+                    while (entriesCursor.moveToNext()) {
+                        mEntriesIds[i] = entriesCursor.getLong(0);
+                        if (mEntriesIds[i] == mInitialEntryId) {
+                            mCurrentPagerPos = i; // To immediately display the good entry
+                            mLastPagerPos = i;
+                            CancelStarNotification(getCurrentEntryID());
+                        }
+                        i++;
                     }
-                    i++;
-                }
 
-                entriesCursor.close();
+                    entriesCursor.close();
+                }
             }
         } else {
             mEntriesIds = null;
@@ -857,7 +861,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }*/
 
     public void UpdateFooter() {
-        EntryView entryView = mEntryPagerAdapter.mEntryViews.get(mEntryPager.getCurrentItem());
+        EntryView entryView = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem());
         if (entryView != null) {
             if ( PrefUtils.getBoolean( "article_text_footer_show_progress", true ) ) {
                 mProgressBar.setVisibility( View.VISIBLE );
@@ -1103,82 +1107,28 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         // Nothing to do
     }*/
 
-    public class EntryPagerAdapter extends PagerAdapter {
+    public abstract class BaseEntryPagerAdapter extends PagerAdapter {
+        abstract void onResume();
+        abstract void onPause();
+        abstract EntryView GetEntryView( int pagerPos );
 
-        private final SparseArray<EntryView> mEntryViews = new SparseArray<>();
-
-        EntryPagerAdapter() {
+        Cursor getCursor(int pagerPos) {
+            EntryView view = GetEntryView( pagerPos );
+            if (view != null ) {
+                return (Cursor) view.getTag();
+            }
+            return null;
         }
-
-        @Override
-        public int getCount() {
-            return mEntriesIds != null ? mEntriesIds.length : 0;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, final int position, Object object) {
-            Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( mEntriesIds[position] );
-            getLoaderManager().destroyLoader(position);
-            container.removeView((View) object);
-            EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
-            SaveScrollPos( false );
-            mEntryViews.delete(position);
-        }
-
-        public void SaveScrollPos(final boolean force ) {
-            final long entryID = getCurrentEntryID();
-            final EntryView view = mEntryViews.get(mCurrentPagerPos);
-            if ( view != null ) {
-                final float scrollPart = view.GetViewScrollPartY();
-                Dog.v(String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", entryID, view.getScrollY(), view.GetContentHeight() ));
-                new Thread() {
-                    @Override
-                    public void run() {
-                        ContentValues values = new ContentValues();
-                        values.put(EntryColumns.SCROLL_POS, scrollPart);
-                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                        //cr.update(EntryColumns.CONTENT_URI(entryID), values, EntryColumns.SCROLL_POS + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.SCROLL_POS + " < " + scroll, null);
-                        FeedDataContentProvider.mNotifyEnabled = false;
-                        String where = EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
-                        cr.update(EntryColumns.CONTENT_URI(entryID), values, force ? "" : where, null);
-                        FeedDataContentProvider.mNotifyEnabled = true;
-                        Dog.v(String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", entryID, scrollPart));
-                    }
-                }.start();
+        void setUpdatedCursor(int pagerPos, Cursor newCursor) {
+            EntryView view = GetEntryView( pagerPos );
+            if (view != null ) {
+                Cursor previousUpdatedOne = (Cursor) view.getTag();
+                if (previousUpdatedOne != null) {
+                    previousUpdatedOne.close();
+                }
+                view.setTag(newCursor);
             }
         }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            FetcherService.addActiveEntryID( mEntriesIds[position] );
-            final EntryView view = new EntryView(getActivity());
-            mEntryViews.put(position, view);
-            container.addView(view);
-            view.setListener(EntryFragment.this);
-            getLoaderManager().restartLoader(position, null, EntryFragment.this);
-            view.setTag(null);
-
-            view.mScrollChangeListener = new Runnable(){
-                @Override
-                public void run() {
-                    if ( !mFavorite )
-                        return;
-                    if ( mRetrieveFullText && !mIsFullTextShown )
-                        return;
-                    if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
-                        return;
-                    if ( view.IsScrolAtBottom() )
-                        SetIsFavourite(false);
-                }
-            };
-            //mProgressBar.setMax( view.getContentHeight() );
-            //mProgressBar.setProgress( view.getScrollY() );
-
-            return view;
-        }
-
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
@@ -1187,7 +1137,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate) {
             Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
 
-            EntryView view = mEntryViews.get(pagerPos);
+            EntryView view = GetEntryView( pagerPos );
             if (view != null ) {
                 if (newCursor == null) {
                     newCursor = (Cursor) view.getTag(); // get the old one
@@ -1241,8 +1191,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         refreshUI(newCursor);
 
                         //if (PrefUtils.getLong(PrefUtils.LAST_ENTRY_ID, 0) == mEntriesIds[pagerPos]) {
-                            //int dy = mScrollPosPos;
-                            //if (dy > view.getScrollY())
+                        //int dy = mScrollPosPos;
+                        //if (dy > view.getScrollY())
                         if ( view.GetViewScrollPartY() < scrollPart )
                             view.mScrollPartY = scrollPart;
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
@@ -1260,13 +1210,41 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        Cursor getCursor(int pagerPos) {
-            EntryView view = mEntryViews.get(pagerPos);
-            if (view != null ) {
-                return (Cursor) view.getTag();
-            }
-            return null;
+    };
+
+    public class EntryPagerAdapter extends BaseEntryPagerAdapter {
+
+        private final SparseArray<EntryView> mEntryViews = new SparseArray<>();
+
+        EntryPagerAdapter() { }
+
+        @Override
+        public int getCount() {
+            return mEntriesIds != null ? mEntriesIds.length : 0;
         }
+
+        @Override
+        public void destroyItem(ViewGroup container, final int position, Object object) {
+            Dog.d( "EntryPagerAdapter.destroyItem " + position );
+            FetcherService.removeActiveEntryID( mEntriesIds[position] );
+            getLoaderManager().destroyLoader(position);
+            container.removeView((View) object);
+            EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
+            GetEntryView( position ).SaveScrollPos( false );
+            mEntryViews.delete(position);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
+            FetcherService.addActiveEntryID( mEntriesIds[position] );
+            final EntryView view = CreateEntryView();
+            mEntryViews.put(position, view);
+            container.addView(view);
+
+            return view;
+        }
+
 
         void setUpdatedCursor(int pagerPos, Cursor newCursor) {
             EntryView view = mEntryViews.get(pagerPos);
@@ -1279,6 +1257,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
+        @Override
         void onResume() {
             if (mEntriesIds != null) {
                 EntryView view = mEntryViews.get(mCurrentPagerPos);
@@ -1288,11 +1267,95 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
+        @Override
         void onPause() {
             for (int i = 0; i < mEntryViews.size(); i++) {
                 mEntryViews.valueAt(i).onPause();
             }
         }
+
+        @Override
+        EntryView GetEntryView( int pagerPos ) {
+            return mEntryViews.get(pagerPos);
+        }
+    }
+
+    public class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
+        EntryView mEntryView = null;
+        Cursor mCursor = null;
+
+        SingleEntryPagerAdapter() {
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+
+        @Override
+        EntryView GetEntryView(int pagerPos) {
+            return mEntryView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, final int position, Object object) {
+            Dog.d( "EntryPagerAdapter.destroyItem " + position );
+            FetcherService.removeActiveEntryID( mEntriesIds[position] );
+            getLoaderManager().destroyLoader(position);
+            container.removeView((View) object);
+            EntryView.mImageDownloadObservable.deleteObserver(mEntryView);
+            mEntryView.SaveScrollPos( false );
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
+            FetcherService.addActiveEntryID( mEntriesIds[position] );
+            final EntryView view = CreateEntryView();
+            container.addView(view);
+            getLoaderManager().restartLoader(position, null, EntryFragment.this);
+
+            mEntryView = view;
+            return view;
+        }
+
+
+        Cursor getCursor(int pagerPos) {
+            return mCursor;
+        }
+
+
+        @Override
+        void onResume() {
+            mEntryView.onResume();
+        }
+
+        @Override
+        void onPause() {
+            mEntryView.onPause();
+        }
+    }
+
+    @NonNull
+    private EntryView CreateEntryView() {
+        final EntryView view = new EntryView(getActivity());
+        view.setListener(EntryFragment.this);
+        view.setTag(null);
+
+        view.mScrollChangeListener = new Runnable(){
+            @Override
+            public void run() {
+                if ( !mFavorite )
+                    return;
+                if ( mRetrieveFullText && !mIsFullTextShown )
+                    return;
+                if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
+                    return;
+                if ( view.IsScrolAtBottom() )
+                    SetIsFavourite(false);
+            }
+        };
+        return view;
     }
 
 

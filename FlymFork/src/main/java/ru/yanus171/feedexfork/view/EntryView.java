@@ -47,6 +47,8 @@ package ru.yanus171.feedexfork.view;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -75,6 +77,8 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -544,6 +548,22 @@ public class EntryView extends WebView implements Observer {
         anim.start();
     }
 
-
+    public void SaveScrollPos(final boolean force ) {
+        final float scrollPart = GetViewScrollPartY();
+        Dog.v(String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight() ));
+        new Thread() {
+            @Override
+            public void run() {
+                ContentValues values = new ContentValues();
+                values.put(FeedData.EntryColumns.SCROLL_POS, scrollPart);
+                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                FeedDataContentProvider.mNotifyEnabled = false;
+                String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
+                cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, force ? "" : where, null);
+                FeedDataContentProvider.mNotifyEnabled = true;
+                Dog.v(String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, scrollPart));
+            }
+        }.start();
+    }
 
 }
