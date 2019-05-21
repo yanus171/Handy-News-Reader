@@ -1,0 +1,4 @@
+• open image in standard viewer application ny tap on it in text (with bug fixes)
+  !!! Attention filename format of cached images changed and existing cache is invalid. So all downloaded images should be LOADED AGAIN.
+• actual brightnes level in color dialog
+• settings - articles text - underline links
