@@ -36,9 +36,4 @@
         <item>Тільки по Wi-Fi</item>
         <item>Завжди</item>
     </string-array>
-    <string-array name="settings_volume_buttons_action">
-        <item>По замовчуванню</item>
-        <item>Наст./Поперед. стаття</item>
-        <item>Наст./Поперед. сторінка</item>
-    </string-array>
 </resources>
