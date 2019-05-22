@@ -11,3 +11,6 @@ files:
     update_option: update_as_unapproved
   - source: /fastlane/metadata/android/en-US/*.txt
     translation: /fastlane/metadata/android/%locale_with_underscore%/%original_file_name%
+    translate_attributes: 0
+    content_segmentation: 0
+    update_option: update_as_unapproved
