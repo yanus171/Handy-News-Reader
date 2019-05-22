@@ -1,0 +1,26 @@
+"Staying in touch with all Your Interests never has been so easy"
+
+Handy News Reader is a user-friendly, feature rich and customizable free (no adds) open source feed reader.
+
+<b>Features</b>
+
+• OPML export/import
+• automatic backup
+• offline support
+• mark articles to read them later
+• gestures for navigation, marking and brightness adjust
+• switching articles by volume buttons or swipe, tap areas
+• remembering the position of reading per article
+• no need to use external web-browser to reach full text
+• customize: colors, footer-clock, margins, font sizes, progress bar...
+• notifications
+• filters and rules
+• easy adding google news topics
+• organize feeds in folders
+• and much more
+
+<b>Where you can find us</b>
+
+• source code at GitHub: https://github.com/yanus171/Handy-News-Reader
+• homepage: https://handynewsreader.blogspot.com/
+• translations: https://crowdin.com/project/handy-news-reader
