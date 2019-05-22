@@ -1,0 +1,2 @@
+• Color dialog inprovements by @SIRSteiner
+• Error fixes
