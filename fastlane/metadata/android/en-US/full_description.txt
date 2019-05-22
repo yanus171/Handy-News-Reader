@@ -1,26 +1,37 @@
-"Staying in touch with all Your Interests never has been so easy"
+"Staying in touch with all My Passions and Interests never has been so easy".
 
 Handy News Reader is a user-friendly, feature rich and customizable free (no adds) open source feed reader.
 
-<b>Features</b>
+...enjoy Your Life being distraction-free - and up-to-date with Your interests in the same time. Focus on the Essence...
 
-• OPML export/import
-• automatic backup
-• offline support
-• mark articles to read them later
-• gestures for navigation, marking and brightness adjust
-• switching articles by volume buttons or swipe, tap areas
-• remembering the position of reading per article
-• no need to use external web-browser to reach full text
-• customize: colors, footer-clock, margins, font sizes, progress bar...
-• notifications
-• filters and rules
-• easy adding google news topics
-• organize feeds in folders
-• and much more
+Handy NR respects Your Time as well as Your Inner Peace: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
+
+<b>Features:</b>
+
+• full articles at hand: no need to use external web-browser to reach full text,
+
+• convenient reading: switching articles by volume buttons or swipe, tap areas', remembering the position of reading per article,
+
+• important articles' notification: You will no longer miss anything You find especially important,
+
+• "Read It Later": You can quickly flick through articles - marking (starring) chosen ones to read later in Your spare time,
+
+• "Remove When Finished" - once You've finished such an article - it may be automatically removed from the 'Favorites' (='Read It Later') set,
+
+• ready to go off-line - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),
+
+• save the bandwidth: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,
+
+• gesture-friendly: e.g. swipe top down to add/remove an article from Favorites, swipe along the left edge of the screen to adjust text brightness.
+
+• user-friendly: care about Your eyes with dark theme, adjust text size and brightness to meet Your individual needs,
+more interesting features "in store" - visit our website to find out more :) !
+
 
 <b>Where you can find us</b>
 
 • source code at GitHub: https://github.com/yanus171/Handy-News-Reader
-• homepage: https://handynewsreader.blogspot.com/
+
+• homepage: https://handynewsreader.blogspot.com
+
 • translations: https://crowdin.com/project/handy-news-reader
