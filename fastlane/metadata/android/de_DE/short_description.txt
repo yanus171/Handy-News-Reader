@@ -1,1 +1,1 @@
-Feature-rich, pure (offline) reading experience on all Your interests.
+Lese-App für ein reines Leseerlebnis mit Offline-Unterstützung
