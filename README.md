@@ -13,25 +13,53 @@
 </blockquote><br />
 </center>
 
-<p><em>Handy NR</em> <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.</p>
+<p>Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.</p>
 
 <br />
 
 <h2 style="font-variant: small-caps;"><u>Features</u>:</h2>
 <ul>
-	<li><b><u>full articles</u> at hand</b>: no need to use external web-browser to reach full text,<br /><br /></li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, tap areas', remembering the position of reading <u>per article</u>,<br /><br /></li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,<br /><br /></li>
-	<li><b><em>"Read It Later"</em></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time,<br /><br /></li>
-	<li><b><em>"Remove When Finished"</b></em> - once You've finished such an article - it may be automatically removed from the <em>'Favorites'</em> (=<em>'Read It Later'</em>) set,<br /><br /></li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),<br /><br /></li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,<br /><br /></li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <em>Favorites</em>, swipe along the left edge of the screen to adjust text brightness.<br /><br /></li>
-	<li><b>user-friendly</b>: care about Your eyes with dark theme, adjust text size and brightness to meet Your individual needs,<br /><br /></li>
-	<li><b>more interesting features</b> "in store" - visit <a href="https://handynewsreader.blogspot.com" target="_blank">our website</a> to find out more :) !<br /><br /></li>
+
+	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
+
+	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
+	
+	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
+
+	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
+	
+	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
+	
+	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
+	
+	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
+	
+	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
+	
+	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
+	
+	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
+	
+	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
+	
+	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
+	
+	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !;</li>
+
 </ul>
 
+<br/><br/>
+<h3>Where you can find us:</h3>
 
+<ul>
+
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>
+	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
+	
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+
+</ul>
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
