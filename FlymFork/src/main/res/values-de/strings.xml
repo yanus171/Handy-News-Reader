@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Lizenz und Informationen</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lizenz und Informationen</big></b><br/>
     Dieses Programm ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version, weitergeben und/oder ändern. Siehe http://www.gnu.org/licenses<br/>
     <br/>
     Diese App basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. Folgende Funktionen wurden inzwischen hinzugefügt:<br/>
@@ -77,7 +77,7 @@
     <b>Übersetzer:</b><br/>
     ***translatorList***
     <br/>
-    "]]></string>
+    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Version</string>
     <string name="about_flym">Info - Hilfe - Support</string>
