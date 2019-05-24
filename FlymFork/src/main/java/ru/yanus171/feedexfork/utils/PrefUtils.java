@@ -77,6 +77,7 @@ public class PrefUtils {
     public static final String TAP_ZONES_VISIBLE = "settings_tap_zones_visible";
     public static final String SHOW_PROGRESS_INFO = "settings_show_progress_info";
     public static final String VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE = "vibrate_on_article_list_entry_swype";
+    public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";
 
 
     public static final String LAST_ENTRY_URI = "last_entry_uri";
