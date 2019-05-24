@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Лицензия</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
    Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
     <br/>
     Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
@@ -77,7 +77,7 @@
     <b>Переводчики:</b><br/>
     ***translatorList***
     <br/>
-    "]]></string>
+    ]]></string>
     <string name="app_name">Удобное чтение новостей</string>
     <string name="about_title_version">версия</string>
     <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
