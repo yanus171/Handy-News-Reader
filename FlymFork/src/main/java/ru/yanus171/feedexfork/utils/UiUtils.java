@@ -152,6 +152,8 @@ public class UiUtils {
         TextView btn = rootView.findViewById(ID);
         if ( transparent )
             btn.setBackgroundColor(Color.TRANSPARENT);
+        else
+            btn.setBackgroundResource( R.drawable.round_background );
         btn.setText("");
     }
 

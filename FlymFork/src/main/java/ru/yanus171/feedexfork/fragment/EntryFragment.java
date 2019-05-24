@@ -258,15 +258,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         //disableSwipe();
 
-        final boolean tapZonesVisible = PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true );
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
-
 
         rootView.findViewById(R.id.layoutBottom).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
@@ -406,7 +397,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( GeneralPrefsFragment.mSetupChanged ) {
             GeneralPrefsFragment.mSetupChanged = false;
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+
+
         }
+
+        final boolean tapZonesVisible = PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true );
+        View rootView = getView().getRootView();
+        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
+        UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
+        UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
+        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
+
     }
 
     @Override
