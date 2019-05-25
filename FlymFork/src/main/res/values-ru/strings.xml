@@ -378,6 +378,7 @@
     <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
+    <string name="auto_refresh_requires_charging">Только во время зарядки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
