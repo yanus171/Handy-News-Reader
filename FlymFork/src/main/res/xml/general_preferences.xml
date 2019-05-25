@@ -385,6 +385,12 @@
                 android:key="refresh.interval"
                 android:title="@string/settings_refresh_interval"/>
 
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="auto_refresh_requires_charging"
+                android:dependency="refresh.enabled"
+                android:title="@string/auto_refresh_requires_charging"/>
+
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="20"
                 android:dependency="refresh.enabled"

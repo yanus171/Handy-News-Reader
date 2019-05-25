@@ -106,7 +106,12 @@ public class AutoJobService extends JobService {
     private static final int AUTO_UPDATE_JOB_ID = 1;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static void initAutoJob(Context context, final String keyInterval, final String keyEnabled, final int jobID, boolean requiresNetwork) {
+    private static void initAutoJob(Context context,
+                                    final String keyInterval,
+                                    final String keyEnabled,
+                                    final int jobID,
+                                    boolean requiresNetwork,
+                                    boolean requiresCharging) {
         final long DEFAULT_INTERVAL = 3600L * 1000 * 24;
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
@@ -122,12 +127,13 @@ public class AutoJobService extends JobService {
         if ( PrefUtils.getBoolean( keyEnabled, true )  ) {
             if (lastInterval != currentInterval ||
                     currentTime - lastJobOccured > currentInterval ||
-                    GetPendingJobByID(jobScheduler, jobID) == null) {
+                    GetPendingJobByID(jobScheduler, jobID) == null ||
+                    GetPendingJobByID(jobScheduler, jobID).isRequireCharging() != requiresCharging ) {
                 ComponentName serviceComponent = new ComponentName(context, AutoJobService.class);
                 JobInfo.Builder builder =
                         new JobInfo.Builder(jobID, serviceComponent)
                                 .setPeriodic(currentInterval)
-                                .setRequiresCharging(false)
+                                .setRequiresCharging(requiresCharging)
                                 .setPersisted(true)
                         //.setRequiresDeviceIdle(true)
                         ;
@@ -146,8 +152,8 @@ public class AutoJobService extends JobService {
     }
     public static void init(Context context) {
         if (Build.VERSION.SDK_INT >= 21 ) {
-            initAutoJob( context, REFRESH_INTERVAL, REFRESH_ENABLED, AUTO_UPDATE_JOB_ID, true );
-            initAutoJob( context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, AUTO_BACKUP_JOB_ID, false );
+            initAutoJob( context, REFRESH_INTERVAL, REFRESH_ENABLED, AUTO_UPDATE_JOB_ID, true, PrefUtils.getBoolean( "auto_refresh_requires_charging", false ) );
+            initAutoJob( context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, AUTO_BACKUP_JOB_ID, false, false );
         }
         /*else {
             GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);

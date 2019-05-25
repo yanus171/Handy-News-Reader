@@ -407,6 +407,7 @@
     <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
     <string name="background1">Background</string>
+    <string name="auto_refresh_requires_charging">Only when charging</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
