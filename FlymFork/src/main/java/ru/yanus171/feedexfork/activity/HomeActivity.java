@@ -191,9 +191,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
-        // Ask the permission to import the feeds if there is already one backup
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
+        // Ask the permission to import the feeds
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED  ) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
