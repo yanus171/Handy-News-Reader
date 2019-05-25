@@ -1,21 +1,21 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Rimani in contatto con tutti i miei interessi non è mai stato così facile".</i>
 
 <i>
 	<h1>Handy News Reader</h1>
-		<h2>make up Your Dream Magazine!</h2>
-		<h2>interesting articles straight into Your hands</h2>
-		<h2>finally enjoy reading</h2>
+		<h2>crea la tua rivista dei sogni!</h2>
+		<h2>articoli interessanti direttamente nelle tue mani</h2>
+		<h2>finalmente goditi di lettura</h2>
 </i>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...<br/><br/>
+...goditi la tua vita <b>senza distrazione - e aggiornato con i tuoi interessi</b> nello stesso tempo. Concentrati sull'Essenza...<br/><br/>
 
-Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.<br/><br/>
+Incontra <i>Handy NR</i> - un lettore RSS ricco di funzionalità, non allineato <i></i> che <b>rispetta il tuo tempo e la tua Pace Interna</b>: evita di spostare attenzione e distrazioni che oggi sono così note quando pensi ai dispositivi mobili.<br/><br/>
 
-<h3><u>Features</u>:</h3>
+<h3><u>Funzioni</u>:</h3>
 
 <ul>
 
-	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
+	<li><b><u>articoli completi</u> a mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
 
 	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
 	
