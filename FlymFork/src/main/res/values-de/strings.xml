@@ -396,6 +396,7 @@
     <string name="colorSlotSaved">Die Farbe wurde gespeichert</string>
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
+    <string name="auto_refresh_requires_charging">Nur beim Laden</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
