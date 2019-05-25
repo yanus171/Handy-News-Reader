@@ -170,7 +170,16 @@
     <string name="settings_max_image_download_count_description">Per un articolo</string>
     <string name="settings_max_image_download_size_kb">Dimensione massima immagine</string>
     <string name="settings_max_image_download_size_kb_summary">(in kb). Non caricare automaticamente immagini più grandi di</string>
+    <string name="max_single_refresh_traffic_mb">Traffico massimo singolo aggiornamento</string>
+    <string name="max_single_refresh_traffic_mb_descr">L\'aggiornamento si fermerà quando il traffico raggiunge il valore massimo (in MB) e non è collegato al WiFi</string>
+    <string name="settings_load_comments">Carica commenti</string>
+    <string name="settings_load_comments_description">Testo completo degli articoli</string>
+    <string name="settings_category_article_list">Elenco articoli</string>
+    <string name="settings_category_article_list_summary">Aspetto della lista degli articoli</string>
     <string name="settings_font_size">Dimensione testo</string>
+    <string name="show_article_icon">Mostra icona articolo</string>
+    <string name="show_article_icon_descr">Spegni per guadagnare più spazio nello schermo</string>
+    <string name="show_article_url">Mostra URL articolo</string>
     <string name="settings_display_oldest_first">Ordinamento articoli</string>
     <string name="settings_display_oldest_first_description">Mostra gli articoli più vecchi prima</string>
     <string name="settings_display_images">Mostra immagini</string>
