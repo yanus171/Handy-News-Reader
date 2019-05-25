@@ -182,6 +182,8 @@
     <string name="show_article_url">Mostra URL articolo</string>
     <string name="settings_display_oldest_first">Ordinamento articoli</string>
     <string name="settings_display_oldest_first_description">Mostra gli articoli più vecchi prima</string>
+    <string name="show_full_text_indicator">Indicatore testo completo</string>
+    <string name="show_new_icon">Icona nuovo articolo</string>
     <string name="settings_display_images">Mostra immagini</string>
     <string name="settings_display_images_description">Mostra le immagini degli articoli</string>
     <string name="settings_display_entries_fullscreen">Articoli a tutto schermo in automatico</string>
