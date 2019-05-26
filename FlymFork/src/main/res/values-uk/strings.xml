@@ -85,8 +85,8 @@
     <string name="filter_is_regex">це регулярний вираз</string>
     <string name="filter_apply_to_title">Застосувати до заголовків або адрес</string>
     <string name="filter_apply_to_content">Застосувати до вмісту</string>
-    <string name="accept">Завантажувати тільки</string>
-    <string name="reject">Не завантажувати</string>
+    <string name="accept">ПРИЙНЯТИ</string>
+    <string name="reject">ВІДХИЛИТИ</string>
     <string name="feed_search">Пошук стрічок</string>
     <string name="select_file">Вибрати файл (корінь SD-карти)</string>
     <string name="question_delete_feed">Ви дійсно бажаєте вилучити цю стрічку?</string>
@@ -316,7 +316,7 @@
     <string name="lock_orientation">Горизонтальна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною</string>
-    <string name="deleteAllEntries">Вилучити всі не помічені статті?</string>
+    <string name="deleteAllEntries">Вилучити всі не помічені статті крім обраних</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з розміткою</string>
     <string name="filter_hint">Всі фільтри об’єднуються по АБО. Завантажувати переважує Не завантажувати</string>
