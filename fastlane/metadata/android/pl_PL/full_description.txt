@@ -37,21 +37,21 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 	
 	<li><b>wysoce konfigurowalny</b>: od rozmiaru <i>Stref Aktywnych</i> po kolor i podkreślanie hiperłączy - jest sporo detali, które możesz dostosować dokładnie wedle Własnego gustu i potrzeb,</li>
 	
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
+	<li><b>funkcje zaawansowane</b>: automatyczna kopia zapasowa (eksport/import do/z pliku w formacie <i>.opml</i>), dostarczanie treści z nie-<i>RSS</i>'owych stron, </li>
 	
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !;</li>
+	<li><b>więcej interesujących funkcji</b> "w przygotowaniu" - odwiedź naszą stronę by dowiedzieć się więcej :) !;</li>
 
 </ul>
 
 <br/><br/>
-<h3>Where you can find us:</h3>
+<h3>Gdzie możesz nas znaleźć:</h3>
 
 <ul>
 
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">kod źródłowy na <i>GitHub</i></a>,</li>
 	
-	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">strona domowa</a>,</li>
 	
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">tłumaczenia</a>;</li>
 
 </ul>
