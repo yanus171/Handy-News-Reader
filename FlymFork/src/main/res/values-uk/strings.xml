@@ -39,6 +39,7 @@
 
  • Jozef Jaroščiak&lt;br/&gt; • Matthias Dill&lt;br/&gt; • Mladen Pejaković&lt;br/&gt; • SIRSteiner&lt;br/&gt; • Thomas Leigh&lt;br/&gt; &lt;br/&gt; Цей додаток вільний; Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses&lt;br/&gt;&lt;br/&gt;."]]></string>
     <string name="app_name">Зручне читання новин</string>
+    <string name="about_title_version">версія</string>
     <string name="about_flym">Про додаток / Допомога / Зв’язок</string>
     <string name="welcome_title">Додати канал?</string>
     <string name="never">ніколи</string>
@@ -153,7 +154,16 @@
     <string name="blue">Синій</string>
     <string name="transparency">Прозорий</string>
     <!-- SETTINGS -->
+    <string name="settings_category_common">Загальні налаштування</string>
+    <string name="settings_category_common_summary">Тема</string>
+    <string name="theme">Тема</string>
+    <string name="customColors">Власні кольори</string>
+    <string name="fontColorsNotFromThemeSummary">інакше використовувати кольори теми</string>
+    <string name="textColor">Колір тексту</string>
+    <string name="settings_color_text_sample_short">Текст</string>
+    <string name="settings_color_text_sample_long">\u201cКоли зустрічаєшся з гарною дівчиною година проходить за секунду. Коли сидиш на гарячій сковороді секунда здається годиною. Це теорія відносності.\u201d\n(Альберт Енштейн)</string>
     <string name="settings_category_refresh">Автоматичне оновлення</string>
+    <string name="settings_category_refresh_summary">Автоматичне оновлення й час зберігання статей</string>
     <string name="settings_refresh_enabled">Автоматичне оновлення</string>
     <string name="settings_refresh_interval">Інтервал оновлення</string>
     <string name="settings_min_update_battery_level">Мін. рівень батареї</string>
@@ -174,6 +184,7 @@
     <string name="settings_load_comments">Завантажувати коментарі</string>
     <string name="settings_load_comments_description">в повних текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
+    <string name="settings_category_article_list_summary">Вигляд списку статей</string>
     <string name="settings_font_size">Розмір тексту</string>
     <string name="show_article_icon">Показувати іконки статей</string>
     <string name="show_article_icon_descr">вимкніть для економії місця на екрані</string>
@@ -192,7 +203,12 @@
     <string name="show_read_article_count_descr">в списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
     <string name="show_group_entries_count_descr">Може знизити швидкодію</string>
+    <string name="textColorRead">Прочитані статті</string>
+    <string name="textColorRead_descr">Колір прочитаних статей</string>
+    <string name="settings_color_text_read_sample_short">Прочитано</string>
+    <string name="settings_color_text_read_sample_long">Прочитані статті</string>
     <string name="settings_category_article_text">Текст статті</string>
+    <string name="settings_category_article_text_summary">Вигляд тексту статті</string>
     <string name="settings_display_images">Показувати зображення</string>
     <string name="settings_display_images_description">в тексті статей</string>
     <string name="settings_display_entries_fullscreen">Статті на весь екран</string>
@@ -200,9 +216,24 @@
     <string name="settings_entry_margins_description">з боків</string>
     <string name="entry_text_align_justify">Вирівнювати за вмістом</string>
     <string name="entry_text_align_justify_description">інакше по лівому краю</string>
+    <string name="linkColor">Колір посилань</string>
+    <string name="linkColor_descr">Колір Посилання</string>
+    <string name="settings_color_link_sample_short">Посилання</string>
+    <string name="settings_color_link_sample_long">Колір посилань</string>
+    <string name="underline_links">Підкреслювати посилання</string>
     <string name="article_text_footer_show_clock">Годинник</string>
+    <string name="article_text_footer_show_clock_description">Показувати годину в лівому нижньому куті в повноекранному режимі</string>
+    <string name="settings_clock_size">Розмір шрифту годинника в колонтитулі</string>
+    <string name="article_text_footer_clock_color">Колір годинника</string>
+    <string name="article_text_footer_clock_color_descr">Колір годинника в колонтитулі</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Смуга прочитаного</string>
+    <string name="article_text_footer_show_progress_descr">Показувати прогрес читання статті на низу екрану</string>
     <string name="article_text_footer_progress_height">Висота смуги</string>
+    <string name="article_text_footer_progress_color">Колір смуги прогресу читання</string>
+    <string name="article_text_footer_progress_color_descr">Колір смуги прогресу читання статті</string>
+    <string name="settings_category_operation">Операції</string>
     <string name="tap_zone_size">Розмір зони натиснення</string>
     <string name="tap_zone_size_descr">Ширина або висота зон натиснення в міліметрах</string>
     <string name="settings_show_tap_zones">Зони натискань видно</string>
@@ -213,6 +244,8 @@
     <string name="brightness_gesture_descr">Якщо галочка є, то рух пальцем догори/додолу по лівому краю екрану статті змінює яскравість</string>
     <string name="brightness_with_dim_activity">Програмне зменшення яскравості</string>
     <string name="brightness_with_dim_activity_descr">Увімкніть, якщо зміна яскравості не працює</string>
+    <string name="settings_category_behavior">Сповіщення \u0026 поведінка</string>
+    <string name="settings_category_behavior_summary">Сповіщення про нові статті</string>
     <string name="settings_notifications_enabled">Увімкнути сповіщення</string>
     <string name="settings_notifications_enabled_description">Увімкнути сповіщення про нові записи</string>
     <string name="settings_notifications_ringtone">Звук</string>
@@ -227,6 +260,8 @@
     <string name="settings_remeber_last_entry_description">Відкривати останню переглянуту статтю при запуску, інакше список непрочитанних статей</string>
     <string name="auto_unstart_at_bottom">Забирати зірку коли прочитано</string>
     <string name="auto_unstart_at_bottom_descr">Автоматично забирати статтю з обраного при досягненні ії нижнього краю</string>
+    <string name="settings_category_advanced">Додатково</string>
+    <string name="settings_category_advanced_summary">Додаткові можливості (резервування, фільтри...)</string>
     <string name="settings_autobackup_enabled">Автоматичне резервне копіювання</string>
     <string name="settings_autobackup_enabled_descr">Періодично зберігати OPML файл з даними стрічок та обраних статей</string>
     <string name="settings_category_content_presentation">Представлення вмісту</string>
@@ -296,6 +331,7 @@
     <string name="customKeepTime">Особистий час зберігання статей</string>
     <string name="menu_toggle_theme">Змінити тему</string>
     <string name="turnOn">Увімкнути</string>
+    <string name="brightness">Яскравість</string>
     <string name="brightness_change">Зміна яскравості</string>
     <string name="exportingToFile">Експорт у файл</string>
     <string name="importingFromFile">Імпорт з файлу</string>

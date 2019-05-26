@@ -14,8 +14,8 @@
         <item>1 giorno</item>
     </string-array>
     <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
+        <item>1 ora</item>
+        <item>12 ore</item>
         <item>1 giorno</item>
         <item>2 giorni</item>
         <item>4 giorni</item>
@@ -24,11 +24,20 @@
         <item>1 mese</item>
         <item>2 mesi</item>
         <item>3 mesi</item>
-        <item>Per sempre</item>
+        <item>Sempre</item>
+    </string-array>
+    <string-array name="settings_volume_buttons_action">
+        <item>Predefinito</item>
+        <item>Passa al prossimo | articolo precedente</item>
+        <item>Pagina su | giù</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
         <item>Mai</item>
         <item>Solo con Wi-Fi</item>
         <item>Sempre</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Chiaro</item>
+        <item>Scuro</item>
     </string-array>
 </resources>
