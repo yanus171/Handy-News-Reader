@@ -346,7 +346,7 @@
     <string name="create_auto_backup">Створити резервну копію</string>
     <string name="auto_backup_opml_file_created">Створено резервну копію:</string>
     <string name="use_standard_file_manager">Стандартний файловий менеджер</string>
-    <string name="use_standard_file_manager_descr">інакше виберіть opml файл для імпорта за допомогою вбудованного діалогу з теки додатку на карті пам’яті</string>
+    <string name="use_standard_file_manager_descr">інакше виберіть .opml файл для імпортування за допомогою вбудованного діалогу з теки додатку на картці пам’яті</string>
     <string name="settings">Налаштування</string>
     <string name="entry_go_prev">Попередня сторінка</string>
     <string name="entry_go_next">Наступна сторінка</string>
