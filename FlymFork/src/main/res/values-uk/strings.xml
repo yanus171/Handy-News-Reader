@@ -39,6 +39,7 @@
 
  • Jozef Jaroščiak&lt;br/&gt; • Matthias Dill&lt;br/&gt; • Mladen Pejaković&lt;br/&gt; • SIRSteiner&lt;br/&gt; • Thomas Leigh&lt;br/&gt; &lt;br/&gt; Цей додаток вільний; Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses&lt;br/&gt;&lt;br/&gt;."]]></string>
     <string name="app_name">Зручне читання новин</string>
+    <string name="about_title_version">версія</string>
     <string name="about_flym">Про додаток / Допомога / Зв’язок</string>
     <string name="welcome_title">Додати канал?</string>
     <string name="never">ніколи</string>
@@ -153,6 +154,13 @@
     <string name="blue">Синій</string>
     <string name="transparency">Прозорий</string>
     <!-- SETTINGS -->
+    <string name="settings_category_common">Загальні налаштування</string>
+    <string name="settings_category_common_summary">Тема</string>
+    <string name="theme">Тема</string>
+    <string name="customColors">Власні кольори</string>
+    <string name="fontColorsNotFromThemeSummary">інакше використовувати кольори теми</string>
+    <string name="textColor">Колір тексту</string>
+    <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_category_refresh">Автоматичне оновлення</string>
     <string name="settings_refresh_enabled">Автоматичне оновлення</string>
     <string name="settings_refresh_interval">Інтервал оновлення</string>
