@@ -15,7 +15,7 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 
 <ul>
 
-	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
+	<li><b><u>pełne artykuły</u> pod ręką</b>: bez potrzeby angażowania zewnętrznej przeglądarki, by zobaczyć pełny tekst,</li>
 
 	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
 	
