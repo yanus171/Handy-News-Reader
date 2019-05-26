@@ -241,6 +241,10 @@
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
+    <string name="textColorRead">Прочитанные статьи</string>
+    <string name="textColorRead_descr">Цвет прочитанных</string>
+    <string name="settings_color_text_read_sample_short">Прочитанные</string>
+    <string name="settings_color_text_read_sample_long">Прочитанные статьи</string>
     <string name="settings_category_article_text">Текст статьи</string>
     <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>
     <string name="settings_display_images">Отображать кратинки</string>
@@ -250,6 +254,10 @@
     <string name="settings_entry_margins_description">по бокам</string>
     <string name="entry_text_align_justify">Выравнивать по содержимому</string>
     <string name="entry_text_align_justify_description">иначе по левому краю</string>
+    <string name="linkColor">Цвет ссылок</string>
+    <string name="linkColor_descr">На другие сайты (статьи)</string>
+    <string name="settings_color_link_sample_short">Ссылки</string>
+    <string name="settings_color_link_sample_long">Цвет ссылки</string>
     <string name="article_text_footer_show_clock">Часы</string>
     <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
     <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
