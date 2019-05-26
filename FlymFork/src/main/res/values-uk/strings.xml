@@ -208,6 +208,7 @@
     <string name="settings_color_text_read_sample_short">Прочитано</string>
     <string name="settings_color_text_read_sample_long">Прочитані статті</string>
     <string name="settings_category_article_text">Текст статті</string>
+    <string name="settings_category_article_text_summary">Вигляд тексту статті</string>
     <string name="settings_display_images">Показувати зображення</string>
     <string name="settings_display_images_description">в тексті статей</string>
     <string name="settings_display_entries_fullscreen">Статті на весь екран</string>
@@ -215,7 +216,16 @@
     <string name="settings_entry_margins_description">з боків</string>
     <string name="entry_text_align_justify">Вирівнювати за вмістом</string>
     <string name="entry_text_align_justify_description">інакше по лівому краю</string>
+    <string name="linkColor">Колір посилань</string>
+    <string name="linkColor_descr">Колір Посилання</string>
+    <string name="settings_color_link_sample_short">Посилання</string>
+    <string name="settings_color_link_sample_long">Колір посилань</string>
+    <string name="underline_links">Підкреслювати посилання</string>
     <string name="article_text_footer_show_clock">Годинник</string>
+    <string name="article_text_footer_show_clock_description">Показувати годину в лівому нижньому куті в повноекранному режимі</string>
+    <string name="settings_clock_size">Розмір шрифту годинника в колонтитулі</string>
+    <string name="article_text_footer_clock_color">Колір годинника</string>
+    <string name="article_text_footer_clock_color_descr">Колір годинника в колонтитулі</string>
     <string name="article_text_footer_show_progress">Смуга прочитаного</string>
     <string name="article_text_footer_progress_height">Висота смуги</string>
     <string name="tap_zone_size">Розмір зони натиснення</string>
