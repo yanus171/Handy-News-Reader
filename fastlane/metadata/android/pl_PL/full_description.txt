@@ -17,19 +17,19 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 
 	<li><b><u>pełne artykuły</u> pod ręką</b>: bez potrzeby angażowania zewnętrznej przeglądarki, by zobaczyć pełny tekst,</li>
 
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
+	<li><b><u>wygodna</u> lektura</b>: przełączanie artykułów przyciskami głośności lub przeciągnięciem, <i>Strefy Aktywne</i>, zapamiętywanie pozycji czytania <u>każdego artykułu z osobna</u>,</li>
 	
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
+	<li><b>powiadomienia o ważnych artykułach</b>: nigdy więcej nie przegapisz niczego ważnego,</li>
 
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
+	<li><b><i>"Przeczytaj Później"</i></b>: Możesz szybko przewertować artykuły - <b>oznaczając wybrane do przeczytania później</b> w wolnym czasie - lub by po prostu zachować,</li>
 	
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
+	<li><b><i>"Usuń po przeczytaniu"</i></b> - gdy skończysz czytać jeden z wcześniej wybranych artykułów - zostanie on automatycznie usunięty z zestawu <i>'Ulubionych'</i> (=<i>'Przeczytaj Później'</i>),</li>
 	
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
+	<li><b>gotowy do pracy off-line</b> - zanurz się interesującej lekturze bez rozpraszaczy: po aktualizacji nie ma potrzeby dodatkowego ładowania czegokolwiek - naprawdę obejdzie się bez Internetu :),</li>
 	
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
+	<li><b>oszczędzaj transfer</b>: przejdź on-line tylko po nowe artykuły - nie by każdorazowo ładować ich pełną wersję; kontroluj co powinno być pobierane - i do jakiego stopnia,</li>
 	
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
+	<li><b>wspierający gesty</b>: np. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
 	
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	
