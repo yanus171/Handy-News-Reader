@@ -33,9 +33,9 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 	
 	<li><b>przyjazny dla użytkownika</b>: dbaj o wzrok z ciemnym motywem, dostosuj rozmiar tekstu, kolor i jasność do Własnych potrzeb,</li>
 	
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
+	<li><b>błyskotliwe pomysły</b>: niezlinkowane tytuły artykułów nie nawiną się więcej pod palce ;) ; przewijanie strony o 90% może ułatwić lekturę, czyniąc ją bardziej komfortową,</li>
 	
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
+	<li><b>wysoce konfigurowalny</b>: od rozmiaru <i>Stref Aktywnych</i> po kolor i podkreślanie hiperłączy - jest sporo detali, które możesz dostosować dokładnie wedle Własnego gustu i potrzeb,</li>
 	
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
 	
