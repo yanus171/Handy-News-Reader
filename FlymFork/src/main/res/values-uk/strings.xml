@@ -163,6 +163,7 @@
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКоли зустрічаєшся з гарною дівчиною година проходить за секунду. Коли сидиш на гарячій сковороді секунда здається годиною. Це теорія відносності.\u201d\n(Альберт Енштейн)</string>
     <string name="settings_category_refresh">Автоматичне оновлення</string>
+    <string name="settings_category_refresh_summary">Автоматичне оновлення й час зберігання статей</string>
     <string name="settings_refresh_enabled">Автоматичне оновлення</string>
     <string name="settings_refresh_interval">Інтервал оновлення</string>
     <string name="settings_min_update_battery_level">Мін. рівень батареї</string>
@@ -183,6 +184,7 @@
     <string name="settings_load_comments">Завантажувати коментарі</string>
     <string name="settings_load_comments_description">в повних текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
+    <string name="settings_category_article_list_summary">Вигляд списку статей</string>
     <string name="settings_font_size">Розмір тексту</string>
     <string name="show_article_icon">Показувати іконки статей</string>
     <string name="show_article_icon_descr">вимкніть для економії місця на екрані</string>
@@ -201,6 +203,10 @@
     <string name="show_read_article_count_descr">в списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
     <string name="show_group_entries_count_descr">Може знизити швидкодію</string>
+    <string name="textColorRead">Прочитані статті</string>
+    <string name="textColorRead_descr">Колір прочитаних статей</string>
+    <string name="settings_color_text_read_sample_short">Прочитано</string>
+    <string name="settings_color_text_read_sample_long">Прочитані статті</string>
     <string name="settings_category_article_text">Текст статті</string>
     <string name="settings_display_images">Показувати зображення</string>
     <string name="settings_display_images_description">в тексті статей</string>
