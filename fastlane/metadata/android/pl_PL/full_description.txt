@@ -29,9 +29,9 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 	
 	<li><b>oszczędzaj transfer</b>: przejdź on-line tylko po nowe artykuły - nie by każdorazowo ładować ich pełną wersję; kontroluj co powinno być pobierane - i do jakiego stopnia,</li>
 	
-	<li><b>wspierający gesty</b>: np. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
+	<li><b>wspierający gesty</b>: np. przesuń z góry w dół by dodać/usunąć artykuł z <i>Ulubionych</i>, przesuń wzdłuż lewej krawędzi ekranu by dostosować jasność,</li>
 	
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
+	<li><b>przyjazny dla użytkownika</b>: dbaj o wzrok z ciemnym motywem, dostosuj rozmiar tekstu, kolor i jasność do Własnych potrzeb,</li>
 	
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	
