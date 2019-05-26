@@ -184,6 +184,10 @@
     <string name="settings_display_oldest_first_description">Mostra gli articoli più vecchi prima</string>
     <string name="show_full_text_indicator">Indicatore testo completo</string>
     <string name="show_new_icon">Icona nuovo articolo</string>
+    <string name="show_read_article_count">Mostra il numero di articoli letti</string>
+    <string name="show_group_entries_count_descr">può ridurre le prestazioni</string>
+    <string name="textColorRead">Articoli letti</string>
+    <string name="textColorRead_descr">Colore degli articoli letti</string>
     <string name="settings_display_images">Mostra immagini</string>
     <string name="settings_display_images_description">Mostra le immagini degli articoli</string>
     <string name="settings_display_entries_fullscreen">Articoli a tutto schermo in automatico</string>
