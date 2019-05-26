@@ -32,6 +32,7 @@ import android.preference.PreferenceManager;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.DebugApp;
@@ -45,14 +46,13 @@ public class MainApplication extends Application {
     }
 
     public static final String NOTIFICATION_CHANNEL_ID = "main_channel";
-    private final static String defaultLanguage = "System";
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
 
-        InitLocale();
+        BaseActivity.InitLocale( mContext );
 
         Thread.setDefaultUncaughtExceptionHandler(new DebugApp().new UncaughtExceptionHandler(this));
 
@@ -78,28 +78,15 @@ public class MainApplication extends Application {
 
     }
 
-    private static void InitLocale() {
-        Locale locale = GetLocale(mContext);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        mContext.getResources().updateConfiguration(config, null);
-    }
 
-    // ----------------------------------------------------------------
-    private static Locale GetLocale(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String lang = prefs.getString(PrefUtils.LANGUAGE, defaultLanguage);
-        if (lang.equals(defaultLanguage)) {
-            if (context.getResources().getConfiguration().locale != null) {
-                lang = context.getResources().getConfiguration().locale.getLanguage();
-            }
-        }
-        return new Locale(lang);
-    }
     @Override
     public void onConfigurationChanged (Configuration newConfig) {
-        InitLocale();
+        BaseActivity.InitLocale( mContext );
         super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext( BaseActivity.InitLocale( base ));
     }
 }

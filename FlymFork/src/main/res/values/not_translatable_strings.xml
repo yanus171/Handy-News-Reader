@@ -106,6 +106,7 @@
         <item>Svenska</item>
         <item>中国</item>
         <item>Ελληνικός</item>
+        <item>Український</item>
     </string-array>
     <string-array name="languageValueList" translatable="false">
         <item>System</item>
@@ -126,6 +127,7 @@
         <item>sv</item>
         <item>zh</item>
         <item>el</item>
+        <item>uk</item>
     </string-array>
 
     <string-array name="themeValueList" translatable="false">
@@ -157,6 +159,7 @@
     • Mladen Pejaković<br/>
     • Ronny Steiner<br/>
     • Thomas Leigh<br/>
-    • ekarpi<br/>]]></string>
+    • ekarpi<br/>
+    • Oleg Pankiv<br/>]]></string>
 
 </resources>

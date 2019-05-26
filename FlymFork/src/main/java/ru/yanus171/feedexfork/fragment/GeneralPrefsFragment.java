@@ -121,7 +121,8 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         });
 
 
-        ApplyBrightness( getPreferenceScreen(), (BaseActivity) getActivity());
+        if ( PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
+            ApplyBrightness( getPreferenceScreen(), (BaseActivity) getActivity());
 
 
 //        for(  int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++ ) {

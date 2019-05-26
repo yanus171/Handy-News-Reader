@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Licencja i informacje</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licencja i informacje</big></b><br/>
     Niniejszy program stanowi wolne oprogramowanie, możesz go rozpowszechniać i/lub modyfikować na zasadach licencji GNU General Public License opublikowanej przez Fundację Wolnego Oprogramowania, w wydaniu 3 licencji, lub (wedle uznania) jakimkolwiek późniejszym. Zobacz https://www.gnu.org/licenses/licenses.pl.html<br/>
     <br/>
     Niniejszy program bazuje na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Pośród funkcji dodanych w tym forku znajdują się:<br/>
@@ -80,7 +80,7 @@
     
  
 about_us_content
-GENERAL"]]></string>
+GENERAL]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
     <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
@@ -247,7 +247,8 @@ GENERAL"]]></string>
     <string name="show_read_article_count_descr">Na liście źródeł</string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
     <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
-    <string name="textColorRead">Kolor nieprzeczytanych artykułów</string>
+    <string name="textColorRead">Nieczytane artykuły</string>
+    <string name="textColorRead_descr">Kolor przeczytanych artykułów</string>
     <string name="settings_color_text_read_sample_short">Przeczytane</string>
     <string name="settings_color_text_read_sample_long">Przeczytane artykuły</string>
     <string name="settings_category_article_text">Tekst artykułu</string>
@@ -261,6 +262,7 @@ GENERAL"]]></string>
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
     <string name="linkColor">Kolor linku</string>
+    <string name="linkColor_descr">Kolor hiperłączy</string>
     <string name="settings_color_link_sample_short">Linki</string>
     <string name="settings_color_link_sample_long">Kolor linków</string>
     <string name="underline_links">Podkreślaj linki</string>
@@ -268,11 +270,14 @@ GENERAL"]]></string>
     <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
     <string name="article_text_footer_clock_color">Kolor zegarka</string>
+    <string name="article_text_footer_clock_color_descr">Kolor zegarka w stopce</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Pasek postępu lektury</string>
+    <string name="article_text_footer_show_progress_descr">Wyświetla postęp lektury artykułu u dołu ekranu</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
     <string name="article_text_footer_progress_color">Kolor paska postępu</string>
+    <string name="article_text_footer_progress_color_descr">Kolor paska postępu lektury</string>
     <string name="settings_category_operation">Czynności</string>
     <string name="settings_category_operation_summary">Ustawienia dot. czynności</string>
     <string name="tap_zone_size">Rozmiar Stref Aktywnych</string>

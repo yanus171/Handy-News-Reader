@@ -121,18 +121,17 @@ public class RssAtomParser extends DefaultHandler {
             {"PST", "-0800"},
             {"ICT", "+0700"}};
 
-    private final DateFormat[] PUBDATE_DATE_FORMATS = {
+    private final DateFormat[] DATE_FORMATS = {
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US)
-    };
-
-    private final DateFormat[] UPDATE_DATE_FORMATS = {
+            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
+            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd", Locale.US)
     };
+
 
     private final Date mRealLastUpdateDate;
     private final String mId;
@@ -343,19 +342,19 @@ public class RssAtomParser extends DefaultHandler {
                     mFeedLink = mEntryLink.toString();
                 }
             } else if (TAG_UPDATED.equals(localName)) {
-                mEntryUpdateDate = parseUpdateDate(mDateStringBuilder.toString());
+                mEntryUpdateDate = parseDate(mDateStringBuilder.toString());
                 mUpdatedTagEntered = false;
             } else if (TAG_PUBDATE.equals(localName)) {
-                mEntryDate = parsePubdateDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString());
                 mPubDateTagEntered = false;
             } else if (TAG_PUBLISHED.equals(localName)) {
-                mEntryDate = parsePubdateDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString());
                 mPublishedTagEntered = false;
             } else if (TAG_LAST_BUILD_DATE.equals(localName)) {
-                mEntryDate = parsePubdateDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString());
                 mLastBuildDateTagEntered = false;
             } else if (TAG_DATE.equals(localName)) {
-                mEntryDate = parseUpdateDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString());
                 mDateTagEntered = false;
             } else if (TAG_ENTRY.equals(localName) || TAG_ITEM.equals(localName)) {
                 mEntryTagEntered = false;
@@ -556,44 +555,18 @@ public class RssAtomParser extends DefaultHandler {
         this.mFetchImages = fetchImages;
     }
 
-    private Date parseUpdateDate(String dateStr) {
+    private Date parseDate(String dateStr) {
         dateStr = improveDateString(dateStr);
-        return parseUpdateDate(dateStr, true);
-    }
-
-    private Date parseUpdateDate(String dateStr, boolean tryAllFormat) {
-        for (DateFormat format : UPDATE_DATE_FORMATS) {
+        for (DateFormat format : DATE_FORMATS ) {
             try {
                 Date result = format.parse(dateStr);
                 return (result.getTime() > mNow ? new Date(mNow) : result);
             } catch (ParseException ignored) {
+
             } // just do nothing
         }
 
-        if (tryAllFormat)
-            return parsePubdateDate(dateStr, false);
-        else
-            return null;
-    }
-
-    public Date parsePubdateDate(String dateStr) {
-        dateStr = improveDateString(dateStr);
-        return parsePubdateDate(dateStr, true);
-    }
-
-    private Date parsePubdateDate(String dateStr, boolean tryAllFormat) {
-        for (DateFormat format : PUBDATE_DATE_FORMATS) {
-            try {
-                Date result = format.parse(dateStr);
-                return (result.getTime() > mNow ? new Date(mNow) : result);
-            } catch (ParseException ignored) {
-            } // just do nothing
-        }
-
-        if (tryAllFormat)
-            return parseUpdateDate(dateStr, false);
-        else
-            return null;
+        return new Date(System.currentTimeMillis());
     }
 
     private String improveDateString(String dateStr) {
@@ -603,7 +576,10 @@ public class RssAtomParser extends DefaultHandler {
             dateStr = dateStr.substring(coma + 2);
         }
 
-        dateStr = dateStr.replaceAll("([0-9])T([0-9])", "$1 $2").replaceAll("Z$", "").replaceAll("  ", " ").trim(); // fix useless char
+        dateStr = dateStr.replaceAll("([0-9])T([0-9])", "$1 $2")
+                .replaceAll("Z$", "")
+                .replaceAll("  ", " ")
+                .trim(); // fix useless char
 
         // Replace bad timezones
         for (String[] timezoneReplace : TIMEZONES_REPLACE) {

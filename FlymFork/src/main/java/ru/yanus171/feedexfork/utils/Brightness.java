@@ -29,7 +29,7 @@ public class Brightness {
         UiUtils.HideButtonText( rootView, R.id.brightnessSlider, true );
         SetSize( rootView, R.id.brightnessSlider, GetTapZoneSize(), MATCH_PARENT );
 
-        if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
+        if ( PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
             rootView.findViewById( R.id.brightnessSlider ).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
@@ -87,7 +87,7 @@ public class Brightness {
 
     }
     public void OnResume() {
-        if ( PrefUtils.getBoolean( "brightness_gesture_enabled", false ) )
+        if ( PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
             SetBrightness( PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 ) );
     }
 //    private int GetAlpha() {

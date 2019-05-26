@@ -31,7 +31,7 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true">"<![CDATA[    <b><big>Лицензия</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
    Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
     <br/>
     Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
@@ -66,7 +66,7 @@
     <br/>
     <b><big>Перевод на Ваш язык</big></b>
     <br/>
-    Вы можете помочь перевести приложение с английского на сайте <b><a href=\"https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    Вы можете помочь перевести приложение с английского на сайте <b><a href=\"https://crowdin.com/project/handy-news-reader\">Crowdin</a></b>.<br/>
     Если Ваш язык там еще не добавлен <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation\">напишите разработчику</a></b>.<br/>
     <br/>
     <b><big>Благодарности</big></b>
@@ -77,7 +77,7 @@
     <b>Переводчики:</b><br/>
     ***translatorList***
     <br/>
-    "]]></string>
+    ]]></string>
     <string name="app_name">Удобное чтение новостей</string>
     <string name="about_title_version">версия</string>
     <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
@@ -200,6 +200,7 @@
     <string name="customColors">Пользовательские цвета</string>
     <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
     <string name="textColor">Цвет текста</string>
+    <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_category_refresh">Автоматическое обновление</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
@@ -241,6 +242,10 @@
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
+    <string name="textColorRead">Прочитанные статьи</string>
+    <string name="textColorRead_descr">Цвет прочитанных</string>
+    <string name="settings_color_text_read_sample_short">Прочитанные</string>
+    <string name="settings_color_text_read_sample_long">Прочитанные статьи</string>
     <string name="settings_category_article_text">Текст статьи</string>
     <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>
     <string name="settings_display_images">Отображать кратинки</string>
@@ -250,13 +255,23 @@
     <string name="settings_entry_margins_description">по бокам</string>
     <string name="entry_text_align_justify">Выравнивать по содержимому</string>
     <string name="entry_text_align_justify_description">иначе по левому краю</string>
+    <string name="linkColor">Цвет ссылок</string>
+    <string name="linkColor_descr">На другие сайты (статьи)</string>
+    <string name="settings_color_link_sample_short">Ссылки</string>
+    <string name="settings_color_link_sample_long">Цвет ссылки</string>
+    <string name="underline_links">Подчеркивать ссылки</string>
     <string name="article_text_footer_show_clock">Часы</string>
     <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
     <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
     <string name="article_text_footer_clock_color">Цвет часов</string>
+    <string name="article_text_footer_clock_color_descr">Цвет часов колонтитула</string>
+    <string name="settings_color_clock_sample_short">8:15</string>
+    <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
+    <string name="article_text_footer_show_progress_descr">Показывать полосу прочитанного внизу окна текста статьи</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>
     <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
+    <string name="article_text_footer_progress_color_descr">Цвет полосы прочитанного</string>
     <string name="settings_category_operation">Операции</string>
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
@@ -378,6 +393,7 @@
     <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
+    <string name="auto_refresh_requires_charging">Только во время зарядки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>

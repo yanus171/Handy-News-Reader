@@ -1,0 +1,1 @@
+Lese-App für ein reines Leseerlebnis mit Offline-Unterstützung
