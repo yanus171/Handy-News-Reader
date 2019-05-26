@@ -319,8 +319,8 @@
     <string name="deleteAllEntries">Вилучити всі не помічені статті крім обраних</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з розміткою</string>
-    <string name="filter_hint">Всі фільтри об’єднуються по АБО. Завантажувати переважує Не завантажувати</string>
-    <string name="keyword">Ключеве слово</string>
+    <string name="filter_hint">Всі фільтри об’єднуються по Або. Прийняти переважує Відхилити</string>
+    <string name="keyword">Ключеве слово(а)</string>
     <string name="loadTypeWeb">Web (завантажувати всі посилання із сторінки)</string>
     <string name="loadTypeRSS">RSS (адреса стрічки або сайту або ключеве слово)</string>
     <string name="loadType">Тип завантаження:</string>
