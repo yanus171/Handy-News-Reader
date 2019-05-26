@@ -1,13 +1,13 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Pozostawanie w kontakcie z wszystkimi Moimi Zainteresowaniami nigdy nie było tak łatwe.".</i>
 
 <i>
 	<h1>Handy News Reader</h1>
-		<h2>make up Your Dream Magazine!</h2>
-		<h2>interesting articles straight into Your hands</h2>
-		<h2>finally enjoy reading</h2>
+		<h2>stwórz Swoje Wymarzone Czasopismo!</h2>
+		<h2>ciekawe artykuły prosto w Twoje ręce</h2>
+		<h2>nareszcie ciesz się lekturą</h2>
 </i>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...<br/><br/>
+...ciesz się życiem <b>będąc wolnym od rozpraszaczy - oraz na bieżąco z Twoimi zainteresowaniami</b> jednocześnie. Focus on the Essence...<br/><br/>
 
 Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.<br/><br/>
 
