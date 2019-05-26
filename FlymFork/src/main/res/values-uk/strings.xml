@@ -338,6 +338,7 @@
     <string name="criticalErrorSending">Надсилаю звіт…</string>
     <string name="copyToClipboard">В буфер</string>
     <string name="sendEmail">Надіслати email</string>
+    <string name="toastAppCrashed">Додаток несподівано зупинився. Будь ласка надішліть звіт розробнику</string>
     <string name="exportingToFile">Експорт у файл</string>
     <string name="importingFromFile">Імпорт з файлу</string>
     <string name="autobackup_interval">Інтервал резервного копіювання</string>
@@ -347,6 +348,13 @@
     <string name="use_standard_file_manager">Стандартний файловий менеджер</string>
     <string name="use_standard_file_manager_descr">інакше виберіть opml файл для імпорта за допомогою вбудованного діалогу з теки додатку на карті пам’яті</string>
     <string name="settings">Налаштування</string>
+    <string name="entry_go_prev">Попередня сторінка</string>
+    <string name="entry_go_next">Наступна сторінка</string>
+    <string name="colorSlotSaveLongTapHint">Порада: Аби зберігти цей колір, зробіть довге натиснення на одну з комірок</string>
+    <string name="colorSlotSaved">Колір збережено до комірки</string>
+    <string name="text">Текст</string>
+    <string name="background1">Тло</string>
+    <string name="auto_refresh_requires_charging">Лише під час зарядження</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
