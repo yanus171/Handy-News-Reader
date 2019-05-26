@@ -324,7 +324,7 @@
     <string name="loadTypeWeb">Web (завантажувати всі посилання із сторінки)</string>
     <string name="loadTypeRSS">RSS (адреса стрічки або сайту або ключеве слово)</string>
     <string name="loadType">Тип завантаження:</string>
-    <string name="global_filter">Глобальний фільтр ...</string>
+    <string name="global_filter">Глобальний фільтр &#8230;</string>
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">інакше застосувати до вмісту</string>
     <string name="rule_text">Текст правила</string>
@@ -344,7 +344,7 @@
     <string name="autobackup_interval">Інтервал резервного копіювання</string>
     <string name="autobackup_interval_descr">Як часто буде створюватись файл резервної копії стрічок та статей</string>
     <string name="create_auto_backup">Створити резервну копію</string>
-    <string name="auto_backup_opml_file_created">Створено файл автоматичної резервної копії:</string>
+    <string name="auto_backup_opml_file_created">Створено резервну копію:</string>
     <string name="use_standard_file_manager">Стандартний файловий менеджер</string>
     <string name="use_standard_file_manager_descr">інакше виберіть opml файл для імпорта за допомогою вбудованного діалогу з теки додатку на карті пам’яті</string>
     <string name="settings">Налаштування</string>
