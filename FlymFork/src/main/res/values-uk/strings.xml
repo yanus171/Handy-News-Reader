@@ -234,6 +234,7 @@
     <string name="article_text_footer_progress_color">Колір смуги прогресу читання</string>
     <string name="article_text_footer_progress_color_descr">Колір смуги прогресу читання статті</string>
     <string name="settings_category_operation">Операції</string>
+    <string name="settings_category_operation_summary">Налаштування операцій</string>
     <string name="tap_zone_size">Розмір зони натиснення</string>
     <string name="tap_zone_size_descr">Ширина або висота зон натиснення в міліметрах</string>
     <string name="settings_show_tap_zones">Зони натискань видно</string>
@@ -333,6 +334,10 @@
     <string name="turnOn">Увімкнути</string>
     <string name="brightness">Яскравість</string>
     <string name="brightness_change">Зміна яскравості</string>
+    <string name="criticalErrorOccured">Виникла помилка. Надішліть цей текст розробнику</string>
+    <string name="criticalErrorSending">Надсилаю звіт…</string>
+    <string name="copyToClipboard">В буфер</string>
+    <string name="sendEmail">Надіслати email</string>
     <string name="exportingToFile">Експорт у файл</string>
     <string name="importingFromFile">Імпорт з файлу</string>
     <string name="autobackup_interval">Інтервал резервного копіювання</string>
