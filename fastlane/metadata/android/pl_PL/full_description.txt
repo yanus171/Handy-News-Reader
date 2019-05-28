@@ -12,10 +12,8 @@
 
 Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytnik <i>RSS</i> który <b>szanuje Twój Czas, jak i Pokój Wewnętrzny</b>: unika przełączania uwagi oraz rozpraszaczy tak powszechnych, gdy pomyśleć o urządzeniach mobilnych.<br/><br/>
 
-
-<b><u>Features</u>:</b>
-
 <ul>
+<b><u>Features</u>:</b>
 	<li><b><u>pełne artykuły</u> pod ręką</b>: bez potrzeby angażowania zewnętrznej przeglądarki, by zobaczyć pełny tekst,</li>
 	<li><b><u>wygodna</u> lektura</b>: przełączanie artykułów przyciskami głośności lub przeciągnięciem, <i>Strefy Aktywne</i>, zapamiętywanie pozycji czytania <u>każdego artykułu z osobna</u>,</li>
 	<li><b>powiadomienia o ważnych artykułach</b>: nigdy więcej nie przegapisz niczego ważnego,</li>
@@ -33,9 +31,8 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 	<li><b>feedback and suggestions are welcome;</b></li>
 </ul>
 
-<b>Where you can find us:</b>
-
 <ul>
+<b>Where you can find us:</b>
 	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">kod źródłowy na <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">strona domowa</a>,</li>
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">tłumaczenia</a>;</li>
