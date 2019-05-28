@@ -133,8 +133,8 @@
     <string name="edit_group_title">Редагувати назву групи</string>
     <string name="message_exported_to">Експортовано в %s.</string>
     <string name="to_group_title">Перенос стрічки</string>
-    <string name="to_group_message">Ви можете розмістити стрічку всередені цієї групи, або зверху від неї. Що бажаєте?</string>
-    <string name="to_group_above">Над групою</string>
+    <string name="to_group_message">Ви можете розмістити стрічку всередені цієї групи, або поза нею. Що бажаєте?</string>
+    <string name="to_group_above">Поза групою</string>
     <string name="to_group_into">Всередину групи</string>
     <string name="add_custom_feed">Додати стрічку за адресою або назвою</string>
     <string name="google_news_title">Google News</string>
@@ -156,7 +156,7 @@
     <string name="favorites">Обране</string>
     <string name="context_menu_share_starred">Поділитися обраними новинами</string>
     <string name="menu_star">В обране</string>
-    <string name="menu_unstar">Забрати з обраного</string>
+    <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
     <string name="menu_full_screen">Весь екран</string>
     <string name="menu_font_bold">Жирний шрифт</string>
@@ -166,7 +166,7 @@
     <string name="menu_toogle_unread_all">Прочитані|Всі</string>
     <string name="menu_load_all_images">Завантажити всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
-    <string name="menu_mark_as_unfavorite">Забрати з обраного</string>
+    <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
     <string name="menu_mark_as_unread">Помітити як непрочитане</string>
     <string name="menu_reload_full_text">Перезавантажити весь текст</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
