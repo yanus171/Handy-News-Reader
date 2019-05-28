@@ -31,11 +31,54 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Ліцензії та інформація</big></b><br/> Цей додаток вільний; Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/> <br/> Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано:<br/> <br/> • згортання груп стрічок<br/> • невидимі  тап зони для переходу на наступну/попередню сторінку при читанні статті<br/> • обмеження числа завантажень зображень статті<br/> • можливість зупинити процес оновлення стрічок<br/> • та багато іншого<br/> <br/> <b><big>Ви можете знайти нас</big></b> <br/> • Завітайте на наш <b><a href="https://handynewsreader.blogspot.com">вебсайт</a></b> щоб  бути в курсі новин<br/> • Ви можете завантажити додаток<b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/> • Ви можете завантажити додаток <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/> • Розділ на<b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/> • Початкові коди на <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/> <br/> <b><big>Наша підтримка</big></b> <br/> Якщо є проблеми з додатком тоді <br/> • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/> • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b><br/> <br/> <b><big>Ваша підтримка</big></b> <br/> Ящо є  ідеї з додаванням нових можливостей:<br/> • звертайтесь на<b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/> • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/> <br/> <b>Якщо додаток виявився корисним, оцініть, будь ласка <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/> <br/> <b><big>Переклади</big></b> <br/> Ви можете допомогти з перекладом на Вашу мову <b><a href="https://crowdin.com/project/handy-news-reader\">Crowdin</a></b>.<br/> Якщо Вашої мови немає, тоді напишіть, будь ласка <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader translation">розробнику</a></b>.<br/> <br/> <b><big>Подяка</big></b> <br/> <b>Розробники:</b><br/> ***developerList*** <br/> <b>Перекладачі:</b><br/> ***translatorList*** <br/>    ]]></string>
+    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Ліцензії та інформація</big></b><br/>
+ Цей додаток вільний; Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
+ <br/> 
+ Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано:<br/>
+ <br/>
+ • згортання груп стрічок<br/> 
+ • невидимі  тап зони для переходу на наступну/попередню сторінку при читанні статті<br/>
+ • обмеження числа завантажень зображень статті<br/>
+ • можливість зупинити процес оновлення стрічок<br/>
+ • та багато іншого<br/>
+  <br/>
+  <b><big>Ви можете знайти нас</big></b>
+  <br/>
+ • Завітайте на наш <b><a href="https://handynewsreader.blogspot.com">вебсайт</a></b> щоб  бути в курсі новин<br/>
+ • Ви можете завантажити додаток<b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+ • Ви можете завантажити додаток <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+ • Розділ на<b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/>
+ • Початкові коди на <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+ <br/>
+ <b><big>Наша підтримка</big></b>
+ <br/>
+  Якщо є проблеми з додатком тоді <br/>
+ • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
+ • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b><br/>
+ <br/>
+ <b><big>Ваша підтримка</big></b>
+ <br/>
+ Ящо є  ідеї з додаванням нових можливостей:<br/>
+ • звертайтесь на<b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
+ • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
+ <br/>
+ <b>Якщо додаток виявився корисним, оцініть, будь ласка <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+ <br/>
+ <b><big>Переклади</big></b>
+ <br/>
+ Ви можете допомогти з перекладом на Вашу мову <b><a href="https://crowdin.com/project/handy-news-reader\">Crowdin</a></b>.<br/>
+ Якщо Вашої мови немає, тоді напишіть, будь ласка <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader translation">розробнику</a></b>.<br/>
+ <br/>
+ <b><big>Подяка</big></b>
+ <br/> <b>Розробники:</b><br/>
+ ***developerList***
+ <br/> <b>Перекладачі:</b><br/>
+ ***translatorList***
+ <br/>    ]]></string>
     <string name="app_name">Зручне читання новин</string>
     <string name="about_title_version">версія</string>
     <string name="about_flym">Про додаток / Допомога / Зв’язок</string>
-    <string name="welcome_title">Додати канал?</string>
+    <string name="welcome_title">Додати стрічку?</string>
     <string name="never">ніколи</string>
     <string name="update">Оновлення</string>
     <string name="menu_settings">Налаштування</string>
@@ -73,9 +116,9 @@
     <string name="tab_filters_title">Фільтри</string>
     <string name="feed_title">НАЗВА</string>
     <string name="feed_filters">Правила фільтрів</string>
-    <string name="filter_add_title">Додати фільтр</string>
-    <string name="filter_delete_title">Вилучити фільтр</string>
-    <string name="filter_edit_title">Редагувати фільтр</string>
+    <string name="filter_add_title">Додати правило</string>
+    <string name="filter_delete_title">Вилучити правило</string>
+    <string name="filter_edit_title">Редагувати правило</string>
     <string name="filter_is_regex">це регулярний вираз</string>
     <string name="filter_apply_to_title">Застосувати до заголовків або адрес</string>
     <string name="filter_apply_to_content">Застосувати до вмісту</string>
