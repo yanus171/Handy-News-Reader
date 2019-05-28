@@ -2,18 +2,18 @@
 
 <b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
-<i>
-	<h1>Handy News Reader</h1>
-		<h2>crea la tua rivista dei sogni!</h2>
-		<h2>articoli interessanti direttamente nelle tue mani</h2>
-		<h2>finalmente goditi di lettura</h2>
-</i>
+<ul>
+	<li><b>make up Your Dream Magazine!</b></li>
+	<li><b>interesting articles straight into Your hands</b></li>
+	<li><b>finally enjoy reading</b></li>
+</ul>
 
 ...goditi la tua vita <b>senza distrazione - e aggiornato con i tuoi interessi</b> nello stesso tempo. Concentrati sull'Essenza...<br/><br/>
 
 Incontra <i>Handy NR</i> - un lettore RSS ricco di funzionalità, non allineato <i></i> che <b>rispetta il tuo tempo e la tua Pace Interna</b>: evita di spostare attenzione e distrazioni che oggi sono così note quando pensi ai dispositivi mobili.<br/><br/>
 
-<h3><u>Funzioni</u>:</h3>
+
+<b><u>Features</u>:</b>
 
 <ul>
 
@@ -49,8 +49,7 @@ Incontra <i>Handy NR</i> - un lettore RSS ricco di funzionalità, non allineato 
 
 </ul>
 
-<br/><br/>
-<h3>Where you can find us:</h3>
+<b>Where you can find us:</b>
 
 <ul>
 
