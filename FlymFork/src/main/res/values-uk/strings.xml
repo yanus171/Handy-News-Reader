@@ -234,12 +234,12 @@
     <string name="show_read_checkbox_descr">Показувати галочку прочитаного</string>
     <string name="show_full_text_indicator">Індикація повного тексту</string>
     <string name="show_full_text_indicator_descr">Показувати іконку маленької дискети, якщо для статті завантажений весь текст</string>
-    <string name="show_new_icon">Фарбувати нові</string>
+    <string name="show_new_icon">Іконка нової статті</string>
     <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назви яких ще ніколи не були видимі)</string>
     <string name="show_read_article_count">Число прочитаних статей стрічок</string>
     <string name="show_read_article_count_descr">в списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
-    <string name="show_group_entries_count_descr">Може знизити швидкодію</string>
+    <string name="show_group_entries_count_descr">може знизити швидкодію</string>
     <string name="textColorRead">Прочитані статті</string>
     <string name="textColorRead_descr">Колір прочитаних статей</string>
     <string name="settings_color_text_read_sample_short">Прочитано</string>
