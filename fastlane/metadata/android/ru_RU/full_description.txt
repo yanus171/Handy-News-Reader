@@ -1,5 +1,7 @@
 <i>"Staying in touch with all My Interests never has been so easy".</i>
 
+<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+
 <i>
 	<h1>Handy News Reader</h1>
 		<h2>make up Your Dream Magazine!</h2>
@@ -39,7 +41,11 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 	
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
 	
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !;</li>
+	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
+	
+	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
+	
+	<li><b>feedback and suggestions are welcome;</b></li>
 
 </ul>
 
