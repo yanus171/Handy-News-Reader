@@ -2,18 +2,18 @@
 
 <b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
-<i>
-	<h1>Handy News Reader</h1>
-		<h2>stwórz Swoje Wymarzone Czasopismo!</h2>
-		<h2>ciekawe artykuły prosto w Twoje ręce</h2>
-		<h2>nareszcie ciesz się lekturą</h2>
-</i>
+<ul>
+	<li><b>make up Your Dream Magazine!</b></li>
+	<li><b>interesting articles straight into Your hands</b></li>
+	<li><b>finally enjoy reading</b></li>
+</ul>
 
 ...ciesz się życiem <b>będąc wolnym od rozpraszaczy - oraz na bieżąco z Twoimi zainteresowaniami</b> jednocześnie. Skoncentruj się na Esencji...<br/><br/>
 
 Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytnik <i>RSS</i> który <b>szanuje Twój Czas, jak i Pokój Wewnętrzny</b>: unika przełączania uwagi oraz rozpraszaczy tak powszechnych, gdy pomyśleć o urządzeniach mobilnych.<br/><br/>
 
-<h3><u>Funkcje</u>:</h3>
+
+<b><u>Features</u>:</b>
 
 <ul>
 
@@ -49,8 +49,7 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 
 </ul>
 
-<br/><br/>
-<h3>Gdzie możesz nas znaleźć:</h3>
+<b>Where you can find us:</b>
 
 <ul>
 
