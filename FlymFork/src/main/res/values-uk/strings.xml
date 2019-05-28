@@ -175,7 +175,7 @@
     <string name="get_full_text">Весь текст</string>
     <string name="show_text_in_entry_list">Показувати тексти статей у списку статей</string>
     <string name="original_text">Коротко</string>
-    <string name="see_enclosure">Показати владення</string>
+    <string name="see_enclosure">Відкрити вкладення</string>
     <string name="see_link">Відкрити у браузері</string>
     <string name="cant_open_link">Не знайдено додатків для відкриття цього посилання</string>
     <string name="open_enclosure">Відкрити вкладення</string>
@@ -183,13 +183,13 @@
     <string name="download_and_save">Завантажити та зберегти</string>
     <string name="open_link">Відкрити посилання</string>
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
-    <string name="undo">Відміна</string>
-    <string name="marked_as_read">Помічено як прочитане</string>
+    <string name="undo">Скасувати</string>
+    <string name="marked_as_read">Позначити як прочитане</string>
     <!-- WIDGET -->
     <string name="red">Червоний</string>
     <string name="green">Зелений</string>
     <string name="blue">Синій</string>
-    <string name="transparency">Прозорий</string>
+    <string name="transparency">Прозорість</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">Загальні налаштування</string>
     <string name="settings_category_common_summary">Тема</string>
@@ -201,15 +201,15 @@
     <string name="settings_color_text_sample_long">\u201cКоли зустрічаєшся з гарною дівчиною година проходить за секунду. Коли сидиш на гарячій сковороді секунда здається годиною. Це теорія відносності.\u201d\n(Альберт Енштейн)</string>
     <string name="settings_category_refresh">Автоматичне оновлення</string>
     <string name="settings_category_refresh_summary">Автоматичне оновлення й час зберігання статей</string>
-    <string name="settings_refresh_enabled">Автоматичне оновлення</string>
+    <string name="settings_refresh_enabled">Увімкнути автоматичне оновлення</string>
     <string name="settings_refresh_interval">Інтервал оновлення</string>
-    <string name="settings_min_update_battery_level">Мін. рівень батареї</string>
+    <string name="settings_min_update_battery_level">Мін. рівень заряду</string>
     <string name="settings_refresh_only_selected">Тільки вибрані</string>
     <string name="settings_refresh_only_selected_summary">автоматично оновлювати тільки вибрані стрічки</string>
     <string name="settings_refresh_on_open">Оновлювати при запуску</string>
     <string name="settings_refresh_on_open_description">Оновлювати всі стрічки під час запуску додатка</string>
     <string name="settings_refresh_wifi_only">Оновлювати тільки через WiFi</string>
-    <string name="settings_refresh_wifi_only_description">Автоматичне оновлення буде виконуватись тільки коли WiFi увімкнуто</string>
+    <string name="settings_refresh_wifi_only_description">Автоматичне оновлення буде виконуватись тільки коли є доступ до WiFi</string>
     <string name="settings_keep_time">Час зберігання новин</string>
     <string name="settings_preload_image_mode">Завчасно завантажувати зображення</string>
     <string name="settings_max_image_download_count">Макс. число зображень при запуску</string>
