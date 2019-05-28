@@ -1,5 +1,7 @@
 <i>"Pozostawanie w kontakcie z wszystkimi Moimi Zainteresowaniami nigdy nie było tak łatwe.".</i>
 
+<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+
 <i>
 	<h1>Handy News Reader</h1>
 		<h2>stwórz Swoje Wymarzone Czasopismo!</h2>
@@ -39,7 +41,11 @@ Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytn
 	
 	<li><b>funkcje zaawansowane</b>: automatyczna kopia zapasowa (eksport/import do/z pliku w formacie <i>.opml</i>), dostarczanie treści z nie-<i>RSS</i>'owych stron, </li>
 	
-	<li><b>więcej interesujących funkcji</b> "w przygotowaniu" - odwiedź naszą stronę by dowiedzieć się więcej :) !;</li>
+	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
+	
+	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
+	
+	<li><b>feedback and suggestions are welcome;</b></li>
 
 </ul>
 
