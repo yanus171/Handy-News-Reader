@@ -16,47 +16,27 @@ Incontra <i>Handy NR</i> - un lettore RSS ricco di funzionalità, non allineato 
 <b><u>Features</u>:</b>
 
 <ul>
-
 	<li><b><u>articoli completi</u> a mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
-
 	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
-	
 	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
-
 	<li><b><i>"Leggilo dopo"</i></b>: Puoi scorrere rapidamente attraverso gli articoli - <b>marcatura (starring) scelte da leggere più tardi</b> nel tuo tempo di riposo - o solo per preservare,</li>
-	
 	<li><b><i>"Rimuovi quando finito"</i></b> - una volta finito questo articolo - potrebbe essere automaticamente rimosso da <i>'Preferiti'</i> (=<i>'Leggi It Later'</i>) impostato,</li>
-	
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	
 	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
-	
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
-	
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
-	
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	
 	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	
 	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	
 	<li><b>feedback and suggestions are welcome;</b></li>
-
 </ul>
 
 <b>Where you can find us:</b>
 
 <ul>
-
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>
-	
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
-
 </ul>
