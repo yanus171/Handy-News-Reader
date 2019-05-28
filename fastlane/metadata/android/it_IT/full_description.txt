@@ -12,10 +12,8 @@
 
 Incontra <i>Handy NR</i> - un lettore RSS ricco di funzionalità, non allineato <i></i> che <b>rispetta il tuo tempo e la tua Pace Interna</b>: evita di spostare attenzione e distrazioni che oggi sono così note quando pensi ai dispositivi mobili.<br/><br/>
 
-
-<b><u>Features</u>:</b>
-
 <ul>
+<b><u>Features</u>:</b>
 	<li><b><u>articoli completi</u> a mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
 	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
 	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
@@ -33,9 +31,8 @@ Incontra <i>Handy NR</i> - un lettore RSS ricco di funzionalità, non allineato 
 	<li><b>feedback and suggestions are welcome;</b></li>
 </ul>
 
-<b>Where you can find us:</b>
-
 <ul>
+<b>Where you can find us:</b>
 	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
