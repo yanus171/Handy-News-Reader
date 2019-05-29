@@ -1,9 +1,9 @@
-<i>"Rimani in contatto con tutti i miei interessi non è mai stato così facile".</i>
+<i>"Rimani in contatto con tutti i Miei interessi non è mai stato così facile".</i>
 
-<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Handy News Reader</i>:nessuna pubblicità/software gratuito libero sotto <i>licenza GNU GPL</i> .</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
+	<li><b>crea la tua rivista dei sogni!</b></li>
 	<li><b>interesting articles straight into Your hands</b></li>
 	<li><b>finally enjoy reading</b></li>
 </ul>
