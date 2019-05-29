@@ -365,7 +365,7 @@
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">інакше застосувати до вмісту</string>
     <string name="rule_text">Текст правила</string>
-    <string name="global_marks_as_star_filter_rule_descr">Кожне правило на своему рядку</string>
+    <string name="global_marks_as_star_filter_rule_descr">кожне правило на новому рядку</string>
     <string name="customKeepTime">Особистий час зберігання статей</string>
     <string name="menu_toggle_theme">Змінити тему</string>
     <string name="turnOn">Увімкнути</string>
