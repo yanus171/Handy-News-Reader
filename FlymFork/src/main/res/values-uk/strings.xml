@@ -328,10 +328,10 @@
     <string name="loadingLink">Завантаження посилань</string>
     <string name="loadLink">Читати зараз</string>
     <string name="loadLinkLater">Читати пізніше</string>
-    <string name="addFeed">Додати канал</string>
+    <string name="addFeed">Додати стрічку</string>
     <string name="externalLinks">Зовнішні посилання</string>
     <string name="markAllAsRead">Помітити все як прочитане</string>
-    <string name="pageUp">Сторінка догори / Свайп щоб помітити обраною</string>
+    <string name="pageUp">сторінка догори / Свайп до низу щоб помітити обраною</string>
     <string name="pageDown">Сторінка вниз</string>
     <string name="fullScreenToggle">Прмк. весь экран</string>
     <string name="auto_refresh_feed">Оновлювати автоматично</string>
