@@ -63,7 +63,7 @@ public class Brightness {
                         if ( Math.abs( paddingY ) > Math.abs( paddingX ) &&
                                 Math.abs( initialY - event.getY() ) > view1.getWidth()  ) {
                             Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
-                            int currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.getHeight() / 2;
+                            int currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.getHeight() / 5;
                             if ( currentAlpha > 255 )
                                 currentAlpha = 255;
                             else if ( currentAlpha < 1 )
