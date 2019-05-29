@@ -1,6 +1,6 @@
 <i>"Staying in touch with all My Interests never has been so easy".</i>
 
-<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Handy News Reader</i>: без реклами/вільне програмне забеспечення по <i>GNU GPL</i> ліцензії.</b>
 
 <ul>
 	<li><b>make up Your Dream Magazine!</b></li>
@@ -26,9 +26,9 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b>багато цікавого</b> "in store" - завітайте на наш вебсайт щоб знайти більше :) !,</li>
+	<li><b><u>важливо</u>:</b> цей додаток НЕ синхронізується з online читалками новин (наприклад <i>Feedly</i>),</li>
+	<li><b>завжди раді відгукам та пропозиціям;</b></li>
 </ul>
 
 <ul>
