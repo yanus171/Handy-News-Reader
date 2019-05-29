@@ -31,6 +31,52 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_us_content" translatable="true"><![CDATA[<b> <big> Licenza e informazioni </ big> </ b> <br/>
+    Questo programma è un software libero: è possibile ridistribuirlo e / o modificarlo secondo i termini della GNU General Public License pubblicata dalla Free Software Foundation, sia la versione 3 della licenza, sia (a propria scelta) qualsiasi versione successiva. Vedi http://www.gnu.org/licenses <br/>
+    <br/>
+    Questa app è basata su \ 'Flym RSS Reader \', copyright 2013-2016 di Frédéric Julian. Tra le funzionalità aggiunte a questo fork sono: <br/>
+    <br/>
+    • espansione del gruppo di feed <br/>
+    • pulsanti pagina su / giù invisibili a schermo intero <br/>
+    • numero massimo di download di immagini per feed <br/>
+    • possibilità di annullare il processo di aggiornamento <br/>
+    • e molto altro <br/>
+    <br/>
+    <b> <big> Dove puoi trovarci </ big> </ b>
+    <br/>
+    • Visita il nostro <b> <a href="https://handynewsreader.blogspot.com"> sito web </a> </ b> per notizie e informazioni <br/>
+    • Puoi scaricare questa app su <b> <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork"> Google Play </a> </ b> <br/>
+    • Puoi scaricare questa app su <b> <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/"> F-Droid </a> </ b> <br />
+    • C'è anche una discussione su <b> <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126"> forum XDA </ a> </ b> <br/>
+    • Fonti che puoi trovare su <b> <a href="https://github.com/yanus171/Handy-News-Reader"> GitHub </a> </ b> <br/>
+    <br/>
+    <b> <big> Il nostro supporto </ big> </ b>
+    <br/>
+    <br /> <br /> <br /> <br /> <br /> Se incappi in un problema con l'app
+    • aprire un issue sulla <b> <a href="https://github.com/yanus171/Handy-News-Reader/issues"> pagina dei problemi di GitHub </a> </ b> o <br/>
+    • invia una <b> <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem"> e-mail allo sviluppatore </a> </ b> <br/>
+    <br/>
+    <b> <big> Il tuo supporto </ big> </ b>
+    <br/>
+    Se hai un'idea per una nuova funzione puoi: <br/>
+    • aprire un issue su <b> <a href="https://github.com/yanus171/Handy-News-Reader/issues"> pagina dei problemi di GitHub </a> </ b> o <br/>
+    • invia una <b> <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea"> e-mail allo sviluppatore </a> </ b> <br/>
+    <br/>
+    <b> Se ritieni che questa app sia utile, votala su <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork"> Google Play </a>. </ b> <br/>
+    <br/>
+    <B> <big> Traduzioni </ big> </ b>
+    <br/>
+    Puoi aiutare nella traduzione nella tua lingua su <b> <a href="https://crowdin.com/project/handy-news-reader\"> Crowdin </a> </ b>. <br/>
+    Se la tua lingua non è disponibile, invia una <b> <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation"> e-mail allo sviluppatore </a> < / b>. <br/>
+    <br/>
+    <b> <big> Riconoscimenti </ big> </ b>
+    <br/>
+    <b> Sviluppatori: </ b> <br/>
+    *** developerList ***
+    <br/>
+    <b> Traduttori: </ b> <br/>
+    *** translatorList ***
+    <br/>    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versione</string>
     <string name="about_flym">Informazioni sull\'app / Aiuto / Contatta lo sviluppatore </string>
@@ -182,15 +228,38 @@
     <string name="show_article_url">Mostra URL articolo</string>
     <string name="settings_display_oldest_first">Ordinamento articoli</string>
     <string name="settings_display_oldest_first_description">Mostra gli articoli più vecchi prima</string>
+    <string name="show_read_checkbox">Leggi casella di controllo</string>
+    <string name="show_read_checkbox_descr">Mostra la piccola casella di controllo per indicare che l\'articolo è letto</string>
     <string name="show_full_text_indicator">Indicatore testo completo</string>
     <string name="show_new_icon">Icona nuovo articolo</string>
     <string name="show_read_article_count">Mostra il numero di articoli letti</string>
+    <string name="show_read_article_count_descr">Nella lista dei feed</string>
     <string name="show_group_entries_count_descr">può ridurre le prestazioni</string>
     <string name="textColorRead">Articoli letti</string>
     <string name="textColorRead_descr">Colore degli articoli letti</string>
+    <string name="settings_color_text_read_sample_short">Leggi</string>
+    <string name="settings_color_text_read_sample_long">Articoli letti</string>
+    <string name="settings_category_article_text">Testo dell\'articolo</string>
+    <string name="settings_category_article_text_summary">Aspetto della lista degli articoli</string>
     <string name="settings_display_images">Mostra immagini</string>
     <string name="settings_display_images_description">Mostra le immagini degli articoli</string>
     <string name="settings_display_entries_fullscreen">Articoli a tutto schermo in automatico</string>
+    <string name="settings_entry_margins">Margini</string>
+    <string name="settings_entry_margins_description">Sinistra | destra</string>
+    <string name="entry_text_align_justify_description">Altrimenti allinea a sinistra</string>
+    <string name="linkColor">Colore del link</string>
+    <string name="settings_color_link_sample_short">Link</string>
+    <string name="settings_color_link_sample_long">Colore dei link</string>
+    <string name="underline_links">Sottolinea i link</string>
+    <string name="article_text_footer_show_clock">Piè di pagina-Orologio</string>
+    <string name="article_text_footer_show_clock_description">Visualizza l\'ora corrente nell\'angolo in basso a sinistra in modalità schermo intero</string>
+    <string name="settings_clock_size">Dimensione testo del Piè di pagina-Orologio</string>
+    <string name="article_text_footer_clock_color">Colore orologio</string>
+    <string name="article_text_footer_clock_color_descr">Colore dell\'orologio del piè di pagina</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_footer_show_progress">Barra di avanzamento della lettura</string>
+    <string name="article_text_footer_show_progress_descr">Visualizza il progresso della lettura di un articolo in fondo</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_ringtone">Suoneria</string>
