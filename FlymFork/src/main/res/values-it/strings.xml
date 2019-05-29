@@ -335,6 +335,15 @@
     <string name="create_auto_backup">Crea backup automatico</string>
     <string name="auto_backup_opml_file_created">File .opml di backup automatico creato:</string>
     <string name="use_standard_file_manager">Usa un file manager standard</string>
+    <string name="use_standard_file_manager_descr">altrimenti seleziona il file .opml da importare - fuori la cartella feedex (tramite dialogo interno)</string>
+    <string name="settings">Impostazioni</string>
+    <string name="entry_go_prev">Pagina precedente</string>
+    <string name="entry_go_next">Pagina successiva</string>
+    <string name="colorSlotSaveLongTapHint">Suggerimento: per salvare il colore attuale fai un lungo tocco su una delle celle</string>
+    <string name="colorSlotSaved">Colore salvato nella cella</string>
+    <string name="text">Testo</string>
+    <string name="background1">Sfondo</string>
+    <string name="auto_refresh_requires_charging">Solo durante la carica</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
