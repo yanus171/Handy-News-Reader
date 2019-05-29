@@ -268,8 +268,15 @@
     <string name="settings_category_operation">Operazione</string>
     <string name="settings_category_operation_summary">Impostazioni operazioni</string>
     <string name="tap_zone_size">Dimensione zona da toccare</string>
-    <string name="tap_zone_size_descr">Altezza o larghezza di tutte le zone di pressione in millimetri (vista di entrata)</string>
+    <string name="tap_zone_size_descr">Altezza o larghezza di tutte le zone di pressione in millimetri (visualizzazione introduttiva)</string>
     <string name="settings_show_tap_zones">Le zone di tocco sono visibili</string>
+    <string name="settings_show_tap_zone_description">Come quadrati trasparenti nella visualizzazione introduttiva</string>
+    <string name="settings_tapZones">Anteprima zone di tocco</string>
+    <string name="brightness_gesture">Gesto cambio luminosità</string>
+    <string name="brightness_gesture_descr">Seleziona qua per regolare la luminosità scorrendo verso l\'alto/basso lungo il bordo sinistro dello schermo</string>
+    <string name="brightness_with_dim_activity_descr">Diminuisci la luminosità riducendo la trasparenza del colore dello sfondo della finestra (controlla se il cambiamento di luminosità non funziona)</string>
+    <string name="settings_category_behavior">Funzionamento \u0026 notifiche</string>
+    <string name="settings_category_behavior_summary">Notifiche sui nuovi articoli e il funzionamento dell\'app</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_ringtone">Suoneria</string>
@@ -278,6 +285,9 @@
     <string name="settings_notifications_vibrate_description">Attiva la vibrazione all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_light">LED</string>
     <string name="settings_notifications_light_description">Accendi il LED di notifica all\'arrivo di nuovi articoli</string>
+    <string name="page_up_down_90_pct">Scorri pagina 90%</string>
+    <string name="page_up_down_90_pct_descr">Per preservare diverse linee dalla pagina precedente - se non controllate, l\'intera pagina verrà scrollata</string>
+    <string name="settings_remember_last_entry">Ricorda l\'ultimo articolo</string>
     <string name="settings_category_content_presentation">Aspetto e contenuti</string>
     <string name="settings_visible_feeds">Feed visibili</string>
     <string name="settings_widget_background">Sfondo</string>
