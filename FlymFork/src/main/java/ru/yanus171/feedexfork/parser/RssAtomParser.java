@@ -125,8 +125,10 @@ public class RssAtomParser extends DefaultHandler {
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
+            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'Z", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
+            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'z", Locale.US),
+            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -566,7 +568,7 @@ public class RssAtomParser extends DefaultHandler {
             } // just do nothing
         }
 
-        return new Date(System.currentTimeMillis());
+        return null;
     }
 
     private String improveDateString(String dateStr) {
