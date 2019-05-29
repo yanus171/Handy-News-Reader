@@ -15,8 +15,8 @@ Conosci <i>Handy NR</i> - ricco di funzionalità, un lettore <i>RSS</i> offline 
 <ul>
 <b><u>Funzioni</u>:</b>
 	<li><b><u>articoli completi</u> a portata di mano</b>: senza bisogno di utilizzare un browser web esterni per raggiungere il testo completo,</li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
+	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Zone da toccare</i>, ricorda la posizione della lettura <u>per articolo</u>,</li>
+	<li><b>segna articoli importanti</b>: non perderai più nulla che trovi particolarmente importante,</li>
 	<li><b><i>"Leggilo dopo"</i></b>: Puoi scorrere rapidamente attraverso gli articoli - <b>marcatura (starring) scelte da leggere più tardi</b> nel tuo tempo di riposo - o solo per preservare,</li>
 	<li><b><i>"Rimuovi quando finito"</i></b> - una volta finito questo articolo - potrebbe essere automaticamente rimosso da <i>'Preferiti'</i> (=<i>'Leggi It Later'</i>) impostato,</li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
