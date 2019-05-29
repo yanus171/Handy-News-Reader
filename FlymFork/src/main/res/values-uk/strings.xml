@@ -337,11 +337,11 @@
     <string name="auto_refresh_feed">Оновлювати автоматично</string>
     <string name="actionBarToggle">Прмк. панелі дій</string>
     <string name="standard">Стандартно</string>
-    <string name="fontsize_entrylist">Розмір тексту у списку статей</string>
+    <string name="fontsize_entrylist">Розмір шрифту у списку статей</string>
     <string name="question_delete_entry">Вилучити статтю?</string>
     <string name="share_all_text">Поділитися текстом</string>
     <string name="group">Група</string>
-    <string name="auto_image_load">Завантажувати зображення при автоматичному завантаженні</string>
+    <string name="auto_image_load">Завантажувати зображення автоматично</string>
     <string name="show_progress_info">Докладна інформація процесу</string>
     <string name="show_progress_info_descr">Показувати докладну інформацію про поточні дії під час завантаження стрічок</string>
     <string name="vibrate_on_article_list_entry_swype">Вібрація при гортанні</string>
@@ -353,9 +353,9 @@
     <string name="lock_orientation">Горизонтальна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною</string>
-    <string name="deleteAllEntries">Вилучити всі не помічені статті крім обраних</string>
+    <string name="deleteAllEntries">Вилучити всі статті крім обраних</string>
     <string name="question">Запитання</string>
-    <string name="reload_full_text_with_tags">Перезавантажити з розміткою</string>
+    <string name="reload_full_text_with_tags">Перезавантажити з мітками</string>
     <string name="filter_hint">Всі фільтри об’єднуються по Або. Прийняти переважує Відхилити</string>
     <string name="keyword">Ключеве слово(а)</string>
     <string name="loadTypeWeb">Web (завантажувати всі посилання із сторінки)</string>
