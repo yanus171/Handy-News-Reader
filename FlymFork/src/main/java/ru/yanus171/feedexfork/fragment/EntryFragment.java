@@ -85,7 +85,6 @@ import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -94,7 +93,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.ColorPreference;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
@@ -114,6 +112,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private static final String STATE_ENTRIES_IDS = "STATE_ENTRIES_IDS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
     private static final String STATE_LOCK_LAND_ORIENTATION = "STATE_LOCK_LAND_ORIENTATION";
+    public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
     private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mScrollPosPos, mRetrieveFullTextPos;
@@ -122,11 +121,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
     private Uri mBaseUri;
     private long mInitialEntryId = -1;
-    private long[] mEntriesIds;
+    private long[] mEntriesIds = new long[1];
 
     private boolean mFavorite, mIsFullTextShown = true;
 
-    private ViewPager mEntryPager;
+    public ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame;
@@ -144,7 +143,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        if ( getActivity().getIntent().getBooleanExtra( "NO_DB", false ) )
+        if ( getActivity().getIntent().getBooleanExtra(NO_DB_EXTRA, false ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter();
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
@@ -192,7 +191,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         if (savedInstanceState != null) {
             mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
-            mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
+            //mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID);
             mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS);
             mEntryPager.getAdapter().notifyDataSetChanged();
@@ -712,78 +711,76 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public long getCurrentEntryID() {
-        if ( mCurrentPagerPos >= 0 && mCurrentPagerPos < mEntriesIds.length )
-            return mEntriesIds[mCurrentPagerPos];
-        else
-            return -1;
+        return GetEntryID( mCurrentPagerPos );
     }
 
     public void setData(final Uri uri) {
         Timer timer = new Timer( "EntryFr.setData" );
-        Dog.v( String.format( "EntryFragment.setData( %s )", uri.toString() ) );
+        Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
 
         mCurrentPagerPos = -1;
 
         //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
 
-        mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
-        Dog.v( String.format( "EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri ) );
-        try {
-            mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
-        } catch (Exception unused) {
-            mInitialEntryId = -1;
-        }
-
-        if (mBaseUri != null) {
-
-            if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
-                mEntriesIds = new long[1];
-                mEntriesIds[0] = mInitialEntryId;
-            } else {
-                String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
-
-                // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-                Cursor entriesCursor = MainApplication.getContext().getContentResolver().query(mBaseUri, EntryColumns.PROJECTION_ID,
-                        null, null, EntryColumns.DATE + entriesOrder);
-
-                if (entriesCursor != null && entriesCursor.getCount() > 0) {
-                    mEntriesIds = new long[entriesCursor.getCount()];
-                    int i = 0;
-                    while (entriesCursor.moveToNext()) {
-                        mEntriesIds[i] = entriesCursor.getLong(0);
-                        if (mEntriesIds[i] == mInitialEntryId) {
-                            mCurrentPagerPos = i; // To immediately display the good entry
-                            mLastPagerPos = i;
-                            CancelStarNotification(getCurrentEntryID());
-                        }
-                        i++;
-                    }
-
-                    entriesCursor.close();
-                }
+        mBaseUri = null;
+        if ( uri != null ) {
+            mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
+            Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
+            try {
+                mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
+            } catch (Exception unused) {
+                mInitialEntryId = -1;
             }
-        } else {
-            mEntriesIds = null;
+
+
+            String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
+
+            // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
+            Cursor entriesCursor = MainApplication.getContext().getContentResolver().query(mBaseUri, EntryColumns.PROJECTION_ID,
+                    null, null, EntryColumns.DATE + entriesOrder);
+
+            if (entriesCursor != null && entriesCursor.getCount() > 0) {
+                synchronized ( this ) {
+                    mEntriesIds = new long[entriesCursor.getCount()];
+                }
+                int i = 0;
+                while (entriesCursor.moveToNext()) {
+                    SetEntryID( i, entriesCursor.getLong(0) );
+                    if (GetEntryID( i ) == mInitialEntryId) {
+                        mCurrentPagerPos = i; // To immediately display the good entry
+                        mLastPagerPos = i;
+                        CancelStarNotification(getCurrentEntryID());
+                    }
+                    i++;
+                }
+
+                entriesCursor.close();
+            }
+        } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
+
+            mCurrentPagerPos = 0;
         }
+        if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
+            Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
+            if ( mBaseUri.getPathSegments().get(1).equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Dog.v( "EntryFragment.setData() update time to current" );
+                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        ContentValues values = new ContentValues();
+                        values.put(EntryColumns.DATE, (new Date()).getTime());
+                        cr.update(uri, values, null, null);
+                    }
+                }).start();
+            }
+        }
+
         mEntryPagerAdapter.notifyDataSetChanged();
         if (mCurrentPagerPos != -1) {
             mEntryPager.setCurrentItem(mCurrentPagerPos);
         }
-		if ( mBaseUri.getPathSegments().size() > 1 ) {
-			Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
-			if ( mBaseUri.getPathSegments().get(1).equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						Dog.v( "EntryFragment.setData() update time to current" );
-						ContentResolver cr = MainApplication.getContext().getContentResolver();
-						ContentValues values = new ContentValues();
-						values.put(EntryColumns.DATE, (new Date()).getTime());
-						cr.update(uri, values, null, null);
-					}
-				}).start();
-			}
-		}
+
         timer.End();
     }
 
@@ -824,7 +821,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         }
 					    @Override
                         public void run() {
-                            final Uri uri = ContentUris.withAppendedId(mBaseUri, mEntriesIds[mPagerPos]);
+                            final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntryID( mPagerPos ));
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             if ( mSetAsRead )
                                 cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
@@ -1051,7 +1048,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Timer.Start( id, "EntryFr.onCreateLoader" );
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(mEntriesIds[id]), null, null, null, null);
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(GetEntryID( id )), null, null, null, null);
         cursorLoader.setUpdateThrottle(100);
         return cursorLoader;
     }
@@ -1059,7 +1056,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Timer.End( loader.getId() );
-        if (mBaseUri != null && cursor != null) { // can be null if we do a setData(null) before
+        if (cursor != null) { // can be null if we do a setData(null) before
             try {
                 if ( cursor.moveToFirst() ) {
 
@@ -1180,7 +1177,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }
 
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
-                    view.setHtml(mEntriesIds[pagerPos],
+                    view.setHtml(GetEntryID( pagerPos ),
                             title,
                             link,
                             contentText,
@@ -1224,13 +1221,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         @Override
         public int getCount() {
-            return mEntriesIds != null ? mEntriesIds.length : 0;
+            synchronized ( this ) {
+                return mEntriesIds != null ? mEntriesIds.length : 0;
+            }
         }
 
         @Override
         public void destroyItem(ViewGroup container, final int position, Object object) {
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( mEntriesIds[position] );
+            FetcherService.removeActiveEntryID( GetEntryID( position ) );
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
             EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
@@ -1241,7 +1240,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            FetcherService.addActiveEntryID( mEntriesIds[position] );
+            FetcherService.addActiveEntryID( GetEntryID( position ) );
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);
@@ -1290,6 +1289,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         Cursor mCursor = null;
 
         SingleEntryPagerAdapter() {
+
         }
 
         @Override
@@ -1305,7 +1305,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public void destroyItem(ViewGroup container, final int position, Object object) {
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( mEntriesIds[position] );
+            FetcherService.removeActiveEntryID( GetEntryID( position ) );
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
             EntryView.mImageDownloadObservable.deleteObserver(mEntryView);
@@ -1315,11 +1315,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            FetcherService.addActiveEntryID( mEntriesIds[position] );
             final EntryView view = CreateEntryView();
             container.addView(view);
-            getLoaderManager().restartLoader(position, null, EntryFragment.this);
-
+            long entryID = GetEntryID( position );
+            if ( entryID != -1 ) {
+                FetcherService.addActiveEntryID(entryID);
+                getLoaderManager().restartLoader(position, null, EntryFragment.this);
+            }
             mEntryView = view;
             return view;
         }
@@ -1330,9 +1332,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
 
+
         @Override
         void onResume() {
-            mEntryView.onResume();
+            if ( mEntryView != null )
+                mEntryView.onResume();
         }
 
         @Override
@@ -1363,6 +1367,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return view;
     }
 
-
+    public void SetEntryID( int position, long entryID )  {
+        synchronized ( this ) {
+            mEntriesIds[position] = entryID;
+        }
+    }
+    public long GetEntryID( int position )  {
+        synchronized ( this ) {
+            if ( position >= 0 && position < mEntriesIds.length )
+                return mEntriesIds[position];
+            else
+                return -1;
+        }
+    }
 }
 

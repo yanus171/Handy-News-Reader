@@ -20,8 +20,10 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,16 +32,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.util.Date;
+import java.util.regex.Matcher;
+
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
+import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -52,13 +63,32 @@ public class EntryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_entry);
+
         mEntryFragment = (EntryFragment) getSupportFragmentManager().findFragmentById(R.id.entry_fragment);
-        if (savedInstanceState == null) { // Put the data only the first time (the fragment will save its state)
-            mEntryFragment.setData(getIntent().getData());
+        mEntryFragment.setData(getIntent().getData());
+
+        final Intent intent = getIntent();
+        final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
+            if (m.find()) {
+                final String url = text.substring(m.start(), m.end());
+                final String title = text.substring(0, m.start());
+                LoadAndOpenLink(url, title, TEXT);
+            }
+        } else if (intent.getScheme() != null && intent.getScheme().startsWith("http")) {
+            final String url = intent.getDataString();
+            final String title = intent.getDataString();
+            LoadAndOpenLink(url, title, TEXT);
         }
+
+        //if (savedInstanceState == null) { // Put the data only the first time (the fragment will save its state)
+        //}
+        //mEntryFragment.setData(intent.getData());
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -86,7 +116,48 @@ public class EntryActivity extends BaseActivity {
 
         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
             setFullScreen(true, true);
+    }
+    private void LoadAndOpenLink(final String url, final String title, final String text) {
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                Uri entryUri = GetEnryUri(url);
+                if (entryUri == null) {
+                    final String feedID = GetExtrenalLinkFeedID();
+                    Timer timer = new Timer("LoadAndOpenLink insert");
+                    ContentValues values = new ContentValues();
+                    values.put(EntryColumns.TITLE, title);
+                    values.put(EntryColumns.SCROLL_POS, 0);
+                    values.put(EntryColumns.DATE, (new Date()).getTime());
+                    values.put(EntryColumns.LINK, url);
+                    values.put(EntryColumns.ABSTRACT, text);
+                    values.put(EntryColumns.MOBILIZED_HTML, text);
+                    entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
+                    SetEntryID(entryUri);
+                    entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
+                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
+                    timer.End();
+
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
+                } else
+                    SetEntryID( entryUri );
+            }
+
+            private void SetEntryID(Uri entryUri) {
+                final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
+                mEntryFragment.SetEntryID( 0, entryID );
+                FetcherService.addActiveEntryID(entryID);
+                UiUtils.RunOnGuiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
+                    }
+                } );
+            }
+        }).start();
+        setIntent( getIntent().putExtra( NO_DB_EXTRA, true ) );
     }
 
     @Override
@@ -119,7 +190,7 @@ public class EntryActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        mEntryFragment.setData(intent.getData());
+
     }
 
     @Override
@@ -148,7 +219,6 @@ public class EntryActivity extends BaseActivity {
         }.start();
 
         //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPagerAdapter.SaveScrollPos( true );
-
         super.onBackPressed();
     }
 
@@ -169,6 +239,7 @@ public class EntryActivity extends BaseActivity {
 
         //super.onRestoreInstanceState(savedInstanceState);
         super.onResume();
+
         setFullScreen();
     }
 

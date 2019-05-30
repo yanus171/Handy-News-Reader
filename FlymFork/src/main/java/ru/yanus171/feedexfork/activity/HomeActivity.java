@@ -238,20 +238,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Timer timer = new Timer("HomeActivity.onResume");
         final Intent intent = getIntent();
         setIntent( new Intent() );
-        final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
-            if (m.find()) {
-                final String url = text.substring(m.start(), m.end());
-                final String title = text.substring(0, m.start());
-                LoadAndOpenLink(url, title, TEXT);
-            }
-        } else if (intent.getScheme() != null && intent.getScheme().startsWith("http")) {
-            final String url = intent.getDataString();
-            final String title = intent.getDataString();
-            LoadAndOpenLink(url, title, TEXT);
-        }
 
         if ( intent.getData() != null && intent.getData().equals( FAVORITES_CONTENT_URI ) ) {
             selectDrawerItem( 2 );
@@ -285,33 +271,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         setIntent( intent );
     }
 
-    private void LoadAndOpenLink(final String url, final String title, final String text) {
-        final ContentResolver cr = MainApplication.getContext().getContentResolver();
-        Uri entryUri = GetEnryUri( url );
-        if ( entryUri == null ) {
-            final String feedID = GetExtrenalLinkFeedID();
-            Timer timer = new Timer( "LoadAndOpenLink insert" );
-            ContentValues values = new ContentValues();
-            values.put(EntryColumns.TITLE, title);
-            values.put(EntryColumns.SCROLL_POS, 0);
-            values.put(EntryColumns.DATE, (new Date()).getTime());
-            values.put(EntryColumns.LINK, url);
-            values.put(EntryColumns.ABSTRACT, text );
-            values.put(EntryColumns.MOBILIZED_HTML, text );
-            entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
-            entryUri = Uri.withAppendedPath( EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( feedID ), entryUri.getLastPathSegment() );
-            timer.End();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes,true, true);
-                }
-            }).start();
-        }
-
-        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
-
-    }
 
 
     public void onBackPressed() {

@@ -109,7 +109,8 @@
         <activity
             android:name=".activity.EntryActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
+            android:parentActivityName=".activity.HomeActivity"
             android:theme="@style/Theme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -120,6 +121,10 @@
             </intent-filter>
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HomeActivity" />
+
             <intent-filter android:label="@string/loadLink" android:icon="@drawable/load_now">
                 <action android:name="android.intent.action.SEND" />
 
