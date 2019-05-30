@@ -1114,7 +1114,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         abstract void onResume();
         abstract void onPause();
-        abstract EntryView GetEntryView( int pagerPos );
+        public abstract EntryView GetEntryView( int pagerPos );
 
         Cursor getCursor(int pagerPos) {
             EntryView view = GetEntryView( pagerPos );
@@ -1245,6 +1245,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);
+            getLoaderManager().restartLoader(position, null, EntryFragment.this);
 
             return view;
         }
@@ -1279,7 +1280,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         @Override
-        EntryView GetEntryView( int pagerPos ) {
+        public EntryView GetEntryView( int pagerPos ) {
             return mEntryViews.get(pagerPos);
         }
     }
@@ -1297,7 +1298,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         @Override
-        EntryView GetEntryView(int pagerPos) {
+        public EntryView GetEntryView(int pagerPos) {
             return mEntryView;
         }
 
