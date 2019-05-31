@@ -616,7 +616,7 @@ public class FetcherService extends IntentService {
                     if ( isShowError ) {
                         String title = "";
                         Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[]{ FeedColumns.NAME }, null, null, null);
-                        if ( cursor.isNull( 0 ) )
+                        if ( cursor.moveToFirst() && cursor.isNull( 0 ) )
                             title = cursor.getString( 0 );
                         cursor.close();
                         Status().SetError(title + ": ", String.valueOf( feedId ), String.valueOf( entryId ), e);

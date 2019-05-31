@@ -204,6 +204,7 @@ public class EntryView extends WebView implements Observer {
     }
 
     public void setHtml(long entryId,
+                        String feedID,
                         String title,
                         String link,
                         String contentText,
@@ -240,13 +241,13 @@ public class EntryView extends WebView implements Observer {
         // } catch (MalformedURLException ignored) {
         // }
         // do not put 'null' to the base url...
-        mData = generateHtmlContent(title, link, contentText, enclosure, author, timestamp, preferFullText);
+        mData = generateHtmlContent(feedID, title, link, contentText, enclosure, author, timestamp, preferFullText);
         loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
         timer.End();
     }
 
-    private String generateHtmlContent(String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
-        Timer timer = new Timer( "EntryView.generateHtmlContent" );
+    private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
+        Timer timer = new Timer("EntryView.generateHtmlContent");
 
         StringBuilder content = new StringBuilder(GetCSS()).append(BODY_START);
 
@@ -263,15 +264,23 @@ public class EntryView extends WebView implements Observer {
             dateStringBuilder.append(" &mdash; ").append(author);
         }
 
-        content.append(dateStringBuilder).append(SUBTITLE_END).append(contentText).append(BUTTON_SECTION_START).append(BUTTON_START);
+        content.append(dateStringBuilder).append(SUBTITLE_END).append(contentText);
 
-        if (!preferFullText) {
-            content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
-        } else {
-            content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
+        content.append(BUTTON_SECTION_START);
+        if (!feedID.equals(FetcherService.GetExtrenalLinkFeedID())) {
+            content.append(BUTTON_START);
+
+            if (!preferFullText) {
+                content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
+            } else {
+                content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
+            }
+            content.append(BUTTON_END);
         }
-        content.append(BUTTON_END);
 
+        if ( preferFullText )
+            content.append(BUTTON_START).append(context.getString(R.string.menu_reload_full_text)).append(BUTTON_MIDDLE)
+                    .append("injectedJSObject.onReloadFullText();").append(BUTTON_END);
         if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
             content.append(BUTTON_START).append(context.getString(R.string.see_enclosure)).append(BUTTON_MIDDLE)
                     .append("injectedJSObject.onClickEnclosure();").append(BUTTON_END);
@@ -469,6 +478,8 @@ public class EntryView extends WebView implements Observer {
 
         void onClickEnclosure();
 
+        void onReloadFullText();
+
         void onStartVideoFullScreen();
 
         void onEndVideoFullScreen();
@@ -500,6 +511,11 @@ public class EntryView extends WebView implements Observer {
         @JavascriptInterface
         public void onClickEnclosure() {
             mEntryViewMgr.onClickEnclosure();
+        }
+
+        @JavascriptInterface
+        public void onReloadFullText() {
+            mEntryViewMgr.onReloadFullText();
         }
     }
 

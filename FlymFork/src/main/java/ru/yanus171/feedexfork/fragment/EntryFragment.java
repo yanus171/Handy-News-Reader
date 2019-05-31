@@ -100,6 +100,7 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
@@ -115,7 +116,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -143,12 +144,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        if ( getActivity().getIntent().getData() == null ) //getBooleanExtra(NO_DB_EXTRA, false ) )
+        if (IsExternalLink( getActivity().getIntent().getData() )) //getBooleanExtra(NO_DB_EXTRA, false ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter();
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
 
         super.onCreate(savedInstanceState);
+    }
+
+    private boolean IsExternalLink( Uri uri ) {
+        return uri == null || uri.toString().startsWith( "http" );
     }
 
     //@Override
@@ -636,10 +641,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_reload_full_text: {
 
-                    int status = FetcherService.Status().Start("Reload fulltext"); try {
-                        DeleteMobilized();
-                        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-                    } finally { FetcherService.Status().End( status ); }
+                    ReloadFullText();
                     break;
                 }
 
@@ -670,6 +672,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         return true;
+    }
+
+    private void ReloadFullText() {
+        int status = FetcherService.Status().Start("Reload fulltext");
+        try {
+            DeleteMobilized();
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
+        } finally { FetcherService.Status().End( status ); }
     }
 
     private void SetIsFavourite(final boolean favorite) {
@@ -723,7 +733,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
 
         mBaseUri = null;
-        if ( uri != null ) {
+        if ( !IsExternalLink( uri ) ) {
             mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
             Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
             try {
@@ -756,25 +766,26 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 entriesCursor.close();
             }
+            if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
+                Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
+                if ( mBaseUri.getPathSegments().get(1).equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Dog.v( "EntryFragment.setData() update time to current" );
+                            ContentResolver cr = MainApplication.getContext().getContentResolver();
+                            ContentValues values = new ContentValues();
+                            values.put(EntryColumns.DATE, (new Date()).getTime());
+                            cr.update(uri, values, null, null);
+                        }
+                    }).start();
+                }
+            }
         } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
             mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
             mCurrentPagerPos = 0;
         }
-        if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
-            Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
-            if ( mBaseUri.getPathSegments().get(1).equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Dog.v( "EntryFragment.setData() update time to current" );
-                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                        ContentValues values = new ContentValues();
-                        values.put(EntryColumns.DATE, (new Date()).getTime());
-                        cr.update(uri, values, null, null);
-                    }
-                }).start();
-            }
-        }
+
 
         mEntryPagerAdapter.notifyDataSetChanged();
         if (mCurrentPagerPos != -1) {
@@ -955,6 +966,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     @Override
+    public void onReloadFullText() {
+        ReloadFullText();
+    }
+
+    @Override
     public void onClickEnclosure() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -1070,6 +1086,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
                         mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
                         mEnclosurePos = cursor.getColumnIndex(EntryColumns.ENCLOSURE);
+                        mFeedIDPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
                         mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
                         mScrollPosPos = cursor.getColumnIndex(EntryColumns.SCROLL_POS);
                         mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
@@ -1152,11 +1169,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     long timestamp = 0;
                     String link = "";
                     String title = "";
+                    String feedID = "";
                     String enclosure = "";
                     float scrollPart = 0;
                     try {
                         contentText = newCursor.getString(mMobilizedHtmlPos);
-                        if (contentText == null || (forceUpdate && !mIsFullTextShown)) {
+                        feedID = newCursor.getString(mFeedIDPos);
+                        if (!feedID.equals(GetExtrenalLinkFeedID()) &&
+                            ( contentText == null || (forceUpdate && !mIsFullTextShown)) ) {
                             mIsFullTextShown = false;
                             contentText = newCursor.getString(mAbstractPos);
                         } else {
@@ -1181,14 +1201,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
                     view.setHtml(GetEntryID( pagerPos ),
-                            title,
-                            link,
-                            contentText,
-                            enclosure,
-                            author,
-                            timestamp,
-                            mIsFullTextShown,
-                            (EntryActivity) getActivity());
+                                feedID,
+                                title,
+                                link,
+                                contentText,
+                                enclosure,
+                                author,
+                                timestamp,
+                                mIsFullTextShown,
+                                (EntryActivity) getActivity());
 
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
