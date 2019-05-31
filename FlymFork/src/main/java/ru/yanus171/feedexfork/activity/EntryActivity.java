@@ -66,7 +66,6 @@ public class EntryActivity extends BaseActivity {
         setContentView(R.layout.activity_entry);
 
         mEntryFragment = (EntryFragment) getSupportFragmentManager().findFragmentById(R.id.entry_fragment);
-        mEntryFragment.setData(getIntent().getData());
 
         final Intent intent = getIntent();
         final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
@@ -83,6 +82,8 @@ public class EntryActivity extends BaseActivity {
             final String title = intent.getDataString();
             LoadAndOpenLink(url, title, TEXT);
         }
+
+        mEntryFragment.setData(getIntent().getData());
 
         //if (savedInstanceState == null) { // Put the data only the first time (the fragment will save its state)
         //}
@@ -118,7 +119,6 @@ public class EntryActivity extends BaseActivity {
             setFullScreen(true, true);
     }
     private void LoadAndOpenLink(final String url, final String title, final String text) {
-
         new Thread(new Runnable() {
             @Override
             public void run() {

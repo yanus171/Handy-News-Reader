@@ -612,9 +612,9 @@ public class FetcherService extends IntentService {
                         }
                     }
                 } catch (Exception e) {
-                    //Dog.e("Mobilize error", e);
+                    e.printStackTrace();
                     if ( isShowError ) {
-                        String title = ""; 
+                        String title = "";
                         Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[]{ FeedColumns.NAME }, null, null, null);
                         if ( cursor.isNull( 0 ) )
                             title = cursor.getString( 0 );

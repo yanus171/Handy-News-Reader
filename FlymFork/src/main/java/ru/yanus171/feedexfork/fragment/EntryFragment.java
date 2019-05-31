@@ -143,7 +143,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        if ( getActivity().getIntent().getBooleanExtra(NO_DB_EXTRA, false ) )
+        if ( getActivity().getIntent().getData() == null ) //getBooleanExtra(NO_DB_EXTRA, false ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter();
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
@@ -193,7 +193,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
             //mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID);
-            mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS);
+            //mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS);
             mEntryPager.getAdapter().notifyDataSetChanged();
             mEntryPager.setCurrentItem(mCurrentPagerPos);
             mLastPagerPos = mCurrentPagerPos;
@@ -688,7 +688,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 /*// Update the cursor
                 Cursor updatedCursor = cr.query(uri, null, null, null, null);
                 updatedCursor.moveToFirst();
-                mEntryPagerAdapter.setUpdatedCursor(mCurrentPagerPos, updatedCursor);*/
+                mEntryPagerAdapter.onsetUpdatedCursor(mCurrentPagerPos, updatedCursor);*/
 
             }
         }.start();
@@ -757,7 +757,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 entriesCursor.close();
             }
         } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
-
+            mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
             mCurrentPagerPos = 0;
         }
         if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
@@ -1145,6 +1145,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
 
                 if (newCursor != null && newCursor.moveToFirst()  ) {
+                    view.setTag(newCursor);
+
                     String contentText;
                     String author = "";
                     long timestamp = 0;
@@ -1173,6 +1175,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             scrollPart = newCursor.getFloat(mScrollPosPos);
 
                     } catch ( IllegalStateException e ) {
+                        e.printStackTrace();
                         contentText = "Context too large";
                     }
 
@@ -1186,7 +1189,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             timestamp,
                             mIsFullTextShown,
                             (EntryActivity) getActivity());
-                    view.setTag(newCursor);
 
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
@@ -1286,7 +1288,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
         EntryView mEntryView = null;
-        Cursor mCursor = null;
 
         SingleEntryPagerAdapter() {
 
@@ -1325,12 +1326,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryView = view;
             return view;
         }
-
-
-        Cursor getCursor(int pagerPos) {
-            return mCursor;
-        }
-
 
 
         @Override
