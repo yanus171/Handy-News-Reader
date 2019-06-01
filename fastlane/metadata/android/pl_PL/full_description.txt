@@ -8,9 +8,9 @@
 	<li><b>nareszcie ciesz się lekturą</b></li>
 </ul>
 
-...ciesz się życiem <b>będąc wolnym od rozpraszaczy - oraz na bieżąco z Twoimi zainteresowaniami</b> jednocześnie. Focus on the Essence...
+...ciesz się życiem <b>będąc wolnym od rozpraszaczy - oraz na bieżąco z Twoimi zainteresowaniami</b> jednocześnie. Skoncentruj się na Esencji...
 
-Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
+Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytnik <i>RSS</i> który <b>szanuje Twój Czas, jak i Pokój Wewnętrzny</b>: unika przełączania uwagi oraz rozpraszaczy tak powszechnych, gdy pomyśleć o urządzeniach mobilnych.
 
 <ul>
 <b><u>Funkcje</u>:</b>
