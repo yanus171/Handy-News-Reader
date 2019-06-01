@@ -311,6 +311,16 @@ public class NetworkUtils {
         return connection;
     }
 
+    static public String ToString( InputStream inputStream ) throws IOException {
+        int ch;
+        StringBuilder sb = new StringBuilder();
+        while((ch = inputStream.read()) != -1)
+                sb.append((char)ch);
+        if ( inputStream.markSupported() )
+            inputStream.reset();
+        return sb.toString();
+    }
+
     private static class PictureFilenameFilter implements FilenameFilter {
         private static final String REGEX = "__.*";
 
