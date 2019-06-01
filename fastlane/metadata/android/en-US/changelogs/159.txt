@@ -1,0 +1,4 @@
+• settings - auto refresh - only when changing
+• error fixes (first article image, rss feed parsing, language select)
+• Ukrainian translation added
+
