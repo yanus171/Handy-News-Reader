@@ -1,0 +1,4 @@
+• read now operation opens now a separate screen activity so we can browse (read now) links and return back
+• read now speed is improved (for there is no swype to other external articles in this mode)
+• rss parse fixes
+• screens title fix by @SIRSteiner
