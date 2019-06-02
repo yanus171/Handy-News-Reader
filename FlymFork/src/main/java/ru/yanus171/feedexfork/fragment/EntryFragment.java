@@ -1376,7 +1376,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     return;
                 if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
                     return;
-                if ( view.IsScrolAtBottom() )
+                if ( view.IsScrollAtBottom() )
                     SetIsFavourite(false);
             }
         };

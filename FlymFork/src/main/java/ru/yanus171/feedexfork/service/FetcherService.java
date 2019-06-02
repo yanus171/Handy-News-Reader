@@ -816,21 +816,21 @@ public class FetcherService extends IntentService {
         boolean wereChanges = false;
         int status = obs.Start(MainApplication.getContext().getString(R.string.EntryImages)); try {
             for( String imgPath: imageList ) {
-                if (isCancelRefresh() || !isEntryIDActive( entryId ) )
+                if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
                     break;
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
                 try {
                     NetworkUtils.downloadImage(entryId, imgPath, true);
                     wereChanges = true;
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 } finally {
                     obs.End(status1);
                 }
             }
         } finally { obs.End( status ); }
         if ( wereChanges )
-        EntryView.NotifyToUpdate( entryId );
+            EntryView.NotifyToUpdate( entryId );
     }
 
 

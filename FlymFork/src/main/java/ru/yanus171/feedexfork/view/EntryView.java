@@ -444,7 +444,7 @@ public class EntryView extends WebView implements Observer {
             mScrollChangeListener.run();
     }
 
-    public boolean IsScrolAtBottom() {
+    public boolean IsScrollAtBottom() {
         return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight());
     }
     @Override
