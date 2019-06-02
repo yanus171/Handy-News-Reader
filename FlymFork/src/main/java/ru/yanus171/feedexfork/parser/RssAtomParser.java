@@ -558,11 +558,13 @@ public class RssAtomParser extends DefaultHandler {
     }
 
     private Date parseDate(String dateStr) {
+        long dateBorder = 5 * 365 * 24 * 60 * 60 * 1000L; // five years ago
         dateStr = improveDateString(dateStr);
         for (DateFormat format : DATE_FORMATS ) {
             try {
                 Date result = format.parse(dateStr);
-                return (result.getTime() > mNow ? new Date(mNow) : result);
+                if ( Math.abs( result.getTime() -  mNow ) < dateBorder )
+                    return (result.getTime() > mNow ? new Date(mNow) : result);
             } catch (ParseException ignored) {
 
             } // just do nothing
