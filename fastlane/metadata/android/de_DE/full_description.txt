@@ -10,12 +10,12 @@
 
 ...genieße Dein Leben <b>ohne Ablenkung und bleibe gleichzeitig auf dem Laufenden mit Deinen Interessen</b>. Konzentriere Dich auf das Wesentliche...
 
-Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
+Lerne <i>Handy NR</i> kennen - eine offline-orientierte <i>RSS</i>-Leseapp mit vielen Funktionen, die sowohl <b>Deine Zeit als auch Deinen inneren Frieden respektiert</b>, ganz anders als man beim Gedanke an mobile Geräte vermutet.
 
 <ul>
-<b><u>Features</u>:</b>
-	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
+<b><u>Funktionen</u>:</b>
+	<li><b><u>vollständige artikel</u></b>: kein externer Browser nötig, um den kompletten Text lesen zu können,</li>
+	<li><b><u>bequemes</u> Lesen</b>: Artikelwechsel mit den Lautstärketasten oder durch Wischen, <i>Tipp-Zonen</i>, speichern der aktuellen Leseposition <u>pro Artikel</u>,</li>
 	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
 	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
 	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
