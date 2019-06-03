@@ -1,4 +1,4 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Nie war es so einfach, alle meine Interessen zu verfolgen."</i>
 
 <b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
