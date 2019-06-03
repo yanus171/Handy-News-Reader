@@ -1,6 +1,6 @@
 <i>"Nie war es so einfach, alle meine Interessen zu verfolgen."</i>
 
-<b><i>Handy News Reader</i>: keine Werbung / freie Software lizenziert nach <i>GNU GPL</i>.</b>
+<b><i>Handy News Reader</i>: werbefrei / freie Software lizenziert nach <i>GNU GPL</i>.</b>
 
 <ul>
 	<li><b>gestalte Dein Traum-Magazin!</b></li>
@@ -14,7 +14,7 @@ Lerne <i>Handy NR</i> kennen - eine offline-orientierte <i>RSS</i>-Leseapp mit v
 
 <ul>
 <b><u>Funktionen</u>:</b>
-	<li><b><u>vollständige artikel</u></b>: kein externer Browser nötig, um den kompletten Text lesen zu können,</li>
+	<li><b><u>vollständige Artikel</u></b>: kein externer Browser nötig, um den kompletten Text lesen zu können,</li>
 	<li><b><u>bequemes</u> Lesen</b>: Artikelwechsel mit den Lautstärketasten oder durch Wischen, <i>Tipp-Zonen</i>, speichern der aktuellen Leseposition <u>pro Artikel</u>,</li>
 	<li><b>Benachrichtigung bei wichtigen Artikeln</b>: Du wirst nichts mehr verpassen, was Dir wichtig ist,</li>
 	<li><b><i>"Später lesen"</i></b>: Du kannst schnell durch die Artikel blättern und dabei <b>diejenigen als Favorit markieren, welche Du später in Deiner Freizeit lesen</b> oder einfach nur aufheben möchtest,</li>
