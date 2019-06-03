@@ -22,8 +22,8 @@ Lerne <i>Handy NR</i> kennen - eine offline-orientierte <i>RSS</i>-Leseapp mit v
 	<li><b>bereit, offline zu gehen</b> - tauche ohne Ablenkung ein: einmal aktualisiert, muss nichts zusätzlich geladen werden - es funktioniert wirklich ohne Internet :),</li>
 	<li><b>spare Datenvolumen</b>: gehe nur für neue Artikel online - kontrolliere, was und in welchem Umfang geladen werden soll,</li>
 	<li><b>Gestensteuerung</b>: z.B. wische von oben nach unten, um Artikel zu den <i>Favoriten</i> hinzuzufügen oder daraus zu entfernen; wische am linken Displayrand, um die Helligkeit einzustellen,</li>
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
+	<li><b>benutzerfreundlich</b>: dunkles und helles Thema, Textgröße, Farbe und Helligkeit ganz nach Deinen Bedürfnissen einstellbar,</li>
+	<li><b>nette Ideen</b>: keine verlinkten Artikel-Überschriften; Artikelseiten nur mit 90% der Anzeigehöhe weiterblättern, damit die letzten gelesenen Zeilen noch sichtbar bleiben,</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
 	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
