@@ -18,10 +18,10 @@ Lerne <i>Handy NR</i> kennen - eine offline-orientierte <i>RSS</i>-Leseapp mit v
 	<li><b><u>bequemes</u> Lesen</b>: Artikelwechsel mit den Lautstärketasten oder durch Wischen, <i>Tipp-Zonen</i>, speichern der aktuellen Leseposition <u>pro Artikel</u>,</li>
 	<li><b>Benachrichtigung bei wichtigen Artikeln</b>: Du wirst nichts mehr verpassen, was Dir wichtig ist,</li>
 	<li><b><i>"Später lesen"</i></b>: Du kannst schnell durch die Artikel blättern und dabei <b>diejenigen als Favorit markieren, welche Du später in Deiner Freizeit lesen</b> oder einfach nur aufheben möchtest,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
+	<li><b><i>"Automatisch aus den Favoriten entfernen"</i></b> - wenn ein Favorit gelesen wurde, kann er automatisch aus den <i>'Favoriten'</i> (=<i>'Später lesen'</i>) entfernt werden,</li>
+	<li><b>bereit, offline zu gehen</b> - tauche ohne Ablenkung ein: einmal aktualisiert, muss nichts zusätzlich geladen werden - es funktioniert wirklich ohne Internet :),</li>
+	<li><b>spare Datenvolumen</b>: gehe nur für neue Artikel online - kontrolliere, was und in welchem Umfang geladen werden soll,</li>
+	<li><b>Gestensteuerung</b>: z.B. wische von oben nach unten, um Artikel zu den <i>Favoriten</i> hinzuzufügen oder daraus zu entfernen; wische am linken Displayrand, um die Helligkeit einzustellen,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
