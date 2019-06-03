@@ -1,11 +1,11 @@
 <i>"Nie war es so einfach, alle meine Interessen zu verfolgen."</i>
 
-<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Handy News Reader</i>: keine Werbung / freie Software lizenziert nach <i>GNU GPL</i>.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>gestalte Dein Traum-Magazin!</b></li>
+	<li><b>interessante Artikel direkt in Deine Hände</b></li>
+	<li><b>genieße endlich das Lesen</b></li>
 </ul>
 
 ...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
