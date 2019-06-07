@@ -42,6 +42,7 @@ public class HtmlUtils {
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
+            .addTags("s")
             .addAttributes("track", "src", "kind", "srclang", "label");
 
     public static final String URL_SPACE = "%20";
@@ -67,7 +68,7 @@ public class HtmlUtils {
     //public static boolean mIsDownloadingImagesForEntryView = false;
 
 
-    public static String improveHtmlContent(String content, String baseUri) {
+    public static String improveHtmlContent(String content, String baseUri, ArticleTextExtractor.MobilizeType mobType) {
         content = ADS_PATTERN.matcher(content).replaceAll("");
 
         if (content != null) {
@@ -79,7 +80,7 @@ public class HtmlUtils {
             content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
 
             // clean by JSoup
-            content = Jsoup.clean(content, baseUri, JSOUP_WHITELIST);
+            content = Jsoup.clean(content, baseUri, mobType == ArticleTextExtractor.MobilizeType.Tags ? JSOUP_WHITELIST.addAttributes( "i", "onclick" ) : JSOUP_WHITELIST  );
 
             // remove empty or bad images
             content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
@@ -215,7 +216,7 @@ public class HtmlUtils {
 
     }
     @NonNull
-    private static String getButtonHtml(String methodName, String caption) {
+    public static String getButtonHtml(String methodName, String caption) {
         final String BUTTON_START = "<i onclick=\"";
         //final String BUTTON_MIDDLE = " onclick=\"";
         final String BUTTON_END = "\" align=\"left\">" + caption + "   </i>";

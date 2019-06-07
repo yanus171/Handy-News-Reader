@@ -1,5 +1,8 @@
 package ru.yanus171.feedexfork.utils;
 
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,8 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
+
+import static ru.yanus171.feedexfork.utils.PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT;
 
 /**
  * This class is thread safe.
@@ -65,18 +71,21 @@ public class ArticleTextExtractor {
         if (doc == null)
             throw new NullPointerException("missing document");
 
-        FetcherService.Status().AddBytes( doc.html().length() );
+        FetcherService.Status().AddBytes(doc.html().length());
         // now remove the clutter
         prepareDocument(doc, mobilize);
 
+
+        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+
         Element bestMatchElement = doc;
-        if ( mobilize == MobilizeType.Yes ) {
+        if (mobilize == MobilizeType.Yes) {
             // init elements
             Collection<Element> nodes = getNodes(doc);
             int maxWeight = 0;
 
             bestMatchElement = getBestElementFromFile(doc, url);
-            if (bestMatchElement == null && isFindBestElement ) {
+            if (bestMatchElement == null && isFindBestElement) {
                 for (Element entry : nodes) {
                     int currentWeight = getWeight(entry, contentIndicator);
                     if (currentWeight > maxWeight) {
@@ -89,15 +98,29 @@ public class ArticleTextExtractor {
                     }
                 }
             }
-        } else if ( mobilize == MobilizeType.Tags ) {
-            for (Element el : doc.getElementsByAttribute( "class" ) )
-                if ( el.hasText() ) {
-                    el.prependText("<< class=" + el.attr("class") + ": ");
-                    el.appendText(": class=" + el.attr("class") + ">>");
+        } else if (mobilize == MobilizeType.Tags) {
+            for (Element el : doc.getElementsByAttribute("class"))
+                if (el.hasText()) {
+                    final String className = el.attr("class");
+                    el.prependText("<< class=" + className + ": ");
+                    el.appendText(": class=" + className + ">>");
+                    if ( !removeClassList.contains( className ) ) {
+                        el.append(HtmlUtils.getButtonHtml("removeClass('" + className + "')", MainApplication.getContext().getString(R.string.hide)));
+                        el.prepend(HtmlUtils.getButtonHtml("removeClass('" + className + "')", MainApplication.getContext().getString(R.string.hide)));
+                    } else {
+                        el.append(HtmlUtils.getButtonHtml("returnClass('" + className + "')", MainApplication.getContext().getString(R.string.show)));
+                        el.prepend(HtmlUtils.getButtonHtml("returnClass('" + className + "')", MainApplication.getContext().getString(R.string.show)));
+                    }
                 }
         }
-        if ( bestMatchElement == null )
+        if (bestMatchElement == null)
             bestMatchElement = doc;
+
+        if (mobilize != MobilizeType.Tags)
+            for (String classItem: removeClassList )
+                bestMatchElement.getAllElements().removeAll( bestMatchElement.getElementsByClass(classItem) );
+
+
 
         Collection<Element> metas = getMetas(doc);
         String ogImage = null;
@@ -150,8 +173,10 @@ public class ArticleTextExtractor {
             ret = ret.replaceAll("<th(.)*?>", "<p>");
             ret = ret.replaceAll("</th>", "</p>");
         }
+
         return ret;
     }
+
 
     private static Element getBestElementFromFile(Document doc, final String url) {
         Element result = null;

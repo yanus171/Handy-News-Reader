@@ -73,6 +73,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import ru.yanus171.feedexfork.Constants;
@@ -945,7 +946,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText)); try {
-                        FetcherService.mobilizeEntry(getContext().getContentResolver(), getCurrentEntryID(), mobilize, FetcherService.AutoDownloadEntryImages.Yes, true, true, true);
+                        FetcherService.mobilizeEntry(getContext().getContentResolver(), getCurrentEntryID(), mobilize, FetcherService.AutoDownloadEntryImages.Yes, true, true);
                     } finally { FetcherService.Status().End( status ); }
                 }
             }.start();
@@ -1031,6 +1032,26 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return (layout == null ? null : (FrameLayout) layout.findViewById(R.id.videoLayout));
     }
 
+    @Override
+    public void removeClass(String className) {
+        final String oldPref = PrefUtils.getString( PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, "" );
+        if ( !PrefUtils.GetRemoveClassList().contains( className ) ) {
+            PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
+            DeleteMobilized();
+            LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+        }
+    }
+
+    @Override
+    public void returnClass(String className) {
+        final ArrayList<String> list = PrefUtils.GetRemoveClassList();
+        if ( list.contains( className) ) {
+            list.remove( className );
+            PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
+            DeleteMobilized();
+            LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+        }
+    }
     @Override
     public void downloadImage(final String url) {
         new Thread(new Runnable() {

@@ -408,6 +408,11 @@
     <string name="text">Text</string>
     <string name="background1">Background</string>
     <string name="auto_refresh_requires_charging">Only while charging</string>
+    <string name="global_class_list_to_remove_from_article_text">Remove text rules</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">class name per line</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

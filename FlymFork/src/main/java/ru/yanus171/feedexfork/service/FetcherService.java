@@ -477,7 +477,7 @@ public class FetcherService extends IntentService {
                         nbAttempt = cursor.getInt(2);
                     }
 
-                    if ( mobilizeEntry(cr, entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, true, false)) {
+                    if ( mobilizeEntry(cr, entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, false)) {
                         cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                     } else {
                         if (nbAttempt + 1 > MAX_TASK_ATTEMPT) {
@@ -529,7 +529,6 @@ public class FetcherService extends IntentService {
                                         final long entryId,
                                         final ArticleTextExtractor.MobilizeType mobilize,
                                         final AutoDownloadEntryImages autoDownloadEntryImages,
-                                        final boolean isFindBestElement,
                                         final boolean isCorrectTitle,
                                         final boolean isShowError ) {
         boolean success = false;
@@ -581,7 +580,7 @@ public class FetcherService extends IntentService {
 
                     if (mobilizedHtml != null) {
                         Status().ChangeProgress(R.string.improveHtmlContent);
-                        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link));
+                        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link), mobilize);
                         Status().ChangeProgress("");
                         ContentValues values = new ContentValues();
                         values.put(EntryColumns.MOBILIZED_HTML, mobilizedHtml);
@@ -718,7 +717,7 @@ public class FetcherService extends IntentService {
                 cr.update(entryUri, values, null, null);
             }
             if ( load && !FetcherService.isCancelRefresh() )
-                mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()), ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes, true, isCorrectTitle, isShowError);
+                mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()), ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError);
             return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);

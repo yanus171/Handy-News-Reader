@@ -73,6 +73,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
+import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
@@ -391,7 +392,7 @@ public class RssAtomParser extends DefaultHandler {
                     ArrayList<String> imagesUrls = null;
                     if (mDescription != null) {
                         // Improve the description
-                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl);
+                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl, ArticleTextExtractor.MobilizeType.No);
                         if (mFetchImages) {
                             imagesUrls = HtmlUtils.getImageURLs(improvedContent);
                             if (!imagesUrls.isEmpty()) {

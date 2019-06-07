@@ -28,6 +28,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import java.util.ArrayList;
 
 import ru.yanus171.feedexfork.MainApplication;
 
@@ -79,6 +83,7 @@ public class PrefUtils {
     public static final String VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE = "vibrate_on_article_list_entry_swype";
     public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";
 
+    public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
 
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
@@ -260,6 +265,17 @@ public class PrefUtils {
             int result = Color.parseColor(MainApplication.getContext().getString(defaultValueID));
             return getInt(key, result);
         }
+    }
+
+    @NonNull
+    public static ArrayList<String> GetRemoveClassList() {
+        final ArrayList<String> removeClassList = new ArrayList<>();
+        for( String item: TextUtils.split(PrefUtils.getString(GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, ""), "\n") )
+            if ( !item.isEmpty() ) {
+                for( String item2: TextUtils.split(item, " ") )
+                    removeClassList.add(item2);
+            }
+        return removeClassList;
     }
 
 }

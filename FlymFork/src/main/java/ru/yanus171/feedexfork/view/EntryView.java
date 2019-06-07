@@ -488,6 +488,10 @@ public class EntryView extends WebView implements Observer {
 
         void downloadImage(String url);
 
+        void removeClass(String className);
+
+        void returnClass(String className);
+
         void downloadNextImages();
     }
 
@@ -525,13 +529,25 @@ public class EntryView extends WebView implements Observer {
         public String toString() {
             return "ImageDownloadJavaScriptObject";
         }
+
         @JavascriptInterface
         public void downloadImage( String url ) {
             mEntryViewMgr.downloadImage(url);
         }
+
         @JavascriptInterface
         public void downloadNextImages() {
             mEntryViewMgr.downloadNextImages();
+        }
+
+        @JavascriptInterface
+        public void removeClass(String className){
+            mEntryViewMgr.removeClass(className);
+        }
+
+        @JavascriptInterface
+        public void returnClass(String className){
+            mEntryViewMgr.returnClass(className);
         }
     }
 
