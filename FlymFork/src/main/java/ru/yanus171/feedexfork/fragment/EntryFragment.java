@@ -884,17 +884,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
                 if (Build.VERSION.SDK_INT >= 21 )
                     mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));
-            } else
+                mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
+            } else {
                 mProgressBar.setVisibility( View.GONE );
+            }
         }
 
         if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) ) {
-            mLabelClock.setVisibility(EntryActivity.GetIsStatusBarHidden() ? View.VISIBLE : View.GONE);
-            mLabelClock.setText(new SimpleDateFormat("HH:mm").format(new Date()));
+            mLabelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
+            mLabelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
             mLabelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
             mLabelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else
-            mLabelClock.setVisibility( View.GONE );
+        } else {
+            mLabelClock.setText( "" );
+        }
     }
 
     @Override
@@ -1226,8 +1229,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     }
 
-                    mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
-                    mLabelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
                     UpdateFooter();
 
                 }
