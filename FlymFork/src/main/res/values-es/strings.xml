@@ -31,8 +31,6 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[Español    ]]></string>
-    <string name="app_name">Español</string>
     <string name="about_title_version">Versión</string>
     <string name="about_flym">Acerca / Ayuda / Contacta con el desarrollador</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
@@ -59,7 +57,6 @@
     <string name="menu_add_group">Añadir grupo</string>
     <string name="menu_import">Importar desde OPML</string>
     <string name="menu_export">Exportar a OPML</string>
-    <string name="storage_request_explanation">Español</string>
     <string name="error_feed_error">No hay conectividad a la dirección de la fuente.</string>
     <string name="error_feed_process">No se ha podido procesar la fuente.</string>
     <string name="error_feed_url_exists">Ya existe esta dirección.</string>
@@ -79,8 +76,6 @@
     <string name="filter_is_regex">es una expresión regular</string>
     <string name="filter_apply_to_title">Aplicar al título (or link adress)</string>
     <string name="filter_apply_to_content">Aplicar al contenido</string>
-    <string name="accept">Español</string>
-    <string name="reject">Español</string>
     <string name="feed_search">Buscar fuentes</string>
     <string name="select_file">Seleccionar archivo</string>
     <string name="question_delete_feed">¿Seguro que quiere eliminar esta fuente?</string>
@@ -93,11 +88,6 @@
     <string name="to_group_message">Puede mover la fuente al grupo o encima del grupo. ¿Qué desea hacer?</string>
     <string name="to_group_above">Encima del grupo</string>
     <string name="to_group_into">Al grupo</string>
-    <string name="add_custom_feed">Español</string>
-    <string name="google_news_title">Español</string>
-    <string name="google_news_indicator">Español</string>
-    <string name="google_news_top_stories">Español</string>
-    <string name="google_news_world">Español</string>
     <string name="google_news_business">Negocio</string>
     <string name="google_news_technology">Tecnología</string>
     <string name="google_news_entertainment">Entretenimiento</string>
