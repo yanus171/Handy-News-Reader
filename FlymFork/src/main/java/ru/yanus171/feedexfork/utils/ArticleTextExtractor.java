@@ -116,11 +116,14 @@ public class ArticleTextExtractor {
         if (bestMatchElement == null)
             bestMatchElement = doc;
 
-        if (mobilize != MobilizeType.Tags)
-            for (String classItem: removeClassList )
-                bestMatchElement.getAllElements().removeAll( bestMatchElement.getElementsByClass(classItem) );
-
-
+        if (mobilize != MobilizeType.Tags) {
+            for (String classItem: removeClassList ) {
+                Elements list = bestMatchElement.getElementsByClass(classItem);
+                for (Element item : list) {
+                    item.remove();
+                }
+            }
+        }
 
         Collection<Element> metas = getMetas(doc);
         String ogImage = null;
