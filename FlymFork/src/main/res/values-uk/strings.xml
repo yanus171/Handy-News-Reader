@@ -392,7 +392,8 @@
     <string name="text">Текст</string>
     <string name="background1">Тло</string>
     <string name="auto_refresh_requires_charging">Лише під час зарядження</string>
-    <string name="global_class_list_to_remove_from_article_text">Правила вилучиння тексту</string>
+    <string name="global_class_list_to_remove_from_article_text">Правила вилучення тексту</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">ім\'я класу на кожен рядок</string>
     <string name="hide">Приховати</string>
     <string name="show">Показати</string>
     <plurals name="number_of_new_entries">
