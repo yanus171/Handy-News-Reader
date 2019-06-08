@@ -171,7 +171,7 @@
     <string name="menu_mark_as_unfavorite">Rimuovi come preferito</string>
     <string name="menu_mark_as_unread">Segna come non letto</string>
     <string name="menu_reload_full_text">Ricarica testo completo</string>
-    <string name="menu_reload_full_text_without_mobilizer">Ricarica senza limite</string>
+    <string name="menu_reload_full_text_without_mobilizer">Ricarica senza Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: articoli preferiti</string>
     <string name="copied_clipboard">Link copiato</string>
     <string name="get_full_text">Recupera il testo completo</string>
@@ -240,6 +240,7 @@
     <string name="show_new_icon_descr">Icona piccola più su nuovi articoli (che non hai mai visto)</string>
     <string name="show_read_article_count">Mostra il numero di articoli letti</string>
     <string name="show_read_article_count_descr">Nella lista dei feed</string>
+    <string name="show_group_entrries_count">Gruppo totale articoli</string>
     <string name="show_group_entries_count_descr">può ridurre le prestazioni</string>
     <string name="textColorRead">Articoli letti</string>
     <string name="textColorRead_descr">Colore degli articoli letti</string>
@@ -255,6 +256,7 @@
     <string name="entry_text_align_justify">Testo allineato</string>
     <string name="entry_text_align_justify_description">Altrimenti allinea a sinistra</string>
     <string name="linkColor">Colore del link</string>
+    <string name="linkColor_descr">Colore Hyperlinks</string>
     <string name="settings_color_link_sample_short">Link</string>
     <string name="settings_color_link_sample_long">Colore dei link</string>
     <string name="underline_links">Sottolinea i link</string>
@@ -277,8 +279,10 @@
     <string name="settings_show_tap_zones">Le zone di tocco sono visibili</string>
     <string name="settings_show_tap_zone_description">Come quadrati trasparenti nella visualizzazione introduttiva</string>
     <string name="settings_tapZones">Anteprima zone di tocco</string>
+    <string name="settings_volume_buttons_action">Azione per pulsanti volume</string>
     <string name="brightness_gesture">Gesto cambio luminosità</string>
     <string name="brightness_gesture_descr">Seleziona qua per regolare la luminosità scorrendo verso l\'alto/basso lungo il bordo sinistro dello schermo</string>
+    <string name="brightness_with_dim_activity">Overlay software</string>
     <string name="brightness_with_dim_activity_descr">Diminuisci la luminosità riducendo la trasparenza del colore dello sfondo della finestra (controlla se il cambiamento di luminosità non funziona)</string>
     <string name="settings_category_behavior">Funzionamento \u0026 notifiche</string>
     <string name="settings_category_behavior_summary">Notifiche sui nuovi articoli e il funzionamento dell\'app</string>
@@ -311,6 +315,7 @@
     <string name="deleteOldEntries">Elimina articoli vecchi</string>
     <string name="AllImages">Tutte le immagini</string>
     <string name="EntryImages">Immagini di ingresso</string>
+    <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Aggiornamento feed</string>
     <string name="deleteImages">Elimina immagini</string>
     <string name="applyOperations">Applica operazioni</string>
@@ -318,6 +323,16 @@
     <string name="improveHtmlContent">Perfezionamento del contenuto HTML</string>
     <string name="parseXml">Analisi XML</string>
     <string name="setupConnection">Configurazione connessione</string>
+    <string name="settings_content_extract_rules">Regole estrattore contenuto</string>
+    <string name="settings_content_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
+    <string name="settings_tap_zones_dialogtitle">solo per le informazioni, le modifiche non sono disponibili</string>
+    <string name="downloadNext">"Scarica il prossimo "</string>
+    <string name="loadingLink">Caricamento link</string>
+    <string name="loadLink">Leggi ora</string>
+    <string name="loadLinkLater">Leggi più tardi</string>
+    <string name="addFeed">Aggiungi feed</string>
+    <string name="externalLinks">Link esterni</string>
+    <string name="markAllAsRead">Segna tutti come letti</string>
     <string name="entry_marked_unread">L\'articolo è stato contrassegnato come non letto</string>
     <string name="lock_orientation">Orientamento orizzontale</string>
     <string name="markAsStarred">Contrassegna come Preferito</string>
