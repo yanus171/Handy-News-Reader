@@ -171,6 +171,7 @@
     <string name="menu_mark_as_unfavorite">Rimuovi come preferito</string>
     <string name="menu_mark_as_unread">Segna come non letto</string>
     <string name="menu_reload_full_text">Ricarica testo completo</string>
+    <string name="menu_reload_full_text_without_mobilizer">Ricarica senza limite</string>
     <string name="share_favorites_title">Handy News Reader: articoli preferiti</string>
     <string name="copied_clipboard">Link copiato</string>
     <string name="get_full_text">Recupera il testo completo</string>
@@ -229,10 +230,14 @@
     <string name="show_article_url">Mostra URL articolo</string>
     <string name="settings_display_oldest_first">Ordinamento articoli</string>
     <string name="settings_display_oldest_first_description">Mostra gli articoli più vecchi prima</string>
+    <string name="show_mark_all_as_read_button">Segna tutto tramite pulsante di lettura</string>
+    <string name="show_mark_all_as_read_button_summary">Mostra tutti gli articoli tramite pulsante di lettura - altrimenti troverete questa opzione nel menu</string>
     <string name="show_read_checkbox">Leggi casella di controllo</string>
     <string name="show_read_checkbox_descr">Mostra la piccola casella di controllo per indicare che l\'articolo è letto</string>
     <string name="show_full_text_indicator">Indicatore testo completo</string>
+    <string name="show_full_text_indicator_descr">Mostra un\'icona di un disco piccolo per indicare che l\'articolo è stato caricato</string>
     <string name="show_new_icon">Icona nuovo articolo</string>
+    <string name="show_new_icon_descr">Icona piccola più su nuovi articoli (che non hai mai visto)</string>
     <string name="show_read_article_count">Mostra il numero di articoli letti</string>
     <string name="show_read_article_count_descr">Nella lista dei feed</string>
     <string name="show_group_entries_count_descr">può ridurre le prestazioni</string>
