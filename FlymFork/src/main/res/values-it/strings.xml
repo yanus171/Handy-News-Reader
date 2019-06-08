@@ -344,6 +344,10 @@
     <string name="text">Testo</string>
     <string name="background1">Sfondo</string>
     <string name="auto_refresh_requires_charging">Solo durante la carica</string>
+    <string name="global_class_list_to_remove_from_article_text">Rimuovi regole di testo</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">nome classe per riga</string>
+    <string name="hide">Nascondi</string>
+    <string name="show">Mostra</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
