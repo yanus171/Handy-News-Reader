@@ -133,6 +133,9 @@ public class EntryView extends WebView implements Observer {
             + ".button-section p {margin: 0.1cm 0 0.2cm 0}"
             + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
             + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
+            + ".tag_button i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + ".tag_button_full_text i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + ".tag_button_hidden i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
             + "</style><meta name='viewport' content='width=device-width'/></head>"; }
 
     private static String getFontBold() {
@@ -450,7 +453,7 @@ public class EntryView extends WebView implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         if ( ( data != null ) && ( (Long)data == mEntryId ) )  {
-            if ( GetViewScrollPartY() < mScrollPartY )
+            //if ( GetViewScrollPartY() < mScrollPartY )
                 mScrollPartY = GetViewScrollPartY();
             mData = HtmlUtils.replaceImageURLs(mData, mEntryId, false);
             loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
@@ -488,9 +491,7 @@ public class EntryView extends WebView implements Observer {
 
         void downloadImage(String url);
 
-        void removeClass(String className);
-
-        void returnClass(String className);
+        void openTagMenu(String className, String baseUrl, String paramValue);
 
         void downloadNextImages();
     }
@@ -541,13 +542,8 @@ public class EntryView extends WebView implements Observer {
         }
 
         @JavascriptInterface
-        public void removeClass(String className){
-            mEntryViewMgr.removeClass(className);
-        }
-
-        @JavascriptInterface
-        public void returnClass(String className){
-            mEntryViewMgr.returnClass(className);
+        public void openTagMenu(String className, String baseUrl, String paramValue){
+            mEntryViewMgr.openTagMenu(className, baseUrl, paramValue);
         }
     }
 

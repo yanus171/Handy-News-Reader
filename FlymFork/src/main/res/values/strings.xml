@@ -412,6 +412,9 @@
     <string name="global_class_list_to_remove_from_article_text_summary">class name per line</string>
     <string name="hide">Hide</string>
     <string name="show">Show</string>
+    <string name="setFullTextRoot">Choose as full text root</string>
+    <string name="fullTextRoot">Full text root</string>
+    <string name="fullTextReloadStarted">Full text reload has started</string>
 
 
     <plurals name="number_of_new_entries">

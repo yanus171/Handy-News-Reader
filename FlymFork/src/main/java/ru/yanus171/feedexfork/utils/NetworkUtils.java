@@ -226,6 +226,18 @@ public class NetworkUtils {
         return baseUrl;
     }
 
+    public static String getUrlDomain(String link) {
+        String result = link;
+        result = result.replaceAll( "http.+?//", "" );
+        if ( result.endsWith( "/" ) )
+            result = result.substring(0, result.length() );
+        int index = result.lastIndexOf('/'); // this also covers https://
+        if (index > -1) {
+            result = result.substring(0, index + 1);
+        }
+        result = result.replace( "www.", "" );
+        return result;
+    }
     public static byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 

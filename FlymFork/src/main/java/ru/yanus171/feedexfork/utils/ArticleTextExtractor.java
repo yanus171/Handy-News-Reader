@@ -1,6 +1,6 @@
 package ru.yanus171.feedexfork.utils;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
-
-import static ru.yanus171.feedexfork.utils.PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT;
 
 /**
  * This class is thread safe.
@@ -50,6 +48,10 @@ public class ArticleTextExtractor {
 
     private static final Pattern NEGATIVE_STYLE =
             Pattern.compile("hidden|display: ?none|font-size: ?small");
+    static final String TAG_BUTTON_CLASS = "tag_button";
+    static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
+    static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
+    static final String CLASS_ATTRIBUTE = "class";
 
     /**
      * @param input            extracts article text from given html string. wasn't tested
@@ -68,6 +70,7 @@ public class ArticleTextExtractor {
                                         String contentIndicator,
                                         MobilizeType mobilize,
                                         boolean isFindBestElement) {
+        final Context context = MainApplication.getContext();
         if (doc == null)
             throw new NullPointerException("missing document");
 
@@ -79,7 +82,7 @@ public class ArticleTextExtractor {
         final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
 
         Element bestMatchElement = doc;
-        if (mobilize == MobilizeType.Yes) {
+        if (mobilize != MobilizeType.No) {
             // init elements
             Collection<Element> nodes = getNodes(doc);
             int maxWeight = 0;
@@ -98,23 +101,31 @@ public class ArticleTextExtractor {
                     }
                 }
             }
-        } else if (mobilize == MobilizeType.Tags) {
-            for (Element el : doc.getElementsByAttribute("class"))
+        }
+
+        if (mobilize == MobilizeType.Tags) {
+
+
+            final String baseUrl = NetworkUtils.getUrlDomain(url);
+            for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
                 if (el.hasText()) {
-                    final String className = el.attr("class");
-                    el.prependText("<< class=" + className + ": ");
-                    el.appendText(": class=" + className + ">>");
-                    if ( !removeClassList.contains( className ) ) {
-                        el.append(HtmlUtils.getButtonHtml("removeClass('" + className + "')", MainApplication.getContext().getString(R.string.hide)));
-                        el.prepend(HtmlUtils.getButtonHtml("removeClass('" + className + "')", MainApplication.getContext().getString(R.string.hide)));
-                    } else {
-                        el.append(HtmlUtils.getButtonHtml("returnClass('" + className + "')", MainApplication.getContext().getString(R.string.show)));
-                        el.prepend(HtmlUtils.getButtonHtml("returnClass('" + className + "')", MainApplication.getContext().getString(R.string.show)));
+                    final String classNameList =
+                            el.attr(CLASS_ATTRIBUTE).trim().replaceAll("\\r|\\n", " ").replaceAll(" +", " ");
+                    if ( classNameList.equals(TAG_BUTTON_CLASS) )
+                        continue;
+                    for ( String className: TextUtils.split( classNameList, " " ) ) {
+                        if ( className.trim().isEmpty() )
+                            continue;
+                        boolean isHidden = removeClassList.contains(className);
+                        AddTagButton(el, className, baseUrl, isHidden, el == bestMatchElement );
+                        if ( isHidden ) {
+                            Element elementS = doc.createElement("s");
+                            el.replaceWith(elementS);
+                            elementS.insertChildren(0, el);
+                        }
                     }
                 }
         }
-        if (bestMatchElement == null)
-            bestMatchElement = doc;
 
         if (mobilize != MobilizeType.Tags) {
             for (String classItem: removeClassList ) {
@@ -124,6 +135,9 @@ public class ArticleTextExtractor {
                 }
             }
         }
+
+        if ( bestMatchElement == null || mobilize == MobilizeType.Tags )
+            bestMatchElement = doc;
 
         Collection<Element> metas = getMetas(doc);
         String ogImage = null;
@@ -178,6 +192,15 @@ public class ArticleTextExtractor {
         }
 
         return ret;
+    }
+
+    private static void AddTagButton(Element el, String className, String baseUrl, boolean isHidden, boolean isFullTextRoot) {
+        final String paramValue = isHidden ? "show" : "hide";
+        final String methodText = "openTagMenu('" + className + "', '" + baseUrl + "', '" + paramValue + "')";
+        //final String fullTextRoot = isFullTextRoot ? " !!! " + MainApplication.getContext().getString( R.string.fullTextRoot ).toUpperCase() + " !!! " : "";
+        final String tagClass = isFullTextRoot ? TAG_BUTTON_FULL_TEXT_ROOT_CLASS : ( isHidden ? TAG_BUTTON_CLASS_HIDDEN : TAG_BUTTON_CLASS );
+        el.append(HtmlUtils.getButtonHtml(methodText,  " " + className + " ]", tagClass));
+        el.prepend(HtmlUtils.getButtonHtml(methodText,  "[ " + className + " ", tagClass));
     }
 
 

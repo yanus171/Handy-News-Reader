@@ -75,6 +75,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -89,6 +90,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -1032,26 +1034,77 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return (layout == null ? null : (FrameLayout) layout.findViewById(R.id.videoLayout));
     }
 
-    @Override
     public void removeClass(String className) {
         final String oldPref = PrefUtils.getString( PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, "" );
         if ( !PrefUtils.GetRemoveClassList().contains( className ) ) {
             PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
             DeleteMobilized();
             LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+            Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
         }
     }
 
-    @Override
-    public void returnClass(String className) {
+    public void returnClass(String classNameList) {
         final ArrayList<String> list = PrefUtils.GetRemoveClassList();
-        if ( list.contains( className) ) {
-            list.remove( className );
-            PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
-            DeleteMobilized();
-            LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
-        }
+        boolean needRefresh = false;
+        for ( String className: TextUtils.split( classNameList, " " ) )
+            if ( list.contains( className ) ) {
+                needRefresh = true;
+                list.remove( className );
+            }
+        if ( !needRefresh )
+            return;
+        PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
+        DeleteMobilized();
+        LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+        Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
     }
+
+    @Override
+    public void openTagMenu(final String className, final String baseUrl, final String paramValue ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext() );
+        builder.setTitle(baseUrl + ":class=" + className)
+            .setItems(new CharSequence[]{getString(R.string.setFullTextRoot),
+                                         getString(paramValue.equals( "hide" ) ? R.string.hide : R.string.show )},
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0)
+                        setFullTextRoot(baseUrl, className);
+                    else if ( paramValue.equals( "hide" ) )
+                        removeClass( className );
+                    else if ( paramValue.equals( "show" ) )
+                        returnClass( className );
+                }
+            });
+        builder.show();
+
+
+
+    }
+
+    private void setFullTextRoot(String baseUrl, String className) {
+        ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ),
+                Pattern.compile( "\\n|\\s" ) );
+        int index = -1;
+        for( int i = 0; i < ruleList.size(); i++ ) {
+            final String line = ruleList.get( i );
+            final String[] list1 = line.split(":");
+            final String url = list1[0];
+            if ( url.equals( baseUrl ) ) {
+                index = i;
+                break;
+            }
+        }
+        final String newRule = baseUrl + ":class=" + className;
+        if ( index != -1 )
+            ruleList.remove(index );
+        ruleList.add( 0, newRule );
+        PrefUtils.putString(PrefUtils.CONTENT_EXTRACT_RULES, TextUtils.join( "\n", ruleList ) );
+        DeleteMobilized();
+        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
+        Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+    }
+
     @Override
     public void downloadImage(final String url) {
         new Thread(new Runnable() {
@@ -1241,7 +1294,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         //if (PrefUtils.getLong(PrefUtils.LAST_ENTRY_ID, 0) == mEntriesIds[pagerPos]) {
                         //int dy = mScrollPosPos;
                         //if (dy > view.getScrollY())
-                        if ( view.GetViewScrollPartY() < scrollPart )
+                        //if ( view.GetViewScrollPartY() < scrollPart )
                             view.mScrollPartY = scrollPart;
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
                         //Dog.v( "displayEntry view.mScrollY = " + view.mScrollY );

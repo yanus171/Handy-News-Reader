@@ -37,7 +37,8 @@ import ru.yanus171.feedexfork.service.FetcherService;
 
 public class HtmlUtils {
 
-    private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed().addTags("iframe", "video", "audio", "source", "track")
+    private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
+            .addTags("iframe", "video", "audio", "source", "track")
             .addAttributes("iframe", "src", "frameborder", "height", "width")
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
@@ -80,7 +81,14 @@ public class HtmlUtils {
             content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
 
             // clean by JSoup
-            content = Jsoup.clean(content, baseUri, mobType == ArticleTextExtractor.MobilizeType.Tags ? JSOUP_WHITELIST.addAttributes( "i", "onclick" ) : JSOUP_WHITELIST  );
+            final Whitelist whiteList =
+                    ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
+                    JSOUP_WHITELIST.addAttributes( "i", "onclick" )
+                                   .addAttributes( "span", "class" )
+                                   .addTags( "s" )
+                    :
+                    JSOUP_WHITELIST;
+            content = Jsoup.clean(content, baseUri, whiteList  );
 
             // remove empty or bad images
             content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
@@ -180,7 +188,7 @@ public class HtmlUtils {
                         } else {
                             String htmlButtons = getDownloadImageHtml(srcText) + "<br/>";
                             if ( index == FetcherService.mMaxImageDownloadCount + 1 )
-                                htmlButtons += getButtonHtml("downloadNextImages()" , getString( R.string.downloadNext ) + PrefUtils.getImageDownloadCount() );
+                                htmlButtons += getButtonHtml("downloadNextImages()" , getString( R.string.downloadNext ) + PrefUtils.getImageDownloadCount(), "download_next" );
                             content = content.replace(imgTagText, htmlButtons + imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath));
                         }
                     }
@@ -208,7 +216,7 @@ public class HtmlUtils {
     }
 
     private static String getDownloadImageHtml(String match) {
-        return getButtonHtml("downloadImage('" + match + "')" , getString( R.string.downloadOneImage ) );
+        return getButtonHtml("downloadImage('" + match + "')" , getString( R.string.downloadOneImage ), "download_image" );
     }
 
     private static String getString( int id ) {
@@ -216,12 +224,11 @@ public class HtmlUtils {
 
     }
     @NonNull
-    public static String getButtonHtml(String methodName, String caption) {
-        final String BUTTON_START = "<i onclick=\"";
-        //final String BUTTON_MIDDLE = " onclick=\"";
-        final String BUTTON_END = "\" align=\"left\">" + caption + "   </i>";
-        //String html = BUTTON_SECTION_START + BUTTON_START + "Download image" + BUTTON_MIDDLE + "ImageDownloadJavaScriptObject.downloadImage('" + match + "');" + BUTTON_END + BUTTON_SECTION_END;
-        return BUTTON_START + "ImageDownloadJavaScriptObject." + methodName + ";" + BUTTON_END;
+    static String getButtonHtml(String methodName, String caption, String divClass) {
+        final String BUTTON_START = "<span class=\"" + divClass +"\"><i onclick=\"";
+        final String BUTTON_END = "\" align=\"left\" >" + caption + "</i></span>";
+        final String result = BUTTON_START + "ImageDownloadJavaScriptObject." + methodName + ";" + BUTTON_END;
+        return result;
     }
 
     public static String getMainImageURL(String content) {
@@ -251,6 +258,19 @@ public class HtmlUtils {
 
     private static boolean isCorrectImage(String imgUrl) {
         return !imgUrl.endsWith(".gif") && !imgUrl.endsWith(".GIF") && !imgUrl.endsWith(".img") && !imgUrl.endsWith(".IMG");
+    }
 
+    static public ArrayList<String> Split( String text, String sep ) {
+        final ArrayList<String> result = new ArrayList<>();
+        for( String item: TextUtils.split(text, sep) )
+            result.add( item );
+        return result;
+
+    }
+    static public ArrayList<String> Split( String text, Pattern sep ) {
+        final ArrayList<String> result = new ArrayList<>();
+        for( String item: TextUtils.split(text, sep) )
+            result.add( item );
+        return result;
     }
 }
