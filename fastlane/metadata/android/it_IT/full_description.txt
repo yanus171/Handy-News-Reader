@@ -24,16 +24,16 @@ Conosci <i>Handy NR</i> - ricco di funzionalità, un lettore <i>RSS</i> offline 
 	<li><b>gesti-semplici</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
 	<li><b>facile-utilizzo</b>: teniamo cura dei tuoi occhi con un tema scuro, regolazione della dimensione del testo, colore e luminosità per soddisfare le tue esigenze individuali,</li>
 	<li><b>idee concise</b>: le intestazioni degli articoli non hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli del 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b>altamente personalizzabile</b>: da <i>Zone di tocco'</i> dimensione al colore degli hyperlink e alla sottolineatura - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>
+	<li><b>funzionalità avanzate</b>: backup automatico (esporta/importa da/in un <i>.opml</i>), fornendo contenuti da siti web non-<i>RSS</i>, </li>
+	<li><b>altre funzionalità interessanti</b> "in negozio" - visita il nostro sito per saperne di più :) !,</li>
+	<li><b><u>importante</u>:</b> questa app NON sincronizza con lettori di notizie online (es. <i>Feedly</i>),</li>
+	<li><b>feedback e suggerimenti sono benvenuti;</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
+<b>Dove puoi trovarci:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">codice sorgente su <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">traduzioni</a>;</li>
 </ul>
