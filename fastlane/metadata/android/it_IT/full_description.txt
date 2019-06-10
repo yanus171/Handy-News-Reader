@@ -22,10 +22,10 @@ Scopri <i>Handy NR</i> - un lettore <i>RSS</i> offline, ricco di funzionalità, 
 	<li><b>pronto per andare offline</b> - immergiti in una lettura interessante senza distrazioni: una volta aggiornato, non c'è bisogno di caricare nulla - funzionerà davvero senza Internet :),</li>
 	<li><b>risparmia sulla larghezza di banda</b>: vai online solo per i nuovi articoli - non per caricare la loro versione completa ogni singola volta; gestisci cosa deve essere scaricato - e in quale maniera,</li>
 	<li><b>supporto per le gesture</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
-	<li><b>facile-utilizzo</b>: teniamo cura dei tuoi occhi con un tema scuro, regolazione della dimensione del testo, colore e luminosità per soddisfare le tue esigenze individuali,</li>
-	<li><b>idee concise</b>: le intestazioni degli articoli non hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli del 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
-	<li><b>altamente personalizzabile</b>: da <i>Zone di tocco'</i> dimensione al colore degli hyperlink e alla sottolineatura - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>
-	<li><b>funzionalità avanzate</b>: backup automatico (esporta/importa da/in un <i>.opml</i>), fornendo contenuti da siti web non-<i>RSS</i>, </li>
+	<li><b>facile da usare</b>: prenditi cura dei tuoi occhi con un tema scuro, regola dimensione, colore e luminosità del testo per soddisfare le tue esigenze personali,</li>
+	<li><b>idee interessanti</b>: le intestazioni degli articoli senza hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli per il 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
+	<li><b>altamente personalizzabile</b>: dalla dimensione delle <i>Zone di tocco'</i> al colore e alla sottolineatura degli hyperlink - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>
+	<li><b>funzionalità avanzate</b>: backup automatico (esporta/importa da/in un file <i>.opml</i>), ottenere contenuti da siti web non-<i>RSS</i>, </li>
 	<li><b>altre funzionalità interessanti</b> "in negozio" - visita il nostro sito per saperne di più :) !,</li>
 	<li><b><u>importante</u>:</b> questa app NON sincronizza con lettori di notizie online (es. <i>Feedly</i>),</li>
 	<li><b>feedback e suggerimenti sono benvenuti;</b></li>
