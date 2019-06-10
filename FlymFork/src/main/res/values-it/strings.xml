@@ -115,7 +115,7 @@
     <string name="optional">(opzionale)</string>
     <string name="website_or_feed">(sito web o feed)</string>
     <string name="tab_feed_title">Feed</string>
-    <string name="tab_filters_title">Filtri</string>
+    <string name="tab_filters_title">Filtro</string>
     <string name="feed_title">TITOLO</string>
     <string name="feed_filters">FILTRO</string>
     <string name="filter_add_title">Aggiungi filtro</string>
@@ -125,7 +125,7 @@
     <string name="filter_apply_to_title">Applica al titolo (or link adress)</string>
     <string name="filter_apply_to_content">Applica al contenuto</string>
     <string name="accept">ACCETTA</string>
-    <string name="reject">BLOCCA</string>
+    <string name="reject">RIFIUTA</string>
     <string name="feed_search">Ricerca feed</string>
     <string name="select_file">Seleziona file (radice SD)</string>
     <string name="question_delete_feed">Vuoi cancellare questo feed?</string>
@@ -162,7 +162,7 @@
     <string name="menu_share">Condividi</string>
     <string name="menu_full_screen">A tutto schermo</string>
     <string name="menu_font_bold">Grassetto</string>
-    <string name="menu_copy_clipboard">Copia il link</string>
+    <string name="menu_copy_clipboard">Copia link</string>
     <string name="menu_cancel_refresh">Annulla aggiornamento</string>
     <string name="menu_delete_all">Elimina tutto</string>
     <string name="menu_toogle_unread_all">Non letti|Tutto</string>
@@ -292,7 +292,7 @@
     <string name="settings_notifications_ringtone_none">Nessuna</string>
     <string name="settings_notifications_vibrate">Vibrazione</string>
     <string name="settings_notifications_vibrate_description">Attiva la vibrazione all\'arrivo di nuovi articoli</string>
-    <string name="settings_notifications_light">LED</string>
+    <string name="settings_notifications_light">LED di notifica</string>
     <string name="settings_notifications_light_description">Accendi il LED di notifica all\'arrivo di nuovi articoli</string>
     <string name="page_up_down_90_pct">Scorri pagina 90%</string>
     <string name="page_up_down_90_pct_descr">Per preservare diverse linee dalla pagina precedente - se non controllate, l\'intera pagina verrà scrollata</string>
