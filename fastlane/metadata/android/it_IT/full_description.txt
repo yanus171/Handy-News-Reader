@@ -1,14 +1,14 @@
-<i>"Rimani in contatto con tutti i Miei interessi non è mai stato così facile".</i>
+<i>"Rimanere in contatto con tutti i Miei interessi non è mai stato così facile".</i>
 
-<b><i>Handy News Reader</i>:nessuna pubblicità/software gratuito libero sotto <i>licenza GNU GPL</i> .</b>
+<b><i>Handy News Reader</i>: nessuna pubblicità/software gratuito sotto <i>licenza GNU GPL</i>.</b>
 
 <ul>
 	<li><b>crea la tua rivista dei sogni!</b></li>
 	<li><b>articoli interessanti direttamente nelle Tue mani</b></li>
-	<li><b>finalmente goditi la lettura</b></li>
+	<li><b>goditi finalmente la lettura</b></li>
 </ul>
 
-...goditi la tua vita <b>diventa libero dalle distrazioni - e aggiornato con i tuoi interessi</b> nello stesso tempo. Concentrati sull'Essenziale...
+...goditi la vita <b>libero da distrazioni - e aggiornato con i tuoi interessi</b> allo stesso tempo. Concentrati sull'Essenziale...
 
 Conosci <i>Handy NR</i> - ricco di funzionalità, un lettore <i>RSS</i> offline che <b>rispetta il tuo tempo e la tua Pace Interna</b>: evita di spostare l'attenzione a distrazioni che oggi sono così note quando pensi ai dispositivi mobile.
 
