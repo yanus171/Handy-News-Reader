@@ -10,12 +10,12 @@
 
 ...goditi la vita <b>libero da distrazioni - e aggiornato con i tuoi interessi</b> allo stesso tempo. Concentrati sull'Essenziale...
 
-Conosci <i>Handy NR</i> - ricco di funzionalità, un lettore <i>RSS</i> offline che <b>rispetta il tuo tempo e la tua Pace Interna</b>: evita di spostare l'attenzione a distrazioni che oggi sono così note quando pensi ai dispositivi mobile.
+Scopri <i>Handy NR</i> - un lettore <i>RSS</i> offline, ricco di funzionalità, che <b>rispetta il tuo tempo e la tua Pace Interiore</b>: evita di perdere la concentrazione e le distrazioni che oggi sono così comuni quando pensi ai dispositivi mobile.
 
 <ul>
-<b><u>Funzioni</u>:</b>
-	<li><b><u>articoli completi</u> a portata di mano</b>: senza bisogno di utilizzare un browser web esterni per raggiungere il testo completo,</li>
-	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Zone da toccare</i>, ricorda la posizione della lettura <u>per articolo</u>,</li>
+<b><u>Funzionalità</u>:</b>
+	<li><b><u>articoli completi</u> a portata di mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
+	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Tap Zones</i>, ricorda la posizione della lettura <u>per singolo articolo</u>,</li>
 	<li><b>segna articoli importanti</b>: non perderai più nulla che trovi particolarmente importante,</li>
 	<li><b><i>"Leggilo dopo"</i></b>: Puoi scorrere rapidamente attraverso gli articoli - <b>marchiando (starring) la scelta per leggelo più tardi</b> nel tuo tempo di riposo - o solo da preservare,</li>
 	<li><b><i>"Rimuovi quando finito"</i></b> - una volta finito un articolo - potrebbe essere automaticamente rimosso da <i>'Preferiti'</i> (=<i>'Leggilo dopo'</i>) impostato,</li>
