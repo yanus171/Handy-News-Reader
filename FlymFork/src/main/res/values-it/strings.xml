@@ -359,7 +359,7 @@
     <string name="question">Domanda</string>
     <string name="reload_full_text_with_tags">Ricarica con i tag</string>
     <string name="filter_hint">L\'azione di un filtro sarà avviata se almeno una condizione (regola) viene soddisfatta. \'Accetta\' sovrascrive \'Rifiuta\'</string>
-    <string name="keyword">parole chiave</string>
+    <string name="keyword">parola/e chiave</string>
     <string name="loadTypeWeb">Web (carica tutti i link dalla pagina)</string>
     <string name="loadTypeRSS">RSS (feed o link al sito o parole chiave)</string>
     <string name="loadType">Tipo di caricamento:</string>
