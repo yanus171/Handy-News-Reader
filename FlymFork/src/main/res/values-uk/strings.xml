@@ -168,7 +168,7 @@
     <string name="menu_mark_as_favorite">В обране</string>
     <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
     <string name="menu_mark_as_unread">Помітити як непрочитане</string>
-    <string name="menu_reload_full_text">Перезавантажити весь текст</string>
+    <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
     <string name="copied_clipboard">Посилання скопійовано</string>
