@@ -1041,7 +1041,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( !PrefUtils.GetRemoveClassList().contains( className ) ) {
             PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
             DeleteMobilized();
-            LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
             Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
         }
     }
@@ -1058,7 +1058,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return;
         PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
         DeleteMobilized();
-        LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
         Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
     }
 
