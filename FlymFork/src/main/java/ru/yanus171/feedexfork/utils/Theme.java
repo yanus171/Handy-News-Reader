@@ -50,9 +50,9 @@ public class Theme {
 		if (ThemeList == null) {
 			ThemeList = new HashMap<>();
 
-			{ 
+			{
 				HashMap<String, String> theme = new HashMap<String, String>();
-				theme.put(TEXT_COLOR, "#000000");
+				theme.put(TEXT_COLOR, "#555555");
 				theme.put(TEXT_COLOR_BACKGROUND, "#f6f6f6");
 				theme.put(MENU_FONT_COLOR, "#000000");
 				theme.put(MENU_BACKGROUND_COLOR, "#FFFFFF");
@@ -93,6 +93,7 @@ public class Theme {
 				theme.put("notificationBackgroundColor", theme.get(MENU_BACKGROUND_COLOR) );
 				theme.put(TEXT_COLOR_READ, MainApplication.getContext().getString( R.string.default_read_color ));
 				theme.put(LINK_COLOR, MainApplication.getContext().getString( R.string.default_link_color ) );
+				theme.put(LINK_COLOR_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
 			}
 			mTheme = PrefUtils.getString( THEME, DARK);
 		}
