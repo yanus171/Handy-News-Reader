@@ -505,7 +505,7 @@
                 android:summary="@string/autobackup_interval_descr"/>
 
             <CheckBoxPreference
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:key="use_standard_file_manager"
                 android:title="@string/use_standard_file_manager"
                 android:summary="@string/use_standard_file_manager_descr"/>

@@ -632,7 +632,7 @@ public class EditFeedsListFragment extends ListFragment {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
                 || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 
-            if (PrefUtils.getBoolean("use_standard_file_manager", true)) {
+            if (PrefUtils.getBoolean("use_standard_file_manager", false)) {
                 // First, try to use a file app
                 try {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
