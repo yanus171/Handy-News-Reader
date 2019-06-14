@@ -94,6 +94,7 @@ public class Theme {
 				theme.put(TEXT_COLOR_READ, MainApplication.getContext().getString( R.string.default_read_color ));
 				theme.put(LINK_COLOR, MainApplication.getContext().getString( R.string.default_link_color ) );
 				theme.put(LINK_COLOR_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
+				theme.put(TEXT_COLOR_READ_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
 			}
 			mTheme = PrefUtils.getString( THEME, DARK);
 		}
