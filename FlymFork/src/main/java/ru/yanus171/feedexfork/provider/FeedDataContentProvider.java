@@ -764,20 +764,40 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES_FOR_FEED: {
                 table = EntryColumns.TABLE_NAME;
                 where.append(EntryColumns.FEED_ID).append('=').append(uri.getPathSegments().get(1));
+                    //TODO also remove tasks
 
+                break;
+            }
+            case URI_UNREAD_ENTRIES: {
+                table = EntryColumns.TABLE_NAME;
+                where.append(EntryColumns.WHERE_UNREAD);
                 //TODO also remove tasks
 
                 break;
             }
             case URI_ENTRIES_FOR_GROUP: {
                 table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns.FEED_ID).append(" IN (SELECT ").append(FeedColumns._ID).append(" FROM ").append(FeedColumns.TABLE_NAME).append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
+                where.append(EntryColumns.FEED_ID)
+                        .append(" IN (SELECT ").append(FeedColumns._ID)
+                        .append(" FROM ").append(FeedColumns.TABLE_NAME)
+                        .append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
 
                 //TODO also remove tasks
 
                 break;
             }
-            case URI_ENTRIES: {
+            case URI_UNREAD_ENTRIES_FOR_GROUP: {
+                table = EntryColumns.TABLE_NAME;
+                where.append(EntryColumns.FEED_ID)
+                        .append(" IN (SELECT ").append(FeedColumns._ID)
+                        .append(" FROM ").append(FeedColumns.TABLE_NAME)
+                        .append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
+                where.append(Constants.DB_AND);
+                where.append(EntryColumns.WHERE_UNREAD);
+                //TODO also remove tasks
+
+                break;
+            } case URI_ENTRIES: {
                 table = EntryColumns.TABLE_NAME;
 
                 // Also remove all tasks

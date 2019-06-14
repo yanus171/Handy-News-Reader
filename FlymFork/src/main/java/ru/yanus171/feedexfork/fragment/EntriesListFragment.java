@@ -610,7 +610,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
 
             case R.id.menu_delete_all: {
-                if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
+                //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
                     new AlertDialog.Builder(getContext()) //
                             .setIcon(android.R.drawable.ic_dialog_alert) //
                             .setTitle( R.string.question ) //
@@ -621,12 +621,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                                     new Thread() {
                                         @Override
                                         public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri.getPathSegments().get(1));
+                                            FetcherService.deleteAllFeedEntries(mCurrentUri);
                                         }
                                     }.start();
                                 }
                             }).setNegativeButton(android.R.string.no, null).show();
-                }
+                //}
                 return true;
             }
             case R.id.menu_mark_all_as_read: {

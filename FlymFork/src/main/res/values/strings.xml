@@ -369,7 +369,7 @@
     <string name="lock_orientation">Landscape orientation</string>
     <string name="markAsStarred">Mark as starred</string>
     <string name="markedAsStarred">The article was marked as starred: </string>
-    <string name="deleteAllEntries">Delete all feed non starred entries</string>
+    <string name="deleteAllEntries">Delete all non starred entries</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Reload with tags</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>

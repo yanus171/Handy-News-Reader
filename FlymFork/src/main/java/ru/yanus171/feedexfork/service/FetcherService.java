@@ -107,6 +107,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -1264,15 +1265,18 @@ public class FetcherService extends IntentService {
             }
         }
 
-        public static void deleteAllFeedEntries (String feedID ){
+        public static void deleteAllFeedEntries ( Uri uri ){
             int status = Status().Start("deleteAllFeedEntries");
             try {
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), EntryColumns.WHERE_NOT_FAVORITE, null);
-                ContentValues values = new ContentValues();
-                values.putNull(FeedColumns.LAST_UPDATE);
-                values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                cr.delete(uri, EntryColumns.WHERE_NOT_FAVORITE, null);
+                if ( FeedDataContentProvider.URI_MATCHER.match(uri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
+                    String feedID = uri.getPathSegments().get( 1 );
+                    ContentValues values = new ContentValues();
+                    values.putNull(FeedColumns.LAST_UPDATE);
+                    values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                }
             } finally {
                 Status().End(status);
             }
@@ -1290,7 +1294,7 @@ public class FetcherService extends IntentService {
                         testAbstract += testAbstract1;
                     //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
 
-                    deleteAllFeedEntries(testFeedID);
+                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     ContentValues values = new ContentValues();
@@ -1320,7 +1324,7 @@ public class FetcherService extends IntentService {
                         testAbstract += testAbstract1;
                     //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
 
-                    deleteAllFeedEntries(testFeedID);
+                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     ContentValues values = new ContentValues();
