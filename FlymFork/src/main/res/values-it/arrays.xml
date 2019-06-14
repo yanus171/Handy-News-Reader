@@ -24,11 +24,11 @@
         <item>1 mese</item>
         <item>2 mesi</item>
         <item>3 mesi</item>
-        <item>Sempre</item>
+        <item>Per sempre</item>
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>Predefinito</item>
-        <item>Passa al prossimo | articolo precedente</item>
+        <item>Passa al prossimo | precedente articolo</item>
         <item>Pagina su | giù</item>
     </string-array>
     <string-array name="settings_preload_image_modes">

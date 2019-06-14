@@ -404,6 +404,9 @@ GENERAL]]></string>
     <string name="global_class_list_to_remove_from_article_text_summary">każda nazwa klasy w osobnej linii</string>
     <string name="hide">Ukryj</string>
     <string name="show">Pokaż</string>
+    <string name="setFullTextRoot">Wybierz źródło pełnego tekstu</string>
+    <string name="fullTextRoot">Źródło pełnego tekstu</string>
+    <string name="fullTextReloadStarted">Przeładowanie pełnego tekstu rozpoczęte</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>

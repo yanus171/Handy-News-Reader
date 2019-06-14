@@ -115,7 +115,7 @@
     <string name="optional">(opzionale)</string>
     <string name="website_or_feed">(sito web o feed)</string>
     <string name="tab_feed_title">Feed</string>
-    <string name="tab_filters_title">Filtri</string>
+    <string name="tab_filters_title">Filtro</string>
     <string name="feed_title">TITOLO</string>
     <string name="feed_filters">FILTRO</string>
     <string name="filter_add_title">Aggiungi filtro</string>
@@ -125,7 +125,7 @@
     <string name="filter_apply_to_title">Applica al titolo (or link adress)</string>
     <string name="filter_apply_to_content">Applica al contenuto</string>
     <string name="accept">ACCETTA</string>
-    <string name="reject">BLOCCA</string>
+    <string name="reject">RIFIUTA</string>
     <string name="feed_search">Ricerca feed</string>
     <string name="select_file">Seleziona file (radice SD)</string>
     <string name="question_delete_feed">Vuoi cancellare questo feed?</string>
@@ -162,7 +162,7 @@
     <string name="menu_share">Condividi</string>
     <string name="menu_full_screen">A tutto schermo</string>
     <string name="menu_font_bold">Grassetto</string>
-    <string name="menu_copy_clipboard">Copia il link</string>
+    <string name="menu_copy_clipboard">Copia link</string>
     <string name="menu_cancel_refresh">Annulla aggiornamento</string>
     <string name="menu_delete_all">Elimina tutto</string>
     <string name="menu_toogle_unread_all">Non letti|Tutto</string>
@@ -292,7 +292,7 @@
     <string name="settings_notifications_ringtone_none">Nessuna</string>
     <string name="settings_notifications_vibrate">Vibrazione</string>
     <string name="settings_notifications_vibrate_description">Attiva la vibrazione all\'arrivo di nuovi articoli</string>
-    <string name="settings_notifications_light">LED</string>
+    <string name="settings_notifications_light">LED di notifica</string>
     <string name="settings_notifications_light_description">Accendi il LED di notifica all\'arrivo di nuovi articoli</string>
     <string name="page_up_down_90_pct">Scorri pagina 90%</string>
     <string name="page_up_down_90_pct_descr">Per preservare diverse linee dalla pagina precedente - se non controllate, l\'intera pagina verrà scrollata</string>
@@ -359,7 +359,7 @@
     <string name="question">Domanda</string>
     <string name="reload_full_text_with_tags">Ricarica con i tag</string>
     <string name="filter_hint">L\'azione di un filtro sarà avviata se almeno una condizione (regola) viene soddisfatta. \'Accetta\' sovrascrive \'Rifiuta\'</string>
-    <string name="keyword">parole chiave</string>
+    <string name="keyword">parola/e chiave</string>
     <string name="loadTypeWeb">Web (carica tutti i link dalla pagina)</string>
     <string name="loadTypeRSS">RSS (feed o link al sito o parole chiave)</string>
     <string name="loadType">Tipo di caricamento:</string>
@@ -398,6 +398,9 @@
     <string name="global_class_list_to_remove_from_article_text_summary">nome classe per riga</string>
     <string name="hide">Nascondi</string>
     <string name="show">Mostra</string>
+    <string name="setFullTextRoot">Scegli come root di testo completo</string>
+    <string name="fullTextRoot">Root testo completo</string>
+    <string name="fullTextReloadStarted">Ricarica del testo completo iniziata</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>

@@ -53,16 +53,16 @@
  <b><big>Наша підтримка</big></b>
  <br/>
   Якщо є проблеми з додатком тоді <br/>
- • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
- • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b><br/>
+ • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b><br/>
  <br/>
  <b><big>Ваша підтримка</big></b>
  <br/>
  Ящо є  ідеї з додаванням нових можливостей:<br/>
- • звертайтесь на<b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
+ • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
  • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
  <br/>
- <b>Якщо додаток виявився корисним, оцініть, будь ласка <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+ <b>Якщо додаток виявився корисним, оцініть, будь ласка на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
  <br/>
  <b><big>Переклади</big></b>
  <br/>
@@ -168,7 +168,7 @@
     <string name="menu_mark_as_favorite">В обране</string>
     <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
     <string name="menu_mark_as_unread">Помітити як непрочитане</string>
-    <string name="menu_reload_full_text">Перезавантажити весь текст</string>
+    <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
     <string name="copied_clipboard">Посилання скопійовано</string>
@@ -396,6 +396,9 @@
     <string name="global_class_list_to_remove_from_article_text_summary">ім\'я класу на кожен рядок</string>
     <string name="hide">Приховати</string>
     <string name="show">Показати</string>
+    <string name="setFullTextRoot">Вибрати як джерело для повного текту</string>
+    <string name="fullTextRoot">Джерело повного тексту</string>
+    <string name="fullTextReloadStarted">Повний текст перезавантажується</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
