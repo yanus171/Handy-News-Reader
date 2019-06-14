@@ -135,8 +135,8 @@
     <string name="to_group_title">Перенос стрічки</string>
     <string name="to_group_message">Ви можете розмістити стрічку всередені цієї групи, або поза нею. Що бажаєте?</string>
     <string name="to_group_above">Поза групою</string>
-    <string name="to_group_into">Всередину групи</string>
-    <string name="add_custom_feed">Додати стрічку за адресою або назвою</string>
+    <string name="to_group_into">В групу</string>
+    <string name="add_custom_feed">Додати стрічку або шукати нову</string>
     <string name="google_news_title">Google News</string>
     <string name="google_news_indicator">Виберіть одну або кілька категорій.</string>
     <string name="google_news_top_stories">Популярне</string>
@@ -167,7 +167,7 @@
     <string name="menu_load_all_images">Завантажити всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
     <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
-    <string name="menu_mark_as_unread">Помітити як непрочитане</string>
+    <string name="menu_mark_as_unread">Позначити непрочитаним</string>
     <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
@@ -297,7 +297,7 @@
     <string name="settings_remember_last_entry">Запам’ятовувати останню статтю</string>
     <string name="settings_remeber_last_entry_description">Відкривати останню переглянуту статтю при запуску, інакше список непрочитанних статей</string>
     <string name="auto_unstart_at_bottom">Забирати з обраних коли прочитано</string>
-    <string name="auto_unstart_at_bottom_descr">Автоматично забирати статтю з обраного при досягненні ії нижнього краю</string>
+    <string name="auto_unstart_at_bottom_descr">Автоматично вилучати статтю з обраного при досягненні ії нижнього краю</string>
     <string name="settings_category_advanced">Додатково</string>
     <string name="settings_category_advanced_summary">Додаткові можливості (резервування, фільтри...)</string>
     <string name="settings_autobackup_enabled">Автоматичне резервне копіювання</string>
