@@ -640,6 +640,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     Uri uri = Uri.parse( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) );
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri );
                     getActivity().startActivity(intent);
+                    break;
                 }
 
                 case R.id.menu_reload_full_text: {
@@ -670,6 +671,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     mLockLandOrientation = !mLockLandOrientation;
                     item.setChecked(mLockLandOrientation);
                     SetOrientation();
+                    break;
                 }
             }
         }
