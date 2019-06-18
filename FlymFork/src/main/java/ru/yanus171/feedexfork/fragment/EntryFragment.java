@@ -424,7 +424,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         EntryView entryView = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
         if (entryView != null) {
             //PrefUtils.putInt(PrefUtils.LAST_ENTRY_SCROLL_Y, entryView.getScrollY());
-            entryView.SaveScrollPos( false );
+            entryView.SaveScrollPos();
             PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, getCurrentEntryID());
             PrefUtils.putBoolean(STATE_LOCK_LAND_ORIENTATION, mLockLandOrientation);
         }
@@ -540,7 +540,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
 
                 case R.id.menu_toggle_theme: {
-                    mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos( false );
+                    mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos();
                     PrefUtils.ToogleTheme(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
                     return true;
                 }
@@ -1333,7 +1333,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
             EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
-            GetEntryView( position ).SaveScrollPos( false );
+            GetEntryView( position ).SaveScrollPos();
             mEntryViews.delete(position);
         }
 
@@ -1408,7 +1408,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
             EntryView.mImageDownloadObservable.deleteObserver(mEntryView);
-            mEntryView.SaveScrollPos( false );
+            mEntryView.SaveScrollPos();
         }
 
         @Override
