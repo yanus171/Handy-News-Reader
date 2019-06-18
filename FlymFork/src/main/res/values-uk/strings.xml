@@ -296,8 +296,8 @@
     <string name="settings_notifications_light_description">Мигання світлодіодом при появі нових статей</string>
     <string name="page_up_down_90_pct">Прокрутка сторінки 90 %</string>
     <string name="page_up_down_90_pct_descr">Щоб залишати кілька рядків з попередньої сторінки, якщо вимкнуто, то гортається ціла сторінка</string>
-    <string name="settings_remember_last_entry">Запам’ятовувати останню стрічку</string>
-    <string name="settings_remeber_last_entry_description">Відкривати останню переглянуту статтю при запуску, інакше список непрочитанних статей</string>
+    <string name="settings_remember_last_entry">Запам’ятовувати останню статтю</string>
+    <string name="settings_remeber_last_entry_description">Відкривати останню статтю під час запуску, інакше список непрочитанних статей</string>
     <string name="auto_unstart_at_bottom">Забирати з обраних коли прочитано</string>
     <string name="auto_unstart_at_bottom_descr">Автоматично вилучати статтю з обраного при досягненні ії нижнього краю</string>
     <string name="settings_category_advanced">Додатково</string>
