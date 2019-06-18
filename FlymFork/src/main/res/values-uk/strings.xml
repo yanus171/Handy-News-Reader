@@ -197,7 +197,7 @@
     <string name="settings_category_common_summary">Тема</string>
     <string name="theme">Тема</string>
     <string name="customColors">Власні кольори</string>
-    <string name="fontColorsNotFromThemeSummary">інакше використовувати кольори теми</string>
+    <string name="fontColorsNotFromThemeSummary">інакше використовуються кольори теми</string>
     <string name="textColor">Колір тексту</string>
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКоли зустрічаєшся з гарною дівчиною година проходить за секунду. Коли сидиш на гарячій сковороді секунда здається годиною. Це теорія відносності.\u201d\n(Альберт Енштейн)</string>
@@ -237,7 +237,7 @@
     <string name="show_full_text_indicator">Індикація повного тексту</string>
     <string name="show_full_text_indicator_descr">Показувати іконку маленької дискети, якщо для статті завантажений весь текст</string>
     <string name="show_new_icon">Іконка нової статті</string>
-    <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назви яких ще ніколи не були видимі)</string>
+    <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назв яких ще ніколи не було)</string>
     <string name="show_read_article_count">Число прочитаних статей стрічок</string>
     <string name="show_read_article_count_descr">в списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
@@ -296,7 +296,7 @@
     <string name="settings_notifications_light_description">Мигання світлодіодом при появі нових статей</string>
     <string name="page_up_down_90_pct">Прокрутка сторінки 90 %</string>
     <string name="page_up_down_90_pct_descr">Щоб залишати кілька рядків з попередньої сторінки, якщо вимкнуто, то гортається ціла сторінка</string>
-    <string name="settings_remember_last_entry">Запам’ятовувати останню статтю</string>
+    <string name="settings_remember_last_entry">Запам’ятовувати останню стрічку</string>
     <string name="settings_remeber_last_entry_description">Відкривати останню переглянуту статтю при запуску, інакше список непрочитанних статей</string>
     <string name="auto_unstart_at_bottom">Забирати з обраних коли прочитано</string>
     <string name="auto_unstart_at_bottom_descr">Автоматично вилучати статтю з обраного при досягненні ії нижнього краю</string>
