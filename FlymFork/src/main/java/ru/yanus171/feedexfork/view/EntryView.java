@@ -46,25 +46,33 @@ package ru.yanus171.feedexfork.view;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -77,6 +85,7 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -384,8 +393,8 @@ public class EntryView extends WebView implements Observer {
 
         setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Context context = getContext();
+            public boolean shouldOverrideUrlLoading(WebView view, final String url) {
+                final Context context = getContext();
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
@@ -397,8 +406,67 @@ public class EntryView extends WebView implements Observer {
                     } else if ( url.contains( "#" ) ) {
                         return false;
                     } else {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        context.startActivity(intent);
+
+                        class Item{
+                            public final String text;
+                            public final int icon;
+                            private Item(int textID, Integer icon) {
+                                this.text = getContext().getString( textID );
+                                this.icon = icon;
+                            }
+                            @Override
+                            public String toString() {
+                                return text;
+                            }
+                        }
+
+                        final Item[] items = {
+                                new Item(R.string.loadLink, R.drawable.load_now),
+                                new Item(R.string.loadLinkLater, R.drawable.load_later),
+                                new Item(R.string.open_link, android.R.drawable.ic_menu_send)
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext() );
+
+                        builder.setAdapter( new ArrayAdapter<Item>(
+                                            getContext(),
+                                            android.R.layout.select_dialog_item,
+                                            android.R.id.text1,
+                                            items ){
+                            @NonNull
+                            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                                //Use super class to create the View
+                                View v = super.getView(position, convertView, parent);
+                                TextView tv = v.findViewById(android.R.id.text1);
+
+                                //Put the image on the TextView
+                                int dp50 = (int) (50 * getResources().getDisplayMetrics().density + 0.5f);
+                                Drawable dr = getResources().getDrawable(items[position].icon);
+                                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+                                Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
+                                tv.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+
+                                //Add margin between image and text (support various screen densities)
+                                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
+                                tv.setCompoundDrawablePadding(dp5);
+
+                                return v;
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                final Intent intent;
+                                if (item == 0)
+                                    intent = new Intent(getContext(), EntryActivity.class );
+                                else if ( item== 1 )
+                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class );
+                                else
+                                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+                                getContext().startActivity(intent.setData( Uri.parse(url) ));
+                            }
+                        });
+
+                        builder.show();
                     }
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(context, R.string.cant_open_link, Toast.LENGTH_SHORT).show();
