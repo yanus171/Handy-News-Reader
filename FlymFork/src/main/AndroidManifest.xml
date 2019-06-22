@@ -22,6 +22,7 @@
         <!--<service-->
             <!--android:name=".service.AutoRefreshService"-->
             <!--android:exported="true"-->
+
             <!--android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">-->
             <!--<intent-filter>-->
                 <!--<action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />-->
@@ -84,6 +85,16 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
+            <intent-filter android:label="@string/loadLinkLater" android:icon="@drawable/load_later">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -122,6 +133,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <intent-filter android:label="@string/loadLink" android:icon="@drawable/load_now">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
