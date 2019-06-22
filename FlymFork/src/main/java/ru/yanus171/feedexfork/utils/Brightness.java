@@ -9,8 +9,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import ru.yanus171.feedexfork.R;
 
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
@@ -87,8 +90,19 @@ public class Brightness {
 
     }
     public void OnResume() {
-        if ( PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
-            SetBrightness( PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 ) );
+        if ( !PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
+            return;
+        final long period = PrefUtils.getIntFromText( "settings_brightness_read_from_system_period_min", 10 ) * 1000 * 60;
+        final long now = new Date().getTime();
+        int brightness = PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 );
+        if ( now - PrefUtils.getLong( PrefUtils.LAST_BRIGHTNESS_ONPAUSE_TIME, now ) > period )
+            //brightness = 255 - (int) (mActivity.getWindow().getAttributes().screenBrightness / (float)255 * 100);
+            brightness = 255 - android.provider.Settings.System.getInt(mActivity.getContentResolver(), SCREEN_BRIGHTNESS, brightness);
+        SetBrightness( brightness );
+    }
+    public void OnPause() {
+        PrefUtils.putInt( PrefUtils.LAST_BRIGHTNESS, mCurrentAlpha);
+        PrefUtils.putLong( PrefUtils.LAST_BRIGHTNESS_ONPAUSE_TIME, new Date().getTime() );
     }
 //    private int GetAlpha() {
 //        if ( PrefUtils.getBoolean( "brightness_with_dim_activity", false ) )
@@ -127,7 +141,4 @@ public class Brightness {
         //getActivity().getWindow().addFlags( WindowManager.LayoutParams.FLAGS_CHANGED );
     }
 
-    public void OnPause() {
-        PrefUtils.putInt( PrefUtils.LAST_BRIGHTNESS, mCurrentAlpha);
-    }
 }

@@ -463,7 +463,6 @@
                 android:key="load_comments"
                 android:title="@string/settings_load_comments"
                 android:summary="@string/settings_load_comments_description"/>
-
         </PreferenceCategory>
     </PreferenceScreen>
 
@@ -553,6 +552,15 @@
                 android:title="@string/global_class_list_to_remove_from_article_text"
                 android:inputType="text|textMultiLine"
                 android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
+
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:key="settings_brightness_read_from_system_period_min"
+                android:dependency="brightness_gesture_enabled"
+                android:inputType="number"
+                android:defaultValue="10"
+                android:title="@string/brightness_update_from_system_period_min"
+                android:summary="@string/brightness_update_from_system_period_min_descr"/>
+
 
         </PreferenceCategory>
     </PreferenceScreen>

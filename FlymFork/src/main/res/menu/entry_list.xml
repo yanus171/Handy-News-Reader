@@ -47,5 +47,8 @@
         android:icon="@drawable/social_share"
         android:title="@string/context_menu_share_starred"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_add_feed_shortcut"
+        android:title="@string/menu_add_feed_shortcut"/>
 
 </menu>

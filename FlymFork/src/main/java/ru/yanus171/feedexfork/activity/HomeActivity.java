@@ -52,6 +52,7 @@ import android.widget.ListView;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import ru.yanus171.feedexfork.Constants;
@@ -74,7 +75,10 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
@@ -239,8 +243,21 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         final Intent intent = getIntent();
         setIntent( new Intent() );
 
-        if ( intent.getData() != null && intent.getData().equals( FAVORITES_CONTENT_URI ) ) {
-            selectDrawerItem( 2 );
+        if ( intent.getData() != null ) {
+            if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
+                selectDrawerItem( 2 );
+            else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
+                selectDrawerItem( 0 );
+            else if ( intent.getData().equals( CONTENT_URI ) )
+                selectDrawerItem( 1 );
+            else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
+                selectDrawerItem( 3 );
+            else {
+                if ( mDrawerAdapter == null )
+                    mNewFeedUri = intent.getData();
+                else
+                    selectDrawerItem(mDrawerAdapter.getItemPosition(Long.parseLong( GetSecondLastSegment( intent.getData() ))));
+            }
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
@@ -380,7 +397,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
 
             if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
-                mCurrentDrawerPos = mDrawerAdapter.getItemPosition( Long.parseLong( mNewFeedUri.getLastPathSegment() ) );
+                mCurrentDrawerPos = mDrawerAdapter.getItemPosition( Long.parseLong( GetSecondLastSegment( mNewFeedUri ) ) );
                 needSelect = true;
                 mDrawerList.smoothScrollToPosition( mCurrentDrawerPos );
                 CloseDrawer();
@@ -396,6 +413,14 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 });
         }
         timer.End();
+    }
+
+    private String GetSecondLastSegment( final Uri uri) {
+        List<String> list = uri.getPathSegments();
+        if ( list.size() == 3 )
+            return list.get(list.size() - 2);
+        else
+            return "";
     }
 
     @Override
@@ -419,7 +444,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 newUri = EntryColumns.CONTENT_URI;
                 break;
             case 2:
-                newUri = FAVORITES_CONTENT_URI;
+                newUri = EntryColumns.FAVORITES_CONTENT_URI;
                 break;
             case 3:
                 newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );

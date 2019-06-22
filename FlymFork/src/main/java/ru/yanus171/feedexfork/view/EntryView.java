@@ -396,6 +396,7 @@ public class EntryView extends WebView implements Observer {
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
                 final Context context = getContext();
                 try {
+
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
                         File extTmpFile = new File(context.getExternalCacheDir(), file.getName());
@@ -403,8 +404,8 @@ public class EntryView extends WebView implements Observer {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
                         context.startActivity(intent);
-                    } else if ( url.contains( "#" ) ) {
-                        return false;
+                    //} else if ( url.contains( "#" ) ) {
+                    //    return false;
                     } else {
 
                         class Item{

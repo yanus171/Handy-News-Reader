@@ -89,6 +89,7 @@ public class PrefUtils {
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
     public static final String LAST_ENTRY_ID = "last_entry_id";
     public static final String LAST_BRIGHTNESS = "last_brightness";
+    public static final String LAST_BRIGHTNESS_ONPAUSE_TIME = "last_brightness_onpause_time";
 
 
     public static final String VOLUME_BUTTONS_ACTION_DEFAULT = "Default";

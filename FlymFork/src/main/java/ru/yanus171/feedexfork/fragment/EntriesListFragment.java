@@ -28,6 +28,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -38,6 +41,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.pm.ShortcutInfoCompat;
+import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -52,6 +58,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -641,6 +648,53 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
             case R.id.menu_create_test_data: {
                 FetcherService.createTestData();
+                return true;
+            }
+            case R.id.menu_add_feed_shortcut: {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    //Adding shortcut for MainActivity on Home screen
+
+                    String name = "";
+                    IconCompat image = null;
+                    if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString(R.string.all_entries);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_empty);
+                    } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString(R.string.favorites);
+                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_with_star );
+                    } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString( R.string.unread_entries );
+                        image = IconCompat.createWithResource(getContext(), R.mipmap.ic_launcher);
+                    } else if ( FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
+                        name = getContext().getString( R.string.externalLinks );
+                        image = IconCompat.createWithResource(getContext(), R.drawable.load_later);
+                    } else {
+                        long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
+                        Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),
+                                new String[]{FeedData.FeedColumns.NAME, FeedData.FeedColumns.ICON},
+                                null, null, null);
+                        if (cursor.moveToFirst()) {
+                            name = cursor.getString(0);
+                            if (!cursor.isNull(1))
+                                image = IconCompat.createWithBitmap(new BitmapDrawable(getContext().getResources(),
+                                        UiUtils.getScaledBitmap(cursor.getBlob(1), 32)).getBitmap());
+                        }
+                        cursor.close();
+                    }
+
+                    if (ShortcutManagerCompat.isRequestPinShortcutSupported(getContext())) {
+                        final ShortcutManagerCompat shortcutManager;
+                            shortcutManager = getContext().getSystemService(ShortcutManagerCompat.class);
+
+                        ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString())
+                                .setIcon(image)
+                                .setShortLabel(name)
+                                .setIntent(new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri ))
+                                .build();
+                        shortcutManager.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                        Toast.makeText( getContext(), R.string.new_feed_shortcut_added, Toast.LENGTH_LONG ).show();
+                    }
+                }
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {

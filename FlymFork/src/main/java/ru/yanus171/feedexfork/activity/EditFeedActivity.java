@@ -97,6 +97,7 @@ import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.loader.BaseLoader;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
@@ -691,7 +692,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.FEED_ID, newFeedUri.getLastPathSegment())
                         .putExtra( Constants.EXTRA_DELETE_OLD, false ));
-                HomeActivity.mNewFeedUri = newFeedUri;
+                HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( newFeedUri.getLastPathSegment() );
                 setResult(RESULT_OK);
                 finish();
             }
