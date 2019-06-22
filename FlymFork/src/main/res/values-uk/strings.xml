@@ -31,10 +31,11 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Ліцензії та інформація</big></b><br/>
- Цей додаток вільний; Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
+    <string name="about_us_content" translatable="true"><![CDATA[ <b><big>Ліцензії та інформація</big></b> 
+ <br/>
+ Цей додаток вільне програмне забезпечення: Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
  <br/> 
- Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано:<br/>
+ Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано: <br/>
  <br/>
  • згортання груп стрічок<br/> 
  • невидимі  тап зони для переходу на наступну/попередню сторінку при читанні статті<br/>
@@ -42,27 +43,28 @@
  • можливість зупинити процес оновлення стрічок<br/>
  • та багато іншого<br/>
   <br/>
-  <b><big>Ви можете знайти нас</big></b>
+  <b><big>Ви можете знайти нас </big></b>
   <br/>
  • Завітайте на наш <b><a href="https://handynewsreader.blogspot.com">вебсайт</a></b> щоб  бути в курсі новин<br/>
- • Ви можете завантажити додаток<b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+ • Ви можете завантажити додаток <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
  • Ви можете завантажити додаток <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
- • Розділ на<b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/>
+ • Розділ на <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/>
  • Початкові коди на <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
  <br/>
  <b><big>Наша підтримка</big></b>
  <br/>
-  Якщо є проблеми з додатком тоді <br/>
+  Якщо є проблеми з додатком тоді: <br/>
  • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
- • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b><br/>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b> 
+ <br/>
  <br/>
  <b><big>Ваша підтримка</big></b>
  <br/>
- Ящо є  ідеї з додаванням нових можливостей:<br/>
+ Ящо є  ідеї з додаванням нових можливостей: <br/>
  • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
- • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
  <br/>
- <b>Якщо додаток виявився корисним, оцініть, будь ласка на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+ <b>Якщо додаток виявився корисним, оцініть, будь ласка, на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
  <br/>
  <b><big>Переклади</big></b>
  <br/>
@@ -135,8 +137,8 @@
     <string name="to_group_title">Перенос стрічки</string>
     <string name="to_group_message">Ви можете розмістити стрічку всередені цієї групи, або поза нею. Що бажаєте?</string>
     <string name="to_group_above">Поза групою</string>
-    <string name="to_group_into">Всередину групи</string>
-    <string name="add_custom_feed">Додати стрічку за адресою або назвою</string>
+    <string name="to_group_into">В групу</string>
+    <string name="add_custom_feed">Додати стрічку або шукати нову</string>
     <string name="google_news_title">Google News</string>
     <string name="google_news_indicator">Виберіть одну або кілька категорій.</string>
     <string name="google_news_top_stories">Популярне</string>
@@ -167,7 +169,7 @@
     <string name="menu_load_all_images">Завантажити всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
     <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
-    <string name="menu_mark_as_unread">Помітити як непрочитане</string>
+    <string name="menu_mark_as_unread">Позначити непрочитаним</string>
     <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
@@ -195,7 +197,7 @@
     <string name="settings_category_common_summary">Тема</string>
     <string name="theme">Тема</string>
     <string name="customColors">Власні кольори</string>
-    <string name="fontColorsNotFromThemeSummary">інакше використовувати кольори теми</string>
+    <string name="fontColorsNotFromThemeSummary">інакше використовуються кольори теми</string>
     <string name="textColor">Колір тексту</string>
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКоли зустрічаєшся з гарною дівчиною година проходить за секунду. Коли сидиш на гарячій сковороді секунда здається годиною. Це теорія відносності.\u201d\n(Альберт Енштейн)</string>
@@ -235,7 +237,7 @@
     <string name="show_full_text_indicator">Індикація повного тексту</string>
     <string name="show_full_text_indicator_descr">Показувати іконку маленької дискети, якщо для статті завантажений весь текст</string>
     <string name="show_new_icon">Іконка нової статті</string>
-    <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назви яких ще ніколи не були видимі)</string>
+    <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назв яких ще ніколи не було)</string>
     <string name="show_read_article_count">Число прочитаних статей стрічок</string>
     <string name="show_read_article_count_descr">в списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
@@ -295,9 +297,9 @@
     <string name="page_up_down_90_pct">Прокрутка сторінки 90 %</string>
     <string name="page_up_down_90_pct_descr">Щоб залишати кілька рядків з попередньої сторінки, якщо вимкнуто, то гортається ціла сторінка</string>
     <string name="settings_remember_last_entry">Запам’ятовувати останню статтю</string>
-    <string name="settings_remeber_last_entry_description">Відкривати останню переглянуту статтю при запуску, інакше список непрочитанних статей</string>
+    <string name="settings_remeber_last_entry_description">Відкривати останню статтю під час запуску, інакше список непрочитанних статей</string>
     <string name="auto_unstart_at_bottom">Забирати з обраних коли прочитано</string>
-    <string name="auto_unstart_at_bottom_descr">Автоматично забирати статтю з обраного при досягненні ії нижнього краю</string>
+    <string name="auto_unstart_at_bottom_descr">Автоматично вилучати статтю з обраного при досягненні ії нижнього краю</string>
     <string name="settings_category_advanced">Додатково</string>
     <string name="settings_category_advanced_summary">Додаткові можливості (резервування, фільтри...)</string>
     <string name="settings_autobackup_enabled">Автоматичне резервне копіювання</string>
