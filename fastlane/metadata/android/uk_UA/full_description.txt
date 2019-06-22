@@ -17,8 +17,8 @@
 	<li><b><u>повні статті</u>під руками</b>: немає потреби в використанні браузера, щоб побачити весь текст статті</li>
 	<li><b><u>зручне</u>читання</b>:
 перемикання статей кнопками гучності або свайпами, <i>Зони натискань</i>, запам'ятовування місця читання<u>в кожній статті</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
+	<li><b>сповіщення про важливі статті</b>: Ви ніколи не пропустите нічого важливого,</li>
+	<li><b><i>"Прочитати пізніше"</i></b>: Ви можете швидко пробіжатись по статтям - <b> позначаючи (обираючи) яку прочитати пізніше</b> у Ваш вільний час, чи просто зберегти,</li>
 	<li><b><i>"Вилучити по завершені"</i></b> - як тільки Ви завершили читати статтю - вона може автоматично вилучатись зі списків<i> 'Обрані'</i>(=<i>'Прочитати пізніше'</i>) </li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
