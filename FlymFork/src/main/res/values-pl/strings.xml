@@ -407,6 +407,10 @@ GENERAL]]></string>
     <string name="setFullTextRoot">Wybierz źródło pełnego tekstu</string>
     <string name="fullTextRoot">Źródło pełnego tekstu</string>
     <string name="fullTextReloadStarted">Przeładowanie pełnego tekstu rozpoczęte</string>
+    <string name="brightness_update_from_system_period_min">Odświeżanie jasności ekranu</string>
+    <string name="brightness_update_from_system_period_min_descr">(w minutach) Po upłynięciu tego czasu jasność tekstu zostanie przywrócona do aktualnego systemowego poziomu jasności</string>
+    <string name="menu_add_feed_shortcut">Wstaw skrót do kanału na pulpit</string>
+    <string name="new_feed_shortcut_added">Nowy skrót do kanału został wstawiony na pulpit</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
