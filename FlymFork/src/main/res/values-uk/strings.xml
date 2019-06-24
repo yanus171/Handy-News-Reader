@@ -401,6 +401,8 @@
     <string name="setFullTextRoot">Вибрати як джерело для повного текту</string>
     <string name="fullTextRoot">Джерело повного тексту</string>
     <string name="fullTextReloadStarted">Повний текст перезавантажується</string>
+    <string name="brightness_update_from_system_period_min">Час відновлення яскравості</string>
+    <string name="brightness_update_from_system_period_min_descr">(в хвилинах) Через який час яскравість змінена за допомогою свайпа буде відновлена до існуючого загального рівня</string>
     <string name="menu_add_feed_shortcut">Додати ярлик стрічки на домашній екран</string>
     <string name="new_feed_shortcut_added">Новий ярлик стрічки був доданий на домашній екран</string>
     <plurals name="number_of_new_entries">
