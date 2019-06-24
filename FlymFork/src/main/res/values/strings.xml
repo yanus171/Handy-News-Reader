@@ -345,7 +345,7 @@
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
     <string name="addFeed">Add a feed</string>
-    <string name="externalLinks">External links</string>
+    <string name="externalLinks">Read It Later</string>
     <string name="markAllAsRead">Mark all as read</string>
     <string name="pageUp">page up / swipe down to (un)star</string>
     <string name="pageDown">page down</string>
