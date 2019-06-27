@@ -417,8 +417,8 @@
     <string name="fullTextReloadStarted">Full text reload has started</string>
     <string name="brightness_update_from_system_period_min">Brightness update time</string>
     <string name="brightness_update_from_system_period_min_descr">(in minutes) After that time period the brightness (by swipe) will be restored from the current system level</string>
-    <string name="menu_add_feed_shortcut">Add feed shortcut to homescreen</string>
-    <string name="new_feed_shortcut_added">New feed shortcut was added on homescreeen</string>
+    <string name="menu_add_feed_shortcut">Create a shortcut on Home Screen</string>
+    <string name="new_feed_shortcut_added">New shortcut has been created on Home Screen</string>
 
 
     <plurals name="number_of_new_entries">
