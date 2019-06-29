@@ -31,6 +31,53 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lizentzia eta informazioa</big></b><br/>
+    Programa hau software librea da: Banatu dezakezu, eta/edo aldatu dezakezu Free Software Foundation fundazioaren GNU General Public License lizentziaren 3 bertsioarekin edo (nahiago baduzu) honen bertsio berriago batekin. Ikusi http://www.gnu.org/licenses<br/>
+    <br/>
+    Aplikazio hau  \'Flym RSS Reader\' du oinarri gisa, copyright 2013–2016 Frédéric Julian. Gehitu zaizkion ezaugarrien artean:<br/>
+    <br/>
+    • jario taldeen hedapena<br/>
+    • pantaila osoan botoi ikustesinak orrian gora edo behera egiteko<br/>
+    • deskargatutako gehieneko irudi kopurua artikuluko<br/>
+    • berritze prozesua ezeztatzeko aukera<br/>
+    • ea askoz gehiago<br/>
+    <br/>
+    <b><big>Non aurkitu gaitzakezu</big></b>
+    <br/>
+    • Bisitatu gaitzazu <b><a href="https://handynewsreader.blogspot.com">website</a></b> helbidean berriak eta informazioa jasotzeko<br/>
+    • Deskargatu aplikazioa hemen: <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • Deskargatu aplikazioa hemen: <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • Foro honetan hari bat dago <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
+    • Iturburu-kodea hemen dago <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+    <br/>
+    <b><big>Gure laguntza</big></b>
+    <br/>
+    Aplikazioarekin arazoren bat baduzu<br/>
+    • ireki arazo-txosten bat hemen: <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> edo<br/>
+    • Bidali <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">e-mail bat garatzaileari</a></b><br/>
+    <br/>
+    <b><big>Zure laguntza</big></b>
+    <br/>
+   Ezaugarri berri baterako ideia bat baduzu:<br/>
+    • ireki txosten bat hemen: <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> edo<br/>
+    • bidali <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail bat garatzaileari</a></b><br/>
+    <br/>
+    <b>Aplikazioa gustukoa baduzu baloratu hemen: <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <br/>
+    <b><big>Itzulpenak</big></b>
+    <br/>
+   Zure hizkuntzara itzultzen lagundu dezakezu hemen: <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    Zure hizkuntza ez badago eskuragarri bidali <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail bat garatzaileari</a></b>.<br/>
+    <br/>
+    <b><big>Errekonozimenduak</big></b>
+    <br/>
+    <b>Garatzaileak:</b><br/>
+    ***developerList***
+    <br/>
+    <b>Itzultzaileak:</b><br/>
+    ***translatorList***
+    <br/>
+    ]]></string>
     <string name="about_title_version">bertsioa</string>
     <string name="about_flym">Aplikazioari buruz / Laguntza / Kontaktatu garatzailea </string>
     <string name="never">inoiz ez</string>
@@ -78,15 +125,20 @@
     <string name="accept">ONARTU</string>
     <string name="reject">BAZTERTU</string>
     <string name="feed_search">Jario-bilaketa</string>
+    <string name="select_file">Hautatu fitxategi bat (SD-erroa)</string>
     <string name="question_delete_feed">Ziur jario hau ezabatu nahi duzula?</string>
     <string name="question_delete_group">Ziur talde hau eta bere jario guztiak ezabatu nahi dituzula?</string>
+    <string name="question_delete_filter">Ziur iragazki hau ezabatu nahi duzula?</string>
     <string name="add_group_title">Hautatu taldearen izena</string>
     <string name="edit_group_title">Editatu taldearen izena</string>
+    <string name="message_exported_to">%s helbidera esportatuta.</string>
     <string name="to_group_title">Jario mugitze ekintza</string>
     <string name="to_group_message">Jario hau talde honen barruan ala kanpoan jarri nahi duzu?</string>
     <string name="to_group_above">Taldearen kanpoan</string>
     <string name="to_group_into">Taldearen barruan</string>
+    <string name="add_custom_feed">Gehitu edo bilatu jarioa</string>
     <string name="google_news_title">Google News gaiak</string>
+    <string name="google_news_indicator">Hautatu gehitzeko gai bat edo gehiago. Baliteke haietako batzuk Googlek zure hizkuntzan ez eskaintzea.</string>
     <string name="google_news_top_stories">Berri nagusiak</string>
     <string name="google_news_world">Mundua</string>
     <string name="google_news_business">Negozioak</string>
@@ -117,6 +169,7 @@
     <string name="menu_mark_as_unfavorite">Desmarkatu gogoko bezala</string>
     <string name="menu_mark_as_unread">Markatu irakurri gabe bezala</string>
     <string name="menu_reload_full_text">Birkargatu testu osoa</string>
+    <string name="menu_reload_full_text_without_mobilizer">Birkargatu Mobilizer gabe</string>
     <string name="copied_clipboard">Esteka kopiatuta</string>
     <string name="get_full_text">Kargatu artikulu osoa</string>
     <string name="show_text_in_entry_list">Erakutsi jatorrizko testua artikuluen zerrendan</string>
@@ -144,6 +197,7 @@
     <string name="fontColorsNotFromThemeSummary">bestela erabili gaiaren koloreak</string>
     <string name="textColor">Testuaren kolorea</string>
     <string name="settings_color_text_sample_short">Testua</string>
+    <string name="settings_color_text_sample_long">\u201cNeska lirain batekin solasean zaudenean ordu batek segundo bat ematen du. Gori gori dagoen txingar batean esertzen bazara segundo batek ordu bat ematen du, Hori da erlatibitatea.\u201d\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Berritze automatikoa</string>
     <string name="settings_category_refresh_summary">Berritze automatikoa eta artikuluak mantentzeko denbora</string>
     <string name="settings_refresh_enabled">Gaitu berritze automatikoa</string>
