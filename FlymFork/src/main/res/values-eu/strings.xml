@@ -223,13 +223,22 @@
     <string name="settings_category_article_list_summary">Artikuluen zerrendaren itxura</string>
     <string name="settings_font_size">Testuaren tamaina</string>
     <string name="show_article_icon">Erakutsi artikulu-ikonoa</string>
+    <string name="show_article_icon_descr">Desgaitu pantailan tokia irabazteko</string>
+    <string name="show_article_url">Erakutsi artikuluaren URLa</string>
     <string name="settings_display_oldest_first">Artikuluen ordena</string>
     <string name="settings_display_oldest_first_description">Erakutsi sarrera zaharrenak aurretik</string>
     <string name="show_mark_all_as_read_button">Markatu denak irakurrita gisa botoia</string>
+    <string name="show_mark_all_as_read_button_summary">Erakutsi \'Markatu artikulu guztiak irakurritako gisa\' botoia, bestela aukera menuan aurkituko duzu</string>
+    <string name="show_read_checkbox">Irakurrita kontrol-laukia</string>
+    <string name="show_read_checkbox_descr">Erakutsi kontrol-lauki txiki bat artikulua irakurritako gisa markatzeko</string>
     <string name="show_full_text_indicator">Testu osoaren adierazlea</string>
+    <string name="show_full_text_indicator_descr">Erakutsi diskete baten ikono txiki bat artikuluaren testu osoa kargatu dela adierazteko</string>
     <string name="show_new_icon">Artikulu berriaren ikonoa</string>
+    <string name="show_new_icon_descr">Gehi ikono txikia artikulu berrietan (ikusi gabekoak)</string>
+    <string name="show_read_article_count">Bistaratu irakurritako artikulu kopurua</string>
     <string name="show_read_article_count_descr">Jarioen zerrendan</string>
     <string name="show_group_entrries_count">Taldearen artikulu kopurua</string>
+    <string name="show_group_entries_count_descr">errendimendua gutxiagotu dezake</string>
     <string name="textColorRead">Irakurri artikuluak</string>
     <string name="textColorRead_descr">Irakurritako artikuluen kolorea</string>
     <string name="settings_color_text_read_sample_short">Irakurri</string>
@@ -239,6 +248,7 @@
     <string name="settings_display_images">Bistaratu irudiak</string>
     <string name="settings_display_images_description">Bistaratu irudiak sarreretan</string>
     <string name="settings_display_entries_fullscreen">Jarri sarreran pantaila osoan automatikoki</string>
+    <string name="settings_entry_margins">Marjinak</string>
     <string name="settings_entry_margins_description">Ezker | eskuin</string>
     <string name="entry_text_align_justify">Testu justifikatua</string>
     <string name="entry_text_align_justify_description">Bestela lerrokatu ezkerrera</string>
@@ -249,6 +259,7 @@
     <string name="underline_links">Azpimarratu estekak</string>
     <string name="article_text_footer_show_clock">Oineko erlojua</string>
     <string name="article_text_footer_show_clock_description">Uneko ordua bistaratzen du behe ezkerreko erpinean pantaila osoan</string>
+    <string name="settings_clock_size">Oineko erlojuaren letra-tamaina</string>
     <string name="article_text_footer_clock_color">Erlojuaren kolorea</string>
     <string name="article_text_footer_clock_color_descr">Oineko erlojuaren kolorea</string>
     <string name="settings_color_clock_sample_short">08:15</string>
@@ -257,7 +268,9 @@
     <string name="article_text_footer_show_progress_descr">Artikulu bat irakurtzearen progresioa bistaratzen du behealdean</string>
     <string name="article_text_footer_progress_height">Progresio-barraren altuera</string>
     <string name="article_text_footer_progress_color">Progresioaren kolorea</string>
-    <string name="settings_category_operation">Eragiketa</string>
+    <string name="article_text_footer_progress_color_descr">Irakurtze progresio-barraren kolorea</string>
+    <string name="settings_category_operation">Eragitea</string>
+    <string name="settings_category_operation_summary">Eragite ezarpenak</string>
     <string name="tap_zone_size">Sakatzeko zonaren tamaina</string>
     <string name="tap_zone_size_descr">Sakatzeko zona guztien altuera edo zabalera milimetroetan (sarrera ikuspegia)</string>
     <string name="settings_show_tap_zones">Sakatze zonak ikusgai daude</string>
@@ -266,6 +279,7 @@
     <string name="settings_volume_buttons_action">Bolumen botoiek ekintza</string>
     <string name="brightness_gesture">Distira aldatzeko keinua</string>
     <string name="brightness_gesture_descr">Markatu hau pantailaren ezkerreko ertzean hatza gora edo behera pasatuz distira aldatzeko</string>
+    <string name="brightness_with_dim_activity">Software gainazala</string>
     <string name="settings_category_behavior">Jakinarazpenak eta portaera</string>
     <string name="settings_category_behavior_summary">Artikulu berrien jakinarazpenak eta aplikazioaren portaera</string>
     <string name="settings_notifications_enabled">Gaitu jakinarazpenak</string>
