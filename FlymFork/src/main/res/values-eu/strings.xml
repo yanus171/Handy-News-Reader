@@ -78,12 +78,15 @@
     ***translatorList***
     <br/>
     ]]></string>
+    <string name="app_name">Berri irakurle trebea</string>
     <string name="about_title_version">bertsioa</string>
     <string name="about_flym">Aplikazioari buruz / Laguntza / Kontaktatu garatzailea </string>
+    <string name="welcome_title">Ongi etorri Berri irakurle trebera. Jario bat gehitu nahi duzu?</string>
     <string name="never">inoiz ez</string>
     <string name="update">Eguneratu</string>
     <string name="menu_settings">Ezarpenak</string>
     <string name="menu_refresh">Berritu</string>
+    <string name="flym_feeds">Berri irakurle trebearen jarioak</string>
     <string name="error">Errorea</string>
     <string name="network_error">Lineaz kanpo zaude.</string>
     <string name="loading">Kargatzen…</string>
@@ -170,6 +173,7 @@
     <string name="menu_mark_as_unread">Markatu irakurri gabe bezala</string>
     <string name="menu_reload_full_text">Birkargatu testu osoa</string>
     <string name="menu_reload_full_text_without_mobilizer">Birkargatu Mobilizer gabe</string>
+    <string name="share_favorites_title">Berri irakurle trebea: izardun sarrerak</string>
     <string name="copied_clipboard">Esteka kopiatuta</string>
     <string name="get_full_text">Kargatu artikulu osoa</string>
     <string name="show_text_in_entry_list">Erakutsi jatorrizko testua artikuluen zerrendan</string>
@@ -299,6 +303,7 @@
     <string name="settings_category_advanced">Aurreratua</string>
     <string name="settings_category_advanced_summary">Ezaugarri gehigarriak (babes-kopiak, iragazkiak eta gehiago)</string>
     <string name="settings_autobackup_enabled">Gaitu babes-kopia automatikoa</string>
+    <string name="settings_autobackup_enabled_descr">Aldiro zure jario eta gogoko artikuluen zerrenda .opml fitxategi batean gordetzeko</string>
     <string name="settings_category_content_presentation">Edukiaren aurkezpena</string>
     <string name="settings_display_text_color">Testuaren argitasuna</string>
     <string name="settings_visible_feeds">Jarioak ikusgai</string>
@@ -329,11 +334,14 @@
     <string name="auto_refresh_feed">Automatikoki berritu jarioa</string>
     <string name="actionBarToggle">Txandakatu ekintza-barra</string>
     <string name="standard">Estandarra</string>
+    <string name="fontsize_entrylist">Letra-tamaina artikuluen zerrendan</string>
     <string name="question_delete_entry">Ezabatu artikulu hau?</string>
     <string name="share_all_text">Partekatu testu osoa</string>
     <string name="group">Taldea</string>
+    <string name="auto_image_load">Irudien karga automatikoa</string>
     <string name="show_progress_info_descr">Erakutsi oraingo eragiketaren xehetasunak</string>
     <string name="vibrate_on_article_list_entry_swype">Bibratu hatza pasatzean</string>
+    <string name="entry_marked_unfavourite">Artikulua gogokoetatik kendu da</string>
     <string name="entry_marked_favourite">Artikulua gogokoetara gehitu da</string>
     <string name="new_feed_was_added">Jario berria gehitu da</string>
     <string name="entry_marked_unread">Artikulua irakurri gabeko gisa markatu da</string>
@@ -344,6 +352,8 @@
     <string name="question">Galdera</string>
     <string name="reload_full_text_with_tags">Birkargatu etiketekin</string>
     <string name="keyword">hitz gakoa(k)</string>
+    <string name="loadTypeWeb">Web (kargatu orriko esteka guztiak)</string>
+    <string name="loadTypeRSS">RSS (jario edo gunearen esteka edo hitz gakoak)</string>
     <string name="loadType">Karga mota:</string>
     <string name="global_filter">Iragazki globala&#8230;</string>
     <string name="global_filter_descr">Jario guztiei aplikatuko zaien iragazkia, utzi iragaziaren testua (eta adierazpen erregularra) hutsik desgaitzeko</string>
@@ -360,16 +370,27 @@
     <string name="copyToClipboard">Arbelera</string>
     <string name="sendEmail">Bidali e-maila</string>
     <string name="exportingToFile">Fitxategira esportatzen</string>
+    <string name="importingFromFile">Fitxategitik inportatzen</string>
+    <string name="autobackup_interval">Babes-kopia automatikoaren tartea</string>
+    <string name="autobackup_interval_descr">Jario eta artikuluen babes-kopia sortzeko maiztasuna</string>
     <string name="create_auto_backup">Sortu babes-kopia automatikoa</string>
+    <string name="auto_backup_opml_file_created">.opml fitxategiaren babes-kopia automatikoa sortuta:</string>
+    <string name="use_standard_file_manager">Erabili fitxategi kudeatzaile estandarra</string>
     <string name="settings">Ezarpenak</string>
     <string name="entry_go_prev">Aurreko orrialdea</string>
     <string name="entry_go_next">Hurrengo orrialdea</string>
+    <string name="colorSlotSaved">Kolorea gelaxkan gorde da</string>
     <string name="text">Testua</string>
     <string name="background1">Atzealdea</string>
     <string name="auto_refresh_requires_charging">Kargatzean besterik ez</string>
     <string name="global_class_list_to_remove_from_article_text">Kendu testu-arauak</string>
     <string name="hide">Ezkutatu</string>
     <string name="show">Erakutsi</string>
+    <string name="setFullTextRoot">Hautatu testu osoaren kolore gisa</string>
+    <string name="fullTextRoot">Testu osoaren erroa</string>
+    <string name="fullTextReloadStarted">Testu osoaren birkarga hasi da</string>
+    <string name="brightness_update_from_system_period_min">Distira eguneratzeko denboa</string>
+    <string name="brightness_update_from_system_period_min_descr">(minutuetan) Denbora hori igarota hatza pasatuz ezarritako distira sistemaren mailara itzuliko da</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>
