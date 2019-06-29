@@ -31,7 +31,31 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_title_version">bertsioa</string>
+    <string name="about_flym">Aplikazioari buruz / Laguntza / Kontaktatu garatzailea </string>
+    <string name="never">inoiz ez</string>
+    <string name="update">Eguneratu</string>
+    <string name="menu_settings">Ezarpenak</string>
+    <string name="menu_refresh">Berritu</string>
+    <string name="error">Errorea</string>
+    <string name="network_error">Lineaz kanpo zaude.</string>
+    <string name="loading">Kargatzen…</string>
+    <string name="no_result">Emaitzarik ez</string>
+    <string name="drawer_open">Ireki nabigazio-tiradera</string>
+    <string name="drawer_close">Itxi nabigazio-tiradera</string>
     <!-- FEEDS -->
+    <string name="feeds">Jarioak</string>
+    <string name="menu_add_feed">Gehitu jario bat</string>
+    <string name="no_feeds">Jariorik ez</string>
+    <string name="no_filters">Araurik ez</string>
+    <string name="context_menu_delete">Ezabatu</string>
+    <string name="edit_feed_title">Editatu jarioa</string>
+    <string name="new_feed_title">Jario berria</string>
+    <string name="context_menu_edit">Editatu</string>
+    <string name="menu_add_group">Gehitu talde bat</string>
+    <string name="menu_import">Inportatu .opml fitxategi batetik</string>
+    <string name="menu_export">Esportatu .opml fitxategi batera</string>
+    <string name="storage_request_explanation">Jarioak fitxategi batetik inportatu edo esportatu ahal izateko, aplikazioak biltegiratze memoria atzitu ahal izatea baimendu behar duzu.</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
