@@ -393,8 +393,8 @@ GENERAL]]></string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
     <string name="settings">Ustawienia</string>
-    <string name="entry_go_prev">Poprzednia strona</string>
-    <string name="entry_go_next">Następna strona</string>
+    <string name="entry_go_prev">Poprzedni artykuł</string>
+    <string name="entry_go_next">Następny artykuł</string>
     <string name="colorSlotSaveLongTapHint">Porada: by zachować aktualny kolor, przytrzymaj jedną z komórek</string>
     <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
     <string name="text">Tekst</string>
