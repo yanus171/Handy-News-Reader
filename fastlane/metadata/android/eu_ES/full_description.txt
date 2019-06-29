@@ -16,7 +16,7 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 <b><u>Ezaugarriak</u>:</b>
 	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b>irakurketa <u>erosoa</u></b>: aldatu artikuluak bolumen botoiekin edo pasatu hatza, <i>sakatze zonak</i>, irakurketaren posizioa gogoratzen du <u>artikuluko</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
+	<li><b>artikulu garrantzitsuetarako jakinarazpenak</b>: Ez duzu garrantzitsutzat jotzen duzun ezer galduko,</li>
 	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
 	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
