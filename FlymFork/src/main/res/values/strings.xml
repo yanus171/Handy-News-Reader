@@ -401,8 +401,8 @@
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
     <string name="settings">Settings</string>
-    <string name="entry_go_prev">Previous page</string>
-    <string name="entry_go_next">Next page</string>
+    <string name="entry_go_prev">Previous article</string>
+    <string name="entry_go_next">Next article</string>
     <string name="colorSlotSaveLongTapHint">Tip: to save the current color make a long tap on one of the cells</string>
     <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
