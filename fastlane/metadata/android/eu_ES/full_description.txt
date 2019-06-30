@@ -26,14 +26,14 @@ Hona <i>Berri irakurle trebea</i>, ezaugarrietan aberatsa den eta lineaz kanpo e
 	<li><b>ideia onak</b>: estekatu gabeko artikuluen goiburuak ez dira tartean jarriko gehiago ;) ; orriak altueraren %90 korritzean irakurketa erosoago bihurtzen du, ez nahasgarria,</li>
 	<li><b>oso pertsonalizagarria</b>: <i>Sanatze zonen</i> tamaina, esteken kolore eta azpimarratzea... zehetasun ugari zehazki zuk nahi bezala doitu ditzakezu,</li>
 	<li><b>ezaugarri aurrerauak</b>: babes-kopia automatikoa (<i>.opml</i> formatuko fitxategira/tik inportatu esortatzea), <i>RSS</i> ez darabilten webguneen edukia, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b>ezaugarri interesgarri gehiago</b> "dendan", bisitatu gure webgunea gehiago jakiteko :) !,</li>
+	<li><b><u>garrantzitsua</u>:</b> aplikazioa hau EZ da sinkronizatzen lineako berri jarioen irakurleekin (adib. <i>Feedly</i>),</li>
+	<li><b>iruzkinak eta ideiak ongi etorriak dira;</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
-	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+<b>Non aurkitu gaitzakezu:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">iturburu-kodea<i>GitHub</i> biltegian</a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">hasiera orria</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">itzulpenak</a>;</li>
 </ul>
