@@ -10,20 +10,20 @@
 
 ...gozatu zure bizitza <b>distrakziorik gabe, eta zure interesen inguruan egunean zaudela</b> aldi berean. Jarri arreta mamian...
 
-Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
+Hona <i>Berri irakurle trebea</i>, ezaugarrietan aberatsa den eta lineaz kanpo erabiltzeko pentsatuta dagoen <i>RSS</i> irakurle bat, <b>zure denbora eta bakea aintzat duena</b>: gaur egun mugikorretan ohikoa den ez bezala arreta deitzea eta distraitzea eragozten du.
 
 <ul>
 <b><u>Ezaugarriak</u>:</b>
-	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
+	<li><b><u>artikulu osoak</u> eskura</b>: ez dago kanpo nabigatzaile baten beharrik testu osoa irakurtzeko,</li>
 	<li><b>irakurketa <u>erosoa</u></b>: aldatu artikuluak bolumen botoiekin edo pasatu hatza, <i>sakatze zonak</i>, irakurketaren posizioa gogoratzen du <u>artikuluko</u>,</li>
 	<li><b>artikulu garrantzitsuetarako jakinarazpenak</b>: Ez duzu garrantzitsutzat jotzen duzun ezer galduko,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
+	<li><b><i>"Irakurri geroago"</i></b>: Azkar gainbegiratu ditzakezu artikuluak, <b>eta izar batekin markatu aukeratutakoak gero irakurtzeko</b>denbora duzunean, edo besterik gabe gordetzeko,</li>
+	<li><b><i>"Kendu amaitutakoan"</i></b>, behin artikuluarekin amaitu duzula, automatikoki kendu daiteke <i>'gogokoetatik'</i> (=<i>'Irakurri geroago'</i>) nahiez gero,</li>
+	<li><b>lineaz kanpo erabiltzeko prest</b>, murgildu irakuketan distrakziorik gabe: behin eguneratuta ez dago ezer gehiago deskargatzeko beharrik, internet gabe ibiliko da :),</li>
+	<li><b>aurreztu banda zabalera</b>: konektatu soilik artikulu beriak eskuratzeko, ez bere bertsio osoa eskuratzeko artikulu bakoitzeko, kontrolatu zer deskargatzen den, eta zein neurritan,</li>
+	<li><b>keinuekin erabilgarria</b>: e.g. pasatu hatza gora artikulua <i>gogoko</i>etara gehitzeko edo gogokoetatik kentzeko, pasatu hatza pantailaren ezkerreko ertzetik distira doitzeko,</li>
+	<li><b>erabilterraza</b>: zaindu zure beiak gai ilun batekin, doitu testuaren tamaina, kolorea eta distira zure beharretara,</li>
+	<li><b>ideia onak</b>: estekatu gabeko artikuluen goiburuak ez dira tartean jarriko gehiago ;) ; orriak altueraren %90 korritzean irakurketa erosoago bihurtzen du, ez nahasgarria,</li>
 	<li><b>oso pertsonalizagarria</b>: <i>Sanatze zonen</i> tamaina, esteken kolore eta azpimarratzea... zehetasun ugari zehazki zuk nahi bezala doitu ditzakezu,</li>
 	<li><b>ezaugarri aurrerauak</b>: babes-kopia automatikoa (<i>.opml</i> formatuko fitxategira/tik inportatu esortatzea), <i>RSS</i> ez darabilten webguneen edukia, </li>
 	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
