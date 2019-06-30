@@ -1,14 +1,14 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Nire interes guztietan egunean jartzea ez da inoiz hain erraza izan".</i>
 
 <b><i>Berri irakurle trebea</i>: iragarkirik ez, doan, software librea <i>GNU GPL</i> lizentziapean.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>Egin zure ametsetako aldizkaria!</b></li>
+	<li><b>artikulu interesgarriak zuzen zure eskuetara</b></li>
+	<li><b>gozatu irakurketa behingoz</b></li>
 </ul>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
+...gozatu zure bizitza <b>distrakziorik gabe, eta zure interesen inguruan egunean zaudela</b> aldi berean. Jarri arreta mamian...
 
 Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
