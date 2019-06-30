@@ -28,7 +28,7 @@
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>Lehenetsia</item>
-        <item>Switch to next | previous article</item>
+        <item>Pasatu hurrengo | aurreko artikulura</item>
         <item>Orrialde gora | behera</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
