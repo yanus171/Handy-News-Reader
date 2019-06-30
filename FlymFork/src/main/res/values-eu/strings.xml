@@ -172,7 +172,7 @@
     <string name="menu_mark_as_unfavorite">Desmarkatu gogoko bezala</string>
     <string name="menu_mark_as_unread">Markatu irakurri gabe bezala</string>
     <string name="menu_reload_full_text">Birkargatu testu osoa</string>
-    <string name="menu_reload_full_text_without_mobilizer">Birkargatu Mobilizer gabe</string>
+    <string name="menu_reload_full_text_without_mobilizer">Birkargatu mugikorrera egokitu gabe</string>
     <string name="share_favorites_title">Berri irakurle trebea: izardun sarrerak</string>
     <string name="copied_clipboard">Esteka kopiatuta</string>
     <string name="get_full_text">Kargatu artikulu osoa</string>
@@ -284,6 +284,7 @@
     <string name="brightness_gesture">Distira aldatzeko keinua</string>
     <string name="brightness_gesture_descr">Markatu hau pantailaren ezkerreko ertzean hatza gora edo behera pasatuz distira aldatzeko</string>
     <string name="brightness_with_dim_activity">Software gainazala</string>
+    <string name="brightness_with_dim_activity_descr">Ilundu distira leihoaren atzealde kolorearen gardentasuna gutxiagotuz (markatu distira aldaketa arrunta ez badabil)</string>
     <string name="settings_category_behavior">Jakinarazpenak eta portaera</string>
     <string name="settings_category_behavior_summary">Artikulu berrien jakinarazpenak eta aplikazioaren portaera</string>
     <string name="settings_notifications_enabled">Gaitu jakinarazpenak</string>
@@ -308,12 +309,14 @@
     <string name="settings_display_text_color">Testuaren argitasuna</string>
     <string name="settings_visible_feeds">Jarioak ikusgai</string>
     <string name="settings_widget_background">Atzealdea</string>
+    <string name="settings_widget_background_description">Trepetaren atzealdearen kolore eta gardentasuna</string>
     <string name="all_feeds">Jario guztiak (etorkizunekoak barne)</string>
     <string name="downloadImage">Irudiak deskargatzen</string>
     <string name="loadFullText">Testu osoa kargatzen</string>
     <string name="deleteOldEntries">Ezabatu artikulu zaharrak</string>
     <string name="AllImages">Irudi guztiak</string>
     <string name="EntryImages">Sarreraren irudiak</string>
+    <string name="mobilizeAll">Mugikorrera egokitzen</string>
     <string name="RefreshFeeds">Jarioak eguneratzen</string>
     <string name="deleteImages">Ezabatu irudiak</string>
     <string name="applyOperations">Aplikatu eragiketak</string>
@@ -322,6 +325,7 @@
     <string name="parseXml">XML-a prozesatzen</string>
     <string name="setupConnection">Ezarri konexioa</string>
     <string name="settings_content_extract_rules">Edukia erauzteko arauak</string>
+    <string name="settings_content_extract_rules_description">Ezarri gune bakoitzeko (HTML jakin behar da)</string>
     <string name="settings_tap_zones_dialogtitle">informaziorako bakarrik, aldaketak ez eskuragarri</string>
     <string name="downloadNext">"Deskargatu hurrengoa "</string>
     <string name="loadingLink">Estekek kargatzen</string>
@@ -330,7 +334,9 @@
     <string name="addFeed">Gehitu jario bat</string>
     <string name="externalLinks">Irakurri geroago</string>
     <string name="markAllAsRead">Markatu denak irakurrita bezala</string>
+    <string name="pageUp">orrialdea gora / pasatu hatza behera izarra jarri edo kentzeko</string>
     <string name="pageDown">orrialdea behera</string>
+    <string name="fullScreenToggle">Txandakatu pantaila osoa</string>
     <string name="auto_refresh_feed">Automatikoki berritu jarioa</string>
     <string name="actionBarToggle">Txandakatu ekintza-barra</string>
     <string name="standard">Estandarra</string>
@@ -379,11 +385,13 @@
     <string name="settings">Ezarpenak</string>
     <string name="entry_go_prev">Aurreko orrialdea</string>
     <string name="entry_go_next">Hurrengo orrialdea</string>
+    <string name="colorSlotSaveLongTapHint">Aholkua: oraingo kolorea gordetzeko sakatu luze gelaxka batean</string>
     <string name="colorSlotSaved">Kolorea gelaxkan gorde da</string>
     <string name="text">Testua</string>
     <string name="background1">Atzealdea</string>
     <string name="auto_refresh_requires_charging">Kargatzean besterik ez</string>
     <string name="global_class_list_to_remove_from_article_text">Kendu testu-arauak</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">klasearen izena lerroko</string>
     <string name="hide">Ezkutatu</string>
     <string name="show">Erakutsi</string>
     <string name="setFullTextRoot">Hautatu testu osoaren kolore gisa</string>
@@ -391,6 +399,8 @@
     <string name="fullTextReloadStarted">Testu osoaren birkarga hasi da</string>
     <string name="brightness_update_from_system_period_min">Distira eguneratzeko denboa</string>
     <string name="brightness_update_from_system_period_min_descr">(minutuetan) Denbora hori igarota hatza pasatuz ezarritako distira sistemaren mailara itzuliko da</string>
+    <string name="menu_add_feed_shortcut">Sortu lasterbidea hasiera pantailan</string>
+    <string name="new_feed_shortcut_added">Lasterbide berri bat gehitu da hasiera pantailara</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>
