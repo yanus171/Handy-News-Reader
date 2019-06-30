@@ -397,6 +397,11 @@
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
     <string name="auto_refresh_requires_charging">Nur beim Laden</string>
+    <string name="global_class_list_to_remove_from_article_text">Textregeln entfernen</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">Klassenname pro Zeile</string>
+    <string name="hide">Ausblenden</string>
+    <string name="show">Anzeigen</string>
+    <string name="setFullTextRoot">Als Volltextstamm auswählen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
