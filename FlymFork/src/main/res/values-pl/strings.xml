@@ -400,7 +400,7 @@ GENERAL]]></string>
     <string name="text">Tekst</string>
     <string name="background1">Tło</string>
     <string name="auto_refresh_requires_charging">Tylko podczas ładowania urządzenia</string>
-    <string name="global_class_list_to_remove_from_article_text">Usuń reguły tekstu</string>
+    <string name="global_class_list_to_remove_from_article_text">Reguły usuwania treści</string>
     <string name="global_class_list_to_remove_from_article_text_summary">każda nazwa klasy w osobnej linii</string>
     <string name="hide">Ukryj</string>
     <string name="show">Pokaż</string>
