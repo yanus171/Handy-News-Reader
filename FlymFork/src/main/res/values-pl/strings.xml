@@ -201,7 +201,7 @@ GENERAL]]></string>
     <string name="settings_category_common">Ustawienia wspólne</string>
     <string name="settings_category_common_summary">Motyw</string>
     <string name="theme">Motyw</string>
-    <string name="customColors">Własne kolory czcionki</string>
+    <string name="customColors">Własne kolory</string>
     <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
     <string name="textColor">Kolor tekstu</string>
     <string name="settings_color_text_sample_short">Tekst</string>
