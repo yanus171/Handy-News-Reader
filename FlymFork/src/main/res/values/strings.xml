@@ -273,7 +273,7 @@
     <string name="article_text_footer_show_clock">Footer Clock</string>
     <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
     <string name="settings_clock_size">Text size of the Footer Clock</string>
-    <string name="article_text_footer_clock_color">Clock color</string>
+    <string name="article_text_footer_clock_color">Clock color and background</string>
     <string name="article_text_footer_clock_color_descr">Color of the footer clock</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
