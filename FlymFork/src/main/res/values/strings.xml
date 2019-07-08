@@ -202,7 +202,7 @@
     <string name="settings_category_common">Common settings</string>
     <string name="settings_category_common_summary">Theme</string>
     <string name="theme">Theme</string>
-    <string name="customColors">Custom font colors</string>
+    <string name="customColors">Custom colors</string>
     <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>
     <string name="textColor">Text and background color</string>
     <string name="settings_color_text_sample_short">Text</string>
