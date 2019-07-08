@@ -203,7 +203,7 @@ GENERAL]]></string>
     <string name="theme">Motyw</string>
     <string name="customColors">Własne kolory</string>
     <string name="fontColorsNotFromThemeSummary">w przeciwnym razie użyj kolorów motywu</string>
-    <string name="textColor">Kolor tekstu</string>
+    <string name="textColor">Kolor tekstu i tła</string>
     <string name="settings_color_text_sample_short">Tekst</string>
     <string name="settings_color_text_sample_long">\"Gdy zalecasz się do ładnej dziewczyny, godzina zdaje się sekundą. Gdy siedzisz na rozgrzanych węglach, sekunda zdaje się godziną. Tym właśnie jest względność\".\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Automatyczne odświeżanie</string>
@@ -248,7 +248,7 @@ GENERAL]]></string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
     <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
     <string name="textColorRead">Nieczytane artykuły</string>
-    <string name="textColorRead_descr">Kolor przeczytanych artykułów</string>
+    <string name="textColorRead_descr">Kolor tekstu i tła przeczytanych artykułów</string>
     <string name="settings_color_text_read_sample_short">Przeczytane</string>
     <string name="settings_color_text_read_sample_long">Przeczytane artykuły</string>
     <string name="settings_category_article_text">Tekst artykułu</string>
@@ -261,15 +261,15 @@ GENERAL]]></string>
     <string name="settings_entry_margins_description">Lewy | prawy</string>
     <string name="entry_text_align_justify">Tekst justowany</string>
     <string name="entry_text_align_justify_description">W przeciwnym razie wyrównany do lewej</string>
-    <string name="linkColor">Kolor linku</string>
-    <string name="linkColor_descr">Kolor hiperłączy</string>
+    <string name="linkColor">Kolor i tło linku</string>
+    <string name="linkColor_descr">Kolor i tło hiperłączy</string>
     <string name="settings_color_link_sample_short">Linki</string>
     <string name="settings_color_link_sample_long">Kolor linków</string>
     <string name="underline_links">Podkreślaj linki</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
     <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
-    <string name="article_text_footer_clock_color">Kolor zegarka</string>
+    <string name="article_text_footer_clock_color">Kolor i tło zegarka</string>
     <string name="article_text_footer_clock_color_descr">Kolor zegarka w stopce</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
