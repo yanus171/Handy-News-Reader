@@ -352,7 +352,7 @@ GENERAL]]></string>
     <string name="auto_image_load">Automatycznie wczytuj obrazki</string>
     <string name="show_progress_info">Szczegółowe informacje techniczne o postępie</string>
     <string name="show_progress_info_descr">Pokazuje szczegółowe informacje nt. aktualnie przeprowadzanej operacji</string>
-    <string name="vibrate_on_article_list_entry_swype">Wibruj przy przesunięciu w lewo/prawo</string>
+    <string name="vibrate_on_article_list_entry_swype">Wibruj przy przesunięciu palcem</string>
     <string name="vibrate_on_article_list_entry_swype_summary">W artykule na liście oraz w tekście artykułu podczas oznaczania gwiazdką</string>
     <string name="entry_marked_unfavourite">Artykuł został usunięty z Ulubionych</string>
     <string name="entry_marked_favourite">Artykuł został dodany do Ulubionych</string>
