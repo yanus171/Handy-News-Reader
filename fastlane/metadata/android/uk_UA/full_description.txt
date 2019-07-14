@@ -25,7 +25,7 @@
 	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
+	<li><b> налаштовується</b>: від <i>розміру Тап зон </i> до кольору посилань та підкреслень - є багато деталей, які Ви можете пристосувати саме до власних смаків й потреб,</li>
 	<li><b>додаткові можливості</b>:автоматичне резервування (експорт/імпорт в/з файл<i>.opml</i>), надання вмісту з без <i>RSS</i> вебсайтів, </li>
 	<li><b>багато цікавого</b> "in store" - завітайте на наш вебсайт щоб знайти більше :) !,</li>
 	<li><b><u>важливо</u>:</b> цей додаток НЕ синхронізується з online читалками новин (наприклад <i>Feedly</i>),</li>
