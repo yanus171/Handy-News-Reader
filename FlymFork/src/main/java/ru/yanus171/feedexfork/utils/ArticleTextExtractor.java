@@ -101,6 +101,8 @@ public class ArticleTextExtractor {
                     }
                 }
             }
+            if ( bestMatchElement == null )
+                bestMatchElement = doc;
         }
 
         if (mobilize == MobilizeType.Tags) {
@@ -221,9 +223,14 @@ public class ArticleTextExtractor {
                         result = doc.getElementById(elementValue);
                     else if (elementType.equals("class")) {
                         Elements elements = doc.getElementsByClass(elementValue);
-                        if (!elements.isEmpty())
-                            result = elements.first();
-                        else
+                        if (!elements.isEmpty()) {
+                            if ( elements.size() == 1 )
+                                result = elements.first();
+                            else {
+                                result = new Element("p");
+                                result.insertChildren(0, elements);
+                            }
+                        } else
                             result = doc;
                     }
                     break;

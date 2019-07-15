@@ -124,7 +124,7 @@ public class NetworkUtils {
                             byte[] buffer = new byte[2048];
                             int bufferLength;
                             FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
-                            while (!FetcherService.isCancelRefresh() && (bufferLength = inputStream.read(buffer)) > 0) {
+                            while (!FetcherService.isCancelRefresh() && ( bufferLength = inputStream.read(buffer) ) > 0) {
                                 if (isSizeLimit && size > maxImageDownloadSize) {
                                     abort = true;
                                     break;
@@ -229,6 +229,7 @@ public class NetworkUtils {
     public static String getUrlDomain(String link) {
         String result = link;
         result = result.replaceAll( "http.+?//", "" );
+        result = result.replaceAll( "http.+?/", "" );
         if ( result.endsWith( "/" ) )
             result = result.substring(0, result.length() );
         int index = result.lastIndexOf('/'); // this also covers https://

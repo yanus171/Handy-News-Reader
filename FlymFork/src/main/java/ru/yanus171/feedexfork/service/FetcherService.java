@@ -786,7 +786,6 @@ public class FetcherService extends IntentService {
                             operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(taskId)).withValues(values).build());
                         }
                     }
-                    EntryView.NotifyToUpdate( entryId );
                 } finally {
                     obs.End( status1 );
                 }

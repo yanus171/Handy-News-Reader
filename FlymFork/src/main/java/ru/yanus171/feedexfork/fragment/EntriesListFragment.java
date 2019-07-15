@@ -651,7 +651,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 return true;
             }
             case R.id.menu_add_feed_shortcut: {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                if (android.os.Build.VERSION.SDK_INT >= 0 ) { //android.os.Build.VERSION_CODES.M) {
                     //Adding shortcut for MainActivity on Home screen
 
                     String name = "";
@@ -684,7 +684,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
                     if (ShortcutManagerCompat.isRequestPinShortcutSupported(getContext())) {
                         final ShortcutManagerCompat shortcutManager;
-                            shortcutManager = getContext().getSystemService(ShortcutManagerCompat.class);
+                            shortcutManager = (ShortcutManagerCompat) getContext().getSystemService("shortcut");
 
                         ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString())
                                 .setIcon(image)

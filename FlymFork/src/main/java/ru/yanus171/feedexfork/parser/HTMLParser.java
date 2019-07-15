@@ -150,7 +150,7 @@ public class HTMLParser {
 				if (!matcher.find()) {
 					matcher = BASE_URL.matcher(feedUrl);
 					if (matcher.find()) {
-						link = matcher.group() + link;
+						link = matcher.group() + "/" + link;
 						link = link.replace( "//", "/" );
 					}
 				}
