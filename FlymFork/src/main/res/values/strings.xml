@@ -178,8 +178,8 @@
     <string name="menu_reload_full_text_without_mobilizer">Reload without Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: starred entries</string>
     <string name="copied_clipboard">Link copied</string>
-    <string name="get_full_text">Load full article.</string>
-    <string name="show_text_in_entry_list">Show original text on article list.</string>
+    <string name="get_full_text">Load full articles</string>
+    <string name="show_text_in_entry_list">Show original text on article list</string>
     <string name="original_text">Show original text</string>
     <string name="see_enclosure">Load the attachment</string>
     <string name="see_link">View in browser</string>
@@ -202,9 +202,9 @@
     <string name="settings_category_common">Common settings</string>
     <string name="settings_category_common_summary">Theme</string>
     <string name="theme">Theme</string>
-    <string name="customColors">Custom font colors</string>
+    <string name="customColors">Custom colors</string>
     <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>
-    <string name="textColor">Text color</string>
+    <string name="textColor">Text and background color</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWhen you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\u201d\n(Albert Einstein)</string>
 
@@ -251,7 +251,7 @@
     <string name="show_group_entrries_count">Group article count</string>
     <string name="show_group_entries_count_descr">may reduce performance</string>
     <string name="textColorRead">Read articles</string>
-    <string name="textColorRead_descr">Color of read articles</string>
+    <string name="textColorRead_descr">Read articles text and background color</string>
     <string name="settings_color_text_read_sample_short">Read</string>
     <string name="settings_color_text_read_sample_long">Read articles</string>
 
@@ -265,15 +265,15 @@
     <string name="settings_entry_margins_description">Left | right</string>
     <string name="entry_text_align_justify">Justified text</string>
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
-    <string name="linkColor">Link color</string>
-    <string name="linkColor_descr">Hyperlinks color</string>
+    <string name="linkColor">Link color and background</string>
+    <string name="linkColor_descr">Hyperlinks color and background</string>
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Color of links</string>
     <string name="underline_links">Underline links</string>
-    <string name="article_text_footer_show_clock">Footer-Clock</string>
+    <string name="article_text_footer_show_clock">Footer Clock</string>
     <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
-    <string name="settings_clock_size">Text size of the Footer-Clock</string>
-    <string name="article_text_footer_clock_color">Clock color</string>
+    <string name="settings_clock_size">Text size of the Footer Clock</string>
+    <string name="article_text_footer_clock_color">Clock color and background</string>
     <string name="article_text_footer_clock_color_descr">Color of the footer clock</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
@@ -345,7 +345,7 @@
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
     <string name="addFeed">Add a feed</string>
-    <string name="externalLinks">External links</string>
+    <string name="externalLinks">Read It Later</string>
     <string name="markAllAsRead">Mark all as read</string>
     <string name="pageUp">page up / swipe down to (un)star</string>
     <string name="pageDown">page down</string>
@@ -401,8 +401,8 @@
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
     <string name="settings">Settings</string>
-    <string name="entry_go_prev">Previous page</string>
-    <string name="entry_go_next">Next page</string>
+    <string name="entry_go_prev">Previous article</string>
+    <string name="entry_go_next">Next article</string>
     <string name="colorSlotSaveLongTapHint">Tip: to save the current color make a long tap on one of the cells</string>
     <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
@@ -416,9 +416,9 @@
     <string name="fullTextRoot">Full text root</string>
     <string name="fullTextReloadStarted">Full text reload has started</string>
     <string name="brightness_update_from_system_period_min">Brightness update time</string>
-    <string name="brightness_update_from_system_period_min_descr">In minutes. After that time period the brightness (by swipe) will restored from current system level</string>
-    <string name="menu_add_feed_shortcut">Add feed shortcut to homescreen</string>
-    <string name="new_feed_shortcut_added">New feed shortcut was added on homescreeen</string>
+    <string name="brightness_update_from_system_period_min_descr">(in minutes) After that time period the brightness (by swipe) will be restored from the current system level</string>
+    <string name="menu_add_feed_shortcut">Create a shortcut on Home Screen</string>
+    <string name="new_feed_shortcut_added">New shortcut has been created on Home Screen</string>
 
 
     <plurals name="number_of_new_entries">
