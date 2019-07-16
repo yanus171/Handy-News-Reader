@@ -116,8 +116,7 @@ public class EntryView extends WebView implements Observer {
     private long mEntryId = -1;
     public Runnable mScrollChangeListener = null;
     private float mOldContentHeight = 0;
-    private int mOldY = 0;
-
+    
     private static String GetCSS() { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold()
             + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; line-height: 120%} "
@@ -478,27 +477,33 @@ public class EntryView extends WebView implements Observer {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Dog.v("EntryView", "EntryView.this.scrollTo " + mScrollPartY);
+                Dog.v("EntryView", "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
                 if (mScrollPartY != 0 /*&& getContentHeight() != getScrollY()*/ ) {
-                    //EntryView.this.scrollTo(0, GetScrollY() );
-                    view.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            final float newHeight = GetContentHeight();
-                            if ( newHeight > mOldContentHeight && mOldContentHeight > 0 ) {
-                                mScrollPartY += (float) mOldY / newHeight - (float) mOldY / mOldContentHeight;
-                                Dog.v("EntryView", "EntryView.onPageFinished new ScrollPartY =" + mScrollPartY);
+                    if ( GetContentHeight() > 0 )
+                        ScrollToY();
+                    else
+                        view.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ScrollToY();
                             }
-                            if ( GetScrollY() > 0 )
-                                EntryView.this.scrollTo(0, GetScrollY() );
-                        }
-                        // Delay the scrollTo to make it work
-                    }, 300);
+                            // Delay the scrollTo to make it work
+                        }, 300);
                 }
             }
         });
 
         timer.End();
+    }
+
+    private void ScrollToY() {
+        final float newHeight = GetContentHeight();
+        if ( newHeight > mOldContentHeight && mOldContentHeight > 0 ) {
+            mScrollPartY += (float) GetScrollY() / newHeight - mScrollPartY;
+            Dog.v("EntryView", "EntryView.onPageFinished new ScrollPartY =" + mScrollPartY + ", GetScrollY() = " + GetScrollY() );
+        }
+        if ( GetScrollY() > 0 )
+            EntryView.this.scrollTo(0, GetScrollY() );
     }
 
 
@@ -528,12 +533,10 @@ public class EntryView extends WebView implements Observer {
     public void update(Observable observable, Object data) {
         if ( ( data != null ) && ( (Long)data == mEntryId ) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
-            //if ( GetViewScrollPartY() < mScrollPartY )
             mData = HtmlUtils.replaceImageURLs(mData, mEntryId, false);
             if ( GetViewScrollPartY() > 0 ) {
                 mScrollPartY = GetViewScrollPartY();
                 mOldContentHeight = GetContentHeight();
-                mOldY = getScrollY();
             }
             loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
         //setScrollY( y );

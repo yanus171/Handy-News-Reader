@@ -812,7 +812,6 @@ public class FetcherService extends IntentService {
 
     public static void downloadEntryImages( long entryId, ArrayList<String> imageList ) {
         StatusText.FetcherObservable obs = Status();
-        boolean wereChanges = false;
         int status = obs.Start(MainApplication.getContext().getString(R.string.EntryImages)); try {
             for( String imgPath: imageList ) {
                 if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
@@ -820,7 +819,6 @@ public class FetcherService extends IntentService {
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
                 try {
                     NetworkUtils.downloadImage(entryId, imgPath, true);
-                    wereChanges = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -828,8 +826,6 @@ public class FetcherService extends IntentService {
                 }
             }
         } finally { obs.End( status ); }
-        if ( wereChanges )
-            EntryView.NotifyToUpdate( entryId );
     }
 
 
