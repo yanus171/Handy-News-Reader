@@ -71,15 +71,21 @@ public class ArticleTextExtractor {
                                         MobilizeType mobilize,
                                         boolean isFindBestElement) {
         final Context context = MainApplication.getContext();
+
         if (doc == null)
             throw new NullPointerException("missing document");
 
+
+        doc.addClass( "Handy_News_Reader_root" );
+
         FetcherService.Status().AddBytes(doc.html().length());
+
         // now remove the clutter
         prepareDocument(doc, mobilize);
 
 
         final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+
 
         Element bestMatchElement = doc;
         if (mobilize != MobilizeType.No) {
@@ -206,7 +212,7 @@ public class ArticleTextExtractor {
     }
 
 
-    private static Element getBestElementFromFile(Document doc, final String url) {
+    private static Element getBestElementFromFile(Element doc, final String url) {
         Element result = null;
         for( String line: PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ).split( "\\n|\\s" ) ) {   //while ( result == null ) {
             if ( ( line == null ) || line.isEmpty() )
@@ -359,7 +365,7 @@ public class ArticleTextExtractor {
      * @param doc document to prepare. Passed as reference, and changed inside
      *            of function
      */
-    private static void prepareDocument(Document doc, MobilizeType mobilize) {
+    private static void prepareDocument(Element doc, MobilizeType mobilize) {
         // stripUnlikelyCandidates(doc);
         if ( mobilize == MobilizeType.Yes )
             removeSelectsAndOptions(doc);
@@ -383,7 +389,7 @@ public class ArticleTextExtractor {
 //            }
 //        }
 //    }
-    private static Document removeScriptsAndStyles(Document doc) {
+    private static Element removeScriptsAndStyles(Element doc) {
         Elements scripts = doc.getElementsByTag("script");
         for (Element item : scripts) {
             item.remove();
@@ -408,7 +414,7 @@ public class ArticleTextExtractor {
         return doc;
     }
 
-    private static Document removeSelectsAndOptions(Document doc) {
+    private static Element removeSelectsAndOptions(Element doc) {
         Elements scripts = doc.getElementsByTag("select");
         for (Element item : scripts) {
             item.remove();
@@ -428,7 +434,7 @@ public class ArticleTextExtractor {
     /**
      * @return a set of all meta nodes
      */
-    private static Collection<Element> getMetas(Document doc) {
+    private static Collection<Element> getMetas(Element doc) {
         Collection<Element> nodes = new HashSet<>(64);
         for (Element el : doc.select("head").select("meta")) {
             nodes.add(el);
@@ -439,7 +445,7 @@ public class ArticleTextExtractor {
     /**
      * @return a set of all important nodes
      */
-    private static Collection<Element> getNodes(Document doc) {
+    private static Collection<Element> getNodes(Element doc) {
         Collection<Element> nodes = new HashSet<>(64);
         for (Element el : doc.select("body").select("*")) {
             if (NODES.matcher(el.tagName()).matches()) {
