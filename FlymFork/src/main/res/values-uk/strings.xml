@@ -374,7 +374,7 @@
     <string name="brightness">Яскравість</string>
     <string name="brightness_change">Зміна яскравості</string>
     <string name="criticalErrorOccured">Виникла помилка. Надішліть цей текст розробнику</string>
-    <string name="criticalErrorSending">Надсилаю звіт…</string>
+    <string name="criticalErrorSending">Надіслати звіт…</string>
     <string name="copyToClipboard">В буфер</string>
     <string name="sendEmail">Надіслати email</string>
     <string name="toastAppCrashed">Додаток несподівано зупинився. Будь ласка надішліть звіт розробнику</string>
