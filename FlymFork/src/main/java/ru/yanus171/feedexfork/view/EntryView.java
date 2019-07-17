@@ -116,7 +116,7 @@ public class EntryView extends WebView implements Observer {
     private long mEntryId = -1;
     public Runnable mScrollChangeListener = null;
     private float mOldContentHeight = 0;
-    
+
     private static String GetCSS() { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold()
             + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; line-height: 120%} "
@@ -242,16 +242,8 @@ public class EntryView extends WebView implements Observer {
             getSettings().setBlockNetworkImage(true);
         }
 
-
-        // String baseUrl = "";
-        // try {
-        // URL url = new URL(mLink);
-        // baseUrl = url.getProtocol() + "://" + url.getHost();
-        // } catch (MalformedURLException ignored) {
-        // }
-        // do not put 'null' to the base url...
         mData = generateHtmlContent(feedID, title, link, contentText, enclosure, author, timestamp, preferFullText);
-        loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
+        LoadData();
         timer.End();
     }
 
@@ -534,13 +526,17 @@ public class EntryView extends WebView implements Observer {
         if ( ( data != null ) && ( (Long)data == mEntryId ) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
             mData = HtmlUtils.replaceImageURLs(mData, mEntryId, false);
-            if ( GetViewScrollPartY() > 0 ) {
-                mScrollPartY = GetViewScrollPartY();
-                mOldContentHeight = GetContentHeight();
-            }
-            loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
+            LoadData();
         //setScrollY( y );
         }
+    }
+
+    private void LoadData() {
+        if ( GetViewScrollPartY() > 0 ) {
+            mScrollPartY = GetViewScrollPartY();
+            mOldContentHeight = GetContentHeight();
+        }
+        loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
     }
 
     private static int NOTIFY_OBSERVERS_DELAY_MS = 500;
