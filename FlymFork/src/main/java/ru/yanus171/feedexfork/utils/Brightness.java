@@ -95,7 +95,7 @@ public class Brightness {
         final long period = PrefUtils.getIntFromText( "settings_brightness_read_from_system_period_min", 10 ) * 1000 * 60;
         final long now = new Date().getTime();
         int brightness = PrefUtils.getInt( PrefUtils.LAST_BRIGHTNESS, 0 );
-        if ( now - PrefUtils.getLong( PrefUtils.LAST_BRIGHTNESS_ONPAUSE_TIME, now ) > period )
+        if ( period != 0 && now - PrefUtils.getLong( PrefUtils.LAST_BRIGHTNESS_ONPAUSE_TIME, now ) > period )
             //brightness = 255 - (int) (mActivity.getWindow().getAttributes().screenBrightness / (float)255 * 100);
             brightness = 255 - android.provider.Settings.System.getInt(mActivity.getContentResolver(), SCREEN_BRIGHTNESS, brightness);
         SetBrightness( brightness );
