@@ -411,6 +411,7 @@ GENERAL]]></string>
     <string name="brightness_update_from_system_period_min_descr">(w minutach) Po upłynięciu tego czasu jasność tekstu zostanie przywrócona do aktualnego systemowego poziomu jasności</string>
     <string name="menu_add_feed_shortcut">Utwórz skrót na pulpicie</string>
     <string name="new_feed_shortcut_added">Nowy skrót został utworzony na pulpicie</string>
+    <string name="custom_data_folder">Własna lokalizacja plików</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
