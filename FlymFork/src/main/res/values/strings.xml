@@ -420,7 +420,7 @@
     <string name="menu_add_feed_shortcut">Create a shortcut on Home Screen</string>
     <string name="new_feed_shortcut_added">New shortcut has been created on Home Screen</string>
     <string name="custom_data_folder">Custom external files path</string>
-    <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backups</string>
+    <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backup</string>
 
 
     <plurals name="number_of_new_entries">
