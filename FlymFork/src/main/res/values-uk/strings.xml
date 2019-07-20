@@ -405,6 +405,8 @@
     <string name="brightness_update_from_system_period_min_descr">(в хвилинах) Через який час яскравість змінена за допомогою свайпа буде відновлена до існуючого загального рівня</string>
     <string name="menu_add_feed_shortcut">Додати ярлик стрічки на домашній екран</string>
     <string name="new_feed_shortcut_added">Новий ярлик стрічки був доданий на домашній екран</string>
+    <string name="custom_data_folder">Власна тека для зовнішніх файлів</string>
+    <string name="custom_data_folder_descr">(порожньо - використовувати за замовчуванням) шлях до теки де будуть зберігатись завантажені зображення та резервні копії</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
