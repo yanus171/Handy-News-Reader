@@ -43,7 +43,8 @@ public class FileUtils {
     }
 
     public static File GetFolder() {
-        File result = new File(Environment.getExternalStorageDirectory(), "feedex/");
+        final String customPath = PrefUtils.getString( PrefUtils.CUSTOM_DATA_FOLDER, "" ).trim();
+        File result = new File(customPath.isEmpty() ? Environment.getExternalStorageDirectory() : new File( customPath ), "feedex/");
         if ( !result.exists() )
             if ( !result.mkdirs() ) {
                 /*FetcherService.mHandler.post(new Runnable() {

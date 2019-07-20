@@ -50,6 +50,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -93,20 +94,18 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         preference = findPreference(PrefUtils.REFRESH_INTERVAL);
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
 
-        preference = findPreference(PrefUtils.THEME);
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        Preference.OnPreferenceChangeListener onRestartPreferenceChangeListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PrefUtils.putString(PrefUtils.THEME, (String) newValue);
-
+                PrefUtils.putString(preference.getKey(), (String) newValue);
                 PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
-
-                android.os.Process.killProcess(android.os.Process.myPid()); // Restart the app
-
+                Process.killProcess(Process.myPid()); // Restart the app
                 // this return statement will never be reached
                 return true;
             }
-        });
+        };
+        findPreference(PrefUtils.THEME).setOnPreferenceChangeListener(onRestartPreferenceChangeListener);
+        findPreference(PrefUtils.CUSTOM_DATA_FOLDER).setOnPreferenceChangeListener(onRestartPreferenceChangeListener);
 
         preference = findPreference(PrefUtils.LANGUAGE);
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

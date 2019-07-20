@@ -74,6 +74,8 @@ public class PrefUtils {
     public static final String ENTRY_MAGRINS = "entry_margins";
     public static final String ENTRY_TEXT_ALIGN_JUSTIFY = "entry_text_align_justify";
     public static final String LANGUAGE = "language";
+    public static final String CUSTOM_DATA_FOLDER = "custom_data_folder";
+
 
     public static final String CONTENT_EXTRACT_RULES = "content_extract_rules";
     public static final String LOAD_COMMENTS = "load_comments";

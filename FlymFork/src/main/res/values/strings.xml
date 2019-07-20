@@ -419,6 +419,8 @@
     <string name="brightness_update_from_system_period_min_descr">(in minutes) After that time period the brightness (by swipe) will be restored from the current system level (0 - off)</string>
     <string name="menu_add_feed_shortcut">Create a shortcut on Home Screen</string>
     <string name="new_feed_shortcut_added">New shortcut has been created on Home Screen</string>
+    <string name="custom_data_folder">Custom external files path</string>
+    <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backups</string>
 
 
     <plurals name="number_of_new_entries">
