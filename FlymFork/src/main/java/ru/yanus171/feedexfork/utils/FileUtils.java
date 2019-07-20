@@ -70,6 +70,12 @@ public class FileUtils {
             mGetImagesFolder = new File(GetFolder(), "images/");
             if (!mGetImagesFolder.exists())
                 MakeDirs( mGetImagesFolder );
+            try {
+                File file = new File( mGetImagesFolder.toString() + "/.nomedia" );
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
                 //Toast.makeText(MainApplication.getContext(), "Cannot create dir " + result.getAbsolutePath(), Toast.LENGTH_LONG ).show();
         return mGetImagesFolder;

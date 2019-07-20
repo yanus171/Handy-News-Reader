@@ -178,7 +178,7 @@ public class HtmlUtils {
                         if ( ( index <= FetcherService.mMaxImageDownloadCount ) || ( FetcherService.mMaxImageDownloadCount == 0 ) ) {
                             if ( isDownLoadImages )
                                 imagesToDl.add(srcText);
-                            content = content.replace(imgTagText, //getDownloadImageHtml(srcText) +
+                            content = content.replace(imgTagText,
                                                         imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
                                                                             .replaceAll( "alt=\"[^\"]+?\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )
                                                                             .replace( "alt=\"\"", "alt=\"" + getString( R.string.downloadOneImage ) + "\" " )

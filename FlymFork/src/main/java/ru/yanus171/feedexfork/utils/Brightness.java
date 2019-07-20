@@ -56,7 +56,7 @@ public class Brightness {
                         mInitialAlpha = mCurrentAlpha;
                         Dog.v( "onTouch ACTION_DOWN" );
                         return true;
-                    } else  if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
+                    } else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
 
                         currentX = (int) event.getX();
                         currentY = (int) event.getY();

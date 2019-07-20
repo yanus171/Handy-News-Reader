@@ -454,6 +454,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 }
             }
         }
+        findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
     }
 
     private void UpdateSpinnerGroup() {
