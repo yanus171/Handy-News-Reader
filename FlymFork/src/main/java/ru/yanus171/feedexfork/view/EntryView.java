@@ -242,6 +242,13 @@ public class EntryView extends WebView implements Observer {
             getSettings().setBlockNetworkImage(true);
         }
 
+        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  )));
+        // Text zoom level from preferences
+        int fontSize = PrefUtils.getFontSize();
+        if (fontSize != 0) {
+            getSettings().setTextZoom(100 + (fontSize * 20));
+        }
+
         mData = generateHtmlContent(feedID, title, link, contentText, enclosure, author, timestamp, preferFullText);
         LoadData();
         timer.End();
@@ -307,12 +314,6 @@ public class EntryView extends WebView implements Observer {
         setHorizontalScrollBarEnabled(false);
         getSettings().setUseWideViewPort(true);
         // For color
-        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  )));
-        // Text zoom level from preferences
-        int fontSize = PrefUtils.getFontSize();
-        if (fontSize != 0) {
-            getSettings().setTextZoom(100 + (fontSize * 20));
-        }
 
         // For javascript
         getSettings().setJavaScriptEnabled(true);
