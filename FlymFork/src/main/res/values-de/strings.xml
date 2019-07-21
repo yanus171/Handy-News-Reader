@@ -402,6 +402,13 @@
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
     <string name="setFullTextRoot">Als Volltextstamm auswählen</string>
+    <string name="fullTextReloadStarted">Neuladen des Volltextes wurde gestartet</string>
+    <string name="brightness_update_from_system_period_min">Zeit für Helligkeitsaktualisierung</string>
+    <string name="brightness_update_from_system_period_min_descr">(in Minuten) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) aus der aktuellen Systemstufe (0 - Aus) wiederhergestellt</string>
+    <string name="menu_add_feed_shortcut">Verknüpfung auf dem Startbildschirm erstellen</string>
+    <string name="new_feed_shortcut_added">Neue Verknüpfung wurde erfolgreich auf dem Startbildschirm hinzugefügt</string>
+    <string name="custom_data_folder">Benutzerdefinierter Pfad für externe Dateien</string>
+    <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
