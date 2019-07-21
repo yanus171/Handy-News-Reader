@@ -198,9 +198,9 @@
     <string name="settings_category_common">Allgemeine Einstellungen</string>
     <string name="settings_category_common_summary">Thema</string>
     <string name="theme">Thema</string>
-    <string name="customColors">Eigene Textfarben</string>
+    <string name="customColors">Benutzerdefinierte Farben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
-    <string name="textColor">Textfarbe</string>
+    <string name="textColor">TextfarbeText- und Hintergrundfarbe</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\u201c\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
@@ -402,6 +402,7 @@
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
     <string name="setFullTextRoot">Als Volltextstamm auswählen</string>
+    <string name="fullTextRoot">Volltext-Stammverzeichnis</string>
     <string name="fullTextReloadStarted">Neuladen des Volltextes wurde gestartet</string>
     <string name="brightness_update_from_system_period_min">Zeit für Helligkeitsaktualisierung</string>
     <string name="brightness_update_from_system_period_min_descr">(in Minuten) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) aus der aktuellen Systemstufe (0 - Aus) wiederhergestellt</string>
