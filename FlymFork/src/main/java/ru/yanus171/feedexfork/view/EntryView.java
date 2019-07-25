@@ -115,7 +115,7 @@ public class EntryView extends WebView implements Observer {
 
     private long mEntryId = -1;
     public Runnable mScrollChangeListener = null;
-    private float mOldContentHeight = 0;
+    private double mOldContentHeight = 0;
 
     private static String GetCSS() { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold()
@@ -188,7 +188,7 @@ public class EntryView extends WebView implements Observer {
     public static final ImageDownloadObservable mImageDownloadObservable = new ImageDownloadObservable();
     private EntryViewManager mEntryViewMgr;
     public String mData = "";
-    public float mScrollPartY = 0;
+    public double mScrollPartY = 0;
 
     private EntryActivity mActivity;
 
@@ -490,9 +490,9 @@ public class EntryView extends WebView implements Observer {
     }
 
     private void ScrollToY() {
-        final float newHeight = GetContentHeight();
+        final double newHeight = GetContentHeight();
         if ( newHeight > mOldContentHeight && mOldContentHeight > 0 ) {
-            mScrollPartY += (float) GetScrollY() / newHeight - mScrollPartY;
+            mScrollPartY += (double) GetScrollY() / newHeight - mScrollPartY;
             Dog.v("EntryView", "EntryView.onPageFinished new ScrollPartY =" + mScrollPartY + ", GetScrollY() = " + GetScrollY() );
         }
         if ( GetScrollY() > 0 )
@@ -657,11 +657,11 @@ public class EntryView extends WebView implements Observer {
         return GetContentHeight() * mScrollPartY != 0 ? ( int )( GetContentHeight() * mScrollPartY ) : 0;
     }
 
-    public float GetContentHeight() {
+    public double GetContentHeight() {
         return getContentHeight() * getScale();
     }
 
-    public float GetViewScrollPartY() {
+    public double GetViewScrollPartY() {
         return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0 ;
     }
 
@@ -675,7 +675,7 @@ public class EntryView extends WebView implements Observer {
     }
 
     public void SaveScrollPos() {
-        final float scrollPart = GetViewScrollPartY();
+        final double scrollPart = GetViewScrollPartY();
         Dog.v(TAG, String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight() ));
         new Thread() {
             @Override

@@ -1250,7 +1250,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     String title = "";
                     String feedID = "";
                     String enclosure = "";
-                    float scrollPart = 0;
+                    double scrollPart = 0;
                     try {
                         contentText = newCursor.getString(mMobilizedHtmlPos);
                         feedID = newCursor.getString(mFeedIDPos);
@@ -1271,7 +1271,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         title = newCursor.getString(mTitlePos);
                         enclosure = newCursor.getString(mEnclosurePos);
                         if ( !newCursor.isNull(mScrollPosPos) )
-                            scrollPart = newCursor.getFloat(mScrollPosPos);
+                            scrollPart = newCursor.getDouble( mScrollPosPos);
 
                     } catch ( IllegalStateException e ) {
                         e.printStackTrace();
