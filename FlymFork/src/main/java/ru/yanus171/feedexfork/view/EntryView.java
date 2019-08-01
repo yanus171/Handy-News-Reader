@@ -59,6 +59,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
@@ -310,6 +311,9 @@ public class EntryView extends WebView implements Observer {
         Timer timer = new Timer( "EntryView.init" );
 
         mImageDownloadObservable.addObserver(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            setTextDirection( TEXT_DIRECTION_LOCALE );
         // For scrolling
         setHorizontalScrollBarEnabled(false);
         getSettings().setUseWideViewPort(true);
@@ -320,10 +324,11 @@ public class EntryView extends WebView implements Observer {
         addJavascriptInterface(mInjectedJSObject, mInjectedJSObject.toString());
         addJavascriptInterface(mImageDownloadObject, mImageDownloadObject.toString());
 
+
         // For HTML5 video
         setWebChromeClient(new WebChromeClient() {
             private View mCustomView;
-            private WebChromeClient.CustomViewCallback mCustomViewCallback;
+            private CustomViewCallback mCustomViewCallback;
 
             @Override
             public void onShowCustomView(View view, CustomViewCallback callback) {
