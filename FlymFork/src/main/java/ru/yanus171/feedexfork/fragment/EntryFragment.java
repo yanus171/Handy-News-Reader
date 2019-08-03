@@ -519,9 +519,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_star: {
 
                     SetIsFavourite( !mFavorite );
-
-                    if ( !mFavorite )
-                        CloseEntry();
                     break;
                 }
                 case R.id.menu_share: {
