@@ -60,7 +60,6 @@ import android.text.TextUtils;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -143,7 +142,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
                         PreferenceScreen screen = (PreferenceScreen) preference;
                         Brightness br = activity.mBrightness;
                         if (screen.getDialog() != null)
-                            Brightness.SetBrightness(br.mCurrentAlpha, screen.getDialog().getWindow());
+                            Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow());
                         return false;
                     }
                 });
@@ -190,7 +189,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         if ( preference instanceof PreferenceScreen ) {
             PreferenceScreen screen = (PreferenceScreen) preference;
             Brightness br =  ((BaseActivity) getActivity() ).mBrightness;
-            Brightness.SetBrightness( br.mCurrentAlpha, screen.getDialog().getWindow() );
+            Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow() );
         }
         return true;
     }
