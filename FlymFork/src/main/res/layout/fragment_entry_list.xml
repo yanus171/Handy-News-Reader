@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-    android:gravity="left|top">
+    android:gravity="start|top">
     <Button
         android:id="@+id/refreshListBtn"
         android:layout_width="match_parent"
@@ -15,7 +15,9 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/bg_refresh_list_button_selector"
         android:textColor="@android:color/white"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -32,8 +34,8 @@
         android:layout_alignParentTop="true"
         android:text="status"
         android:visibility="visible"
-        android:layout_gravity="left|top"
-        android:gravity="left|top" />
+        android:layout_gravity="start|top"
+        android:gravity="start|top" />
     <TextView
         android:id="@+id/errorText"
         android:layout_width="match_parent"
@@ -42,8 +44,8 @@
         android:text="error"
         android:textColor="#FF0000"
         android:visibility="visible"
-        android:layout_gravity="left|top"
-        android:gravity="left|top" />
+        android:layout_gravity="start|top"
+        android:gravity="start|top" />
 
     <FrameLayout
         android:layout_width="match_parent"

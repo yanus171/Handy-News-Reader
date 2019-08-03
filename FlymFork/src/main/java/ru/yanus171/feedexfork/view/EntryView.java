@@ -80,6 +80,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -166,7 +167,7 @@ public class EntryView extends WebView implements Observer {
             return "left";
     }
 
-    private static final String BODY_START = "<body>";
+    private static final String BODY_START = "<body dir=\"%s\">";
     private static final String BODY_END = "</body>";
     private static final String TITLE_START = "<h1>";
     //private static final String TITLE_MIDDLE = "'>";
@@ -254,11 +255,20 @@ public class EntryView extends WebView implements Observer {
         LoadData();
         timer.End();
     }
+    public static boolean isRTL() {
+        return isRTL(Locale.getDefault());
+    }
+
+    public static boolean isRTL(Locale locale) {
+        final int directionality = Character.getDirectionality(locale.getDisplayName().charAt(0));
+        return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
+    }
 
     private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS()).append(BODY_START);
+        StringBuilder content = new StringBuilder(GetCSS()).append(String.format(  BODY_START, isRTL() ? "rtl" : "inherit" ) );
 
         if (link == null) {
             link = "";

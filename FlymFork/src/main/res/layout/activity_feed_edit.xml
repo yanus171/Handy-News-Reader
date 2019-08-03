@@ -6,7 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
 
         <include layout="@layout/view_toolbar" />
 
@@ -138,7 +140,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/feed_title"
                                         android:layout_alignParentRight="true"
-                                        android:orientation="horizontal">
+                                        android:orientation="horizontal"
+                                        android:layout_alignParentEnd="true">
 
                                         <CheckBox
                                             android:id="@+id/has_group"
@@ -160,7 +163,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/layout_group"
                                         android:layout_alignParentRight="true"
-                                        android:text="@string/get_full_text" />
+                                        android:text="@string/get_full_text"
+                                        android:layout_alignParentEnd="true" />
 
                                     <CheckBox
                                         android:id="@+id/show_text_in_entry_list"
@@ -169,7 +173,8 @@
                                         android:layout_below="@+id/retrieve_fulltext"
                                         android:layout_alignParentRight="true"
                                         android:singleLine="false"
-                                        android:text="@string/show_text_in_entry_list" />
+                                        android:text="@string/show_text_in_entry_list"
+                                        android:layout_alignParentEnd="true" />
 
                                     <CheckBox
                                         android:id="@+id/auto_refresh"
@@ -177,7 +182,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/show_text_in_entry_list"
                                         android:layout_alignParentRight="true"
-                                        android:text="@string/auto_refresh_feed" />
+                                        android:text="@string/auto_refresh_feed"
+                                        android:layout_alignParentEnd="true" />
 
                                     <CheckBox
                                         android:id="@+id/auto_image_load"
@@ -185,7 +191,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/auto_refresh"
                                         android:layout_alignParentRight="true"
-                                        android:text="@string/auto_image_load" />
+                                        android:text="@string/auto_image_load"
+                                        android:layout_alignParentEnd="true" />
 
                                     <LinearLayout
                                         android:id="@+id/layout_keeptime"
@@ -193,7 +200,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/feed_title"
                                         android:layout_alignParentRight="true"
-                                        android:orientation="horizontal">
+                                        android:orientation="horizontal"
+                                        android:layout_alignParentEnd="true">
 
                                         <CheckBox
                                             android:id="@+id/cbCustomKeepTime"

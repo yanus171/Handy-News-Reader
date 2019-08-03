@@ -4,17 +4,19 @@
     android:id="@+id/btnLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom|right"
+    android:layout_gravity="bottom|end"
     android:paddingBottom="0dp"
     android:paddingLeft="10dp"
     android:paddingRight="5dp"
     android:paddingTop="0dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="5dp">
 
     <ImageView
         android:id="@+id/mobilized_icon"
         android:layout_width="30dp"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:layout_height="30dp"
         android:scaleType="fitCenter"
         android:alpha="0.5"
@@ -29,7 +31,8 @@
         android:scaleType="fitCenter"
         android:paddingRight="5dp"
         android:alpha="0.5"
-        android:src="@drawable/rounded_checbox_white" />
+        android:src="@drawable/rounded_checbox_white"
+        android:paddingEnd="5dp" />
 
     <ImageView
         android:id="@+id/favorite_icon"
@@ -38,6 +41,7 @@
         android:scaleType="fitCenter"
         android:paddingRight="5dp"
         android:alpha="0.5"
-        android:src="@drawable/star_yellow" />
+        android:src="@drawable/star_yellow"
+        android:paddingEnd="5dp" />
 
 </LinearLayout>
