@@ -184,10 +184,9 @@ public class NetworkUtils {
 
                 File[] files = FileUtils.GetImagesFolder().listFiles(filenameFilter);
                 if (files != null) {
-                    int i = 0;
+                    if ( files.length > 0 )
+                        FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d", files.length ) );
                     for (File file : files) {
-                        i++;
-                        FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d/%d", i, files.length ) );
                         file.delete();
                         if ( FetcherService.isCancelRefresh() )
                             break;

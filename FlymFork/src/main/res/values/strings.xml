@@ -331,7 +331,7 @@
     <string name="EntryImages">Entry images</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Updating feeds</string>
-    <string name="deleteImages">Delete images</string>
+    <string name="deleteImages">Images deleting:</string>
     <string name="applyOperations">Apply operations</string>
     <string name="extractContent">Extracting content</string>
     <string name="improveHtmlContent">Improving HTML content</string>
