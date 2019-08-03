@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package ru.yanus171.feedexfork.utils
 
 import android.annotation.SuppressLint
@@ -18,14 +20,12 @@ import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
 
 class Brightness(private val mActivity: Activity, rootView: View) {
-    private val mDimFrame: View
-    private val mInfo: TextView?
+    private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
+    private val mInfo: TextView = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha = 128
 
     init {
-        mDimFrame = rootView.findViewById(R.id.dimFrame)
-        mInfo = rootView.findViewById(R.id.brightnessInfo)
-        mInfo!!.visibility = View.GONE
+        mInfo.visibility = View.GONE
         mCurrentAlpha = PrefUtils.getInt(PrefUtils.LAST_BRIGHTNESS, mCurrentAlpha)
         UiUtils.HideButtonText(rootView, R.id.brightnessSlider, true)
         SetSize(rootView, R.id.brightnessSlider, GetTapZoneSize(), MATCH_PARENT)
@@ -43,44 +43,47 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                 @SuppressLint("ClickableViewAccessibility", "DefaultLocale")
                 override fun onTouch(view1: View, event: MotionEvent): Boolean {
 
-                    if (event.action == MotionEvent.ACTION_DOWN) {
-                        paddingX = 0
-                        paddingY = 0
-                        initialX = event.x.toInt()
-                        initialY = event.y.toInt()
-                        currentX = event.x.toInt()
-                        currentY = event.y.toInt()
-                        mInitialAlpha = mCurrentAlpha
-                        Dog.v("onTouch ACTION_DOWN")
-                        return true
-                    } else if (event.action == MotionEvent.ACTION_MOVE) {
-
-                        currentX = event.x.toInt()
-                        currentY = event.y.toInt()
-                        paddingX = currentX - initialX
-                        paddingY = currentY - initialY
-
-                        if (Math.abs(paddingY) > Math.abs(paddingX) && Math.abs(initialY - event.y) > view1.width) {
-                            Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY")
-                            var currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.height / 5
-                            if (currentAlpha > 255)
-                                currentAlpha = 255
-                            else if (currentAlpha < 1)
-                                currentAlpha = 1
-                            setBrightness(currentAlpha)
-                            mInfo.visibility = View.VISIBLE
-                            mInfo.text = String.format("%s: %d %%",
-                                    mInfo.context.getString(R.string.brightness),
-                                    ((255 - currentAlpha) / 255.toFloat() * 100).toInt())
+                    when {
+                        event.action == MotionEvent.ACTION_DOWN -> {
+                            paddingX = 0
+                            paddingY = 0
+                            initialX = event.x.toInt()
+                            initialY = event.y.toInt()
+                            currentX = event.x.toInt()
+                            currentY = event.y.toInt()
+                            mInitialAlpha = mCurrentAlpha
+                            Dog.v("onTouch ACTION_DOWN")
+                            return true
                         }
-                        return true
-                    } else if (event.action == MotionEvent.ACTION_UP) {
-                        if (mInfo != null)
+                        event.action == MotionEvent.ACTION_MOVE -> {
+
+                            currentX = event.x.toInt()
+                            currentY = event.y.toInt()
+                            paddingX = currentX - initialX
+                            paddingY = currentY - initialY
+
+                            if (Math.abs(paddingY) > Math.abs(paddingX) && Math.abs(initialY - event.y) > view1.width) {
+                                Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY")
+                                var currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.height / 5
+                                if (currentAlpha > 255)
+                                    currentAlpha = 255
+                                else if (currentAlpha < 1)
+                                    currentAlpha = 1
+                                setBrightness(currentAlpha)
+                                mInfo.visibility = View.VISIBLE
+                                mInfo.text = String.format("%s: %d %%",
+                                        mInfo.context.getString(R.string.brightness),
+                                        ((255 - currentAlpha) / 255.toFloat() * 100).toInt())
+                            }
+                            return true
+                        }
+                        event.action == MotionEvent.ACTION_UP -> {
                             mInfo.visibility = View.GONE
-                        return false
+                            return false
+                        }
+                        else -> return false
                     }
 
-                    return false
                 }
             })
 
