@@ -412,7 +412,7 @@ GENERAL]]></string>
     <string name="menu_add_feed_shortcut">Utwórz skrót na pulpicie</string>
     <string name="new_feed_shortcut_added">Nowy skrót został utworzony na pulpicie</string>
     <string name="custom_data_folder">Własna lokalizacja plików</string>
-    <string name="custom_data_folder_descr">(puste - użyj domyślnej) ścieżka do folderu feedex, przechowującego kopię zapasową oraz obrazki</string>
+    <string name="custom_data_folder_descr">(puste - użyj domyślnej) ścieżka do folderu feedex, przechowującego kopię zapasową oraz pobrane obrazki</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
