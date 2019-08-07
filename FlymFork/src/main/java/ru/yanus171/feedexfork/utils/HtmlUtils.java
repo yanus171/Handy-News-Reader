@@ -98,8 +98,8 @@ public class HtmlUtils {
             // fix non http image paths
             content = NON_HTTP_IMAGE_PATTERN.matcher(content).replaceAll(" $1=$2http://");
             // remove trailing BR & too much BR
-            content = START_BR_PATTERN.matcher(content).replaceAll("");
-            content = END_BR_PATTERN.matcher(content).replaceAll("");
+            //content = START_BR_PATTERN.matcher(content).replaceAll("");
+            //content = END_BR_PATTERN.matcher(content).replaceAll("");
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
             if ( !baseUri.contains( "user" ) ) {
                 content = REF_REPLY_PATTERN.matcher(content).replaceAll("");

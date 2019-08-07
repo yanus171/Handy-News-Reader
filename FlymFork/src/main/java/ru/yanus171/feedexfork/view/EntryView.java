@@ -126,6 +126,7 @@ public class EntryView extends WebView implements Observer {
             + "h1, h2 {font-weight: normal; line-height: 130%} "
             + "h1 {font-size: 170%; text-align:center; margin-bottom: 0.1em} "
             + "h2 {font-size: 140%} "
+            + "a.no_draw_link {color: " + Theme.GetTextColor()  + "; background: " + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; text-decoration: none" + "}"
             + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) +
             ( PrefUtils.getBoolean( "underline_links", true ) ? "" : "; text-decoration: none" ) + "}"
             + "h1 {color: inherit; text-decoration: none}"
@@ -163,15 +164,17 @@ public class EntryView extends WebView implements Observer {
     private static String getAlign() {
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false ) )
             return "justify";
+        else if ( isRTL() )
+            return "right";
         else
             return "left";
     }
 
     private static final String BODY_START = "<body dir=\"%s\">";
     private static final String BODY_END = "</body>";
-    private static final String TITLE_START = "<h1>";
+    private static final String TITLE_START = "<h1><a class='no_draw_link' href=\"%s\">";
     //private static final String TITLE_MIDDLE = "'>";
-    private static final String TITLE_END = "</h1>";
+    private static final String TITLE_END = "</a></h1>";
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
@@ -273,7 +276,8 @@ public class EntryView extends WebView implements Observer {
         if (link == null) {
             link = "";
         }
-        content.append(TITLE_START).append(title).append(TITLE_END).append(SUBTITLE_START);
+
+        content.append(String.format( TITLE_START, link )).append(title).append(TITLE_END).append(SUBTITLE_START);
         Date date = new Date(timestamp);
         Context context = getContext();
         StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
@@ -450,7 +454,8 @@ public class EntryView extends WebView implements Observer {
                                 Drawable dr = getResources().getDrawable(items[position].icon);
                                 Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
                                 Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
-                                tv.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+                                d.setBounds( 0, 0, dp50, dp50);
+                                tv.setCompoundDrawables(d, null, null, null);
 
                                 //Add margin between image and text (support various screen densities)
                                 int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
