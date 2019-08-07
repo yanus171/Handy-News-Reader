@@ -28,7 +28,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import ru.yanus171.feedexfork.MainApplication;
 
 import static ru.yanus171.feedexfork.utils.Theme.DARK;
-import static ru.yanus171.feedexfork.utils.Theme.LIGHT;
 
 public class PrefUtils {
 

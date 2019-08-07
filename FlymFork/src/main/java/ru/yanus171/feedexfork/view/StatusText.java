@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -289,8 +289,8 @@ public class StatusText implements Observer {
                     new NotificationCompat.BigTextStyle();
             bigTextStyle.bigText(text);
             bigTextStyle.setBigContentTitle(title);
-            android.support.v4.app.NotificationCompat.Builder builder =
-                    new android.support.v4.app.NotificationCompat.Builder(MainApplication.getContext()) //
+            androidx.core.app.NotificationCompat.Builder builder =
+                    new androidx.core.app.NotificationCompat.Builder(MainApplication.getContext()) //
                             .setSmallIcon(R.drawable.refresh) //
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
                             .setStyle(bigTextStyle)

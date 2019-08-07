@@ -19,7 +19,7 @@
 
 package ru.yanus171.feedexfork.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
