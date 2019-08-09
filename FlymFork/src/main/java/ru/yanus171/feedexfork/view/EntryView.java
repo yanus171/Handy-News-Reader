@@ -61,6 +61,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
+
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -119,8 +121,8 @@ public class EntryView extends WebView implements Observer {
     public Runnable mScrollChangeListener = null;
     private double mOldContentHeight = 0;
 
-    private static String GetCSS() { return "<head><style type='text/css'> "
-            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign() + "; font-weight: " + getFontBold()
+    private static String GetCSS( String text ) { return "<head><style type='text/css'> "
+            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
             + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
             + "h1, h2 {font-weight: normal; line-height: 130%} "
@@ -161,22 +163,31 @@ public class EntryView extends WebView implements Observer {
             return "0.1cm";
     }
 
-    private static String getAlign() {
+    private static String getAlign( String text ) {
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false ) )
             return "justify";
-        else if ( isRTL() )
+        else if ( isRTL( text ) )
             return "right";
         else
             return "left";
     }
 
-public static boolean checkRtl ( String string ) {
-    if (TextUtils.isEmpty(string)) {
+    private static boolean isWordRtl ( String s ) {
+        if (s.isEmpty()) {
+            return false;
+        }
+        char c = s.charAt(0);
+        return c >= 0x590 && c <= 0x6ff;
+    }
+
+    private static boolean isTextRtl ( String text ) {
+        String[] list =  TextUtils.split( text.substring( 0, 250 ), "" );
+        for ( String item: list )
+            if ( isWordRtl( item ) )
+                return true;
         return false;
     }
-    char c = string.charAt(0);
-    return c >= 0x590 && c <= 0x6ff;
-}
+
     private static final String BODY_START = "<body dir=\"%s\">";
     private static final String BODY_END = "</body>";
     private static final String TITLE_START = "<h1><a class='no_draw_link' href=\"%s\">";
@@ -265,20 +276,16 @@ public static boolean checkRtl ( String string ) {
         LoadData();
         timer.End();
     }
-    public static boolean isRTL() {
-        return isRTL(Locale.getDefault());
-    }
-
-    public static boolean isRTL(Locale locale) {
-        final int directionality = Character.getDirectionality(locale.getDisplayName().charAt(0));
-        return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
+    public static boolean isRTL(String text) {
+        final int directionality = Character.getDirectionality(Locale.getDefault().getDisplayName().charAt(0));
+        return ( directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC ) && isTextRtl( text );
     }
 
     private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS()).append(String.format(  BODY_START, isRTL() ? "rtl" : "inherit" ) );
+        StringBuilder content = new StringBuilder(GetCSS( title )).append(String.format(  BODY_START, isRTL(title) ? "rtl" : "inherit" ) );
 
         if (link == null) {
             link = "";
