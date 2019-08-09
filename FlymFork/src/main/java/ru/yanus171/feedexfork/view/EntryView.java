@@ -170,6 +170,13 @@ public class EntryView extends WebView implements Observer {
             return "left";
     }
 
+public static boolean checkRtl ( String string ) {
+    if (TextUtils.isEmpty(string)) {
+        return false;
+    }
+    char c = string.charAt(0);
+    return c >= 0x590 && c <= 0x6ff;
+}
     private static final String BODY_START = "<body dir=\"%s\">";
     private static final String BODY_END = "</body>";
     private static final String TITLE_START = "<h1><a class='no_draw_link' href=\"%s\">";
