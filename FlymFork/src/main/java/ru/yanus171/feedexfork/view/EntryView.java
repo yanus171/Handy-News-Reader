@@ -164,15 +164,15 @@ public class EntryView extends WebView implements Observer {
     }
 
     private static String getAlign( String text ) {
-        if ( PrefUtils.getBoolean( PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false ) )
-            return "justify";
-        else if ( isRTL( text ) )
+        if ( isTextRTL( text ) )
             return "right";
+        else if ( PrefUtils.getBoolean( PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false ) )
+            return "justify";
         else
             return "left";
     }
 
-    private static boolean isWordRtl ( String s ) {
+    private static boolean isWordRTL ( String s ) {
         if (s.isEmpty()) {
             return false;
         }
@@ -180,12 +180,18 @@ public class EntryView extends WebView implements Observer {
         return c >= 0x590 && c <= 0x6ff;
     }
 
-    private static boolean isTextRtl ( String text ) {
+    private static boolean isTextRTL ( String text ) {
         String[] list =  TextUtils.split( text.substring( 0, 250 ), " " );
         for ( String item: list )
-            if ( isWordRtl( item ) )
+            if ( isWordRTL( item ) )
                 return true;
         return false;
+    }
+    
+    public static boolean isRTL(String text) {
+        final int directionality = Character.getDirectionality(Locale.getDefault().getDisplayName().charAt(0));
+        return ( directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC ) && isTextRtl( text );
     }
 
     private static final String BODY_START = "<body dir=\"%s\">";
@@ -276,16 +282,12 @@ public class EntryView extends WebView implements Observer {
         LoadData();
         timer.End();
     }
-    public static boolean isRTL(String text) {
-        final int directionality = Character.getDirectionality(Locale.getDefault().getDisplayName().charAt(0));
-        return ( directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC ) && isTextRtl( text );
-    }
+    
 
     private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS( title )).append(String.format(  BODY_START, isRTL(title) ? "rtl" : "inherit" ) );
+        StringBuilder content = new StringBuilder(GetCSS( title )).append(String.format(  BODY_START, isTextRTL(title) ? "rtl" : "inherit" ) );
 
         if (link == null) {
             link = "";
