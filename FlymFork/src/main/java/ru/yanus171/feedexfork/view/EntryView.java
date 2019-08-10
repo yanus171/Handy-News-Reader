@@ -181,7 +181,7 @@ public class EntryView extends WebView implements Observer {
     }
 
     private static boolean isTextRtl ( String text ) {
-        String[] list =  TextUtils.split( text.substring( 0, 250 ), "" );
+        String[] list =  TextUtils.split( text.substring( 0, 250 ), " " );
         for ( String item: list )
             if ( isWordRtl( item ) )
                 return true;
