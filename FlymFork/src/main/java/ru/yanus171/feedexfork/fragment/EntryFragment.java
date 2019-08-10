@@ -809,18 +809,28 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 				activity.invalidateOptionsMenu();
 
-				mStatusText.SetEntryID( String.valueOf( getCurrentEntryID() ) );
+				final long currentEntryID = getCurrentEntryID();
+				mStatusText.SetEntryID( String.valueOf( currentEntryID ) );
 				// Listen the mobilizing task
 
-				if (FetcherService.hasMobilizationTask( getCurrentEntryID() )) {
-					//--showSwipeProgress();
+                new Thread() {
+                    long mID;
+                    @Override
+                    public void run() {
+                        if (FetcherService.hasMobilizationTask( currentEntryID )) {
+                            //--showSwipeProgress();
+                            // If the service is not started, start it here to avoid an infinite loading
+                            if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
+                                FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
+                                        .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
+                        }
+                    }
+                    Thread SetID( long id ) {
+                        mID = id;
+                        return this;
+                    }
+                }.SetID( currentEntryID ).start();
 
-					// If the service is not started, start it here to avoid an infinite loading
-					if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
-                        FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
-                                                     .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
-					}
-				}
 
 				// Mark the previous opened article as read
 				//if (entryCursor.getInt(mIsReadPos) != 1) {
