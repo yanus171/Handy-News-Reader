@@ -6,7 +6,7 @@
         android:id="@+id/menu_refresh"
         android:icon="@drawable/refresh"
         android:title="@string/menu_refresh"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_cancel_refresh"
         android:icon="@drawable/ic_action_cancel_gray"
@@ -40,7 +40,7 @@
         android:id="@+id/menu_search"
         android:icon="@drawable/action_search"
         android:title="@android:string/search_go"
-        app:showAsAction="ifRoom|collapseActionView"
+        app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
         android:id="@+id/menu_share_starred"
