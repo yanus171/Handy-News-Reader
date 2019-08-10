@@ -211,46 +211,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
     }
 
-    /*private int mNewEntriesNumber, mOldUnreadEntriesNumber = -1;
-    private boolean mAutoRefreshDisplayDate = false;
-    private final LoaderManager.LoaderCallbacks<Cursor> mEntriesNumberLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
-        @Override
-        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.mEntriesNumberLoader" );
-            final String EXPR_READ_COUNT = "SUM(" + EntryColumns.FETCH_DATE + '>' + mListDisplayDate + ")";
-            final String EXPR_UNREAD_COUNT = "SUM(" + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + Constants.DB_AND + EntryColumns.WHERE_UNREAD + ")";
-            CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, new String[]{ EXPR_READ_COUNT, EXPR_UNREAD_COUNT}, null, null, null);
-            cursorLoader.setUpdateThrottle(150);
-            return cursorLoader;
-        }
-
-        @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            Timer.End(NEW_ENTRIES_NUMBER_LOADER_ID);
-            if ( data == null )
-                return;
-
-            data.moveToFirst();
-            mNewEntriesNumber = data.getInt(0);
-            mOldUnreadEntriesNumber = data.getInt(1);
-
-            if (mAutoRefreshDisplayDate && mNewEntriesNumber != 0 && mOldUnreadEntriesNumber == 0) {
-                mListDisplayDate = new Date().getTime();
-                restartLoaders();
-            } else {
-                refreshUI();
-            }
-
-            mAutoRefreshDisplayDate = false;
-
-        }
-
-        @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
-        }
-    };
-    private Button mRefreshListBtn;*/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreate" );
@@ -263,11 +223,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         if (savedInstanceState != null) {
             mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
-            //mStatusText.SetFeedID( mCurrentUri );
             mOriginalUri = savedInstanceState.getParcelable(STATE_ORIGINAL_URI);
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
-            //mListDisplayDate = savedInstanceState.getLong(STATE_LIST_DISPLAY_DATE);
             mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
             mShowUnRead = savedInstanceState.getBoolean(STATE_SHOW_UNREAD, PrefUtils.getBoolean( STATE_SHOW_UNREAD, false ));
             Dog.v( String.format( "EntriesListFragment.onCreate mShowUnRead = %b", mShowUnRead ) );
