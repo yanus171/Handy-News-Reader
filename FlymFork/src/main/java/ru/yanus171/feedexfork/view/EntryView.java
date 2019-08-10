@@ -181,7 +181,7 @@ public class EntryView extends WebView implements Observer {
     }
 
     private static boolean isTextRTL ( String text ) {
-        String[] list =  TextUtils.split( text.substring( 0, 250 ), " " );
+        String[] list =  TextUtils.split( text, " " );
         for ( String item: list )
             if ( isWordRTL( item ) )
                 return true;
@@ -191,7 +191,7 @@ public class EntryView extends WebView implements Observer {
     public static boolean isRTL(String text) {
         final int directionality = Character.getDirectionality(Locale.getDefault().getDisplayName().charAt(0));
         return ( directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC ) && isTextRtl( text );
+                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC ) && isTextRTL( text );
     }
 
     private static final String BODY_START = "<body dir=\"%s\">";
