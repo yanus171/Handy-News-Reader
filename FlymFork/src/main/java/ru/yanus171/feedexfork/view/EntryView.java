@@ -116,6 +116,7 @@ public class EntryView extends WebView implements Observer {
     private static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
     private static final String TAG = "EntryView";
+    private static final String NO_MENU = "NO_MENU_";
 
     private long mEntryId = -1;
     public Runnable mScrollChangeListener = null;
@@ -293,7 +294,7 @@ public class EntryView extends WebView implements Observer {
             link = "";
         }
 
-        content.append(String.format( TITLE_START, link )).append(title).append(TITLE_END).append(SUBTITLE_START);
+        content.append(String.format( TITLE_START, link + NO_MENU )).append(title).append(TITLE_END).append(SUBTITLE_START);
         Date date = new Date(timestamp);
         Context context = getContext();
         StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
@@ -431,6 +432,9 @@ public class EntryView extends WebView implements Observer {
                         context.startActivity(intent);
                     //} else if ( url.contains( "#" ) ) {
                     //    return false;
+                    } else if ( url.contains( NO_MENU ) ) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        getContext().startActivity(intent.setData( Uri.parse(url.replace( NO_MENU,"" ))));
                     } else {
 
                         class Item{
