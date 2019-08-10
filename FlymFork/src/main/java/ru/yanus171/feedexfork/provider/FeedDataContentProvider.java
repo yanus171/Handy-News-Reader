@@ -67,6 +67,7 @@ import ru.yanus171.feedexfork.BuildConfig;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
@@ -200,7 +201,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
         if (!uriSearchParam.isEmpty()) {
             uriSearchParam = DatabaseUtils.sqlEscapeString("%" + Uri.decode(uriSearchParam) + "%");
-            return EntryColumns.TITLE + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.ABSTRACT + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.MOBILIZED_HTML + " LIKE " + uriSearchParam;
+            return EntryColumns.TITLE + " LIKE " + uriSearchParam; //+ Constants.DB_OR + EntryColumns.ABSTRACT + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.MOBILIZED_HTML + " LIKE " + uriSearchParam;
         } else {
             return "1 = 2"; // to have 0 result with an empty search
         }
@@ -874,6 +875,9 @@ public class FeedDataContentProvider extends ContentProvider {
             cr.notifyChange(FeedColumns.GROUPS_CONTENT_URI, null);
             cr.notifyChange(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, null);
         }
+        if ( EntriesListFragment.mSearchQueryUri != null )
+            cr.notifyChange(EntriesListFragment.mSearchQueryUri, null);
+
     }
 
 

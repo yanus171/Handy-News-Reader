@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
@@ -156,6 +157,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
     };
     private StatusText mStatusText = null;
+    public static Uri mSearchQueryUri = null;
 
     private void UpdateActions() {
         if ( mMenu == null )
@@ -530,7 +532,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         inflater.inflate(R.menu.entry_list, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        final MenuItem searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         if (EntryColumns.isSearchUri(mCurrentUri)) {
             searchItem.expandActionView();
@@ -546,16 +548,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (TextUtils.isEmpty(query)) {
+
+                } else {
+                    setData(EntryColumns.SEARCH_URI(query), true, true, false);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    setData(mOriginalUri, true, true, mOriginalUriShownEntryText);
-                } else {
-                    setData(EntryColumns.SEARCH_URI(newText), true, true, false);
-                }
                 return false;
             }
         });
@@ -804,7 +806,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         Dog.v( String.format( "EntriesListFragment.setData( %s )", uri.toString() ) );
         mCurrentUri = uri;
-        if (!isSearchUri) {
+        if ( isSearchUri )
+            mSearchQueryUri = uri;
+        else  {
+            mSearchQueryUri = null;
             mOriginalUri = mCurrentUri;
             mOriginalUriShownEntryText = showTextInEntryList;
         }
