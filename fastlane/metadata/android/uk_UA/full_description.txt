@@ -20,7 +20,7 @@
 	<li><b>сповіщення про важливі статті</b>: Ви ніколи не пропустите нічого важливого,</li>
 	<li><b><i>"Прочитати пізніше"</i></b>: Ви можете швидко пробіжатись по статтям - <b> позначаючи (обираючи) яку прочитати пізніше</b> у Ваш вільний час, чи просто зберегти,</li>
 	<li><b><i>"Вилучити по завершені"</i></b> - як тільки Ви завершили читати статтю - вона може автоматично вилучатись зі списків<i> 'Обрані'</i>(=<i>'Прочитати пізніше'</i>) </li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
+	<li><b>готовий працювати без доступу до мережі</b>зануртись у читання без відволікань, один раз оновити і більше немає потреби щось завантажувати - буде працювати без інтернету :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
 	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>

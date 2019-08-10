@@ -176,7 +176,7 @@
     <string name="menu_reload_full_text_without_mobilizer">Ohne Mobilizer neu laden</string>
     <string name="share_favorites_title">Handy News Reader: Favoriten</string>
     <string name="copied_clipboard">Link kopiert</string>
-    <string name="get_full_text">Gesamten Artikel laden.</string>
+    <string name="get_full_text">Gesamten Artikel laden</string>
     <string name="show_text_in_entry_list">Originaltext in der Artikelliste zeigen.</string>
     <string name="original_text">Originaltext anzeigen</string>
     <string name="see_enclosure">Anhang laden</string>
@@ -198,9 +198,9 @@
     <string name="settings_category_common">Allgemeine Einstellungen</string>
     <string name="settings_category_common_summary">Thema</string>
     <string name="theme">Thema</string>
-    <string name="customColors">Eigene Textfarben</string>
+    <string name="customColors">Benutzerdefinierte Farben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
-    <string name="textColor">Textfarbe</string>
+    <string name="textColor">TextfarbeText- und Hintergrundfarbe</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\u201c\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
@@ -245,7 +245,7 @@
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
     <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
     <string name="textColorRead">Textfarbe (gelesen)</string>
-    <string name="textColorRead_descr">Farbe der gelesenen Artikel</string>
+    <string name="textColorRead_descr">Gelesene Artikel - Text- und Hintergrundfarbe</string>
     <string name="settings_color_text_read_sample_short">Text</string>
     <string name="settings_color_text_read_sample_long">Gelesene Artikel</string>
     <string name="settings_category_article_text">Artikelinhalt</string>
@@ -334,7 +334,7 @@
     <string name="loadLink">Jetzt Lesen</string>
     <string name="loadLinkLater">Später lesen</string>
     <string name="addFeed">Feed hinzufügen</string>
-    <string name="externalLinks">Externe Links</string>
+    <string name="externalLinks">Zurückstellen</string>
     <string name="markAllAsRead">Alle als gelesen markieren</string>
     <string name="pageUp">Seite zurück, Wischen für Fav.</string>
     <string name="pageDown">Seite vor</string>
@@ -358,7 +358,7 @@
     <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatische Favoriten</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="deleteAllEntries">Alle Artikel löschen, welche nicht als Favorit markiert sind</string>
+    <string name="deleteAllEntries">Alle nicht gekennzeichneten Artikel löschen</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Mit Tags erneut laden</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
@@ -390,8 +390,8 @@
     <string name="use_standard_file_manager">Standard Dateimanager verwenden</string>
     <string name="use_standard_file_manager_descr">andernfalls die zu importierende .opml-Datei auswählen - nur außerhalb des feedex-Ordners (über den internen Dialog)</string>
     <string name="settings">Einstellungen</string>
-    <string name="entry_go_prev">Artikel zurück</string>
-    <string name="entry_go_next">Artikel vor</string>
+    <string name="entry_go_prev">Vorheriger Artikel</string>
+    <string name="entry_go_next">Nächster Artikel</string>
     <string name="colorSlotSaveLongTapHint">Hinweis: Zum Speichern der aktuellen Farbe, bitte lange auf eines der Farbkästchen tippen</string>
     <string name="colorSlotSaved">Die Farbe wurde gespeichert</string>
     <string name="text">Schrift</string>
@@ -401,7 +401,15 @@
     <string name="global_class_list_to_remove_from_article_text_summary">Klassenname pro Zeile</string>
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
-    <string name="setFullTextRoot">Als Volltextstamm auswählen</string>
+    <string name="setFullTextRoot">Volltext-Stammverzeichnis auswählen</string>
+    <string name="fullTextRoot">Volltext-Stammverzeichnis</string>
+    <string name="fullTextReloadStarted">Neuladen des Volltextes wurde gestartet</string>
+    <string name="brightness_update_from_system_period_min">Zeit für Helligkeitsaktualisierung</string>
+    <string name="brightness_update_from_system_period_min_descr">(in Minuten) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) aus der aktuellen Systemstufe (0 - Aus) wiederhergestellt</string>
+    <string name="menu_add_feed_shortcut">Verknüpfung auf dem Startbildschirm erstellen</string>
+    <string name="new_feed_shortcut_added">Neue Verknüpfung wurde erfolgreich auf dem Startbildschirm hinzugefügt</string>
+    <string name="custom_data_folder">Benutzerdefinierter Pfad für externe Dateien</string>
+    <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
