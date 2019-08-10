@@ -100,6 +100,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private FloatingActionButton mFab;
     private ListView mListView;
     private ProgressBar mProgressBar = null;
+    private ProgressBar mProgressBarLoader = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
@@ -108,6 +109,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     private final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
+
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
@@ -119,6 +121,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             String[] projection = mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
             CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
             cursorLoader.setUpdateThrottle(150);
+            if ( mProgressBarLoader != null )
+                mProgressBarLoader.setVisibility( View.VISIBLE );
             return cursorLoader;
         }
 
@@ -138,11 +142,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                         ( pos > mListView.getLastVisiblePosition() || pos < mListView.getFirstVisiblePosition() )  )
                     mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
             }
+            if ( mProgressBarLoader != null )
+                mProgressBarLoader.setVisibility( View.GONE );
             timer.End();
         }
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
+            if ( mProgressBarLoader != null )
+                mProgressBarLoader.setVisibility( View.VISIBLE );
             mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
         }
 
@@ -338,6 +346,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                         FetcherService.Status());
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
+        mProgressBarLoader = rootView.findViewById(R.id.progressBarLoader);
 
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
