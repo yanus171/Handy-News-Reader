@@ -28,7 +28,7 @@
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>إفتراضي</item>
-        <item>Switch to next | previous article</item>
+        <item>إنتقال للتالي | المقال السابق</item>
         <item>Page up | down</item>
     </string-array>
 </resources>
