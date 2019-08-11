@@ -7,10 +7,23 @@
         <item>15 دقيقةً</item>
         <item>30 دقيقةً</item>
         <item>1 ساعة</item>
-        <item>2 hours</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>12 hours</item>
+        <item>ساعتان</item>
+        <item>3 ساعات</item>
+        <item>6 ساعات</item>
+        <item>12 ساعةً</item>
+        <item>1 يوم</item>
+    </string-array>
+    <string-array name="settings_keep_times">
+        <item>1 ساعة</item>
+        <item>12 ساعةً</item>
         <item>1 day</item>
+        <item>2 days</item>
+        <item>4 days</item>
+        <item>1 week</item>
+        <item>2 weeks</item>
+        <item>1 month</item>
+        <item>2 months</item>
+        <item>3 months</item>
+        <item>Forever</item>
     </string-array>
 </resources>
