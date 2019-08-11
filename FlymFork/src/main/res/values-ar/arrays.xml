@@ -16,14 +16,14 @@
     <string-array name="settings_keep_times">
         <item>1 ساعة</item>
         <item>12 ساعةً</item>
-        <item>1 day</item>
-        <item>2 days</item>
-        <item>4 days</item>
-        <item>1 week</item>
-        <item>2 weeks</item>
-        <item>1 month</item>
-        <item>2 months</item>
-        <item>3 months</item>
+        <item>يوم</item>
+        <item>يومان</item>
+        <item>4 أيام</item>
+        <item>إسبوع</item>
+        <item>إسبوعان</item>
+        <item>شهر</item>
+        <item>شهران</item>
+        <item>3 أشهر</item>
         <item>Forever</item>
     </string-array>
 </resources>
