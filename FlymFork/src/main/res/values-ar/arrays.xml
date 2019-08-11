@@ -24,6 +24,11 @@
         <item>شهر</item>
         <item>شهران</item>
         <item>3 أشهر</item>
-        <item>Forever</item>
+        <item>دائماً</item>
+    </string-array>
+    <string-array name="settings_volume_buttons_action">
+        <item>إفتراضي</item>
+        <item>Switch to next | previous article</item>
+        <item>Page up | down</item>
     </string-array>
 </resources>
