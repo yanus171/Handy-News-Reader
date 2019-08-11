@@ -34,6 +34,7 @@
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
     <string name="about_flym">حول التطبيق \ مساعدة \ الإتصال بالمطوّر</string>
+    <string name="welcome_title">مرحباً بك مع Handy News Reader. هل ترغب بإضافة تغذية؟</string>
     <!-- FEEDS -->
     <!-- ENTRIES -->
     <!-- WIDGET -->
