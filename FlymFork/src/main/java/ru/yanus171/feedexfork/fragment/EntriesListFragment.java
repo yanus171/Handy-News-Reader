@@ -27,9 +27,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -618,7 +622,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 return true;
             }
             case R.id.menu_add_feed_shortcut: {
-                if (android.os.Build.VERSION.SDK_INT >= 0 ) { //android.os.Build.VERSION_CODES.M) {
+                if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
                     //Adding shortcut for MainActivity on Home screen
 
                     String name = "";
@@ -649,19 +653,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                         cursor.close();
                     }
 
-                    if (ShortcutManagerCompat.isRequestPinShortcutSupported(getContext())) {
-                        final ShortcutManagerCompat shortcutManager;
-                            shortcutManager = (ShortcutManagerCompat) getContext().getSystemService("shortcut");
-
-                        ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString())
-                                .setIcon(image)
-                                .setShortLabel(name)
-                                .setIntent(new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri ))
-                                .build();
-                        shortcutManager.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString())
+                            .setIcon(image)
+                            .setShortLabel(name)
+                            .setIntent(new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri ))
+                            .build();
+                    ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                    if ( Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O )
                         Toast.makeText( getContext(), R.string.new_feed_shortcut_added, Toast.LENGTH_LONG ).show();
-                    }
-                }
+                } else
+                    Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {
