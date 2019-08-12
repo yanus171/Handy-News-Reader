@@ -72,6 +72,7 @@
     <string name="feed_filters">قواعد التصفية</string>
     <string name="filter_add_title">اضافة قاعدة</string>
     <string name="filter_delete_title">حذف قاعدة</string>
+    <string name="filter_edit_title">تعديل قاعدة</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
