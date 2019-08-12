@@ -61,6 +61,7 @@
     <string name="error_feed_process">لا يمكن معالجة الخلاصة.</string>
     <string name="error_feed_url_exists">العنوان موجود بالفعل.</string>
     <string name="error_feed_import">لا يمكن جلب الملف المحدد.</string>
+    <string name="error_feed_export">فشل في التصدير. تأكد من أنَّ بطاقة-SD المدرجة لديك قابلةً للكتابة.</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
