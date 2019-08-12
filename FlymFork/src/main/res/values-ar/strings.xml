@@ -60,6 +60,7 @@
     <string name="error_feed_error">موقع الخلاصة غير قابل للوصول.</string>
     <string name="error_feed_process">لا يمكن معالجة الخلاصة.</string>
     <string name="error_feed_url_exists">العنوان موجود بالفعل.</string>
+    <string name="error_feed_import">لا يمكن جلب الملف المحدد.</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
