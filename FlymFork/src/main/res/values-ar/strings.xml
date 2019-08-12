@@ -41,6 +41,7 @@
     <string name="menu_refresh">تحيين</string>
     <string name="error">خطأ</string>
     <string name="network_error">أنت غير متّصل.</string>
+    <string name="loading">جارِ التحميل…</string>
     <!-- FEEDS -->
     <!-- ENTRIES -->
     <!-- WIDGET -->
