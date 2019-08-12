@@ -39,6 +39,8 @@
     <string name="update">تحديث</string>
     <string name="menu_settings">الإعدادات</string>
     <string name="menu_refresh">تحيين</string>
+    <string name="error">خطأ</string>
+    <string name="network_error">أنت غير متّصل.</string>
     <!-- FEEDS -->
     <!-- ENTRIES -->
     <!-- WIDGET -->
