@@ -57,6 +57,9 @@
     <string name="menu_import">جلب من ملف opml</string>
     <string name="menu_export">تصدير إلى ملف opml</string>
     <string name="storage_request_explanation">لكي تتمكن من جلب أو تصدير الخلاصات من أو إلى ملف، يتوجب عليك السماح للتطبيق بالوصول لذاكرة التخزين.</string>
+    <string name="error_feed_error">موقع الخلاصة غير قابل للوصول.</string>
+    <string name="error_feed_process">لا يمكن معالجة الخلاصة.</string>
+    <string name="error_feed_url_exists">العنوان موجود بالفعل.</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
