@@ -63,6 +63,8 @@
     <string name="error_feed_import">لا يمكن جلب الملف المحدد.</string>
     <string name="error_feed_export">فشل في التصدير. تأكد من أنَّ بطاقة-SD المدرجة لديك قابلةً للكتابة.</string>
     <string name="error_external_storage_not_available">وحدة التخزين الخارجية (كبطاقة-SD) غير متوفرة.</string>
+    <string name="feed_url">عنوان الرابط</string>
+    <string name="optional">(إختياري)</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
