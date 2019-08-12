@@ -78,6 +78,8 @@
     <string name="filter_is_regex">&#8230; هو تعبير منتظم</string>
     <string name="filter_apply_to_title">تُطَبق على عنوان المقال أو عنوان الرابط</string>
     <string name="filter_apply_to_content">تُطبق على المحتوى</string>
+    <string name="accept">قبول</string>
+    <string name="reject">رفض</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
