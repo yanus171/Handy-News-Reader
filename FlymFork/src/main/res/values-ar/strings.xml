@@ -39,11 +39,13 @@
     <string name="update">تحديث</string>
     <string name="menu_settings">الإعدادات</string>
     <string name="menu_refresh">تحيين</string>
+    <string name="flym_feeds">خلاصات Handy News Reader</string>
     <string name="error">خطأ</string>
     <string name="network_error">أنت غير متّصل.</string>
     <string name="loading">جارِ التحميل…</string>
     <string name="no_result">لا توجد نتائج</string>
     <string name="drawer_open">فتح القائمة الجانبية</string>
+    <string name="drawer_close">إغلاق القائمة الجانبية</string>
     <!-- FEEDS -->
     <string name="feeds">الخلاصات</string>
     <string name="menu_add_feed">إضافة خلاصة</string>
