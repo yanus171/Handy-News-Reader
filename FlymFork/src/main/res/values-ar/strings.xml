@@ -42,6 +42,7 @@
     <string name="error">خطأ</string>
     <string name="network_error">أنت غير متّصل.</string>
     <string name="loading">جارِ التحميل…</string>
+    <string name="no_result">لا توجد نتائج</string>
     <!-- FEEDS -->
     <!-- ENTRIES -->
     <!-- WIDGET -->
