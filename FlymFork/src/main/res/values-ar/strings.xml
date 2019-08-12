@@ -75,6 +75,7 @@
     <string name="filter_add_title">اضافة قاعدة</string>
     <string name="filter_delete_title">حذف قاعدة</string>
     <string name="filter_edit_title">تعديل قاعدة</string>
+    <string name="filter_is_regex">&#8230; هو تعبير منتظم</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
