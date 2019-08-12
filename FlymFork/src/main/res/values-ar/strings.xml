@@ -31,6 +31,9 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_us_content" translatable="true"><![CDATA[الترخيص والمعلومات
+هذا البرنامج هو برمجيه حرة: يمكنك إعادة توزيعه و / أو تعديله وفقًا لشروط رخصة جنو العمومية على النحو المنشور من قبل مؤسسة البرمجيات الحرة ، إما الإصدار 3 من الترخيص ، أو (حسب اختيارك) أي إصدار لاحق. انظر http://www.gnu.org/licenses
+يستند هذا التطبيق على /'Flym RSS Reader/'، حقوق النشر 2013-2016 Frédéric Julian. من بين المزايا المضافه لهذا التفرع    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
     <string name="about_flym">حول التطبيق \ مساعدة \ الإتصال بالمطوّر</string>
