@@ -45,7 +45,11 @@
     <string name="no_result">لا توجد نتائج</string>
     <string name="drawer_open">فتح القائمة الجانبية</string>
     <!-- FEEDS -->
-    <string name="feeds">التغذيات</string>
+    <string name="feeds">الخلاصات</string>
+    <string name="menu_add_feed">إضافة خلاصة</string>
+    <string name="no_feeds">لا توجد خلاصات</string>
+    <string name="no_filters">لا توجد قواعد</string>
+    <string name="context_menu_delete">حذف</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
