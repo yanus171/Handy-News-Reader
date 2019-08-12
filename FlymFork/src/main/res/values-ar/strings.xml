@@ -54,6 +54,8 @@
     <string name="new_feed_title">خلاصه جديدة</string>
     <string name="context_menu_edit">تحرير</string>
     <string name="menu_add_group">إضافة مجموعة</string>
+    <string name="menu_import">جلب من ملف opml</string>
+    <string name="menu_export">تصدير إلى ملف opml</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
