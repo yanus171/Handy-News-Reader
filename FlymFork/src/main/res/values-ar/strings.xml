@@ -43,7 +43,9 @@
     <string name="network_error">أنت غير متّصل.</string>
     <string name="loading">جارِ التحميل…</string>
     <string name="no_result">لا توجد نتائج</string>
+    <string name="drawer_open">فتح القائمة الجانبية</string>
     <!-- FEEDS -->
+    <string name="feeds">التغذيات</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
