@@ -32,9 +32,9 @@
 <resources>
     <!-- GENERAL -->
     <string name="about_us_content" translatable="true"><![CDATA[ <b><big>الترخيص والمعلومات</big></b><br/>
- هذا البرنامج هو برمجيه حرة: يمكنك إعادة توزيعه و / أو تعديله وفقًا لشروط رخصة جنو العمومية على النحو المنشور من قبل مؤسسة البرمجيات الحرة ، إما الإصدار 3 من الترخيص ، أو (حسب اختيارك) أي إصدار لاحق. إطَّلع على http://www.gnu.org/licenses<br/> 
+ هذا البرنامج هو برمجيه حرة: يمكنك إعادة توزيعه و / أو تعديله وفقًا لشروط رخصة جنو العمومية على النحو المنشور من قبل مؤسسة البرمجيات الحرة ، إما الإصدار 3 من الترخيص ، أو (حسب اختيارك) أي إصدار لاحق. إطَّلع على http://www.gnu.org/licenses<br/>
  <br/>
- يستند هذا التطبيق على /'Flym RSS Reader/'، حقوق النشر.2013-2016 Frédéric Julian من بين المزايا المضافه لهذا التفرع:<br/>
+ يستند هذا التطبيق على  \'Flym RSS Reader\', حقوق النشر 2013-2016 Frédéric Julian. من بين المزايا المضافه لهذا التفرع:<br/>
  <br/>
  • زيادة مجموعة الخلاصات<br/>
  • صفحه بملء الشاشه, حتى الأزرار السفلية غير مرئية<br/> 
@@ -129,9 +129,9 @@
     <string name="filter_add_title">إضافة قاعدة</string>
     <string name="filter_delete_title">حذف قاعدة</string>
     <string name="filter_edit_title">تعديل قاعدة</string>
-    <string name="filter_is_regex">&#8230; هو تعبير منتظم</string>
-    <string name="filter_apply_to_title">تُطَبق على عنوان المقال أو عنوان الرابط</string>
-    <string name="filter_apply_to_content">تُطبق على المحتوى</string>
+    <string name="filter_is_regex">&#8230; عبارةٍ عن تعبير منتظم</string>
+    <string name="filter_apply_to_title">تطبيق على عنوان المقال أو عنوان الرابط</string>
+    <string name="filter_apply_to_content">تطبيق على المحتوى</string>
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
     <string name="feed_search">بحث الخلاصات</string>
