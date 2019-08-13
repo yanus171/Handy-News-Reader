@@ -115,7 +115,7 @@
     <string name="storage_request_explanation">لكي تتمكن من جلب أو تصدير الخلاصات من أو إلى ملف، يتوجب عليك السماح للتطبيق بالوصول لذاكرة التخزين.</string>
     <string name="error_feed_error">لا يمكن الوصول لموقع الويب الخاص بالخلاصة.</string>
     <string name="error_feed_process">لا يمكن معالجة الخلاصة.</string>
-    <string name="error_feed_url_exists">العنوان موجود بالفعل.</string>
+    <string name="error_feed_url_exists">العنوان موجود مسبقاً.</string>
     <string name="error_feed_import">لا يمكن جلب الملف المحدد.</string>
     <string name="error_feed_export">فشل في التصدير. تأكد من أنَّ بطاقة-SD المدرجة لديك قابلةً للكتابة.</string>
     <string name="error_external_storage_not_available">وحدة التخزين الخارجية (كبطاقة-SD) غير متوفرة.</string>
@@ -126,7 +126,7 @@
     <string name="tab_filters_title">تصفية</string>
     <string name="feed_title">عنوان المقال</string>
     <string name="feed_filters">قواعد التصفية</string>
-    <string name="filter_add_title">اضافة قاعدة</string>
+    <string name="filter_add_title">إضافة قاعدة</string>
     <string name="filter_delete_title">حذف قاعدة</string>
     <string name="filter_edit_title">تعديل قاعدة</string>
     <string name="filter_is_regex">&#8230; هو تعبير منتظم</string>
