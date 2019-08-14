@@ -1,6 +1,6 @@
 <i>"البقاء على إتصال وإطّلاعٌ بكل ما أهتم بهِ لم يكن أبداً بهذه السهولة".</i>
 
-<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>قارئ الأخبار العملي</i>: بدون إعلانات/تطبيق مجاني وحر بموجب ترخيص<i>GNU GPL</i>.</b>
 
 <ul>
 	<li><b>make up Your Dream Magazine!</b></li>
