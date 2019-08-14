@@ -85,15 +85,15 @@
 
 
     ]]></string>
-    <string name="app_name">Handy News Reader</string>
+    <string name="app_name">قارئ الأخبار العملي</string>
     <string name="about_title_version">الإصدار</string>
     <string name="about_flym">حول التطبيق \ مساعدة \ الإتصال بالمطوّر</string>
-    <string name="welcome_title">مرحباً بك مع Handy News Reader. هل ترغب بإضافة خلاصة؟</string>
+    <string name="welcome_title">مرحباً بك مع قارئ الأخبار العملي. هل ترغب بإضافة خلاصة؟</string>
     <string name="never">مطلقاً</string>
     <string name="update">تحديث</string>
     <string name="menu_settings">الإعدادات</string>
     <string name="menu_refresh">تحيين</string>
-    <string name="flym_feeds">خلاصات Handy News Reader</string>
+    <string name="flym_feeds">خلاصات قارئ الأخبار العملي</string>
     <string name="error">خطأ</string>
     <string name="network_error">أنت غير متّصل.</string>
     <string name="loading">جارِ التحميل…</string>
@@ -121,7 +121,7 @@
     <string name="error_external_storage_not_available">وحدة التخزين الخارجية (كبطاقة-SD) غير متوفرة.</string>
     <string name="feed_url">عنوان الرابط</string>
     <string name="optional">(إختياري)</string>
-    <string name="website_or_feed">(رابط الخلاصة أو بحث بالكلمة)</string>
+    <string name="website_or_feed">(رابط الخلاصة أو الإسم)</string>
     <string name="tab_feed_title">الخلاصة</string>
     <string name="tab_filters_title">التصفية</string>
     <string name="feed_title">الإسم</string>
