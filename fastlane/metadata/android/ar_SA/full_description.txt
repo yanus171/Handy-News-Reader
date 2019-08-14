@@ -4,8 +4,8 @@
 
 <ul>
 	<li><b>إصنع مجلة أحلامك!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>مقالات مثيرةٌ للإهتمام مباشرةً بين يديك</b></li>
+	<li><b>وأخيراً إستمتع بالقراءة</b></li>
 </ul>
 
 ...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
