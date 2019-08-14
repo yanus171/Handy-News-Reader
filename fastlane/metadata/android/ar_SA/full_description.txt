@@ -3,7 +3,7 @@
 <b><i>قارئ الأخبار العملي</i>: بدون إعلانات/تطبيق مجاني وحر بموجب ترخيص<i>GNU GPL</i>.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
+	<li><b>إصنع مجلة أحلامك!</b></li>
 	<li><b>interesting articles straight into Your hands</b></li>
 	<li><b>finally enjoy reading</b></li>
 </ul>
