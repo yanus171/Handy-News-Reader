@@ -137,6 +137,9 @@
     <string name="feed_search">بحث الخلاصات</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
+    <string name="question_delete_filter">هل حقاً تريد حدف هذا الفلتر؟</string>
+    <string name="add_group_title">حدّد إسم المجموعة</string>
+    <string name="edit_group_title">تعديل إسم المجموعة</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
