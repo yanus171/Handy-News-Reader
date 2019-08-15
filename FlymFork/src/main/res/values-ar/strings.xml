@@ -178,6 +178,8 @@
     <string name="share_favorites_title">قارئ الأخبار العملي: المقالات المميزة</string>
     <string name="copied_clipboard">تمَّ نسخ الرابط</string>
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
+    <string name="original_text">إظهار النص الأصلي</string>
+    <string name="see_link">عرض في المتصفح</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
