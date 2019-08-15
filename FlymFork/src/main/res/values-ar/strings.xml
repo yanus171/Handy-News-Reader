@@ -155,7 +155,9 @@
     <string name="google_news_sports">رياضة</string>
     <string name="google_news_science">علوم</string>
     <string name="google_news_health">صحة</string>
+    <string name="google_news_custom_topic">أدخِل موضوع مُحَدّد</string>
     <!-- ENTRIES -->
+    <string name="unread_entries">غير مقروءة</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
