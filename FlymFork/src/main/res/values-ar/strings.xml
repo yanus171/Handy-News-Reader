@@ -222,4 +222,6 @@
     <string name="settings_category_article_list_summary">ظهور قائمة المقالات</string>
     <string name="settings_font_size">حجم النص</string>
     <string name="show_article_icon">إظهار أيقونة المقال</string>
+    <string name="show_article_icon_descr">إيقاف تشغيلها يؤدي لتحرير مساحه أكبر من الشاشة</string>
+    <string name="show_article_url">إظهار رابط المقال</string>
 </resources>
