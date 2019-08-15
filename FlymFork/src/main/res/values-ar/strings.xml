@@ -200,4 +200,5 @@
     <string name="settings_color_text_sample_long">\u201cعندما تغازل فتاة جميلة ستشعر بمرور الساعة وكأنها ثانية، ولكن إذا جلست على جمرٍ فستشعر بالثانية الواحدة كأنّها ساعة. تلك هي
 النسبيّة.\u201d\n(ألبرت إينشتاين)</string>
     <string name="settings_category_refresh">تحيين تلقائي</string>
+    <string name="settings_category_refresh_summary">تحيين تلقائي مع الوقت للحفاظ على تدفق المقالات</string>
 </resources>
