@@ -161,6 +161,8 @@
     <string name="all_entries">كل المقالات</string>
     <string name="favorites">المقالات المميزة</string>
     <string name="context_menu_share_starred">مشاركة المقالات المميزة</string>
+    <string name="menu_star">مُميّزة</string>
+    <string name="menu_unstar">غير مُميّزة</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
