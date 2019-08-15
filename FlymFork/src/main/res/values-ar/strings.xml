@@ -180,6 +180,9 @@
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
     <string name="original_text">إظهار النص الأصلي</string>
     <string name="see_link">عرض في المتصفح</string>
+    <string name="open_enclosure">فتح المرفق</string>
+    <string name="download_and_save">تحميل وحفظ</string>
+    <string name="open_link">فتح الرابط</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
