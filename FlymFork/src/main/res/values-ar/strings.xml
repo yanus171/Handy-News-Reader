@@ -230,4 +230,7 @@
     <string name="show_read_checkbox">قراءة مربع الإختيار</string>
     <string name="show_read_checkbox_descr">إظهار مربع الإختيار الصغير للإشارة إلى قراءة المقال</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
+    <string name="show_full_text_indicator_descr">إظهار رمز القرص الصغير للإشارة إلى أنه تم تحميل النص الكامل للخلاصة</string>
+    <string name="show_new_icon">رمز المقال الجديد</string>
+    <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها أبدًا)</string>
 </resources>
