@@ -159,10 +159,13 @@
     <!-- ENTRIES -->
     <string name="unread_entries">غير مقروءة</string>
     <string name="all_entries">كل المقالات</string>
+    <string name="downloadOneImage">تحميل الصورة</string>
     <string name="favorites">المقالات المميزة</string>
     <string name="context_menu_share_starred">مشاركة المقالات المميزة</string>
     <string name="menu_star">مُميّزة</string>
     <string name="menu_unstar">غير مُميّزة</string>
+    <string name="menu_share">مشاركة</string>
+    <string name="menu_full_screen">مِلء الشاشة</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
