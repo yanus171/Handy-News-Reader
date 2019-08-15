@@ -212,4 +212,5 @@
     <string name="settings_refresh_on_open_description">تحيين كل الخلاصات بعد فتح التطبيق</string>
     <string name="settings_refresh_wifi_only">تحيين عبر الواي فاي فقط</string>
     <string name="settings_refresh_wifi_only_description">سيتم التحيين التلقائي فقط في حالة توفر اتصال واي فاي</string>
+    <string name="settings_keep_time">مدة الإحتفاظ بالمقالات</string>
 </resources>
