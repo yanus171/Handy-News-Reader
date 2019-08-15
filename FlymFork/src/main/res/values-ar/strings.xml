@@ -254,4 +254,5 @@
     <string name="linkColor_descr">لونُ الإرتباطات التشعبيه والخلفية</string>
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
+    <string name="underline_links">تسطير الروابط</string>
 </resources>
