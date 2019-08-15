@@ -204,4 +204,5 @@
     <string name="settings_refresh_enabled">تمكين التحيين التلقائي</string>
     <string name="settings_refresh_interval">الفاصل الزمني للتحيين</string>
     <string name="settings_min_update_battery_level">الحد الإدنى لمستوى البطارية</string>
+    <string name="settings_refresh_only_selected">المحددةُ فقط</string>
 </resources>
