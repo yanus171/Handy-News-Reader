@@ -255,4 +255,6 @@
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
+    <string name="article_text_footer_show_clock">ساعة تذييل</string>
+    <string name="article_text_footer_show_clock_description">عرض الوقت الحالي في الأركان السفليه في وضع ملء الشاشة</string>
 </resources>
