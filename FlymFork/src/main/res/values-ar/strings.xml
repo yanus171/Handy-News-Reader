@@ -228,4 +228,6 @@
     <string name="settings_display_oldest_first_description">عرض المقالات الأقدم أولاً</string>
     <string name="show_mark_all_as_read_button">زر تحديد الكل كمقروء</string>
     <string name="show_read_checkbox">قراءة مربع الإختيار</string>
+    <string name="show_read_checkbox_descr">إظهار مربع الإختيار الصغير للإشارة إلى قراءة المقال</string>
+    <string name="show_full_text_indicator">مؤشر النص الكامل</string>
 </resources>
