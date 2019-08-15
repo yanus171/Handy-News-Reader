@@ -146,6 +146,9 @@
     <string name="to_group_above">خارج المجموعة</string>
     <string name="to_group_into">داخِل المجموعة</string>
     <string name="google_news_title">مواضيع أخبار جوجل</string>
+    <string name="google_news_indicator">حدّد موضوعاً واحداً أو عدة مواضيع لإضافتها. قد لا تُقَدّم جوجل بعضًا منها بلغتك.</string>
+    <string name="google_news_top_stories">أهمُّ الأخبار</string>
+    <string name="google_news_world">العالم</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
