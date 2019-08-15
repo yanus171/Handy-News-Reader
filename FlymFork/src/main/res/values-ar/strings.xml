@@ -233,4 +233,9 @@
     <string name="show_full_text_indicator_descr">إظهار رمز القرص الصغير للإشارة إلى أنه تم تحميل النص الكامل للخلاصة</string>
     <string name="show_new_icon">رمز المقال الجديد</string>
     <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها أبدًا)</string>
+    <string name="show_read_article_count">إظهار عدد المقالات المقروءة</string>
+    <string name="show_read_article_count_descr">في قائمة الخلاصة</string>
+    <string name="show_group_entrries_count">عدد مقالات المجموعة</string>
+    <string name="show_group_entries_count_descr">قد يُقلل من الأداء</string>
+    <string name="textColorRead">قراءة المقالات</string>
 </resources>
