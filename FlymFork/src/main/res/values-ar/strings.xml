@@ -158,6 +158,7 @@
     <string name="google_news_custom_topic">أدخِل موضوع مُحَدّد</string>
     <!-- ENTRIES -->
     <string name="unread_entries">غير مقروءة</string>
+    <string name="all_entries">كل المقالات</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
