@@ -262,4 +262,5 @@
     <string name="article_text_footer_clock_color_descr">لون ساعة التذييل</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_footer_show_progress">شريط التقَدُم بالقراءة</string>
 </resources>
