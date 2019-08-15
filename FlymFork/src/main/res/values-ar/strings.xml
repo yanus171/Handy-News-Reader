@@ -213,6 +213,7 @@
     <string name="settings_refresh_wifi_only">تحيين عبر الواي فاي فقط</string>
     <string name="settings_refresh_wifi_only_description">سيتم التحيين التلقائي فقط في حالة توفر اتصال واي فاي</string>
     <string name="settings_keep_time">مدة الإحتفاظ بالمقالات</string>
+    <string name="settings_preload_image_mode">إعادة تحميل الصور</string>
     <string name="settings_max_image_download_size_kb">الحد الأقصى لحجم الصورة</string>
     <string name="settings_max_image_download_size_kb_summary">(بالكيلوبايت). لا تَقُم بتحميل الصور تلقائياً إذا كانت أكبر من</string>
     <string name="settings_load_comments">تحميل التعليقات</string>
@@ -220,4 +221,5 @@
     <string name="settings_category_article_list">قائمة المقالات</string>
     <string name="settings_category_article_list_summary">ظهور قائمة المقالات</string>
     <string name="settings_font_size">حجم النص</string>
+    <string name="show_article_icon">إظهار أيقونة المقال</string>
 </resources>
