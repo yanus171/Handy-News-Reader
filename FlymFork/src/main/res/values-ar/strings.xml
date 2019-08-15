@@ -263,4 +263,9 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">شريط التقَدُم بالقراءة</string>
+    <string name="article_text_footer_show_progress_descr">يعرض التقَدُم المُحرَز في قراءة مقال في الأسفل</string>
+    <string name="article_text_footer_progress_height">إرتفاع شريط التقَدُم</string>
+    <string name="article_text_footer_progress_color">لون التقَدُم</string>
+    <string name="article_text_footer_progress_color_descr">لون شريط التقَدُم بالقراءة</string>
+    <string name="settings_category_operation">العمليّات</string>
 </resources>
