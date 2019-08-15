@@ -175,6 +175,9 @@
     <string name="menu_mark_as_favorite">وضع علامة مميز</string>
     <string name="menu_mark_as_unread">جعلهُ كغير مقروء</string>
     <string name="menu_reload_full_text">إعادة تحميل النص الكامل</string>
+    <string name="share_favorites_title">قارئ الأخبار العملي: المقالات المميزة</string>
+    <string name="copied_clipboard">تمَّ نسخ الرابط</string>
+    <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
