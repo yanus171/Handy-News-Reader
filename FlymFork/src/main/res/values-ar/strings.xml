@@ -195,4 +195,6 @@
     <string name="settings_category_common_summary">السمة</string>
     <string name="theme">السمة</string>
     <string name="customColors">تخصيص الألوان</string>
+    <string name="textColor">لون النص والخلفية</string>
+    <string name="settings_color_text_sample_short">النص</string>
 </resources>
