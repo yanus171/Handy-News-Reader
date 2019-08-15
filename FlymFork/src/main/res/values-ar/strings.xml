@@ -183,6 +183,8 @@
     <string name="open_enclosure">فتح المرفق</string>
     <string name="download_and_save">تحميل وحفظ</string>
     <string name="open_link">فتح الرابط</string>
+    <string name="tip_sentence">تلميح: إسحب لليمين لوضع علامه كمقروء، واسحب لليسار للإضافة إلى المميزة</string>
+    <string name="undo">تراجُع</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
