@@ -149,6 +149,12 @@
     <string name="google_news_indicator">حدّد موضوعاً واحداً أو عدة مواضيع لإضافتها. قد لا تُقَدّم جوجل بعضًا منها بلغتك.</string>
     <string name="google_news_top_stories">أهمُّ الأخبار</string>
     <string name="google_news_world">العالم</string>
+    <string name="google_news_business">أعمال</string>
+    <string name="google_news_technology">تكنولوجيا</string>
+    <string name="google_news_entertainment">ترفيه</string>
+    <string name="google_news_sports">رياضة</string>
+    <string name="google_news_science">علوم</string>
+    <string name="google_news_health">صحة</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
