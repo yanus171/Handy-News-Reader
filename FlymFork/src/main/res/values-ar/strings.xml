@@ -186,5 +186,13 @@
     <string name="tip_sentence">تلميح: إسحب لليمين لوضع علامه كمقروء، واسحب لليسار للإضافة إلى المميزة</string>
     <string name="undo">تراجُع</string>
     <!-- WIDGET -->
+    <string name="red">أحمر</string>
+    <string name="green">أخضر</string>
+    <string name="blue">أزرق</string>
+    <string name="transparency">الشفافية</string>
     <!-- SETTINGS -->
+    <string name="settings_category_common">الإعدادات المشتركة</string>
+    <string name="settings_category_common_summary">السمة</string>
+    <string name="theme">السمة</string>
+    <string name="customColors">تخصيص الألوان</string>
 </resources>
