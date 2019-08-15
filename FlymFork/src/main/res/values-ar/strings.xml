@@ -206,5 +206,8 @@
     <string name="settings_min_update_battery_level">الحد الإدنى لمستوى البطارية</string>
     <string name="settings_refresh_only_selected">المحددةُ فقط</string>
     <string name="settings_refresh_only_selected_summary">التحيين التلقائي للخلاصات المُحدّدةُ فقط</string>
+    <string name="settings_refresh_on_open">تحيين الخلاصات بعد الفتح</string>
     <string name="settings_refresh_on_open_description">تحيين كل الخلاصات بعد فتح التطبيق</string>
+    <string name="settings_refresh_wifi_only">تحيين عبر الواي فاي فقط</string>
+    <string name="settings_refresh_wifi_only_description">سيتم التحيين التلقائي فقط في حالة توفر اتصال واي فاي</string>
 </resources>
