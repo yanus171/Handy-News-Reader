@@ -205,4 +205,6 @@
     <string name="settings_refresh_interval">الفاصل الزمني للتحيين</string>
     <string name="settings_min_update_battery_level">الحد الإدنى لمستوى البطارية</string>
     <string name="settings_refresh_only_selected">المحددةُ فقط</string>
+    <string name="settings_refresh_only_selected_summary">التحيين التلقائي للخلاصات المُحدّدةُ فقط</string>
+    <string name="settings_refresh_on_open_description">تحيين كل الخلاصات بعد فتح التطبيق</string>
 </resources>
