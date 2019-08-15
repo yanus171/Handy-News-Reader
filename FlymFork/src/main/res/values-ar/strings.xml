@@ -248,4 +248,10 @@
     <string name="settings_display_entries_fullscreen">المقالات بملء الشاشة تلقائياً</string>
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
+    <string name="entry_text_align_justify">نص متوسط</string>
+    <string name="entry_text_align_justify_description">بخلاف ذلك، المحاذاة للجانب الأيسر</string>
+    <string name="linkColor">لون الرابط والخلفية</string>
+    <string name="linkColor_descr">لونُ الإرتباطات التشعبيه والخلفية</string>
+    <string name="settings_color_link_sample_short">الروابط</string>
+    <string name="settings_color_link_sample_long">لون الروابط</string>
 </resources>
