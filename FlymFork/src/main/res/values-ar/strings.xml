@@ -160,6 +160,7 @@
     <!-- ENTRIES -->
     <string name="unread_entries">غير مقروءة</string>
     <string name="all_entries">كل المقالات</string>
+    <string name="no_entries">لا توجد مقالات</string>
     <string name="downloadOneImage">تحميل الصورة</string>
     <string name="favorites">المقالات المميزة</string>
     <string name="context_menu_share_starred">مشاركة المقالات المميزة</string>
