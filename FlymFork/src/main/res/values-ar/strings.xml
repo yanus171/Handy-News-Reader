@@ -279,4 +279,7 @@
     <string name="settings_show_tap_zones">النقر فوق المناطق المرئية</string>
     <string name="settings_show_tap_zone_description">كأنها مربعات شفافة في مستعرِض المقال</string>
     <string name="settings_tapZones">معاينة المناطق</string>
+    <string name="settings_volume_buttons_action">إجراءات إزرار الصوت</string>
+    <string name="brightness_gesture">إيماءة تغيير السطوع</string>
+    <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى / لأسفل على طول الحافة اليسرى أو اليمنى من الشاشة حسب لغة التطبيق</string>
 </resources>
