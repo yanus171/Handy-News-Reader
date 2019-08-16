@@ -281,5 +281,6 @@
     <string name="settings_tapZones">معاينة المناطق</string>
     <string name="settings_volume_buttons_action">إجراءات إزرار الصوت</string>
     <string name="brightness_gesture">إيماءة تغيير السطوع</string>
-    <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى / لأسفل على طول الحافة اليسرى أو اليمنى من الشاشة حسب لغة التطبيق</string>
+    <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى/لأسفل على طول الحافة اليمنى من الشاشة</string>
+    <string name="brightness_with_dim_activity">تراكُب البرمجيات</string>
 </resources>
