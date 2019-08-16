@@ -288,4 +288,10 @@
     <string name="settings_category_behavior_summary">إشعارات حول المقالات الجديدة وسلوك التطبيق</string>
     <string name="settings_notifications_enabled">تمكين الإشعارات</string>
     <string name="settings_notifications_enabled_description">تمكين الإشعارات في حالة وجود مقالات جديدة</string>
+    <string name="settings_notifications_ringtone">النغمة</string>
+    <string name="settings_notifications_ringtone_none">لا شَيْء</string>
+    <string name="settings_notifications_vibrate">إهتزاز</string>
+    <string name="settings_notifications_vibrate_description">تمكين الإهتزاز للمقالات الجديدة</string>
+    <string name="settings_notifications_light">مضيء</string>
+    <string name="settings_notifications_light_description">تمكين ضوء الإشعار للمقالات الجديدة</string>
 </resources>
