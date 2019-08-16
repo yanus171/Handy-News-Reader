@@ -295,4 +295,6 @@
     <string name="settings_notifications_light">مضيء</string>
     <string name="settings_notifications_light_description">تمكين ضوء الإشعار للمقالات الجديدة</string>
     <string name="page_up_down_90_pct">تمرير الصفحة 90٪</string>
+    <string name="page_up_down_90_pct_descr">للحفاظ على عدة أسطر من الصفحة السابقة</string>
+    <string name="settings_remember_last_entry">تذَكُر المقال الأخير</string>
 </resources>
