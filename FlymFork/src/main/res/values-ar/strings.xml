@@ -294,4 +294,5 @@
     <string name="settings_notifications_vibrate_description">تمكين الإهتزاز للمقالات الجديدة</string>
     <string name="settings_notifications_light">مضيء</string>
     <string name="settings_notifications_light_description">تمكين ضوء الإشعار للمقالات الجديدة</string>
+    <string name="page_up_down_90_pct">تمرير الصفحة 90٪</string>
 </resources>
