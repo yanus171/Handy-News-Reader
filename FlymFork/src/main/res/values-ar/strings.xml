@@ -321,4 +321,8 @@
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد الإتصال</string>
     <string name="settings_content_extract_rules">قواعد استخراج المحتوى</string>
+    <string name="settings_tap_zones_dialogtitle">للمعلومات فقط، التغييرات غير متاحة</string>
+    <string name="downloadNext">"تحميل التالي "</string>
+    <string name="loadingLink">تحميل الروابط</string>
+    <string name="loadLink">اقرأ الآن</string>
 </resources>
