@@ -307,4 +307,6 @@
     <string name="settings_category_content_presentation">طريقة عرض المحتوى</string>
     <string name="settings_display_text_color">سطوع النص</string>
     <string name="settings_widget_background">الخلفية</string>
+    <string name="settings_widget_background_description">لون وشفافية خلفية الويجِت</string>
+    <string name="all_feeds">كل الخلاصات (بما في ذلك. المستقبلية)</string>
 </resources>
