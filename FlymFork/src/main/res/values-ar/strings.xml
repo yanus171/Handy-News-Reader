@@ -338,4 +338,6 @@
     <string name="standard">قياسي</string>
     <string name="fontsize_entrylist">حجم الخط في قائمة المقال</string>
     <string name="question_delete_entry">حذف هذا المقال؟</string>
+    <string name="share_all_text">مشاركة النص بأكمله</string>
+    <string name="group">مجموعة</string>
 </resources>
