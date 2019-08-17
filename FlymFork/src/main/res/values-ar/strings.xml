@@ -351,4 +351,5 @@
     <string name="markAsStarred">تحديده كمُميّز</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
     <string name="question">سؤال</string>
+    <string name="reload_full_text_with_tags">إعادة تحميل مع العلامات</string>
 </resources>
