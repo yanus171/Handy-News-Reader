@@ -314,4 +314,7 @@
     <string name="mobilizeAll">تعبئة</string>
     <string name="RefreshFeeds">جارِ تحديث الخلاصات</string>
     <string name="applyOperations">تطبيق العمليات</string>
+    <string name="extractContent">جارِ إستخراج المحتوى</string>
+    <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
+    <string name="parseXml">جارِ تحليل XML</string>
 </resources>
