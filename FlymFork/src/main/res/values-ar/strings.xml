@@ -312,4 +312,6 @@
     <string name="deleteOldEntries">حذف المقالات القديمة</string>
     <string name="AllImages">كل الصور</string>
     <string name="mobilizeAll">تعبئة</string>
+    <string name="RefreshFeeds">جارِ تحديث الخلاصات</string>
+    <string name="applyOperations">تطبيق العمليات</string>
 </resources>
