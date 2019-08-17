@@ -346,4 +346,6 @@
     <string name="entry_marked_unfavourite">تمَّت إزالة المقال من المميزة</string>
     <string name="entry_marked_favourite">تمَّ إضافة المقال إلى المميّزة</string>
     <string name="new_feed_was_added">تمَّ إضافة خلاصه جديدة</string>
+    <string name="entry_marked_unread">تمَّ تحديد المقال كغير مقروء</string>
+    <string name="lock_orientation">الوضعُ الأُفُقي</string>
 </resources>
