@@ -330,4 +330,6 @@
     <string name="loadLink">اقرأ الآن</string>
     <string name="loadLinkLater">اقرأ لاحقاً</string>
     <string name="addFeed">إضافة خلاصة</string>
+    <string name="externalLinks">أقرأُها لاحقاً</string>
+    <string name="markAllAsRead">جَعل الكُل كمقروء</string>
 </resources>
