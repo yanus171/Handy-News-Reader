@@ -340,5 +340,7 @@
     <string name="question_delete_entry">حذف هذا المقال؟</string>
     <string name="share_all_text">مشاركة النص بأكمله</string>
     <string name="group">مجموعة</string>
-    <string name="show_progress_info">معلومات فنية مفصلة وآنيّه عند تنفيذ عمليات في التطبيق</string>
+    <string name="show_progress_info">معلومات فنية مفصلة عند تنفيذ عمليات في التطبيق</string>
+    <string name="show_progress_info_descr">عرض معلومات مفصلة حول العملية الحالية</string>
+    <string name="vibrate_on_article_list_entry_swype">إهتزاز عند السحب</string>
 </resources>
