@@ -309,6 +309,8 @@
     <string name="settings_widget_background">الخلفية</string>
     <string name="settings_widget_background_description">لون وشفافية خلفية الويجِت</string>
     <string name="all_feeds">كل الخلاصات (بما في ذلك. المستقبلية)</string>
+    <string name="downloadImage">جارِ تحميل الصور</string>
+    <string name="loadFullText">جارِ تحميل النص الكامل</string>
     <string name="deleteOldEntries">حذف المقالات القديمة</string>
     <string name="AllImages">كل الصور</string>
     <string name="mobilizeAll">تعبئة</string>
@@ -317,4 +319,6 @@
     <string name="extractContent">جارِ إستخراج المحتوى</string>
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
     <string name="parseXml">جارِ تحليل XML</string>
+    <string name="setupConnection">إعداد الإتصال</string>
+    <string name="settings_content_extract_rules">قواعد استخراج المحتوى</string>
 </resources>
