@@ -146,6 +146,7 @@
     <string name="to_group_message">هل ترغب بوضع الخلاصة داخل أو خارج هذه المجموعة؟</string>
     <string name="to_group_above">خارج المجموعة</string>
     <string name="to_group_into">داخِل المجموعة</string>
+    <string name="add_custom_feed">أضِف خلاصةً مُحدده أو إستخدِم خاصية البحث</string>
     <string name="google_news_title">مواضيع أخبار جوجل</string>
     <string name="google_news_indicator">حدّد موضوعاً واحداً أو عدة مواضيع لإضافتها. قد لا تُقَدّم جوجل بعضًا منها بلغتك.</string>
     <string name="google_news_top_stories">أهمُّ الأخبار</string>
@@ -177,6 +178,7 @@
     <string name="menu_mark_as_favorite">وضع علامة مميز</string>
     <string name="menu_mark_as_unread">جعلهُ كغير مقروء</string>
     <string name="menu_reload_full_text">إعادة تحميل النص الكامل</string>
+    <string name="menu_reload_full_text_without_mobilizer">إعادة التحميل بدون تعبئة</string>
     <string name="share_favorites_title">قارئ الأخبار العملي: المقالات المميزة</string>
     <string name="copied_clipboard">تمَّ نسخ الرابط</string>
     <string name="get_full_text">تحميل كامل المقال</string>
@@ -190,6 +192,7 @@
     <string name="open_link">فتح الرابط</string>
     <string name="tip_sentence">تلميح: إسحب لليمين لوضع علامه كمقروء، واسحب لليسار للإضافة إلى المميزة</string>
     <string name="undo">تراجُع</string>
+    <string name="marked_as_read">جَعلُهُ كمقروء</string>
     <!-- WIDGET -->
     <string name="red">أحمر</string>
     <string name="green">أخضر</string>
