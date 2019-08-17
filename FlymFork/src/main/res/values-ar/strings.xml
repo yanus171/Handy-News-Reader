@@ -325,4 +325,6 @@
     <string name="downloadNext">"تحميل التالي "</string>
     <string name="loadingLink">تحميل الروابط</string>
     <string name="loadLink">اقرأ الآن</string>
+    <string name="loadLinkLater">اقرأ لاحقاً</string>
+    <string name="addFeed">إضافة خلاصة</string>
 </resources>
