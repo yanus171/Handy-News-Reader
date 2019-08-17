@@ -348,4 +348,7 @@
     <string name="new_feed_was_added">تمَّ إضافة خلاصه جديدة</string>
     <string name="entry_marked_unread">تمَّ تحديد المقال كغير مقروء</string>
     <string name="lock_orientation">الوضعُ الأُفُقي</string>
+    <string name="markAsStarred">تحديده كمُميّز</string>
+    <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
+    <string name="question">سؤال</string>
 </resources>
