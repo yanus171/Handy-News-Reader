@@ -334,4 +334,5 @@
     <string name="markAllAsRead">جَعل الكُل كمقروء</string>
     <string name="fullScreenToggle">تبديل ملء الشاشة</string>
     <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
+    <string name="standard">قياسي</string>
 </resources>
