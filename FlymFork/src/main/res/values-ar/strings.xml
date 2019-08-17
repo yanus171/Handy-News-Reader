@@ -352,4 +352,6 @@
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
     <string name="question">سؤال</string>
     <string name="reload_full_text_with_tags">إعادة تحميل مع العلامات</string>
+    <string name="filter_hint">سيتم بدء إجراء الفلتَرَه في حال إستيفاء شرط واحد على الأقل (قاعدة). \'قبول\' تتجاوز \'رفض\'</string>
+    <string name="keyword">الكلمات الدلالية</string>
 </resources>
