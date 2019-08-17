@@ -332,4 +332,6 @@
     <string name="addFeed">إضافة خلاصة</string>
     <string name="externalLinks">أقرأُها لاحقاً</string>
     <string name="markAllAsRead">جَعل الكُل كمقروء</string>
+    <string name="fullScreenToggle">تبديل ملء الشاشة</string>
+    <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
 </resources>
