@@ -369,4 +369,7 @@
     <string name="brightness">السطوع</string>
     <string name="brightness_change">تغيير السطوع</string>
     <string name="criticalErrorOccured">حدث خطأ فادح في تطبيقك. الرجاء إرسال هذا النص للمطور</string>
+    <string name="criticalErrorSending">إرسال خطأ فادح…</string>
+    <string name="copyToClipboard">إلى الحافظة</string>
+    <string name="sendEmail">إرسال إيميل</string>
 </resources>
