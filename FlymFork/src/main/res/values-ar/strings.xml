@@ -176,6 +176,7 @@
     <string name="menu_toogle_unread_all">غير المقروءة|الكل</string>
     <string name="menu_load_all_images">تحميل كل الصور</string>
     <string name="menu_mark_as_favorite">وضع علامة مميز</string>
+    <string name="menu_mark_as_unfavorite">إلغاء تحديده كمُميّز</string>
     <string name="menu_mark_as_unread">جعلهُ كغير مقروء</string>
     <string name="menu_reload_full_text">إعادة تحميل النص الكامل</string>
     <string name="menu_reload_full_text_without_mobilizer">إعادة التحميل بدون تعبئة</string>
@@ -376,4 +377,5 @@
     <string name="exportingToFile">يُصَدّر إلى الملف</string>
     <string name="importingFromFile">يُجلَب منَ الملف</string>
     <string name="autobackup_interval">الفاصل الزمني للنسخ الإحتياطي التلقائي</string>
+    <string name="autobackup_interval_descr">الفترات التي سيتم فيها إنشاء ملف نسخ احتياطي للخلاصات والمقالات</string>
 </resources>
