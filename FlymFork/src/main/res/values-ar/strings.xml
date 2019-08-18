@@ -384,4 +384,9 @@
     <string name="settings">الإعدادات</string>
     <string name="entry_go_prev">المقال السابق</string>
     <string name="entry_go_next">المقال التالي</string>
+    <string name="colorSlotSaveLongTapHint">تلميح: لحفظ اللون الحالي، إضغط مطوّلاً على إحدى الخلايا</string>
+    <string name="colorSlotSaved">تمَّ حفظ اللون في الخلية</string>
+    <string name="text">النص</string>
+    <string name="background1">الخلفيّة</string>
+    <string name="auto_refresh_requires_charging">أثناء الشحن فقط</string>
 </resources>
