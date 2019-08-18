@@ -393,4 +393,6 @@
     <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
     <string name="hide">إخفاء</string>
     <string name="show">إظهار</string>
+    <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص بالكامل</string>
+    <string name="brightness_update_from_system_period_min">وقت تحديث السطوع</string>
 </resources>
