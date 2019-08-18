@@ -358,4 +358,6 @@
     <string name="keyword">الكلمات الدلالية</string>
     <string name="loadTypeWeb">الويب (تحميل جميع الروابط من الصفحة)</string>
     <string name="loadTypeRSS">RSS (رابط الخلاصة أو الموقع، أو الإسم)</string>
+    <string name="loadType">نوع التحميل:</string>
+    <string name="global_filter">الفلتر العام&#8230;</string>
 </resources>
