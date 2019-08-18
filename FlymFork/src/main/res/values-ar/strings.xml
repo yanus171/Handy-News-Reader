@@ -372,4 +372,5 @@
     <string name="criticalErrorSending">إرسال خطأ فادح…</string>
     <string name="copyToClipboard">إلى الحافظة</string>
     <string name="sendEmail">إرسال إيميل</string>
+    <string name="toastAppCrashed">فشل التطبيق بشكل غير متوقع: (الرجاء إرسال إيميل للمطور)</string>
 </resources>
