@@ -396,4 +396,5 @@
     <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص بالكامل</string>
     <string name="brightness_update_from_system_period_min">وقت تحديث السطوع</string>
     <string name="menu_add_feed_shortcut">إنشاء إختصار على الشاشة الرئيسية</string>
+    <string name="new_feed_shortcut_added">تمَّ إنشاء إختصار جديد على الشاشة الرئيسية</string>
 </resources>
