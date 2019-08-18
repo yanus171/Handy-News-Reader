@@ -378,4 +378,6 @@
     <string name="importingFromFile">يُجلَب منَ الملف</string>
     <string name="autobackup_interval">الفاصل الزمني للنسخ الإحتياطي التلقائي</string>
     <string name="autobackup_interval_descr">الفترات التي سيتم فيها إنشاء ملف نسخ احتياطي للخلاصات والمقالات</string>
+    <string name="create_auto_backup">إنشاء نسخ إحتياطي تلقائي</string>
+    <string name="auto_backup_opml_file_created">تَمَّ إنشاء ملف .opml للنسخ الإحتياطي التلقائي:</string>
 </resources>
