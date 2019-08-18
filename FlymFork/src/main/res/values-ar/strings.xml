@@ -360,4 +360,5 @@
     <string name="loadTypeRSS">RSS (رابط الخلاصة أو الموقع، أو الإسم)</string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
+    <string name="global_filter_descr">فلتر يُطَبَق على كل خلاصة - إترك نص الفلتر (ونص regex) فارغًا لتعطيل الوظيفة</string>
 </resources>
