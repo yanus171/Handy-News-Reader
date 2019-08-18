@@ -187,6 +187,7 @@
     <string name="original_text">إظهار النص الأصلي</string>
     <string name="see_enclosure">تحميل المرفق</string>
     <string name="see_link">عرض في المتصفح</string>
+    <string name="cant_open_link">لم يتم العثور على تطبيق لهذا الرابط</string>
     <string name="open_enclosure">فتح المرفق</string>
     <string name="file">ملف</string>
     <string name="download_and_save">تحميل وحفظ</string>
@@ -204,6 +205,7 @@
     <string name="settings_category_common_summary">السمة</string>
     <string name="theme">السمة</string>
     <string name="customColors">تخصيص الألوان</string>
+    <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، إستخدم ألوان السمة</string>
     <string name="textColor">لون النص والخلفية</string>
     <string name="settings_color_text_sample_short">النص</string>
     <string name="settings_color_text_sample_long">\u201cعندما تغازل فتاة جميلة ستشعر بمرور الساعة وكأنها ثانية، ولكن إذا جلست على جمرٍ فستشعر بالثانية الواحدة كأنّها ساعة. تلك هي
