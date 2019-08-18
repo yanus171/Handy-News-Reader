@@ -373,4 +373,7 @@
     <string name="copyToClipboard">إلى الحافظة</string>
     <string name="sendEmail">إرسال إيميل</string>
     <string name="toastAppCrashed">فشل التطبيق بشكل غير متوقع: (الرجاء إرسال إيميل للمطور)</string>
+    <string name="exportingToFile">يُصَدّر إلى الملف</string>
+    <string name="importingFromFile">يُجلَب منَ الملف</string>
+    <string name="autobackup_interval">الفاصل الزمني للنسخ الإحتياطي التلقائي</string>
 </resources>
