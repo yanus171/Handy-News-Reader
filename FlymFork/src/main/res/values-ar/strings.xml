@@ -381,4 +381,5 @@
     <string name="create_auto_backup">إنشاء نسخ إحتياطي تلقائي</string>
     <string name="auto_backup_opml_file_created">تَمَّ إنشاء ملف .opml للنسخ الإحتياطي التلقائي:</string>
     <string name="use_standard_file_manager">إستخدام مدير ملفات قياسي</string>
+    <string name="settings">الإعدادات</string>
 </resources>
