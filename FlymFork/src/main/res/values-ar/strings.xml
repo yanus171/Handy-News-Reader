@@ -362,4 +362,6 @@
     <string name="global_filter">الفلتر العام&#8230;</string>
     <string name="global_filter_descr">فلتر يُطَبَق على كل خلاصة - إترك نص الفلتر (ونص regex) فارغًا لتعطيل الوظيفة</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">وإلاّ ستُطَبّق على المحتوى</string>
+    <string name="rule_text">نصُ القاعدة</string>
+    <string name="global_marks_as_star_filter_rule_descr">قاعده لكل سطر</string>
 </resources>
