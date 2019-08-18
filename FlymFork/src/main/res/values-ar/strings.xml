@@ -391,4 +391,6 @@
     <string name="auto_refresh_requires_charging">أثناء الشحن فقط</string>
     <string name="global_class_list_to_remove_from_article_text">إزالة قواعد النص</string>
     <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
+    <string name="hide">إخفاء</string>
+    <string name="show">إظهار</string>
 </resources>
