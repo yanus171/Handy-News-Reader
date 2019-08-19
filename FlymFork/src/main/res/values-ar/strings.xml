@@ -416,4 +416,5 @@
     <string name="new_feed_shortcut_added">تمَّ إنشاء إختصار جديد على الشاشة الرئيسية</string>
     <string name="new_feed_shortcut_add_failed">اللانشر لا يمكنه إنشاء إختصار</string>
     <string name="custom_data_folder">مسار الملفات الخارجية المخصصة</string>
+    <string name="custom_data_folder_descr">(إستخدام مسار إفتراضي فارغ) لمجلد feedex، الذي يُخَزِّن الصور التي تم تنزيلها والنسخ الاحتياطية</string>
 </resources>
