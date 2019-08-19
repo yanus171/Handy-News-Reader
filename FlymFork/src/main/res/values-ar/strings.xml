@@ -270,7 +270,7 @@
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_footer_show_clock">ساعة تذييل</string>
-    <string name="article_text_footer_show_clock_description">عرض الوقت الحالي في الأركان السفليه في وضع ملء الشاشة</string>
+    <string name="article_text_footer_show_clock_description">عرض الوقت الحالي في الركن الأيمن السفلي في وضع ملء الشاشة</string>
     <string name="settings_clock_size">حجم نص ساعة التذييل</string>
     <string name="article_text_footer_clock_color">لونُ الساعه والخلفية</string>
     <string name="article_text_footer_clock_color_descr">لون ساعة التذييل</string>
