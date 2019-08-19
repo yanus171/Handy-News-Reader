@@ -241,10 +241,10 @@
     <string name="settings_display_oldest_first_description">عرض المقالات الأقدم أولاً</string>
     <string name="show_mark_all_as_read_button">زر تحديد الكل كمقروء</string>
     <string name="show_mark_all_as_read_button_summary">إظهار زر على كل المقالات لتحديدها كمقروء، وإلا فستجد هذا الخيار في القائمة</string>
-    <string name="show_read_checkbox">قراءة مربع الإختيار</string>
-    <string name="show_read_checkbox_descr">إظهار مربع الإختيار الصغير للإشارة إلى قراءة المقال</string>
+    <string name="show_read_checkbox">مربع التحديد كمقروء</string>
+    <string name="show_read_checkbox_descr">إظهار مربع صغير للإشارة إلى قراءة المقال</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
-    <string name="show_full_text_indicator_descr">إظهار رمز القرص الصغير للإشارة إلى أنه تم تحميل النص الكامل للخلاصة</string>
+    <string name="show_full_text_indicator_descr">إظهار رمز قرص صغير للإشارة إلى أنه تم تحميل النص الكامل للمقال</string>
     <string name="show_new_icon">رمز المقال الجديد</string>
     <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها أبدًا)</string>
     <string name="show_read_article_count">إظهار عدد المقالات المقروءة</string>
