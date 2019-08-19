@@ -135,7 +135,7 @@
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
     <string name="feed_search">بحث الخلاصات</string>
-    <string name="select_file">حدّد ملفاً (SD_يتطلب روت)</string>
+    <string name="select_file">حدّد ملفاً (من بطاقة SD)</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
     <string name="question_delete_filter">هل حقاً تريد حدف هذا الفلتر؟</string>
