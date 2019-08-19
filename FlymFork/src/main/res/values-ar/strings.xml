@@ -377,6 +377,7 @@
     <string name="global_marks_as_star_filter_apply_to_title_descr">وإلاّ ستُطَبّق على المحتوى</string>
     <string name="rule_text">نصُ القاعدة</string>
     <string name="global_marks_as_star_filter_rule_descr">قاعده لكل سطر</string>
+    <string name="customKeepTime">فترة الإحتفاظ بالمقالات</string>
     <string name="menu_toggle_theme">تغيير السمة</string>
     <string name="turnOn">تشغيل</string>
     <string name="brightness">السطوع</string>
