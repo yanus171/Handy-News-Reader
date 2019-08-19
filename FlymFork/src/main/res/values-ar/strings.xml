@@ -405,6 +405,7 @@
     <string name="fullTextRoot">أصل النص الكامل</string>
     <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص بالكامل</string>
     <string name="brightness_update_from_system_period_min">وقت تحديث السطوع</string>
+    <string name="brightness_update_from_system_period_min_descr">(بالدقائق) بعد تلك الفترة الزمنية سيتم إستعادة السطوع (عن طريق السحب) من مستوى النظام الحالي (0 -تعني إيقاف)</string>
     <string name="menu_add_feed_shortcut">إنشاء إختصار على الشاشة الرئيسية</string>
     <string name="new_feed_shortcut_added">تمَّ إنشاء إختصار جديد على الشاشة الرئيسية</string>
     <string name="new_feed_shortcut_add_failed">اللانشر لا يمكنه إنشاء إختصار</string>
