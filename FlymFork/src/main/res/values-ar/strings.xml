@@ -401,6 +401,8 @@
     <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
     <string name="hide">إخفاء</string>
     <string name="show">إظهار</string>
+    <string name="setFullTextRoot">اختر كأصل النص الكامل</string>
+    <string name="fullTextRoot">أصل النص الكامل</string>
     <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص بالكامل</string>
     <string name="brightness_update_from_system_period_min">وقت تحديث السطوع</string>
     <string name="menu_add_feed_shortcut">إنشاء إختصار على الشاشة الرئيسية</string>
