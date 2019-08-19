@@ -262,7 +262,7 @@
     <string name="settings_display_entries_fullscreen">المقالات بملء الشاشة تلقائياً</string>
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
-    <string name="entry_text_align_justify">نص متوسط</string>
+    <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
     <string name="entry_text_align_justify_description">بخلاف ذلك، المحاذاة للجانب الأيسر</string>
     <string name="linkColor">لون الرابط والخلفية</string>
     <string name="linkColor_descr">لونُ الإرتباطات التشعبيه والخلفية</string>
@@ -283,8 +283,8 @@
     <string name="article_text_footer_progress_color_descr">لون شريط التقَدُم بالقراءة</string>
     <string name="settings_category_operation">العمليّات</string>
     <string name="settings_category_operation_summary">الإعدادات العملياتية</string>
-    <string name="tap_zone_size">حجم منطقة الضغط</string>
-    <string name="tap_zone_size_descr">إرتفاع أو عُرض كُل مناطق النقر بالملليمتر (طريقة عَرض المقال)</string>
+    <string name="tap_zone_size">حجم مناطق النقر النشطة</string>
+    <string name="tap_zone_size_descr">إرتفاع أو عُرض كُل المناطق النقر بالملليمتر (طريقة عَرض المقال)</string>
     <string name="settings_show_tap_zones">النقر فوق المناطق المرئية</string>
     <string name="settings_show_tap_zone_description">كأنها مربعات شفافة في مستعرِض المقال</string>
     <string name="settings_tapZones">معاينة المناطق</string>
