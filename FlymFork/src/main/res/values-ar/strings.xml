@@ -417,4 +417,12 @@
     <string name="new_feed_shortcut_add_failed">اللانشر لا يمكنه إنشاء إختصار</string>
     <string name="custom_data_folder">مسار الملفات الخارجية المخصصة</string>
     <string name="custom_data_folder_descr">(إستخدام مسار إفتراضي فارغ) لمجلد feedex، الذي يُخَزِّن الصور التي تم تنزيلها والنسخ الاحتياطية</string>
+    <plurals name="number_of_new_entries">
+        <item quantity="zero">%d ليس هنالك أي مقال جديد.</item>
+        <item quantity="one">مقال جديد.</item>
+        <item quantity="two">%d مقالان جديدان.</item>
+        <item quantity="few">%d مقالات جديدة.</item>
+        <item quantity="many">%d مقالاً جديداً.</item>
+        <item quantity="other">%d مقالاً جديداً.</item>
+    </plurals>
 </resources>
