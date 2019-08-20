@@ -252,7 +252,7 @@
     <string name="show_group_entrries_count">عدد مقالات المجموعة</string>
     <string name="show_group_entries_count_descr">قد يُقلل من الأداء</string>
     <string name="textColorRead">قراءة المقالات</string>
-    <string name="textColorRead_descr">قراءة نص المقالات ولون الخلفية</string>
+    <string name="textColorRead_descr">لون النص والخلفية للمقالات المقروءة</string>
     <string name="settings_color_text_read_sample_short">القراءة</string>
     <string name="settings_color_text_read_sample_long">قراءة المقالات</string>
     <string name="settings_category_article_text">نص المقال</string>
