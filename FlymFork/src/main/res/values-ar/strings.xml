@@ -246,7 +246,7 @@
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
     <string name="show_full_text_indicator_descr">إظهار رمز قرص صغير للإشارة إلى أنه تم تحميل النص الكامل للمقال</string>
     <string name="show_new_icon">رمز المقال الجديد</string>
-    <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها أبدًا)</string>
+    <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها بعد)</string>
     <string name="show_read_article_count">إظهار عدد المقالات المقروءة</string>
     <string name="show_read_article_count_descr">في قائمة الخلاصة</string>
     <string name="show_group_entrries_count">عدد مقالات المجموعة</string>
