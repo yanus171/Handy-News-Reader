@@ -142,7 +142,7 @@
     <string name="add_group_title">حدّد إسم المجموعة</string>
     <string name="edit_group_title">تعديل إسم المجموعة</string>
     <string name="message_exported_to">تصديرها إلى %s.</string>
-    <string name="to_group_title">إجراء تحريك الخلاصة</string>
+    <string name="to_group_title">إجراءات تحريك الخلاصة</string>
     <string name="to_group_message">هل ترغب بوضع الخلاصة داخل أو خارج هذه المجموعة؟</string>
     <string name="to_group_above">خارج المجموعة</string>
     <string name="to_group_into">داخِل المجموعة</string>
