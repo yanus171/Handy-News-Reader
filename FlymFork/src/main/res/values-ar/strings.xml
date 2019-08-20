@@ -182,19 +182,19 @@
     <string name="menu_reload_full_text_without_mobilizer">إعادة التحميل بدون تعبئة</string>
     <string name="share_favorites_title">قارئ الأخبار العملي: المقالات المميزة</string>
     <string name="copied_clipboard">تمَّ نسخ الرابط</string>
-    <string name="get_full_text">تحميل كامل المقال</string>
+    <string name="get_full_text">تحميل المقالات بالكامل</string>
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
     <string name="original_text">إظهار النص الأصلي</string>
     <string name="see_enclosure">تحميل المرفق</string>
     <string name="see_link">عرض في المتصفح</string>
-    <string name="cant_open_link">لم يتم العثور على تطبيق لهذا الرابط</string>
+    <string name="cant_open_link">لم يتم العثور على تطبيق يدعم هذا الرابط</string>
     <string name="open_enclosure">فتح المرفق</string>
     <string name="file">ملف</string>
     <string name="download_and_save">تحميل وحفظ</string>
     <string name="open_link">فتح الرابط</string>
     <string name="tip_sentence">تلميح: إسحب لليمين لوضع علامه كمقروء، واسحب لليسار للإضافة إلى المميزة</string>
     <string name="undo">تراجُع</string>
-    <string name="marked_as_read">جَعلُهُ كمقروء</string>
+    <string name="marked_as_read">تمَّ تحديدهُ كمقروء</string>
     <!-- WIDGET -->
     <string name="red">أحمر</string>
     <string name="green">أخضر</string>
