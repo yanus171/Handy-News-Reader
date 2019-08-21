@@ -23,7 +23,7 @@
 	<li><b>وفّر في كمية البيانات</b>: إستخدم الإنترنت فقط للمقالات الجديدة - وليس لتحميل الجميع في كل مرة; وتحكم في ما يجب تنزيله - وإلى أي مستوى تُريد،</li>
 	<li><b>سهولة الإيماءات</b>: على سبيل المثال. مَرّر إصبعك من أعلى لأسفل لإضافة/إزالة مقال من <i>المُميّزة</i>، مَرّر إصبعك على طول الحافة اليمنى من الشاشة لضبط سطوع النص،</li>
 	<li><b>راحةُ الإستخدام</b>: إهتم بعينيك مع سمةٌ مظلمة ، وقم بضبط حجم النص واللون والسطوع لتلبية إحتياجاتك الفردية،</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
+	<li><b>أفكارٌ رائعة</b>: لن تتراجع رؤوس المقالات غير المرتبطة بعد الآن تحت أصابعك ;) ; فالتمرير عبر الصفحة 90% يمكن أن يجعل القراءة أسهل، مما يجعلها أكثر راحةً،</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
 	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
