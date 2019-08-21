@@ -15,8 +15,8 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 <ul>
 <b><u>الميزات</u>:</b>
 	<li><b><u>مقالات كاملة</u>بين يديك</b>: فأنتَ لستَ بحاجة لإستخدام متصفح ويب خارجي لتكملة قراءة باقي المقال،</li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
+	<li><b><u>قراءةٌ</u>مريحةٌ بما تناسبك</b>: تنَقّل بين المقالات عن طريق أزرار الصوت أو السحب، <i>النقرُ على المناطق النَشِطة</i>، وأكمل القراءة من حيث انتهيت <u>في كل المقالات</u> عند فتح التطبيق مجدداً،</li>
+	<li><b>إشعارات المقالات المهمة</b>: لن يفوتك بعد الآن أي شيء تجدهُ مهماً لك بشكلٍ خاص،</li>
 	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
 	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
