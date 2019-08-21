@@ -20,7 +20,7 @@
 	<li><b><i>"إقرأ لاحقاً"</i></b>: يمكنك تصفح المقالات بسرعه - <b>(نَجِّم) على المقالات التي تريد قراءتها</b> في وقت الفراغ - أو لمجرد أنك تريد الإحتفاظ بها فحسب،
 	<li><b><i>"الإزالة عند الإنتهاء"</i></b> - بمجرد الإنتهاء من قراءة المقال فسيتم إزالتةُ تلقائياً من مجموعة<i> ’المُميّزة’</i> (ونفس الحاله مع مجموعة <i>’أقرأها لاحقاً’</i>)،</li>
 	<li><b>جاهز للعمل بدون إتصال</b> - بمجرد تحديث: يمكنُك الغوص بقراءة ممتعة بدون إلهاء وتشتيت، لا حاجة لتحميل أي شيء إضافي - نعم سوف تفعل ذلك من دون إنترنت :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
+	<li><b>وفّر في كمية البيانات</b>: إستخدم الإنترنت فقط للمقالات الجديدة - وليس لتحميل الجميع في كل مرة; وتحكم في ما يجب تنزيله - وإلى أي مستوى تُريد،</li>
 	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
