@@ -18,8 +18,8 @@
 	<li><b><u>قراءةٌ</u>مريحةٌ بما تناسبك</b>: تنَقّل بين المقالات عن طريق أزرار الصوت أو السحب، <i>النقرُ على المناطق النَشِطة</i>، وأكمل القراءة من حيث انتهيت <u>في كل المقالات</u> عند فتح التطبيق مجدداً،</li>
 	<li><b>إشعارات المقالات المهمة</b>: لن يفوتك بعد الآن أي شيء تجدهُ مهماً لك بشكلٍ خاص،</li>
 	<li><b><i>"إقرأ لاحقاً"</i></b>: يمكنك تصفح المقالات بسرعه - <b>(نَجِّم) على المقالات التي تريد قراءتها</b> في وقت الفراغ - أو لمجرد أنك تريد الإحتفاظ بها فحسب،
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
+	<li><b><i>"الإزالة عند الإنتهاء"</i></b> - بمجرد الإنتهاء من قراءة المقال فسيتم إزالتةُ تلقائياً من مجموعة<i> ’المُميّزة’</i> (ونفس الحاله مع مجموعة <i>’أقرأها لاحقاً’</i>)،</li>
+	<li><b>جاهز للعمل بدون إتصال</b> - بمجرد تحديث: يمكنُك الغوص بقراءة ممتعة بدون إلهاء وتشتيت، لا حاجة لتحميل أي شيء إضافي - نعم سوف تفعل ذلك من دون إنترنت :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
 	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
