@@ -28,11 +28,11 @@
 	<li><b>الميزات المتقدمة</b>: النسخ الإحتياطي التلقائي (تصدير/جلب إلى/من تنسيق.opml)،توفير المحتوى من مواقع من غير RSS،</li>
 	<li><b>المزيد من الميزات الشيّقة</b>"في المتجر" - تفَضّل بزيارة موقعنا الإلكتروني لمعرفة المزيد :) !،</li>
 	<li><b><u>هام</u>:</b>لا يتزامن هذا التطبيق مع برامج قراءة الأخبار على الإنترنت (مثل. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b>التعليقات والإقتراحات مُرَحَب بها</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
+<b>أين يمكنك أن تجدنا:</b>
 	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
