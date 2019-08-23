@@ -133,7 +133,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     companion object {
 
         fun setBrightness(currentAlpha: Int, window: Window) {
-            val brightness = 255 - currentAlpha
+            val brightness = if ( currentAlpha == 255 ) { 1  } else { 255 - currentAlpha }
             //                    if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite( getContext() )) {
             //                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
             //                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS, currentAlpha);

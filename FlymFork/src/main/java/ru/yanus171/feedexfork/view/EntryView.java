@@ -510,7 +510,11 @@ public class EntryView extends WebView implements Observer {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Dog.v("EntryView", "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+                SheduleScrollTo(view);
+            }
+
+            private void SheduleScrollTo(final WebView view) {
+                Dog.v(EntryView.TAG, "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
                 if (mScrollPartY != 0 /*&& getContentHeight() != getScrollY()*/ ) {
                     if ( GetContentHeight() > 0 )
                         ScrollToY();
@@ -518,10 +522,10 @@ public class EntryView extends WebView implements Observer {
                         view.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ScrollToY();
+                                SheduleScrollTo( view );
                             }
                             // Delay the scrollTo to make it work
-                        }, 300);
+                        }, 50);
                 }
             }
         });
@@ -567,16 +571,16 @@ public class EntryView extends WebView implements Observer {
         if ( ( data != null ) && ( (Long)data == mEntryId ) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
             mData = HtmlUtils.replaceImageURLs(mData, mEntryId, false);
+            if ( GetViewScrollPartY() > 0 ) {
+                mScrollPartY = GetViewScrollPartY();
+                mOldContentHeight = GetContentHeight();
+            }
             LoadData();
         //setScrollY( y );
         }
     }
 
     private void LoadData() {
-        if ( GetViewScrollPartY() > 0 ) {
-            mScrollPartY = GetViewScrollPartY();
-            mOldContentHeight = GetContentHeight();
-        }
         loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
     }
 
@@ -716,20 +720,22 @@ public class EntryView extends WebView implements Observer {
 
     public void SaveScrollPos() {
         final double scrollPart = GetViewScrollPartY();
-        Dog.v(TAG, String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight() ));
-        new Thread() {
-            @Override
-            public void run() {
-                ContentValues values = new ContentValues();
-                values.put(FeedData.EntryColumns.SCROLL_POS, scrollPart);
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                FeedDataContentProvider.mNotifyEnabled = false;
-                //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
-                cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
-                FeedDataContentProvider.mNotifyEnabled = true;
-                Dog.v( "EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, scrollPart));
-            }
-        }.start();
+        if ( scrollPart > 0.0001 ) {
+            Dog.v(TAG, String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight()));
+//            new Thread() {
+//                @Override
+//                public void run() {
+                    ContentValues values = new ContentValues();
+                    values.put(FeedData.EntryColumns.SCROLL_POS, scrollPart);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    FeedDataContentProvider.mNotifyEnabled = false;
+                    //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
+                    cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
+                    FeedDataContentProvider.mNotifyEnabled = true;
+                    Dog.v("EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, scrollPart));
+//                }
+//            }.start();
+        }
     }
 
 }
