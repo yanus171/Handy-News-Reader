@@ -263,9 +263,9 @@
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
     <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
-    <string name="entry_text_align_justify_description">بخلاف ذلك، المحاذاة للجانب الأيسر</string>
+    <string name="entry_text_align_justify_description">بخلاف ذلك، فالمحاذاة تكون حسب اللغة</string>
     <string name="linkColor">لون الرابط والخلفية</string>
-    <string name="linkColor_descr">لونُ الإرتباطات التشعبيه والخلفية</string>
+    <string name="linkColor_descr">لونُ الروابط التشعبيه والخلفية</string>
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
