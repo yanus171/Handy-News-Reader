@@ -362,9 +362,9 @@
     <string name="new_feed_was_added">تمَّ إضافة خلاصه جديدة</string>
     <string name="entry_marked_unread">تمَّ تحديد المقال كغير مقروء</string>
     <string name="lock_orientation">الوضعُ الأُفُقي</string>
-    <string name="markAsStarred">تم تحديده كمُميّز</string>
+    <string name="markAsStarred">تحديد كمُميّزة</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
-    <string name="deleteAllEntries">حذف كل المقالات التي تَظهَر إذا لم توضع لها علامة مميّز</string>
+    <string name="deleteAllEntries">حذف كل المقالات التي تَظهَر إذا لم توضع لها علامة نجمة</string>
     <string name="question">سؤال</string>
     <string name="reload_full_text_with_tags">إعادة تحميل مع العلامات</string>
     <string name="filter_hint">سيتم بدء إجراء الفلتَرَه في حال إستيفاء شرط واحد على الأقل (قاعدة). \'قبول\' تتجاوز \'رفض\'</string>
