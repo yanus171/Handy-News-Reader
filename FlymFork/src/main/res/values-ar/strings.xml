@@ -269,7 +269,7 @@
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
-    <string name="article_text_footer_show_clock">ساعة تذييل</string>
+    <string name="article_text_footer_show_clock">ساعة تذييل الصفحة</string>
     <string name="article_text_footer_show_clock_description">عرض الوقت الحالي في الركن الأيمن السفلي في وضع ملء الشاشة</string>
     <string name="settings_clock_size">حجم نص ساعة التذييل</string>
     <string name="article_text_footer_clock_color">لونُ الساعه والخلفية</string>
@@ -332,11 +332,11 @@
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد الإتصال</string>
-    <string name="settings_content_extract_rules">قواعد استخراج المحتوى</string>
+    <string name="settings_content_extract_rules">قواعد إستخراج المحتوى</string>
     <string name="settings_content_extract_rules_description">تعيين لكل موقع (يلزم معرفة HTML الأساسية)</string>
     <string name="settings_tap_zones_dialogtitle">للمعلومات فقط، التغييرات غير متاحة</string>
     <string name="downloadNext">"تحميل التالي "</string>
-    <string name="loadingLink">تحميل الروابط</string>
+    <string name="loadingLink">جارِ تحميل الروابط</string>
     <string name="loadLink">اقرأ الآن</string>
     <string name="loadLinkLater">اقرأ لاحقاً</string>
     <string name="addFeed">إضافة خلاصة</string>
