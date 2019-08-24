@@ -309,7 +309,7 @@
     <string name="settings_remeber_last_entry_description">إفتح آخر مقال تم عرضه في الجلسة السابقة، وبخلاف ذلك أظهر قائمة الغير مقروءة</string>
     <string name="auto_unstart_at_bottom">إلغاء علامة النجمة تلقائياً</string>
     <string name="auto_unstart_at_bottom_descr">إزالة المقال تلقائيًا من المقالات المميزة عند الوصول إلى أسفل المقال</string>
-    <string name="settings_category_advanced">إعدادات مُتقدمة</string>
+    <string name="settings_category_advanced">الإعدادات المُتقدمة</string>
     <string name="settings_category_advanced_summary">ميزات إضافية (مثل النسخ الاحتياطي ،عوامل التصفية والمزيد)</string>
     <string name="settings_autobackup_enabled">تمكين النسخ الإحتياطي التلقائي</string>
     <string name="settings_autobackup_enabled_descr">لحفظ قائمة الخلاصة والمقالات المميزة بشكل دوري في ملف .opml</string>
