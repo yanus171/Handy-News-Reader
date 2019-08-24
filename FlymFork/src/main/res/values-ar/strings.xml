@@ -259,7 +259,7 @@
     <string name="settings_category_article_text_summary">ظهور نص المقال</string>
     <string name="settings_display_images">عرض الصور</string>
     <string name="settings_display_images_description">عرض الصور في المقالات</string>
-    <string name="settings_display_entries_fullscreen">المقالات بملء الشاشة تلقائياً</string>
+    <string name="settings_display_entries_fullscreen">عرض المقالات بملء الشاشة تلقائياً</string>
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
     <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
