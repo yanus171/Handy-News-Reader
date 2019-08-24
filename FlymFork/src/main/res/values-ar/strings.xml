@@ -205,7 +205,7 @@
     <string name="settings_category_common_summary">السمة ولونها</string>
     <string name="theme">السمة</string>
     <string name="customColors">تخصيص الألوان</string>
-    <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، إستخدم لون السمة الإفتراضي</string>
+    <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، فسَيُستَخدم لون السمة الإفتراضي</string>
     <string name="textColor">لون النص والخلفية</string>
     <string name="settings_color_text_sample_short">النص</string>
     <string name="settings_color_text_sample_long">\u201cعندما تغازل فتاة جميلة ستشعر بمرور الساعة وكأنها ثانية، ولكن إذا جلست على جمرٍ فستشعر بالثانية الواحدة كأنّها ساعة. تلك هي
