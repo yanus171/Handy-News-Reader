@@ -354,8 +354,8 @@
     <string name="group">مجموعة</string>
     <string name="auto_image_load">تحميل الصور تلقائياً</string>
     <string name="show_progress_info">المعلومات الفنية المفصلة</string>
-    <string name="show_progress_info_descr">عرض معلومات مفصلة حول العملية الحالية</string>
-    <string name="vibrate_on_article_list_entry_swype">إهتزاز عند السحب</string>
+    <string name="show_progress_info_descr">عرض معلومات آنيه ومفصلة حالَ حدوث عمليات داخل الخلاصات</string>
+    <string name="vibrate_on_article_list_entry_swype">الإهتزاز عند السحب</string>
     <string name="vibrate_on_article_list_entry_swype_summary">عند السحب نحو اليمين أو اليسار في القوائم الرئيسية للمقالات لتحديد المقال كمقروء أو كمُميّز</string>
     <string name="entry_marked_unfavourite">تمَّت إزالة المقال من المُميّزة</string>
     <string name="entry_marked_favourite">تمَّ إضافة المقال إلى المميّزة</string>
