@@ -202,7 +202,7 @@
     <string name="transparency">الشفافية</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">الإعدادات المشتركة</string>
-    <string name="settings_category_common_summary">السمة</string>
+    <string name="settings_category_common_summary">السمة ولونها</string>
     <string name="theme">السمة</string>
     <string name="customColors">تخصيص الألوان</string>
     <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، إستخدم ألوان السمة</string>
