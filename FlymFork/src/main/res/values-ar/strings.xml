@@ -196,9 +196,9 @@
     <string name="undo">تراجُع</string>
     <string name="marked_as_read">تمَّ تحديدهُ كمقروء</string>
     <!-- WIDGET -->
-    <string name="red">أحمر</string>
-    <string name="green">أخضر</string>
-    <string name="blue">أزرق</string>
+    <string name="red">الأحمر</string>
+    <string name="green">الأخضر</string>
+    <string name="blue">الأزرق</string>
     <string name="transparency">الشفافية</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">الإعدادات المشتركة</string>
