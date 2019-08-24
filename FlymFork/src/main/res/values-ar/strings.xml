@@ -205,7 +205,7 @@
     <string name="settings_category_common_summary">السمة ولونها</string>
     <string name="theme">السمة</string>
     <string name="customColors">تخصيص الألوان</string>
-    <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، إستخدم ألوان السمة</string>
+    <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، إستخدم لون السمة الإفتراضي</string>
     <string name="textColor">لون النص والخلفية</string>
     <string name="settings_color_text_sample_short">النص</string>
     <string name="settings_color_text_sample_long">\u201cعندما تغازل فتاة جميلة ستشعر بمرور الساعة وكأنها ثانية، ولكن إذا جلست على جمرٍ فستشعر بالثانية الواحدة كأنّها ساعة. تلك هي
@@ -240,7 +240,7 @@
     <string name="settings_display_oldest_first">ترتيب المقالات</string>
     <string name="settings_display_oldest_first_description">عرض المقالات الأقدم أولاً</string>
     <string name="show_mark_all_as_read_button">زر تحديد الكل كمقروء</string>
-    <string name="show_mark_all_as_read_button_summary">إظهار زر على كل المقالات لتحديدها كمقروء، وإلا فستجد هذا الخيار في القائمة</string>
+    <string name="show_mark_all_as_read_button_summary">إظهار زر على كل المقالات لتحديدها كمقروءة، وإلا فستجد هذا الخيار في القائمة</string>
     <string name="show_read_checkbox">مربع التحديد كمقروء</string>
     <string name="show_read_checkbox_descr">إظهار مربع صغير للإشارة إلى قراءة المقال</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
