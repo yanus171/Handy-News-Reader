@@ -194,7 +194,7 @@
     <string name="open_link">فتح الرابط</string>
     <string name="tip_sentence">تلميح: إسحب لليمين لوضع علامه كمقروء، واسحب لليسار للإضافة إلى المميزة</string>
     <string name="undo">تراجُع</string>
-    <string name="marked_as_read">تمَّ تحديدهُ كمقروء</string>
+    <string name="marked_as_read">تمَّ تحديد الكل كمقروء</string>
     <!-- WIDGET -->
     <string name="red">الأحمر</string>
     <string name="green">الأخضر</string>
