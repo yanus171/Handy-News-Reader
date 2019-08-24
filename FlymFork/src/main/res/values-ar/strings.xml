@@ -310,7 +310,7 @@
     <string name="auto_unstart_at_bottom">إلغاء علامة النجمة تلقائياً</string>
     <string name="auto_unstart_at_bottom_descr">إزالة المقال تلقائيًا من المقالات المميزة عند الوصول إلى أسفل المقال</string>
     <string name="settings_category_advanced">الإعدادات المُتقدمة</string>
-    <string name="settings_category_advanced_summary">ميزات إضافية (مثل النسخ الاحتياطي ،عوامل التصفية والمزيد)</string>
+    <string name="settings_category_advanced_summary">ميزات إضافية (مثل النسخ الاحتياطي، الفلاتر والمزيد)</string>
     <string name="settings_autobackup_enabled">تمكين النسخ الإحتياطي التلقائي</string>
     <string name="settings_autobackup_enabled_descr">لحفظ قائمة الخلاصة والمقالات المميزة بشكل دوري في ملف .opml</string>
     <string name="settings_category_content_presentation">طريقة عرض المحتوى</string>
@@ -353,7 +353,7 @@
     <string name="share_all_text">مشاركة النص بأكمله</string>
     <string name="group">مجموعة</string>
     <string name="auto_image_load">تحميل الصور تلقائياً</string>
-    <string name="show_progress_info">معلومات فنية مفصلة وآنيه عند تنفيذ عمليات في التطبيق</string>
+    <string name="show_progress_info">المعلومات الفنية المفصلة</string>
     <string name="show_progress_info_descr">عرض معلومات مفصلة حول العملية الحالية</string>
     <string name="vibrate_on_article_list_entry_swype">إهتزاز عند السحب</string>
     <string name="vibrate_on_article_list_entry_swype_summary">عند السحب نحو اليمين أو اليسار في القوائم الرئيسية للمقالات لتحديد المقال كمقروء أو كمُميّز</string>
