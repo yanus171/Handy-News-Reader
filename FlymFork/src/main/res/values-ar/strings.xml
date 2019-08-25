@@ -282,7 +282,7 @@
     <string name="article_text_footer_progress_color">لون التقَدُم</string>
     <string name="article_text_footer_progress_color_descr">لون شريط التقَدُم بالقراءة</string>
     <string name="settings_category_operation">العمليّات</string>
-    <string name="settings_category_operation_summary">الإعدادات العملياتية</string>
+    <string name="settings_category_operation_summary">الإعدادات التشغيلية</string>
     <string name="tap_zone_size">حجم مناطق النقر النَشِطة</string>
     <string name="tap_zone_size_descr">الإرتفاع والعرض لكل مناطق النقر بالملليمتر</string>
     <string name="settings_show_tap_zones">المناطق النشطة مرئية</string>
