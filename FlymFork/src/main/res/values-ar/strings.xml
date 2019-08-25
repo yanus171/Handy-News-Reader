@@ -129,8 +129,8 @@
     <string name="filter_add_title">إضافة قاعدة</string>
     <string name="filter_delete_title">حذف قاعدة</string>
     <string name="filter_edit_title">تعديل قاعدة</string>
-    <string name="filter_is_regex">&#8230; عبارةٍ عن تعبير منتظم</string>
-    <string name="filter_apply_to_title">تطبيق على عنوان المقال أو عنوان الرابط</string>
+    <string name="filter_is_regex">&#8230;عبارةً عن تعبير منتظم</string>
+    <string name="filter_apply_to_title">تطبيق على عنوان المقال أو الرابط</string>
     <string name="filter_apply_to_content">تطبيق على المحتوى</string>
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
