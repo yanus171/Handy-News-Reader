@@ -331,10 +331,10 @@
     <string name="extractContent">جارِ إستخراج المحتوى</string>
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
     <string name="parseXml">جارِ تحليل XML</string>
-    <string name="setupConnection">إعداد الإتصال</string>
+    <string name="setupConnection">إعداد إتصال</string>
     <string name="settings_content_extract_rules">قواعد إستخراج المحتوى</string>
     <string name="settings_content_extract_rules_description">تعيين لكل موقع (يلزم معرفة HTML الأساسية)</string>
-    <string name="settings_tap_zones_dialogtitle">للمعلومات فقط، التغييرات غير متاحة</string>
+    <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
     <string name="downloadNext">"تحميل التالي "</string>
     <string name="loadingLink">جارِ تحميل الروابط</string>
     <string name="loadLink">اقرأ الآن</string>
