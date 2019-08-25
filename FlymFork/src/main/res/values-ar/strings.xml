@@ -224,7 +224,7 @@
     <string name="settings_keep_time">مدة الإحتفاظ بالمقالات</string>
     <string name="settings_preload_image_mode">إعادة تحميل الصور</string>
     <string name="settings_max_image_download_count">الحد الأقصى لعدد تحميلات الصور</string>
-    <string name="settings_max_image_download_count_description">لكل مقال واحد</string>
+    <string name="settings_max_image_download_count_description">للمقال الواحد</string>
     <string name="settings_max_image_download_size_kb">الحد الأقصى لحجم الصورة</string>
     <string name="settings_max_image_download_size_kb_summary">(بالكيلوبايت). لا تَقُم بتحميل الصور تلقائياً إذا كانت أكبر من</string>
     <string name="max_single_refresh_traffic_mb">الحد الأقصى لحركة التحديث الفردية</string>
