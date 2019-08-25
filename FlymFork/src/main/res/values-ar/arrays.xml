@@ -32,7 +32,7 @@
         <item>الصفحة لأعلى | لِأسفل</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
-        <item>مطلقاً</item>
+        <item>كلا إطلاقاً</item>
         <item>عبر الواي فاي فقط</item>
         <item>دائماً</item>
     </string-array>
