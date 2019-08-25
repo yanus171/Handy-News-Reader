@@ -192,7 +192,7 @@
     <string name="file">ملف</string>
     <string name="download_and_save">تحميل وحفظ</string>
     <string name="open_link">فتح الرابط</string>
-    <string name="tip_sentence">تلميح: إسحب لليمين لوضع علامه كمقروء، واسحب لليسار للإضافة إلى المميزة</string>
+    <string name="tip_sentence">تلميح: إسحب لليمين للتحديد كمقروء، واسحب لليسار للإضافة إلى المُميّزة</string>
     <string name="undo">تراجُع</string>
     <string name="marked_as_read">تمَّ تحديد الكل كمقروء</string>
     <!-- WIDGET -->
