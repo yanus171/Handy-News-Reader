@@ -342,7 +342,7 @@
     <string name="addFeed">إضافة خلاصة</string>
     <string name="externalLinks">أقرأُها لاحقاً (روابط خارجية)</string>
     <string name="markAllAsRead">تحديد الكُل كمقروء</string>
-    <string name="pageUp">صفحة لأعلى / سحب لأسفل (لإلغاء) النجمة</string>
+    <string name="pageUp">سحب لأسفل/لأعلى،يضع نجمة/إلغاءها</string>
     <string name="pageDown">صفحة لأسفل</string>
     <string name="fullScreenToggle">تبديل ملء الشاشة</string>
     <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
