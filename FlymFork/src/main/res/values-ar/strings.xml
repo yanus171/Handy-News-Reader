@@ -343,7 +343,7 @@
     <string name="externalLinks">أقرأُها لاحقاً (روابط خارجية)</string>
     <string name="markAllAsRead">تحديد الكُل كمقروء</string>
     <string name="pageUp">سحب لأسفل/لأعلى،يضع نجمة/إلغاءها</string>
-    <string name="pageDown">صفحة لأسفل</string>
+    <string name="pageDown">أسفل الصفحة</string>
     <string name="fullScreenToggle">تبديل ملء الشاشة</string>
     <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
     <string name="actionBarToggle">تبديل شريط الإجراءات</string>
@@ -391,9 +391,9 @@
     <string name="importingFromFile">يُجلَب منَ الملف</string>
     <string name="autobackup_interval">الفاصل الزمني للنسخ الإحتياطي التلقائي</string>
     <string name="autobackup_interval_descr">الفترات التي سيتم فيها إنشاء ملف نسخ احتياطي للخلاصات والمقالات</string>
-    <string name="create_auto_backup">عمل نسخ إحتياطي</string>
+    <string name="create_auto_backup">إنشاء نسخه إحتياطية</string>
     <string name="auto_backup_opml_file_created">تَمَّ إنشاء ملف .opml للنسخ الإحتياطي التلقائي:</string>
-    <string name="use_standard_file_manager">إستخدام مدير ملفات قياسي</string>
+    <string name="use_standard_file_manager">إستخدام مدير الملفات القياسي</string>
     <string name="use_standard_file_manager_descr">وبخلاف ذلك، حدد ملف .opml من خارج مجلد feedex (عبر نافذة الحوار) فقط</string>
     <string name="settings">الإعدادات</string>
     <string name="entry_go_prev">المقال السابق</string>
