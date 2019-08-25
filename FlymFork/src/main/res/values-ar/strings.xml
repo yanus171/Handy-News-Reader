@@ -125,7 +125,7 @@
     <string name="tab_feed_title">الخلاصة</string>
     <string name="tab_filters_title">الفلتر</string>
     <string name="feed_title">الإسم</string>
-    <string name="feed_filters">قواعد الفلترة</string>
+    <string name="feed_filters">قواعد الفَلتَرة</string>
     <string name="filter_add_title">إضافة قاعدة</string>
     <string name="filter_delete_title">حذف قاعدة</string>
     <string name="filter_edit_title">تعديل قاعدة</string>
@@ -351,7 +351,7 @@
     <string name="fontsize_entrylist">حجم الخط في قائمة المقال</string>
     <string name="question_delete_entry">حذف هذا المقال؟</string>
     <string name="share_all_text">مشاركة النص بأكمله</string>
-    <string name="group">مجموعة</string>
+    <string name="group">المجموعة</string>
     <string name="auto_image_load">تحميل الصور تلقائياً</string>
     <string name="show_progress_info">المعلومات الفنية المفصلة</string>
     <string name="show_progress_info_descr">عرض معلومات آنيه ومفصلة حالَ حدوث أي عمليات داخل الخلاصات</string>
