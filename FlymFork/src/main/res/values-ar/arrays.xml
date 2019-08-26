@@ -28,7 +28,7 @@
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>إفتراضي</item>
-        <item>إنتقال للتالي | المقال السابق</item>
+        <item>إنتقال للمقال التالي | السابق</item>
         <item>الصفحة لأعلى | لِأسفل</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
