@@ -168,7 +168,7 @@
     <string name="menu_star">مُميّز</string>
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
-    <string name="menu_full_screen">مِلء الشاشة</string>
+    <string name="menu_full_screen">وضع مِلء الشاشة</string>
     <string name="menu_font_bold">خط عريض</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
