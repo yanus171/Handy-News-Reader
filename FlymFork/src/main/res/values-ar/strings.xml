@@ -409,7 +409,7 @@
     <string name="show">إظهار</string>
     <string name="setFullTextRoot">اختر كأصل النص الكامل</string>
     <string name="fullTextRoot">أصل النص الكامل</string>
-    <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص بالكامل</string>
+    <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص الكامل</string>
     <string name="brightness_update_from_system_period_min">وقت تحديث السطوع</string>
     <string name="brightness_update_from_system_period_min_descr">(بالدقائق) بعد هذا الوقت سيتم إستعادة السطوع (بواسطة السحب) من مستوى النظام الحالي (0 -تعني عدم الإستعادة)</string>
     <string name="menu_add_feed_shortcut">إنشاء إختصار على الشاشة الرئيسية</string>
