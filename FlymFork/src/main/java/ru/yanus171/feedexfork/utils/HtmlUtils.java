@@ -103,7 +103,7 @@ public class HtmlUtils {
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
             if ( !baseUri.contains( "user" ) ) {
                 content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
-                content = IMG_USER_PATTERN.matcher(content).replaceAll("");
+                content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
             }
 
             // xml
@@ -155,6 +155,7 @@ public class HtmlUtils {
 
             boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);//NetworkUtils.needDownloadPictures();
             final ArrayList<String> imagesToDl = new ArrayList<>();
+
 
             matcher = IMG_PATTERN.matcher(content);
             int index = 0;

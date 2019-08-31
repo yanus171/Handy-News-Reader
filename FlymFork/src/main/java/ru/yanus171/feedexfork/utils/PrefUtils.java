@@ -89,7 +89,7 @@ public class PrefUtils {
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
     public static final String LAST_ENTRY_ID = "last_entry_id";
-    public static final String LAST_BRIGHTNESS = "last_brightness";
+    public static final String LAST_BRIGHTNESS_FLOAT = "last_brightness_float";
     public static final String LAST_BRIGHTNESS_ONPAUSE_TIME = "last_brightness_onpause_time";
 
 
@@ -159,6 +159,10 @@ public class PrefUtils {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.getInt(key, defValue);
     }
+    public static Float getFloat(String key, Float defValue) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        return settings.getFloat( key, defValue);
+    }
     public static int getIntFromText(String key, int defValue) {
         int result = defValue;
         try {
@@ -185,6 +189,11 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static void putFloat(String key, Float value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
+        editor.putFloat(key, value);
+        editor.apply();
+    }
     public static boolean contains(String key) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.contains( key );
