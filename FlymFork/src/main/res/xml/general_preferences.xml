@@ -254,6 +254,11 @@
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort=" "
                 colorPreference:sampletextLong=" " />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="entry_text_title_link"
+                android:summary="@string/entry_text_title_link_description"
+                android:title="@string/entry_text_title_link"/>
         </PreferenceCategory>
     </PreferenceScreen>
 

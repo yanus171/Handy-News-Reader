@@ -19,6 +19,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
 import kotlin.math.abs
+import kotlin.math.exp
+import kotlin.math.log
 
 class Brightness(private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
@@ -64,18 +66,20 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                             paddingY = currentY - initialY
 
                             if (abs(paddingY) > abs(paddingX) && abs(initialY - event.y) > view1.width) {
-                                Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY")
-                                val coeff : Float = mInitialAlpha / 255F * 10
-                                var currentAlpha : Float = mInitialAlpha + 255F * paddingY.toFloat() / mDimFrame.height.toFloat() / coeff
+                                val coeff : Float = 10 - abs( paddingY.toFloat() ) / mDimFrame.height.toFloat() * 10 //mInitialAlpha / 255F * 10
+                                val height = mDimFrame.height;
+                                val delta : Float = 255F * paddingY.toFloat() / mDimFrame.height.toFloat()
+                                var currentAlpha : Float = mInitialAlpha + delta / coeff
                                 if (currentAlpha > 255)
                                     currentAlpha = 255F
                                 else if (currentAlpha < 1)
                                     currentAlpha = 1F
+                                Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
                                 setBrightness(currentAlpha)
                                 mInfo.visibility = View.VISIBLE
-                                mInfo.text = String.format("%s: %.2f %%",
+                                mInfo.text = String.format("%s: %.1f %%",
                                         mInfo.context.getString(R.string.brightness),
-                                        ((255 - currentAlpha) / 255.toFloat() * 100))
+                                        if ( currentAlpha >= 255F / 100F ) { (255 - currentAlpha) / 255.toFloat() * 100 } else { 100F } )
                             }
                             return true
                         }

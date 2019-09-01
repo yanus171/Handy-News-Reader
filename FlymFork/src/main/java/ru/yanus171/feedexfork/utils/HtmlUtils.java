@@ -103,7 +103,7 @@ public class HtmlUtils {
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
             if ( !baseUri.contains( "user" ) ) {
                 content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
-                content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
+                //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
             }
 
             // xml

@@ -197,9 +197,11 @@ public class EntryView extends WebView implements Observer {
 
     private static final String BODY_START = "<body dir=\"%s\">";
     private static final String BODY_END = "</body>";
-    private static final String TITLE_START = "<h1><a class='no_draw_link' href=\"%s\">";
+    private static final String TITLE_START_WITH_LINK = "<h1><a class='no_draw_link' href=\"%s\">";
+    private static final String TITLE_START = "<h1>";
     //private static final String TITLE_MIDDLE = "'>";
-    private static final String TITLE_END = "</a></h1>";
+    private static final String TITLE_END = "</h1>";
+    private static final String TITLE_END_WITH_LINK = "</a></h1>";
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
@@ -294,7 +296,13 @@ public class EntryView extends WebView implements Observer {
             link = "";
         }
 
-        content.append(String.format( TITLE_START, link + NO_MENU )).append(title).append(TITLE_END).append(SUBTITLE_START);
+        if ( PrefUtils.getBoolean( "entry_text_title_link", true ) )
+            content.append(String.format( TITLE_START_WITH_LINK, link + NO_MENU )).append(title).append(TITLE_END_WITH_LINK);
+        else
+            content.append(TITLE_START).append(title).append(TITLE_END);
+
+        content.append(SUBTITLE_START);
+
         Date date = new Date(timestamp);
         Context context = getContext();
         StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
