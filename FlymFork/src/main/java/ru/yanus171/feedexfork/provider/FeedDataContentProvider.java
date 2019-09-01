@@ -49,6 +49,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -59,6 +60,7 @@ import android.os.CancellationSignal;
 import android.os.Handler;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -67,6 +69,7 @@ import ru.yanus171.feedexfork.BuildConfig;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -153,24 +156,30 @@ public class FeedDataContentProvider extends ContentProvider {
 
     private DatabaseHelper mDatabaseHelper;
 
-    public static Uri addFeed(Context context, String url, String name, Long groupID,
-                              boolean retrieveFullText,
-                              boolean showTextInEntryList,
-                              boolean imageAutoLoad,
-                              String options) {
+    public static Pair<Uri, Boolean> addFeed(Context context, String url, String name, Long groupID,
+                                             boolean retrieveFullText,
+                                             boolean showTextInEntryList,
+                                             boolean imageAutoLoad,
+                                             String options) {
+        boolean added = false;
         ContentResolver cr = context.getContentResolver();
 
         if (!url.startsWith(Constants.HTTP_SCHEME) && !url.startsWith(Constants.HTTPS_SCHEME)) {
             url = Constants.HTTP_SCHEME + url;
         }
 
-        Cursor cursor = cr.query(FeedColumns.CONTENT_URI, null, FeedColumns.URL + Constants.DB_ARG,
+        Cursor cursor = cr.query(FeedColumns.CONTENT_URI, new String[] {FeedColumns._ID}, FeedColumns.URL + Constants.DB_ARG,
                 new String[]{url}, null);
 
         Uri result = Uri.EMPTY;
         if (cursor.moveToFirst()) {
-            cursor.close();
             Toast.makeText(context, R.string.error_feed_url_exists, Toast.LENGTH_SHORT).show();
+            final long feedId = cursor.getLong(0);
+            result = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( feedId );
+            context.startActivity( new Intent( context, HomeActivity.class )
+                    .setAction(Intent.ACTION_MAIN)
+                    .setData( result ) );
+            cursor.close();
         } else {
             cursor.close();
             ContentValues values = new ContentValues();
@@ -192,8 +201,9 @@ public class FeedDataContentProvider extends ContentProvider {
             values.put(FeedColumns.OPTIONS, options);
 
             result = cr.insert(FeedColumns.CONTENT_URI, values);
+            added = true;
         }
-        return result;
+        return new Pair<>(result, added);
     }
 
     private static String getSearchWhereClause(String uriSearchParam) {

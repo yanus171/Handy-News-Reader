@@ -315,9 +315,7 @@ public class FetcherService extends IntentService {
                                 list.add(item.mCaption);
                             ShowNotification(TextUtils.join(", ", list),
                                     R.string.markedAsStarred,
-                                    new Intent(FetcherService.this, HomeActivity.class)
-                                            .setData(EntryColumns.FAVORITES_CONTENT_URI),
-                                    null,
+                                    new Intent(FetcherService.this, HomeActivity.class),
                                     Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
                         } else if (mMarkAsStarredFoundList.size() > 0)
                             for (MarkItem item : mMarkAsStarredFoundList) {
@@ -334,7 +332,6 @@ public class FetcherService extends IntentService {
                                 ShowNotification(item.mCaption,
                                         R.string.markedAsStarred,
                                         new Intent(Intent.ACTION_VIEW, entryUri),
-                                        entryUri,
                                         ID);
                             }
                     }
@@ -351,7 +348,6 @@ public class FetcherService extends IntentService {
                                 ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
                                         R.string.flym_feeds,
                                         new Intent(FetcherService.this, HomeActivity.class),
-                                        null,
                                         Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
                             }
                         } else if (Constants.NOTIF_MGR != null) {
@@ -967,7 +963,7 @@ public class FetcherService extends IntentService {
         return newCount;
     }
 
-    private void ShowNotification(String text, int captionID, Intent intent, Uri entryUri, int ID){
+    private void ShowNotification(String text, int captionID, Intent intent, int ID){
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 

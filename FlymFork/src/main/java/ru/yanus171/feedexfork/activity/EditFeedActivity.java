@@ -60,6 +60,7 @@ import android.os.Bundle;
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -678,7 +679,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
 
             private void AddFeed(HashMap<String, String> dataItem) {
-                Uri newFeedUri =
+                Pair<Uri, Boolean> result =
                     FeedDataContentProvider.addFeed(EditFeedActivity.this,
                         dataItem.get(FEED_SEARCH_URL),
                         name.isEmpty() ? dataItem.get(FEED_SEARCH_TITLE) : name,
@@ -687,15 +688,21 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         mShowTextInEntryListCb.isChecked(),
                         mIsAutoImageLoadCb.isChecked(),
                         getOptionsJsonString());
-                UiUtils.toast( EditFeedActivity.this, R.string.new_feed_was_added);
+                if (result.second ) {
+                    UiUtils.toast(EditFeedActivity.this, R.string.new_feed_was_added);
 
-                FetcherService.StartService( new Intent(EditFeedActivity.this, FetcherService.class)
-                        .setAction(FetcherService.ACTION_REFRESH_FEEDS)
-                        .putExtra(Constants.FEED_ID, newFeedUri.getLastPathSegment())
-                        .putExtra( Constants.EXTRA_DELETE_OLD, false ));
-                HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( newFeedUri.getLastPathSegment() );
-                setResult(RESULT_OK);
-                //finish();
+                    FetcherService.StartService(new Intent(EditFeedActivity.this, FetcherService.class)
+                            .setAction(FetcherService.ACTION_REFRESH_FEEDS)
+                            .putExtra(Constants.FEED_ID, result.first.getLastPathSegment())
+                            .putExtra(Constants.EXTRA_DELETE_OLD, false));
+                    HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(result.first.getLastPathSegment());
+                    setResult(RESULT_OK);
+                    startActivity( new Intent( EditFeedActivity.this, HomeActivity.class )
+                            .setAction(Intent.ACTION_MAIN)
+                            .setData( HomeActivity.mNewFeedUri ) );
+
+                }
+                finish();
             }
         });
     }
