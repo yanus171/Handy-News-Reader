@@ -695,7 +695,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         .putExtra( Constants.EXTRA_DELETE_OLD, false ));
                 HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( newFeedUri.getLastPathSegment() );
                 setResult(RESULT_OK);
-                finish();
+                //finish();
             }
         });
     }
