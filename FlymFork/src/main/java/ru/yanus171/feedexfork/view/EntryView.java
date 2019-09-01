@@ -572,7 +572,7 @@ public class EntryView extends WebView implements Observer {
     }
 
     public boolean IsScrollAtBottom() {
-        return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight());
+        return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight()) - getMeasuredHeight() * 0.4;
     }
     @Override
     public void update(Observable observable, Object data) {
