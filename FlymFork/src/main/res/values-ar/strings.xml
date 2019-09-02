@@ -418,6 +418,7 @@
     <string name="custom_data_folder">مسار الملفات الخارجية المخصصة</string>
     <string name="custom_data_folder_descr">(إستخدام مسار إفتراضي فارغ) لمجلد feedex، الذي يُخَزِّن الصور التي تم تنزيلها والنسخ الاحتياطية</string>
     <string name="entry_text_title_link">الرابط في عنوان المقال</string>
+    <string name="entry_text_title_link_description">يُتيحُ لكَ فتح صفحة المقال في المتصفح عندَ النقرِ على عنوان المقال</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
