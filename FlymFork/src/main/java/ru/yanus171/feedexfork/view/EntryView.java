@@ -727,20 +727,20 @@ public class EntryView extends WebView implements Observer {
     }
 
     public void SaveScrollPos() {
-        final double scrollPart = GetViewScrollPartY();
-        if ( scrollPart > 0.0001 ) {
+        mScrollPartY = GetViewScrollPartY();
+        if ( mScrollPartY > 0.0001 ) {
             Dog.v(TAG, String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight()));
 //            new Thread() {
 //                @Override
 //                public void run() {
                     ContentValues values = new ContentValues();
-                    values.put(FeedData.EntryColumns.SCROLL_POS, scrollPart);
+                    values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     FeedDataContentProvider.mNotifyEnabled = false;
                     //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
                     cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
                     FeedDataContentProvider.mNotifyEnabled = true;
-                    Dog.v("EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, scrollPart));
+                    Dog.v("EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();
         }
