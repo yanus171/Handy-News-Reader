@@ -47,6 +47,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -120,6 +121,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "HomeActivity.onCreate" );
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS );
         super.onCreate(savedInstanceState);
 
         if ( getIntent().hasCategory( "LoadLinkLater" ) )

@@ -147,6 +147,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                         ( pos > mListView.getLastVisiblePosition() || pos < mListView.getFirstVisiblePosition() )  )
                     mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
             }
+            getActivity().setProgressBarIndeterminateVisibility( false );
             if ( mProgressBarLoader != null )
                 mProgressBarLoader.setVisibility( View.GONE );
             timer.End();
@@ -156,6 +157,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         public void onLoaderReset(@NonNull Loader<Cursor> loader) {
             if ( mProgressBarLoader != null )
                 mProgressBarLoader.setVisibility( View.VISIBLE );
+            //getActivity().setProgressBarIndeterminateVisibility( true );
             mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
         }
 
@@ -310,7 +312,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
         mProgressBarLoader = rootView.findViewById(R.id.progressBarLoader);
-
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
