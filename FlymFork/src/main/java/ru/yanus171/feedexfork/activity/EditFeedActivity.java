@@ -508,10 +508,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
                     values.putNull(FeedColumns.ERROR);
 
-                    synchronized (GeneralPrefsFragment.mSetupChanged ) {
-                        GeneralPrefsFragment.mSetupChanged = true;
-                        cr.update(getIntent().getData(), values, null, null);
-                    }
+                    GeneralPrefsFragment.mSetupChanged = true;
+                    cr.update(getIntent().getData(), values, null, null);
 
                 }
             } catch (Exception ignored) {

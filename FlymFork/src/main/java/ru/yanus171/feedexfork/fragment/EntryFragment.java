@@ -129,8 +129,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private boolean mFavorite, mIsFullTextShown = true;
 
-    public ViewPager mEntryPager;
-    public BaseEntryPagerAdapter mEntryPagerAdapter;
+    private ViewPager mEntryPager;
+    private BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame;
     private ProgressBar mProgressBar;

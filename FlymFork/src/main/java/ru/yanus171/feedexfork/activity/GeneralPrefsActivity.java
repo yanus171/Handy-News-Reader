@@ -80,9 +80,7 @@ public class GeneralPrefsActivity extends BaseActivity {
     }
 
     public void onBackPressed() {
-        synchronized (GeneralPrefsFragment.mSetupChanged ) {
-            GeneralPrefsFragment.mSetupChanged = true;
-        }
+        GeneralPrefsFragment.mSetupChanged = true;
         if (Build.VERSION.SDK_INT >= 21 )
             AutoJobService.init( this );
         Theme.ReInit();
