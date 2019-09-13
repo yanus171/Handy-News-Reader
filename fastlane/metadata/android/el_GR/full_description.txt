@@ -1,14 +1,14 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Το να μείνω ενημερωμένος για τα ενδιαφέροντα μου ποτέ εν ήταν τόσο εύκολο"</i>
 
-<b><i>Handy News Reader</i>: όχι διαφήμισεις/ελεύθερο λογισμικό κάτω από την <i>GNU GPL</i> άδεια.</b>
+<b><i>Handy News Reader</i>: χωρίς διαφημίσεις/ελεύθερο λογισμικό υπό την <i>GNU GPL</i> άδεια.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>φτιάξτε το δικό σας Περιοδικό!</b></li>
+	<li><b>ενδιαφέροντα άρθρα κατευθείαν στα χέρια σας</b></li>
+	<li><b>επιτέλους ευχαριστηθείτε το διάβασμα</b></li>
 </ul>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
+...χαρείτε τη ζωή σας <b>μείνετε ενημερωμένοι για τα ενδιαφέροντά σας</b> ταυτόχρονα. Εστιάστε στην ουσία...
 
 Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
