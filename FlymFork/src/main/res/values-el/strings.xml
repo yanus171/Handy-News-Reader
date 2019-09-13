@@ -420,6 +420,8 @@
     <string name="new_feed_shortcut_add_failed">Ο εκκινητής (launcher) δεν μπόρεσε να δημιουργήσει συντόμευση</string>
     <string name="custom_data_folder">Προσαρμοσμένη διαδρομή φακέλου εξωτερικών αρχείων</string>
     <string name="custom_data_folder_descr">Διαδρομή φακέλου για αποθήκευση των εικόνων και των αρχείων αντιγράφων ασφαλείας (κενό - χρήση προεπιλογής)</string>
+    <string name="entry_text_title_link">Σύνδεσμος τίτλου</string>
+    <string name="entry_text_title_link_description">επιτρέπει να ανοιχτεί σελίδα στον φυλλομετρητή (browser) αγγίζοντας τον τίτλο</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
