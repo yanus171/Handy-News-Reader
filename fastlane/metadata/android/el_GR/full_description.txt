@@ -15,9 +15,9 @@
 <ul>
 <b><u>Χαρακτηριστικά</u>:</b>
 	<li><b><u>Πλήρη άρθρα</u> ανά χείρας</b>: δεν απαιτείται η χρήση φυλλομετρητή,</li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
+	<li><b><u>άνετο</u> διάβασμα</b>: Αλλαγή των άρθρων με τα κουμπιά ρύθμισης ήχου ή με σύρσιμο, <i>ζώνες αφής</i>, απομνημόνευση της θέσης διαβάσματος <u>ανά άρθρο</u>,</li>
+	<li><b>ειδοποιήσεις σημαντικών άρθρων</b>: Δεν θα χάσετε τίποτα που θεωρείτε σημαντικό,</li>
+	<li><b><i>"Διάβασμα αργότερα"</i></b>: Μπορείτε να ξεφυλλίσετε τα άρθρα - <b>σημειώνοντας (βάζοντας αστέρι) σε αυτά που θέλετε να διαβάσετε αργότερα</b> στον ελεύθερο χρόνο σας,</li>
 	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
