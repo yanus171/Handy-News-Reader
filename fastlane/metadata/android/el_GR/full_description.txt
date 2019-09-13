@@ -18,8 +18,8 @@
 	<li><b><u>άνετο</u> διάβασμα</b>: Αλλαγή των άρθρων με τα κουμπιά ρύθμισης ήχου ή με σύρσιμο, <i>ζώνες αφής</i>, απομνημόνευση της θέσης διαβάσματος <u>ανά άρθρο</u>,</li>
 	<li><b>ειδοποιήσεις σημαντικών άρθρων</b>: Δεν θα χάσετε τίποτα που θεωρείτε σημαντικό,</li>
 	<li><b><i>"Διάβασμα αργότερα"</i></b>: Μπορείτε να ξεφυλλίσετε τα άρθρα - <b>σημειώνοντας (βάζοντας αστέρι) σε αυτά που θέλετε να διαβάσετε αργότερα</b> στον ελεύθερο χρόνο σας,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
+	<li><b><i>"Αφαίρεση όταν διαβαστεί"</i></b> - όταν διαβάσετε ένα άρθρο με αστέρι αφαιρείται από <i>'τα αγαπημένα'</i> (=<i>'διάβασμα αργότερα'</i>)</li>
+	<li><b>έτοιμοι για χρήση εκτός σύνδεσης</b> - διαβάστε χωρίς να αποσπαστεί η προσοχή σας: μόλις συγχρονιστεί δεν υπάρχει ανάγκη πλέον να φορτωθεί τίποτα άλλο - δεν χρειάζεστε πια το ίντερνετ :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
 	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
