@@ -23,17 +23,17 @@
 	<li><b>σώστε δεδομενα</b>: μπείτε online μόνο για λίγα άρθρα - όχι για να φορτώνετε κάθε φορά ολόκληρη την ιστοσελίδα,</li>
 	<li><b>φιλικό με gestures</b>: π.χ. σύρετε πάνω/κάτω για προσθήκη/αφαίρεση του άρθρου από τα <i>αγαπημένα</i>, σύρετε στην αριστερή άκρη για να ρυθμίσετε την φωτεινότητα,</li>
 	<li><b>φιλικό στο χρήστη</b>: εφαρμόστε σκούρο θέμα, ρυθμίστε το μέγεθος της γραμματοσειράς, χρώματα και φωτεινότητα σύμφωνα με τις ανάγκες σας,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b>νοικοκυρεμένες ιδέες</b>: οι επικεφαλίδες δε θα μπλέκονται με τα δάκτυλά σας πλέον ;) κύλιση του άρθρου ως το 90% του ύψους κάνει το διάβασμα λιγότερο μπερδεμένο και πιο άνετο,</li>
+	<li><b>εξαιρετικά προσαρμόσιμο</b>: από το μέγεθος των υπερσυνδέσμων στις <i>Ζώνες Αφής</i> και υπογραμμίζοντας - υπάρχουν πολλές λεπτομέρειες που μπορείτε να ρυθμίσετε στο γούστο και στις ανάγκες σας,</li>
+	<li><b>προχωρημένα χαρακτηριστικά</b>: αυτόματα αντίγραφα ασφαλείας (εισαγωγή/εξαγωγή από/προς <i>.opml</i> αρχεία), παροχή περιεχομένου από μη <i>RSS</i> ιστοσελίδες, </li>
+	<li><b>πιο ενδιαφέροντα χαρακτηριστικά</b> "εντός καταστήματος" - επισκεφθείτε την ιστοσελίδα μας για να βρείτε περισσότερα :) !,</li>
+	<li><b><u>σημαντικό</u>:</b> αυτή η εφαρμογή ΔΕΝ συγχρονίζει με online αναγνώστες RSS (π.χ. <i>Feedly</i>),</li>
+	<li><b>ανατροφοδότηση και προτάσεις ευπρόσδεκτες</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
-	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+<b>Που θα μας βρείτε:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">πηγαίος κώδικας στο <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">η ιστοσελίδα μας</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">μεταφράσεις</a>;</li>
 </ul>
