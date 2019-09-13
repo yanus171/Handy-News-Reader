@@ -280,8 +280,10 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Μπάρα προόδου διαβάσματος</string>
+    <string name="article_text_footer_show_progress_descr">Προβολή προόδου διαβάσματος του άρθρου στο κάτω μέρος της οθόνης</string>
     <string name="article_text_footer_progress_height">Ύψος μπάρας προόδου</string>
     <string name="article_text_footer_progress_color">Χρώμα γραμμής προόδου</string>
+    <string name="article_text_footer_progress_color_descr">Χρώμα της μπάρας προόδου διαβάσματος</string>
     <string name="settings_category_operation">Λειτουργικότητα</string>
     <string name="settings_category_operation_summary">Ρυθμίσεις λειτουργικότητας</string>
     <string name="tap_zone_size">Μέγεθος ζώνης αφής</string>
@@ -403,6 +405,13 @@
     <string name="colorSlotSaved">Το χρώμα καταχωρήθηκε στο κελί</string>
     <string name="text">Κείμενο</string>
     <string name="background1">Φόντο</string>
+    <string name="auto_refresh_requires_charging">Μόνο κατά τη φόρτιση</string>
+    <string name="global_class_list_to_remove_from_article_text">Αφαίρεση κανόνων κειμένου</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">όνομα κλάσης ανά γραμμή</string>
+    <string name="hide">Απόκρυψη</string>
+    <string name="show">Προβολή</string>
+    <string name="setFullTextRoot">Επιλογή πλήρους κειμένου</string>
+    <string name="fullTextRoot">Πλήρης πηγή κειμένου</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
