@@ -20,9 +20,9 @@
 	<li><b><i>"Διάβασμα αργότερα"</i></b>: Μπορείτε να ξεφυλλίσετε τα άρθρα - <b>σημειώνοντας (βάζοντας αστέρι) σε αυτά που θέλετε να διαβάσετε αργότερα</b> στον ελεύθερο χρόνο σας,</li>
 	<li><b><i>"Αφαίρεση όταν διαβαστεί"</i></b> - όταν διαβάσετε ένα άρθρο με αστέρι αφαιρείται από <i>'τα αγαπημένα'</i> (=<i>'διάβασμα αργότερα'</i>)</li>
 	<li><b>έτοιμοι για χρήση εκτός σύνδεσης</b> - διαβάστε χωρίς να αποσπαστεί η προσοχή σας: μόλις συγχρονιστεί δεν υπάρχει ανάγκη πλέον να φορτωθεί τίποτα άλλο - δεν χρειάζεστε πια το ίντερνετ :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
+	<li><b>σώστε δεδομενα</b>: μπείτε online μόνο για λίγα άρθρα - όχι για να φορτώνετε κάθε φορά ολόκληρη την ιστοσελίδα,</li>
+	<li><b>φιλικό με gestures</b>: π.χ. σύρετε πάνω/κάτω για προσθήκη/αφαίρεση του άρθρου από τα <i>αγαπημένα</i>, σύρετε στην αριστερή άκρη για να ρυθμίσετε την φωτεινότητα,</li>
+	<li><b>φιλικό στο χρήστη</b>: εφαρμόστε σκούρο θέμα, ρυθμίστε το μέγεθος της γραμματοσειράς, χρώματα και φωτεινότητα σύμφωνα με τις ανάγκες σας,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
