@@ -77,6 +77,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 
 public class FeedDataContentProvider extends ContentProvider {
@@ -855,6 +856,7 @@ public class FeedDataContentProvider extends ContentProvider {
         // If it's an entry deletion, delete associated cache files
         // Need to be done before the real entry deletion
         if (EntryColumns.TABLE_NAME.equals(table)) {
+            FileUtils.INSTANCE.deleteMobilized( uri );
             NetworkUtils.deleteEntriesImagesCache(uri, where.toString(), selectionArgs);
         }
 

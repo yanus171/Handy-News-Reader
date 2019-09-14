@@ -76,6 +76,7 @@ import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -110,6 +111,7 @@ import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.DebugApp;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -533,15 +535,15 @@ public class FetcherService extends IntentService {
         Cursor entryCursor = cr.query(entryUri, null, null, null, null);
 
         if (entryCursor.moveToFirst()) {
-            if (entryCursor.isNull(entryCursor.getColumnIndex(EntryColumns.MOBILIZED_HTML))) { // If we didn't already mobilized it
-                int linkPos = entryCursor.getColumnIndex(EntryColumns.LINK);
+            int linkPos = entryCursor.getColumnIndex(EntryColumns.LINK);
+            final String link = entryCursor.getString(linkPos);
+            if ( !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
                 int titlePos = entryCursor.getColumnIndex(EntryColumns.TITLE);
                 final int feedId = entryCursor.getColumnIndex(EntryColumns.FEED_ID);
                 HttpURLConnection connection = null;
 
                 try {
-                    String link = entryCursor.getString(linkPos);
 
                     // Try to find a text indicator for better content extraction
                     String contentIndicator = null;
@@ -579,7 +581,7 @@ public class FetcherService extends IntentService {
                         mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link), mobilize);
                         Status().ChangeProgress("");
                         ContentValues values = new ContentValues();
-                        values.put(EntryColumns.MOBILIZED_HTML, mobilizedHtml);
+                        FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
                         if ( title != null )
                             values.put(EntryColumns.TITLE, title);
 
@@ -617,7 +619,7 @@ public class FetcherService extends IntentService {
                         Status().SetError(title + ": ", String.valueOf( feedId ), String.valueOf( entryId ), e);
                     } else {
                         ContentValues values = new ContentValues();
-                        values.put(EntryColumns.MOBILIZED_HTML, e.toString());
+                        FileUtils.INSTANCE.saveMobilizedHTML( link, e.toString(), values );
                         cr.update( entryUri, values, null, null );
                     }
                 } finally {
@@ -633,6 +635,8 @@ public class FetcherService extends IntentService {
         entryCursor.close();
         return success;
     }
+
+
 
     public static Intent GetIntent( String extra ) {
         return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
@@ -707,11 +711,9 @@ public class FetcherService extends IntentService {
                 load = true;
             }
 
-            if ( forceReload == ForceReload.Yes ) {
-                ContentValues values = new ContentValues();
-                values.putNull(EntryColumns.MOBILIZED_HTML);
-                cr.update(entryUri, values, null, null);
-            }
+            if ( forceReload == ForceReload.Yes )
+                FileUtils.INSTANCE.deleteMobilized( entryUri );
+
             if ( load && !FetcherService.isCancelRefresh() )
                 mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()), ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError);
             return new Pair<>(entryUri, load);

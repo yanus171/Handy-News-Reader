@@ -90,6 +90,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -709,11 +710,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     private void DeleteMobilized() {
-        ContentValues values = new ContentValues();
-        values.putNull(EntryColumns.MOBILIZED_HTML);
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
-        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-        cr.update(uri, values, null, null);
+        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
     }
 
     private void CloseEntry() {
@@ -1253,20 +1250,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     String contentText;
                     String author = "";
                     long timestamp = 0;
-                    String link = "";
+                    String link =  newCursor.getString(mLinkPos);
                     String title = "";
                     String feedID = "";
                     String enclosure = "";
                     double scrollPart = 0;
                     try {
-                        contentText = newCursor.getString(mMobilizedHtmlPos);
                         feedID = newCursor.getString(mFeedIDPos);
                         if (!feedID.equals(GetExtrenalLinkFeedID()) &&
-                            ( contentText == null || (forceUpdate && !mIsFullTextShown)) ) {
+                            ( !FileUtils.INSTANCE.isMobilized( link, newCursor ) || (forceUpdate && !mIsFullTextShown)) ) {
                             mIsFullTextShown = false;
                             contentText = newCursor.getString(mAbstractPos);
                         } else {
                             mIsFullTextShown = true;
+                            contentText = FileUtils.INSTANCE.loadMobilizedHTML( link, newCursor );
                         }
                         if (contentText == null) {
                             contentText = "";
@@ -1274,7 +1271,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                         author = newCursor.getString(mAuthorPos);
                         timestamp = newCursor.getLong(mDatePos);
-                        link = newCursor.getString(mLinkPos);
                         title = newCursor.getString(mTitlePos);
                         enclosure = newCursor.getString(mEnclosurePos);
                         if ( !newCursor.isNull(mScrollPosPos) )

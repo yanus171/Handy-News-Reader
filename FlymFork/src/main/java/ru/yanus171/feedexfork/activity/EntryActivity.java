@@ -43,6 +43,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -131,9 +132,8 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.TITLE, title);
                     values.put(EntryColumns.SCROLL_POS, 0);
                     values.put(EntryColumns.DATE, (new Date()).getTime());
-                    values.put(EntryColumns.LINK, url);
                     values.put(EntryColumns.ABSTRACT, text);
-                    values.put(EntryColumns.MOBILIZED_HTML, text);
+                    FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
                     SetEntryID(entryUri);
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());

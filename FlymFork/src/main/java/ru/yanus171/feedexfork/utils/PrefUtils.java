@@ -281,12 +281,11 @@ public class PrefUtils {
     @NonNull
     public static ArrayList<String> GetRemoveClassList() {
         final ArrayList<String> removeClassList = new ArrayList<>();
-        for( String item: TextUtils.split(PrefUtils.getString(GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, ""), "\n") )
-            if ( !item.isEmpty() ) {
-                for( String item2: TextUtils.split(item, " ") )
+        for (String item : TextUtils.split(PrefUtils.getString(GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, ""), "\n"))
+            if (!item.isEmpty()) {
+                for (String item2 : TextUtils.split(item, " "))
                     removeClassList.add(item2);
             }
         return removeClassList;
     }
-
 }

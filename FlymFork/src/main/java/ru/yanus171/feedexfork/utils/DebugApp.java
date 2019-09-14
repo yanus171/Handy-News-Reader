@@ -347,7 +347,7 @@ public class DebugApp {
 	}
 
 	// ------------------------------------------------------------------------
-	private static void AddErrorToLog(String text, Exception e) {
+	public static void AddErrorToLog(String text, Exception e) {
 		AddErrorToLog(text, e, true);
 	}
 	// ------------------------------------------------------------------------
@@ -381,7 +381,7 @@ public class DebugApp {
 		if (fileName.startsWith("/"))
 			file = new File(fileName);
 		else {
-			file = FileUtils.GetFolder();
+			file = FileUtils.INSTANCE.GetFolder();
 			file.mkdirs();
 			file = new File(file, dir);
 			file.mkdirs();

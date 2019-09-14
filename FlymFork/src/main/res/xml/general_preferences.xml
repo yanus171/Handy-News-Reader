@@ -555,6 +555,7 @@
                         android:defaultValue="false"
                         android:title="@string/filter_apply_to_title"
                         android:summary= "@string/global_marks_as_star_filter_apply_to_title_descr"/>
+
                 </PreferenceCategory>
             </PreferenceScreen>
 

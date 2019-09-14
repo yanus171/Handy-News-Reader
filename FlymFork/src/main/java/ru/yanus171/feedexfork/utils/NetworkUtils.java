@@ -85,7 +85,7 @@ public class NetworkUtils {
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
 
-        return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + prefix + entryId + ID_SEPARATOR +
+        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + entryId + ID_SEPARATOR +
                StringUtils.getMd5(imgUrl
                        .replace(" ", HtmlUtils.URL_SPACE) ) + fileExtension.replace("?", "");
     }
@@ -175,7 +175,7 @@ public class NetworkUtils {
     }
 
     public static synchronized void deleteEntriesImagesCache(Uri entriesUri, String selection, String[] selectionArgs) {
-        if (FileUtils.GetImagesFolder().exists()) {
+        if (FileUtils.INSTANCE.GetImagesFolder().exists()) {
             Context context = MainApplication.getContext();
             PictureFilenameFilter filenameFilter = new PictureFilenameFilter();
 
@@ -184,7 +184,7 @@ public class NetworkUtils {
             while (cursor.moveToNext() && !FetcherService.isCancelRefresh()) {
                 filenameFilter.setEntryId(cursor.getString(0));
 
-                File[] files = FileUtils.GetImagesFolder().listFiles(filenameFilter);
+                File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles(filenameFilter);
                 if (files != null) {
                     if ( files.length > 0 )
                         FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d", files.length ) );

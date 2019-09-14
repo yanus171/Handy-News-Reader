@@ -85,6 +85,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
@@ -366,9 +367,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
-        holder.isMobilized = !cursor.isNull(mMobilizedPos);
+        holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos);
 
-        int size = (int) (cursor.getFloat( mTextLenPos ) / 1024);
+        int size = 0;
+        try {
+            size = (int) (cursor.getFloat(mTextLenPos) / 1024);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
         String sizeText = size > 0 ? String.format( ", %d KB", size ) : "";
         if (mShowFeedInfo && mFeedNamePos > -1) {
             if (feedName != null) {

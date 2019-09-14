@@ -52,6 +52,7 @@ import android.text.TextUtils;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.PrefUtils;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
@@ -226,8 +227,11 @@ public class FeedData {
         public static final String SCROLL_POS = "scroll_pos";
         public static final String IS_NEW = "new";
 
-        private static final String TEXT_LEN_EXPR = String.format( "CASE WHEN %s IS NULL THEN length(%s) ELSE length(%s) END AS TEXT_LEN",
-                EntryColumns.MOBILIZED_HTML, EntryColumns.ABSTRACT, EntryColumns.MOBILIZED_HTML );
+        private static final String MOB_LENGTH_EXPR( String fieldName ) {
+            return String.format( "CASE WHEN length(%s) > 10 THEN length(%s) ELSE %s END", fieldName, fieldName, fieldName );
+        }
+        private static final String TEXT_LEN_EXPR = String.format( "CASE WHEN %s IS NULL THEN length(%s) ELSE %s END AS TEXT_LEN",
+                EntryColumns.MOBILIZED_HTML, EntryColumns.ABSTRACT, MOB_LENGTH_EXPR( EntryColumns.MOBILIZED_HTML ) );
         public static final String[] PROJECTION_ID = new String[]{EntryColumns._ID};
         public static final String[] PROJECTION_WITHOUT_TEXT =
                 new String[]{EntryColumns._ID,
