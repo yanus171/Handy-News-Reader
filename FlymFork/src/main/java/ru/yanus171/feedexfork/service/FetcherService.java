@@ -64,6 +64,7 @@ import androidx.core.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
+import android.util.SparseLongArray;
 import android.util.Xml;
 import android.widget.Toast;
 
@@ -88,6 +89,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
@@ -157,6 +160,7 @@ public class FetcherService extends IntentService {
             Pattern.CASE_INSENSITIVE);
     public static int mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
     private boolean mDeleteOld = true;
+    public static int mDeletedImageCount = 0;
 
     public static StatusText.FetcherObservable Status() {
         if (mStatusText == null) {
@@ -359,13 +363,40 @@ public class FetcherService extends IntentService {
 
                     mobilizeAllEntries(isFromAutoRefresh);
                     downloadAllImages();
+                    mDeletedImageCount = 0;
                     if ( mDeleteOld )
                         deleteOldEntries(keepDateBorderTime);
+                    deleteGhostImages();
                     if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
                         PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
                 }
             } );
         }
+    }
+
+    private void deleteGhostImages() {
+        int status = Status().Start( getString( R.string.deltingGhostImages ) );
+        final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns._ID},null, null, null );
+        final HashSet<Long> mapEntryID = new HashSet<>();
+        while  ( cursor.moveToNext() )
+            mapEntryID.add( cursor.getLong( 0 ) );
+        cursor.close();
+
+        String[] fileNames = FileUtils.INSTANCE.GetImagesFolder().list();
+        if (fileNames != null  )
+            for (String fileName : fileNames) {
+                String[] list = TextUtils.split( fileName, "_" );
+                if ( list.length >= 2 && !mapEntryID.contains( Long.parseLong( list[0] ) ) ) {
+                    if ( new File( FileUtils.INSTANCE.GetImagesFolder(), fileName ).delete() )
+                        mDeletedImageCount++;
+                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d", mDeletedImageCount  ) );
+                    if (FetcherService.isCancelRefresh())
+                        break;
+
+                }
+            }
+
+        Status().End( status );
     }
 
     private void LongOper( int textID, Runnable oper ) {

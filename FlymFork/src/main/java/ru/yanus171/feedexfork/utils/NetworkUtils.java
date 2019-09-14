@@ -185,14 +185,14 @@ public class NetworkUtils {
                 filenameFilter.setEntryId(cursor.getString(0));
 
                 File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles(filenameFilter);
-                if (files != null) {
-                    if ( files.length > 0 )
-                        FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d", files.length ) );
+                if (files != null && files.length > 0 ) {
                     for (File file : files) {
                         file.delete();
                         if ( FetcherService.isCancelRefresh() )
                             break;
                     }
+                    FetcherService.mDeletedImageCount += files.length;
+                    FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d", FetcherService.mDeletedImageCount ) );
                 }
             }
             cursor.close();

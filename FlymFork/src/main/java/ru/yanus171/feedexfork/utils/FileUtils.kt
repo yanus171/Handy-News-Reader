@@ -169,8 +169,8 @@ object FileUtils {
     fun deleteMobilized(uri: Uri ) {
         val cr = MainApplication.getContext().contentResolver
         val cursor = cr.query(uri, arrayOf(FeedData.EntryColumns.LINK), null, null, null)
-        cursor?.moveToFirst()
-        with ( LinkToFile(cursor.getString(0)) ) { if ( exists() ) delete() }
+        if ( cursor.moveToFirst() )
+            with ( LinkToFile(cursor.getString(0)) ) { if ( exists() ) delete() }
         cursor.close()
 
         val values = ContentValues()

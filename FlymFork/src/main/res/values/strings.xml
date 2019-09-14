@@ -424,6 +424,7 @@
     <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backup</string>
     <string name="entry_text_title_link">Title link</string>
     <string name="entry_text_title_link_description">allows to open web page in browser by tap on the tiitle</string>
+    <string name="deltingGhostImages">Deleting ghost images</string>
 
 
     <plurals name="number_of_new_entries">
