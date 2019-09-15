@@ -358,7 +358,7 @@
     <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatische Favoriten</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="deleteAllEntries">Alle nicht gekennzeichneten Artikel löschen</string>
+    <string name="deleteAllEntries">Alle nicht markierten Artikel löschen</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Mit Tags erneut laden</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
@@ -411,7 +411,7 @@
     <string name="new_feed_shortcut_add_failed">Der verwendete Launcher kann keine Verknüpfung erstellen</string>
     <string name="custom_data_folder">Benutzerdefinierter Pfad für externe Dateien</string>
     <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
-    <string name="entry_text_title_link">Titellink</string>
+    <string name="entry_text_title_link">Titel verknüpfen</string>
     <string name="entry_text_title_link_description">Ermöglicht das Öffnen von Webseiten im Browser durch Antippen der Überschrift</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
