@@ -97,6 +97,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
@@ -126,7 +127,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
     private Uri mBaseUri;
     private long mInitialEntryId = -1;
-    private long[] mEntriesIds = new long[1];
+    private Entry[] mEntriesIds = new Entry[1];
 
     private boolean mFavorite, mIsFullTextShown = true;
 
@@ -369,7 +370,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_BASE_URI, mBaseUri);
-        outState.putLongArray(STATE_ENTRIES_IDS, mEntriesIds);
+        //outState.putLongArray(STATE_ENTRIES_IDS, mEntriesIds);
         outState.putLong(STATE_INITIAL_ENTRY_ID, mInitialEntryId);
         outState.putInt(STATE_CURRENT_PAGER_POS, mCurrentPagerPos);
 
@@ -720,7 +721,19 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public long getCurrentEntryID() {
-        return GetEntryID( mCurrentPagerPos );
+        Entry entry = GetEntry( mCurrentPagerPos );
+        if ( entry != null )
+            return entry.mID;
+        else
+            return -1;
+    }
+
+    String getCurrentEntryLink() {
+        Entry entry = GetEntry( mCurrentPagerPos );
+        if ( entry != null )
+            return entry.mLink;
+        else
+            return "";
     }
 
     public void setData(final Uri uri) {
@@ -750,12 +763,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             if (entriesCursor != null && entriesCursor.getCount() > 0) {
                 synchronized ( this ) {
-                    mEntriesIds = new long[entriesCursor.getCount()];
+                    mEntriesIds = new Entry[entriesCursor.getCount()];
                 }
                 int i = 0;
                 while (entriesCursor.moveToNext()) {
-                    SetEntryID( i, entriesCursor.getLong(0) );
-                    if (GetEntryID( i ) == mInitialEntryId) {
+                    SetEntryID( i, entriesCursor.getLong(0), entriesCursor.getString(1) );
+                    if (GetEntry( i ).mID == mInitialEntryId) {
                         mCurrentPagerPos = i; // To immediately display the good entry
                         mLastPagerPos = i;
                         CancelStarNotification(getCurrentEntryID());
@@ -841,7 +854,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         }
 					    @Override
                         public void run() {
-                            final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntryID( mPagerPos ));
+                            final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntry( mPagerPos ).mID);
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             if ( mSetAsRead )
                                 cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
@@ -1118,7 +1131,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             public void run() {
                 FetcherService.mCancelRefresh = false;
                 int status = FetcherService.Status().Start( getString(R.string.downloadImage) ); try {
-                    NetworkUtils.downloadImage(getCurrentEntryID(), url, false);
+                    NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false);
                 } catch (IOException e) {
                     //FetcherService.Status().End( status );
                     e.printStackTrace();
@@ -1147,7 +1160,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Timer.Start( id, "EntryFr.onCreateLoader" );
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(GetEntryID( id )), null, null, null, null);
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(GetEntry( id ).mID), null, null, null, null);
         cursorLoader.setUpdateThrottle(100);
         return cursorLoader;
     }
@@ -1282,7 +1295,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }
 
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
-                    view.setHtml(GetEntryID( pagerPos ),
+                    view.setHtml(GetEntry( pagerPos ).mID,
                                 feedID,
                                 title,
                                 link,
@@ -1332,7 +1345,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public void destroyItem(ViewGroup container, final int position, Object object) {
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( GetEntryID( position ) );
+            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
             EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
@@ -1343,7 +1356,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            FetcherService.addActiveEntryID( GetEntryID( position ) );
+            FetcherService.addActiveEntryID( GetEntry( position ).mID );
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);
@@ -1407,7 +1420,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public void destroyItem(ViewGroup container, final int position, Object object) {
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( GetEntryID( position ) );
+            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
             EntryView.mImageDownloadObservable.deleteObserver(mEntryView);
@@ -1419,7 +1432,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
             final EntryView view = CreateEntryView();
             container.addView(view);
-            long entryID = GetEntryID( position );
+            long entryID = GetEntry( position ).mID;
             if ( entryID != -1 ) {
                 FetcherService.addActiveEntryID(entryID);
                 getLoaderManager().restartLoader(position, null, EntryFragment.this);
@@ -1463,17 +1476,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return view;
     }
 
-    public void SetEntryID( int position, long entryID )  {
+    public void SetEntryID( int position, long entryID, String entryLink )  {
         synchronized ( this ) {
-            mEntriesIds[position] = entryID;
+            mEntriesIds[position] = new Entry( entryID, entryLink );
         }
     }
-    public long GetEntryID( int position )  {
+    private Entry GetEntry(int position)  {
         synchronized ( this ) {
             if ( position >= 0 && position < mEntriesIds.length )
                 return mEntriesIds[position];
             else
-                return -1;
+                return null;
         }
     }
 }

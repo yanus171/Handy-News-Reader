@@ -135,19 +135,19 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.ABSTRACT, text);
                     FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
-                    SetEntryID(entryUri);
+                    SetEntryID(entryUri, url);
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
                     FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
                 } else
-                    SetEntryID( entryUri );
+                    SetEntryID( entryUri, url );
             }
 
-            private void SetEntryID(Uri entryUri) {
+            private void SetEntryID(Uri entryUri, String entryLink) {
                 final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
-                mEntryFragment.SetEntryID( 0, entryID );
+                mEntryFragment.SetEntryID( 0, entryID, entryLink );
                 FetcherService.addActiveEntryID(entryID);
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override

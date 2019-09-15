@@ -393,9 +393,10 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_TASKS: {
-                queryBuilder.setTables(TaskColumns.TABLE_NAME);
+                queryBuilder.setTables(FeedData.TASKS_WITH_FEED_INFO);
                 break;
             }
+
             case URI_TASK: {
                 queryBuilder.setTables(TaskColumns.TABLE_NAME);
                 queryBuilder.appendWhere(new StringBuilder(EntryColumns._ID).append('=').append(uri.getPathSegments().get(1)));
@@ -857,7 +858,7 @@ public class FeedDataContentProvider extends ContentProvider {
         // Need to be done before the real entry deletion
         if (EntryColumns.TABLE_NAME.equals(table)) {
             FileUtils.INSTANCE.deleteMobilized( uri );
-            NetworkUtils.deleteEntriesImagesCache(uri, where.toString(), selectionArgs);
+            //NetworkUtils.deleteEntriesImagesCache(uri, where.toString(), selectionArgs);
         }
 
         int count = database.delete(table, where.toString(), selectionArgs);

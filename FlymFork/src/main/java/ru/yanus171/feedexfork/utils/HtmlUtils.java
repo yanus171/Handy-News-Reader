@@ -140,7 +140,7 @@ public class HtmlUtils {
     private static String GetLinkStartTag(String imgPath) {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
-    public static String replaceImageURLs(String content, final long entryId, boolean isDownLoadImages) {
+    public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
         // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
         if (!TextUtils.isEmpty(content)) {
@@ -167,7 +167,7 @@ public class HtmlUtils {
                     content = content.replace( getDownloadImageHtml(srcText), "" );
                     content = content.replace( imgTagText, GetLinkStartTag( srcText ) + imgTagText + LINK_TAG_END );
                 } else {
-                    final String imgPath = NetworkUtils.getDownloadedImagePath(entryId, srcText);
+                    final String imgPath = NetworkUtils.getDownloadedImagePath( entryLink, srcText );
                     index++;
                     if (new File(imgPath).exists()) {
                         content = content.replace( imgTagText,
@@ -206,7 +206,7 @@ public class HtmlUtils {
                     @Override
                     public void run() {
                     //FetcherService.addImagesToDownload(String.valueOf(entryId), imagesToDl);
-                    FetcherService.downloadEntryImages( entryId, imagesToDl );
+                    FetcherService.downloadEntryImages( entryId, entryLink, imagesToDl );
                 }
                 }).start();
             }

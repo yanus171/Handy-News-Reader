@@ -320,6 +320,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
+        holder.entryLink = cursor.getString(mUrlPos);
 
         final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
 
@@ -349,7 +350,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( /*!mShowEntryText && */PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
-            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryID, mainImgUrl);
+            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
@@ -619,6 +620,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isFavorite;
         boolean isMobilized;
         long entryID = -1;
+        String entryLink;
     }
 
     public int GetFirstUnReadPos() {

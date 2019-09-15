@@ -67,8 +67,8 @@ public class NetworkUtils {
         CookieHandler.setDefault(this);
     }};
 
-    public static String getDownloadedOrDistantImageUrl(long entryId, String imgUrl) {
-        File dlImgFile = new File(NetworkUtils.getDownloadedImagePath(entryId, imgUrl));
+    public static String getDownloadedOrDistantImageUrl(String entryLink, String imgUrl) {
+        File dlImgFile = new File(NetworkUtils.getDownloadedImagePath(entryLink, imgUrl));
         if (dlImgFile.exists()) {
             return Uri.fromFile(dlImgFile).toString();
         } else {
@@ -76,30 +76,35 @@ public class NetworkUtils {
         }
     }
 
-    public static String getDownloadedImagePath(long entryId, String imgUrl) {
-        return getDownloadedImagePath(entryId, "", imgUrl);
+    public static String getDownloadedImagePath(String entryLink, String imgUrl) {
+        return getDownloadedImagePath(entryLink, "", imgUrl);
     }
-    private static String getDownloadedImagePath(long entryId, String prefix, String imgUrl) {
+
+    public static String getImageEntryCode( String entryLink ) {
+        return StringUtils.getMd5( entryLink );
+    }
+
+    private static String getDownloadedImagePath( String entryLink, String prefix, String imgUrl ) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
         String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
 
-        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + entryId + ID_SEPARATOR +
+        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + getImageEntryCode( entryLink ) + ID_SEPARATOR +
                StringUtils.getMd5(imgUrl
                        .replace(" ", HtmlUtils.URL_SPACE) ) + fileExtension.replace("?", "");
     }
 
-    private static String getTempDownloadedImagePath(long entryId, String imgUrl) {
-        return getDownloadedImagePath(entryId, TEMP_PREFIX, imgUrl);
+    private static String getTempDownloadedImagePath(String entryLink, String imgUrl) {
+        return getDownloadedImagePath(entryLink, TEMP_PREFIX, imgUrl);
         //return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
     }
 
-    public static void downloadImage(final long entryId, String imgUrl, boolean isSizeLimit ) throws IOException {
+    public static void downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit ) throws IOException {
         if ( FetcherService.isCancelRefresh() )
             return;
-        String tempImgPath = getTempDownloadedImagePath(entryId, imgUrl);
-        String finalImgPath = getDownloadedImagePath(entryId, imgUrl);
+        String tempImgPath = getTempDownloadedImagePath(entryUrl, imgUrl);
+        String finalImgPath = getDownloadedImagePath(entryUrl, imgUrl);
 
 
         if (!new File(tempImgPath).exists() && !new File(finalImgPath).exists()) {
@@ -165,7 +170,7 @@ public class NetworkUtils {
             }
 
             if ( success && !abort )
-                EntryView.NotifyToUpdate( entryId );
+                EntryView.NotifyToUpdate( entryId, entryUrl );
         }
         //if ( updateGUI )
     }
@@ -191,8 +196,8 @@ public class NetworkUtils {
                         if ( FetcherService.isCancelRefresh() )
                             break;
                     }
-                    FetcherService.mDeletedImageCount += files.length;
-                    FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d", FetcherService.mDeletedImageCount ) );
+                    //FetcherService.mDeletedImageCount += files.length;
+                    //FetcherService.Status().ChangeProgress(context.getString(R.string.deleteImages) + String.format( " %d", FetcherService.mDeletedImageCount ) );
                 }
             }
             cursor.close();

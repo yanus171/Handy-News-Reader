@@ -160,7 +160,6 @@ public class FetcherService extends IntentService {
             Pattern.CASE_INSENSITIVE);
     public static int mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
     private boolean mDeleteOld = true;
-    public static int mDeletedImageCount = 0;
 
     public static StatusText.FetcherObservable Status() {
         if (mStatusText == null) {
@@ -363,7 +362,6 @@ public class FetcherService extends IntentService {
 
                     mobilizeAllEntries(isFromAutoRefresh);
                     downloadAllImages();
-                    mDeletedImageCount = 0;
                     if ( mDeleteOld )
                         deleteOldEntries(keepDateBorderTime);
                     deleteGhostImages();
@@ -375,27 +373,28 @@ public class FetcherService extends IntentService {
     }
 
     private void deleteGhostImages() {
+
         int status = Status().Start( getString( R.string.deltingGhostImages ) );
-        final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns._ID},null, null, null );
-        final HashSet<Long> mapEntryID = new HashSet<>();
+        final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns.LINK},null, null, null );
+        final HashSet<String> mapEntryID = new HashSet<>();
         while  ( cursor.moveToNext() )
-            mapEntryID.add( cursor.getLong( 0 ) );
+            mapEntryID.add( NetworkUtils.getImageEntryCode( cursor.getString( 0 ) ) );
         cursor.close();
 
+        int deletedImageCount = 0;
         String[] fileNames = FileUtils.INSTANCE.GetImagesFolder().list();
         if (fileNames != null  )
             for (String fileName : fileNames) {
                 String[] list = TextUtils.split( fileName, "_" );
-                if ( list.length >= 2 && !mapEntryID.contains( Long.parseLong( list[0] ) ) ) {
+                if ( list.length != 3 || list.length >= 2 && !mapEntryID.contains( list[0] ) ) {
                     if ( new File( FileUtils.INSTANCE.GetImagesFolder(), fileName ).delete() )
-                        mDeletedImageCount++;
-                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d", mDeletedImageCount  ) );
+                        deletedImageCount++;
+                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d", deletedImageCount ) );
                     if (FetcherService.isCancelRefresh())
                         break;
 
                 }
             }
-
         Status().End( status );
     }
 
@@ -786,7 +785,7 @@ public class FetcherService extends IntentService {
 
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{TaskColumns._ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
-                    TaskColumns.NUMBER_ATTEMPT}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
+                    TaskColumns.NUMBER_ATTEMPT, EntryColumns.LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
             while (cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
@@ -794,6 +793,7 @@ public class FetcherService extends IntentService {
                 //int status1 = obs.Start(String.format("%d", cursor.getPosition() + 1, cursor.getCount())); try {
                     long taskId = cursor.getLong(0);
                     long entryId = cursor.getLong(1);
+                    String entryLink = cursor.getString(4);
                     String imgPath = cursor.getString(2);
                     int nbAttempt = 0;
                     if (!cursor.isNull(3)) {
@@ -801,7 +801,7 @@ public class FetcherService extends IntentService {
                     }
 
                     try {
-                        NetworkUtils.downloadImage(entryId, imgPath, true);
+                        NetworkUtils.downloadImage(entryId, entryLink, imgPath, true);
 
                         // If we are here, everything is OK
                         operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
@@ -838,7 +838,7 @@ public class FetcherService extends IntentService {
         }
     }
 
-    public static void downloadEntryImages( long entryId, ArrayList<String> imageList ) {
+    public static void downloadEntryImages( long entryId, String entryLink, ArrayList<String> imageList ) {
         StatusText.FetcherObservable obs = Status();
         int status = obs.Start(MainApplication.getContext().getString(R.string.EntryImages)); try {
             for( String imgPath: imageList ) {
@@ -846,7 +846,7 @@ public class FetcherService extends IntentService {
                     break;
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
                 try {
-                    NetworkUtils.downloadImage(entryId, imgPath, true);
+                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
