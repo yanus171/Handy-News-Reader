@@ -442,6 +442,11 @@
                 android:key="keeptime"
                 android:title="@string/settings_keep_time"/>
 
+            <CheckBoxPreference
+                android:key="delete_read_articles"
+                android:title="@string/delete_read_articles"
+                android:summary="@string/delete_read_articles_descr"/>
+
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="ALWAYS_PRELOAD"
                 android:dependency="display_images"

@@ -122,7 +122,12 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
 
 public class FetcherService extends IntentService {
 
@@ -150,7 +155,7 @@ public class FetcherService extends IntentService {
     private static final ArrayList<Long> mActiveEntryIDList = new ArrayList<>();
     private static Boolean mIsDownloadImageCursorNeedsRequery = false;
 
-    private static volatile Boolean mIsDeletingOld = false;
+    //private static volatile Boolean mIsDeletingOld = false;
 
     public static final ArrayList<MarkItem> mMarkAsStarredFoundList = new ArrayList<>();
 
@@ -177,7 +182,7 @@ public class FetcherService extends IntentService {
 
     public static boolean hasMobilizationTask(long entryId) {
         Cursor cursor = MainApplication.getContext().getContentResolver().query(TaskColumns.CONTENT_URI, TaskColumns.PROJECTION_ID,
-                TaskColumns.ENTRY_ID + '=' + entryId + Constants.DB_AND + TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
+                TaskColumns.ENTRY_ID + '=' + entryId + DB_AND + TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
 
         boolean result = cursor.getCount() > 0;
         cursor.close();
@@ -374,7 +379,7 @@ public class FetcherService extends IntentService {
 
     private void deleteGhostImages() {
 
-        int status = Status().Start( getString( R.string.deltingGhostImages ) );
+        //int status = Status().Start( getString( R.string.deltingGhostImages ) );
         final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns.LINK},null, null, null );
         final HashSet<String> mapEntryID = new HashSet<>();
         while  ( cursor.moveToNext() )
@@ -395,7 +400,8 @@ public class FetcherService extends IntentService {
 
                 }
             }
-        Status().End( status );
+        Status().ChangeProgress( "" );
+        //Status().End( status );
     }
 
     private void LongOper( int textID, Runnable oper ) {
@@ -694,7 +700,7 @@ public class FetcherService extends IntentService {
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         Cursor cursor = cr.query(EntryColumns.CONTENT_URI,
                 new String[]{EntryColumns._ID, EntryColumns.FEED_ID},
-                EntryColumns.LINK + "='" + url1 + "'" + Constants.DB_OR + EntryColumns.LINK + "='" + url2 + "'",
+                EntryColumns.LINK + "='" + url1 + "'" + DB_OR + EntryColumns.LINK + "='" + url2 + "'",
                 null,
                 null);
         try {
@@ -858,14 +864,14 @@ public class FetcherService extends IntentService {
 
 
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
-        if ( !mIsDeletingOld ) {
+        //if ( !mIsDeletingOld ) {
             int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                     new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
                     FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
             try {
-                mIsDeletingOld = true;
+                //mIsDeletingOld = true;
                 while (cursor.moveToNext()) {
                     long keepDateBorderTime = defaultKeepDateBorderTime;
                     final String jsonText = cursor.isNull( 1 ) ? "" : cursor.getString(1);
@@ -883,16 +889,16 @@ public class FetcherService extends IntentService {
             } finally {
                 Status().End(status);
                 cursor.close();
-                mIsDeletingOld = false;
+                //mIsDeletingOld = false;
             }
-        }
+        //}
     }
 
     private void DeleteOldEntries(final long feedID, final long keepDateBorderTime) {
         if (keepDateBorderTime > 0 && !isCancelRefresh() ) {
             ContentResolver cr = MainApplication.getContext().getContentResolver();
-
-            String where = EntryColumns.DATE + '<' + keepDateBorderTime + Constants.DB_AND + EntryColumns.WHERE_NOT_FAVORITE;
+            final String deleteRead = PrefUtils.getBoolean( "delete_read_articles", false ) ? DB_OR + WHERE_READ : "";
+            String where = "(" + EntryColumns.DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
             // Delete the entries, the cache files will be deleted by the content provider
             cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
         }
@@ -1292,7 +1298,7 @@ public class FetcherService extends IntentService {
             int status = Status().Start("deleteAllFeedEntries");
             try {
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.delete(uri, EntryColumns.WHERE_NOT_FAVORITE, null);
+                cr.delete(uri, WHERE_NOT_FAVORITE, null);
                 if ( FeedDataContentProvider.URI_MATCHER.match(uri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
                     String feedID = uri.getPathSegments().get( 1 );
                     ContentValues values = new ContentValues();

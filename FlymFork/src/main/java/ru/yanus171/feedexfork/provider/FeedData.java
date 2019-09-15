@@ -272,7 +272,7 @@ public class FeedData {
                         String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                         FeedColumns.NAME,
                         TEXT_LEN_EXPR };
-        static final String WHERE_READ = IS_READ + DB_IS_TRUE;
+        public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
         static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
         public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ')';
