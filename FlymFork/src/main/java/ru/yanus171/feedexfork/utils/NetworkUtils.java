@@ -81,7 +81,9 @@ public class NetworkUtils {
     }
     private static String getDownloadedImagePath(long entryId, String prefix, String imgUrl) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
-        final String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
+        String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
+        if ( fileExtension.contains( "?" ) )
+            fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
 
         return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + prefix + entryId + ID_SEPARATOR +
                StringUtils.getMd5(imgUrl

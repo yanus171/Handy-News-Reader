@@ -249,7 +249,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
                 else
-                    selectDrawerItem(mDrawerAdapter.getItemPosition(Long.parseLong( GetSecondLastSegment( intent.getData() ))));
+                    selectDrawerItem(mDrawerAdapter.getItemPosition(GetFeedID(intent.getData())));
             }
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
@@ -265,6 +265,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
         timer.End();
+    }
+
+    private long GetFeedID(Uri uri) {
+        final String result = GetSecondLastSegment(uri);
+        return Long.parseLong( result );
     }
 
     @Override
@@ -390,7 +395,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
 
             if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
-                mCurrentDrawerPos = mDrawerAdapter.getItemPosition( Long.parseLong( GetSecondLastSegment( mNewFeedUri ) ) );
+                mCurrentDrawerPos = mDrawerAdapter.getItemPosition( GetFeedID( mNewFeedUri ) );
                 needSelect = true;
                 mDrawerList.smoothScrollToPosition( mCurrentDrawerPos );
                 CloseDrawer();

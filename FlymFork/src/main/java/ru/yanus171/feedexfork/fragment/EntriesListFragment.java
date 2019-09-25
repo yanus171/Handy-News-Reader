@@ -519,16 +519,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (TextUtils.isEmpty(query)) {
-
-                } else {
-                    setData(EntryColumns.SEARCH_URI(query), true, true, false);
-                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (!TextUtils.isEmpty(newText))
+                    setData(EntryColumns.SEARCH_URI(newText), true, true, false);
                 return false;
             }
         });

@@ -405,6 +405,7 @@
     <string name="brightness_update_from_system_period_min_descr">In minuti. Dopo quel tempo la luminosità (modificata con lo scorrimento) sarà riportata al livello di sistema</string>
     <string name="menu_add_feed_shortcut">Aggiungi collegamento al feed nella home</string>
     <string name="new_feed_shortcut_added">Il collegamento al feed è stato aggiunta alla home</string>
+    <string name="new_feed_shortcut_add_failed">Il tuo launcher non è in grado di creare una scorciatoia</string>
     <string name="custom_data_folder">Percorso file esterni personalizzato</string>
     <string name="custom_data_folder_descr">(vuoto - usa il percorso predefinito) per la cartella feedex per memorizzare immagini scaricate e backup</string>
     <plurals name="number_of_new_entries">

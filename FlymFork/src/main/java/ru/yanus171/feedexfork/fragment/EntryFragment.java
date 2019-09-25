@@ -1303,7 +1303,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         //if (PrefUtils.getLong(PrefUtils.LAST_ENTRY_ID, 0) == mEntriesIds[pagerPos]) {
                         //int dy = mScrollPosPos;
                         //if (dy > view.getScrollY())
-                        //if ( view.GetViewScrollPartY() < scrollPart )
+                        if ( view.mScrollPartY == 0 )
                             view.mScrollPartY = scrollPart;
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
                         //Dog.v( "displayEntry view.mScrollY = " + view.mScrollY );

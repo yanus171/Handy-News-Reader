@@ -18,15 +18,18 @@ import android.provider.Settings.System.SCREEN_BRIGHTNESS
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
+import kotlin.math.abs
+import kotlin.math.exp
+import kotlin.math.log
 
 class Brightness(private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
     private val mInfo: TextView = rootView.findViewById(R.id.brightnessInfo)
-    var mCurrentAlpha = 128
+    var mCurrentAlpha : Float = 128F
 
     init {
         mInfo.visibility = View.GONE
-        mCurrentAlpha = PrefUtils.getInt(PrefUtils.LAST_BRIGHTNESS, mCurrentAlpha)
+        mCurrentAlpha = PrefUtils.getFloat( PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
         UiUtils.HideButtonText(rootView, R.id.brightnessSlider, true)
         SetSize(rootView, R.id.brightnessSlider, GetTapZoneSize(), MATCH_PARENT)
 
@@ -38,7 +41,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                 private var initialY = 0
                 private var currentX = 0
                 private var currentY = 0
-                private var mInitialAlpha = 0
+                private var mInitialAlpha: Float = 0F
 
                 @SuppressLint("ClickableViewAccessibility", "DefaultLocale")
                 override fun onTouch(view1: View, event: MotionEvent): Boolean {
@@ -62,18 +65,21 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                             paddingX = currentX - initialX
                             paddingY = currentY - initialY
 
-                            if (Math.abs(paddingY) > Math.abs(paddingX) && Math.abs(initialY - event.y) > view1.width) {
-                                Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY")
-                                var currentAlpha = mInitialAlpha + 255 * paddingY / mDimFrame.height / 5
+                            if (abs(paddingY) > abs(paddingX) && abs(initialY - event.y) > view1.width) {
+                                val coeff : Float = 10 - abs( paddingY.toFloat() ) / mDimFrame.height.toFloat() * 10 //mInitialAlpha / 255F * 10
+                                val height = mDimFrame.height;
+                                val delta : Float = 255F * paddingY.toFloat() / mDimFrame.height.toFloat()
+                                var currentAlpha : Float = mInitialAlpha + delta / coeff
                                 if (currentAlpha > 255)
-                                    currentAlpha = 255
+                                    currentAlpha = 255F
                                 else if (currentAlpha < 1)
-                                    currentAlpha = 1
+                                    currentAlpha = 1F
+                                Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
                                 setBrightness(currentAlpha)
                                 mInfo.visibility = View.VISIBLE
-                                mInfo.text = String.format("%s: %d %%",
+                                mInfo.text = String.format("%s: %.1f %%",
                                         mInfo.context.getString(R.string.brightness),
-                                        ((255 - currentAlpha) / 255.toFloat() * 100).toInt())
+                                        if ( currentAlpha >= 255F / 100F ) { (255 - currentAlpha) / 255.toFloat() * 100 } else { 100F } )
                             }
                             return true
                         }
@@ -94,15 +100,15 @@ class Brightness(private val mActivity: Activity, rootView: View) {
             return
         val period = (PrefUtils.getIntFromText("settings_brightness_read_from_system_period_min", 10) * 1000 * 60).toLong()
         val now = Date().time
-        var brightness = PrefUtils.getInt(PrefUtils.LAST_BRIGHTNESS, 0)
+        var brightness = PrefUtils.getFloat(PrefUtils.LAST_BRIGHTNESS_FLOAT, 0F)
         if (period != 0L && now - PrefUtils.getLong(PrefUtils.LAST_BRIGHTNESS_ONPAUSE_TIME, now) > period)
         //brightness = 255 - (int) (mActivity.getWindow().getAttributes().screenBrightness / (float)255 * 100);
-            brightness = 255 - android.provider.Settings.System.getInt(mActivity.contentResolver, SCREEN_BRIGHTNESS, brightness)
+            brightness = 255F - android.provider.Settings.System.getInt(mActivity.contentResolver, SCREEN_BRIGHTNESS, brightness.toInt())
         setBrightness(brightness)
     }
 
     fun OnPause() {
-        PrefUtils.putInt(PrefUtils.LAST_BRIGHTNESS, mCurrentAlpha)
+        PrefUtils.putFloat(PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
         PrefUtils.putLong(PrefUtils.LAST_BRIGHTNESS_ONPAUSE_TIME, Date().time)
     }
     //    private int GetAlpha() {
@@ -113,12 +119,12 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     //    }
 
     @SuppressLint("DefaultLocale")
-    private fun setBrightness(currentAlpha: Int) {
+    private fun setBrightness(currentAlpha: Float) {
         mCurrentAlpha = currentAlpha
-        Dog.d(String.format("setBrightness currentAlpha=%d", currentAlpha))
+        Dog.d(String.format("setBrightness currentAlpha=%.2f", currentAlpha))
         if (PrefUtils.getBoolean("brightness_with_dim_activity", false)) {
-            SetWindowBrightness(0)
-            val newColor = Color.argb(currentAlpha, 0, 0, 0)
+            SetWindowBrightness(0F)
+            val newColor = Color.argb(currentAlpha.toInt(), 0, 0, 0)
             mDimFrame.setBackgroundColor(newColor)
         } else {
             mDimFrame.setBackgroundColor(Color.TRANSPARENT)
@@ -126,20 +132,20 @@ class Brightness(private val mActivity: Activity, rootView: View) {
         }
     }
 
-    private fun SetWindowBrightness(currentAlpha: Int) {
+    private fun SetWindowBrightness(currentAlpha: Float) {
         setBrightness(currentAlpha, mActivity.window)
     }
 
     companion object {
 
-        fun setBrightness(currentAlpha: Int, window: Window) {
-            val brightness = 255 - currentAlpha
+        fun setBrightness(currentAlpha: Float, window: Window) {
+            val brightness : Float = if ( currentAlpha > 254 ) { 1F  } else { 255F - currentAlpha }
             //                    if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite( getContext() )) {
             //                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
             //                        android.provider.Settings.System.putInt(getContext().getContentResolver(), SCREEN_BRIGHTNESS, currentAlpha);
             //                    }
             val lp = window.attributes
-            lp.screenBrightness = brightness / 255.toFloat()
+            lp.screenBrightness = brightness / 255F
             window.attributes = lp
             //getActivity().getWindow().addFlags( WindowManager.LayoutParams.FLAGS_CHANGED );
         }

@@ -218,7 +218,7 @@ public class EntryActivity extends BaseActivity {
             }
         }.start();
 
-        //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPagerAdapter.SaveScrollPos( true );
+        //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPager.getCurrentItem() ).SaveScrollPos();
         super.onBackPressed();
     }
 
