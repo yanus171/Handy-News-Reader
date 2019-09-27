@@ -200,7 +200,7 @@
     <string name="theme">Thema</string>
     <string name="customColors">Benutzerdefinierte Farben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
-    <string name="textColor">TextfarbeText- und Hintergrundfarbe</string>
+    <string name="textColor">Text- und Hintergrundfarbe</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\u201c\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Automatische Aktualisierung</string>
@@ -320,7 +320,7 @@
     <string name="EntryImages">Artikelbilder</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Feeds aktualisieren</string>
-    <string name="deleteImages">Bilder löschen</string>
+    <string name="deleteImages">Bilder löschen:</string>
     <string name="applyOperations">Operationen anwenden</string>
     <string name="extractContent">Inhalt extrahieren</string>
     <string name="improveHtmlContent">HTML-Inhalt verbessern</string>
@@ -358,7 +358,7 @@
     <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatische Favoriten</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="deleteAllEntries">Alle nicht gekennzeichneten Artikel löschen</string>
+    <string name="deleteAllEntries">Alle nicht markierten Artikel löschen</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Mit Tags erneut laden</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
@@ -408,8 +408,11 @@
     <string name="brightness_update_from_system_period_min_descr">(in Minuten) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) aus der aktuellen Systemstufe (0 - Aus) wiederhergestellt</string>
     <string name="menu_add_feed_shortcut">Verknüpfung auf dem Startbildschirm erstellen</string>
     <string name="new_feed_shortcut_added">Neue Verknüpfung wurde erfolgreich auf dem Startbildschirm hinzugefügt</string>
+    <string name="new_feed_shortcut_add_failed">Der verwendete Launcher kann keine Verknüpfung erstellen</string>
     <string name="custom_data_folder">Benutzerdefinierter Pfad für externe Dateien</string>
     <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
+    <string name="entry_text_title_link">Titel verknüpfen</string>
+    <string name="entry_text_title_link_description">Ermöglicht das Öffnen von Webseiten im Browser durch Antippen der Überschrift</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
