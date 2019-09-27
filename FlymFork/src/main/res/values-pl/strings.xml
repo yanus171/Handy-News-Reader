@@ -416,6 +416,12 @@ GENERAL]]></string>
     <string name="custom_data_folder_descr">(puste - użyj domyślnej) ścieżka do folderu feedex, przechowującego kopię zapasową oraz pobrane obrazki</string>
     <string name="entry_text_title_link">Link w tytule</string>
     <string name="entry_text_title_link_description">zezwala na otwarcie strony w przeglądarce po tapnięciu na tytuł</string>
+    <string name="delete_read_articles">Usuwaj przeczytane artykuły</string>
+    <string name="delete_read_articles_descr">niezależnie od czasu przechowywania artykułów</string>
+    <string name="data_folder">Folder danych</string>
+    <string name="data_folder_descr">Gdzie przechowywać tekst i obrazki pobranych artykułów</string>
+    <string name="internalMemory">Pamięć wewnętrzna (Cache)</string>
+    <string name="externalMemory">Pamięć zewnętrzna</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
