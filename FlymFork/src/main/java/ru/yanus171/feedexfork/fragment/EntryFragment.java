@@ -1432,9 +1432,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
             final EntryView view = CreateEntryView();
             container.addView(view);
-            long entryID = GetEntry( position ).mID;
-            if ( entryID != -1 ) {
-                FetcherService.addActiveEntryID(entryID);
+            Entry entry = GetEntry( position );
+            if ( entry != null ) {
+                FetcherService.addActiveEntryID(entry.mID);
                 getLoaderManager().restartLoader(position, null, EntryFragment.this);
             }
             mEntryView = view;

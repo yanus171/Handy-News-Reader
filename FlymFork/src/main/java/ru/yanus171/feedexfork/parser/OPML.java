@@ -99,7 +99,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
 
 public class OPML {
 
-    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.GetFolder() + "/HandyNewsReader_auto_backup.opml"; }
+    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.getFolder() + "/HandyNewsReader_auto_backup.opml"; }
 
     private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";

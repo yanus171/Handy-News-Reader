@@ -64,6 +64,9 @@ import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.view.ColorPreference;
+import ru.yanus171.feedexfork.view.StorageSelectPreference;
+
+import static ru.yanus171.feedexfork.utils.PrefUtils.DATA_FOLDER;
 
 public class GeneralPrefsFragment extends PreferenceFragment implements  PreferenceScreen.OnPreferenceClickListener {
     public static Boolean mSetupChanged = false;
@@ -104,7 +107,6 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
             }
         };
         findPreference(PrefUtils.THEME).setOnPreferenceChangeListener(onRestartPreferenceChangeListener);
-        findPreference(PrefUtils.CUSTOM_DATA_FOLDER).setOnPreferenceChangeListener(onRestartPreferenceChangeListener);
 
         preference = findPreference(PrefUtils.LANGUAGE);
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -121,15 +123,6 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
         if ( PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
             ApplyBrightness( getPreferenceScreen(), (BaseActivity) getActivity());
-
-
-//        for(  int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++ ) {
-//            Preference pref = getPreferenceScreen().getPreference( i );
-//            if ( pref instanceof PreferenceCategory )
-//                pref.setLayoutResource( PrefUtils.IsLightTheme() ? R.layout.preference_category_light : R.layout.preference_category);
-//        }
-
-
     }
 
     private static void ApplyBrightness(PreferenceScreen screen, final BaseActivity activity ) {

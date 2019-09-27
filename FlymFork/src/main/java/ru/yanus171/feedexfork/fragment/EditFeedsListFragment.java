@@ -608,7 +608,7 @@ public class EditFeedsListFragment extends ListFragment {
         builder.setTitle(R.string.select_file);
 
         try {
-            final String[] fileNames = FileUtils.INSTANCE.GetFolder().list(new FilenameFilter() {
+            final String[] fileNames = FileUtils.INSTANCE.getFolder().list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
                     return new File(dir, filename).isFile();
@@ -618,7 +618,7 @@ public class EditFeedsListFragment extends ListFragment {
                 @Override
                 public void onClick(DialogInterface dialog, final int which) {
                     FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).
-                            putExtra( Constants.EXTRA_FILENAME, FileUtils.INSTANCE.GetFolder().toString() + File.separator
+                            putExtra( Constants.EXTRA_FILENAME, FileUtils.INSTANCE.getFolder().toString() + File.separator
                                     + fileNames[which]) );
                 }
             });
@@ -659,7 +659,7 @@ public class EditFeedsListFragment extends ListFragment {
                 public void run() {
                     try {
                         final String dateTimeStr = new SimpleDateFormat( "yyyyMMdd_HHmmss" ).format( new Date( System.currentTimeMillis() ) );
-                        final String filename =  FileUtils.INSTANCE.GetFolder() +  "/HandyNewsReader_" + dateTimeStr + ".opml";
+                        final String filename =  FileUtils.INSTANCE.getFolder() +  "/HandyNewsReader_" + dateTimeStr + ".opml";
 
                         OPML.exportToFile(filename);
                         getActivity().runOnUiThread(new Runnable() {

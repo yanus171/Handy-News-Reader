@@ -381,7 +381,7 @@ public class DebugApp {
 		if (fileName.startsWith("/"))
 			file = new File(fileName);
 		else {
-			file = FileUtils.INSTANCE.GetFolder();
+			file = FileUtils.INSTANCE.getFolder();
 			file.mkdirs();
 			file = new File(file, dir);
 			file.mkdirs();

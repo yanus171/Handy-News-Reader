@@ -73,7 +73,7 @@ public class PrefUtils {
     public static final String ENTRY_MAGRINS = "entry_margins";
     public static final String ENTRY_TEXT_ALIGN_JUSTIFY = "entry_text_align_justify";
     public static final String LANGUAGE = "language";
-    public static final String CUSTOM_DATA_FOLDER = "custom_data_folder";
+    public static final String DATA_FOLDER = "data_folder";
 
 
     public static final String CONTENT_EXTRACT_RULES = "content_extract_rules";
@@ -221,7 +221,7 @@ public class PrefUtils {
     }
 
     @SuppressLint("ApplySharedPref")
-    static void putStringCommit(String key, String value) {
+    public static void putStringCommit(String key, String value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
         editor.putString(key, value);
         editor.commit();

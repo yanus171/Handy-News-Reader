@@ -29,8 +29,9 @@ import android.util.AttributeSet
 
 import java.util.ArrayList
 
-class AutoSummaryListPreference(context: Context, attrs: AttributeSet) : android.preference.ListPreference(context, attrs) {
+open class AutoSummaryListPreference(context: Context, attrs: AttributeSet) : android.preference.ListPreference(context, attrs) {
     private var mSummary: CharSequence = summary
+
 
     override fun onDialogClosed(positiveResult: Boolean) {
         super.onDialogClosed(positiveResult)

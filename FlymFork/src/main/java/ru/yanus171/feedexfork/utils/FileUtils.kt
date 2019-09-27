@@ -19,7 +19,6 @@
 
 package ru.yanus171.feedexfork.utils
 
-import android.content.ContentUris
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
@@ -49,9 +48,9 @@ object FileUtils {
         outStream.close()
     }
 
-    fun GetFolder(): File {
-        val customPath = PrefUtils.getString(PrefUtils.CUSTOM_DATA_FOLDER, "").trim { it <= ' ' }
-        var result = File(if (customPath.isEmpty()) Environment.getExternalStorageDirectory() else File(customPath), "feedex/")
+    fun getFolder(): File {
+        val customPath = PrefUtils.getString(PrefUtils.DATA_FOLDER, "").trim { it <= ' ' }
+        var result = File(if (customPath.isEmpty()) GetDefaultStoragePath() else File(customPath), "feedex/")
         if (!result.exists())
             if (!result.mkdirs()) {
                 result = File(MainApplication.getContext().cacheDir, "feedex/")
@@ -61,6 +60,8 @@ object FileUtils {
         return result
     }
 
+    public fun GetDefaultStoragePath() = Environment.getExternalStorageDirectory()
+
     private fun MakeDirs(result: File) {
         if (!result.mkdirs())
             Toast.makeText(MainApplication.getContext(), "Cannot create dir: " + result.path, Toast.LENGTH_LONG).show()
@@ -68,7 +69,7 @@ object FileUtils {
 
     fun GetImagesFolder(): File {
         if (mGetImagesFolder == null) {
-            mGetImagesFolder = File(GetFolder(), "images/")
+            mGetImagesFolder = File(getFolder(), "images/")
             if (!mGetImagesFolder!!.exists())
                 MakeDirs(mGetImagesFolder!!)
             try {
@@ -82,6 +83,9 @@ object FileUtils {
         //Toast.makeText(MainApplication.getContext(), "Cannot create dir " + result.getAbsolutePath(), Toast.LENGTH_LONG ).show();
         return mGetImagesFolder as File
     }
+    fun reloadPrefs() {
+        mGetImagesFolder = null
+    }
 
     fun LinkToFile(  link: String ): File {
         return File(GetHTMLFolder(), StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE) )
@@ -90,7 +94,7 @@ object FileUtils {
     private lateinit var mGetHTMLFolder: File
     private fun GetHTMLFolder(): File {
         if (! ::mGetHTMLFolder.isInitialized ) {
-            mGetHTMLFolder = File(GetFolder(), "html/")
+            mGetHTMLFolder = File(getFolder(), "html/")
             if (!mGetHTMLFolder.exists())
                 MakeDirs(mGetHTMLFolder)
             try {

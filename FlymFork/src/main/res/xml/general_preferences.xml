@@ -484,6 +484,7 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
+
     <PreferenceScreen
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -526,11 +527,12 @@
                 android:key="use_standard_file_manager"
                 android:title="@string/use_standard_file_manager"
                 android:summary="@string/use_standard_file_manager_descr"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="custom_data_folder"
-                android:inputType="text"
-                android:title="@string/custom_data_folder"
-                android:summary="@string/custom_data_folder_descr"/>
+
+            <ru.yanus171.feedexfork.view.StorageSelectPreference
+                android:defaultValue="cache"
+                android:key="data_folder"
+                android:title="@string/data_folder"
+                android:summary="@string/data_folder_descr"/>
 
             <PreferenceScreen
                 android:title="@string/global_filter"
