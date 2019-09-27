@@ -408,6 +408,8 @@
     <string name="new_feed_shortcut_add_failed">Il tuo launcher non è in grado di creare una scorciatoia</string>
     <string name="custom_data_folder">Percorso file esterni personalizzato</string>
     <string name="custom_data_folder_descr">(vuoto - usa il percorso predefinito) per la cartella feedex per memorizzare immagini scaricate e backup</string>
+    <string name="entry_text_title_link">Link del titolo</string>
+    <string name="entry_text_title_link_description">permette di aprire la pagina nel browser premendo sul titolo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>

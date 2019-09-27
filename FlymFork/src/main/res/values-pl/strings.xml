@@ -414,6 +414,8 @@ GENERAL]]></string>
     <string name="new_feed_shortcut_add_failed">Twój launcher nie jest w stanie utworzyć skrótu</string>
     <string name="custom_data_folder">Własna lokalizacja plików</string>
     <string name="custom_data_folder_descr">(puste - użyj domyślnej) ścieżka do folderu feedex, przechowującego kopię zapasową oraz pobrane obrazki</string>
+    <string name="entry_text_title_link">Link w tytule</string>
+    <string name="entry_text_title_link_description">zezwala na otwarcie strony w przeglądarce po tapnięciu na tytuł</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
