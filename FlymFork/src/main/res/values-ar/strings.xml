@@ -419,6 +419,12 @@
     <string name="custom_data_folder_descr">(إستخدام مسار إفتراضي فارغ) لمجلد feedex، الذي يُخَزِّن الصور التي تم تنزيلها والنسخ الاحتياطية</string>
     <string name="entry_text_title_link">الرابط في عنوان المقال</string>
     <string name="entry_text_title_link_description">يُتيحُ لكَ فتح صفحة المقال في المتصفح عندَ النقرِ على عنوان المقال</string>
+    <string name="delete_read_articles">حَذف المَقالات المَقروءة</string>
+    <string name="delete_read_articles_descr">بِغَض النَظَر عَن فَترَة الإحتِفاظ بالمَقال</string>
+    <string name="data_folder">مُجَلّد البَيانات</string>
+    <string name="data_folder_descr">ذاكِرَة تَخزين نصوص وصوَر المَقالات المُحَمَّلَة</string>
+    <string name="internalMemory">الذاكِرَةُ الداخليّة(Cache)</string>
+    <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
