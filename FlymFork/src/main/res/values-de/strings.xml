@@ -416,7 +416,7 @@
     <string name="delete_read_articles">Gelesene Artikel löschen</string>
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
-    <string name="data_folder_descr">Speicher, auf dem heruntergeladene Artikel, Texte und Grafiken gespeichert werden können</string>
+    <string name="data_folder_descr">Speicher, wohin Artikel, Texte und Grafiken heruntergeladen werden sollen</string>
     <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
     <plurals name="number_of_new_entries">
