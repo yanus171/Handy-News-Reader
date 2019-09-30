@@ -1,39 +1,39 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Το να μείνω ενημερωμένος για τα ενδιαφέροντα μου ποτέ εν ήταν τόσο εύκολο"</i>
 
-<b><i>Handy News Reader</i>: όχι διαφήμισεις/ελεύθερο λογισμικό κάτω από την <i>GNU GPL</i> άδεια.</b>
+<b><i>Handy News Reader</i>: χωρίς διαφημίσεις/ελεύθερο λογισμικό υπό την <i>GNU GPL</i> άδεια.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>φτιάξτε το δικό σας Περιοδικό!</b></li>
+	<li><b>ενδιαφέροντα άρθρα κατευθείαν στα χέρια σας</b></li>
+	<li><b>επιτέλους ευχαριστηθείτε το διάβασμα</b></li>
 </ul>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
+...χαρείτε τη ζωή σας <b>μείνετε ενημερωμένοι για τα ενδιαφέροντά σας</b> ταυτόχρονα. Εστιάστε στην ουσία...
 
-Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
+Γνωρίστε το <i>Handy NR</i> ένα πλούσιο, προσανατολισμένο για εργασία εκτός σύνδεσης πρόγραμμα ανάγνωσης <i>RSS</i> το οποίο <b> σέβεται τον χρόνο σας και την ηρεμία σας</b>: Αποφεύγει να σας αποσπά τη προσοχή, τόσο συχνό φαινόμενο στις σύγχρονες φορητές συσκευές.
 
 <ul>
-<b><u>Features</u>:</b>
-	<li><b><u>full articles</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+<b><u>Χαρακτηριστικά</u>:</b>
+	<li><b><u>Πλήρη άρθρα</u> ανά χείρας</b>: δεν απαιτείται η χρήση φυλλομετρητή,</li>
+	<li><b><u>άνετο</u> διάβασμα</b>: Αλλαγή των άρθρων με τα κουμπιά ρύθμισης ήχου ή με σύρσιμο, <i>ζώνες αφής</i>, απομνημόνευση της θέσης διαβάσματος <u>ανά άρθρο</u>,</li>
+	<li><b>ειδοποιήσεις σημαντικών άρθρων</b>: Δεν θα χάσετε τίποτα που θεωρείτε σημαντικό,</li>
+	<li><b><i>"Διάβασμα αργότερα"</i></b>: Μπορείτε να ξεφυλλίσετε τα άρθρα - <b>σημειώνοντας (βάζοντας αστέρι) σε αυτά που θέλετε να διαβάσετε αργότερα</b> στον ελεύθερο χρόνο σας,</li>
+	<li><b><i>"Αφαίρεση όταν διαβαστεί"</i></b> - όταν διαβάσετε ένα άρθρο με αστέρι αφαιρείται από <i>'τα αγαπημένα'</i> (=<i>'διάβασμα αργότερα'</i>)</li>
+	<li><b>έτοιμοι για χρήση εκτός σύνδεσης</b> - διαβάστε χωρίς να αποσπαστεί η προσοχή σας: μόλις συγχρονιστεί δεν υπάρχει ανάγκη πλέον να φορτωθεί τίποτα άλλο - δεν χρειάζεστε πια το ίντερνετ :),</li>
+	<li><b>σώστε δεδομενα</b>: μπείτε online μόνο για λίγα άρθρα - όχι για να φορτώνετε κάθε φορά ολόκληρη την ιστοσελίδα,</li>
+	<li><b>φιλικό με gestures</b>: π.χ. σύρετε πάνω/κάτω για προσθήκη/αφαίρεση του άρθρου από τα <i>αγαπημένα</i>, σύρετε στην αριστερή άκρη για να ρυθμίσετε την φωτεινότητα,</li>
+	<li><b>φιλικό στο χρήστη</b>: εφαρμόστε σκούρο θέμα, ρυθμίστε το μέγεθος της γραμματοσειράς, χρώματα και φωτεινότητα σύμφωνα με τις ανάγκες σας,</li>
+	<li><b>νοικοκυρεμένες ιδέες</b>: οι επικεφαλίδες δε θα μπλέκονται με τα δάκτυλά σας πλέον ;) κύλιση του άρθρου ως το 90% του ύψους κάνει το διάβασμα λιγότερο μπερδεμένο και πιο άνετο,</li>
+	<li><b>εξαιρετικά προσαρμόσιμο</b>: από το μέγεθος των υπερσυνδέσμων στις <i>Ζώνες Αφής</i> και υπογραμμίζοντας - υπάρχουν πολλές λεπτομέρειες που μπορείτε να ρυθμίσετε στο γούστο και στις ανάγκες σας,</li>
+	<li><b>προχωρημένα χαρακτηριστικά</b>: αυτόματα αντίγραφα ασφαλείας (εισαγωγή/εξαγωγή από/προς <i>.opml</i> αρχεία), παροχή περιεχομένου από μη <i>RSS</i> ιστοσελίδες, </li>
+	<li><b>πιο ενδιαφέροντα χαρακτηριστικά</b> "εντός καταστήματος" - επισκεφθείτε την ιστοσελίδα μας για να βρείτε περισσότερα :) !,</li>
+	<li><b><u>σημαντικό</u>:</b> αυτή η εφαρμογή ΔΕΝ συγχρονίζει με online αναγνώστες RSS (π.χ. <i>Feedly</i>),</li>
+	<li><b>ανατροφοδότηση και προτάσεις ευπρόσδεκτες</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
-	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+<b>Που θα μας βρείτε:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">πηγαίος κώδικας στο <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">η ιστοσελίδα μας</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">μεταφράσεις</a>;</li>
 </ul>

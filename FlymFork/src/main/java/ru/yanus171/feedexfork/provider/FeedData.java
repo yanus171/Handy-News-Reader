@@ -52,6 +52,7 @@ import android.text.TextUtils;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.PrefUtils;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
@@ -76,6 +77,8 @@ public class FeedData {
             "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
     public static final String ENTRIES_TABLE_WITH_FEED_INFO = EntryColumns.TABLE_NAME + " JOIN (SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.RETRIEVE_FULLTEXT + ", " + FeedColumns.NAME + ", " + FeedColumns.URL + ", " +
             FeedColumns.ICON + ", " + FeedColumns.GROUP_ID + " FROM " + FeedColumns.TABLE_NAME + ") AS f ON (" + EntryColumns.TABLE_NAME + '.' + FEED_ID + " = f.joined_feed_id)";
+    public static final String TASKS_WITH_FEED_INFO = TaskColumns.TABLE_NAME  + " LEFT JOIN (SELECT " + EntryColumns._ID + " AS entry_id, " + EntryColumns.LINK + " FROM " + EntryColumns.TABLE_NAME + ") AS f " +
+            "ON (" + TaskColumns.TABLE_NAME + '.' + TaskColumns.ENTRY_ID + " = f.entry_id )";
     public static final String ALL_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + ")";
     public static final String ALL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + ")";
     public static final String FAVORITES_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_FAVORITE  + ')';
@@ -226,9 +229,12 @@ public class FeedData {
         public static final String SCROLL_POS = "scroll_pos";
         public static final String IS_NEW = "new";
 
-        private static final String TEXT_LEN_EXPR = String.format( "CASE WHEN %s IS NULL THEN length(%s) ELSE length(%s) END AS TEXT_LEN",
-                EntryColumns.MOBILIZED_HTML, EntryColumns.ABSTRACT, EntryColumns.MOBILIZED_HTML );
-        public static final String[] PROJECTION_ID = new String[]{EntryColumns._ID};
+        private static final String MOB_LENGTH_EXPR( String fieldName ) {
+            return String.format( "CASE WHEN length(%s) > 10 THEN length(%s) ELSE %s END", fieldName, fieldName, fieldName );
+        }
+        private static final String TEXT_LEN_EXPR = String.format( "CASE WHEN %s IS NULL THEN length(%s) ELSE %s END AS TEXT_LEN",
+                EntryColumns.MOBILIZED_HTML, EntryColumns.ABSTRACT, MOB_LENGTH_EXPR( EntryColumns.MOBILIZED_HTML ) );
+        public static final String[] PROJECTION_ID = new String[]{EntryColumns._ID, EntryColumns.LINK};
         public static final String[] PROJECTION_WITHOUT_TEXT =
                 new String[]{EntryColumns._ID,
                              EntryColumns.AUTHOR,
@@ -266,7 +272,7 @@ public class FeedData {
                         String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                         FeedColumns.NAME,
                         TEXT_LEN_EXPR };
-        static final String WHERE_READ = IS_READ + DB_IS_TRUE;
+        public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
         static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
         public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ')';

@@ -424,6 +424,12 @@
     <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backup</string>
     <string name="entry_text_title_link">Title link</string>
     <string name="entry_text_title_link_description">allows to open web page in browser by tap on the tiitle</string>
+    <string name="delete_read_articles">Delete read articles</string>
+    <string name="delete_read_articles_descr">regardless of the articles keep time</string>
+    <string name="data_folder">Data folder</string>
+    <string name="data_folder_descr">Where to store downloaded articles texts and images</string>
+    <string name="internalMemory">Internal memory (Cache)</string>
+    <string name="externalMemory">External memory</string>
 
 
     <plurals name="number_of_new_entries">

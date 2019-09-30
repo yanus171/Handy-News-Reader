@@ -65,7 +65,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                             paddingX = currentX - initialX
                             paddingY = currentY - initialY
 
-                            if (abs(paddingY) > abs(paddingX) && abs(initialY - event.y) > view1.width) {
+                            if (abs(paddingY) > abs(paddingX) ) {
                                 val coeff : Float = 10 - abs( paddingY.toFloat() ) / mDimFrame.height.toFloat() * 10 //mInitialAlpha / 255F * 10
                                 val height = mDimFrame.height;
                                 val delta : Float = 255F * paddingY.toFloat() / mDimFrame.height.toFloat()

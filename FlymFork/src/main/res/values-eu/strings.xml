@@ -406,8 +406,11 @@
     <string name="brightness_update_from_system_period_min_descr">(minutuetan) Denbora hori igarota hatza pasatuz ezarritako distira sistemaren mailara itzuliko da</string>
     <string name="menu_add_feed_shortcut">Sortu lasterbidea hasiera pantailan</string>
     <string name="new_feed_shortcut_added">Lasterbide berri bat gehitu da hasiera pantailara</string>
+    <string name="new_feed_shortcut_add_failed">Zure abiarazleak ezin du laster-bide bat sortu</string>
     <string name="custom_data_folder">Kanpoko fitxategien bide pertsonalizatua</string>
     <string name="custom_data_folder_descr">(hutsik lehenetsia erabiltzeko) deskargatutako irudiak eta babes-kopia ordetzeko feedex karpetaren bidea</string>
+    <string name="entry_text_title_link">Tituluaren esteka</string>
+    <string name="entry_text_title_link_description">tituluan sakatuz web orria nabigatzailean irekiko da</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>

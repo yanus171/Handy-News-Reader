@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -27,27 +28,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.ShortcutInfo;
-import android.content.pm.ShortcutManager;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.core.content.ContextCompat;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
-import androidx.appcompat.widget.SearchView;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -62,6 +48,20 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -116,6 +116,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
+        @NonNull
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader" );
@@ -131,7 +132,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
         @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
             Timer.End(ENTRIES_LOADER_ID);
             Timer timer = new Timer( "EntriesListFragment.onCreateLoader" );
 
@@ -146,15 +147,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                         ( pos > mListView.getLastVisiblePosition() || pos < mListView.getFirstVisiblePosition() )  )
                     mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
             }
+            getActivity().setProgressBarIndeterminateVisibility( false );
             if ( mProgressBarLoader != null )
                 mProgressBarLoader.setVisibility( View.GONE );
             timer.End();
         }
 
         @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
+        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
             if ( mProgressBarLoader != null )
                 mProgressBarLoader.setVisibility( View.VISIBLE );
+            //getActivity().setProgressBarIndeterminateVisibility( true );
             mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
         }
 
@@ -309,7 +312,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
         mProgressBarLoader = rootView.findViewById(R.id.progressBarLoader);
-
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -326,7 +328,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     if( !mWasVisibleList.contains( uri ) )
                         mWasVisibleList.add( uri );
                 }
-                SetIsRead( firstVisibleItem - 2, true );
+                SetIsRead( firstVisibleItem - 2);
                 if ( !mShowTextInEntryList && firstVisibleItem > 0 ) {
                     mLastVisibleTopEntryID = mEntriesCursorAdapter.getItemId(firstVisibleItem);
                     View v = mListView.getChildAt(0);
@@ -401,7 +403,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     }
 
 
-    private void SetIsRead( final int pos, final boolean wait ) {
+    private void SetIsRead(final int pos) {
         if ( !mShowTextInEntryList )
             return;
         final Uri uri = GetUri( pos );
@@ -426,10 +428,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 }
             }
         }
-        if ( wait )
-            UiUtils.RunOnGuiThread(  new Run( pos ), 2000);
-        else
-            new Run( pos ).run();
+        UiUtils.RunOnGuiThread(  new Run( pos ), 2000);
+
     }
 
     public static void ShowDeleteDialog(Context context, final String title, final long id) {
@@ -684,6 +684,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     }
 
 
+    @SuppressLint("PrivateResource")
     private void markAllAsRead() {
         if (mEntriesCursorAdapter != null) {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
@@ -798,7 +799,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
     private void restartLoaders() {
 
-        LoaderManager loaderManager = getLoaderManager();
+        LoaderManager loaderManager = LoaderManager.getInstance( this );
 
         //HACK: 2 times to workaround a hard-to-reproduce bug with non-refreshing loaders...
         Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesLoader" );

@@ -99,7 +99,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
 
 public class OPML {
 
-    public static String GetAutoBackupOPMLFileName() { return  FileUtils.GetFolder() + "/HandyNewsReader_auto_backup.opml"; }
+    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.getFolder() + "/HandyNewsReader_auto_backup.opml"; }
 
     private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
@@ -497,9 +497,10 @@ public class OPML {
                     values.put(EntryColumns.IS_NEW, GetBool( attributes, EntryColumns.IS_NEW));
                     values.put(EntryColumns.IS_READ, GetBool( attributes, EntryColumns.IS_READ));
                     values.put(EntryColumns.IS_FAVORITE, GetBool( attributes, EntryColumns.IS_FAVORITE));
-                    values.put(EntryColumns.LINK, GetText( attributes, EntryColumns.LINK ));
                     values.put(EntryColumns.ABSTRACT, GetText( attributes, EntryColumns.ABSTRACT));
-                    values.put(EntryColumns.MOBILIZED_HTML, GetText( attributes, EntryColumns.MOBILIZED_HTML));
+                    final String link = GetText( attributes, EntryColumns.LINK );
+                    final String mobHtml = GetText( attributes, EntryColumns.MOBILIZED_HTML);
+                    FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
                     values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
                     values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
                     values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));

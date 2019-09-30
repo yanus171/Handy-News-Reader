@@ -85,6 +85,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
@@ -319,6 +320,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
+        holder.entryLink = cursor.getString(mUrlPos);
 
         final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
 
@@ -348,7 +350,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( /*!mShowEntryText && */PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
-            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryID, mainImgUrl);
+            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
@@ -366,9 +368,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
-        holder.isMobilized = !cursor.isNull(mMobilizedPos);
+        holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos);
 
-        int size = (int) (cursor.getFloat( mTextLenPos ) / 1024);
+        int size = 0;
+        try {
+            size = (int) (cursor.getFloat(mTextLenPos) / 1024);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
         String sizeText = size > 0 ? String.format( ", %d KB", size ) : "";
         if (mShowFeedInfo && mFeedNamePos > -1) {
             if (feedName != null) {
@@ -613,6 +620,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isFavorite;
         boolean isMobilized;
         long entryID = -1;
+        String entryLink;
     }
 
     public int GetFirstUnReadPos() {

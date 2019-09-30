@@ -86,6 +86,7 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
+import kotlin.Pair;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -119,6 +120,7 @@ public class EntryView extends WebView implements Observer {
     private static final String NO_MENU = "NO_MENU_";
 
     private long mEntryId = -1;
+    private String mEntryLink = "";
     public Runnable mScrollChangeListener = null;
     private double mOldContentHeight = 0;
 
@@ -258,12 +260,13 @@ public class EntryView extends WebView implements Observer {
 
         mActivity = activity;
         mEntryId = entryId;
+        mEntryLink = link;
         //getSettings().setBlockNetworkLoads(true);
         getSettings().setUseWideViewPort( true );
         getSettings().setSupportZoom( false );
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true)) {
-            contentText = HtmlUtils.replaceImageURLs(contentText, entryId, true);
+            contentText = HtmlUtils.replaceImageURLs(contentText, entryId, link, true);
             if (getSettings().getBlockNetworkImage()) {
                 // setBlockNetworkImage(false) calls postSync, which takes time, so we clean up the html first and change the value afterwards
                 loadData("", TEXT_HTML, Constants.UTF8);
@@ -434,7 +437,7 @@ public class EntryView extends WebView implements Observer {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
                         File extTmpFile = new File(context.getExternalCacheDir(), file.getName());
-                        FileUtils.copy(file, extTmpFile);
+                        FileUtils.INSTANCE.copy(file, extTmpFile);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
                         context.startActivity(intent);
@@ -576,9 +579,11 @@ public class EntryView extends WebView implements Observer {
     }
     @Override
     public void update(Observable observable, Object data) {
-        if ( ( data != null ) && ( (Long)data == mEntryId ) )  {
+        if ( data != null &&
+            (( Entry)data ).mID == mEntryId &&
+            ((Entry) data).mLink.equals(mEntryLink) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
-            mData = HtmlUtils.replaceImageURLs(mData, mEntryId, false);
+            mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
             if ( GetViewScrollPartY() > 0 ) {
                 mScrollPartY = GetViewScrollPartY();
                 mOldContentHeight = GetContentHeight();
@@ -593,11 +598,11 @@ public class EntryView extends WebView implements Observer {
     }
 
     private static int NOTIFY_OBSERVERS_DELAY_MS = 500;
-    public static void NotifyToUpdate( final long entryId ) {
+    public static void NotifyToUpdate( final long entryId, final String entryLink ) {
             UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
-                        ScheduledNotifyObservers( entryId );
+                        ScheduledNotifyObservers( entryId, entryLink );
 
                     }
                 }, NOTIFY_OBSERVERS_DELAY_MS);
@@ -606,7 +611,7 @@ public class EntryView extends WebView implements Observer {
     private static HashMap<Long, Long> mLastNotifyObserversTime = new HashMap<>();
     private static HashMap<Long, Boolean> mLastNotifyObserversScheduled = new HashMap<>();
 
-    private static void ScheduledNotifyObservers( final long entryId ) {
+    private static void ScheduledNotifyObservers( final long entryId, final String entryLink ) {
         mLastNotifyObserversTime.put( entryId, new Date().getTime() );
         if (!mLastNotifyObserversScheduled.containsKey( entryId )) {
             mLastNotifyObserversScheduled.put( entryId, true );
@@ -616,9 +621,9 @@ public class EntryView extends WebView implements Observer {
                     mLastNotifyObserversScheduled.remove( entryId );
                     Dog.v( TAG,"EntryView.ScheduledNotifyObservers() run");
                     if (new Date().getTime() - mLastNotifyObserversTime.get( entryId ) > NOTIFY_OBSERVERS_DELAY_MS)
-                        mImageDownloadObservable.notifyObservers(entryId);
+                        mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink) );
                     else
-                        ScheduledNotifyObservers( entryId );
+                        ScheduledNotifyObservers( entryId, entryLink );
                 }
             }, NOTIFY_OBSERVERS_DELAY_MS);
         }
@@ -727,23 +732,24 @@ public class EntryView extends WebView implements Observer {
     }
 
     public void SaveScrollPos() {
-        final double scrollPart = GetViewScrollPartY();
-        if ( scrollPart > 0.0001 ) {
+        mScrollPartY = GetViewScrollPartY();
+        if ( mScrollPartY > 0.0001 ) {
             Dog.v(TAG, String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight()));
 //            new Thread() {
 //                @Override
 //                public void run() {
                     ContentValues values = new ContentValues();
-                    values.put(FeedData.EntryColumns.SCROLL_POS, scrollPart);
+                    values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     FeedDataContentProvider.mNotifyEnabled = false;
                     //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
                     cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
                     FeedDataContentProvider.mNotifyEnabled = true;
-                    Dog.v("EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, scrollPart));
+                    Dog.v("EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();
         }
     }
 
 }
+

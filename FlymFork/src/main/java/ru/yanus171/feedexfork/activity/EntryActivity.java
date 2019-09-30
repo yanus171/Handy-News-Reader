@@ -43,6 +43,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -131,23 +132,22 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.TITLE, title);
                     values.put(EntryColumns.SCROLL_POS, 0);
                     values.put(EntryColumns.DATE, (new Date()).getTime());
-                    values.put(EntryColumns.LINK, url);
                     values.put(EntryColumns.ABSTRACT, text);
-                    values.put(EntryColumns.MOBILIZED_HTML, text);
+                    FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
-                    SetEntryID(entryUri);
+                    SetEntryID(entryUri, url);
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
                     FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
                 } else
-                    SetEntryID( entryUri );
+                    SetEntryID( entryUri, url );
             }
 
-            private void SetEntryID(Uri entryUri) {
+            private void SetEntryID(Uri entryUri, String entryLink) {
                 final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
-                mEntryFragment.SetEntryID( 0, entryID );
+                mEntryFragment.SetEntryID( 0, entryID, entryLink );
                 FetcherService.addActiveEntryID(entryID);
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override

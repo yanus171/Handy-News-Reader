@@ -32,7 +32,7 @@ public class Theme {
 	public static final String SUBTITLE_COLOR = "subtitle_color";
 	public static final String SUBTITLE_BORDER_COLOR = "subtitle_border_color";
 	//public static final String ENTRY_LIST_BACKGROUND = "entry_list_background";
-	static final String STYLE_THEME = "style_theme";
+	public static final String STYLE_THEME = "style_theme";
 	private static HashMap<String, HashMap<String, String>> ThemeList = null;
 	static final String THEME_CUSTOM = "Custom";
 	public static String mTheme = DARK;
@@ -218,7 +218,7 @@ public class Theme {
 			return def;
 	}
 
-	static AlertDialog.Builder CreateDialog(Context context) {
+	public static AlertDialog.Builder CreateDialog(Context context) {
 		if ( Build.VERSION.SDK_INT >= 11 )
 			return new AlertDialog.Builder(context, GetThemeDialog());
 		else

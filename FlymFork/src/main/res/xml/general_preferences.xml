@@ -442,6 +442,11 @@
                 android:key="keeptime"
                 android:title="@string/settings_keep_time"/>
 
+            <CheckBoxPreference
+                android:key="delete_read_articles"
+                android:title="@string/delete_read_articles"
+                android:summary="@string/delete_read_articles_descr"/>
+
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="ALWAYS_PRELOAD"
                 android:dependency="display_images"
@@ -478,6 +483,7 @@
                 android:summary="@string/settings_load_comments_description"/>
         </PreferenceCategory>
     </PreferenceScreen>
+
 
     <PreferenceScreen
         android:layout_width="wrap_content"
@@ -521,11 +527,12 @@
                 android:key="use_standard_file_manager"
                 android:title="@string/use_standard_file_manager"
                 android:summary="@string/use_standard_file_manager_descr"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="custom_data_folder"
-                android:inputType="text"
-                android:title="@string/custom_data_folder"
-                android:summary="@string/custom_data_folder_descr"/>
+
+            <ru.yanus171.feedexfork.view.StorageSelectPreference
+                android:defaultValue="cache"
+                android:key="data_folder"
+                android:title="@string/data_folder"
+                android:summary="@string/data_folder_descr"/>
 
             <PreferenceScreen
                 android:title="@string/global_filter"
@@ -555,6 +562,7 @@
                         android:defaultValue="false"
                         android:title="@string/filter_apply_to_title"
                         android:summary= "@string/global_marks_as_star_filter_apply_to_title_descr"/>
+
                 </PreferenceCategory>
             </PreferenceScreen>
 
