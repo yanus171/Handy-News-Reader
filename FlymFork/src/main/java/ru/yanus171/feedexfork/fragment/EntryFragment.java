@@ -938,7 +938,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         final BaseActivity activity = (BaseActivity) getActivity();
 
         Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-        final boolean alreadyMobilized = !cursor.isNull(mMobilizedHtmlPos);
+        final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(cursor.getString( mLinkPos ), cursor );
 
         if (alreadyMobilized) {
             activity.runOnUiThread(new Runnable() {

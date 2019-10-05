@@ -87,7 +87,10 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                             mInfo.visibility = View.GONE
                             return false
                         }
-                        else -> return false
+                        else -> {
+                            mInfo.visibility = View.GONE
+                            return false
+                        }
                     }
 
                 }
@@ -96,6 +99,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     }
 
     fun OnResume() {
+        mInfo.visibility = View.GONE
         if (!PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false))
             return
         val period = (PrefUtils.getIntFromText("settings_brightness_read_from_system_period_min", 10) * 1000 * 60).toLong()

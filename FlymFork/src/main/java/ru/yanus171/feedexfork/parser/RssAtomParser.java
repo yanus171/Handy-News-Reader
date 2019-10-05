@@ -75,8 +75,13 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
+
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 
 public class RssAtomParser extends DefaultHandler {
     private static final String AND_SHARP = "&#";
@@ -638,12 +643,13 @@ public class RssAtomParser extends DefaultHandler {
                 }
             }
             if (mRetrieveFullText) {
-                Cursor c = cr.query(mFeedEntriesUri, new String[]{EntryColumns._ID}, EntryColumns.MOBILIZED_HTML + Constants.DB_IS_NULL, null, EntryColumns.DATE + Constants.DB_DESC);
+                Cursor c = cr.query(mFeedEntriesUri, new String[]{EntryColumns._ID, EntryColumns.LINK, MOBILIZED_HTML},
+                        MOBILIZED_HTML + DB_IS_NULL + DB_OR + MOBILIZED_HTML + " = '" + FileUtils.EMPTY_MOBILIZED_VALUE + "'", null, EntryColumns.DATE + Constants.DB_DESC);
                 while (c.moveToNext()) {
-                    entriesId.add(c.getLong(0));
+                    if (!FileUtils.INSTANCE.isMobilized( c.getString(1), c, 2, 0 ))
+                        entriesId.add(c.getLong(0));
                 }
                 c.close();
-
                 FetcherService.addEntriesToMobilize(entriesId.toArray( new Long[entriesId.size()] ));
             }
 

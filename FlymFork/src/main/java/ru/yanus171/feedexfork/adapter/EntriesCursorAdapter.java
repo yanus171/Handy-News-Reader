@@ -368,7 +368,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
-        holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos);
+        holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos, mIdPos );
 
         int size = 0;
         try {

@@ -316,6 +316,7 @@ public class NetworkUtils {
 
         connection = new OkUrlFactory(new OkHttpClient()).open(url);
 
+
         connection.setDoInput(true);
         connection.setDoOutput(false);
         connection.setRequestProperty("User-agent", "Mozilla/5.0 (compatible) AppleWebKit Chrome Safari"); // some feeds need this to work properly

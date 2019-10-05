@@ -250,7 +250,7 @@ public class FeedData {
                              EntryColumns.IS_NEW,
                              EntryColumns.TITLE,
                              EntryColumns.DATE,
-                             String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
+                             String.format( "substr( %s, 1, 10 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                              FeedColumns.NAME,
                              TEXT_LEN_EXPR };
         public static final String[] PROJECTION_WITH_TEXT =

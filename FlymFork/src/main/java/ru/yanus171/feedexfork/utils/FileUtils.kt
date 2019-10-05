@@ -19,23 +19,26 @@
 
 package ru.yanus171.feedexfork.utils
 
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
 import android.os.Environment
+import android.provider.BaseColumns._ID
 import android.widget.Toast
 
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.provider.FeedData
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML
 
 import ru.yanus171.feedexfork.utils.DebugApp.AddErrorToLog
 import java.io.*
+import kotlin.concurrent.thread
 
 object FileUtils {
 
     private var mGetImagesFolder: File? = null
-
-
 
     @Throws(IOException::class)
     fun copy(src: File, dst: File) {
@@ -115,11 +118,12 @@ object FileUtils {
             var str: String?
             do  {
                 str = reader.readLine()
-                contentBuilder.append(str)
+                if ( str != null )
+                    contentBuilder.append(str)
             } while ( str != null )
             reader.close()
         } catch (e: IOException) {
-
+            e.printStackTrace()
         }
         return contentBuilder.toString()
     }
@@ -145,14 +149,14 @@ object FileUtils {
         values.put(FeedData.EntryColumns.LINK, link)
         if ( mobilizedHtml != null ) {
             saveHTMLToFile(link, mobilizedHtml)
-            values.put(FeedData.EntryColumns.MOBILIZED_HTML, mobilizedHtml.length)
+            values.put(MOBILIZED_HTML, mobilizedHtml.length)
         }
     }
 
-    val MIN_MOBILIZED_LEN = 10
+    private const val MIN_MOBILIZED_LEN = 10
 
     fun loadMobilizedHTML(link: String, cursor: Cursor) : String {
-        val columnIndex = cursor.getColumnIndex(FeedData.EntryColumns.MOBILIZED_HTML)
+        val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)
         if ( !cursor.isNull( columnIndex ) ) {
             val content: String = cursor.getString(columnIndex)
             if ( content.length > MIN_MOBILIZED_LEN )
@@ -161,25 +165,60 @@ object FileUtils {
         return readHTMLFromFile( link )
     }
 
-    fun isMobilized (link: String, cursor: Cursor, col: Int ): Boolean {
-        return !cursor.isNull( col ) && cursor.getString(col).length > MIN_MOBILIZED_LEN ||
-                LinkToFile( link ).exists()
+    class UpdateMob(private val mMobValue: String, private val mEntryID: Long ) : Thread() {
+        override fun run() {
+            val cr = MainApplication.getContext().contentResolver
+            val values = ContentValues()
+            values.put(MOBILIZED_HTML, mMobValue )
+            cr.update(FeedData.EntryColumns.CONTENT_URI( mEntryID ), values, null, null)
+        }
+    }
+
+    fun isMobilized (link: String, cursor: Cursor, colMob: Int, colID: Int ): Boolean {
+        if ( cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) {
+            val file = LinkToFile( link )
+            val mobValue = if ( file.exists() ) {
+                "${file.length()}"
+            } else {
+                EMPTY_MOBILIZED_VALUE
+            }
+
+            UpdateMob( mobValue, cursor.getLong( colID ) ).start()
+//            object : Thread() {
+//                override fun run() {
+//                    cr.update(FeedData.EntryColumns.CONTENT_URI( cursor.getLong( colID ) ), values, null, null)
+//                }
+//            }.start()
+
+
+            return mobValue != EMPTY_MOBILIZED_VALUE
+        }
+
+
+        return !cursor.isNull( colMob ) && cursor.getString( colMob ) != EMPTY_MOBILIZED_VALUE
     }
 
     fun isMobilized (link: String, cursor: Cursor ): Boolean {
-        return isMobilized( link, cursor, cursor.getColumnIndex( FeedData.EntryColumns.MOBILIZED_HTML ) )
+        return isMobilized( link, cursor, cursor.getColumnIndex( MOBILIZED_HTML ), cursor.getColumnIndex( FeedData.EntryColumns._ID ) )
     }
 
     fun deleteMobilized(uri: Uri ) {
         val cr = MainApplication.getContext().contentResolver
-        val cursor = cr.query(uri, arrayOf(FeedData.EntryColumns.LINK), null, null, null)
+        val cursor = cr.query(uri, arrayOf(_ID, LINK), null, null, null)
         if ( cursor.moveToFirst() )
-            with ( LinkToFile(cursor.getString(0)) ) { if ( exists() ) delete() }
+            deleteMobilized(cursor.getString(1), FeedData.EntryColumns.CONTENT_URI( cursor.getString(0) ))
         cursor.close()
 
-        val values = ContentValues()
-        values.putNull(FeedData.EntryColumns.MOBILIZED_HTML)
-        cr.update(uri, values, null, null)
 
     }
+
+    public fun deleteMobilized(link: String, entryUri: Uri) {
+        with(LinkToFile(link)) { if (exists()) delete() }
+        val values = ContentValues()
+        values.put(MOBILIZED_HTML, EMPTY_MOBILIZED_VALUE)
+        MainApplication.getContext().contentResolver.update(entryUri, values, null, null)
+    }
+
+    public const val EMPTY_MOBILIZED_VALUE = "EMPTY_MOB"
+
 }
