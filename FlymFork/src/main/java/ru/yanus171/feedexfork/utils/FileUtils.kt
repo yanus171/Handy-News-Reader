@@ -23,17 +23,21 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.BaseColumns._ID
 import android.widget.Toast
 
 import ru.yanus171.feedexfork.MainApplication
+import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML
 
 import ru.yanus171.feedexfork.utils.DebugApp.AddErrorToLog
+import ru.yanus171.feedexfork.view.StorageItem
 import java.io.*
+import java.util.ArrayList
 import kotlin.concurrent.thread
 
 object FileUtils {
@@ -51,12 +55,14 @@ object FileUtils {
         outStream.close()
     }
 
+    public const val APP_SUBDIR = "feedex/"
+
     fun getFolder(): File {
         val customPath = PrefUtils.getString(PrefUtils.DATA_FOLDER, "").trim { it <= ' ' }
-        var result = File(if (customPath.isEmpty()) GetDefaultStoragePath() else File(customPath), "feedex/")
+        var result = File(if (customPath.isEmpty()) GetDefaultStoragePath() else File(customPath), APP_SUBDIR)
         if (!result.exists())
             if (!result.mkdirs()) {
-                result = File(MainApplication.getContext().cacheDir, "feedex/")
+                result = File(MainApplication.getContext().cacheDir, APP_SUBDIR)
                 MakeDirs(result)
             }
 
@@ -88,18 +94,19 @@ object FileUtils {
     }
     fun reloadPrefs() {
         mGetImagesFolder = null
+        mGetHTMLFolder = null
     }
 
     fun LinkToFile(  link: String ): File {
         return File(GetHTMLFolder(), StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE) )
     }
 
-    private lateinit var mGetHTMLFolder: File
+    private var mGetHTMLFolder: File? = null
     private fun GetHTMLFolder(): File {
-        if (! ::mGetHTMLFolder.isInitialized ) {
+        if ( mGetHTMLFolder == null ) {
             mGetHTMLFolder = File(getFolder(), "html/")
-            if (!mGetHTMLFolder.exists())
-                MakeDirs(mGetHTMLFolder)
+            if (!mGetHTMLFolder!!.exists())
+                MakeDirs(mGetHTMLFolder!!)
             try {
                 val file = File("$mGetHTMLFolder/.nomedia")
                 file.createNewFile()
@@ -107,7 +114,7 @@ object FileUtils {
                 e.printStackTrace()
             }
         }
-        return mGetHTMLFolder
+        return mGetHTMLFolder as File
     }
 
     private fun readHTMLFromFile( link: String ): String {
@@ -219,6 +226,16 @@ object FileUtils {
         MainApplication.getContext().contentResolver.update(entryUri, values, null, null)
     }
 
+    public fun createStorageList(): ArrayList<StorageItem> {
+        val list = ArrayList<StorageItem>()
+        list += StorageItem( MainApplication.getContext().cacheDir, R.string.internalMemory )
+        list += StorageItem( Environment.getExternalStorageDirectory(), R.string.externalMemory )
+        if (Build.VERSION.SDK_INT >= 19)
+            for (item in MainApplication.getContext().getExternalFilesDirs(null))
+                if ( !item.path.startsWith( Environment.getExternalStorageDirectory().path ) )
+                    list += StorageItem( item, R.string.externalMemory )
+        return list
+    }
     public const val EMPTY_MOBILIZED_VALUE = "EMPTY_MOB"
 
 }

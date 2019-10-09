@@ -64,7 +64,6 @@ import androidx.core.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
-import android.util.SparseLongArray;
 import android.util.Xml;
 import android.widget.Toast;
 
@@ -89,7 +88,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
@@ -121,13 +119,15 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
+import ru.yanus171.feedexfork.view.StorageItem;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
+import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
 
 public class FetcherService extends IntentService {
 
@@ -244,12 +244,27 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                 try {
-                    OPML.exportToFile(OPML.GetAutoBackupOPMLFileName());
+                    final String sourceFileName = OPML.GetAutoBackupOPMLFileName();
+                    OPML.exportToFile( sourceFileName );
+                    //final ArrayList<String> resultList = new ArrayList<>();
+                    //resultList.add( sourceFileName );
+                    for (StorageItem destDir: FileUtils.INSTANCE.createStorageList() ) {
+                        File destFile = new File(destDir.getMPath().getAbsolutePath() + "/" + APP_SUBDIR, AUTO_BACKUP_OPML_FILENAME);
+                        if ( !destFile.getAbsolutePath().equals(sourceFileName) ) {
+                            try {
+                                FileUtils.INSTANCE.copy(new File(sourceFileName), destFile);
+                                //resultList.add( destFile.getAbsolutePath() );
+                            } catch ( Exception e ) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                     PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
                     UiUtils.RunOnGuiThread(  new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText( MainApplication.getContext(), getString(R.string.auto_backup_opml_file_created) + OPML.GetAutoBackupOPMLFileName(), Toast.LENGTH_LONG ).show();
+                            for ( int i =0; i < 2; i++ )
+                                Toast.makeText( MainApplication.getContext(), getString(R.string.auto_backup_opml_file_created) + "\n" + sourceFileName, Toast.LENGTH_LONG ).show();
                         }
                     });
                 } catch (FileNotFoundException e) {
