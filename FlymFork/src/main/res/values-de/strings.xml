@@ -413,6 +413,12 @@
     <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
     <string name="entry_text_title_link">Titel verknüpfen</string>
     <string name="entry_text_title_link_description">Ermöglicht das Öffnen von Webseiten im Browser durch Antippen der Überschrift</string>
+    <string name="delete_read_articles">Gelesene Artikel löschen</string>
+    <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
+    <string name="data_folder">Datenordner</string>
+    <string name="data_folder_descr">Speicher, wohin Artikel, Texte und Grafiken heruntergeladen werden sollen</string>
+    <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
+    <string name="externalMemory">Externer Speicher</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

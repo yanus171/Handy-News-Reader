@@ -410,6 +410,12 @@
     <string name="custom_data_folder_descr">(порожньо - використовувати за замовчуванням) шлях до теки де будуть зберігатись завантажені зображення та резервні копії</string>
     <string name="entry_text_title_link">Посилання у заголовку</string>
     <string name="entry_text_title_link_description">відкриття сторінки із статтею у браузері при натисканні на заголовок</string>
+    <string name="delete_read_articles">Вилучити прочитані статті</string>
+    <string name="delete_read_articles_descr">незалежно від часу зберігання статей</string>
+    <string name="data_folder">Тека даних</string>
+    <string name="data_folder_descr">Місце для збереження завантажених текстів та зображень статей</string>
+    <string name="internalMemory">Внутрішня пам\'ять (Кеш)</string>
+    <string name="externalMemory">Зовнішня пам’ять</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
