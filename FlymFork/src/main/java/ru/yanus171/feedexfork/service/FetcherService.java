@@ -237,6 +237,8 @@ public class FetcherService extends IntentService {
         }
         Status().ClearError();
 
+        FileUtils.INSTANCE.reloadPrefs();
+
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
             LongOper(R.string.exportingToFile, new Runnable() {
                 @Override
@@ -275,7 +277,6 @@ public class FetcherService extends IntentService {
             });
             return;
         }
-
 
         mIsWiFi = GetIsWifi();
 
