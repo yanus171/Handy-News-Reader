@@ -62,6 +62,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Brightness;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.view.ColorPreference;
 import ru.yanus171.feedexfork.view.StorageSelectPreference;
@@ -86,6 +87,9 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if ( PrefUtils.getString( DATA_FOLDER, "" ).isEmpty() )
+            PrefUtils.putString( DATA_FOLDER, FileUtils.INSTANCE.GetDefaultStoragePath().getAbsolutePath() );
 
         addPreferencesFromResource(R.xml.general_preferences);
 

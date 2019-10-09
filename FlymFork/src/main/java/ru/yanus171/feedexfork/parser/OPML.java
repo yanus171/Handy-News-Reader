@@ -526,9 +526,6 @@ public class OPML {
                     mEditor.putLong(key, Long.parseLong(value));
                 } else if (className.contains(PREF_CLASS_FLOAT)) {
                     mEditor.putFloat(key, Float.parseFloat(value));
-                } else {
-                    // throw new ClassNotFoundException("Unknown type: "
-                    // + prefClass);
                 }
                 mEditor.apply();
             }

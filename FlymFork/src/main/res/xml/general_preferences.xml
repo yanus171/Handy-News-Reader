@@ -529,7 +529,7 @@
                 android:summary="@string/use_standard_file_manager_descr"/>
 
             <ru.yanus171.feedexfork.view.StorageSelectPreference
-                android:defaultValue="cache"
+                android:defaultValue="external"
                 android:key="data_folder"
                 android:title="@string/data_folder"
                 android:summary="@string/data_folder_descr"/>
