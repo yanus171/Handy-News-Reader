@@ -60,11 +60,10 @@ object FileUtils {
     fun getFolder(): File {
         val customPath = PrefUtils.getString(PrefUtils.DATA_FOLDER, "").trim { it <= ' ' }
         var result = File(if (customPath.isEmpty()) GetDefaultStoragePath() else File(customPath), APP_SUBDIR)
-        if (!result.exists())
-            if (!result.mkdirs()) {
-                result = File(MainApplication.getContext().cacheDir, APP_SUBDIR)
-                MakeDirs(result)
-            }
+        if ( !result.exists() && !result.mkdirs() ) {
+            result = File(MainApplication.getContext().cacheDir, APP_SUBDIR)
+            MakeDirs(result)
+        }
 
         return result
     }
@@ -72,15 +71,15 @@ object FileUtils {
     public fun GetDefaultStoragePath() = Environment.getExternalStorageDirectory()
 
     private fun MakeDirs(result: File) {
-        if (!result.mkdirs())
+        if ( !result.exists() && !result.mkdirs())
             Toast.makeText(MainApplication.getContext(), "Cannot create dir: " + result.path, Toast.LENGTH_LONG).show()
     }
 
     fun GetImagesFolder(): File {
         if (mGetImagesFolder == null) {
             mGetImagesFolder = File(getFolder(), "images/")
-            if (!mGetImagesFolder!!.exists())
-                MakeDirs(mGetImagesFolder!!)
+
+            MakeDirs(mGetImagesFolder!!)
             try {
                 val file = File(mGetImagesFolder!!.toString() + "/.nomedia")
                 file.createNewFile()
@@ -105,8 +104,7 @@ object FileUtils {
     private fun GetHTMLFolder(): File {
         if ( mGetHTMLFolder == null ) {
             mGetHTMLFolder = File(getFolder(), "html/")
-            if (!mGetHTMLFolder!!.exists())
-                MakeDirs(mGetHTMLFolder!!)
+            MakeDirs(mGetHTMLFolder!!)
             try {
                 val file = File("$mGetHTMLFolder/.nomedia")
                 file.createNewFile()

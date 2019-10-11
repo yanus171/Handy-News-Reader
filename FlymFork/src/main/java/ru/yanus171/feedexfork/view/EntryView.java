@@ -80,6 +80,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.acl.LastOwnerException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -123,6 +124,7 @@ public class EntryView extends WebView implements Observer {
     private String mEntryLink = "";
     public Runnable mScrollChangeListener = null;
     private double mOldContentHeight = 0;
+    private int mLastContentLength = 0;
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -261,6 +263,10 @@ public class EntryView extends WebView implements Observer {
         mActivity = activity;
         mEntryId = entryId;
         mEntryLink = link;
+
+        if ( contentText.length() == mLastContentLength )
+            return;
+        mLastContentLength = contentText.length();
         //getSettings().setBlockNetworkLoads(true);
         getSettings().setUseWideViewPort( true );
         getSettings().setSupportZoom( false );
@@ -597,7 +603,7 @@ public class EntryView extends WebView implements Observer {
         loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
     }
 
-    private static int NOTIFY_OBSERVERS_DELAY_MS = 500;
+    private static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
     public static void NotifyToUpdate( final long entryId, final String entryLink ) {
             UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
