@@ -319,6 +319,7 @@
     <string name="mobilizeAll">Mugikorrera egokitzen</string>
     <string name="RefreshFeeds">Jarioak eguneratzen</string>
     <string name="deleteImages">Ezabatu irudiak</string>
+    <string name="deleteFullTexts">Testu osoen ezabaketa:</string>
     <string name="applyOperations">Aplikatu eragiketak</string>
     <string name="extractContent">Edukia erauzten</string>
     <string name="improveHtmlContent">HTML edukia hobetzen</string>
