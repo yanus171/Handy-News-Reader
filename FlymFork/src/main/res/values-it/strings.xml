@@ -318,6 +318,7 @@
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Aggiornamento feed</string>
     <string name="deleteImages">Elimina immagini</string>
+    <string name="deleteFullTexts">Eliminazione completa dei testi:</string>
     <string name="applyOperations">Applica operazioni</string>
     <string name="extractContent">Estrazione contenuti</string>
     <string name="improveHtmlContent">Perfezionamento del contenuto HTML</string>
