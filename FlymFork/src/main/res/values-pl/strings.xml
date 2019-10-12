@@ -324,6 +324,7 @@ GENERAL]]></string>
     <string name="mobilizeAll">Mobilizacja</string>
     <string name="RefreshFeeds">Aktualizacja źródeł</string>
     <string name="deleteImages">Usuń obrazki</string>
+    <string name="deleteFullTexts">Usuwanie pełnego tekstu:</string>
     <string name="applyOperations">Zastosuj operacje</string>
     <string name="extractContent">Pozyskiwanie treści</string>
     <string name="improveHtmlContent">Udoskonalanie treści HTML</string>
