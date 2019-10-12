@@ -417,6 +417,7 @@
     <string name="data_folder_descr">Dove memorizzare i testi e le immagini degli articoli scaricati</string>
     <string name="internalMemory">Memoria interna (Cache)</string>
     <string name="externalMemory">Memoria esterna</string>
+    <string name="show_html">Mostra HTML</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
