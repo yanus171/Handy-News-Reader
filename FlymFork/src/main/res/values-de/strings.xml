@@ -420,6 +420,7 @@
     <string name="data_folder_descr">Speicher, wohin Artikel, Texte und Grafiken heruntergeladen werden sollen</string>
     <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
+    <string name="show_html">HTML anzeigen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
