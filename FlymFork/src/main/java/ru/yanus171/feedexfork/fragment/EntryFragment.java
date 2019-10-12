@@ -44,13 +44,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -71,11 +64,34 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -83,6 +99,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
+import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -403,7 +420,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mMarkAsUnreadOnFinish = false;
         if ( GeneralPrefsFragment.mSetupChanged ) {
             GeneralPrefsFragment.mSetupChanged = false;
-            mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+            mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
 
 
         }
@@ -604,13 +621,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }*/
                 case R.id.menu_font_bold: {
                     PrefUtils.putBoolean(PrefUtils.ENTRY_FONT_BOLD,
-                            !PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false));
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                            !getBoolean(PrefUtils.ENTRY_FONT_BOLD, false));
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                     break;
                 }
                 case R.id.menu_load_all_images: {
                     FetcherService.mMaxImageDownloadCount = 0;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                     break;
                 }
                 case R.id.menu_share_all_text: {
@@ -670,6 +687,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     mLockLandOrientation = !mLockLandOrientation;
                     item.setChecked(mLockLandOrientation);
                     SetOrientation();
+                    break;
+                }
+
+                case R.id.menu_show_html: {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        String input = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData + "</root>";
+                        MessageBox.Show(NetworkUtils.formatXML(input));
+                    }
                     break;
                 }
             }
@@ -928,7 +953,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                 mIsFullTextShown = false;
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
             }
         });
     }
@@ -945,7 +970,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     mIsFullTextShown = true;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                 }
             });
         } else /*--if (!isRefreshing())*/ {
@@ -1150,7 +1175,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public void run() {
                 FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
             }
         });
 
@@ -1194,7 +1219,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     int position = loader.getId();
                     if (position != -1) {
                         FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-                        mEntryPagerAdapter.displayEntry(position, cursor, false);
+                        mEntryPagerAdapter.displayEntry(position, cursor, false, false);
                         mRetrieveFullText = cursor.getInt(mRetrieveFullTextPos) == 1;
                         EntryActivity activity = (EntryActivity) getActivity();
                         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
@@ -1248,11 +1273,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return view == object;
         }
 
-        void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate) {
+        void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
             Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
+
 
             EntryView view = GetEntryView( pagerPos );
             if (view != null ) {
+                if ( invalidateCache  )
+                    view.InvalidateContentCache();
                 if (newCursor == null) {
                     newCursor = (Cursor) view.getTag(); // get the old one
                 }

@@ -28,7 +28,10 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Html;
+
+import androidx.annotation.RequiresApi;
 
 import okhttp3.OkHttpClient;
 import okhttp3.OkUrlFactory;
@@ -359,4 +362,66 @@ public class NetworkUtils {
             return mPattern.matcher(filename).find();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String formatXML(final String unformattedXML) {
+        final int length = unformattedXML.length();
+        final int indentSpace = 3;
+        final StringBuilder newString = new StringBuilder(length + length / 10);
+        final char space = ' ';
+        int i = 0;
+        int indentCount = 0;
+        char currentChar = unformattedXML.charAt(i++);
+        char previousChar = currentChar;
+        boolean nodeStarted = true;
+        newString.append(currentChar);
+        for (; i < length - 1;) {
+            currentChar = unformattedXML.charAt(i++);
+
+            final String TAG = "<br>";
+            if ( i < unformattedXML.length() - TAG.length() && unformattedXML.substring( i, i + TAG.length() ).equals( TAG ) ) {
+                newString.append( TAG );
+                i += TAG.length();
+                continue;
+            }
+
+            if(((int) currentChar < 33) && !nodeStarted) {
+                continue;
+            }
+
+            switch (currentChar) {
+                case '<':
+                    if ('>' == previousChar && '/' != unformattedXML.charAt(i - 1) && '/' != unformattedXML.charAt(i) &&
+                            '!' != unformattedXML.charAt(i)) {
+                        indentCount++;
+                    }
+                    newString.append(System.lineSeparator());
+                    for (int j = indentCount * indentSpace; j > 0; j--) {
+                        newString.append(space);
+                    }
+                    newString.append(currentChar);
+                    nodeStarted = true;
+                    break;
+                case '>':
+                    newString.append(currentChar);
+                    nodeStarted = false;
+                    break;
+                case '/':
+                    if ('<' == previousChar || '>' == unformattedXML.charAt(i)) {
+                        indentCount--;
+                    }
+                    newString.append(currentChar);
+                    break;
+                default:
+                    newString.append(currentChar);
+            }
+            previousChar = currentChar;
+        }
+        newString.append(unformattedXML.charAt(length - 1));
+        return newString.toString();
+        //System.out.println(newString.toString());
+    }
+
+
+
 }

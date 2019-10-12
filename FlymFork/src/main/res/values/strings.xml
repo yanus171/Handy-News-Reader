@@ -431,6 +431,7 @@
     <string name="data_folder_descr">Where to store downloaded articles texts and images</string>
     <string name="internalMemory">Internal memory (Cache)</string>
     <string name="externalMemory">External memory</string>
+    <string name="show_html">Show html</string>
 
 
     <plurals name="number_of_new_entries">

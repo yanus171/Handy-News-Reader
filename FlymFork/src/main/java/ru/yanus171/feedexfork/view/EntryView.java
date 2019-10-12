@@ -296,7 +296,10 @@ public class EntryView extends WebView implements Observer {
         LoadData();
         timer.End();
     }
-    
+
+    public void InvalidateContentCache() {
+        mLastContentLength = 0;
+    }
 
     private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");

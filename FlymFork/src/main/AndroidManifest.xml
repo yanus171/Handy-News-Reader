@@ -234,6 +234,7 @@
         </activity>
 
         <activity android:name=".activity.SendErrorActivity" />
+        <activity android:name=".activity.MessageBox"/>
 
 
         <!--<receiver android:name=".widget.WidgetProvider">-->
