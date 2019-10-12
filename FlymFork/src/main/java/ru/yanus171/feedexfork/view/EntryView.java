@@ -104,6 +104,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
@@ -112,6 +113,7 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_BACKGROUND;
+import static ru.yanus171.feedexfork.view.EntryView.mLastNotifyObserversScheduled;
 
 public class EntryView extends WebView implements Observer {
 
@@ -603,7 +605,7 @@ public class EntryView extends WebView implements Observer {
         loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
     }
 
-    private static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
+    static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
     public static void NotifyToUpdate( final long entryId, final String entryLink ) {
             UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
@@ -614,24 +616,14 @@ public class EntryView extends WebView implements Observer {
                 }, NOTIFY_OBSERVERS_DELAY_MS);
     }
 
-    private static HashMap<Long, Long> mLastNotifyObserversTime = new HashMap<>();
-    private static HashMap<Long, Boolean> mLastNotifyObserversScheduled = new HashMap<>();
+    static HashMap<Long, Long> mLastNotifyObserversTime = new HashMap<>();
+    static HashMap<Long, Boolean> mLastNotifyObserversScheduled = new HashMap<>();
 
-    private static void ScheduledNotifyObservers( final long entryId, final String entryLink ) {
+    static void ScheduledNotifyObservers( final long entryId, final String entryLink ) {
         mLastNotifyObserversTime.put( entryId, new Date().getTime() );
         if (!mLastNotifyObserversScheduled.containsKey( entryId )) {
             mLastNotifyObserversScheduled.put( entryId, true );
-            UiUtils.RunOnGuiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mLastNotifyObserversScheduled.remove( entryId );
-                    Dog.v( TAG,"EntryView.ScheduledNotifyObservers() run");
-                    if (new Date().getTime() - mLastNotifyObserversTime.get( entryId ) > NOTIFY_OBSERVERS_DELAY_MS)
-                        mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink) );
-                    else
-                        ScheduledNotifyObservers( entryId, entryLink );
-                }
-            }, NOTIFY_OBSERVERS_DELAY_MS);
+            UiUtils.RunOnGuiThread( new ScheduledEnrtyNotifyObservers( entryId, entryLink ), NOTIFY_OBSERVERS_DELAY_MS);
         }
     }
 
@@ -759,3 +751,22 @@ public class EntryView extends WebView implements Observer {
 
 }
 
+class ScheduledEnrtyNotifyObservers implements Runnable {
+    private final String mLink;
+    private long mId = 0;
+
+    public ScheduledEnrtyNotifyObservers( long id, String link ) {
+        mId = id;
+        mLink = link;
+    }
+
+    @Override
+    public void run() {
+        EntryView.mLastNotifyObserversScheduled.remove( mId );
+        Dog.v( TAG,"EntryView.ScheduledNotifyObservers() run");
+        if (new Date().getTime() - EntryView.mLastNotifyObserversTime.get( mId ) > EntryView.NOTIFY_OBSERVERS_DELAY_MS)
+            EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink) );
+        else
+            EntryView.ScheduledNotifyObservers( mId, mLink );
+    }
+}

@@ -860,10 +860,9 @@ public class FeedDataContentProvider extends ContentProvider {
         // If it's an entry deletion, delete associated cache files
         // Need to be done before the real entry deletion
         if (EntryColumns.TABLE_NAME.equals(table)) {
-            Cursor cursor = getContext().getContentResolver().query( uri, new String[]{ _ID, LINK }, where.toString(), null, null );
-
-            while( cursor.moveToNext() )
-                FileUtils.INSTANCE.deleteMobilized( cursor.getString( 1 ), EntryColumns.CONTENT_URI( cursor.getLong( 0 ) ) );
+//            Cursor cursor = getContext().getContentResolver().query( uri, new String[]{ _ID, LINK }, where.toString(), null, null );
+//            while( cursor.moveToNext() )
+//                FileUtils.INSTANCE.deleteMobilized( cursor.getString( 1 ), EntryColumns.CONTENT_URI( cursor.getLong( 0 ) ) );
 
 
             //NetworkUtils.deleteEntriesImagesCache(uri, where.toString(), selectionArgs);

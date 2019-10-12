@@ -80,9 +80,6 @@ public class NetworkUtils {
         return getDownloadedImagePath(entryLink, "", imgUrl);
     }
 
-    public static String getImageEntryCode( String entryLink ) {
-        return StringUtils.getMd5( entryLink );
-    }
 
     private static String getDownloadedImagePath( String entryLink, String prefix, String imgUrl ) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
@@ -90,9 +87,8 @@ public class NetworkUtils {
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
 
-        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + getImageEntryCode( entryLink ) + ID_SEPARATOR +
-               StringUtils.getMd5(imgUrl
-                       .replace(" ", HtmlUtils.URL_SPACE) ) + fileExtension.replace("?", "");
+        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + FileUtils.INSTANCE.getLinkHash( entryLink ) + ID_SEPARATOR +
+               FileUtils.INSTANCE.getLinkHash( imgUrl ) + fileExtension.replace("?", "");
     }
 
     private static String getTempDownloadedImagePath(String entryLink, String imgUrl) {

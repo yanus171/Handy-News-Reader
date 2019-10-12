@@ -19,7 +19,6 @@
 
 package ru.yanus171.feedexfork.utils
 
-import android.content.ContentResolver
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
@@ -38,7 +37,6 @@ import ru.yanus171.feedexfork.utils.DebugApp.AddErrorToLog
 import ru.yanus171.feedexfork.view.StorageItem
 import java.io.*
 import java.util.ArrayList
-import kotlin.concurrent.thread
 
 object FileUtils {
 
@@ -96,12 +94,16 @@ object FileUtils {
         mGetHTMLFolder = null
     }
 
-    fun LinkToFile(  link: String ): File {
-        return File(GetHTMLFolder(), StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE) )
+    fun LinkToFile( link: String ): File {
+        return File(GetHTMLFolder(), getLinkHash( link ) )
+    }
+
+    fun getLinkHash(link: String ): String {
+        return StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE);
     }
 
     private var mGetHTMLFolder: File? = null
-    private fun GetHTMLFolder(): File {
+    public fun GetHTMLFolder(): File {
         if ( mGetHTMLFolder == null ) {
             mGetHTMLFolder = File(getFolder(), "html/")
             MakeDirs(mGetHTMLFolder!!)

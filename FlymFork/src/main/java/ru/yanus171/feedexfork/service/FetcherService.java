@@ -383,9 +383,10 @@ public class FetcherService extends IntentService {
 
                     mobilizeAllEntries(isFromAutoRefresh);
                     downloadAllImages();
-                    if ( mDeleteOld )
+                    if ( mDeleteOld ) {
                         deleteOldEntries(keepDateBorderTime);
-                    deleteGhostImages();
+                        deleteGhost();
+                    }
                     if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
                         PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
                 }
@@ -393,24 +394,47 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private void deleteGhostImages() {
-
-        //int status = Status().Start( getString( R.string.deltingGhostImages ) );
+    private void deleteGhost() {
         final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns.LINK},null, null, null );
-        final HashSet<String> mapEntryID = new HashSet<>();
+        final HashSet<String> mapEntryLinkHash = new HashSet<>();
         while  ( cursor.moveToNext() )
-            mapEntryID.add( NetworkUtils.getImageEntryCode( cursor.getString( 0 ) ) );
+            mapEntryLinkHash.add( FileUtils.INSTANCE.getLinkHash( cursor.getString( 0 ) ) );
         cursor.close();
+        deleteGhostHtmlFiles( mapEntryLinkHash );
+        deleteGhostImages( mapEntryLinkHash );
+    }
 
-        int deletedImageCount = 0;
+
+    private void deleteGhostHtmlFiles( final HashSet<String> mapEntryLink ) {
+        int deletedCount = 0;
+        final File folder = FileUtils.INSTANCE.GetHTMLFolder();
+        String[] fileNames = folder.list();
+        if (fileNames != null  )
+            for (String fileName : fileNames) {
+                if ( !mapEntryLink.contains( fileName ) ) {
+                    if ( new File( folder, fileName ).delete() )
+                        deletedCount++;
+                    Status().ChangeProgress(getString(R.string.deleteFullTexts) + String.format( " %d", deletedCount ) );
+                    if (FetcherService.isCancelRefresh())
+                        break;
+
+                }
+            }
+        Status().ChangeProgress( "" );
+        //Status().End( status );
+    }
+
+    private void deleteGhostImages(  final HashSet<String> mapEntryID ) {
+        int deletedCount = 0;
+        final File folder = FileUtils.INSTANCE.GetImagesFolder();
         String[] fileNames = FileUtils.INSTANCE.GetImagesFolder().list();
         if (fileNames != null  )
             for (String fileName : fileNames) {
                 String[] list = TextUtils.split( fileName, "_" );
                 if ( list.length != 3 || list.length >= 2 && !mapEntryID.contains( list[0] ) ) {
-                    if ( new File( FileUtils.INSTANCE.GetImagesFolder(), fileName ).delete() )
-                        deletedImageCount++;
-                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d", deletedImageCount ) );
+                    if ( new File( folder, fileName ).delete() )
+                        deletedCount++;
+                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d", deletedCount ) );
                     if (FetcherService.isCancelRefresh())
                         break;
 
