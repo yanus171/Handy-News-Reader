@@ -318,6 +318,7 @@
     <string name="mobilizeAll">Завантаження повних текстів</string>
     <string name="RefreshFeeds">Оновлення статей</string>
     <string name="deleteImages">Вилучити зображення</string>
+    <string name="deleteFullTexts">Вилучення повного текту:</string>
     <string name="applyOperations">Застосувати операції</string>
     <string name="extractContent">Форматування тексту</string>
     <string name="improveHtmlContent">Оптимізація HTML тексту</string>
