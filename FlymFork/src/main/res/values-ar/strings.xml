@@ -327,6 +327,7 @@
     <string name="mobilizeAll">تعبئة</string>
     <string name="RefreshFeeds">جارِ تحديث الخلاصات</string>
     <string name="deleteImages">حذف الصور:</string>
+    <string name="deleteFullTexts">جَارٍ حَذَفَ النُّصُوصُ الْكَامِلَةُ:</string>
     <string name="applyOperations">تطبيق العمليات</string>
     <string name="extractContent">جارِ إستخراج المحتوى</string>
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
@@ -425,6 +426,7 @@
     <string name="data_folder_descr">ذاكِرَة تَخزين نصوص وصوَر المَقالات المُحَمَّلَة</string>
     <string name="internalMemory">الذاكِرَةُ الداخليّة(Cache)</string>
     <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
+    <string name="show_html">عَرْضُ الـ HTML</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
