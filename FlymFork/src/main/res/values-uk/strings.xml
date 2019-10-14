@@ -417,6 +417,7 @@
     <string name="data_folder_descr">Місце для збереження завантажених текстів та зображень статей</string>
     <string name="internalMemory">Внутрішня пам\'ять (Кеш)</string>
     <string name="externalMemory">Зовнішня пам’ять</string>
+    <string name="show_html">Показати html</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
