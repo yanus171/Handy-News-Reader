@@ -418,6 +418,7 @@
     <string name="internalMemory">Memoria interna (Cache)</string>
     <string name="externalMemory">Memoria esterna</string>
     <string name="show_html">Mostra HTML</string>
+    <string name="image_white_background">Immagine di sfondo bianco</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
