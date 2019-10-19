@@ -19,16 +19,14 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
 import kotlin.math.abs
-import kotlin.math.exp
-import kotlin.math.log
 
 class Brightness(private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
-    private val mInfo: TextView = rootView.findViewById(R.id.brightnessInfo)
+    private val mInfo: TextView? = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha : Float = 128F
 
     init {
-        mInfo.visibility = View.GONE
+        mInfo?.visibility = View.GONE
         mCurrentAlpha = PrefUtils.getFloat( PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
         UiUtils.HideButtonText(rootView, R.id.brightnessSlider, true)
         SetSize(rootView, R.id.brightnessSlider, GetTapZoneSize(), MATCH_PARENT)
@@ -76,19 +74,19 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                                     currentAlpha = 1F
                                 Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
                                 setBrightness(currentAlpha)
-                                mInfo.visibility = View.VISIBLE
-                                mInfo.text = String.format("%s: %.1f %%",
-                                        mInfo.context.getString(R.string.brightness),
+                                mInfo?.visibility = View.VISIBLE
+                                mInfo?.text = String.format("%s: %.1f %%",
+                                        mInfo?.context?.getString(R.string.brightness),
                                         if ( currentAlpha >= 255F / 100F ) { (255 - currentAlpha) / 255.toFloat() * 100 } else { 100F } )
                             }
                             return true
                         }
                         event.action == MotionEvent.ACTION_UP -> {
-                            mInfo.visibility = View.GONE
+                            mInfo?.visibility = View.GONE
                             return false
                         }
                         else -> {
-                            mInfo.visibility = View.GONE
+                            mInfo?.visibility = View.GONE
                             return false
                         }
                     }
@@ -99,7 +97,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     }
 
     fun OnResume() {
-        mInfo.visibility = View.GONE
+        mInfo?.visibility = View.GONE
         if (!PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false))
             return
         val period = (PrefUtils.getIntFromText("settings_brightness_read_from_system_period_min", 10) * 1000 * 60).toLong()

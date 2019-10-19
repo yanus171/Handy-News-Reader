@@ -385,8 +385,8 @@ public class NetworkUtils {
                 continue;
             }
 
-            if(((int) currentChar < 33) && !nodeStarted) {
-                continue;
+            if(((int) currentChar < 32 && currentChar != 13 ) && !nodeStarted) {
+                //continue;
             }
 
             switch (currentChar) {

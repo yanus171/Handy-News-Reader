@@ -171,6 +171,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
 
+        if ( savedInstanceState != null ) {
+            mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS, -1);
+            mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
+            //outState.putLongArray(STATE_ENTRIES_IDS, mEntriesIds);
+            mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID, -1);
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -393,6 +399,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         super.onSaveInstanceState(outState);
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {
