@@ -265,7 +265,6 @@ public class EntryView extends WebView implements Observer {
         mActivity = activity;
         mEntryId = entryId;
         mEntryLink = link;
-
         if ( contentText.length() == mLastContentLength )
             return;
         mLastContentLength = contentText.length();
@@ -360,6 +359,8 @@ public class EntryView extends WebView implements Observer {
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void init() {
+
+        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  )));
 
         Timer timer = new Timer( "EntryView.init" );
 
