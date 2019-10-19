@@ -124,6 +124,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
+import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -528,6 +529,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //menu.findItem(R.id.menu_mark_as_unfavorite).setVisible(mFavorite);
 
         menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
+        menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
+        menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
 
 //        if (mFavorite)
 //            menu.findItem(R.id.menu_mark_as_favorite ).setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
@@ -599,40 +602,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     UiUtils.toast( getActivity(), R.string.entry_marked_unread );
                     break;
                 }
-                /*case R.id.menu_mark_as_favorite: {
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update(uri, FeedData.getFavoriteContentValues(true), null, null);
-                        }
-                    }.start();
-                    UiUtils.toast( getActivity(), R.string.entry_marked_favourite );
-                    break;
-                }
-                case R.id.menu_mark_as_unfavorite: {
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update(uri, FeedData.getFavoriteContentValues(false), null, null);
-                        }
-                    }.start();
-
-                    UiUtils.toast( getActivity(), R.string.entry_marked_unfavourite );
-
-                    CloseEntry();
-
-                    break;
-                }*/
-                case R.id.menu_font_bold: {
-                    PrefUtils.putBoolean(PrefUtils.ENTRY_FONT_BOLD,
-                            !getBoolean(PrefUtils.ENTRY_FONT_BOLD, false));
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
-                    break;
-                }
                 case R.id.menu_load_all_images: {
                     FetcherService.mMaxImageDownloadCount = 0;
                     mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
@@ -697,6 +666,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     SetOrientation();
                     break;
                 }
+                case R.id.menu_image_white_background: {
+                    PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND) ;
+                    item.setChecked( PrefUtils.isImageWhiteBackground() );
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    break;
+                }
+                case R.id.menu_font_bold: {
+                    PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD);
+                    item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    break;
+                }
 
                 case R.id.menu_show_html: {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -710,6 +691,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         return true;
     }
+
 
     private void ReloadFullText() {
         int status = FetcherService.Status().Start("Reload fulltext");

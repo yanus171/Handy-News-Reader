@@ -38,19 +38,17 @@
         android:orderInCategory="5"
         android:icon="@drawable/rounded_checbox_white"
         android:title="@string/menu_mark_as_unread"/>
-    <!--<item-->
-        <!--android:id="@+id/menu_mark_as_favorite"-->
-        <!--android:icon="@drawable/rating_important"-->
-        <!--android:title="@string/menu_mark_as_favorite"/>-->
-    <!--<item-->
-        <!--android:id="@+id/menu_mark_as_unfavorite"-->
-        <!--android:icon="@drawable/rating_not_important"-->
-        <!--android:title="@string/menu_mark_as_unfavorite"/>-->
     <item
         android:id="@+id/menu_font_bold"
+        android:checkable="true"
         android:title="@string/menu_font_bold"/>
     <item
+        android:id="@+id/menu_image_white_background"
+        android:checkable="true"
+        android:title="@string/image_white_background"/>
+    <item
         android:id="@+id/menu_reload_full_text"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/refresh"
         android:title="@string/menu_reload_full_text"/>
     <item
@@ -62,6 +60,7 @@
     <item
         android:id="@+id/menu_load_all_images"
         android:icon="@android:drawable/ic_menu_gallery"
+        app:showAsAction="ifRoom"
         android:title="@string/menu_load_all_images"/>
     <item
         android:id="@+id/menu_share_all_text"

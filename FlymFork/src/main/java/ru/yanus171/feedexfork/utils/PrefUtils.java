@@ -112,6 +112,11 @@ public class PrefUtils {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
     }
 
+    public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
+    public static Boolean isImageWhiteBackground() {
+        return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
+    }
+
     public static int getFontSizeFooterClock() {
         return Integer.parseInt(PrefUtils.getString("article_text_footer_show_clock_fontsize", "0"));
     }
@@ -155,6 +160,12 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static void toggleBoolean(String key) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(key, !pref.getBoolean(key, false ));
+        editor.apply();
+    }
     public static int getInt(String key, int defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.getInt(key, defValue);
