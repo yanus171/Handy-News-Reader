@@ -330,6 +330,7 @@
     <string name="mobilizeAll">Θέμα φορητών συσκευών</string>
     <string name="RefreshFeeds">Ανανέωση Ροών</string>
     <string name="deleteImages">Διαγραφή εικόνων</string>
+    <string name="deleteFullTexts">Πλήρης διαγραφή κειμένων:</string>
     <string name="applyOperations">Εφαρμογή αλλαγών</string>
     <string name="extractContent">Εξαγωγή περιεχομένου</string>
     <string name="improveHtmlContent">Βελτίωση περιεχομένου HTML</string>
@@ -422,6 +423,14 @@
     <string name="custom_data_folder_descr">Διαδρομή φακέλου για αποθήκευση των εικόνων και των αρχείων αντιγράφων ασφαλείας (κενό - χρήση προεπιλογής)</string>
     <string name="entry_text_title_link">Σύνδεσμος τίτλου</string>
     <string name="entry_text_title_link_description">επιτρέπει να ανοιχτεί σελίδα στον φυλλομετρητή (browser) αγγίζοντας τον τίτλο</string>
+    <string name="delete_read_articles">Διαγραφή διαβασμένων άρθρων</string>
+    <string name="delete_read_articles_descr">ανεξάρτητα από το χρόνο που κρατιούνται τα άρθρα</string>
+    <string name="data_folder">Φάκελος δεδομένων</string>
+    <string name="data_folder_descr">Που θα αποθηκεύονται τα κείμενα και οι εικόνες των κατεβασμένων άρθρων</string>
+    <string name="internalMemory">Προσωρινή μνήμη (Cache)</string>
+    <string name="externalMemory">Εξωτερική μνήμη</string>
+    <string name="show_html">Να ναι ορατή η ηλεκτρονική διεύθυνση</string>
+    <string name="image_white_background">Λευκή εικόνα φόντου</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
