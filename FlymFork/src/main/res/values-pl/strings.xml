@@ -424,6 +424,7 @@ GENERAL]]></string>
     <string name="internalMemory">Pamięć wewnętrzna (Cache)</string>
     <string name="externalMemory">Pamięć zewnętrzna</string>
     <string name="show_html">Pokaż html</string>
+    <string name="image_white_background">Białe tło obrazków</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
