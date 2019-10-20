@@ -72,26 +72,11 @@ import androidx.loader.content.Loader;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -127,6 +112,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_BACKGROUND;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>, EntryView.EntryViewManager {
@@ -295,7 +281,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //disableSwipe();
 
 
-        rootView.findViewById(R.id.layoutBottom).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
         mLockLandOrientation = PrefUtils.getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
@@ -918,6 +904,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
                 mProgressBar.setMax(contentHeight - webViewHeight);
                 mProgressBar.setProgress(entryView.getScrollY());
+                getActivity().findViewById( R.id.layoutColontitul).setBackgroundColor( Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  ) ) );
                 String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
                 if (Build.VERSION.SDK_INT >= 21 )
                     mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));

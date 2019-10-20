@@ -596,16 +596,17 @@ public class EntryView extends WebView implements Observer {
             ((Entry) data).mLink.equals(mEntryLink) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
             mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
-            if ( GetViewScrollPartY() > 0 ) {
-                mScrollPartY = GetViewScrollPartY();
-                mOldContentHeight = GetContentHeight();
-            }
+
             LoadData();
         //setScrollY( y );
         }
     }
 
     private void LoadData() {
+        if ( GetViewScrollPartY() > 0 ) {
+            mScrollPartY = GetViewScrollPartY();
+            mOldContentHeight = GetContentHeight();
+        }
         loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
     }
 
