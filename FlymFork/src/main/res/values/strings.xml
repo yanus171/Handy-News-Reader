@@ -271,14 +271,14 @@
     <string name="settings_color_link_sample_long">Color of links</string>
     <string name="underline_links">Underline links</string>
     <string name="article_text_footer_show_clock">Footer Clock</string>
-    <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
+    <string name="article_text_footer_show_clock_description">Displays the current time at the top right corner in fullscreen mode</string>
     <string name="settings_clock_size">Text size of the Footer Clock</string>
     <string name="article_text_footer_clock_color">Clock color and background</string>
     <string name="article_text_footer_clock_color_descr">Color of the footer clock</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
-    <string name="article_text_footer_show_progress_descr">Displays the progress of reading an article at the bottom</string>
+    <string name="article_text_footer_show_progress_descr">Displays the progress of reading an article at the top</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>
     <string name="article_text_footer_progress_color">Progress color</string>
     <string name="article_text_footer_progress_color_descr">Color of the reading progress bar</string>
