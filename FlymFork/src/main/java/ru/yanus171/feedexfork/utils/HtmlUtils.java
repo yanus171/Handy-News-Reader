@@ -43,6 +43,7 @@ public class HtmlUtils {
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
+            .addAttributes( ":all", "id", "name" )
             .addTags("s")
             .addAttributes("track", "src", "kind", "srclang", "label");
 

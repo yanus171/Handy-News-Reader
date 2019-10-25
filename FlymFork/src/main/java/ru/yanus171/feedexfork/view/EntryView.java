@@ -62,6 +62,7 @@ import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
 
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
@@ -80,6 +81,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.security.acl.LastOwnerException;
 import java.util.Date;
 import java.util.HashMap;
@@ -121,6 +123,7 @@ public class EntryView extends WebView implements Observer {
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
     private static final String TAG = "EntryView";
     private static final String NO_MENU = "NO_MENU_";
+    public static final String BASE_URL = "";
 
     private long mEntryId = -1;
     private String mEntryLink = "";
@@ -370,6 +373,7 @@ public class EntryView extends WebView implements Observer {
             setTextDirection( TEXT_DIRECTION_LOCALE );
         // For scrolling
         setHorizontalScrollBarEnabled(false);
+        setVerticalScrollBarEnabled(true);
         getSettings().setUseWideViewPort(true);
         // For color
 
@@ -441,6 +445,7 @@ public class EntryView extends WebView implements Observer {
         });
 
         setWebViewClient(new WebViewClient() {
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
                 final Context context = getContext();
@@ -453,8 +458,11 @@ public class EntryView extends WebView implements Observer {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
                         context.startActivity(intent);
-                    //} else if ( url.contains( "#" ) ) {
-                    //    return false;
+                    } else if ( url.contains( "#" ) ) {
+                        String hash = url.substring( url.indexOf( '#' ) + 1 );
+                        hash = URLDecoder.decode( hash );
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                            view.evaluateJavascript("javascript:location.hash = '" + hash + "';", null );
                     } else if ( url.contains( NO_MENU ) ) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         getContext().startActivity(intent.setData( Uri.parse(url.replace( NO_MENU,"" ))));
@@ -607,7 +615,7 @@ public class EntryView extends WebView implements Observer {
             mScrollPartY = GetViewScrollPartY();
             mOldContentHeight = GetContentHeight();
         }
-        loadDataWithBaseURL("", mData, TEXT_HTML, Constants.UTF8, null);
+        loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
     }
 
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
