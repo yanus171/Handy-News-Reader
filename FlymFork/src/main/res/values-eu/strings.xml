@@ -418,6 +418,8 @@
     <string name="data_folder_descr">Non gorde deskargatutako artikuluen testu eta irudiak</string>
     <string name="internalMemory">Barne memoria (Cachea)</string>
     <string name="externalMemory">Kanpo memoria</string>
+    <string name="show_html">Erakutsi html-a</string>
+    <string name="image_white_background">Irudiaren atzealde zuria</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>
