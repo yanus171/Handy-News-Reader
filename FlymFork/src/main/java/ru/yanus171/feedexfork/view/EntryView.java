@@ -88,6 +88,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Stack;
 
 import kotlin.Pair;
 import ru.yanus171.feedexfork.Constants;
@@ -130,6 +131,7 @@ public class EntryView extends WebView implements Observer {
     public Runnable mScrollChangeListener = null;
     private double mOldContentHeight = 0;
     private int mLastContentLength = 0;
+    private Stack<Integer> mHistoryAchorScrollY = new Stack<>();
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -459,10 +461,12 @@ public class EntryView extends WebView implements Observer {
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
                         context.startActivity(intent);
                     } else if ( url.contains( "#" ) ) {
-                        String hash = url.substring( url.indexOf( '#' ) + 1 );
-                        hash = URLDecoder.decode( hash );
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                            view.evaluateJavascript("javascript:location.hash = '" + hash + "';", null );
+                        String hash = url.substring(url.indexOf('#') + 1);
+                        hash = URLDecoder.decode(hash);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
+                            mHistoryAchorScrollY.push( getScrollY() );
+                        }
                     } else if ( url.contains( NO_MENU ) ) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         getContext().startActivity(intent.setData( Uri.parse(url.replace( NO_MENU,"" ))));
@@ -638,6 +642,14 @@ public class EntryView extends WebView implements Observer {
             mLastNotifyObserversScheduled.put( entryId, true );
             UiUtils.RunOnGuiThread( new ScheduledEnrtyNotifyObservers( entryId, entryLink ), NOTIFY_OBSERVERS_DELAY_MS);
         }
+    }
+
+    public boolean onBackPressed() {
+        if ( canGoBack() && !mHistoryAchorScrollY.isEmpty() ) {
+            scrollTo(0, mHistoryAchorScrollY.pop() );
+            return true;
+        }
+        return false;
     }
 
     public interface EntryViewManager {

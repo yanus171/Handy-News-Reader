@@ -136,7 +136,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean mFavorite, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
-    private BaseEntryPagerAdapter mEntryPagerAdapter;
+    public BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame;
     private ProgressBar mProgressBar;
@@ -1493,6 +1493,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             else
                 return null;
         }
+    }
+
+    public EntryView GetSelectedEntryView()  {
+        return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
     }
 }
 
