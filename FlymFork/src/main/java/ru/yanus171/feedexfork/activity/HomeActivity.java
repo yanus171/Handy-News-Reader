@@ -317,7 +317,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     public void onClickAdd(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.menu_add_feed)
+        if ( !PrefUtils.getBoolean("settings_add_google_news_dialog", true ) )
+            startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
+        else
+            builder.setTitle(R.string.menu_add_feed)
                 .setItems(new CharSequence[]{getString(R.string.add_custom_feed), getString(R.string.google_news_title)}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
@@ -326,8 +329,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                             startActivity(new Intent(HomeActivity.this, AddGoogleNewsActivity.class));
                         }
                     }
-                });
-        builder.show();
+                }).show();
     }
 
     public void onClickSettings(View view) {

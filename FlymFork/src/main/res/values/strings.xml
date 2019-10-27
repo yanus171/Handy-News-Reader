@@ -377,6 +377,7 @@
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb">Web (load all links from page)</string>
     <string name="loadTypeRSS">RSS (feed or site link or keywords)</string>
+    <string name="loadTypeWebPageSearch">Web page search (find and load one article)</string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
@@ -433,7 +434,8 @@
     <string name="externalMemory">External memory</string>
     <string name="show_html">Show html</string>
     <string name="image_white_background">Image white background</string>
-
+    <string name="settings_add_google_news_dialog">Add Google News dialog</string>
+    <string name="settings_add_google_news_dialog_descr">Uncheck to bypass a select feed type dialog when adding a feed</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

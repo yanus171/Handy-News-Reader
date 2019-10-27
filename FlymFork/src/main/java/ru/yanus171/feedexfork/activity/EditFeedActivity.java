@@ -83,9 +83,13 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -317,7 +321,16 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mLoadTypeRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                mRetrieveFulltextCb.setEnabled( i == R.id.rbRss );
+                final boolean isRss = ( i == R.id.rbRss );
+                final boolean isWebPageSearch = ( i == R.id.rbWebPageSearch );
+                mRetrieveFulltextCb.setEnabled( isRss && !isWebPageSearch );
+                mGroupSpinner.setEnabled( !isWebPageSearch );
+                mIsAutoImageLoadCb.setEnabled( !isWebPageSearch );
+                mIsAutoRefreshCb.setEnabled( !isWebPageSearch );
+                mKeepTimeCB.setEnabled( !isWebPageSearch );
+                mShowTextInEntryListCb.setEnabled( !isWebPageSearch );
+                mNameEditText.setEnabled( !isWebPageSearch );
+
             }
         });
 
@@ -572,17 +585,21 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 finish();
                 return true;
             case R.id.menu_validate: // only in insert mode
-                final String name = mNameEditText.getText().toString().trim();
                 final String urlOrSearch = mUrlEditText.getText().toString().trim();
                 if (urlOrSearch.isEmpty()) {
                     UiUtils.showMessage(EditFeedActivity.this, R.string.error_feed_error);
                 }
 
-                if ( !urlOrSearch.toLowerCase().contains("www") &&
-                        ( !urlOrSearch.contains(".") || !urlOrSearch.contains("/") || urlOrSearch.contains(" ")) ) {
-                    AddFeedFromUserSelection(name, new GetFeedSearchResultsLoader(EditFeedActivity.this, urlOrSearch));
+                if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
+                    AddFeedFromUserSelection("", new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
                 } else {
-                    AddFeedFromUserSelection(name, new GetSiteAlternateListLoader(EditFeedActivity.this, urlOrSearch));
+                    final String name = mNameEditText.getText().toString().trim();
+                    if (!urlOrSearch.toLowerCase().contains("www") &&
+                            (!urlOrSearch.contains(".") || !urlOrSearch.contains("/") || urlOrSearch.contains(" "))) {
+                        AddFeedFromUserSelection(name, new GetFeedSearchResultsLoader(EditFeedActivity.this, urlOrSearch));
+                    } else {
+                        AddFeedFromUserSelection(name, new GetSiteAlternateListLoader(EditFeedActivity.this, urlOrSearch));
+                    }
                 }
                 return true;
             case R.id.menu_add_filter: {
@@ -677,6 +694,11 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
 
             private void AddFeed(HashMap<String, String> dataItem) {
+                if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
+                    Intent intent = new Intent(EditFeedActivity.this, EntryActivity.class );
+                    EditFeedActivity.this.startActivity(intent.setData( Uri.parse(dataItem.get(FEED_SEARCH_URL)) ));
+                    return;
+                }
                 Pair<Uri, Boolean> result =
                     FeedDataContentProvider.addFeed(EditFeedActivity.this,
                         dataItem.get(FEED_SEARCH_URL),
@@ -781,8 +803,6 @@ class GetFeedSearchResultsLoader extends BaseLoader<ArrayList<HashMap<String, St
             return null;
         }
     }
-
-
 }
 
 class GetSiteAlternateListLoader extends BaseLoader<ArrayList<HashMap<String, String>>> {
@@ -855,5 +875,56 @@ class GetSiteAlternateListLoader extends BaseLoader<ArrayList<HashMap<String, St
             return null;
         }
     }
+
+}
+
+/**
+ * A custom Loader that loads feed search results from the google WS.
+ */
+class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<String, String>>> {
+    private static final String CLASS_ATTRIBUTE = "result__snippet";
+    private String mSearchText;
+
+    public GetWebSearchDuckDuckGoResultsLoader(Context context, String searchText) {
+        super(context);
+        mSearchText = searchText;
+        try {
+            mSearchText = URLEncoder.encode(searchText, Constants.UTF8);
+        } catch (UnsupportedEncodingException ignored) {
+        }
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> loadInBackground() {
+        try {
+            HttpURLConnection conn = NetworkUtils.setupConnection("http://duckduckgo.com/html/?q=" + mSearchText);
+            try {
+                final ArrayList<HashMap<String, String>> results = new ArrayList<>();
+                Document doc = Jsoup.parse(conn.getInputStream(), null, "");
+                for (Element el : doc.getElementsByClass( "results_links")) {
+                    try {
+                        final String title = el.getElementsByClass( "result__title" ).text();
+                        String url = el.getElementsByClass( "result__title" ).first().getElementsByTag( "a" ).first().attr( "href" );
+                        url = URLDecoder.decode( url.substring( url.indexOf( "http" ) ) );
+                        final String descr = el.getElementsByClass( "result__snippet" ).text();
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put(EditFeedActivity.FEED_SEARCH_TITLE, title);
+                        map.put(EditFeedActivity.FEED_SEARCH_URL, url);
+                        map.put(EditFeedActivity.FEED_SEARCH_DESC, descr);
+                        results.add(map);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return results;
+            } finally {
+                conn.disconnect();
+            }
+        } catch (Exception e) {
+            Dog.e("Error", e);
+            return null;
+        }
+    }
+
 
 }

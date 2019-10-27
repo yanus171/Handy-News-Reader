@@ -512,6 +512,11 @@
                 android:title="@string/settings_autobackup_enabled"
                 android:summary="@string/settings_autobackup_enabled_descr"/>
 
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="settings_add_google_news_dialog"
+                android:summary="@string/settings_add_google_news_dialog_descr"
+                android:title="@string/settings_add_google_news_dialog" />
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="86400000"
                 android:entries="@array/settings_intervals"

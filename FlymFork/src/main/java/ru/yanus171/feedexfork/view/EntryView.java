@@ -523,7 +523,7 @@ public class EntryView extends WebView implements Observer {
                                 final Intent intent;
                                 if (item == 0)
                                     intent = new Intent(getContext(), EntryActivity.class );
-                                else if ( item== 1 )
+                                else if ( item == 1 )
                                     intent = new Intent(getContext(), LoadLinkLaterActivity.class );
                                 else
                                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

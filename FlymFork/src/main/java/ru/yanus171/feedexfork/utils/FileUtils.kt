@@ -126,7 +126,7 @@ object FileUtils {
             do  {
                 str = reader.readLine()
                 if ( str != null )
-                    contentBuilder.append(str).append( "\n" );
+                    contentBuilder.append(str).append( "\n" )
             } while ( str != null )
             reader.close()
         } catch (e: IOException) {
