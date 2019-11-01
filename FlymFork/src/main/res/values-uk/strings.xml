@@ -422,6 +422,7 @@
     <string name="show_html">Показати html</string>
     <string name="image_white_background">Білий фон зображень</string>
     <string name="settings_add_google_news_dialog">Додати діалогове вікно Google News</string>
+    <string name="settings_add_google_news_dialog_descr">Зніміть позначку, щоб обминути діалогове вікно вибору типу новин</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
