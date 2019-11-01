@@ -80,6 +80,10 @@ public class UiUtils {
         textView.setTextSize(COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
     }
 
+    static public void SetSmallFontSize(TextView textView) {
+        textView.setTextSize(COMPLEX_UNIT_DIP, 14 + PrefUtils.getFontSizeEntryList() );
+    }
+
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
         View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
         Snackbar snackbar = Snackbar.make((coordinatorLayout != null ? coordinatorLayout : activity.findViewById(android.R.id.content)), message, Snackbar.LENGTH_SHORT);
@@ -187,7 +191,7 @@ public class UiUtils {
         result.setPadding(10, 0, 10, 0);
 
         result.setTextColor(color != null ? color.Text : Theme.GetMenuFontColor());
-
+        SetSmallFontSize( result );
         return result;
     }
 

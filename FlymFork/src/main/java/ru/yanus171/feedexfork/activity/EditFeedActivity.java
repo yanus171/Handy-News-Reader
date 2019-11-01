@@ -62,12 +62,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
@@ -465,6 +467,16 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 }
             }
         }
+        mUrlEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    handled = true;
+                    Validate();
+                }
+                return handled;
+            }
+        });
         ShowControls();
         findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
     }
@@ -486,7 +498,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mNameEditText.setVisibility( visibility );
         findViewById( R.id.name_textview ).setVisibility( visibility );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     private boolean IsAdd() {
@@ -609,22 +621,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 finish();
                 return true;
             case R.id.menu_validate: // only in insert mode
-                final String urlOrSearch = mUrlEditText.getText().toString().trim();
-                if (urlOrSearch.isEmpty()) {
-                    UiUtils.showMessage(EditFeedActivity.this, R.string.error_feed_error);
-                }
-
-                if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
-                    AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + DUCKDUCKGO_SEARCH_URL + urlOrSearch, new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
-                } else {
-                    final String name = mNameEditText.getText().toString().trim();
-                    if (!urlOrSearch.toLowerCase().contains("www") &&
-                            (!urlOrSearch.contains(".") || !urlOrSearch.contains("/") || urlOrSearch.contains(" "))) {
-                        AddFeedFromUserSelection(name, getString(R.string.feed_search), new GetFeedSearchResultsLoader(EditFeedActivity.this, urlOrSearch));
-                    } else {
-                        AddFeedFromUserSelection(name, getString(R.string.feed_search), new GetSiteAlternateListLoader(EditFeedActivity.this, urlOrSearch));
-                    }
-                }
+                Validate();
                 return true;
             case R.id.menu_add_filter: {
                 final View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_edit, null);
@@ -663,6 +660,25 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             default:
 
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void Validate() {
+        final String urlOrSearch = mUrlEditText.getText().toString().trim();
+        if (urlOrSearch.isEmpty()) {
+            UiUtils.showMessage(EditFeedActivity.this, R.string.error_feed_error);
+        }
+
+        if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
+            AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + DUCKDUCKGO_SEARCH_URL + urlOrSearch, new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
+        } else {
+            final String name = mNameEditText.getText().toString().trim();
+            if (!urlOrSearch.toLowerCase().contains("www") &&
+                    (!urlOrSearch.contains(".") || !urlOrSearch.contains("/") || urlOrSearch.contains(" "))) {
+                AddFeedFromUserSelection(name, getString(R.string.feed_search), new GetFeedSearchResultsLoader(EditFeedActivity.this, urlOrSearch));
+            } else {
+                AddFeedFromUserSelection(name, getString(R.string.feed_search), new GetSiteAlternateListLoader(EditFeedActivity.this, urlOrSearch));
+            }
         }
     }
 
