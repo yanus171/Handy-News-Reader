@@ -127,6 +127,7 @@
     <string name="accept">ACCETTA</string>
     <string name="reject">RIFIUTA</string>
     <string name="feed_search">Ricerca feed</string>
+    <string name="web_page_search_duckduckgo">Pagina di ricerca web (Duck Duck Go)</string>
     <string name="select_file">Seleziona file (radice SD)</string>
     <string name="question_delete_feed">Vuoi cancellare questo feed?</string>
     <string name="question_delete_group">Vuoi cancellare questo gruppo e tutti i suoi feed?</string>
@@ -363,6 +364,7 @@
     <string name="keyword">parola/e chiave</string>
     <string name="loadTypeWeb">Web (carica tutti i link dalla pagina)</string>
     <string name="loadTypeRSS">RSS (feed o link al sito o parole chiave)</string>
+    <string name="loadTypeWebPageSearch">Pagina di ricerca web Duck Duck Go (trova e carica un articolo)</string>
     <string name="loadType">Tipo di caricamento:</string>
     <string name="global_filter">Filtro globale&#8230;</string>
     <string name="global_filter_descr">Un filtro che si applica ad ogni feed - lascia vuoto il testo del filtro (e il testo regex) per disabilitare</string>
@@ -419,6 +421,8 @@
     <string name="externalMemory">Memoria esterna</string>
     <string name="show_html">Mostra HTML</string>
     <string name="image_white_background">Immagine di sfondo bianco</string>
+    <string name="settings_add_google_news_dialog">Aggiungi dialogo Google News</string>
+    <string name="settings_add_google_news_dialog_descr">Deseleziona per ignorare un tipo di feed selezionato quando aggiungi un feed</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
