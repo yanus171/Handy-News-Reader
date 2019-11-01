@@ -648,7 +648,9 @@ public class FetcherService extends IntentService {
                             title = titleEls.first().text();
                     }
 
-                    mobilizedHtml = ArticleTextExtractor.extractContent(doc, link, contentIndicator, mobilize, true);
+
+
+                    mobilizedHtml = ArticleTextExtractor.extractContent(doc, link, contentIndicator, mobilize, !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ) );
 
                     Status().ChangeProgress("");
 
@@ -791,7 +793,8 @@ public class FetcherService extends IntentService {
                 FileUtils.INSTANCE.deleteMobilized( entryUri );
 
             if ( load && !FetcherService.isCancelRefresh() )
-                mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()), ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError);
+                mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()),
+                              ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError);
             return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);

@@ -163,13 +163,17 @@ public class UiUtils {
     static TextView AddSmallText(LinearLayout layout, int textID) {
         return AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(textID));
     }
-    static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
-        TextView result = new TextView(layout.getContext());
+    public static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
+        TextView result = CreateSmallText( layout.getContext(), gravity, color, text );
         if (lp != null) {
             layout.addView(result, lp);
         } else {
             layout.addView(result);
         }
+        return result;
+    }
+    public static TextView CreateSmallText(Context context, int gravity, ColorTB color, String text) {
+        TextView result = new TextView(context);
         result.setAutoLinkMask(Linkify.ALL);
         result.setLinkTextColor(Color.LTGRAY);
         result.setText(text);

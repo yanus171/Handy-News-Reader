@@ -112,8 +112,6 @@ public class ArticleTextExtractor {
         }
 
         if (mobilize == MobilizeType.Tags) {
-
-
             final String baseUrl = NetworkUtils.getUrlDomain(url);
             for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
                 if (el.hasText()) {

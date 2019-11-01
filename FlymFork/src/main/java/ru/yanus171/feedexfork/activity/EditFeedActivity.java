@@ -61,10 +61,12 @@ import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -97,6 +99,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment;
@@ -117,6 +120,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     static final String FEED_SEARCH_URL = "feedId";//"website";//"url";
     static final String FEED_SEARCH_DESC = "description";//"contentSnippet";
     private static final String STATE_CURRENT_TAB = "STATE_CURRENT_TAB";
+    private static final String STATE_FEED_EDIT_LOAD_TYPE_ID = "STATE_FEED_EDIT_LOAD_TYPE_ID";
+    public static final String DUCKDUCKGO_SEARCH_URL = "http://duckduckgo.com/html/?q=";
     private static final String[] FEED_PROJECTION =
         new String[]{FeedColumns.NAME, FeedColumns.URL, FeedColumns.RETRIEVE_FULLTEXT, FeedColumns.IS_GROUP, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, FeedColumns.IS_AUTO_REFRESH, FeedColumns.GROUP_ID, FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS  };
     private String[] mKeepTimeValues;
@@ -306,6 +311,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
         });
         mLoadTypeRG = findViewById(R.id.rgLoadType);
+        mLoadTypeRG.check( PrefUtils.getInt( STATE_FEED_EDIT_LOAD_TYPE_ID, R.id.rbRss ) );
         View tabWidget = findViewById(android.R.id.tabs);
 
 
@@ -321,15 +327,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mLoadTypeRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                final boolean isRss = ( i == R.id.rbRss );
-                final boolean isWebPageSearch = ( i == R.id.rbWebPageSearch );
-                mRetrieveFulltextCb.setEnabled( isRss && !isWebPageSearch );
-                mGroupSpinner.setEnabled( !isWebPageSearch );
-                mIsAutoImageLoadCb.setEnabled( !isWebPageSearch );
-                mIsAutoRefreshCb.setEnabled( !isWebPageSearch );
-                mKeepTimeCB.setEnabled( !isWebPageSearch );
-                mShowTextInEntryListCb.setEnabled( !isWebPageSearch );
-                mNameEditText.setEnabled( !isWebPageSearch );
+                ShowControls();
 
             }
         });
@@ -364,9 +362,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mGroupSpinner.setAdapter( adapter );
 
         mIsAutoImageLoadCb.setVisibility( PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true) ? View.VISIBLE : View.GONE );
-        mLoadTypeRG.check( R.id.rbRss );
 
-        if (intent.getAction().equals(Intent.ACTION_INSERT) || intent.getAction().equals(Intent.ACTION_SEND)) {
+        if (IsAdd()) {
             setTitle(R.string.new_feed_title);
 
             tabWidget.setVisibility(View.GONE);
@@ -468,7 +465,32 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 }
             }
         }
+        ShowControls();
         findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
+    }
+
+    private void ShowControls() {
+        int i = mLoadTypeRG.getCheckedRadioButtonId();
+        final boolean isRss = ( i == R.id.rbRss );
+        final boolean isWebPageSearch = ( i == R.id.rbWebPageSearch );
+        final int visibility = isWebPageSearch ? View.GONE : View.VISIBLE;
+        mRetrieveFulltextCb.setEnabled( isRss && !isWebPageSearch );
+
+        mRetrieveFulltextCb.setVisibility( visibility );
+        mHasGroupCb.setVisibility( visibility );
+        mGroupSpinner.setVisibility( visibility );
+        mIsAutoImageLoadCb.setVisibility( visibility );
+        mIsAutoRefreshCb.setVisibility( visibility );
+        mKeepTimeCB.setVisibility( visibility );
+        mShowTextInEntryListCb.setVisibility( visibility );
+        mNameEditText.setVisibility( visibility );
+        findViewById( R.id.name_textview ).setVisibility( visibility );
+        findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
+
+    }
+
+    private boolean IsAdd() {
+        return getIntent().getAction().equals(Intent.ACTION_INSERT) || getIntent().getAction().equals(Intent.ACTION_SEND);
     }
 
     private void UpdateSpinnerGroup() {
@@ -485,7 +507,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public void onDestroy() {
-        if (getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+        if ( IsAdd() )
+            PrefUtils.putInt( STATE_FEED_EDIT_LOAD_TYPE_ID, mLoadTypeRG.getCheckedRadioButtonId() );
+        else if (getIntent().getAction().equals(Intent.ACTION_EDIT)) {
             String url = mUrlEditText.getText().toString();
             ContentResolver cr = getContentResolver();
 
@@ -591,14 +615,14 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 }
 
                 if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
-                    AddFeedFromUserSelection("", new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
+                    AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + DUCKDUCKGO_SEARCH_URL + urlOrSearch, new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
                 } else {
                     final String name = mNameEditText.getText().toString().trim();
                     if (!urlOrSearch.toLowerCase().contains("www") &&
                             (!urlOrSearch.contains(".") || !urlOrSearch.contains("/") || urlOrSearch.contains(" "))) {
-                        AddFeedFromUserSelection(name, new GetFeedSearchResultsLoader(EditFeedActivity.this, urlOrSearch));
+                        AddFeedFromUserSelection(name, getString(R.string.feed_search), new GetFeedSearchResultsLoader(EditFeedActivity.this, urlOrSearch));
                     } else {
-                        AddFeedFromUserSelection(name, new GetSiteAlternateListLoader(EditFeedActivity.this, urlOrSearch));
+                        AddFeedFromUserSelection(name, getString(R.string.feed_search), new GetSiteAlternateListLoader(EditFeedActivity.this, urlOrSearch));
                     }
                 }
                 return true;
@@ -642,7 +666,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         }
     }
 
-    private void AddFeedFromUserSelection(final String name, final Loader<ArrayList<HashMap<String, String>>> loader) {
+    private void AddFeedFromUserSelection(final String name, final String dialogCaption, final Loader<ArrayList<HashMap<String, String>>> loader) {
         final ProgressDialog pd = new ProgressDialog(EditFeedActivity.this);
         pd.setMessage(getString(R.string.loading));
         pd.setCancelable(true);
@@ -669,11 +693,13 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                     AddFeed(data.get(0));
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditFeedActivity.this);
-                    builder.setTitle(R.string.feed_search);
-
+                    //builder.setTitle(dialogCaption);
+                    {
+                        builder.setCustomTitle( UiUtils.CreateSmallText(builder.getContext(),Gravity.CENTER, null, dialogCaption) );
+                    }
                     // create the grid item mapping
-                    String[] from = new String[]{FEED_SEARCH_TITLE, FEED_SEARCH_DESC};
-                    int[] to = new int[]{android.R.id.text1, android.R.id.text2};
+                    String[] from = new String[]{FEED_SEARCH_TITLE, FEED_SEARCH_DESC, FEED_SEARCH_URL};
+                    int[] to = new int[]{android.R.id.text1, android.R.id.text2, R.id.textUrl};
 
                     // fill in the grid_item layout
                     SimpleAdapter adapter = new SimpleAdapter(EditFeedActivity.this, data, R.layout.item_search_result, from, to);
@@ -897,7 +923,7 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
     @Override
     public ArrayList<HashMap<String, String>> loadInBackground() {
         try {
-            HttpURLConnection conn = NetworkUtils.setupConnection("http://duckduckgo.com/html/?q=" + mSearchText);
+            HttpURLConnection conn = NetworkUtils.setupConnection(EditFeedActivity.DUCKDUCKGO_SEARCH_URL + mSearchText);
             try {
                 final ArrayList<HashMap<String, String>> results = new ArrayList<>();
                 Document doc = Jsoup.parse(conn.getInputStream(), null, "");
