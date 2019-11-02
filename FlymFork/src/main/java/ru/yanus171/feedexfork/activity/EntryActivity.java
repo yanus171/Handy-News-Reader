@@ -199,7 +199,8 @@ public class EntryActivity extends BaseActivity {
         editor.putLong(PrefUtils.LAST_ENTRY_ID, 0);
         editor.putString(PrefUtils.LAST_ENTRY_URI, "");
         editor.commit();*/
-        if ( mEntryFragment.GetSelectedEntryView().onBackPressed()  )
+
+        if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().onBackPressed()  )
             return;
 
         PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);

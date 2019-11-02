@@ -60,9 +60,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import androidx.annotation.NonNull;
-
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
@@ -79,10 +76,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.security.acl.LastOwnerException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -90,7 +88,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
 
-import kotlin.Pair;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -107,7 +104,6 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
@@ -116,13 +112,12 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_BACKGROUND;
-import static ru.yanus171.feedexfork.view.EntryView.mLastNotifyObserversScheduled;
 
 public class EntryView extends WebView implements Observer {
 
     private static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
-    private static final String TAG = "EntryView";
+    public static final String TAG = "EntryView";
     private static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
 
@@ -549,7 +544,7 @@ public class EntryView extends WebView implements Observer {
             }
 
             private void SheduleScrollTo(final WebView view) {
-                Dog.v(EntryView.TAG, "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+                Dog.v(TAG, "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
                 if (mScrollPartY != 0 /*&& getContentHeight() != getScrollY()*/ ) {
                     if ( GetContentHeight() > 0 )
                         ScrollToY();
@@ -788,7 +783,7 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
     @Override
     public void run() {
         EntryView.mLastNotifyObserversScheduled.remove( mId );
-        Dog.v( TAG,"EntryView.ScheduledNotifyObservers() run");
+        Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
         if (new Date().getTime() - EntryView.mLastNotifyObserversTime.get( mId ) > EntryView.NOTIFY_OBSERVERS_DELAY_MS)
             EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink) );
         else

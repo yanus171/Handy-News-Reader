@@ -148,6 +148,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public boolean mMarkAsUnreadOnFinish = false;
     private boolean mRetrieveFullText = false;
+    private View mRootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -176,14 +177,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_entry, container, true);
-        TapZonePreviewPreference.SetupZoneSizes( rootView );
+        mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
+        TapZonePreviewPreference.SetupZoneSizes( mRootView );
 
-        mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
-                                      (TextView)rootView.findViewById( R.id.errorText ),
+        mStatusText = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
+                                      (TextView)mRootView.findViewById( R.id.errorText ),
                                       FetcherService.Status()/*,
                                       this*/);
-        rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
+        mRootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EntryActivity activity = (EntryActivity) getActivity();
@@ -191,13 +192,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
 
-        mProgressBar = rootView.findViewById(R.id.progressBar);
+        mProgressBar = mRootView.findViewById(R.id.progressBar);
         mProgressBar.setProgress( 0 );
 
-        mLabelClock = rootView.findViewById(R.id.textClock);
+        mLabelClock = mRootView.findViewById(R.id.textClock);
         mLabelClock.setText("");
 
-        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
+        mRootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EntryActivity activity = (EntryActivity) getActivity();
@@ -205,7 +206,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
 
-        mEntryPager = rootView.findViewById(R.id.pager);
+        mEntryPager = mRootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
         mEntryPager.setAdapter(mEntryPagerAdapter);
 
@@ -246,14 +247,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             });
 
 
-        rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
+        mRootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
             }
         });
 
-        rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
+        mRootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, false );
@@ -268,10 +269,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         };
 
-        rootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
+        mRootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
 
-        rootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+        mRootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PageUp();
@@ -281,16 +282,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //disableSwipe();
 
 
-        rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
-        rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
+        mRootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
+        mRootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
         mLockLandOrientation = PrefUtils.getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
 
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
-        mStarFrame = rootView.findViewById(R.id.frameStar);
-        final ImageView frameStarImage  = rootView.findViewById(R.id.frameStarImage);
+        mStarFrame = mRootView.findViewById(R.id.frameStar);
+        final ImageView frameStarImage  = mRootView.findViewById(R.id.frameStarImage);
         final boolean prefVibrate = PrefUtils.getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
-        rootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
+        mRootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
             private int initialy = 0;
             private boolean mWasVibrate = false;
             private boolean mWasSwipe = false;
@@ -340,7 +341,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         SetOrientation();
 
-        return rootView;
+        return mRootView;
     }
 
     private void SetStarFrameWidth(int w) {
@@ -904,7 +905,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
                 mProgressBar.setMax(contentHeight - webViewHeight);
                 mProgressBar.setProgress(entryView.getScrollY());
-                getActivity().findViewById( R.id.layoutColontitul).setBackgroundColor( Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  ) ) );
+                mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  ) ) );
                 String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
                 if (Build.VERSION.SDK_INT >= 21 )
                     mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));

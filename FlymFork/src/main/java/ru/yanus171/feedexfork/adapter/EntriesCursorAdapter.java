@@ -358,9 +358,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
             if (mainImgUrl != null) {
                 Glide.with(context).load(mainImgUrl).centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
-                //Glide.with(context).load(mainImgUrl).apply( new RequestOptions().centerCrop().placeholder(letterDrawable).error(letterDrawable) ).into(holder.mainImgView);
             } else {
-                Glide.clear(holder.mainImgView);
+                Glide.with(context).clear(holder.mainImgView);
                 holder.mainImgView.setImageDrawable(letterDrawable);
             }
         } else
