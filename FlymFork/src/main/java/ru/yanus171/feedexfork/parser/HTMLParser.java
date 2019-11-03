@@ -74,6 +74,7 @@ import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 
+import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 
@@ -101,10 +102,10 @@ public class HTMLParser {
 		}
 
 
-		HttpURLConnection connection = null;
+		Connection connection = null;
 		Document doc = null;
 		try {
-			connection = NetworkUtils.setupConnection(feedUrl);
+			connection = new Connection(feedUrl);
 			doc = Jsoup.parse(connection.getInputStream(), null, "");
 		} catch (Exception e) {
 			FetcherService.Status().SetError( e.getLocalizedMessage(), feedID, "", e );

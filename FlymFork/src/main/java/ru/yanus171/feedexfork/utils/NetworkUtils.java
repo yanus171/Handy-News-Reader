@@ -33,9 +33,6 @@ import android.text.Html;
 
 import androidx.annotation.RequiresApi;
 
-import okhttp3.OkHttpClient;
-import okhttp3.OkUrlFactory;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +45,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -105,15 +106,15 @@ public class NetworkUtils {
         if (!new File(tempImgPath).exists() && !new File(finalImgPath).exists()) {
             boolean abort = false;
             boolean success = false;
-            HttpURLConnection imgURLConnection = null;
+            Connection imgURLConnection = null;
             try {
                 //IMAGE_FOLDER_FILE.mkdir(); // create images dir
 
                 // Compute the real URL (without "&eacute;", ...)
                 String realUrl = Html.fromHtml(imgUrl).toString();
-                imgURLConnection = setupConnection(realUrl);
+                imgURLConnection = new Connection( realUrl);
 
-                int size = imgURLConnection.getContentLength();
+                long size = imgURLConnection.getContentLength();
                 int maxImageDownloadSize = PrefUtils.getImageMaxDownloadSizeInKb() * 1024;
                 if ( !isSizeLimit || size <= maxImageDownloadSize ) {
 
@@ -268,10 +269,10 @@ public class NetworkUtils {
         } finally {
             cursor.close();
         }
-        HttpURLConnection iconURLConnection = null;
+        Connection iconURLConnection = null;
 
         try {
-            iconURLConnection = setupConnection(new URL(url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON));
+            iconURLConnection = new Connection( url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON);
 
             byte[] iconBytes = getBytes(iconURLConnection.getInputStream());
             if (iconBytes != null && iconBytes.length > 0) {
@@ -301,15 +302,16 @@ public class NetworkUtils {
         }
     }
 
-    public static HttpURLConnection setupConnection(String url) throws IOException {
-        return setupConnection(new URL(url));
+    public static HttpURLConnection setupConnection1(String url) throws IOException {
+        return setupConnection1(new URL(url));
     }
 
-    public static HttpURLConnection setupConnection(URL url) throws IOException {
-        HttpURLConnection connection;
+
+
+    public static HttpURLConnection setupConnection1(URL url) throws IOException {
         FetcherService.Status().ChangeProgress(R.string.setupConnection);
 
-        connection = new OkUrlFactory(new OkHttpClient()).open(url);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();//; new OkUrlFactory(new OkHttpClient()).open(url);
 
 
         connection.setDoInput(true);
@@ -421,3 +423,5 @@ public class NetworkUtils {
 
 
 }
+
+;

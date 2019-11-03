@@ -111,6 +111,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
+import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -617,7 +618,7 @@ public class FetcherService extends IntentService {
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
                 int titlePos = entryCursor.getColumnIndex(EntryColumns.TITLE);
                 final int feedId = entryCursor.getColumnIndex(EntryColumns.FEED_ID);
-                HttpURLConnection connection = null;
+                Connection connection = null;
 
                 try {
 
@@ -631,7 +632,7 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    connection = NetworkUtils.setupConnection(link);
+                    connection = new Connection( link);
 
                     String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);
@@ -1133,11 +1134,11 @@ public class FetcherService extends IntentService {
         int urlPosition = cursor.getColumnIndex(FeedColumns.URL);
         int iconPosition = cursor.getColumnIndex(FeedColumns.ICON);
 
-        HttpURLConnection connection = null;
+        Connection connection = null;
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         try {
 
-            connection = NetworkUtils.setupConnection(feedUrl);
+            connection = new Connection( feedUrl);
             String contentType = connection.getContentType();
             int fetchMode = cursor.getInt(fetchModePosition);
 
@@ -1172,7 +1173,7 @@ public class FetcherService extends IntentService {
                     String xmlDescription = new String(chars, 0, length);
 
                     connection.disconnect();
-                    connection = NetworkUtils.setupConnection(connection.getURL());
+                    connection = new Connection(feedUrl);
 
                     int start = xmlDescription.indexOf(ENCODING);
 
@@ -1301,7 +1302,7 @@ public class FetcherService extends IntentService {
                     if (handler.getFeedLink() != null)
                         NetworkUtils.retrieveFavicon(this, new URL(handler.getFeedLink()), feedId);
                     else
-                        NetworkUtils.retrieveFavicon(this, connection.getURL(), feedId);
+                        NetworkUtils.retrieveFavicon(this, new URL( feedUrl ), feedId);
                 }
             } catch (Throwable ignored) {
             }
