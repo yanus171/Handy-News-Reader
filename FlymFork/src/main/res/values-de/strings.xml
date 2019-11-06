@@ -321,6 +321,7 @@
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Feeds aktualisieren</string>
     <string name="deleteImages">Bilder löschen:</string>
+    <string name="deleteFullTexts">Texte vollständig löschen:</string>
     <string name="applyOperations">Operationen anwenden</string>
     <string name="extractContent">Inhalt extrahieren</string>
     <string name="improveHtmlContent">HTML-Inhalt verbessern</string>
@@ -419,6 +420,8 @@
     <string name="data_folder_descr">Speicher, wohin Artikel, Texte und Grafiken heruntergeladen werden sollen</string>
     <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
+    <string name="show_html">HTML anzeigen</string>
+    <string name="image_white_background">Abbildung mit weißem Hintergrund</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

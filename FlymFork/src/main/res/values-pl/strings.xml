@@ -132,6 +132,7 @@ GENERAL]]></string>
     <string name="accept">AKCEPTUJ</string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
+    <string name="web_page_search_duckduckgo">Wyszukiwarka (Duck Duck Go)</string>
     <string name="select_file">Wybierz plik z karty SD</string>
     <string name="question_delete_feed">Czy na pewno chcesz usunąć ten kanał?</string>
     <string name="question_delete_group">Czy na pewno chcesz usunąć tą grupę wraz z jej kanałami?</string>
@@ -324,6 +325,7 @@ GENERAL]]></string>
     <string name="mobilizeAll">Mobilizacja</string>
     <string name="RefreshFeeds">Aktualizacja źródeł</string>
     <string name="deleteImages">Usuń obrazki</string>
+    <string name="deleteFullTexts">Usuwanie pełnego tekstu:</string>
     <string name="applyOperations">Zastosuj operacje</string>
     <string name="extractContent">Pozyskiwanie treści</string>
     <string name="improveHtmlContent">Udoskonalanie treści HTML</string>
@@ -368,6 +370,7 @@ GENERAL]]></string>
     <string name="keyword">słowo/a kluczowe</string>
     <string name="loadTypeWeb">Web (wczytuj wszystkie linki)</string>
     <string name="loadTypeRSS">RSS (adres kanału lub strony internetowej) lub słowo kluczowe</string>
+    <string name="loadTypeWebPageSearch">Wyszukiwarka DuckDuckGo (znajdź i wczytaj artykuł)</string>
     <string name="loadType">Wczytuj:</string>
     <string name="global_filter">Filtr globalny&#8230;</string>
     <string name="global_filter_descr">Filtr stosowany do wszystkich kanałów - nie wypełniaj pól, jeśli ma być nieaktywny</string>
@@ -422,6 +425,10 @@ GENERAL]]></string>
     <string name="data_folder_descr">Gdzie przechowywać tekst i obrazki pobranych artykułów</string>
     <string name="internalMemory">Pamięć wewnętrzna (Cache)</string>
     <string name="externalMemory">Pamięć zewnętrzna</string>
+    <string name="show_html">Pokaż html</string>
+    <string name="image_white_background">Białe tło obrazków</string>
+    <string name="settings_add_google_news_dialog">Okno dialogowe Dodaj Wiadomości Google</string>
+    <string name="settings_add_google_news_dialog_descr">Odznacz by pominąć wybór typu kanału podczas jego dodawania</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
