@@ -270,14 +270,14 @@
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_footer_show_clock">ساعة تذييل الصفحة</string>
-    <string name="article_text_footer_show_clock_description">عرض الوقت الحالي في الركن الأيمن السفلي في وضع ملء الشاشة</string>
+    <string name="article_text_footer_show_clock_description">عَرْضُ الْوَقْتِ الْحَالِيِّ فِي الرُّكْنِ الْأَيْسَرِ الْعَلَوِيِّ</string>
     <string name="settings_clock_size">حجم نص ساعة التذييل</string>
     <string name="article_text_footer_clock_color">لونُ الساعه والخلفية</string>
     <string name="article_text_footer_clock_color_descr">لون ساعة التذييل</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">شريط التقَدُم بالقراءة</string>
-    <string name="article_text_footer_show_progress_descr">يعرض التقَدُم المُحرَز في قراءة مقال في الأسفل</string>
+    <string name="article_text_footer_show_progress_descr">يَعْرِضُ التَقَدُمَ المُحْرَز بقِرآءَةِ الْمَقَالِ فِي الْأعْلَى</string>
     <string name="article_text_footer_progress_height">إرتفاع شريط التقَدُم</string>
     <string name="article_text_footer_progress_color">لون التقَدُم</string>
     <string name="article_text_footer_progress_color_descr">لون شريط التقَدُم بالقراءة</string>
@@ -327,6 +327,7 @@
     <string name="mobilizeAll">تعبئة</string>
     <string name="RefreshFeeds">جارِ تحديث الخلاصات</string>
     <string name="deleteImages">حذف الصور:</string>
+    <string name="deleteFullTexts">جَارٍ حَذَفَ النُّصُوصُ الْكَامِلَةُ:</string>
     <string name="applyOperations">تطبيق العمليات</string>
     <string name="extractContent">جارِ إستخراج المحتوى</string>
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
@@ -425,6 +426,8 @@
     <string name="data_folder_descr">ذاكِرَة تَخزين نصوص وصوَر المَقالات المُحَمَّلَة</string>
     <string name="internalMemory">الذاكِرَةُ الداخليّة(Cache)</string>
     <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
+    <string name="show_html">عَرْضُ الـ HTML</string>
+    <string name="image_white_background">طَبَقَةٌ بَيْضَاءَ تَحْتَ الصُّورِ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>

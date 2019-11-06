@@ -319,6 +319,7 @@
     <string name="mobilizeAll">Mugikorrera egokitzen</string>
     <string name="RefreshFeeds">Jarioak eguneratzen</string>
     <string name="deleteImages">Ezabatu irudiak</string>
+    <string name="deleteFullTexts">Testu osoen ezabaketa:</string>
     <string name="applyOperations">Aplikatu eragiketak</string>
     <string name="extractContent">Edukia erauzten</string>
     <string name="improveHtmlContent">HTML edukia hobetzen</string>
@@ -411,6 +412,14 @@
     <string name="custom_data_folder_descr">(hutsik lehenetsia erabiltzeko) deskargatutako irudiak eta babes-kopia ordetzeko feedex karpetaren bidea</string>
     <string name="entry_text_title_link">Tituluaren esteka</string>
     <string name="entry_text_title_link_description">tituluan sakatuz web orria nabigatzailean irekiko da</string>
+    <string name="delete_read_articles">Ezabatu irakurritako artikuluak</string>
+    <string name="delete_read_articles_descr">mezuak mantentzeko denbora dena dela</string>
+    <string name="data_folder">Datuen karpeta</string>
+    <string name="data_folder_descr">Non gorde deskargatutako artikuluen testu eta irudiak</string>
+    <string name="internalMemory">Barne memoria (Cachea)</string>
+    <string name="externalMemory">Kanpo memoria</string>
+    <string name="show_html">Erakutsi html-a</string>
+    <string name="image_white_background">Irudiaren atzealde zuria</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>

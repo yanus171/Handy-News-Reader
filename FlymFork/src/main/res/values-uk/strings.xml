@@ -127,6 +127,7 @@
     <string name="accept">ПРИЙНЯТИ</string>
     <string name="reject">ВІДХИЛИТИ</string>
     <string name="feed_search">Пошук стрічок</string>
+    <string name="web_page_search_duckduckgo">Веб-пошук сторінок (Duck Duck Go)</string>
     <string name="select_file">Вибрати файл (корінь SD-карти)</string>
     <string name="question_delete_feed">Ви дійсно бажаєте вилучити цю стрічку?</string>
     <string name="question_delete_group">Ви дійсно бажаєте вилучити цю групу та всі ії стрічки?</string>
@@ -318,6 +319,7 @@
     <string name="mobilizeAll">Завантаження повних текстів</string>
     <string name="RefreshFeeds">Оновлення статей</string>
     <string name="deleteImages">Вилучити зображення</string>
+    <string name="deleteFullTexts">Вилучення повного текту:</string>
     <string name="applyOperations">Застосувати операції</string>
     <string name="extractContent">Форматування тексту</string>
     <string name="improveHtmlContent">Оптимізація HTML тексту</string>
@@ -362,6 +364,7 @@
     <string name="keyword">Ключеве слово(а)</string>
     <string name="loadTypeWeb">Web (завантажувати всі посилання із сторінки)</string>
     <string name="loadTypeRSS">RSS (адреса стрічки або сайту або ключеве слово)</string>
+    <string name="loadTypeWebPageSearch">Веб-пошук сторінок DuckDuckGo (знайти і завантажити одну статтю)</string>
     <string name="loadType">Тип завантаження:</string>
     <string name="global_filter">Глобальний фільтр &#8230;</string>
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
@@ -416,6 +419,10 @@
     <string name="data_folder_descr">Місце для збереження завантажених текстів та зображень статей</string>
     <string name="internalMemory">Внутрішня пам\'ять (Кеш)</string>
     <string name="externalMemory">Зовнішня пам’ять</string>
+    <string name="show_html">Показати html</string>
+    <string name="image_white_background">Білий фон зображень</string>
+    <string name="settings_add_google_news_dialog">Додати діалогове вікно Google News</string>
+    <string name="settings_add_google_news_dialog_descr">Зніміть позначку, щоб обминути діалогове вікно вибору типу новин</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
