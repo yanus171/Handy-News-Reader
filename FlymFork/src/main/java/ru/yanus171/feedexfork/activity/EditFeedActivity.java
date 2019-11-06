@@ -495,6 +495,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mIsAutoImageLoadCb.setVisibility( visibility );
         mIsAutoRefreshCb.setVisibility( visibility );
         mKeepTimeCB.setVisibility( visibility );
+        mKeepTimeSpinner.setVisibility( visibility );
         mShowTextInEntryListCb.setVisibility( visibility );
         mNameEditText.setVisibility( visibility );
         findViewById( R.id.name_textview ).setVisibility( visibility );

@@ -616,8 +616,7 @@ public class FetcherService extends IntentService {
             final String link = entryCursor.getString(linkPos);
             if ( !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
-                int titlePos = entryCursor.getColumnIndex(EntryColumns.TITLE);
-                final int feedId = entryCursor.getColumnIndex(EntryColumns.FEED_ID);
+                final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
                 Connection connection = null;
 
                 try {
@@ -641,15 +640,13 @@ public class FetcherService extends IntentService {
                         return false;
                     Document doc = Jsoup.parse(connection.getInputStream(), null, "");
 
-                    String title = entryCursor.getString(titlePos);
+                    String title = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.TITLE));
                     //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
                     if ( isCorrectTitle ) {
                         Elements titleEls = doc.getElementsByTag("title");
                         if (!titleEls.isEmpty())
                             title = titleEls.first().text();
                     }
-
-
 
                     mobilizedHtml = ArticleTextExtractor.extractContent(doc, link, contentIndicator, mobilize, !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ) );
 
