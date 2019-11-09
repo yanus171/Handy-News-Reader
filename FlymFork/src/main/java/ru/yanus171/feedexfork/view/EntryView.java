@@ -78,6 +78,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -96,14 +99,17 @@ import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElementAndUpdateTagButtons;
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
@@ -603,10 +609,17 @@ public class EntryView extends WebView implements Observer {
             ((Entry) data).mLink.equals(mEntryLink) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
             mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
-
             LoadData();
-        //setScrollY( y );
         }
+    }
+
+    public void UpdateTags() {
+        final int status = FetcherService.Status().Start( getContext().getString( R.string.update ) );
+        Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
+        FindBestElementAndUpdateTagButtons( doc, mEntryLink, "", ArticleTextExtractor.MobilizeType.Tags, true );
+        mData = generateHtmlContent( "-1", "", mEntryLink,  doc.toString(), "", "", 0, true );
+        LoadData();
+        FetcherService.Status().End( status );
     }
 
     private void LoadData() {

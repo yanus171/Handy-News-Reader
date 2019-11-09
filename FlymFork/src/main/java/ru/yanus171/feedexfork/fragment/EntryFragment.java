@@ -407,6 +407,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onDestroy() {
         FetcherService.Status().deleteObserver(mStatusText);
+        ArticleTextExtractor.mLastLoadedAllDoc = "";
         super.onDestroy();
     }
     @Override
@@ -632,8 +633,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_reload_full_text_without_mobilizer: {
 
                     int status = FetcherService.Status().Start("Reload fulltext"); try {
-                        DeleteMobilized();
-                        LoadFullText( ArticleTextExtractor.MobilizeType.No );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -641,8 +641,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_reload_full_text_with_tags: {
 
                     int status = FetcherService.Status().Start("Reload fulltext"); try {
-                        DeleteMobilized();
-                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true );
+
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -683,8 +683,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private void ReloadFullText() {
         int status = FetcherService.Status().Start("Reload fulltext");
         try {
-            DeleteMobilized();
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true );
         } finally { FetcherService.Status().End( status ); }
     }
 
@@ -712,9 +711,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         Toast.makeText( getContext(), mFavorite ? R.string.entry_marked_favourite : R.string.entry_marked_unfavourite, Toast.LENGTH_LONG ).show();
     }
 
-    private void DeleteMobilized() {
-        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
-    }
+//    private void DeleteMobilized() {
+//        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
+//    }
 
     private void CloseEntry() {
         PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
@@ -952,11 +951,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
             });
         } else /*--if (!isRefreshing())*/ {
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, false );
         }
     }
 
-    private void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize ) {
+    private void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize, final boolean isForceReload ) {
         final BaseActivity activity = (BaseActivity) getActivity();
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -970,7 +969,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText)); try {
-                        FetcherService.mobilizeEntry(getContext().getContentResolver(), getCurrentEntryID(), mobilize, FetcherService.AutoDownloadEntryImages.Yes, true, true);
+                        FetcherService.mobilizeEntry( getContext().getContentResolver(),
+                                                      getCurrentEntryID(),
+                                                      mobilize,
+                                                      FetcherService.AutoDownloadEntryImages.Yes,
+                                                      true,
+                                                      true,
+                                                      isForceReload);
                     } finally { FetcherService.Status().End( status ); }
                 }
             }.start();
@@ -1059,11 +1064,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void removeClass(String className) {
         final String oldPref = PrefUtils.getString( PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, "" );
         if ( !PrefUtils.GetRemoveClassList().contains( className ) ) {
-            PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
-            DeleteMobilized();
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-            Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+            PrefUtils.putStringCommit(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
         }
+        ActionAfterRulesEditing();
+    }
+
+    private void ActionAfterRulesEditing() {
+        if (PrefUtils.getBoolean("settings_reload_fulltext_after_tag_editing", true) ) {
+            LoadFullText(ArticleTextExtractor.MobilizeType.Yes, true);
+            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
+        } else
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    GetSelectedEntryView().UpdateTags();
+                }
+            });
     }
 
     public void returnClass(String classNameList) {
@@ -1074,12 +1090,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 needRefresh = true;
                 list.remove( className );
             }
-        if ( !needRefresh )
-            return;
-        PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
-        DeleteMobilized();
-        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-        Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+        if ( needRefresh )
+            PrefUtils.putStringCommit(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
+        ActionAfterRulesEditing();
     }
 
     @Override
@@ -1121,10 +1134,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( index != -1 )
             ruleList.remove(index );
         ruleList.add( 0, newRule );
-        PrefUtils.putString(PrefUtils.CONTENT_EXTRACT_RULES, TextUtils.join( "\n", ruleList ) );
-        DeleteMobilized();
-        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-        Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+        PrefUtils.putStringCommit(PrefUtils.CONTENT_EXTRACT_RULES, TextUtils.join( "\n", ruleList ) );
+        ActionAfterRulesEditing();
     }
 
     @Override
@@ -1254,7 +1265,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
             Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
 
-
             EntryView view = GetEntryView( pagerPos );
             if (view != null ) {
                 if ( invalidateCache  )
@@ -1301,39 +1311,29 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }
 
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
-                    view.setHtml(GetEntry( pagerPos ).mID,
-                                feedID,
-                                title,
-                                link,
-                                contentText,
-                                enclosure,
-                                author,
-                                timestamp,
-                                mIsFullTextShown,
-                                (EntryActivity) getActivity());
+                    view.setHtml( GetEntry( pagerPos ).mID,
+                                  feedID,
+                                  title,
+                                  link,
+                                  contentText,
+                                  enclosure,
+                                  author,
+                                  timestamp,
+                                  mIsFullTextShown,
+                                  (EntryActivity) getActivity());
 
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
 
-                        //if (PrefUtils.getLong(PrefUtils.LAST_ENTRY_ID, 0) == mEntriesIds[pagerPos]) {
-                        //int dy = mScrollPosPos;
-                        //if (dy > view.getScrollY())
                         if ( view.mScrollPartY == 0 )
                             view.mScrollPartY = scrollPart;
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
-                        //Dog.v( "displayEntry view.mScrollY = " + view.mScrollY );
-                        //}
-
-
                     }
-
                     UpdateFooter();
-
                 }
             }
         }
-
-    };
+    }
 
     public class EntryPagerAdapter extends BaseEntryPagerAdapter {
 

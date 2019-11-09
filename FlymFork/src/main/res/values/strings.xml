@@ -437,6 +437,8 @@
     <string name="image_white_background">Image white background</string>
     <string name="settings_add_google_news_dialog">Add Google News dialog</string>
     <string name="settings_add_google_news_dialog_descr">Uncheck to bypass a select feed type dialog when adding a feed</string>
+    <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
+    <string name="reload_fulltext_after_tag_editing_descr">if unchecked the full text would not be reloaded after each tag editing (show|hide|root), so it would be easy to make multiple editings. In this case you should manually start Reload full text after editing finished</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

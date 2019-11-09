@@ -228,7 +228,7 @@ public class HtmlUtils {
     @NonNull
     static String getButtonHtml(String methodName, String caption, String divClass) {
         final String BUTTON_START = "<span class=\"" + divClass +"\"><i onclick=\"";
-        final String BUTTON_END = "\" align=\"left\" >" + caption + "</i></span>";
+        final String BUTTON_END = "\" align=\"left\" class=\"" + divClass + "\" >" + caption + "</i></span>";
         final String result = BUTTON_START + "ImageDownloadJavaScriptObject." + methodName + ";" + BUTTON_END;
         return result;
     }
