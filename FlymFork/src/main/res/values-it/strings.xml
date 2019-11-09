@@ -423,6 +423,8 @@
     <string name="image_white_background">Immagine di sfondo bianco</string>
     <string name="settings_add_google_news_dialog">Aggiungi dialogo Google News</string>
     <string name="settings_add_google_news_dialog_descr">Deseleziona per ignorare un tipo di feed selezionato quando aggiungi un feed</string>
+    <string name="reload_fulltext_after_tag_editing">Ricarica il testo dopo la modifica dei tag</string>
+    <string name="reload_fulltext_after_tag_editing_descr">se deselezionato il testo completo non sarà ricaricato dopo ogni modifica di un tag (mostra|nascondi|root), quindi sarebbe facile fare più modifiche. In questo caso dovresti avviare manualmente il ricaricamento completo dopo la modifica completata</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
