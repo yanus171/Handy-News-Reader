@@ -119,6 +119,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String EXTRA_WEB_SEARCH = "EXTRA_WEB_SEARCH";
     static final String FEED_SEARCH_TITLE = "title";
     static final String FEED_SEARCH_URL = "feedId";//"website";//"url";
     static final String FEED_SEARCH_DESC = "description";//"contentSnippet";
@@ -127,7 +128,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     public static final String DUCKDUCKGO_SEARCH_URL = "http://duckduckgo.com/html/?q=";
     private static final String[] FEED_PROJECTION =
         new String[]{FeedColumns.NAME, FeedColumns.URL, FeedColumns.RETRIEVE_FULLTEXT, FeedColumns.IS_GROUP, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, FeedColumns.IS_AUTO_REFRESH, FeedColumns.GROUP_ID, FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS  };
+    public static final String STATE_WEB_SEARCH_TEXT = "WEB_SEARCH_TEXT";
     private String[] mKeepTimeValues;
+
 
     private final ActionMode.Callback mFilterActionModeCallback = new ActionMode.Callback() {
 
@@ -381,7 +384,6 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             mKeepTimeCB.setChecked( false );
             UpdateSpinnerKeepTime();
 
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         } else if (intent.getAction().equals(Intent.ACTION_VIEW)) {
             setTitle(R.string.new_feed_title);
 
@@ -482,6 +484,21 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if ( getIntent().hasExtra( EXTRA_WEB_SEARCH ) )
+            mLoadTypeRG.check(R.id.rbWebPageSearch);
+
+        if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch )
+            mUrlEditText.setText( PrefUtils.getString( STATE_WEB_SEARCH_TEXT, "" ) );
+
+        if ( IsAdd() ) {
+            mUrlEditText.requestFocus();
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
     private void ShowControls() {
         int i = mLoadTypeRG.getCheckedRadioButtonId();
         final boolean isRss = ( i == R.id.rbRss );
@@ -500,6 +517,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mNameEditText.setVisibility( visibility );
         findViewById( R.id.name_textview ).setVisibility( visibility );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
+        if ( !IsAdd() && isWebPageSearch )
+            mLoadTypeRG.check( R.id.rbRss );
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
@@ -672,6 +691,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         }
 
         if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
+            PrefUtils.putString( STATE_WEB_SEARCH_TEXT, mUrlEditText.getText().toString() );
             AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + DUCKDUCKGO_SEARCH_URL + urlOrSearch, new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
         } else {
             final String name = mNameEditText.getText().toString().trim();

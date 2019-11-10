@@ -22,16 +22,27 @@
         android:title="@string/menu_toggle_theme"/>
 
     <item
+        android:id="@+id/menu_add_feed"
+        android:icon="@drawable/content_new"
+        android:title="@string/menu_add_feed"/>
+
+    <item
+        android:id="@+id/menu_setting"
+        android:icon="@drawable/action_settings"
+        android:title="@string/settings" />
+    <item
+        android:id="@+id/menu_cancel_refresh"
+        android:icon="@drawable/ic_action_cancel_gray"
+        android:orderInCategory="0"
+        android:title="@string/menu_cancel_refresh"
+        android:visible="true" />
+    <item
         android:id="@+id/menu_full_screen"
         android:icon="@drawable/full_screen"
         android:title="@string/menu_full_screen"
         app:showAsAction="ifRoom"
         android:orderInCategory="4"
         tools:ignore="AlwaysShowAction"/>
-    <item
-        android:id="@+id/menu_copy_clipboard"
-        android:icon="@drawable/content_copy"
-        android:title="@string/menu_copy_clipboard"/>
     <item
         android:id="@+id/menu_mark_as_unread"
         app:showAsAction="ifRoom"
@@ -65,19 +76,13 @@
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/share_all_text"/>
     <item
+        android:id="@+id/menu_copy_clipboard"
+        android:icon="@drawable/content_copy"
+        android:title="@string/menu_copy_clipboard" />
+    <item
         android:id="@+id/menu_open_link"
         android:icon="@android:drawable/ic_menu_send"
         android:title="@string/open_link"/>
-    <item
-        android:id="@+id/menu_cancel_refresh"
-        android:icon="@drawable/ic_action_cancel_gray"
-        android:orderInCategory="0"
-        android:visible="true"
-        android:title="@string/menu_cancel_refresh"/>
-    <item
-        android:id="@+id/menu_setting"
-        android:icon="@drawable/action_settings"
-        android:title="@string/settings"/>
     <item
         android:id="@+id/menu_lock_land_orientation"
         android:title="@string/lock_orientation"

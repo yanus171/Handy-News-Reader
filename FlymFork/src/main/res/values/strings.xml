@@ -97,7 +97,7 @@
 
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
-    <string name="menu_add_feed">Add a feed</string>
+    <string name="menu_add_feed">Article web search</string>
     <string name="no_feeds">No feeds</string>
     <string name="no_filters">No rules</string>
     <string name="context_menu_delete">Delete</string>
