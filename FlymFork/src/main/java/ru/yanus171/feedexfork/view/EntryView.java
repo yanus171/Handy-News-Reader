@@ -117,7 +117,6 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_BACKGROUND;
 
 public class EntryView extends WebView implements Observer {
 
@@ -136,12 +135,12 @@ public class EntryView extends WebView implements Observer {
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
-            + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; line-height: 120%} "
+            + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
             + "h1, h2 {font-weight: normal; line-height: 120%} "
-            + "h1 {font-size: 140%; text-align:center; margin-top: 0.5cm; margin-bottom: 0.1em} "
-            + "h2 {font-size: 140%} "
-            + "a.no_draw_link {color: " + Theme.GetTextColor()  + "; background: " + Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) + "; text-decoration: none" + "}"
+            + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
+            + "h2 {font-size: 120%} "
+            + "a.no_draw_link {color: " + Theme.GetTextColor()  + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
             + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) +
             ( PrefUtils.getBoolean( "underline_links", true ) ? "" : "; text-decoration: none" ) + "}"
             + "h1 {color: inherit; text-decoration: none}"
@@ -161,6 +160,7 @@ public class EntryView extends WebView implements Observer {
             + ".tag_button_full_text i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
             + ".tag_button_hidden i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
             + "</style><meta name='viewport' content='width=device-width'/></head>"; }
+
 
     private static String getFontBold() {
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) )
@@ -290,7 +290,7 @@ public class EntryView extends WebView implements Observer {
             getSettings().setBlockNetworkImage(true);
         }
 
-        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  )));
+        setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
         // Text zoom level from preferences
         int fontSize = PrefUtils.getFontSize();
         if (fontSize != 0) {
@@ -366,7 +366,7 @@ public class EntryView extends WebView implements Observer {
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void init() {
 
-        setBackgroundColor(Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  )));
+        setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
 
         Timer timer = new Timer( "EntryView.init" );
 

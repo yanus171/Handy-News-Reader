@@ -109,6 +109,11 @@ public class Theme {
 		//	return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
 	}
 
+	public static String GetBackgroundColor() {
+		return Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
+	}
+
+
 	public static boolean IsLight() {
 		return GetTheme().equals( LIGHT );
 	}

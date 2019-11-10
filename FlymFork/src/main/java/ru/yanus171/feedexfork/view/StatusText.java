@@ -26,6 +26,7 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
@@ -51,7 +52,7 @@ public class StatusText implements Observer {
         mErrorView = errorView;
         mView.setVisibility(View.GONE);
         mView.setGravity(Gravity.LEFT | Gravity.TOP);
-        mView.setBackgroundColor(Color.TRANSPARENT );
+        mView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,20 +66,19 @@ public class StatusText implements Observer {
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);
-        mErrorView.setBackgroundColor(Color.TRANSPARENT );
+        mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FetcherObservable status = (FetcherObservable)observable;
-                status.ClearError();
-                v.setVisibility(View.GONE);
-
+            FetcherObservable status = (FetcherObservable)observable;
+            status.ClearError();
+            v.setVisibility(View.GONE);
             }
         });
         mErrorView.setLines( 2 );
     }
 
-    public void SetFeedID( String feedID ) {
+    private void SetFeedID(String feedID) {
         mFeedID = feedID;
         FetcherService.Status().UpdateText();
     }

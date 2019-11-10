@@ -420,8 +420,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( GeneralPrefsFragment.mSetupChanged ) {
             GeneralPrefsFragment.mSetupChanged = false;
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
-
-
         }
 
         final boolean tapZonesVisible = PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true );
@@ -433,7 +431,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
-
     }
 
     @Override
@@ -911,7 +908,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
                 mProgressBar.setMax(contentHeight - webViewHeight);
                 mProgressBar.setProgress(entryView.getScrollY());
-                mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( Color.parseColor(Theme.GetColor( TEXT_COLOR_BACKGROUND, android.R.color.black  ) ) );
+                mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( Color.parseColor(Theme.GetBackgroundColor() ) );
                 String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
                 if (Build.VERSION.SDK_INT >= 21 )
                     mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));

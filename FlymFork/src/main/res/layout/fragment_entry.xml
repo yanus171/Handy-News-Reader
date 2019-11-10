@@ -48,15 +48,6 @@
 
 
         <TextView
-            android:id="@+id/statusText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|top"
-            android:gravity="start|top"
-            android:text="status"
-            android:visibility="invisible" />
-
-        <TextView
             android:id="@+id/errorText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +129,14 @@
                 tools:ignore="RtlHardcoded"
                 android:layout_alignParentEnd="true" />
 
-
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:gravity="start|top"
+                android:text="status"
+                android:visibility="invisible" />
 
             <FrameLayout
                 android:id="@+id/videoLayout"
