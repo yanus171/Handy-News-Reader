@@ -97,6 +97,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -692,7 +693,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
         if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
             PrefUtils.putString( STATE_WEB_SEARCH_TEXT, mUrlEditText.getText().toString() );
-            AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + DUCKDUCKGO_SEARCH_URL + urlOrSearch, new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch));
+            GetWebSearchDuckDuckGoResultsLoader loader = new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch );
+            AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + loader.mUrl, loader );
         } else {
             final String name = mNameEditText.getText().toString().trim();
             if (!urlOrSearch.toLowerCase().contains("www") &&
@@ -733,7 +735,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditFeedActivity.this);
                     //builder.setTitle(dialogCaption);
                     {
-                        builder.setCustomTitle( UiUtils.CreateSmallText(builder.getContext(),Gravity.CENTER, null, dialogCaption) );
+                        TextView textView = UiUtils.CreateSmallText(builder.getContext(),Gravity.CENTER, null, dialogCaption);
+                        textView.setMaxLines( 3 );
+                        builder.setCustomTitle( textView );
                     }
                     // create the grid item mapping
                     String[] from = new String[]{FEED_SEARCH_TITLE, FEED_SEARCH_DESC, FEED_SEARCH_URL};
@@ -947,6 +951,7 @@ class GetSiteAlternateListLoader extends BaseLoader<ArrayList<HashMap<String, St
  */
 class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<String, String>>> {
     private static final String CLASS_ATTRIBUTE = "result__snippet";
+    final String mUrl;
     private String mSearchText;
 
     public GetWebSearchDuckDuckGoResultsLoader(Context context, String searchText) {
@@ -956,12 +961,13 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
             mSearchText = URLEncoder.encode(searchText, Constants.UTF8);
         } catch (UnsupportedEncodingException ignored) {
         }
+        mUrl = EditFeedActivity.DUCKDUCKGO_SEARCH_URL + mSearchText + "&kl=" + Locale.getDefault().getLanguage();
     }
 
     @Override
     public ArrayList<HashMap<String, String>> loadInBackground() {
         try {
-            Connection conn = new Connection(EditFeedActivity.DUCKDUCKGO_SEARCH_URL + mSearchText);
+            Connection conn = new Connection(mUrl) ;
             try {
                 final ArrayList<HashMap<String, String>> results = new ArrayList<>();
                 Document doc = Jsoup.parse(conn.getInputStream(), null, "");
