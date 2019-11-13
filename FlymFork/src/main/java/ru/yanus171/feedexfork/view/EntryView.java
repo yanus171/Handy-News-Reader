@@ -80,6 +80,7 @@ import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,7 +110,9 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElementAndUpdateTagButtons;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
@@ -616,7 +619,8 @@ public class EntryView extends WebView implements Observer {
     public void UpdateTags() {
         final int status = FetcherService.Status().Start( getContext().getString( R.string.update ) );
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
-        FindBestElementAndUpdateTagButtons( doc, mEntryLink, "", ArticleTextExtractor.MobilizeType.Tags, true );
+        Element root = FindBestElement( doc, mEntryLink, "", true );
+        AddTagButtons( doc, mEntryLink,  root );
         mData = generateHtmlContent( "-1", "", mEntryLink,  doc.toString(), "", "", 0, true );
         LoadData();
         FetcherService.Status().End( status );

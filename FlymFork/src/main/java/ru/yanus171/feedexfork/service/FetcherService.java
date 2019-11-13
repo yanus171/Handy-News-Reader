@@ -654,9 +654,6 @@ public class FetcherService extends IntentService {
                     Status().ChangeProgress("");
 
                     if (mobilizedHtml != null) {
-                        Status().ChangeProgress(R.string.improveHtmlContent);
-                        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link), mobilize);
-                        Status().ChangeProgress("");
                         ContentValues values = new ContentValues();
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
                         if ( title != null )

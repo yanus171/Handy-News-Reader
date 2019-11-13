@@ -35,15 +35,20 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
+
 public class HtmlUtils {
 
     private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
-            .addTags("iframe", "video", "audio", "source", "track")
+            .addTags("iframe", "video", "audio", "source", "track" )
             .addAttributes("iframe", "src", "frameborder", "height", "width")
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
-            .addAttributes( ":all", "id", "name" )
+            //.addAttributes("math", "xmlns")
+            //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
+            .addAttributes( ":all", "id", "name", "class", "displaystyle", "scriptlevel" )
+            .addAttributes( "textroot", HANDY_NEWS_READER_ROOT_CLASS )
             .addTags("s")
             .addAttributes("track", "src", "kind", "srclang", "label");
 
