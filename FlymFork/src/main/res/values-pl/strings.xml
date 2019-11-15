@@ -99,7 +99,7 @@ GENERAL]]></string>
     <string name="drawer_close">Zamknij panel nawigacyjny</string>
     <!-- FEEDS -->
     <string name="feeds">Kanały</string>
-    <string name="menu_add_feed">Wyszukaj artykuł w Sieci</string>
+    <string name="menu_add_feed">Wyszukaj artykuły w Sieci</string>
     <string name="no_feeds">Brak kanałów</string>
     <string name="no_filters">Brak reguł</string>
     <string name="context_menu_delete">Usuń</string>
