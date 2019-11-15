@@ -184,13 +184,19 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mStatusText = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
                                       (TextView)mRootView.findViewById( R.id.errorText ),
-                                      FetcherService.Status()/*,
-                                      this*/);
+                                      FetcherService.Status());
         mRootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EntryActivity activity = (EntryActivity) getActivity();
                 activity.setFullScreen( EntryActivity.GetIsStatusBarHidden(), !EntryActivity.GetIsActionBarHidden() );
+            }
+        });
+        mRootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EntryActivity activity = (EntryActivity) getActivity();
+                activity.setFullScreen(!EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden());
             }
         });
 
@@ -199,14 +205,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mLabelClock = mRootView.findViewById(R.id.textClock);
         mLabelClock.setText("");
-
-        mRootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen(!EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden());
-            }
-        });
 
         mEntryPager = mRootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
@@ -493,6 +491,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_favorite));
         //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_unfavorite));
         updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
+        updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
         //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_without_mobilizer));
         //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_with_tags));
         updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
@@ -519,6 +518,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
+        menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
 
 //        if (mFavorite)
 //            menu.findItem(R.id.menu_mark_as_favorite ).setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
@@ -562,7 +563,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_full_screen: {
                     EntryActivity activity1 = (EntryActivity) getActivity();
-                    activity1.setFullScreen( true, true );
+                    activity1.setFullScreen( !EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden() );
+                    item.setChecked( EntryActivity.GetIsStatusBarHidden() );
+                    break;
+                }
+                case R.id.menu_actionbar_visible: {
+                    EntryActivity activity1 = (EntryActivity) getActivity();
+                    activity1.setFullScreen( EntryActivity.GetIsStatusBarHidden(), !EntryActivity.GetIsActionBarHidden() );
+                    item.setChecked( !EntryActivity.GetIsActionBarHidden() );
                     break;
                 }
 

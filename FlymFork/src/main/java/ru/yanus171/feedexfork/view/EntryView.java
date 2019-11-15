@@ -60,9 +60,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -112,7 +115,6 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
@@ -121,13 +123,16 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 
-public class EntryView extends WebView implements Observer {
+public class EntryView extends WebView implements Observer, Handler.Callback {
 
     private static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
     public static final String TAG = "EntryView";
     private static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
+    private static final int CLICK_ON_WEBVIEW = 1;
+    private static final int CLICK_ON_URL = 2;
+    public static final int TOUCH_PRESS_POS_DELTA = 5;
 
     private long mEntryId = -1;
     private String mEntryLink = "";
@@ -135,6 +140,7 @@ public class EntryView extends WebView implements Observer {
     private double mOldContentHeight = 0;
     private int mLastContentLength = 0;
     private Stack<Integer> mHistoryAchorScrollY = new Stack<>();
+    private final Handler mHandler = new Handler( this );
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -454,6 +460,7 @@ public class EntryView extends WebView implements Observer {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
+                mHandler.sendEmptyMessage(CLICK_ON_URL);
                 final Context context = getContext();
                 try {
 
@@ -569,7 +576,42 @@ public class EntryView extends WebView implements Observer {
             }
         });
 
+        setOnTouchListener(new View.OnTouchListener(){
+            private float mPressedY;
+            private float mPressedX;
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if ( event.getAction() == MotionEvent.ACTION_DOWN ){
+                    mPressedX = event.getX();
+                    mPressedY = event.getY();
+                }
+                if ( event.getAction() == MotionEvent.ACTION_UP ) {
+                    if ( Math.abs( event.getX() - mPressedX ) < TOUCH_PRESS_POS_DELTA &&
+                         Math.abs( event.getY() - mPressedY ) < TOUCH_PRESS_POS_DELTA &&
+                         EntryActivity.GetIsActionBarHidden() )
+                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 100);
+                }
+                return false;
+            }
+        });
+
+
         timer.End();
+    }
+
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg.what == CLICK_ON_URL){
+            mHandler.removeMessages(CLICK_ON_WEBVIEW);
+            return true;
+        }
+        if (msg.what == CLICK_ON_WEBVIEW){
+            mActivity.openOptionsMenu();
+            return true;
+        }
+        return false;
     }
 
     private void ScrollToY() {
@@ -663,6 +705,7 @@ public class EntryView extends WebView implements Observer {
         }
         return false;
     }
+
 
     public interface EntryViewManager {
         void onClickOriginalText();
