@@ -99,7 +99,7 @@ GENERAL]]></string>
     <string name="drawer_close">Zamknij panel nawigacyjny</string>
     <!-- FEEDS -->
     <string name="feeds">Kanały</string>
-    <string name="menu_add_feed">Dodaj kanał</string>
+    <string name="menu_add_feed">Wyszukaj artykuł w Sieci</string>
     <string name="no_feeds">Brak kanałów</string>
     <string name="no_filters">Brak reguł</string>
     <string name="context_menu_delete">Usuń</string>
@@ -167,6 +167,7 @@ GENERAL]]></string>
     <string name="menu_unstar">Usuń z Ulubionych</string>
     <string name="menu_share">Udostępnij</string>
     <string name="menu_full_screen">Pełny ekran</string>
+    <string name="menu_actionbar_visible">Pasek akcji</string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
     <string name="menu_copy_clipboard">Kopiuj link do schowka</string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
