@@ -164,6 +164,7 @@
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_full_screen">Vollbild</string>
+    <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
     <string name="menu_copy_clipboard">Link kopieren</string>
     <string name="menu_cancel_refresh">Aktualisierung abbrechen</string>
