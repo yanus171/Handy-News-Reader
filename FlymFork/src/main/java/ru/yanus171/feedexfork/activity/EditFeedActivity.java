@@ -970,7 +970,7 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
             Connection conn = new Connection(mUrl) ;
             try {
                 final ArrayList<HashMap<String, String>> results = new ArrayList<>();
-                Document doc = Jsoup.parse(conn.getInputStream(), null, "");
+                Document doc = conn.getParse();
                 for (Element el : doc.getElementsByClass( "results_links")) {
                     try {
                         final String title = el.getElementsByClass( "result__title" ).text();

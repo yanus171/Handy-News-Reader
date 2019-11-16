@@ -99,8 +99,8 @@ public class HtmlUtils {
             // remove empty or bad images
             content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
             content = BAD_IMAGE_PATTERN.matcher(content).replaceAll("");
-            // remove empty links
-            content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
+            //// remove empty links
+            //content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
             // fix non http image paths
             content = NON_HTTP_IMAGE_PATTERN.matcher(content).replaceAll(" $1=$2http://");
             // remove trailing BR & too much BR

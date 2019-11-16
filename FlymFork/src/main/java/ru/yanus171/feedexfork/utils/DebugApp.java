@@ -372,7 +372,7 @@ public class DebugApp {
 	}
 
 	 //--------------------------------------------------------------------------------
-	private static Uri CreateFileUri(String dir, String fileName, String text) {
+	public static Uri CreateFileUri(String dir, String fileName, String text) {
 
 		Uri result = null;
 		fileName = fileName.replace(",", "_");

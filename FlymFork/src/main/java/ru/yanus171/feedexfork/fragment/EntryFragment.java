@@ -92,6 +92,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -676,8 +677,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_show_html: {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        String input = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData + "</root>";
-                        MessageBox.Show(NetworkUtils.formatXML(input));
+                        String input = NetworkUtils.formatXML("<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData + "</root>" );
+                        DebugApp.CreateFileUri("", "html.html", input);
+                        MessageBox.Show(input);
                     }
                     break;
                 }

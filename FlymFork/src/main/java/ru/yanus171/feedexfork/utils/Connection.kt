@@ -10,6 +10,8 @@ import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import org.jsoup.Jsoup
+import org.w3c.dom.Document
 
 class Connection(url: String) {
     private var mConnection: HttpURLConnection? = null
@@ -33,6 +35,13 @@ class Connection(url: String) {
             mResponse!!.body?.contentType()?.type
         } else {
             mConnection!!.contentType
+        }
+
+    val parse: org.jsoup.nodes.Document?
+        get() = if (IsOkHttp()) {
+            Jsoup.parse(inputStream, null, "")
+        } else {
+            Jsoup.parse(inputStream, "UTF-8", mConnection?.url.toString())
         }
 
     init {
