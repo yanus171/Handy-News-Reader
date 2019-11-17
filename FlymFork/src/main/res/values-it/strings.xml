@@ -426,6 +426,8 @@
     <string name="settings_add_google_news_dialog_descr">Deseleziona per ignorare un tipo di feed selezionato quando aggiungi un feed</string>
     <string name="reload_fulltext_after_tag_editing">Ricarica il testo dopo la modifica dei tag</string>
     <string name="reload_fulltext_after_tag_editing_descr">se deselezionato il testo completo non sarà ricaricato dopo ogni modifica di un tag (mostra|nascondi|root), quindi sarebbe facile fare più modifiche. In questo caso dovresti avviare manualmente il ricaricamento completo dopo la modifica completata</string>
+    <string name="article_menu_show_by_tap">Mostra menù articolo con tocco</string>
+    <string name="article_menu_show_by_tap_descr">Quando la barra delle azioni è nascosta - altrimenti la troverai solo lì</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
