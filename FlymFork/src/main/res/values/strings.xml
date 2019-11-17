@@ -166,7 +166,7 @@
     <string name="menu_unstar">Unstar</string>
     <string name="menu_share">Share</string>
     <string name="menu_full_screen">Full screen</string>
-    <string name="menu_actionbar_visible">Action bar</string>
+    <string name="menu_actionbar_visible">Action Bar</string>
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
@@ -354,7 +354,7 @@
     <string name="pageDown">page down</string>
     <string name="fullScreenToggle">Full screen toggle</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">Toggle action bar</string>
+    <string name="actionBarToggle">Toggle Action Bar</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article\'s list</string>
     <string name="question_delete_entry">Delete this article?</string>
@@ -441,7 +441,7 @@
     <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
     <string name="reload_fulltext_after_tag_editing_descr">if unchecked, the full text won\'t be reloaded after each tag editing (show|hide|root), so You can introduce multiple changes easier (in such a case you need to manually reload full text once You finish the editing)</string>
     <string name="article_menu_show_by_tap">Show article menu by tap</string>
-    <string name="article_menu_show_by_tap_descr">When action bar is hidden. Otherwise menu would be available only from the action bar</string>
+    <string name="article_menu_show_by_tap_descr">When Action Bar is hidden - otherwise You\'ll find it only there</string>
 
 
     <plurals name="number_of_new_entries">
