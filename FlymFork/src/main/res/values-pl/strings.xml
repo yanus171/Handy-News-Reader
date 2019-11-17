@@ -432,6 +432,8 @@ GENERAL]]></string>
     <string name="settings_add_google_news_dialog_descr">Odznacz by pominąć wybór typu kanału podczas jego dodawania</string>
     <string name="reload_fulltext_after_tag_editing">Przeładuj tekst po edycji tagów</string>
     <string name="reload_fulltext_after_tag_editing_descr">gdy odznaczone, tekst nie będzie przeładowywany przy każdej pojedynczej edycji tagów (pokaż|ukryj|źródło), stąd łatwiej przeprowadzisz kilka zmian naraz (w takim przypadku potrzebujesz ręcznie przeładować pełny tekst, gdy zakończysz pracę nad edycją)</string>
+    <string name="article_menu_show_by_tap">Dotknij, by pokazać menu</string>
+    <string name="article_menu_show_by_tap_descr">Gdy pasek akcji jest ukryty. W przeciwnym razie menu jest dostępne tylko na pasku akcji</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
