@@ -425,6 +425,8 @@
     <string name="settings_add_google_news_dialog_descr">Зніміть позначку, щоб обминути діалогове вікно вибору типу новин</string>
     <string name="reload_fulltext_after_tag_editing">Перезавантажити текст після редагування мітки</string>
     <string name="reload_fulltext_after_tag_editing_descr">якщо вимкнено, то весь текст не буде перезавантажений після кожного редагування мітки (показати|сховати|root), таким чином Ви можете ввести кілька змін легше (в іншому випадку потрібно вручну перезавантажити повний текст після завершення редагування)</string>
+    <string name="article_menu_show_by_tap">Показувати меню статті дотиком</string>
+    <string name="article_menu_show_by_tap_descr">Коли панель дій прихована - в іншому випадку ви знайдете її тільки там</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
