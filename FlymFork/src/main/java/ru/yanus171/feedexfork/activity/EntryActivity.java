@@ -27,6 +27,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +62,7 @@ public class EntryActivity extends BaseActivity {
     public EntryFragment mEntryFragment = null;
 
     private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
+    public boolean mHasSelection = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,5 +356,15 @@ public class EntryActivity extends BaseActivity {
         return getResources().getAssets();
     }
 
+    @Override
+    public void onActionModeStarted (ActionMode mode) {
+        super.onActionModeStarted(mode);
+        mHasSelection = true;
+    }
 
+    @Override
+    public void onActionModeFinished (ActionMode mode) {
+        super.onActionModeFinished(mode);
+        mHasSelection = false;
+    }
 }

@@ -65,11 +65,13 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -141,6 +143,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private int mLastContentLength = 0;
     private Stack<Integer> mHistoryAchorScrollY = new Stack<>();
     private final Handler mHandler = new Handler( this );
+    private int mScrollY = 0;
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -235,6 +238,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private static final String LINK_BUTTON_MIDDLE = "'>";
     private static final String LINK_BUTTON_END = "</a></p>";
     private static final String IMAGE_ENCLOSURE = "[@]image/";
+    private static final long TAP_TIMEOUT  = 300;
 
     private final JavaScriptObject mInjectedJSObject = new JavaScriptObject();
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
@@ -460,7 +464,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-                mHandler.sendEmptyMessage(CLICK_ON_URL);
+                DoNotShowMenu();
                 final Context context = getContext();
                 try {
 
@@ -579,18 +583,28 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         setOnTouchListener(new View.OnTouchListener(){
             private float mPressedY;
             private float mPressedX;
+            private long mPressedTime = System.currentTimeMillis();
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if ( event.getAction() == MotionEvent.ACTION_DOWN ){
                     mPressedX = event.getX();
                     mPressedY = event.getY();
+                    mPressedTime = System.currentTimeMillis();
+                    //Log.v( TAG, "ACTION_DOWN mPressedTime=" + mPressedTime );
                 }
                 if ( event.getAction() == MotionEvent.ACTION_UP ) {
-                    if ( Math.abs( event.getX() - mPressedX ) < TOUCH_PRESS_POS_DELTA &&
+                    //Log.v( TAG, "ACTION_DOWN time delta=" + ( System.currentTimeMillis() - mPressedTime ) );
+                    if ( System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
+                         Math.abs( event.getX() - mPressedX ) < TOUCH_PRESS_POS_DELTA &&
                          Math.abs( event.getY() - mPressedY ) < TOUCH_PRESS_POS_DELTA &&
-                         EntryActivity.GetIsActionBarHidden() )
+                         PrefUtils.getBoolean( "article_menu_show_by_tap", true ) &&
+                         EntryActivity.GetIsActionBarHidden() &&
+                         !mActivity.mHasSelection ) {
+                        //final HitTestResult hr = getHitTestResult();
+                        //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
                         mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 100);
+                    }
                 }
                 return false;
             }
@@ -671,6 +685,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private void LoadData() {
         if ( GetViewScrollPartY() > 0 ) {
             mScrollPartY = GetViewScrollPartY();
+            mScrollY = getScrollY();
             mOldContentHeight = GetContentHeight();
         }
         loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
@@ -738,23 +753,31 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
         @JavascriptInterface
         public void onClickOriginalText() {
+            DoNotShowMenu();
             mEntryViewMgr.onClickOriginalText();
         }
 
         @JavascriptInterface
         public void onClickFullText() {
+            DoNotShowMenu();
             mEntryViewMgr.onClickFullText();
         }
 
         @JavascriptInterface
         public void onClickEnclosure() {
+            DoNotShowMenu();
             mEntryViewMgr.onClickEnclosure();
         }
 
         @JavascriptInterface
         public void onReloadFullText() {
+            DoNotShowMenu();
             mEntryViewMgr.onReloadFullText();
         }
+    }
+
+    private void DoNotShowMenu() {
+        mHandler.sendEmptyMessage(CLICK_ON_URL);
     }
 
     private class ImageDownloadJavaScriptObject {
@@ -766,16 +789,20 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
         @JavascriptInterface
         public void downloadImage( String url ) {
+            DoNotShowMenu();
             mEntryViewMgr.downloadImage(url);
         }
 
         @JavascriptInterface
         public void downloadNextImages() {
+            DoNotShowMenu();
             mEntryViewMgr.downloadNextImages();
+
         }
 
         @JavascriptInterface
         public void openTagMenu(String className, String baseUrl, String paramValue){
+            DoNotShowMenu();
             mEntryViewMgr.openTagMenu(className, baseUrl, paramValue);
         }
     }
@@ -789,6 +816,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
 
     private int GetScrollY() {
+        if ( mScrollY != 0 )
+            return mScrollY;
         return GetContentHeight() * mScrollPartY != 0 ? ( int )( GetContentHeight() * mScrollPartY ) : 0;
     }
 

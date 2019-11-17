@@ -440,6 +440,9 @@
     <string name="settings_add_google_news_dialog_descr">Uncheck to bypass a select feed type dialog when adding a feed</string>
     <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
     <string name="reload_fulltext_after_tag_editing_descr">if unchecked, the full text won\'t be reloaded after each tag editing (show|hide|root), so You can introduce multiple changes easier (in such a case you need to manually reload full text once You finish the editing)</string>
+    <string name="article_menu_show_by_tap">Show article menu by tap</string>
+    <string name="article_menu_show_by_tap_descr">When action bar is hidden. Otherwise menu would be available only from the action bar</string>
+
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

@@ -371,6 +371,11 @@
                 android:key="entry_auto_unstart_at_bottom"
                 android:summary="@string/auto_unstart_at_bottom_descr"
                 android:title="@string/auto_unstart_at_bottom"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_menu_show_by_tap"
+                android:title="@string/article_menu_show_by_tap"
+                android:summary="@string/article_menu_show_by_tap_descr"/>
 
         </PreferenceCategory>
     </PreferenceScreen>
