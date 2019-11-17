@@ -107,6 +107,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
@@ -128,7 +129,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -713,12 +714,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 values.put(EntryColumns.IS_FAVORITE, mFavorite ? 1 : 0);
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
-
-                /*// Update the cursor
-                Cursor updatedCursor = cr.query(uri, null, null, null, null);
-                updatedCursor.moveToFirst();
-                mEntryPagerAdapter.onsetUpdatedCursor(mCurrentPagerPos, updatedCursor);*/
-
             }
         }.start();
         getActivity().invalidateOptionsMenu();
@@ -830,7 +825,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 				activity.setTitle("");//activity.setTitle(feedTitle);
 
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
-				//mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
+                //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
+
 
 				activity.invalidateOptionsMenu();
 
@@ -1209,6 +1205,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
                         mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
                         mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
+                        mIsWasAutoUnStarPos = cursor.getColumnIndex(EntryColumns.IS_WAS_AUTO_UNSTAR);
                         mEnclosurePos = cursor.getColumnIndex(EntryColumns.ENCLOSURE);
                         mFeedIDPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
                         mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
@@ -1298,6 +1295,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     String feedID = "";
                     String enclosure = "";
                     double scrollPart = 0;
+                    boolean isWasAutoUnStar = false;
+
                     try {
                         feedID = newCursor.getString(mFeedIDPos);
                         if (!feedID.equals(GetExtrenalLinkFeedID()) &&
@@ -1316,6 +1315,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         timestamp = newCursor.getLong(mDatePos);
                         title = newCursor.getString(mTitlePos);
                         enclosure = newCursor.getString(mEnclosurePos);
+                        isWasAutoUnStar = newCursor.getInt( mIsWasAutoUnStarPos) == 1 ? true : false;
                         if ( !newCursor.isNull(mScrollPosPos) )
                             scrollPart = newCursor.getDouble( mScrollPosPos);
 
@@ -1332,9 +1332,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                   contentText,
                                   enclosure,
                                   author,
+                                  isWasAutoUnStar,
                                   timestamp,
                                   mIsFullTextShown,
-                                  (EntryActivity) getActivity());
+                                  (EntryActivity) getActivity() );
 
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
@@ -1489,8 +1490,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     return;
                 if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
                     return;
-                if ( view.IsScrollAtBottom() )
+                if ( view.mWasAutoUnStar )
+                    return;
+                if ( view.IsScrollAtBottom() ) {
+                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                    view.mWasAutoUnStar = true;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            ContentValues values = new ContentValues();
+                            values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, 1);
+                            ContentResolver cr = MainApplication.getContext().getContentResolver();
+                            cr.update(uri, values, null, null);
+                        }
+                    }.start();
+
                     SetIsFavourite(false);
+                }
             }
         };
         return view;

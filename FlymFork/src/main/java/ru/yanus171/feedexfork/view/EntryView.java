@@ -135,6 +135,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
     public static final int TOUCH_PRESS_POS_DELTA = 5;
+    public boolean mWasAutoUnStar = false;
 
     private long mEntryId = -1;
     private String mEntryLink = "";
@@ -276,6 +277,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                         String contentText,
                         String enclosure,
                         String author,
+                        boolean wasAutoUnStar,
                         long timestamp,
                         final boolean preferFullText,
                         EntryActivity activity) {
@@ -287,6 +289,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         if ( contentText.length() == mLastContentLength )
             return;
         mLastContentLength = contentText.length();
+        mWasAutoUnStar = wasAutoUnStar;
         //getSettings().setBlockNetworkLoads(true);
         getSettings().setUseWideViewPort( true );
         getSettings().setSupportZoom( false );
