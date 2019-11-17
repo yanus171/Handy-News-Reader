@@ -429,6 +429,8 @@
     <string name="settings_add_google_news_dialog_descr">Deaktivieren Sie das Kontrollkästchen, um einen Dialog zur Auswahl des Feedtyps zu umgehen, wenn Sie einen Feed hinzufügen.</string>
     <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
     <string name="reload_fulltext_after_tag_editing_descr">Wenn das Kontrollkästchen deaktiviert ist, wird der Volltext nicht nach jeder Schlagwort-Bearbeitung neu geladen (Anzeigen|Ausblenden|Stamm), so dass es einfach wäre, mehrere Bearbeitungen durchzuführen. In diesem Fall sollten Sie den Volltext nach Abschluss der Bearbeitung manuell neu laden.</string>
+    <string name="article_menu_show_by_tap">Artikelmenü durch Antippen anzeigen</string>
+    <string name="article_menu_show_by_tap_descr">Wenn die Aktionsleiste ausgeblendet ist. Andernfalls wäre das Menü nur in der Aktionsleiste verfügbar.</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
