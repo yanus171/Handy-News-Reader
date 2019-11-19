@@ -135,6 +135,7 @@
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
     <string name="feed_search">نتائج البحث</string>
+    <string name="web_page_search_duckduckgo">بَحْثُ صَفْحَةِ الوِيبْ (DuckDuckGo)</string>
     <string name="select_file">حدّد ملفاً (من بطاقة SD)</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
@@ -372,6 +373,7 @@
     <string name="keyword">الكلمات الدلالية</string>
     <string name="loadTypeWeb">الويب (تحميل جميع الروابط من الصفحة)</string>
     <string name="loadTypeRSS">RSS (رابط الخلاصة أو الموقع، أو الإسم)</string>
+    <string name="loadTypeWebPageSearch">البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo (بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
     <string name="global_filter_descr">فلتر يُطَبَق على كل خلاصة - إترك نص الفلتر (ونص regex) فارغًا لتعطيل الوظيفة</string>
