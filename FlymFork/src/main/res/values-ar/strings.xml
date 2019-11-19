@@ -170,6 +170,7 @@
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
     <string name="menu_full_screen">وضع مِلء الشاشة</string>
+    <string name="menu_actionbar_visible">شَريطُ العَمَل</string>
     <string name="menu_font_bold">خط عريض</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
@@ -430,6 +431,10 @@
     <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
     <string name="show_html">عَرْضُ الـ HTML</string>
     <string name="image_white_background">طَبَقَةٌ بَيْضَاءَ تَحْتَ الصُّورِ</string>
+    <string name="settings_add_google_news_dialog">نافِذَةُ حِوارِ طُرُقِ جَلْبِ المُحْتَوَى</string>
+    <string name="settings_add_google_news_dialog_descr">قُمْ بِالْغَاءِ التَّحْدِيدِ لِإِلْغَاءِ خِيَارِ (مَوَاضِيعُ أَخْبَارِ جوجل) بِتَخَطِّي النّافِذَةِ</string>
+    <string name="reload_fulltext_after_tag_editing">إِعادَةُ تَحْميلِ النَّصِّ بَعْدَ تَحْريرِ العَلامَة</string>
+    <string name="reload_fulltext_after_tag_editing_descr">إِذَا لَمْ يَتِمَّ تَحْديدُ هَذَا الْخِيَارِ ، فَلَنْ تَتِمَّ إِعادَةُ تَحْميلِ النَّصِّ الكامِلِ بَعْدَ تَحْريرِ كُلِّ عَلامَةٍ ( إِظْهار | إِخْفاء | الجِذْر ) ، بِحَيْثُ يُمَكِّنُكَ إِدْخالُ تَغْيِيرَاتٍ مُتَعَدِّدَةٍ بِشَكْلٍ أَسْهَلَ ( فِي هَذِهِ الحالَةِ ، سَتَحْتَاجُ إِلَى إِعادَةِ تَحْميلِ النَّصِّ بِالْكَامِلِ يَدَوِيًّا بِمُجَرَّدِ الِانْتِهاءِ مِنْ التَّحْرِيرِ )</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
