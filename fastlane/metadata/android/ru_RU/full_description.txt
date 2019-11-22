@@ -17,23 +17,23 @@
 	<li><b><u>полные статьи</u> под рукой</b>: не нужно использовать внешний веб-браузер для получения полного текста,</li>
 	<li><b><u>удобное</u> чтение</b>: переключение статей кнопками громкости или свайпом, <i>Зоны касаний</i>, запоминающие место чтения <u>в статье</u>,</li>
 	<li><b>уведомление о важных статьях</b>: Вы больше никогда не упустите что-нибудь особенно важное</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b><i>"Читать позже"</i></b>: Вы можете быстро просмотреть статьи - <b>пометив звездочкой, чтобы поместить в избранные и прочитать позже</b> в свободное время - или просто сохранить,</li>
+	<li><b><i>"Удалить после завершения"</i></b> - после того, как вы закончили такую статью - она может быть автоматически удалена из <i>'Избранное'</i> (=<i>'Читать позже'</i>) установлено,</li>
+	<li><b>готова к оффлайн</b> - погрузиться в интересное чтение без отвлекающих факторов: после обновления, нет необходимости в дополнительной загрузке - это действительно будет работать без Интернета :),</li>
+	<li><b>сохраните траффик</b>: выходите в on-line только для новых статей - не для загрузки их полных версий каждый раз подряд; контролируйте, что должно быть загружено - и в какой степени,</li>
+	<li><b>дружит с жестами</b>: например проведите сверху вниз, чтобы добавить/удалить статью из <i>Избранное</i>, проведите по левому краю экрана, чтобы настроить яркость текста,</li>
+	<li><b>удобный интерфейс</b>: заботьтесь о ваших глазах с помощью темной темы, регулируйте размер текста, цвет и яркость, чтобы соответствовать вашим индивидуальным потребностям,</li>
+	<li> <b>аккуратные идеи</b>: заголовки статей без гиперссылок больше не будут мешать вашим пальцам ;) ; прокрутка страниц статьи на 90% их высоты может сделать чтение менее запутанным, а значит более удобным, </li>
+	<li><b>хорошонастраиваемая</b>: от <i>Размер Зон прикосновения</i> до цвета гиперссылок и подчеркивания - есть набор деталей, которые вы можете подобрать именно под свой вкус и потребности,</li>
+	<li><b>расширенные функции</b>: автоматическое резервное копирование (экспорт/импорт из <i>.opml</i> формата), предоставление контента из не-<i>RSS</i> веб-сайтов, </li>
+	<li><b>еще больше интересных функций</b> "в магазине" - посетите наш сайт, чтобы узнать подробнее :) !,</li>
+	<li><b><u>Важно</u>:</b> это приложение НЕ синхронизируется с онлайн-ридерами и агрегаторами новостей (такими как <i>Feedly</i>),</li>
+	<li><b>Отзывы и предложения приветствуются;</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
-	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+<b>Где нас можно найти:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">исходный код на <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">домашняя страница</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">перевод</a>;</li>
 </ul>
