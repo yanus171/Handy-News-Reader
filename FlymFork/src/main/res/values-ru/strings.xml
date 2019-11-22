@@ -366,6 +366,7 @@
     <string name="keyword">Ключевое слово</string>
     <string name="loadTypeWeb">Web (загружать все ссылки со страницы)</string>
     <string name="loadTypeRSS">RSS (адрес ленты или сайта или ключевое слово)</string>
+    <string name="loadTypeWebPageSearch">Поиск по веб-странице с DuckDuckGo (найти и загрузить одну статью)</string>
     <string name="loadType">Тип загрузки:</string>
     <string name="global_filter">Глобальный фильтр &#8230;</string>
     <string name="global_filter_descr">Фильтр, применяемый к каждой ленте. Для отключения оставьте текст фильтра (и регулярного выражения) пустым</string>
@@ -398,6 +399,18 @@
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
     <string name="auto_refresh_requires_charging">Только во время зарядки</string>
+    <string name="global_class_list_to_remove_from_article_text">Удалить текст правил</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">название класса в строке</string>
+    <string name="hide">Скрыть</string>
+    <string name="show">Показать</string>
+    <string name="brightness_update_from_system_period_min">Время обновления яркости</string>
+    <string name="brightness_update_from_system_period_min_descr">(в минутах) После этого периода яркость (свайп) будет восстановлена с текущего системного уровня (0 - выкл)</string>
+    <string name="menu_add_feed_shortcut">Создать ярлык на главном экране</string>
+    <string name="new_feed_shortcut_added">Новый ярлык был создан на главном экране</string>
+    <string name="reload_fulltext_after_tag_editing">Перезагрузить текст после редактирования тегов</string>
+    <string name="reload_fulltext_after_tag_editing_descr">если флажок снят, полный текст не будет перезагружен после редактирования тегов (show|hide|root), поэтому вы можете внести несколько изменений (в таком случае вам нужно вручную перезагрузить полный текст после завершения редактирования)</string>
+    <string name="article_menu_show_by_tap">Показывать меню статьи по нажатию</string>
+    <string name="article_menu_show_by_tap_descr">Когда панель действий скрыта - иначе ее можно найти только там</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
