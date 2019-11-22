@@ -3,9 +3,9 @@
 <b><i>Handy News Reader</i>: без рекламы/свободное программное обеспечение с <i>GNU GPL</i> лицензией.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>создайте свой журнал мечты!</b></li>
+	<li><b>интересные статьи прямо в ваши руки</b></li>
+	<li><b>получите, наконец, удовольствие от чтения!</b></li>
 </ul>
 
 ...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
