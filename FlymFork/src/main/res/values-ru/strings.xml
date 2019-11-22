@@ -403,6 +403,9 @@
     <string name="global_class_list_to_remove_from_article_text_summary">название класса в строке</string>
     <string name="hide">Скрыть</string>
     <string name="show">Показать</string>
+    <string name="setFullTextRoot">Выбрать источник полного текста</string>
+    <string name="fullTextRoot">Источник полного текста</string>
+    <string name="fullTextReloadStarted">Началась перезагрузка полного текста</string>
     <string name="brightness_update_from_system_period_min">Время обновления яркости</string>
     <string name="brightness_update_from_system_period_min_descr">(в минутах) После этого периода яркость (свайп) будет восстановлена с текущего системного уровня (0 - выкл)</string>
     <string name="menu_add_feed_shortcut">Создать ярлык на главном экране</string>
