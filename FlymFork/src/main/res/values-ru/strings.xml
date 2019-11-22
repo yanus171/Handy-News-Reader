@@ -203,6 +203,7 @@
     <string name="fontColorsNotFromThemeSummary">иначе использовать цвета темы</string>
     <string name="textColor">Цвет текста</string>
     <string name="settings_color_text_sample_short">Текст</string>
+    <string name="settings_color_text_sample_long">\u201cКогда вы ухаживаете за хорошенькой девушкой, час кажется секундой. Когда вы сидите на раскаленных углях, секунда кажется часом. Это и есть относительность.\u201d\n(Альберт Эйнштейн)</string>
     <string name="settings_category_refresh">Автоматическое обновление</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
@@ -320,6 +321,7 @@
     <string name="mobilizeAll">Загрузка полных текстов</string>
     <string name="RefreshFeeds">Обновление статей</string>
     <string name="deleteImages">Удаление картинок</string>
+    <string name="deleteFullTexts">Удаление полных текстов:</string>
     <string name="applyOperations">Завершение операций</string>
     <string name="extractContent">Форматирование текста</string>
     <string name="improveHtmlContent">Оптимизация текста</string>
