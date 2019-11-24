@@ -162,6 +162,7 @@
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
     <string name="menu_full_screen">Весь екран</string>
+    <string name="menu_actionbar_visible">Смуга подій</string>
     <string name="menu_font_bold">Жирний шрифт</string>
     <string name="menu_copy_clipboard">Скопіювати посилання</string>
     <string name="menu_cancel_refresh">Скасувати оновлення</string>
