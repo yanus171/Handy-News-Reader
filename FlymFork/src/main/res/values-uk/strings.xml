@@ -112,8 +112,8 @@
     <string name="error_feed_export">Експорт не вдався. Переконайтесь, що карта пам’яті має можливість запису.</string>
     <string name="error_external_storage_not_available">Зовнішне сховище (наприклад, карта пам’яті) недосяжно.</string>
     <string name="feed_url">URL-адреса</string>
-    <string name="optional">(не обов’язково)</string>
-    <string name="website_or_feed">(стрічки новин або ключове слово)</string>
+    <string name="optional">(необов’язково)</string>
+    <string name="website_or_feed">(URL-адреса стрічки або ключове слово)</string>
     <string name="tab_feed_title">Стрічку</string>
     <string name="tab_filters_title">Фільтри</string>
     <string name="feed_title">НАЗВА</string>
