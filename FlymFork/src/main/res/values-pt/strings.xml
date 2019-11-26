@@ -423,4 +423,12 @@
     <string name="settings_add_google_news_dialog">Adicionar diálogo de notícias do Google</string>
     <string name="settings_add_google_news_dialog_descr">Desmarque para ignorar uma caixa de diálogo do tipo feed ao adicionar um feed</string>
     <string name="reload_fulltext_after_tag_editing">Recarregar texto após edição de tags</string>
+    <string name="reload_fulltext_after_tag_editing_descr">se desmarcado, o texto completo não será recarregado após cada edição de tag (mostrar|ocultar|root), para que você possa introduzir várias alterações mais facilmente (nos casos em que você precise recarregar manualmente o texto completo uma vez que você termine a edição)</string>
+    <string name="article_menu_show_by_tap">Mostrar menu do artigo ao tocar</string>
+    <string name="web_page_loading">Carregando página...</string>
+    <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está ocultada - caso contrário você encontrará o menu somente na Barra de Ação</string>
+    <plurals name="number_of_new_entries">
+        <item quantity="one">Um novo artigo.</item>
+        <item quantity="other">%d artigos novos.</item>
+    </plurals>
 </resources>
