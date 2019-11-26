@@ -31,7 +31,121 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licença e informações</big></b><br/>
+    Este programa é um software livre: você pode redistribui-lo e/ou modificá-lo sob os termos da Licença GNU General Public como publicado pela Free Software Foundation, versão 3 desta Licença ou (de acordo com sua escolha) por uma versão de licença posterior. Veja em http://www.gnu.org/licenses<br/>
+    <br/>
+    Este app é baseado no \'Flym RSS Reader\', direitos autorais 2013–2016 Frédéric Julian. Entre outras características adicionadas nesta ramificação, estão:<br/>
+    <br/>
+    • expansão de grupos de feeds<br/>
+    • botões de página acima|abaixo invisíveis na tela cheia<br/>
+    • contador de downloads máximos de imagens por feed<br/>
+    • capacidade de cancelar processos de atualização <br/>
+    • e muito mais<br/>
+    <br/>
+    <b><big>Onde você pode nos encontrar</big></b>
+    <br/>
+    • Por favor visite nosso <b><a href="https://handynewsreader.blogspot.com">website</a></b> para novidades e informações<br/>
+    • Você pode baixar este app no <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • Você pode baixar este app no <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • Há ainda um tópico de discussão no <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">fórum XDA</a></b><br/>
+    • O código-fonte pode ser encontrado no <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+    <br/>
+    <b><big>Nosso suporte</big></b>
+    <br/>
+    Se você encontrar um problema com este app, você\deve<br/>
+    • abrir um chamado na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">página de chamados do GitHub</a></b> ou<br/>
+    • enviar um <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">e-mail para o desenvolvedor</a></b><br/>
+    <br/>
+    <b><big>Seu apoio</big></b>
+    <br/>
+    Se você tem uma ideia para uma nova função, você pode:<br/>
+    • abrir um chamado na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">página de chamados do GitHub</a></b> or<br/>
+    • enviar um <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail para o desenvolvedor</a></b><br/>
+    <br/>
+    <b>Se você considera este app útil, por favor avalie-o no <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <br/>
+    <b><big>Traduções</big></b>
+    <br/>
+    Você pode ajudar na tradução para sua própria língua no <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    Se sua língua não\está disponível, por favor envie um <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail para o desenvolvedor</a></b>.<br/>
+    <br/>
+    <b><big>Agradecimentos</big></b>
+    <br/>
+    <b>Desenvolvedores:</b><br/>
+    ***developerList***
+    <br/>
+    <b>Translators:</b><br/>
+    ***translatorList***
+    <br/>
+    ]]></string>
+    <string name="app_name">Leitor de Notícias Handy</string>
+    <string name="about_title_version">versão</string>
+    <string name="about_flym">Sobre o aplicativo / Ajuda / Contatar o desenvolvedor </string>
+    <string name="welcome_title">Bem-vindo ao Leitor de Notícias Handy. Gostaria de adicionar um feed?</string>
+    <string name="never">nunca</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="menu_refresh">Atualizar</string>
+    <string name="flym_feeds">Leitor de Notícias Handy</string>
+    <string name="error">Erro</string>
+    <string name="network_error">Você está off-line.</string>
+    <string name="loading">Carregando…</string>
+    <string name="no_result">Sem Resultados</string>
+    <string name="drawer_open">Abrir painel de navegação</string>
+    <string name="drawer_close">Fechar painel de navegação</string>
     <!-- FEEDS -->
+    <string name="feeds">Feeds</string>
+    <string name="menu_add_feed">Pesquisa de Artigos na Web</string>
+    <string name="no_feeds">Sem feeds</string>
+    <string name="no_filters">Nenhuma regra</string>
+    <string name="context_menu_delete">Excluir</string>
+    <string name="edit_feed_title">Editar feed</string>
+    <string name="new_feed_title">Novo feed ou artigo</string>
+    <string name="context_menu_edit">Editar</string>
+    <string name="menu_add_group">Adicionar um grupo</string>
+    <string name="menu_import">Importar de arquivo .opml</string>
+    <string name="menu_export">Exportar para arquivo .opml</string>
+    <string name="storage_request_explanation">Para poder importar ou exportar os feeds de ou para um arquivo, você deve permitir que o aplicativo acesse a memória de armazenamento.</string>
+    <string name="error_feed_error">O site do feed está inacessível.</string>
+    <string name="error_feed_process">O feed não pode ser processado.</string>
+    <string name="error_feed_url_exists">Esse endereço já existe.</string>
+    <string name="error_feed_import">O arquivo selecionado não pôde ser importado.</string>
+    <string name="error_feed_export">A exportação falhou. Certifique-se de que você tem um cartão SD montado.</string>
+    <string name="error_external_storage_not_available">O armazenamento externo (por exemplo, um cartão SD) não está disponível.</string>
+    <string name="feed_url">Endereço URL</string>
+    <string name="optional">(opcional)</string>
+    <string name="website_or_feed">(URL do feed ou busca por palavra-chave)</string>
+    <string name="tab_feed_title">Feed</string>
+    <string name="tab_filters_title">Filtro</string>
+    <string name="feed_title">TÍTULO</string>
+    <string name="feed_filters">REGRAS DE FILTRO</string>
+    <string name="filter_add_title">Adicionar uma regra</string>
+    <string name="filter_delete_title">Excluir regra</string>
+    <string name="filter_edit_title">Editar regra</string>
+    <string name="filter_is_regex">&#8230;é uma expressão regular</string>
+    <string name="filter_apply_to_title">Aplicar ao título ou endereço de link</string>
+    <string name="filter_apply_to_content">Aplicar ao conteúdo</string>
+    <string name="accept">ACEITAR</string>
+    <string name="reject">REJEITAR</string>
+    <string name="feed_search">Pesquisa de feed</string>
+    <string name="web_page_search_duckduckgo">Pesquisa na página (Duck Duck Go)</string>
+    <string name="select_file">Selecione um arquivo (SD-root)</string>
+    <string name="question_delete_feed">Você realmente deseja excluir este feed?</string>
+    <string name="question_delete_group">Você realmente deseja excluir este grupo e todos os seus feeds?</string>
+    <string name="question_delete_filter">Você realmente deseja excluir este filtro?</string>
+    <string name="add_group_title">Selecione o nome do grupo</string>
+    <string name="edit_group_title">Edite o nome do grupo</string>
+    <string name="message_exported_to">Exportado para %s.</string>
+    <string name="to_group_title">Ação de mover feed</string>
+    <string name="to_group_message">Gostaria de colocar este feed dentro ou fora deste grupo?</string>
+    <string name="to_group_above">Fora do grupo</string>
+    <string name="to_group_into">No grupo</string>
+    <string name="add_custom_feed">Adicionar um feed personalizado ou procurar por um</string>
+    <string name="google_news_title">Tópicos de notícias do Google</string>
+    <string name="google_news_indicator">Selecione um ou vários tópicos para adicionar. Alguns deles podem não ser fornecidos pelo Google para o seu idioma.</string>
+    <string name="google_news_top_stories">Principais Notícias</string>
+    <string name="google_news_world">Mundo</string>
+    <string name="google_news_business">Negócios</string>
+    <string name="google_news_technology">Tecnologia</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
