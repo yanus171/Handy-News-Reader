@@ -33,7 +33,6 @@
     <!-- GENERAL -->
     <string name="welcome_title">欢迎来到 Handy News Reader. 您想要添加一个Feed吗?</string>
     <string name="never">从不</string>
-    <string name="update">更新</string>
     <string name="menu_settings">设置</string>
     <string name="menu_refresh">刷新</string>
     <string name="error">错误</string>
