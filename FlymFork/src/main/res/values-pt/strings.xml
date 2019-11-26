@@ -83,6 +83,7 @@
     <string name="about_flym">Sobre o aplicativo / Ajuda / Contatar o desenvolvedor </string>
     <string name="welcome_title">Bem-vindo ao Leitor de Notícias Handy. Gostaria de adicionar um feed?</string>
     <string name="never">nunca</string>
+    <string name="update">Atualizar</string>
     <string name="menu_settings">Configurações</string>
     <string name="menu_refresh">Atualizar</string>
     <string name="flym_feeds">Leitor de Notícias Handy</string>
@@ -173,6 +174,7 @@
     <string name="menu_mark_as_unfavorite">Desmarcar como favorito</string>
     <string name="menu_mark_as_unread">Marcar como não lido</string>
     <string name="menu_reload_full_text">Recarregar texto completo</string>
+    <string name="menu_reload_full_text_without_mobilizer">Recarregar sem Mobilizer</string>
     <string name="share_favorites_title">Leitor de Notícias Handy: entradas com estrela</string>
     <string name="copied_clipboard">Link copiado</string>
     <string name="get_full_text">Carregar artigos completos</string>
