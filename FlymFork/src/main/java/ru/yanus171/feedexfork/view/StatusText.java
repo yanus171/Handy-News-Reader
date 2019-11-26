@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Observable;
@@ -38,6 +39,7 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 public class StatusText implements Observer {
     private static final String SEP = "__";
+    public static final String DELIMITER = ", ";
     private String mFeedID = "";
     private String mEntryID = "";
     private TextView mView;
@@ -146,37 +148,37 @@ public class StatusText implements Observer {
                 @Override
                 public void run() {
                 synchronized ( mList ) {
-                    String s = "";
+                    ArrayList<String> s = new ArrayList<>();
                     if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) )
                         for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
-                                s += item.getValue() + " ";
+                                s.add( item.getValue() );
 
                     if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
                         if (!mProgressText.isEmpty())
-                            s += " " + mProgressText;
+                            s.add( mProgressText );
                         if (!mList.isEmpty() && !mDBText.isEmpty())
-                            s += " " + mDBText;
+                            s.add( mDBText );
                         if (!mList.isEmpty() && FetcherService.mCancelRefresh)
-                            s += "\n cancel Refresh";
+                            s.add( "\n cancel Refresh" );
                         if (mBytesRecievedLast > 0)
-                            s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
+                            s.add(0, String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) );
                     }
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s, mNotificationTitle));
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
                     if ( !mNotificationTitle.isEmpty() )
-                        s = mNotificationTitle + " " + s;
-                    NotifyObservers(s, mErrorText, mErrorFeedID, mErrorEntryID);
-                    Dog.v("Status Update " + s.replace("\n", " "));
+                        s.add( 0, mNotificationTitle );
+                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID);
+                    Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
                 }
                 }
             });
         }
 
-        public void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID) {
+        void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID) {
             notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID);
         }
 

@@ -33,7 +33,7 @@
     <!-- GENERAL -->
     <string name="welcome_title">플라임 사용을 환영합니다. 피드를 추가하시겠습니까?</string>
     <string name="never">하지 않음</string>
-    <string name="update">업데이트</string>
+    <string name="last_update">업데이트</string>
     <string name="menu_settings">설정</string>
     <string name="menu_refresh">새로 고침</string>
     <string name="flym_feeds">플라임 피드</string>

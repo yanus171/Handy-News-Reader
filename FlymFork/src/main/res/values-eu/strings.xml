@@ -83,7 +83,7 @@
     <string name="about_flym">Aplikazioari buruz / Laguntza / Kontaktatu garatzailea </string>
     <string name="welcome_title">Ongi etorri Berri irakurle trebera. Jario bat gehitu nahi duzu?</string>
     <string name="never">inoiz ez</string>
-    <string name="update">Eguneratu</string>
+    <string name="last_update">Eguneratu</string>
     <string name="menu_settings">Ezarpenak</string>
     <string name="menu_refresh">Berritu</string>
     <string name="flym_feeds">Berri irakurle trebearen jarioak</string>

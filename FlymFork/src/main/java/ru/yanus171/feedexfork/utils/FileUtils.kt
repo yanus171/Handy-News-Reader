@@ -26,17 +26,16 @@ import android.os.Build
 import android.os.Environment
 import android.provider.BaseColumns._ID
 import android.widget.Toast
-
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML
-
+import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.DebugApp.AddErrorToLog
 import ru.yanus171.feedexfork.view.StorageItem
 import java.io.*
-import java.util.ArrayList
+import java.util.*
 
 object FileUtils {
 
@@ -163,13 +162,19 @@ object FileUtils {
     private const val MIN_MOBILIZED_LEN = 10
 
     fun loadMobilizedHTML(link: String, cursor: Cursor) : String {
-        val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)
-        if ( !cursor.isNull( columnIndex ) ) {
-            val content: String = cursor.getString(columnIndex)
-            if ( content.length > MIN_MOBILIZED_LEN )
-                saveHTMLToFile( link, content )
+        val status = FetcherService.Status().Start("Reading article file")
+        try {
+
+            val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)
+            if (!cursor.isNull(columnIndex)) {
+                val content: String = cursor.getString(columnIndex)
+                if (content.length > MIN_MOBILIZED_LEN)
+                    saveHTMLToFile(link, content)
+            }
+            return readHTMLFromFile(link)
+        } finally {
+            FetcherService.Status().End( status )
         }
-        return readHTMLFromFile( link )
     }
 
     class UpdateMob(private val mMobValue: String, private val mEntryID: Long ) : Thread() {

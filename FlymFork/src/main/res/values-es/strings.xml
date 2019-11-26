@@ -35,7 +35,7 @@
     <string name="about_flym">Acerca / Ayuda / Contacta con el desarrollador</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
     <string name="never">nunca</string>
-    <string name="update">Actualizar</string>
+    <string name="last_update">Actualizar</string>
     <string name="menu_settings">Configuración</string>
     <string name="menu_refresh">Actualizar</string>
     <string name="flym_feeds">Fuentes de Handy News Reader</string>

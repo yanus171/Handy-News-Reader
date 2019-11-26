@@ -271,15 +271,15 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mEntryViewMgr = manager;
     }
 
-    public void setHtml(long entryId,
-                        String feedID,
-                        String title,
-                        String link,
+    public void setHtml(final long entryId,
+                        final String feedID,
+                        final String title,
+                        final String link,
                         String contentText,
-                        String enclosure,
-                        String author,
+                        final String enclosure,
+                        final String author,
                         boolean wasAutoUnStar,
-                        long timestamp,
+                        final long timestamp,
                         final boolean preferFullText,
                         EntryActivity activity) {
         Timer timer = new Timer( "EntryView.setHtml" );
@@ -298,7 +298,6 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         getSettings().setSupportZoom( false );
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true)) {
-            contentText = HtmlUtils.replaceImageURLs(contentText, entryId, link, true);
             if (getSettings().getBlockNetworkImage()) {
                 // setBlockNetworkImage(false) calls postSync, which takes time, so we clean up the html first and change the value afterwards
                 loadData("", TEXT_HTML, Constants.UTF8);
@@ -316,10 +315,24 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             getSettings().setTextZoom(100 + (fontSize * 20));
         }
 
-        synchronized ( this ) {
-            mData = generateHtmlContent(feedID, title, link, contentText, enclosure, author, timestamp, preferFullText);
-        }
-        LoadData();
+        final String finalContentText = contentText;
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized ( this ) {
+                    String finalContentText2 = finalContentText;
+                    if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
+                        finalContentText2 = HtmlUtils.replaceImageURLs(finalContentText2, entryId, link, true);
+                    mData = generateHtmlContent(feedID, title, link, finalContentText2, enclosure, author, timestamp, preferFullText);
+                }
+                UiUtils.RunOnGuiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadData();
+                    }
+                });
+            }
+        }.start();
         timer.End();
     }
 
@@ -735,7 +748,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }
 
     public void UpdateTags() {
-        final int status = FetcherService.Status().Start( getContext().getString( R.string.update ) );
+        final int status = FetcherService.Status().Start( getContext().getString( R.string.last_update) );
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement( doc, mEntryLink, "", true );
         AddTagButtons( doc, mEntryLink,  root );

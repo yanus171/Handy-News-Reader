@@ -35,6 +35,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
 
 public class HtmlUtils {
@@ -147,6 +148,7 @@ public class HtmlUtils {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
+        final int status = Status().Start("Reading images");
         // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
         if (!TextUtils.isEmpty(content)) {
@@ -218,6 +220,7 @@ public class HtmlUtils {
             }
 
         }
+        FetcherService.Status().End(status );
 
         return content;
     }

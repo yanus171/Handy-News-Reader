@@ -83,7 +83,7 @@
     <string name="about_flym">About the app / Help / Contact the developer </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
-    <string name="update">Update</string>
+    <string name="last_update">Update</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
@@ -441,7 +441,7 @@
     <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
     <string name="reload_fulltext_after_tag_editing_descr">if unchecked, the full text won\'t be reloaded after each tag editing (show|hide|root), so You can introduce multiple changes easier (in such a case you need to manually reload full text once You finish the editing)</string>
     <string name="article_menu_show_by_tap">Show article menu by tap</string>
-    <string name="web_page_loading">Page loading ...</string>
+    <string name="web_page_loading">Page loading</string>
     <string name="article_menu_show_by_tap_descr">When Action Bar is hidden - otherwise You\'ll find the menu only in action bar</string>
 
     <plurals name="number_of_new_entries">
