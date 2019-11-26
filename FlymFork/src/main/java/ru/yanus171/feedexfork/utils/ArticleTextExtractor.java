@@ -1,7 +1,5 @@
 package ru.yanus171.feedexfork.utils;
 
-import android.content.Context;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
@@ -53,6 +50,7 @@ public class ArticleTextExtractor {
     static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
     static final String CLASS_ATTRIBUTE = "class";
     public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
+    public static final String P_HR = "</p><hr>";
 
     public enum MobilizeType {Yes, No, Tags}
     public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
@@ -120,7 +118,7 @@ public class ArticleTextExtractor {
         }
 
 
-        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false)) {
+        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false) ) {
             Element comments = doc.getElementById("comments");
             if (comments != null) {
                 Elements li = comments.getElementsByTag("li");
@@ -135,18 +133,18 @@ public class ArticleTextExtractor {
             }
         }
 
-        if ( mobilize == MobilizeType.No ) {
+        if ( mobilize != MobilizeType.No ) {
             ret = ret.replaceAll("<table(.)*?>", "<p>");
             ret = ret.replaceAll("</table>", "</p>");
 
             ret = ret.replaceAll("<tr(.)*?>", "<p>");
-            ret = ret.replaceAll("</tr>", "</p>");
+            ret = ret.replaceAll("</tr>", P_HR);
 
             ret = ret.replaceAll("<td(.)*?>", "<p>");
             ret = ret.replaceAll("</td>", "</p>");
 
             ret = ret.replaceAll("<th(.)*?>", "<p>");
-            ret = ret.replaceAll("</th>", "</p>");
+            ret = ret.replaceAll("</th>", P_HR);
         }
 
 
@@ -210,7 +208,7 @@ public class ArticleTextExtractor {
                         continue;
                     boolean isHidden = removeClassList.contains(className);
                     AddTagButton(el, className, baseUrl, isHidden, el == bestMatchElement || el.hasAttr( BEST_ELEMENT_ATTR ) );
-                    if ( isHidden ) {
+                    if ( isHidden && el.parent() != null ) {
                         Element elementS = doc.createElement("s");
                         elementS.addClass( TAG_BUTTON_CLASS_HIDDEN );
                         el.replaceWith(elementS);

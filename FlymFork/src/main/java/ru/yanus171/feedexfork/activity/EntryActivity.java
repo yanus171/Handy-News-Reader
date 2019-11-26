@@ -43,6 +43,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -203,6 +204,7 @@ public class EntryActivity extends BaseActivity {
         editor.putString(PrefUtils.LAST_ENTRY_URI, "");
         editor.commit();*/
 
+        mEntryFragment.mIsFinishing = true;
         if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().onBackPressed()  )
             return;
 
@@ -212,16 +214,15 @@ public class EntryActivity extends BaseActivity {
         new Thread() {
             @Override
             public void run() {
+                FeedDataContentProvider.mNotifyEnabled = false;
                 ContentResolver cr = getContentResolver();
                 cr.delete(FeedData.TaskColumns.CONTENT_URI, FeedData.TaskColumns.ENTRY_ID + " = " + mEntryFragment.getCurrentEntryID(), null);
                 FetcherService.setDownloadImageCursorNeedsRequery(true);
-
+                FeedDataContentProvider.mNotifyEnabled = true;
                 if ( !mEntryFragment.mMarkAsUnreadOnFinish )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 )
                         cr.update(EntryColumns.CONTENT_URI(  mEntryFragment.getCurrentEntryID() ), FeedData.getReadContentValues(), null, null);
-
-
             }
         }.start();
 
@@ -248,6 +249,7 @@ public class EntryActivity extends BaseActivity {
         super.onResume();
 
         setFullScreen();
+
     }
 
     public void setFullScreen() {

@@ -194,19 +194,23 @@ public class StatusText implements Observer {
                 mErrorText = "";
             }
         }
+        public int Start( final int textId ) {
+            return Start( MainApplication.getContext().getString( textId ) );
+        }
         public int Start( final String text ) {
-            Dog.v("Status Start " + text);
             synchronized ( mList ) {
-                if ( mList.isEmpty() )
+                if ( mList.isEmpty() ) {
                     mBytesRecievedLast = 0;
+                }
                 MaxID++;
                 mList.put(MaxID, text );
+                Dog.v("Status Start " + text + " id = " + MaxID );
             }
             UpdateText();
             return MaxID;
         }
         public void End( int id ) {
-            Dog.v( "Status End " );
+            Dog.v( "Status End " + id );
             synchronized ( mList ) {
                 mProgressText = "";
                 mList.remove( id );
@@ -214,6 +218,14 @@ public class StatusText implements Observer {
             UpdateText();
         }
 
+        public void Change( int id, String newText ) {
+            Dog.v( "Status change " + newText + " id = " + id );
+            synchronized ( mList ) {
+                mProgressText = "";
+                mList.put( id, newText );
+            }
+            UpdateText();
+        }
         public void ChangeProgress(String text) {
             synchronized ( mList ) {
                 mProgressText = text;

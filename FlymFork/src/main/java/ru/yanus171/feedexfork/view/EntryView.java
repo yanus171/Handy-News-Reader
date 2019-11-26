@@ -65,13 +65,11 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -145,6 +143,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private Stack<Integer> mHistoryAchorScrollY = new Stack<>();
     private final Handler mHandler = new Handler( this );
     private int mScrollY = 0;
+    private int mStatus = 0 ;
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -161,12 +160,14 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
             + "pre {white-space: pre-wrap;} "
             + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR, android.R.color.black ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR, android.R.color.black  ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
+            + "td {font-weight: " + getFontBold() + "} "
+            + "hr {width: 100%; color:" + Theme.GetTextColor() + ";align=\"center\"; size=5} "
             + "p {margin: 0.8em 0 0.8em 0} "
             + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR, android.R.color.black  ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black  ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
             + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
-            + ".button-section p {margin: 0.1cm 0 0.2cm 0}"
+            + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
             + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
             + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
             + ".tag_button i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
@@ -245,7 +246,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
     public static final ImageDownloadObservable mImageDownloadObservable = new ImageDownloadObservable();
     private EntryViewManager mEntryViewMgr;
-    public String mData = "";
+    private String mData = "";
     public double mScrollPartY = 0;
 
     private EntryActivity mActivity;
@@ -286,8 +287,10 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mActivity = activity;
         mEntryId = entryId;
         mEntryLink = link;
-        if ( contentText.length() == mLastContentLength )
+        if ( contentText.length() == mLastContentLength ) {
+            EndStatus();
             return;
+        }
         mLastContentLength = contentText.length();
         mWasAutoUnStar = wasAutoUnStar;
         //getSettings().setBlockNetworkLoads(true);
@@ -313,7 +316,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             getSettings().setTextZoom(100 + (fontSize * 20));
         }
 
-        mData = generateHtmlContent(feedID, title, link, contentText, enclosure, author, timestamp, preferFullText);
+        synchronized ( this ) {
+            mData = generateHtmlContent(feedID, title, link, contentText, enclosure, author, timestamp, preferFullText);
+        }
         LoadData();
         timer.End();
     }
@@ -382,6 +387,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void init() {
 
+        //StatusStartPageLoading();
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
 
         Timer timer = new Timer( "EntryView.init" );
@@ -460,6 +466,20 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     result =  BitmapFactory.decodeResource( MainApplication.getContext().getResources(), android.R.drawable.presence_video_online );
                 return result;
             }
+
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                synchronized ( this ) {
+                    if (progress == 100) {
+                        EndStatus();
+                    } else if (mStatus != 0) {
+                        FetcherService.Status().Change(mStatus, getContext().getString(R.string.web_page_loading) + " " + progress + " %");
+                    }
+                }
+            }
+
+
+
 
         });
 
@@ -560,22 +580,27 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 return true;
             }
 
+            @Override
+            public void onPageStarted (WebView view, String url, Bitmap favicon) {
+
+            }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                SheduleScrollTo(view);
+                ScheduleScrollTo(view);
             }
 
-            private void SheduleScrollTo(final WebView view) {
+            private void ScheduleScrollTo(final WebView view) {
                 Dog.v(TAG, "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
                 if (mScrollPartY != 0 /*&& getContentHeight() != getScrollY()*/ ) {
-                    if ( GetContentHeight() > 0 )
+                    if ( GetContentHeight() > 0 ) {
                         ScrollToY();
-                    else
+                        EndStatus();
+                    } else
                         view.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                SheduleScrollTo( view );
+                                ScheduleScrollTo( view );
                             }
                             // Delay the scrollTo to make it work
                         }, 50);
@@ -586,7 +611,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         setOnTouchListener(new View.OnTouchListener(){
             private float mPressedY;
             private float mPressedX;
-            private long mPressedTime = System.currentTimeMillis();
+            private long mPressedTime = 0;
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -595,8 +620,11 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     mPressedY = event.getY();
                     mPressedTime = System.currentTimeMillis();
                     //Log.v( TAG, "ACTION_DOWN mPressedTime=" + mPressedTime );
-                }
-                if ( event.getAction() == MotionEvent.ACTION_UP ) {
+                } else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
+                    if ( Math.abs( event.getX() - mPressedX ) > TOUCH_PRESS_POS_DELTA ||
+                         Math.abs( event.getY() - mPressedY ) > TOUCH_PRESS_POS_DELTA )
+                        mPressedTime = 0;
+                } else  if ( event.getAction() == MotionEvent.ACTION_UP ) {
                     //Log.v( TAG, "ACTION_DOWN time delta=" + ( System.currentTimeMillis() - mPressedTime ) );
                     if ( System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
                          Math.abs( event.getX() - mPressedX ) < TOUCH_PRESS_POS_DELTA &&
@@ -606,7 +634,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                          !mActivity.mHasSelection ) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
-                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 100);
+                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 200);
                     }
                 }
                 return false;
@@ -616,12 +644,25 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
         timer.End();
     }
+    public void Destroy() {
+        EntryView.mImageDownloadObservable.deleteObserver( this );
+        SaveScrollPos();
+        EndStatus();
+    }
 
+    private void EndStatus() {
+        synchronized ( this ) {
+            if (mStatus != 0)
+                FetcherService.Status().End( mStatus );
+            mStatus = 0;
+        }
+    }
 
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == CLICK_ON_URL){
             mHandler.removeMessages(CLICK_ON_WEBVIEW);
+            mActivity.closeContextMenu();
             return true;
         }
         if (msg.what == CLICK_ON_WEBVIEW){
@@ -651,6 +692,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
     }*/
 
+    public String GetData() {
+        synchronized ( this ) {
+            return mData;
+        }
+    }
+
     @Override
     protected void onScrollChanged (int l, int t, int oldl, int oldt) {
         FetcherService.Status().HideByScroll();
@@ -670,8 +717,20 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             (( Entry)data ).mID == mEntryId &&
             ((Entry) data).mLink.equals(mEntryLink) )  {
             Dog.v( "EntryView", "EntryView.update() " + mEntryId );
-            mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
-            LoadData();
+            new Thread() {
+                @Override
+                public void run() {
+                    synchronized ( this ) {
+                        mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
+                    }
+                    UiUtils.RunOnGuiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoadData();
+                        }
+                    });
+                }
+            }.start();
         }
     }
 
@@ -680,7 +739,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement( doc, mEntryLink, "", true );
         AddTagButtons( doc, mEntryLink,  root );
-        mData = generateHtmlContent( "-1", "", mEntryLink,  doc.toString(), "", "", 0, true );
+        synchronized ( this ) {
+            mData = generateHtmlContent( "-1", "", mEntryLink,  doc.toString(), "", "", 0, true );
+        }
         LoadData();
         FetcherService.Status().End( status );
     }
@@ -691,7 +752,17 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             mScrollY = getScrollY();
             mOldContentHeight = GetContentHeight();
         }
-        loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
+        StatusStartPageLoading();
+        synchronized ( this ) {
+            loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
+        }
+    }
+
+    public void StatusStartPageLoading() {
+        synchronized ( this ) {
+            if (mStatus == 0)
+                mStatus = FetcherService.Status().Start(R.string.web_page_loading);
+        }
     }
 
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;

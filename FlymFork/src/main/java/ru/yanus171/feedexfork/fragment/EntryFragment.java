@@ -153,6 +153,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public boolean mMarkAsUnreadOnFinish = false;
     private boolean mRetrieveFullText = false;
     private View mRootView;
+    public boolean mIsFinishing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -414,6 +415,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
     @Override
     public void onResume() {
+        mIsFinishing = false;
         super.onResume();
         mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
@@ -607,7 +609,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_share_all_text: {
                     if ( mCurrentPagerPos != -1 ) {
-                        Spanned spanned = Html.fromHtml(mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData);
+                        Spanned spanned = Html.fromHtml(mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData());
                         char[] chars = new char[spanned.length()];
                         TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
                         String plainText = new String(chars);
@@ -678,7 +680,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_show_html: {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        String input = NetworkUtils.formatXML("<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData + "</root>" );
+                        String input = NetworkUtils.formatXML("<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData() + "</root>" );
                         DebugApp.CreateFileUri("", "html.html", input);
                         MessageBox.Show(input);
                     }
@@ -1191,6 +1193,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if ( mIsFinishing )
+            return;
         Timer.End( loader.getId() );
         if (cursor != null) { // can be null if we do a setData(null) before
             try {
@@ -1278,6 +1282,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             EntryView view = GetEntryView( pagerPos );
             if (view != null ) {
+                view.StatusStartPageLoading();
                 if ( invalidateCache  )
                     view.InvalidateContentCache();
                 if (newCursor == null) {
@@ -1369,10 +1374,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             FetcherService.removeActiveEntryID( GetEntry( position ).mID );
             getLoaderManager().destroyLoader(position);
             container.removeView((View) object);
-            EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
-            GetEntryView( position ).SaveScrollPos();
+            GetEntryView( position ).Destroy();
             mEntryViews.delete(position);
         }
+
+
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {

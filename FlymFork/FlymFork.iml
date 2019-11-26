@@ -25,7 +25,7 @@
       </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false" pureKotlinSourceFolders="D:\Projects\Flym\FlymFork\src\debug\kotlin;D:\Projects\Flym\FlymFork\src\debug\java;D:\Projects\Flym\FlymFork\src\releaseDebugkeyUnitTest\kotlin;D:\Projects\Flym\FlymFork\src\release\kotlin;D:\Projects\Flym\FlymFork\src\release\java;D:\Projects\Flym\FlymFork\src\debugAndroidTest\kotlin;D:\Projects\Flym\FlymFork\src\debugUnitTest\kotlin;D:\Projects\Flym\FlymFork\src\releaseDebugkey\kotlin;D:\Projects\Flym\FlymFork\src\releaseDebugkey\java;D:\Projects\Flym\FlymFork\src\releaseUnitTest\kotlin">
+      <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false">
         <compilerSettings>
           <option name="additionalArguments" value="-Xallow-no-source-files" />
         </compilerSettings>
