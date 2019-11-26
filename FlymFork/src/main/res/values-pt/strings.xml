@@ -83,7 +83,6 @@
     <string name="about_flym">Sobre o aplicativo / Ajuda / Contatar o desenvolvedor </string>
     <string name="welcome_title">Bem-vindo ao Leitor de Notícias Handy. Gostaria de adicionar um feed?</string>
     <string name="never">nunca</string>
-    <string name="update">Atualizar</string>
     <string name="menu_settings">Configurações</string>
     <string name="menu_refresh">Atualizar</string>
     <string name="flym_feeds">Leitor de Notícias Handy</string>
@@ -175,7 +174,7 @@
     <string name="menu_mark_as_unread">Marcar como não lido</string>
     <string name="menu_reload_full_text">Recarregar texto completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Recarregar sem Mobilizer</string>
-    <string name="share_favorites_title">Leitor de Notícias Handy: entradas com estrela</string>
+    <string name="share_favorites_title">Leitor de Notícias Handy: entradas favoritas</string>
     <string name="copied_clipboard">Link copiado</string>
     <string name="get_full_text">Carregar artigos completos</string>
     <string name="show_text_in_entry_list">Mostrar texto original na lista de artigos</string>
@@ -301,7 +300,7 @@
     <string name="page_up_down_90_pct_descr">Para preservar várias linhas da página anterior - se desmarcado, toda a página será rolada</string>
     <string name="settings_remember_last_entry">Lembrar último artigo</string>
     <string name="settings_remeber_last_entry_description">Abrir último artigo visualizado na inicialização, caso contrário lista de entradas não lidas</string>
-    <string name="auto_unstart_at_bottom">Desfavoritar automaticamente quando terminar a leitura</string>
+    <string name="auto_unstart_at_bottom">Desmarcar favorito automaticamente quando terminar a leitura</string>
     <string name="auto_unstart_at_bottom_descr">Remover automaticamente o artigo dos Favoritos quando alcançar o fim artigo</string>
     <string name="settings_category_advanced">Avançado</string>
     <string name="settings_category_advanced_summary">Recursos adicionais (como backup, filtros e outros)</string>
@@ -337,7 +336,7 @@
     <string name="addFeed">Adicionar feed</string>
     <string name="externalLinks">Ler mais tarde</string>
     <string name="markAllAsRead">Marcar tudo como lido</string>
-    <string name="pageUp">página para cima / deslizar para baixo para (des)marcar</string>
+    <string name="pageUp">página acima / deslizar abaixo para (des)marcar favorito</string>
     <string name="pageDown">página abaixo</string>
     <string name="fullScreenToggle">Alternar para tela cheia</string>
     <string name="auto_refresh_feed">Auto atualizar feed</string>
@@ -351,7 +350,7 @@
     <string name="show_progress_info">Informações técnicas detalhadas de progresso</string>
     <string name="show_progress_info_descr">Mostrar informações detalhadas sobre a operação atual</string>
     <string name="vibrate_on_article_list_entry_swype">Vibrar ao deslizar</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">Na entrada da lista de artigos e na janela de texto do artigo enquanto estiver estrelando</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Na entrada da lista de artigos e na janela de texto do artigo quando favorito</string>
     <string name="entry_marked_unfavourite">O artigo foi removido dos Favoritos</string>
     <string name="entry_marked_favourite">O artigo foi adicionado aos Favoritos</string>
     <string name="new_feed_was_added">Novo feed foi adicionado</string>
@@ -359,7 +358,7 @@
     <string name="lock_orientation">Orientação paisagem</string>
     <string name="markAsStarred">Marcar como favorito</string>
     <string name="markedAsStarred">O artigo foi marcado como favorito: </string>
-    <string name="deleteAllEntries">Excluir todos os artigos visíveis e não marcados com estrela</string>
+    <string name="deleteAllEntries">Excluir todos os artigos visíveis e não favoritos</string>
     <string name="question">Questão</string>
     <string name="reload_full_text_with_tags">Recarregar com tags</string>
     <string name="filter_hint">A ação do filtro será iniciada se pelo menos uma condição (regra) for cumprida. \'Aceitar\' substitui \'Rejeitar\'</string>
