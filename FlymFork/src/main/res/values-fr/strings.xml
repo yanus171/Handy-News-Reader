@@ -33,7 +33,6 @@
     <!-- GENERAL -->
     <string name="welcome_title">Bienvenue sur Handy News Reader. Voulez vous ajouter un flux ?</string>
     <string name="never">jamais</string>
-    <string name="update">Mise à jour</string>
     <string name="colon">\u00A0:\u00A0</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
