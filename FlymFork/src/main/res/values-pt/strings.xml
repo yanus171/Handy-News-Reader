@@ -318,6 +318,7 @@
     <string name="deleteOldEntries">Excluir artigos antigos</string>
     <string name="AllImages">Todas as imagens</string>
     <string name="EntryImages">Imagens de postagem</string>
+    <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Atualizando feeds</string>
     <string name="deleteImages">Imagens apagadas:</string>
     <string name="deleteFullTexts">Textos completos excluídos:</string>
