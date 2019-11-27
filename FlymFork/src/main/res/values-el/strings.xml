@@ -438,6 +438,9 @@
     <string name="settings_add_google_news_dialog_descr">Απεπιλέξτε για να παρακάμψετε ένα τύπο διαλόγου ροής κατά την προσθήκη μιας ροής</string>
     <string name="reload_fulltext_after_tag_editing">Επαναφόρτωση κειμένου μετά την επεξεργασία ετικετών</string>
     <string name="reload_fulltext_after_tag_editing_descr">αν αποεπιλεχθεί, ολοκλήρο το κείμενο δε θα φορτωθεί μετά την επεξεργασία των ετικετών (προβολή|απόκρυψη|root), έτσι μπορείτε να κάνετε πολλαπλές αλλαγές ευκολότερα (σε περίπτωση που θέλετε χειροκίνητα να φορτώσετε το κείμενο όταν τελειώσετε την επεξεργασία)</string>
+    <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
+    <string name="web_page_loading">Φόρτωση σελίδας...</string>
+    <string name="article_menu_show_by_tap_descr">Όταν η μπάρα ενεργειών είναι κρυμένη- αλλιώς θα τη βρείτε μόνο στο μενού ενεργειών</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
