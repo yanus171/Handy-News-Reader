@@ -441,7 +441,7 @@
     <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
     <string name="reload_fulltext_after_tag_editing_descr">if unchecked, the full text won\'t be reloaded after each tag editing (show|hide|root), so You can introduce multiple changes easier (in such a case you need to manually reload full text once You finish the editing)</string>
     <string name="article_menu_show_by_tap">Show article menu by tap</string>
-    <string name="web_page_loading">Page loading...</string>
+    <string name="web_page_loading">Page loading</string>
     <string name="article_menu_show_by_tap_descr">When Action Bar is hidden - otherwise You\'ll find the menu only on the Action Bar</string>
     <string name="menu_go_back">Go back</string>
     <string name="menu_go_top">Scroll to top</string>
