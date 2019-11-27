@@ -83,6 +83,7 @@
     <string name="about_flym">О приложении / Помощь / Связь с разработчиком </string>
     <string name="welcome_title">Добавить канал?</string>
     <string name="never">никогда</string>
+    <string name="last_update">Обновить</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="flym_feeds">Ленты</string>
@@ -427,6 +428,7 @@
     <string name="reload_fulltext_after_tag_editing">Перезагрузить текст после редактирования тегов</string>
     <string name="reload_fulltext_after_tag_editing_descr">если флажок снят, полный текст не будет перезагружен после редактирования тегов (show|hide|root), поэтому вы можете внести несколько изменений (в таком случае вам нужно вручную перезагрузить полный текст после завершения редактирования)</string>
     <string name="article_menu_show_by_tap">Показывать меню статьи по нажатию</string>
+    <string name="web_page_loading">Загрузка страницы...</string>
     <string name="article_menu_show_by_tap_descr">Когда панель действий скрыта - иначе ее можно найти только там</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
