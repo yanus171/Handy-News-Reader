@@ -161,7 +161,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             + "pre {white-space: pre-wrap;} "
             + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR, android.R.color.black ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR, android.R.color.black  ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
             + "td {font-weight: " + getFontBold() + "} "
-            + "hr {width: 100%; color:" + Theme.GetTextColor() + ";align=\"center\"; size=5} "
+            + "hr {width: 100%; color:" + Theme.GetMenuBackgroundColor() + ";align=\"center\"; size=5} "
             + "p {margin: 0.8em 0 0.8em 0} "
             + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR, android.R.color.black  ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black  ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
@@ -800,12 +800,16 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         }
     }
 
-    public boolean onBackPressed() {
-        if ( canGoBack() && !mHistoryAchorScrollY.isEmpty() ) {
+    public boolean CanGoBack() {
+        return canGoBack() && !mHistoryAchorScrollY.isEmpty();
+    }
+    public void GoBack() {
+        if ( CanGoBack() )
             scrollTo(0, mHistoryAchorScrollY.pop() );
-            return true;
-        }
-        return false;
+    }
+    public void GoTop() {
+        mHistoryAchorScrollY.push( getScrollY() );
+        scrollTo(0, 0 );
     }
 
 

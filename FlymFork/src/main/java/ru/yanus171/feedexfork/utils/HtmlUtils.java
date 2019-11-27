@@ -213,9 +213,8 @@ public class HtmlUtils {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                    //FetcherService.addImagesToDownload(String.valueOf(entryId), imagesToDl);
-                    FetcherService.downloadEntryImages( entryId, entryLink, imagesToDl );
-                }
+                        FetcherService.downloadEntryImages( entryId, entryLink, imagesToDl );
+                    }
                 }).start();
             }
 

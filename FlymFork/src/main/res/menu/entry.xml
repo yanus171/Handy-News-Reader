@@ -70,6 +70,13 @@
         android:icon="@android:drawable/ic_menu_gallery"
         android:title="@string/menu_load_all_images"/>
     <item
+        android:id="@+id/menu_go_top"
+        android:title="@string/menu_go_top"/>
+
+    <item
+        android:id="@+id/menu_go_back"
+        android:title="@string/menu_go_back"/>
+    <item
         android:id="@+id/menu_font_bold"
         android:checkable="true"
         android:title="@string/menu_font_bold"/>

@@ -119,6 +119,7 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
 
@@ -846,7 +847,7 @@ public class FetcherService extends IntentService {
                     }
 
                     try {
-                        NetworkUtils.downloadImage(entryId, entryLink, imgPath, true);
+                        NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
 
                         // If we are here, everything is OK
                         operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
@@ -891,13 +892,14 @@ public class FetcherService extends IntentService {
                     break;
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
                 try {
-                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true);
+                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     obs.End(status1);
                 }
             }
+            EntryView.NotifyToUpdate( entryId, entryLink );
         } finally { obs.End( status ); }
     }
 

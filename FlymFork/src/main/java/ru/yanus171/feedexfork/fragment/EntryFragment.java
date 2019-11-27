@@ -519,11 +519,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //menu.findItem(R.id.menu_mark_as_favorite).setVisible( !mFavorite );
         //menu.findItem(R.id.menu_mark_as_unfavorite).setVisible(mFavorite);
 
-        menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
-        menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
-        menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
-        menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
-        menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
+
 
 //        if (mFavorite)
 //            menu.findItem(R.id.menu_mark_as_favorite ).setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
@@ -531,6 +527,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 //            menu.findItem(R.id.menu_mark_as_unfavorite).setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu (Menu menu) {
+        menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
+        menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
+        menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
+        menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
+
+        EntryView view = GetSelectedEntryView();
+        menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
     }
 
     @Override
@@ -605,6 +613,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_load_all_images: {
                     FetcherService.mMaxImageDownloadCount = 0;
                     mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    break;
+                }
+                case R.id.menu_go_back: {
+                    GetSelectedEntryView().GoBack();
+                    break;
+                }
+                case R.id.menu_go_top: {
+                    GetSelectedEntryView().GoTop();
                     break;
                 }
                 case R.id.menu_share_all_text: {
@@ -1157,7 +1173,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             public void run() {
                 FetcherService.mCancelRefresh = false;
                 int status = FetcherService.Status().Start( getString(R.string.downloadImage) ); try {
-                    NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false);
+                    NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
                 } catch (IOException e) {
                     //FetcherService.Status().End( status );
                     e.printStackTrace();
