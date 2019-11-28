@@ -83,6 +83,7 @@
     <string name="about_flym">Sobre o aplicativo / Ajuda / Contatar o desenvolvedor </string>
     <string name="welcome_title">Bem-vindo ao Leitor de Notícias Handy. Gostaria de adicionar um feed?</string>
     <string name="never">nunca</string>
+    <string name="last_update">Atualizar</string>
     <string name="menu_settings">Configurações</string>
     <string name="menu_refresh">Atualizar</string>
     <string name="flym_feeds">Leitor de Notícias Handy</string>
@@ -429,6 +430,8 @@
     <string name="article_menu_show_by_tap">Mostrar menu do artigo ao tocar</string>
     <string name="web_page_loading">Carregando página...</string>
     <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está ocultada - caso contrário você encontrará o menu somente na Barra de Ação</string>
+    <string name="menu_go_back">Voltar</string>
+    <string name="menu_go_top">Rolar para o topo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
