@@ -31,8 +31,59 @@
 -->
 <resources>
     <!-- GENERAL -->
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licence et information</big></b><br/>
+    Ce logiciel est libre : vous pouvez le redistribuer et/ou le modifier sous les termes de la Licence Publique Générale GNU publiée par la Free Software Foundation, soit la version 3 de cette licence, soit (à votre choix) l'une des versions ultérieures. Voir http://www.gnu.org/licenses<br/>
+    <br/>
+    Cette application se base sur \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Parmi les fonctionnalités ajoutées à ce fork, se trouvent :<br/>
+    <br/>
+    • groupes de flux dépliants<br/>
+    • boutons page haut|bas invisibles et sur tout l'écran<br/>
+    • compteur d'images téléchargées maximales par flux<br/>
+    • possibilité d'annuler le rafraîchissement<br/>
+    • et bien d'autres<br/>
+    <br/>
+    <b><big>Où nous trouver</big></b>
+    <br/>
+    • Visitez notre <b><a href="https://handynewsreader.blogspot.com">site internet</a></b> pour les actualités et toute information<br/>
+    • Vous pouvez télécharger cette application sur <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • Vous pouvez télécharger cette application sur <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • Consultez aussi le fil de discussion sur <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
+    • Retrouvez les sources sur <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+    <br/>
+    <b><big>Our support</big></b>
+    <br/>
+    If you stumble upon a problem with the app you\'d better<br/>
+    • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
+    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">e-mail to the developer</a></b><br/>
+    <br/>
+    <b><big>Your support</big></b>
+    <br/>
+    If you have an idea for a new feature you can:<br/>
+    • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
+    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail to the developer</a></b><br/>
+    <br/>
+    <b>If you find this app useful please rate it at <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <br/>
+    <b><big>Translations</big></b>
+    <br/>
+    You can help in translation to your own language at <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    If your language isn\'t available then please send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail to the developer</a></b>.<br/>
+    <br/>
+    <b><big>Acknowledgments</big></b>
+    <br/>
+    <b>Developers:</b><br/>
+    ***developerList***
+    <br/>
+    <b>Translators:</b><br/>
+    ***translatorList***
+    <br/>
+    ]]></string>
+    <string name="app_name">Handy News Reader</string>
+    <string name="about_title_version">version</string>
+    <string name="about_flym">À propos de l\'appli / Aide / Contactez le développeur </string>
     <string name="welcome_title">Bienvenue sur Handy News Reader. Voulez vous ajouter un flux ?</string>
     <string name="never">jamais</string>
+    <string name="last_update">Mise à jour</string>
     <string name="colon">\u00A0:\u00A0</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
@@ -75,7 +126,10 @@
     <string name="filter_is_regex">est une expression régulière</string>
     <string name="filter_apply_to_title">Appliquer au titre (or link adress)</string>
     <string name="filter_apply_to_content">Appliquer au contenu</string>
+    <string name="accept">ACCEPTER</string>
+    <string name="reject">REFUSER</string>
     <string name="feed_search">Recherche de flux</string>
+    <string name="web_page_search_duckduckgo">Moteur de recherche (Duck Duck Go)</string>
     <string name="select_file">Sélectionner le fichier (racine SD)</string>
     <string name="question_delete_feed">Voulez-vous vraiment supprimer ce flux ?</string>
     <string name="question_delete_group">Voulez-vous vraiment supprimer ce groupe et tout ses flux ?</string>
@@ -96,12 +150,14 @@
     <string name="google_news_technology">High-Tech</string>
     <string name="google_news_entertainment">Culture</string>
     <string name="google_news_sports">Sport</string>
+    <string name="google_news_science">Science</string>
     <string name="google_news_health">Santé</string>
     <string name="google_news_custom_topic">Entrer un sujet personnalisé</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Non lus</string>
     <string name="all_entries">Tous les articles</string>
     <string name="no_entries">Pas d\'article</string>
+    <string name="downloadOneImage">Télécharger l\'image</string>
     <string name="favorites">Favoris</string>
     <string name="context_menu_share_starred">Partager les favoris</string>
     <string name="menu_star">Mettre en favoris</string>
@@ -156,6 +212,21 @@
     <string name="settings_widget_background">Arrière-plan</string>
     <string name="settings_widget_background_description">Couleur et transparence de l\'arrière-plan du widget</string>
     <string name="all_feeds">Tous les flux (y compris ceux à venir)</string>
+    <string name="loadLink">Lire maintenant</string>
+    <string name="loadLinkLater">Lire plus tard</string>
+    <string name="addFeed">Ajouter un flux</string>
+    <string name="externalLinks">Lire plus tard</string>
+    <string name="markAllAsRead">Marquer tout comme lu</string>
+    <string name="pageUp">page précédente / glisser vers le bas pour retirer l\'étoile</string>
+    <string name="pageDown">page suivante</string>
+    <string name="fullScreenToggle">Basculer en plein écran</string>
+    <string name="auto_refresh_feed">Rafraîchir automatiquement les flux</string>
+    <string name="actionBarToggle">Activer/désactiver la barre d\'actions</string>
+    <string name="standard">Standard</string>
+    <string name="fontsize_entrylist">Taille de police de la liste d\'article</string>
+    <string name="question_delete_entry">Supprimer cet article?</string>
+    <string name="share_all_text">Partager tout le texte</string>
+    <string name="group">Grouper</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
