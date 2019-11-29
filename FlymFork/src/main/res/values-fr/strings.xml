@@ -204,6 +204,7 @@
     <string name="fontColorsNotFromThemeSummary">sinon, utiliser les couleurs du thème</string>
     <string name="textColor">Couleur du texte et de l\'arrière-plan</string>
     <string name="settings_color_text_sample_short">Texte</string>
+    <string name="settings_color_text_sample_long">\u201cQuand vous courtisez une belle fille une heure semble une seconde. Quand vous vous asseyez sur un récipient brûlant une seconde semble une heure. Voilà ce qu\'est la relativité.\u201d\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Mise à jour automatique</string>
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
