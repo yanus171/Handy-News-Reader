@@ -202,6 +202,8 @@
     <string name="theme">Thème</string>
     <string name="customColors">Couleurs personnalisées</string>
     <string name="fontColorsNotFromThemeSummary">sinon, utiliser les couleurs du thème</string>
+    <string name="textColor">Couleur du texte et de l\'arrière-plan</string>
+    <string name="settings_color_text_sample_short">Texte</string>
     <string name="settings_category_refresh">Mise à jour automatique</string>
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
