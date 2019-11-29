@@ -227,6 +227,7 @@
     <string name="question_delete_entry">Supprimer cet article?</string>
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
+    <string name="auto_image_load">Chargement des images auto</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
