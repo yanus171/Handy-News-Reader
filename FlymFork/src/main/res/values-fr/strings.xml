@@ -164,11 +164,22 @@
     <string name="menu_unstar">Enlever des favoris</string>
     <string name="menu_share">Partager</string>
     <string name="menu_full_screen">Plein écran</string>
+    <string name="menu_actionbar_visible">Barre d’actions</string>
+    <string name="menu_font_bold">Gras</string>
     <string name="menu_copy_clipboard">Copier le lien</string>
+    <string name="menu_cancel_refresh">Annuler la mise à jour</string>
+    <string name="menu_delete_all">Tout supprimer</string>
+    <string name="menu_toogle_unread_all">Marquer tous comme non lus</string>
+    <string name="menu_load_all_images">Charger toutes les images</string>
+    <string name="menu_mark_as_favorite">Ajouter aux Favoris</string>
+    <string name="menu_mark_as_unfavorite">Retirer des Favoris</string>
     <string name="menu_mark_as_unread">Marquer comme non lu</string>
+    <string name="menu_reload_full_text">Recharger tout le texte</string>
+    <string name="menu_reload_full_text_without_mobilizer">Recharger sans Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: articles favoris</string>
     <string name="copied_clipboard">Lien copié</string>
     <string name="get_full_text">Récupérer le texte complet</string>
+    <string name="show_text_in_entry_list">Afficher le texte original sur la liste des articles</string>
     <string name="original_text">Affiche le texte original</string>
     <string name="see_enclosure">Voir le fichier joint</string>
     <string name="see_link">Ouvrir dans le navigateur web</string>
@@ -186,6 +197,11 @@
     <string name="blue">Bleu</string>
     <string name="transparency">Transparence</string>
     <!-- SETTINGS -->
+    <string name="settings_category_common">Paramètres généraux</string>
+    <string name="settings_category_common_summary">Thème</string>
+    <string name="theme">Thème</string>
+    <string name="customColors">Couleurs personnalisées</string>
+    <string name="fontColorsNotFromThemeSummary">sinon, utiliser les couleurs du thème</string>
     <string name="settings_category_refresh">Mise à jour automatique</string>
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
