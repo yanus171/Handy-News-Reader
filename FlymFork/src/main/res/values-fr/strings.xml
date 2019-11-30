@@ -206,8 +206,11 @@
     <string name="settings_color_text_sample_short">Texte</string>
     <string name="settings_color_text_sample_long">\u201cQuand vous courtisez une belle fille une heure semble une seconde. Quand vous vous asseyez sur un récipient brûlant une seconde semble une heure. Voilà ce qu\'est la relativité.\u201d\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Mise à jour automatique</string>
+    <string name="settings_category_refresh_summary">Actualisation automatique et temps de conservation des articles</string>
     <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
     <string name="settings_refresh_interval">Intervalle de mise à jour</string>
+    <string name="settings_min_update_battery_level">Niveau de batterie min</string>
+    <string name="settings_refresh_only_selected">Sélectionnés seulement</string>
     <string name="settings_refresh_on_open">Mise à jour des flux à l\'ouverture</string>
     <string name="settings_refresh_on_open_description">Met à jour tous les flux à l\'ouverture de l\'application</string>
     <string name="settings_refresh_wifi_only">Mise à jour en WiFi uniquement</string>
