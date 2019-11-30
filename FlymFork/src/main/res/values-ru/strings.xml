@@ -430,6 +430,8 @@
     <string name="article_menu_show_by_tap">Показывать меню статьи по нажатию</string>
     <string name="web_page_loading">Загрузка страницы...</string>
     <string name="article_menu_show_by_tap_descr">Когда панель действий скрыта - иначе ее можно найти только там</string>
+    <string name="menu_go_back">Назад</string>
+    <string name="menu_go_top">Прокрутить вверх</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
