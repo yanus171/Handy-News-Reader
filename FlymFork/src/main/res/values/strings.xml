@@ -83,7 +83,7 @@
     <string name="about_flym">About the app / Help / Contact the developer </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
-    <string name="update">Update</string>
+    <string name="last_update">Update</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
@@ -97,7 +97,7 @@
 
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
-    <string name="menu_add_feed">Add a feed</string>
+    <string name="menu_add_feed">Article Web Search</string>
     <string name="no_feeds">No feeds</string>
     <string name="no_filters">No rules</string>
     <string name="context_menu_delete">Delete</string>
@@ -166,6 +166,7 @@
     <string name="menu_unstar">Unstar</string>
     <string name="menu_share">Share</string>
     <string name="menu_full_screen">Full screen</string>
+    <string name="menu_actionbar_visible">Action Bar</string>
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
@@ -353,7 +354,7 @@
     <string name="pageDown">page down</string>
     <string name="fullScreenToggle">Full screen toggle</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">Toggle action bar</string>
+    <string name="actionBarToggle">Toggle Action Bar</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article\'s list</string>
     <string name="question_delete_entry">Delete this article?</string>
@@ -437,6 +438,13 @@
     <string name="image_white_background">Image white background</string>
     <string name="settings_add_google_news_dialog">Add Google News dialog</string>
     <string name="settings_add_google_news_dialog_descr">Uncheck to bypass a select feed type dialog when adding a feed</string>
+    <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
+    <string name="reload_fulltext_after_tag_editing_descr">if unchecked, the full text won\'t be reloaded after each tag editing (show|hide|root), so You can introduce multiple changes easier (in such a case you need to manually reload full text once You finish the editing)</string>
+    <string name="article_menu_show_by_tap">Show article menu by tap</string>
+    <string name="web_page_loading">Page loading</string>
+    <string name="article_menu_show_by_tap_descr">When Action Bar is hidden - otherwise You\'ll find the menu only on the Action Bar</string>
+    <string name="menu_go_back">Go back</string>
+    <string name="menu_go_top">Scroll to top</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

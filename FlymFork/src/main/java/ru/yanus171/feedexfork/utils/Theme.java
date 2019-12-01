@@ -55,7 +55,7 @@ public class Theme {
 				theme.put(TEXT_COLOR, "#555555");
 				theme.put(TEXT_COLOR_BACKGROUND, "#f6f6f6");
 				theme.put(MENU_FONT_COLOR, "#000000");
-				theme.put(MENU_BACKGROUND_COLOR, "#FFFFFF");
+				theme.put(MENU_BACKGROUND_COLOR, "#CCCCCC");
 				theme.put(QUOTE_BACKGROUND_COLOR, "#e6e6e6");
 				theme.put(QUOTE_LEFT_COLOR, "#a6a6a6");
 				theme.put(BUTTON_COLOR, "#52A7DF");
@@ -75,7 +75,7 @@ public class Theme {
 				theme.put(TEXT_COLOR, "#FFFFFF");
 				theme.put(TEXT_COLOR_BACKGROUND, "#181b1f");
 				theme.put(MENU_FONT_COLOR, "#FFFFFF");
-				theme.put(MENU_BACKGROUND_COLOR, "#000000");
+				theme.put(MENU_BACKGROUND_COLOR, "#222222");
 				theme.put(QUOTE_BACKGROUND_COLOR, "#383b3f");
 				theme.put(QUOTE_LEFT_COLOR, "#686b6f");
 				theme.put(BUTTON_COLOR, "#1A5A81");
@@ -108,6 +108,11 @@ public class Theme {
 		//else
 		//	return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
 	}
+
+	public static String GetBackgroundColor() {
+		return Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
+	}
+
 
 	public static boolean IsLight() {
 		return GetTheme().equals( LIGHT );

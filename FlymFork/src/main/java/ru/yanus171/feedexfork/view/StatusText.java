@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Observable;
@@ -26,6 +27,7 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
@@ -37,6 +39,7 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 public class StatusText implements Observer {
     private static final String SEP = "__";
+    public static final String DELIMITER = ", ";
     private String mFeedID = "";
     private String mEntryID = "";
     private TextView mView;
@@ -51,7 +54,7 @@ public class StatusText implements Observer {
         mErrorView = errorView;
         mView.setVisibility(View.GONE);
         mView.setGravity(Gravity.LEFT | Gravity.TOP);
-        mView.setBackgroundColor(Color.TRANSPARENT );
+        mView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,20 +68,19 @@ public class StatusText implements Observer {
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);
-        mErrorView.setBackgroundColor(Color.TRANSPARENT );
+        mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FetcherObservable status = (FetcherObservable)observable;
-                status.ClearError();
-                v.setVisibility(View.GONE);
-
+            FetcherObservable status = (FetcherObservable)observable;
+            status.ClearError();
+            v.setVisibility(View.GONE);
             }
         });
         mErrorView.setLines( 2 );
     }
 
-    public void SetFeedID( String feedID ) {
+    private void SetFeedID(String feedID) {
         mFeedID = feedID;
         FetcherService.Status().UpdateText();
     }
@@ -146,37 +148,37 @@ public class StatusText implements Observer {
                 @Override
                 public void run() {
                 synchronized ( mList ) {
-                    String s = "";
+                    ArrayList<String> s = new ArrayList<>();
                     if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) )
                         for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
-                                s += item.getValue() + " ";
+                                s.add( item.getValue() );
 
                     if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
                         if (!mProgressText.isEmpty())
-                            s += " " + mProgressText;
+                            s.add( mProgressText );
                         if (!mList.isEmpty() && !mDBText.isEmpty())
-                            s += " " + mDBText;
+                            s.add( mDBText );
                         if (!mList.isEmpty() && FetcherService.mCancelRefresh)
-                            s += "\n cancel Refresh";
+                            s.add( "\n cancel Refresh" );
                         if (mBytesRecievedLast > 0)
-                            s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
+                            s.add(0, String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) );
                     }
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s, mNotificationTitle));
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
                     if ( !mNotificationTitle.isEmpty() )
-                        s = mNotificationTitle + " " + s;
-                    NotifyObservers(s, mErrorText, mErrorFeedID, mErrorEntryID);
-                    Dog.v("Status Update " + s.replace("\n", " "));
+                        s.add( 0, mNotificationTitle );
+                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID);
+                    Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
                 }
                 }
             });
         }
 
-        public void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID) {
+        void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID) {
             notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID);
         }
 
@@ -194,19 +196,23 @@ public class StatusText implements Observer {
                 mErrorText = "";
             }
         }
+        public int Start( final int textId ) {
+            return Start( MainApplication.getContext().getString( textId ) );
+        }
         public int Start( final String text ) {
-            Dog.v("Status Start " + text);
             synchronized ( mList ) {
-                if ( mList.isEmpty() )
+                if ( mList.isEmpty() ) {
                     mBytesRecievedLast = 0;
+                }
                 MaxID++;
                 mList.put(MaxID, text );
+                Dog.v("Status Start " + text + " id = " + MaxID );
             }
             UpdateText();
             return MaxID;
         }
         public void End( int id ) {
-            Dog.v( "Status End " );
+            Dog.v( "Status End " + id );
             synchronized ( mList ) {
                 mProgressText = "";
                 mList.remove( id );
@@ -214,6 +220,14 @@ public class StatusText implements Observer {
             UpdateText();
         }
 
+        public void Change( int id, String newText ) {
+            Dog.v( "Status change " + newText + " id = " + id );
+            synchronized ( mList ) {
+                mProgressText = "";
+                mList.put( id, newText );
+            }
+            UpdateText();
+        }
         public void ChangeProgress(String text) {
             synchronized ( mList ) {
                 mProgressText = text;

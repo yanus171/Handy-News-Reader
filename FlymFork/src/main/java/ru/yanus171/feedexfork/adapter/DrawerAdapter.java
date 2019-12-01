@@ -186,7 +186,7 @@ public class DrawerAdapter extends BaseAdapter {
                     String formattedDate = mFormattedDateCache.get(timestamp);
                     if (formattedDate == null) {
 
-                        formattedDate = mContext.getString(R.string.update) + COLON;
+                        formattedDate = mContext.getString(R.string.last_update) + COLON;
 
                         if (timestamp == 0) {
                             formattedDate += mContext.getString(R.string.never);

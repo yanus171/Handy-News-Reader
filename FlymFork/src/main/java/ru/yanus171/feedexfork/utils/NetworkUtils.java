@@ -96,7 +96,7 @@ public class NetworkUtils {
         //return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
     }
 
-    public static void downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit ) throws IOException {
+    public static void downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit, boolean notify ) throws IOException {
         if ( FetcherService.isCancelRefresh() )
             return;
         String tempImgPath = getTempDownloadedImagePath(entryUrl, imgUrl);
@@ -165,7 +165,7 @@ public class NetworkUtils {
                 }
             }
 
-            if ( success && !abort )
+            if ( success && !abort && notify )
                 EntryView.NotifyToUpdate( entryId, entryUrl );
         }
         //if ( updateGUI )

@@ -119,6 +119,7 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
 
@@ -552,7 +553,7 @@ public class FetcherService extends IntentService {
                         nbAttempt = cursor.getInt(2);
                     }
 
-                    if ( mobilizeEntry(cr, entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, false)) {
+                    if ( mobilizeEntry(cr, entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, false, false)) {
                         cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                     } else {
                         if (nbAttempt + 1 > MAX_TASK_ATTEMPT) {
@@ -605,7 +606,8 @@ public class FetcherService extends IntentService {
                                         final ArticleTextExtractor.MobilizeType mobilize,
                                         final AutoDownloadEntryImages autoDownloadEntryImages,
                                         final boolean isCorrectTitle,
-                                        final boolean isShowError ) {
+                                        final boolean isShowError,
+                                        final boolean isForceReload ) {
         boolean success = false;
 
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
@@ -614,7 +616,7 @@ public class FetcherService extends IntentService {
         if (entryCursor.moveToFirst()) {
             int linkPos = entryCursor.getColumnIndex(EntryColumns.LINK);
             final String link = entryCursor.getString(linkPos);
-            if ( !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
+            if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
                 final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
                 Connection connection = null;
@@ -653,9 +655,6 @@ public class FetcherService extends IntentService {
                     Status().ChangeProgress("");
 
                     if (mobilizedHtml != null) {
-                        Status().ChangeProgress(R.string.improveHtmlContent);
-                        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link), mobilize);
-                        Status().ChangeProgress("");
                         ContentValues values = new ContentValues();
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
                         if ( title != null )
@@ -792,7 +791,7 @@ public class FetcherService extends IntentService {
 
             if ( load && !FetcherService.isCancelRefresh() )
                 mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()),
-                              ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError);
+                              ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError, false);
             return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);
@@ -848,7 +847,7 @@ public class FetcherService extends IntentService {
                     }
 
                     try {
-                        NetworkUtils.downloadImage(entryId, entryLink, imgPath, true);
+                        NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
 
                         // If we are here, everything is OK
                         operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
@@ -893,13 +892,14 @@ public class FetcherService extends IntentService {
                     break;
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
                 try {
-                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true);
+                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     obs.End(status1);
                 }
             }
+            EntryView.NotifyToUpdate( entryId, entryLink );
         } finally { obs.End( status ); }
     }
 

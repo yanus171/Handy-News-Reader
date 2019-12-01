@@ -35,15 +35,21 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
+
 public class HtmlUtils {
 
     private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
-            .addTags("iframe", "video", "audio", "source", "track")
+            .addTags("iframe", "video", "audio", "source", "track", "hr" )
             .addAttributes("iframe", "src", "frameborder", "height", "width")
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
-            .addAttributes( ":all", "id", "name" )
+            //.addAttributes("math", "xmlns")
+            //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
+            .addAttributes( ":all", "id", "name", "class", "displaystyle", "scriptlevel" )
+            .addAttributes( "textroot", HANDY_NEWS_READER_ROOT_CLASS )
             .addTags("s")
             .addAttributes("track", "src", "kind", "srclang", "label");
 
@@ -94,8 +100,8 @@ public class HtmlUtils {
             // remove empty or bad images
             content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
             content = BAD_IMAGE_PATTERN.matcher(content).replaceAll("");
-            // remove empty links
-            content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
+            //// remove empty links
+            //content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
             // fix non http image paths
             content = NON_HTTP_IMAGE_PATTERN.matcher(content).replaceAll(" $1=$2http://");
             // remove trailing BR & too much BR
@@ -142,6 +148,7 @@ public class HtmlUtils {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
+        final int status = Status().Start("Reading images");
         // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
         if (!TextUtils.isEmpty(content)) {
@@ -206,13 +213,13 @@ public class HtmlUtils {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                    //FetcherService.addImagesToDownload(String.valueOf(entryId), imagesToDl);
-                    FetcherService.downloadEntryImages( entryId, entryLink, imagesToDl );
-                }
+                        FetcherService.downloadEntryImages( entryId, entryLink, imagesToDl );
+                    }
                 }).start();
             }
 
         }
+        FetcherService.Status().End(status );
 
         return content;
     }
@@ -228,7 +235,7 @@ public class HtmlUtils {
     @NonNull
     static String getButtonHtml(String methodName, String caption, String divClass) {
         final String BUTTON_START = "<span class=\"" + divClass +"\"><i onclick=\"";
-        final String BUTTON_END = "\" align=\"left\" >" + caption + "</i></span>";
+        final String BUTTON_END = "\" align=\"left\" class=\"" + divClass + "\" >" + caption + "</i></span>";
         final String result = BUTTON_START + "ImageDownloadJavaScriptObject." + methodName + ";" + BUTTON_END;
         return result;
     }

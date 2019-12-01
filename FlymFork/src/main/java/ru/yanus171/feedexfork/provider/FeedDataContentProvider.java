@@ -870,7 +870,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
         int count = database.delete(table, where.toString(), selectionArgs);
 
-        if (count > 0) {
+        if (count > 0 && mNotifyEnabled ) {
 //            if (FeedColumns.TABLE_NAME.equals(table)) {
 //                mDatabaseHelper.exportToOPML();
 //            }

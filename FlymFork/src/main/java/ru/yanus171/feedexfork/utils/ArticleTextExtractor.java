@@ -1,8 +1,5 @@
 package ru.yanus171.feedexfork.utils;
 
-import android.content.Context;
-import android.text.TextUtils;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
@@ -52,6 +49,13 @@ public class ArticleTextExtractor {
     static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
     static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
     static final String CLASS_ATTRIBUTE = "class";
+    public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
+    public static final String P_HR = "</p><hr>";
+
+    public enum MobilizeType {Yes, No, Tags}
+    public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
+
+    public static String mLastLoadedAllDoc = "";
 
     /**
      * @param input            extracts article text from given html string. wasn't tested
@@ -59,8 +63,6 @@ public class ArticleTextExtractor {
      * @param contentIndicator a text which should be included into the extracted content, or null
      * @return extracted article, all HTML tags stripped
      */
-    public enum MobilizeType {Yes, No, Tags}
-
     public static String extractContent(InputStream input, final String url, String contentIndicator, MobilizeType mobilize, boolean isFindBEstElement) throws Exception {
         return extractContent(Jsoup.parse(input, null, ""), url, contentIndicator, mobilize, isFindBEstElement);
     }
@@ -70,80 +72,28 @@ public class ArticleTextExtractor {
                                         String contentIndicator,
                                         MobilizeType mobilize,
                                         boolean isFindBestElement) {
-        final Context context = MainApplication.getContext();
-
         if (doc == null)
             throw new NullPointerException("missing document");
-
-
-        doc.addClass( "Handy_News_Reader_root" );
 
         FetcherService.Status().AddBytes(doc.html().length());
 
         // now remove the clutter
         prepareDocument(doc, mobilize);
 
-
-        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
-
-
-        Element bestMatchElement = doc;
-        if (mobilize != MobilizeType.No) {
-            // init elements
-            Collection<Element> nodes = getNodes(doc);
-            int maxWeight = 0;
-
-            bestMatchElement = getBestElementFromFile(doc, url);
-            if (bestMatchElement == null && isFindBestElement) {
-                for (Element entry : nodes) {
-                    int currentWeight = getWeight(entry, contentIndicator);
-                    if (currentWeight > maxWeight) {
-                        maxWeight = currentWeight;
-                        bestMatchElement = entry;
-
-                        if (maxWeight > 300) {
-                            break;
-                        }
-                    }
-                }
-            }
-            if ( bestMatchElement == null )
-                bestMatchElement = doc;
-        }
-
-        if (mobilize == MobilizeType.Tags) {
-            final String baseUrl = NetworkUtils.getUrlDomain(url);
-            for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
-                if (el.hasText()) {
-                    final String classNameList =
-                            el.attr(CLASS_ATTRIBUTE).trim().replaceAll("\\r|\\n", " ").replaceAll(" +", " ");
-                    if ( classNameList.equals(TAG_BUTTON_CLASS) )
-                        continue;
-                    for ( String className: TextUtils.split( classNameList, " " ) ) {
-                        if ( className.trim().isEmpty() )
-                            continue;
-                        boolean isHidden = removeClassList.contains(className);
-                        AddTagButton(el, className, baseUrl, isHidden, el == bestMatchElement );
-                        if ( isHidden ) {
-                            Element elementS = doc.createElement("s");
-                            el.replaceWith(elementS);
-                            elementS.insertChildren(0, el);
-                        }
-                    }
-                }
-        }
-
-        if (mobilize != MobilizeType.Tags) {
-            for (String classItem: removeClassList ) {
-                Elements list = bestMatchElement.getElementsByClass(classItem);
+        Element rootElement = doc;
+        if ( mobilize == MobilizeType.Yes) {
+            rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
+            final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+            for (String classItem : removeClassList) {
+                Elements list = rootElement.getElementsByClass(classItem);
                 for (Element item : list) {
                     item.remove();
                 }
             }
         }
 
-        if ( bestMatchElement == null || mobilize == MobilizeType.Tags )
-            bestMatchElement = doc;
+        if ( rootElement == null )
+            rootElement = doc;
 
         Collection<Element> metas = getMetas(doc);
         String ogImage = null;
@@ -155,20 +105,20 @@ public class ArticleTextExtractor {
         }
 
 
-        Elements title = bestMatchElement.getElementsByClass("title");
+        Elements title = rootElement.getElementsByClass("title");
         for (Element entry : title)
             if (entry.tagName().toLowerCase().equals("h1")) {
                 title.first().remove();
                 break;
             }
 
-        String ret = bestMatchElement.toString();
+        String ret = rootElement.toString();
         if (ogImage != null && !ret.contains(ogImage)) {
             ret = "<img src=\"" + ogImage + "\"><br>\n" + ret;
         }
 
 
-        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false)) {
+        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false) ) {
             Element comments = doc.getElementById("comments");
             if (comments != null) {
                 Elements li = comments.getElementsByTag("li");
@@ -183,21 +133,89 @@ public class ArticleTextExtractor {
             }
         }
 
-        if ( mobilize == MobilizeType.No ) {
+        if ( mobilize != MobilizeType.No ) {
             ret = ret.replaceAll("<table(.)*?>", "<p>");
             ret = ret.replaceAll("</table>", "</p>");
 
             ret = ret.replaceAll("<tr(.)*?>", "<p>");
-            ret = ret.replaceAll("</tr>", "</p>");
+            ret = ret.replaceAll("</tr>", P_HR);
 
             ret = ret.replaceAll("<td(.)*?>", "<p>");
             ret = ret.replaceAll("</td>", "</p>");
 
             ret = ret.replaceAll("<th(.)*?>", "<p>");
-            ret = ret.replaceAll("</th>", "</p>");
+            ret = ret.replaceAll("</th>", P_HR);
         }
 
+
+        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), mobilize);
+
+        if ( mobilize == MobilizeType.Tags ) {
+            mLastLoadedAllDoc = ret;
+            Document tempDoc = Jsoup.parse(ret, NetworkUtils.getUrlDomain(url));
+            rootElement = FindBestElement(tempDoc, url, contentIndicator, isFindBestElement);
+            AddTagButtons(tempDoc, url, rootElement);
+            ret = tempDoc.toString();
+        }
+
+
         return ret;
+    }
+
+    public static Element FindBestElement(Document doc, String url, String contentIndicator, boolean isFindBestElement) {
+
+        Element bestMatchElement = doc;
+        // init elements
+        Collection<Element> nodes = getNodes(doc);
+        int maxWeight = 0;
+
+        bestMatchElement = getBestElementFromFile(doc, url);
+        if (bestMatchElement == null && isFindBestElement) {
+            for (Element entry : nodes) {
+                int currentWeight = getWeight(entry, contentIndicator);
+                if (currentWeight > maxWeight) {
+                    maxWeight = currentWeight;
+                    bestMatchElement = entry;
+
+                    if (maxWeight > 300) {
+                        break;
+                    }
+                }
+            }
+        }
+        if ( bestMatchElement == null )
+            bestMatchElement = doc;
+
+
+        return bestMatchElement;
+    }
+
+    public static void AddTagButtons(Document doc, String url, Element bestMatchElement) {
+        doc.addClass( HANDY_NEWS_READER_ROOT_CLASS );
+
+        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+
+        final String baseUrl = NetworkUtils.getUrlDomain(url);
+        for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
+            if (el.hasText()) {
+                //final String classNameList =
+                //       el.attr(CLASS_ATTRIBUTE).trim().replaceAll("\\r|\\n", " ").replaceAll(" +", " ");
+                final Set<String> classNameList = el.classNames();
+                if ( classNameList.contains( TAG_BUTTON_CLASS) )
+                    continue;
+                for ( String className: classNameList ) {
+                    if ( className.trim().isEmpty() )
+                        continue;
+                    boolean isHidden = removeClassList.contains(className);
+                    AddTagButton(el, className, baseUrl, isHidden, el == bestMatchElement || el.hasAttr( BEST_ELEMENT_ATTR ) );
+                    if ( isHidden && el.parent() != null ) {
+                        Element elementS = doc.createElement("s");
+                        elementS.addClass( TAG_BUTTON_CLASS_HIDDEN );
+                        el.replaceWith(elementS);
+                        elementS.insertChildren(0, el);
+                    }
+                }
+            }
     }
 
     private static void AddTagButton(Element el, String className, String baseUrl, boolean isHidden, boolean isFullTextRoot) {
@@ -223,16 +241,20 @@ public class ArticleTextExtractor {
                 String elementValue = list2[1];
                 //if (doc.head().html().contains(keyWord)) {
                 if (url.contains(keyWord)) {
+                    if ( elementValue.equals( HANDY_NEWS_READER_ROOT_CLASS ) )
+                        return doc;
                     if (elementType.equals("id"))
                         result = doc.getElementById(elementValue);
                     else if (elementType.equals("class")) {
-                        Elements elements = doc.getElementsByClass(elementValue);
+                        final Elements elements = doc.getElementsByClass(elementValue);
                         if (!elements.isEmpty()) {
                             if ( elements.size() == 1 )
                                 result = elements.first();
                             else {
+                                for ( Element el: elements )
+                                    el.attr(BEST_ELEMENT_ATTR, "1");
                                 result = new Element("p");
-                                result.insertChildren(0, elements);
+                                result.insertChildren(0, elements.clone());
                             }
                         } else
                             result = doc;
