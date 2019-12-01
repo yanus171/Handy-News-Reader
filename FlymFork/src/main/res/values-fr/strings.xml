@@ -32,15 +32,15 @@
 <resources>
     <!-- GENERAL -->
     <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licence et information</big></b><br/>
-    Ce logiciel est libre : vous pouvez le redistribuer et/ou le modifier sous les termes de la Licence Publique Générale GNU publiée par la Free Software Foundation, soit la version 3 de cette licence, soit (à votre choix) l'une des versions ultérieures. Voir http://www.gnu.org/licenses<br/>
+    Ce logiciel est libre : vous pouvez le redistribuer et/ou le modifier sous les termes de la Licence Publique Générale GNU publiée par la Free Software Foundation, soit la version 3 de cette licence, soit (à votre choix) l\'une des versions ultérieures. Voir http://www.gnu.org/licenses<br/>
     <br/>
     Cette application se base sur \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Parmi les fonctionnalités ajoutées à ce fork, se trouvent :<br/>
     <br/>
     • groupes de flux dépliants<br/>
-    • boutons page haut|bas invisibles et sur tout l'écran<br/>
-    • compteur d'images téléchargées maximales par flux<br/>
-    • possibilité d'annuler le rafraîchissement<br/>
-    • et bien d'autres<br/>
+    • boutons page haut|bas invisibles et sur tout l\'écran<br/>
+    • compteur d\'images téléchargées maximales par flux<br/>
+    • possibilité d\'annuler le rafraîchissement<br/>
+    • et bien d\'autres<br/>
     <br/>
     <b><big>Où nous trouver</big></b>
     <br/>
