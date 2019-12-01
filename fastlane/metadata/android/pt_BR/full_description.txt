@@ -1,0 +1,39 @@
+<i>"Manter-se em contato com todos os meus interesses nunca foi tão fácil".</i>
+
+<b><i>Leitor de Notícias Handy</i>: sem anúncios / software livre com licença <i>GNU GPL</i>.</b>
+
+<ul>
+	<li><b>crie uma revista dos seus sonhos!</b></li>
+	<li><b>artigos interessantes diretamente nas suas mãos</b></li>
+	<li><b>finalmente uma leitura agradável</b></li>
+</ul>
+
+...aproveite sua vida <b>ficando livre de distrações - e atualizado com seus interesses</b> ao mesmo tempo. Com foco no que é essencial...
+
+Conheça <i>LN Handy</i> - um leitor de notícias <i>RSS</i> rico em recursos, orientado para leitura offline, leitor que <b>respeita tanto o seu tempo quanto sua paz interna</b>: evita distrações e não chama a atenção, coisas tão familiares hoje quando você pensa em dispositivos móveis.
+
+<ul>
+<b><u>Características</u>:</b>
+	<li><b><u>artigos completos</u> à mão</b>: sem necessidade de usar um navegador externo para acessar o texto completo,</li>
+	<li><b>leitura</b><u>conveniente</u>: alterne artigos pelos botões de volume, deslizando ou por <i>Zonas de Toque</i>, lembrando a posição de leitura <u>por artigo</u>,</li>
+	<li><b>notificação de artigos importantes</b>: Você não perderá mais nada que achar especialmente importante,</li>
+	<li><b><i>"Leia Mais Tarde"</i></b>: Você pode marcar rapidamente or artigos - <b>sinalização (estrela) de artigos para leitura posterior</b> no seu tempo livre - ou apenas para salvar,</li>
+	<li><b><i>"Remover quando finalizado"</i></b> - uma vez que você concluiu determinado artigo - ele pode ser automaticamente removido da lista dos <i>'Favoritos'</i> (=<i>'Leia Mais Tarde'</i>),</li>
+	<li><b>pronto para ficar off-line</b> - mergulhe numa leitura interessante sem distrações: uma vez atualizada, não há necessidade de carregamento adicional - ele realmente funciona sem Internet :),</li>
+	<li><b>preserve a largura de banda</b>: entre on-line apenas para novos artigos - não para carregar a versão completa todas as vezes; controle o que deve ser baixado - e em que grau,</li>
+	<li><b>uso de gestos</b>: ex. deslize de cima para baixo para adicionar/remover um artigo dos <i>Favoritos</i>, deslize ao longo da borda esquerda da tela para ajustar o brilho do texto,</li>
+	<li><b>amigável ao usuário</b>: tema escuro que se preocupa com seus olhos, ajuste o tamanho do texto, cor e brilho para atender suas necessidades individuais,</li>
+	<li><b>ideias legais</b>: cabeçalhos de artigo sem links não irão interferir com seus dedos ;) ; rolar páginas de artigos em 90% de sua altura pode tornar a leitura menos confusa = mais confortável,</li>
+	<li><b>altamente personalizável</b>: do tamanho das <i>Zonas de Toque</i> às cores e sublinhamentos de links - há um monte de detalhes que você pode configurar exatamente para seu gosto e necessidades.</li>
+	<li><b>recursos avançados</b>: backup automático (exportar/importar para/de um <i>formato.opml</i>), fornecendo conteúdo de websites de formato não--<i>RSS</i>, </li>
+	<li><b>mais funcionalidades interessantes</b> "na loja" - visite nosso site para saber mais :) !,</li>
+	<li><b><u>importante</u>:</b> este aplicativo NÃO sincroniza com leitores de notícias online (ou seja, <i>Feedly</i>),</li>
+	<li><b>feedback e sugestões são bem vindos;</b></li>
+</ul>
+
+<ul>
+<b>Onde você pode nos encontrar:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">código-fonte em <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">página inicial</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">traduções</a>;</li>
+</ul>

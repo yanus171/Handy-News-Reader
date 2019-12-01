@@ -129,6 +129,7 @@
     <string name="accept">ZULASSEN</string>
     <string name="reject">ABLEHNEN</string>
     <string name="feed_search">Feed-Suche</string>
+    <string name="web_page_search_duckduckgo">Webseitensuche (DuckDuckGo)</string>
     <string name="select_file">Datei auswählen (SD-Stammverzeichnis)</string>
     <string name="question_delete_feed">Möchten Sie diesen Feed wirklich löschen?</string>
     <string name="question_delete_group">Möchten Sie diese Gruppe mit allen Feeds wirklich löschen?</string>
@@ -163,6 +164,7 @@
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_full_screen">Vollbild</string>
+    <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
     <string name="menu_copy_clipboard">Link kopieren</string>
     <string name="menu_cancel_refresh">Aktualisierung abbrechen</string>
@@ -366,6 +368,7 @@
     <string name="keyword">Schlüsselwort(e)</string>
     <string name="loadTypeWeb">Web (alle Links laden)</string>
     <string name="loadTypeRSS">RSS (Feed, Link oder Schlüsselworte)</string>
+    <string name="loadTypeWebPageSearch">Webseitensuche DuckDuckGo (einen Artikel finden und laden)</string>
     <string name="loadType">Art des Ladens:</string>
     <string name="global_filter">Automatische Favoriten&#8230;</string>
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
@@ -422,6 +425,15 @@
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Abbildung mit weißem Hintergrund</string>
+    <string name="settings_add_google_news_dialog">Google News Dialog hinzufügen</string>
+    <string name="settings_add_google_news_dialog_descr">Deaktivieren Sie das Kontrollkästchen, um einen Dialog zur Auswahl des Feedtyps zu umgehen, wenn Sie einen Feed hinzufügen.</string>
+    <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
+    <string name="reload_fulltext_after_tag_editing_descr">Wenn das Kontrollkästchen deaktiviert ist, wird der Volltext nicht nach jeder Schlagwort-Bearbeitung neu geladen (Anzeigen|Ausblenden|Stamm), so dass es einfach wäre, mehrere Bearbeitungen durchzuführen. In diesem Fall sollten Sie den Volltext nach Abschluss der Bearbeitung manuell neu laden.</string>
+    <string name="article_menu_show_by_tap">Artikelmenü durch Antippen anzeigen</string>
+    <string name="web_page_loading">Seite wird geladen …</string>
+    <string name="article_menu_show_by_tap_descr">Wenn die Aktionsleiste ausgeblendet ist. Andernfalls wäre das Menü nur in der Aktionsleiste verfügbar.</string>
+    <string name="menu_go_back">Zurück</string>
+    <string name="menu_go_top">Zum Seitenanfang</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

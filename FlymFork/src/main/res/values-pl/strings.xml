@@ -86,7 +86,7 @@ GENERAL]]></string>
     <string name="about_flym">O programie / Pomoc / Kontakt z Autorem</string>
     <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
-    <string name="last_update">Aktualizuj</string>
+    <string name="last_update">Aktualizacja</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież</string>
@@ -99,12 +99,12 @@ GENERAL]]></string>
     <string name="drawer_close">Zamknij panel nawigacyjny</string>
     <!-- FEEDS -->
     <string name="feeds">Kanały</string>
-    <string name="menu_add_feed">Dodaj kanał</string>
+    <string name="menu_add_feed">Wyszukaj artykuły w Sieci</string>
     <string name="no_feeds">Brak kanałów</string>
     <string name="no_filters">Brak reguł</string>
     <string name="context_menu_delete">Usuń</string>
     <string name="edit_feed_title">Edytuj kanał</string>
-    <string name="new_feed_title">Nowy kanał</string>
+    <string name="new_feed_title">Nowy kanał lub artykuł</string>
     <string name="context_menu_edit">Edytuj</string>
     <string name="menu_add_group">Dodaj grupę</string>
     <string name="menu_import">Importuj z pliku .opml</string>
@@ -167,6 +167,7 @@ GENERAL]]></string>
     <string name="menu_unstar">Usuń z Ulubionych</string>
     <string name="menu_share">Udostępnij</string>
     <string name="menu_full_screen">Pełny ekran</string>
+    <string name="menu_actionbar_visible">Pasek Akcji</string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
     <string name="menu_copy_clipboard">Kopiuj link do schowka</string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
@@ -268,14 +269,14 @@ GENERAL]]></string>
     <string name="settings_color_link_sample_long">Kolor linków</string>
     <string name="underline_links">Podkreślaj linki</string>
     <string name="article_text_footer_show_clock">Zegarek w stopce</string>
-    <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w dolnym lewym rogu ekranu, w trybie pełnoekranowym</string>
+    <string name="article_text_footer_show_clock_description">Wyświetla aktualny czas w prawym górnym rogu ekranu, w trybie pełnoekranowym</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
     <string name="article_text_footer_clock_color">Kolor i tło zegarka</string>
     <string name="article_text_footer_clock_color_descr">Kolor zegarka w stopce</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Pasek postępu lektury</string>
-    <string name="article_text_footer_show_progress_descr">Wyświetla postęp lektury artykułu u dołu ekranu</string>
+    <string name="article_text_footer_show_progress_descr">Wyświetla postęp lektury artykułu u góry ekranu</string>
     <string name="article_text_footer_progress_height">Wysokość paska postępu</string>
     <string name="article_text_footer_progress_color">Kolor paska postępu</string>
     <string name="article_text_footer_progress_color_descr">Kolor paska postępu lektury</string>
@@ -345,7 +346,7 @@ GENERAL]]></string>
     <string name="pageDown">strona w dół</string>
     <string name="fullScreenToggle">przełącznik pełnego ekranu</string>
     <string name="auto_refresh_feed">Automatycznie odświeżaj kanał</string>
-    <string name="actionBarToggle">Przełącznik belki akcji</string>
+    <string name="actionBarToggle">Przełącz Pasek Akcji</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Rozmiar tekstu na liście artykułów</string>
     <string name="question_delete_entry">Usunąć artykuł?</string>
@@ -429,6 +430,13 @@ GENERAL]]></string>
     <string name="image_white_background">Białe tło obrazków</string>
     <string name="settings_add_google_news_dialog">Okno dialogowe Dodaj Wiadomości Google</string>
     <string name="settings_add_google_news_dialog_descr">Odznacz by pominąć wybór typu kanału podczas jego dodawania</string>
+    <string name="reload_fulltext_after_tag_editing">Przeładuj tekst po edycji tagów</string>
+    <string name="reload_fulltext_after_tag_editing_descr">gdy odznaczone, tekst nie będzie przeładowywany przy każdej pojedynczej edycji tagów (pokaż|ukryj|źródło), stąd łatwiej przeprowadzisz kilka zmian naraz (w takim przypadku potrzebujesz ręcznie przeładować pełny tekst, gdy zakończysz pracę nad edycją)</string>
+    <string name="article_menu_show_by_tap">Dotknij, by pokazać menu</string>
+    <string name="web_page_loading">Wczytywanie strony...</string>
+    <string name="article_menu_show_by_tap_descr">Gdy Pasek Akcji jest ukryty - w przeciwnym razie znajdziesz je tylko tam</string>
+    <string name="menu_go_back">Wstecz</string>
+    <string name="menu_go_top">Przewiń na górę</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>

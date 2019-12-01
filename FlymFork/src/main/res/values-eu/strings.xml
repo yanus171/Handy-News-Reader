@@ -128,6 +128,7 @@
     <string name="accept">ONARTU</string>
     <string name="reject">BAZTERTU</string>
     <string name="feed_search">Jario-bilaketa</string>
+    <string name="web_page_search_duckduckgo">Web bilaketa (Duck Duck Go)</string>
     <string name="select_file">Hautatu fitxategi bat (SD-erroa)</string>
     <string name="question_delete_feed">Ziur jario hau ezabatu nahi duzula?</string>
     <string name="question_delete_group">Ziur talde hau eta bere jario guztiak ezabatu nahi dituzula?</string>
@@ -364,6 +365,7 @@
     <string name="keyword">hitz gakoa(k)</string>
     <string name="loadTypeWeb">Web (kargatu orriko esteka guztiak)</string>
     <string name="loadTypeRSS">RSS (jario edo gunearen esteka edo hitz gakoak)</string>
+    <string name="loadTypeWebPageSearch">DuckDuckGo web bilaketa (bilatu eta kargatu artikulu bat)</string>
     <string name="loadType">Karga mota:</string>
     <string name="global_filter">Iragazki globala&#8230;</string>
     <string name="global_filter_descr">Jario guztiei aplikatuko zaien iragazkia, utzi iragaziaren testua (eta adierazpen erregularra) hutsik desgaitzeko</string>
@@ -420,6 +422,8 @@
     <string name="externalMemory">Kanpo memoria</string>
     <string name="show_html">Erakutsi html-a</string>
     <string name="image_white_background">Irudiaren atzealde zuria</string>
+    <string name="settings_add_google_news_dialog">Gehitu Google News elkarrizketa-koadroa</string>
+    <string name="settings_add_google_news_dialog_descr">Desmarkatu jarioa gehitzean jario mota aukeratzeko elkarrizketa-koadroa saltatzeko</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>

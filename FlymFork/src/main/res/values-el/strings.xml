@@ -139,6 +139,7 @@
     <string name="accept">ΑΠΟΔΟΧΗ</string>
     <string name="reject">ΑΠΟΡΡΙΨΗ</string>
     <string name="feed_search">Αναζήτηση Ροής</string>
+    <string name="web_page_search_duckduckgo">Αναζήτηση στον ιστό (Duck Duck Go)</string>
     <string name="select_file">Επιλογή αρχείου (γονικός φάκελος SD κάρτας)</string>
     <string name="question_delete_feed">Θέλετε πραγματικά να διαγράψετε αυτή τη ροή;</string>
     <string name="question_delete_group">Θέλετε πραγματικά να διαγράψετε αυτή την ομάδα με όλες τις Ροές της;</string>
@@ -173,6 +174,7 @@
     <string name="menu_unstar">Αφαίρεση αστεριού</string>
     <string name="menu_share">Αποστολή</string>
     <string name="menu_full_screen">Πλήρης οθόνη</string>
+    <string name="menu_actionbar_visible">Μπάρα ενεργειών</string>
     <string name="menu_font_bold">Έντονη γραμματοσειρά</string>
     <string name="menu_copy_clipboard">Αντιγραφή συνδέσμου</string>
     <string name="menu_cancel_refresh">Ακύρωση ενημέρωσης</string>
@@ -375,6 +377,7 @@
     <string name="keyword">λέξη ή λέξεις κλειδιά</string>
     <string name="loadTypeWeb">Ιστός (φόρτωση όλων των συνδέσμων από τη σελίδα)</string>
     <string name="loadTypeRSS">RSS (Ροές ή σύνδεσμος σελίδας ή λέξεις κλειδιά)</string>
+    <string name="loadTypeWebPageSearch">Αναζήτηση ιστού με τη μηχανή αναζήτησης DuckDuckGo (βρείτε και φορτώστε ένα άρθρο)</string>
     <string name="loadType">Τύπος φόρτωσης:</string>
     <string name="global_filter">Γενικό φίλτρο&#8230;</string>
     <string name="global_filter_descr">Φίλτρο που ενεργεί σε κάθε Ροή, αφήστε το κείμενο κενό για απενεργοποίηση</string>
@@ -431,6 +434,13 @@
     <string name="externalMemory">Εξωτερική μνήμη</string>
     <string name="show_html">Να ναι ορατή η ηλεκτρονική διεύθυνση</string>
     <string name="image_white_background">Λευκή εικόνα φόντου</string>
+    <string name="settings_add_google_news_dialog">Προσθήκη Google News</string>
+    <string name="settings_add_google_news_dialog_descr">Απεπιλέξτε για να παρακάμψετε ένα τύπο διαλόγου ροής κατά την προσθήκη μιας ροής</string>
+    <string name="reload_fulltext_after_tag_editing">Επαναφόρτωση κειμένου μετά την επεξεργασία ετικετών</string>
+    <string name="reload_fulltext_after_tag_editing_descr">αν αποεπιλεχθεί, ολοκλήρο το κείμενο δε θα φορτωθεί μετά την επεξεργασία των ετικετών (προβολή|απόκρυψη|root), έτσι μπορείτε να κάνετε πολλαπλές αλλαγές ευκολότερα (σε περίπτωση που θέλετε χειροκίνητα να φορτώσετε το κείμενο όταν τελειώσετε την επεξεργασία)</string>
+    <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
+    <string name="web_page_loading">Φόρτωση σελίδας...</string>
+    <string name="article_menu_show_by_tap_descr">Όταν η μπάρα ενεργειών είναι κρυμένη- αλλιώς θα τη βρείτε μόνο στο μενού ενεργειών</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
