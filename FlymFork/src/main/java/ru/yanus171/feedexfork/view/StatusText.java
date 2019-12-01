@@ -92,6 +92,14 @@ public class StatusText implements Observer {
         FetcherService.Status().UpdateText();
     }
 
+    public int GetHeight() {
+        int result = 0;
+        if ( mView.getVisibility() == View.VISIBLE )
+            result += mView.getHeight();
+        if ( mErrorView.getVisibility() == View.VISIBLE )
+            result += mErrorView.getHeight();
+        return result;
+    }
 
     @Override
     public void update(Observable observable, Object data) {

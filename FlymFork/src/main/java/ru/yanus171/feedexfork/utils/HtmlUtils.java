@@ -46,6 +46,7 @@ public class HtmlUtils {
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
+            .addAttributes("a", "data-fancybox-href")
             //.addAttributes("math", "xmlns")
             //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
             .addAttributes( ":all", "id", "name", "class", "displaystyle", "scriptlevel" )
@@ -56,7 +57,7 @@ public class HtmlUtils {
     public static final String URL_SPACE = "%20";
 
     private static final Pattern IMG_PATTERN = Pattern.compile("<img\\s+[^>]*src=\\s*['\"]([^'\"]+)['\"][^>]*>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern A_IMG_PATTERN = Pattern.compile("<a href([^>]+)>([^<]?)<img(.)*?</a>", Pattern.CASE_INSENSITIVE);
+    private static final Pattern A_IMG_PATTERN = Pattern.compile("<a[^>]+href([^>]+)>([^<]?)<img(.)*?</a>", Pattern.CASE_INSENSITIVE);
     private static final Pattern ADS_PATTERN = Pattern.compile("<div class=('|\")mf-viral('|\")><table border=('|\")0('|\")>.*", Pattern.CASE_INSENSITIVE);
     private static final Pattern LAZY_LOADING_PATTERN = Pattern.compile("\\s+src=[^>]+\\s+original[-]*src=(\"|')", Pattern.CASE_INSENSITIVE);
     private static final Pattern LAZY_LOADING_PATTERN2 = Pattern.compile("src=\\\"[^\\\"]+?lazy[^\\\"]+\"", Pattern.CASE_INSENSITIVE);
@@ -153,12 +154,20 @@ public class HtmlUtils {
 
         if (!TextUtils.isEmpty(content)) {
 
-            // img in a tag
+            // <img> in <a> tag
+            final Pattern A_HREF_WITH_IMG = Pattern.compile("href=(.[^>]+(jpg|png).)", Pattern.CASE_INSENSITIVE);
+
             Matcher matcher = A_IMG_PATTERN.matcher(content);
             while ( matcher.find()  ) {
                 String match = matcher.group();
-                String replace = match.replaceAll( "<a([^>]+)>", "" ).replaceAll( "</a>", "" );
-                content = content.replace( match, replace );
+                Matcher matcherHrefImg = A_HREF_WITH_IMG.matcher(match);
+                if (matcherHrefImg.find()) {
+                    String newText = "<img src=" + matcherHrefImg.group(1) + " />";
+                    content = content.replace( match, newText );
+                } else {
+                    String replace = match.replaceAll("<a([^>]+)>", "").replaceAll("</a>", "");
+                    content = content.replace(match, replace);
+                }
             }
 
             boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);//NetworkUtils.needDownloadPictures();

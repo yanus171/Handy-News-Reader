@@ -88,11 +88,12 @@ public class HTMLParser {
 		int result = 0;
         FetcherService.Status().ChangeProgress( "Loading main page");
 
-		final boolean isTomorrow = feedUrl.contains( TOMORROW_YYYY_MM_DD );
+        Calendar cal = Calendar.getInstance();
+		final boolean isTomorrow = feedUrl.contains( TOMORROW_YYYY_MM_DD ) && cal.get( Calendar.HOUR_OF_DAY ) >= 16;
 		{
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.DATE, 1);
-			feedUrl = feedUrl.replace(TOMORROW_YYYY_MM_DD, new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date( date.getTimeInMillis() ) ) );
+			feedUrl = feedUrl.replace( TOMORROW_YYYY_MM_DD, isTomorrow ? new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date( date.getTimeInMillis() ) ) : "" );
 		}
 
 		/* check and optionally find favicon */

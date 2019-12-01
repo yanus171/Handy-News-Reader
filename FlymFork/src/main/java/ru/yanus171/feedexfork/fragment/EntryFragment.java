@@ -362,11 +362,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void PageUp() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1, mStatusText);
     }
 
     public void PageDown() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1, mStatusText);
     }
 
 
