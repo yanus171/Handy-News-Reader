@@ -89,7 +89,7 @@
     <string name="menu_refresh">Actualiser</string>
     <string name="flym_feeds">Flux Handy News Reader</string>
     <string name="error">Erreur</string>
-    <string name="network_error">Pas de connexion disponible</string>
+    <string name="network_error">Vous êtes hors ligne.</string>
     <string name="loading">Chargement en cours…</string>
     <string name="no_result">Aucun résultat</string>
     <string name="drawer_open">Ouvrir menu de navigation</string>
@@ -300,6 +300,11 @@
     <string name="settings_notifications_light_description">Active les notifications LED pour les nouveaux articles</string>
     <string name="page_up_down_90_pct">Défilement de page 90%</string>
     <string name="page_up_down_90_pct_descr">Pour préserver plusieurs lignes de la page précédente - si non cochée, la page entière défilera</string>
+    <string name="settings_remember_last_entry">Se souvenir du dernier article</string>
+    <string name="settings_remeber_last_entry_description">Ouvrir le dernier article consulté au démarrage, sinon la liste des entrées non lues</string>
+    <string name="auto_unstart_at_bottom">Retirer automatiquement des favoris à la fin de la lecture</string>
+    <string name="auto_unstart_at_bottom_descr">Retirer automatiquement des favoris lorsque le bas de l\'article a été atteint</string>
+    <string name="settings_category_advanced">Avancés</string>
     <string name="settings_category_content_presentation">Présentation des flux</string>
     <string name="settings_display_text_color">Luminosité du texte</string>
     <string name="settings_visible_feeds">Flux visibles</string>
@@ -364,6 +369,8 @@
     <string name="background1">Arrière-plan</string>
     <string name="auto_refresh_requires_charging">Seulement pendant la charge de la batterie</string>
     <string name="global_class_list_to_remove_from_article_text">Supprimer les règlages de texte</string>
+    <string name="hide">Masquer</string>
+    <string name="show">Afficher</string>
     <string name="setFullTextRoot">Choisir comme racine pour le texte complet</string>
     <string name="fullTextRoot">Racine pour le texte complet</string>
     <string name="fullTextReloadStarted">Le rechargement du texte complet a commencé</string>
@@ -378,7 +385,7 @@
     <string name="settings_add_google_news_dialog">Ajouter une boîte de dialogue Google News</string>
     <string name="settings_add_google_news_dialog_descr">Décochez pour contourner la sélection du type de flux lors de l\'ajout d\'un flux</string>
     <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
-    <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (show|hide|root), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
+    <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (montrer|cacher|racine), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
     <string name="web_page_loading">Chargement de la page</string>
     <string name="article_menu_show_by_tap_descr">Lorsque la barre d\'action est masquée - sinon vous trouverez le menu uniquement sur la barre d\'action</string>
     <string name="menu_go_back">Retour</string>
