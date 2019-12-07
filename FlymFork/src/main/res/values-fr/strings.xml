@@ -299,6 +299,7 @@
     <string name="settings_notifications_light">LED</string>
     <string name="settings_notifications_light_description">Active les notifications LED pour les nouveaux articles</string>
     <string name="page_up_down_90_pct">Défilement de page 90%</string>
+    <string name="page_up_down_90_pct_descr">Pour préserver plusieurs lignes de la page précédente - si non cochée, la page entière défilera</string>
     <string name="settings_category_content_presentation">Présentation des flux</string>
     <string name="settings_display_text_color">Luminosité du texte</string>
     <string name="settings_visible_feeds">Flux visibles</string>
@@ -375,8 +376,13 @@
     <string name="show_html">Afficher le html</string>
     <string name="image_white_background">Arrière-plan blanc de l\'image</string>
     <string name="settings_add_google_news_dialog">Ajouter une boîte de dialogue Google News</string>
+    <string name="settings_add_google_news_dialog_descr">Décochez pour contourner la sélection du type de flux lors de l\'ajout d\'un flux</string>
     <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
     <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (show|hide|root), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
+    <string name="web_page_loading">Chargement de la page</string>
+    <string name="article_menu_show_by_tap_descr">Lorsque la barre d\'action est masquée - sinon vous trouverez le menu uniquement sur la barre d\'action</string>
+    <string name="menu_go_back">Retour</string>
+    <string name="menu_go_top">Défiler vers le haut</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
