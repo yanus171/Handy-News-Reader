@@ -39,7 +39,7 @@
     • groupes de flux dépliants<br/>
     • boutons page haut|bas invisibles et sur tout l\'écran<br/>
     • nombre d'images téléchargées maximales par flux<br/>
-    • possibilité d\'annuler le rafraîchissement<br/>
+    • possibilité d\'annuler l'actualisation<br/>
     • et bien d\'autres<br/>
     <br/>
     <b><big>Où nous trouver</big></b>
@@ -178,7 +178,7 @@
     <string name="menu_reload_full_text_without_mobilizer">Recharger sans Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: articles favoris</string>
     <string name="copied_clipboard">Lien copié</string>
-    <string name="get_full_text">Récupérer le texte complet</string>
+    <string name="get_full_text">Récupérer complètement les articles</string>
     <string name="show_text_in_entry_list">Afficher le texte original sur la liste des articles</string>
     <string name="original_text">Affiche le texte original</string>
     <string name="see_enclosure">Voir le fichier joint</string>
@@ -205,25 +205,27 @@
     <string name="textColor">Couleur du texte et de l\'arrière-plan</string>
     <string name="settings_color_text_sample_short">Texte</string>
     <string name="settings_color_text_sample_long">\u201cQuand vous courtisez une belle fille une heure semble une seconde. Quand vous vous asseyez sur un récipient brûlant une seconde semble une heure. Voilà ce qu\'est la relativité.\u201d\n(Albert Einstein)</string>
-    <string name="settings_category_refresh">Mise à jour automatique</string>
+    <string name="settings_category_refresh">Actualisation automatique</string>
     <string name="settings_category_refresh_summary">Actualisation automatique et temps de conservation des articles</string>
-    <string name="settings_refresh_enabled">Activer la mise à jour auto</string>
-    <string name="settings_refresh_interval">Intervalle de mise à jour</string>
+    <string name="settings_refresh_enabled">Activer l\'actualisation auto</string>
+    <string name="settings_refresh_interval">Intervalle d\'actualisation</string>
     <string name="settings_min_update_battery_level">Niveau de batterie min</string>
     <string name="settings_refresh_only_selected">Sélectionnés seulement</string>
-    <string name="settings_refresh_only_selected_summary">Actualiser uniquement les flux vérifiés</string>
-    <string name="settings_refresh_on_open">Mise à jour des flux à l\'ouverture</string>
+    <string name="settings_refresh_only_selected_summary">Actualiser uniquement les flux sélectionnés</string>
+    <string name="settings_refresh_on_open">Actualisation des flux à l\'ouverture</string>
     <string name="settings_refresh_on_open_description">Met à jour tous les flux à l\'ouverture de l\'application</string>
-    <string name="settings_refresh_wifi_only">Mise à jour en WiFi uniquement</string>
-    <string name="settings_refresh_wifi_only_description">La mise à jour auto ne se fera que si le Wifi est activé</string>
+    <string name="settings_refresh_wifi_only">Actualisation en WiFi uniquement</string>
+    <string name="settings_refresh_wifi_only_description">L\'actualisation auto ne se fera que si le Wifi est activé</string>
     <string name="settings_keep_time">Délai de conservation des flux</string>
     <string name="settings_preload_image_mode">Préchargement des images</string>
+    <string name="settings_max_image_download_count">Nombre maximum d\'images téléchargées</string>
     <string name="settings_max_image_download_count_description">Par article</string>
     <string name="settings_max_image_download_size_kb">Taille d\'image max</string>
     <string name="settings_max_image_download_size_kb_summary">(en kb). Ne pas charger automatiquement les images plus grandes que</string>
+    <string name="max_single_refresh_traffic_mb">Trafic maximum d\'actualisation unique</string>
     <string name="max_single_refresh_traffic_mb_descr">L\'actualisation s\'arrêtera lorsque le trafic atteint la valeur max (en MB) et n\'est pas en WiFi</string>
     <string name="settings_load_comments">Charger les commentaires</string>
-    <string name="settings_load_comments_description">Dans le texte intégral des articles</string>
+    <string name="settings_load_comments_description">Dans tout le texte des articles</string>
     <string name="settings_category_article_list">Liste des articles</string>
     <string name="settings_category_article_list_summary">Apparence de la liste des articles</string>
     <string name="settings_font_size">Taille du texte</string>
@@ -236,7 +238,8 @@
     <string name="show_mark_all_as_read_button_summary">Afficher le bouton Marquer tous les articles comme lus - autrement vous trouverez cette option dans le menu</string>
     <string name="show_read_checkbox">Case lu</string>
     <string name="show_read_checkbox_descr">Afficher la petite case à cocher pour indiquer que l\'article est lu</string>
-    <string name="show_full_text_indicator">Indicateur de texte intégral</string>
+    <string name="show_full_text_indicator">Indicateur de texte complet</string>
+    <string name="show_full_text_indicator_descr">Afficher l\'icône de petite disquette pour indiquer que le texte complet de l\'article a été chargé</string>
     <string name="show_new_icon">Icône de nouvel article</string>
     <string name="show_new_icon_descr">Petite icône plus sur les nouveaux articles (qui n\'avaient jamais été vus)</string>
     <string name="show_read_article_count">Afficher le nombre d\'articles lus</string>
@@ -272,6 +275,10 @@
     <string name="article_text_footer_progress_height">Hauteur de la barre de progression</string>
     <string name="article_text_footer_progress_color">Couleur de la progression</string>
     <string name="article_text_footer_progress_color_descr">Couleur de la barre de progression de lecture</string>
+    <string name="settings_volume_buttons_action">Action des boutons de volume</string>
+    <string name="brightness_gesture">Geste de changement de luminosité</string>
+    <string name="brightness_gesture_descr">Cochez cette case pour ajuster la luminosité en glissant vers le haut/bas le long du bord gauche de l\'écran</string>
+    <string name="brightness_with_dim_activity">Superposition du logiciel</string>
     <string name="settings_notifications_enabled">Activer les notifications</string>
     <string name="settings_notifications_enabled_description">Active les notifications en cas de nouveaux articles</string>
     <string name="settings_notifications_ringtone">Sonnerie</string>
@@ -281,10 +288,20 @@
     <string name="settings_notifications_light">LED</string>
     <string name="settings_notifications_light_description">Active les notifications LED pour les nouveaux articles</string>
     <string name="settings_category_content_presentation">Présentation des flux</string>
+    <string name="settings_display_text_color">Luminosité du texte</string>
     <string name="settings_visible_feeds">Flux visibles</string>
     <string name="settings_widget_background">Arrière-plan</string>
     <string name="settings_widget_background_description">Couleur et transparence de l\'arrière-plan du widget</string>
     <string name="all_feeds">Tous les flux (y compris ceux à venir)</string>
+    <string name="downloadImage">Téléchargement des images</string>
+    <string name="loadFullText">Chargement du texte complet</string>
+    <string name="deleteOldEntries">Supprimer les anciens articles</string>
+    <string name="AllImages">Toutes les images</string>
+    <string name="EntryImages">Images de saisie</string>
+    <string name="mobilizeAll">Mobilisation</string>
+    <string name="RefreshFeeds">Mise à jour des flux</string>
+    <string name="deleteImages">Suppression des images :</string>
+    <string name="deleteFullTexts">Suppression des textes complets :</string>
     <string name="loadLink">Lire maintenant</string>
     <string name="loadLinkLater">Lire plus tard</string>
     <string name="addFeed">Ajouter un flux</string>
@@ -293,7 +310,7 @@
     <string name="pageUp">page précédente / glisser vers le bas pour retirer l\'étoile</string>
     <string name="pageDown">page suivante</string>
     <string name="fullScreenToggle">Basculer en plein écran</string>
-    <string name="auto_refresh_feed">Rafraîchir automatiquement les flux</string>
+    <string name="auto_refresh_feed">Actualiser automatiquement les flux</string>
     <string name="actionBarToggle">Activer/désactiver la barre d\'actions</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Taille de police de la liste d\'article</string>
@@ -331,7 +348,12 @@
     <string name="background1">Arrière-plan</string>
     <string name="auto_refresh_requires_charging">Seulement pendant la charge de la batterie</string>
     <string name="global_class_list_to_remove_from_article_text">Supprimer les règlages de texte</string>
+    <string name="setFullTextRoot">Choisir comme racine pour le texte complet</string>
+    <string name="fullTextRoot">Racine pour le texte complet</string>
+    <string name="fullTextReloadStarted">Le rechargement du texte complet a commencé</string>
     <string name="image_white_background">Arrière-plan blanc de l\'image</string>
+    <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
+    <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (show|hide|root), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
