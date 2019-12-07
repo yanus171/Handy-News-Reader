@@ -504,6 +504,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
         updateMenuWithIcon(menu.findItem(R.id.menu_setting));
         updateMenuWithIcon(menu.findItem(R.id.menu_add_feed));
+        updateMenuWithIcon(menu.findItem(R.id.menu_close));
 
         //EntryActivity activity = (EntryActivity) getActivity();
         menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
@@ -547,6 +548,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             Activity activity = getActivity();
 
             switch (item.getItemId()) {
+
+                case R.id.menu_close: {
+                    onClose();
+                    break;
+                }
+
                 case R.id.menu_star: {
 
                     SetIsFavourite( !mFavorite );
@@ -1029,6 +1036,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onReloadFullText() {
         ReloadFullText();
+    }
+
+    @Override
+    public void onClose() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     @Override

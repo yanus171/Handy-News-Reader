@@ -386,7 +386,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             content.append(BUTTON_START).append(context.getString(R.string.see_enclosure)).append(BUTTON_MIDDLE)
                     .append("injectedJSObject.onClickEnclosure();").append(BUTTON_END);
         }
-
+        content.append(BUTTON_START).append(context.getString(R.string.menu_go_back)).append(BUTTON_MIDDLE)
+                .append("injectedJSObject.onClose();").append(BUTTON_END);
         /*if (link.length() > 0) {
             content.append(LINK_BUTTON_START).append(link).append(LINK_BUTTON_MIDDLE).append(context.getString(R.string.see_link)).append(LINK_BUTTON_END);
         }*/
@@ -822,6 +823,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
         void onReloadFullText();
 
+        void onClose();
+
         void onStartVideoFullScreen();
 
         void onEndVideoFullScreen();
@@ -864,6 +867,11 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         public void onReloadFullText() {
             DoNotShowMenu();
             mEntryViewMgr.onReloadFullText();
+        }
+        @JavascriptInterface
+        public void onClose() {
+            DoNotShowMenu();
+            mEntryViewMgr.onClose();
         }
     }
 

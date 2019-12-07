@@ -2,7 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools">
-
+    <item
+        android:id="@+id/menu_close"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/menu_close"/>
     <item
         android:id="@+id/menu_star"
         android:icon="@drawable/rating_not_important"
