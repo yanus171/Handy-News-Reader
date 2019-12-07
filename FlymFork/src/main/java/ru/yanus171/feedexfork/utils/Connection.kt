@@ -12,6 +12,7 @@ import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.Jsoup
 import org.w3c.dom.Document
+import ru.yanus171.feedexfork.service.FetcherService
 
 class Connection(url: String) {
     private var mConnection: HttpURLConnection? = null
@@ -45,21 +46,15 @@ class Connection(url: String) {
         }
 
     init {
-        try {
+        if (IsOkHttp()) {
+            val request = Request.Builder()
+                    .url(url)
+                    .build()
 
-            if (IsOkHttp()) {
-                val request = Request.Builder()
-                        .url(url)
-                        .build()
-
-                val call = OkHttpClient().newCall(request)
-                mResponse = call.execute()
-            } else
-                mConnection = NetworkUtils.setupConnection1(url)
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+            val call = OkHttpClient().newCall(request)
+            mResponse = call.execute()
+        } else
+            mConnection = NetworkUtils.setupConnection1(url)
 
     }
 
@@ -67,7 +62,7 @@ class Connection(url: String) {
         if (IsOkHttp()) {
 
         } else {
-            mConnection!!.disconnect()
+            mConnection?.disconnect()
             mConnection = null
         }
     }

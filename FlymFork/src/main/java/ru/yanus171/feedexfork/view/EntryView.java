@@ -319,7 +319,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         new Thread() {
             @Override
             public void run() {
-                synchronized ( this ) {
+                synchronized ( EntryView.this ) {
                     String finalContentText2 = finalContentText;
                     if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
                         finalContentText2 = HtmlUtils.replaceImageURLs(finalContentText2, entryId, link, true);
@@ -482,7 +482,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                synchronized ( this ) {
+                synchronized ( EntryView.this ) {
                     if (progress == 100) {
                         EndStatus();
                     } else if (mStatus != 0) {
@@ -664,7 +664,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }
 
     private void EndStatus() {
-        synchronized ( this ) {
+        synchronized ( EntryView.this ) {
             if (mStatus != 0)
                 FetcherService.Status().End( mStatus );
             mStatus = 0;
@@ -706,7 +706,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }*/
 
     public String GetData() {
-        synchronized ( this ) {
+        synchronized ( EntryView.this ) {
             return mData;
         }
     }
@@ -733,7 +733,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             new Thread() {
                 @Override
                 public void run() {
-                    synchronized ( this ) {
+                    synchronized ( EntryView.this ) {
                         mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
                     }
                     UiUtils.RunOnGuiThread(new Runnable() {
@@ -752,7 +752,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement( doc, mEntryLink, "", true );
         AddTagButtons( doc, mEntryLink,  root );
-        synchronized ( this ) {
+        synchronized ( EntryView.this ) {
             mData = generateHtmlContent( "-1", "", mEntryLink,  doc.toString(), "", "", 0, true );
         }
         LoadData();
@@ -766,13 +766,13 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             mOldContentHeight = GetContentHeight();
         }
         StatusStartPageLoading();
-        synchronized ( this ) {
+        synchronized ( EntryView.this ) {
             loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
         }
     }
 
     public void StatusStartPageLoading() {
-        synchronized ( this ) {
+        synchronized ( EntryView.this ) {
             if (mStatus == 0)
                 mStatus = FetcherService.Status().Start(R.string.web_page_loading);
         }
