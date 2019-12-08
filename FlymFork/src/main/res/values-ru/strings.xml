@@ -264,14 +264,14 @@
     <string name="settings_color_link_sample_long">Цвет ссылки</string>
     <string name="underline_links">Подчеркивать ссылки</string>
     <string name="article_text_footer_show_clock">Часы</string>
-    <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
-    <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
+    <string name="article_text_footer_show_clock_description">Отображать текущее время в левом верхнем углу</string>
+    <string name="settings_clock_size">Размер шрифта часов вверху текста статьи</string>
     <string name="article_text_footer_clock_color">Цвет часов</string>
     <string name="article_text_footer_clock_color_descr">Цвет часов вверху текста статьи</string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
-    <string name="article_text_footer_show_progress_descr">Показывать полосу прочитанного внизу окна текста статьи</string>
+    <string name="article_text_footer_show_progress_descr">Показывать полосу прочитанного вверху окна текста статьи</string>
     <string name="article_text_footer_progress_height">Высота полосы</string>
     <string name="article_text_footer_progress_color">Цвет полосы прочитанного</string>
     <string name="article_text_footer_progress_color_descr">Цвет полосы прочитанного</string>
@@ -341,7 +341,7 @@
     <string name="pageDown">Страница вниз</string>
     <string name="fullScreenToggle">Пркл. полный экран</string>
     <string name="auto_refresh_feed">Обновлять автоматически</string>
-    <string name="actionBarToggle">Пркл. панель действий</string>
+    <string name="actionBarToggle">Панели действий</string>
     <string name="standard">Стандартно</string>
     <string name="fontsize_entrylist">Размер текста в списке статей</string>
     <string name="question_delete_entry">Удалить статью?</string>
