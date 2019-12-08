@@ -10,13 +10,12 @@ android {
     }*/
 
     compileSdkVersion 28
-    //buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 190
-        versionName '0.11.6'
+        versionCode 191
+        versionName '0.11.7'
     }
     lintOptions {
         checkReleaseBuilds false

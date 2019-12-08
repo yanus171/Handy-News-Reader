@@ -72,6 +72,15 @@
             <include layout="@layout/brightness_slider_layout" />
 
             <TextView
+                android:id="@+id/statusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:gravity="start|top"
+                android:text="status"
+                android:visibility="invisible" />
+
+            <TextView
                 android:id="@+id/pageUpBtn"
                 style="@style/TapZone"
                 android:layout_width="match_parent"
@@ -94,6 +103,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:text="@string/pageDown"
+                android:visibility="gone"
                 android:layout_alignParentEnd="true" />
 
             <TextView
@@ -128,15 +138,6 @@
                 android:text="@string/entry_go_next"
                 tools:ignore="RtlHardcoded"
                 android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|top"
-                android:gravity="start|top"
-                android:text="status"
-                android:visibility="invisible" />
 
             <FrameLayout
                 android:id="@+id/videoLayout"

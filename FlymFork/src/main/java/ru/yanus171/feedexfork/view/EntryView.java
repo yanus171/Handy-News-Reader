@@ -161,9 +161,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             + "pre {white-space: pre-wrap;} "
             + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR, android.R.color.black ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR, android.R.color.black  ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
             + "td {font-weight: " + getFontBold() + "} "
-            + "hr {width: 100%; color:" + Theme.GetMenuBackgroundColor() + ";align=\"center\"; size=5} "
+            + "hr {width: 100%; color: #777777; align: center; size: 1} "
             + "p {margin: 0.8em 0 0.8em 0} "
-            + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR, android.R.color.black  ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black  ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
+            + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR, android.R.color.black ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black  ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
             + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
@@ -920,9 +920,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0 ;
     }
 
-    public void PageChange(int delta ) {
+    public void PageChange( int delta, StatusText statusText ) {
         ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
-                (int) (getScrollY() + delta * getHeight() *
+                (int) ( getScrollY() + delta * ( getHeight() - statusText.GetHeight() ) *
                         ( PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98 ) ));
         anim.setDuration(450);
         anim.setInterpolator( new AccelerateDecelerateInterpolator() );
