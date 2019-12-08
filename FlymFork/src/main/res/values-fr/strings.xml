@@ -305,6 +305,7 @@
     <string name="auto_unstart_at_bottom">Retirer automatiquement des favoris à la fin de la lecture</string>
     <string name="auto_unstart_at_bottom_descr">Retirer automatiquement des favoris lorsque le bas de l\'article a été atteint</string>
     <string name="settings_category_advanced">Avancés</string>
+    <string name="settings_category_advanced_summary">Fonctionnalités supplémentaires (telles que la sauvegarde, les filtres et plus encore)</string>
     <string name="settings_category_content_presentation">Présentation des flux</string>
     <string name="settings_display_text_color">Luminosité du texte</string>
     <string name="settings_visible_feeds">Flux visibles</string>
