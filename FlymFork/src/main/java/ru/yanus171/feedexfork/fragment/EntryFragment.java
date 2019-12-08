@@ -116,7 +116,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_BACKGROUND;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>, EntryView.EntryViewManager {
@@ -157,9 +156,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-
-        if (IsExternalLink( getActivity().getIntent().getData() )) //getBooleanExtra(NO_DB_EXTRA, false ) )
+        setHasOptionsMenu( true );
+        if ( IsExternalLink( getActivity().getIntent().getData() ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter();
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
@@ -171,6 +169,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID, -1);
         }
         super.onCreate(savedInstanceState);
+    }
+
+    private boolean IsCreateViewPager( Uri uri ) {
+        return PrefUtils.getBoolean( "change_articles_by_swipe", false ) &&
+                !IsExternalLink( uri );
     }
 
     private boolean IsExternalLink( Uri uri ) {
@@ -792,9 +795,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
 
+            final ContentResolver cr = MainApplication.getContext().getContentResolver();
             // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-            Cursor entriesCursor = MainApplication.getContext().getContentResolver().query(mBaseUri, EntryColumns.PROJECTION_ID,
-                    null, null, EntryColumns.DATE + entriesOrder);
+            Cursor entriesCursor = cr.query( IsCreateViewPager( uri ) ? mBaseUri : EntryColumns.CONTENT_URI( mInitialEntryId ),
+                    EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
 
             if (entriesCursor != null && entriesCursor.getCount() > 0) {
                 synchronized ( this ) {
@@ -830,7 +834,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
             mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
-            mCurrentPagerPos = 0;
         }
 
 

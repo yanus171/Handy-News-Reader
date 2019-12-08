@@ -446,6 +446,10 @@
     <string name="menu_go_back">Go back</string>
     <string name="menu_go_top">Scroll to top</string>
     <string name="menu_close">Close</string>
+    <string name="change_articles_by_swipe">Change articles by left|right swipe</string>
+    <string name="change_articles_by_swipe_descr">May decrease performance on article opening</string>
+
+
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
