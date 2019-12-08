@@ -437,6 +437,7 @@ GENERAL]]></string>
     <string name="article_menu_show_by_tap_descr">Gdy Pasek Akcji jest ukryty - w przeciwnym razie znajdziesz je tylko tam</string>
     <string name="menu_go_back">Wstecz</string>
     <string name="menu_go_top">Przewiń na górę</string>
+    <string name="menu_close">Zamknij</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
