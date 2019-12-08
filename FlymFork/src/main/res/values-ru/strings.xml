@@ -259,7 +259,7 @@
     <string name="entry_text_align_justify">Выравнивать по содержимому</string>
     <string name="entry_text_align_justify_description">иначе по левому краю</string>
     <string name="linkColor">Цвет ссылок</string>
-    <string name="linkColor_descr">На другие сайты (статьи)</string>
+    <string name="linkColor_descr">Цвет ссылок на другие статьи</string>
     <string name="settings_color_link_sample_short">Ссылки</string>
     <string name="settings_color_link_sample_long">Цвет ссылки</string>
     <string name="underline_links">Подчеркивать ссылки</string>
@@ -267,7 +267,7 @@
     <string name="article_text_footer_show_clock_description">Отображать текущее время в левом нижнем углу</string>
     <string name="settings_clock_size">Размер шрифта часов в нижней сноске</string>
     <string name="article_text_footer_clock_color">Цвет часов</string>
-    <string name="article_text_footer_clock_color_descr">Цвет часов колонтитула</string>
+    <string name="article_text_footer_clock_color_descr">Цвет часов вверху текста статьи</string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_footer_show_progress">Полоса прочитанного</string>
@@ -399,12 +399,12 @@
     <string name="text">Текст</string>
     <string name="background1">Фон</string>
     <string name="auto_refresh_requires_charging">Только во время зарядки</string>
-    <string name="global_class_list_to_remove_from_article_text">Удалить текст правил</string>
-    <string name="global_class_list_to_remove_from_article_text_summary">название класса в строке</string>
+    <string name="global_class_list_to_remove_from_article_text">Правила удаления текста</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">Название класса (атрибут class) в каждой строке</string>
     <string name="hide">Скрыть</string>
     <string name="show">Показать</string>
-    <string name="setFullTextRoot">Выбрать источник полного текста</string>
-    <string name="fullTextRoot">Источник полного текста</string>
+    <string name="setFullTextRoot">Выбрать корень полного текста</string>
+    <string name="fullTextRoot">Корень полного текста</string>
     <string name="fullTextReloadStarted">Началась перезагрузка полного текста</string>
     <string name="brightness_update_from_system_period_min">Время обновления яркости</string>
     <string name="brightness_update_from_system_period_min_descr">(в минутах) После этого периода яркость (свайп) будет восстановлена на текущего системный уровень (0 - выкл)</string>
