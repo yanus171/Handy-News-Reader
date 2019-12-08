@@ -434,6 +434,7 @@
     <string name="article_menu_show_by_tap_descr">Wenn die Aktionsleiste ausgeblendet ist. Andernfalls wäre das Menü nur in der Aktionsleiste verfügbar.</string>
     <string name="menu_go_back">Zurück</string>
     <string name="menu_go_top">Zum Seitenanfang</string>
+    <string name="menu_close">Schließen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
