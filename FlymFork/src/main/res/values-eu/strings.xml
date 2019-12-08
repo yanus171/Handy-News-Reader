@@ -163,6 +163,7 @@
     <string name="menu_unstar">Kendu izarra</string>
     <string name="menu_share">Partekatu</string>
     <string name="menu_full_screen">Pantaila osoa</string>
+    <string name="menu_actionbar_visible">Ekintza-barra</string>
     <string name="menu_font_bold">Letra lodia</string>
     <string name="menu_copy_clipboard">Kopiatu esteka</string>
     <string name="menu_cancel_refresh">Ezeztatu eguneraketa</string>
@@ -424,6 +425,8 @@
     <string name="image_white_background">Irudiaren atzealde zuria</string>
     <string name="settings_add_google_news_dialog">Gehitu Google News elkarrizketa-koadroa</string>
     <string name="settings_add_google_news_dialog_descr">Desmarkatu jarioa gehitzean jario mota aukeratzeko elkarrizketa-koadroa saltatzeko</string>
+    <string name="menu_go_back">Joan atzera</string>
+    <string name="menu_go_top">Korritu gora</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>

@@ -441,6 +441,8 @@
     <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
     <string name="web_page_loading">Φόρτωση σελίδας...</string>
     <string name="article_menu_show_by_tap_descr">Όταν η μπάρα ενεργειών είναι κρυμένη- αλλιώς θα τη βρείτε μόνο στο μενού ενεργειών</string>
+    <string name="menu_go_back">Επιστροφή</string>
+    <string name="menu_go_top">Κύλιση στην αρχή</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
