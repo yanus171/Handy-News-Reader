@@ -147,14 +147,6 @@
                 colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="change_articles_by_swipe"
-                android:title="@string/change_articles_by_swipe"
-                android:summary="@string/change_articles_by_swipe_descr" />
-
-
-
         </PreferenceCategory>
     </PreferenceScreen>
 

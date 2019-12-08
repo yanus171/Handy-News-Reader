@@ -82,7 +82,6 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
@@ -107,11 +106,9 @@ import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
-import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
@@ -228,6 +225,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         if ( mEntryPagerAdapter instanceof EntryPagerAdapter )
             mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
                 @Override
                 public void onPageScrolled(int i, float v, int i2) {
                 }
@@ -242,9 +240,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     CancelStarNotification( getCurrentEntryID() );
 
-                    refreshUI(( ( EntryPagerAdapter )mEntryPagerAdapter ).getCursor(i));
                     mLastPagerPos = i;
+                    refreshUI( mEntryPagerAdapter.getCursor(i) );
 
+                    EntryView view = mEntryPagerAdapter.GetEntryView( i );
+                    if ( view != null ) {
+                        if ( view.mLoadTitleOnly )
+                            getLoaderManager().restartLoader(i, null, EntryFragment.this);
+                        view.mLoadTitleOnly = false;
+                    }
                 }
 
                 @Override
@@ -797,8 +801,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             final ContentResolver cr = MainApplication.getContext().getContentResolver();
             // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-            Cursor entriesCursor = cr.query( IsCreateViewPager( uri ) ? mBaseUri : EntryColumns.CONTENT_URI( mInitialEntryId ),
-                    EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
+            Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
 
             if (entriesCursor != null && entriesCursor.getCount() > 0) {
                 synchronized ( this ) {
@@ -1264,7 +1267,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         EntryActivity activity = (EntryActivity) getActivity();
                         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
                             activity.setFullScreen(true, true);
-
+                        if ( position == mCurrentPagerPos ) {
+                            EntryView view = mEntryPagerAdapter.GetEntryView( position );
+                            view.mLoadTitleOnly = false;
+                            getLoaderManager().restartLoader( position, null, EntryFragment.this );
+                        }
                     }
                 }
             } catch ( IllegalStateException e ) {
@@ -1328,62 +1335,19 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 if (newCursor != null && newCursor.moveToFirst()  ) {
                     view.setTag(newCursor);
 
-                    String contentText;
-                    String author = "";
-                    long timestamp = 0;
-                    String link =  newCursor.getString(mLinkPos);
-                    String title = "";
-                    String feedID = "";
-                    String enclosure = "";
-                    double scrollPart = 0;
-                    boolean isWasAutoUnStar = false;
-
-                    try {
-                        feedID = newCursor.getString(mFeedIDPos);
-                        if (!feedID.equals(GetExtrenalLinkFeedID()) &&
-                            ( !FileUtils.INSTANCE.isMobilized( link, newCursor ) || (forceUpdate && !mIsFullTextShown)) ) {
-                            mIsFullTextShown = false;
-                            contentText = newCursor.getString(mAbstractPos);
-                        } else {
-                            mIsFullTextShown = true;
-                            contentText = FileUtils.INSTANCE.loadMobilizedHTML( link, newCursor );
-                        }
-                        if (contentText == null) {
-                            contentText = "";
-                        }
-
-                        author = newCursor.getString(mAuthorPos);
-                        timestamp = newCursor.getLong(mDatePos);
-                        title = newCursor.getString(mTitlePos);
-                        enclosure = newCursor.getString(mEnclosurePos);
-                        isWasAutoUnStar = newCursor.getInt( mIsWasAutoUnStarPos) == 1 ? true : false;
-                        if ( !newCursor.isNull(mScrollPosPos) )
-                            scrollPart = newCursor.getDouble( mScrollPosPos);
-
-                    } catch ( IllegalStateException e ) {
-                        e.printStackTrace();
-                        contentText = "Context too large";
-                    }
 
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
-                    view.setHtml( GetEntry( pagerPos ).mID,
-                                  feedID,
-                                  title,
-                                  link,
-                                  contentText,
-                                  enclosure,
-                                  author,
-                                  isWasAutoUnStar,
-                                  timestamp,
-                                  mIsFullTextShown,
-                                  (EntryActivity) getActivity() );
+                    mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
+                                                      newCursor,
+                                                      mIsFullTextShown,
+                                                      forceUpdate,
+                                                      (EntryActivity) getActivity() );
 
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
 
-                        if ( view.mScrollPartY == 0 )
-                            view.mScrollPartY = scrollPart;
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
+
                     }
                     UpdateFooter();
                 }
@@ -1423,6 +1387,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);
+
             getLoaderManager().restartLoader(position, null, EntryFragment.this);
 
             return view;

@@ -53,6 +53,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -113,6 +114,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
 import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
@@ -144,6 +146,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private final Handler mHandler = new Handler( this );
     private int mScrollY = 0;
     private int mStatus = 0 ;
+    public boolean mLoadTitleOnly = true;
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -246,7 +249,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
     public static final ImageDownloadObservable mImageDownloadObservable = new ImageDownloadObservable();
     private EntryViewManager mEntryViewMgr;
-    private String mData = "";
+    String mData = "";
     public double mScrollPartY = 0;
 
     private EntryActivity mActivity;
@@ -271,28 +274,54 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mEntryViewMgr = manager;
     }
 
-    public void setHtml(final long entryId,
-                        final String feedID,
-                        final String title,
-                        final String link,
-                        String contentText,
-                        final String enclosure,
-                        final String author,
-                        boolean wasAutoUnStar,
-                        final long timestamp,
-                        final boolean preferFullText,
+    public boolean setHtml(final long entryId,
+                        Cursor newCursor,
+                        boolean isFullTextShown,
+                        boolean forceUpdate,
                         EntryActivity activity) {
         Timer timer = new Timer( "EntryView.setHtml" );
 
-        mActivity = activity;
         mEntryId = entryId;
-        mEntryLink = link;
-        if ( contentText.length() == mLastContentLength ) {
+        mEntryLink =  newCursor.getString( newCursor.getColumnIndex(FeedData.EntryColumns.LINK) );
+
+        final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
+        final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
+        final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
+        final String title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+        final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
+        mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
+        mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS) ) ?
+            newCursor.getDouble( newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
+
+        String contentText = "";
+        if ( mLoadTitleOnly)
+            contentText = getContext().getString( R.string.loading );
+        else {
+            try {
+                if (!feedID.equals(GetExtrenalLinkFeedID()) &&
+                        (!FileUtils.INSTANCE.isMobilized(mEntryLink, newCursor) || (forceUpdate && !isFullTextShown))) {
+                    isFullTextShown = false;
+                    contentText = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT));
+                } else {
+                    isFullTextShown = true;
+                    contentText = FileUtils.INSTANCE.loadMobilizedHTML(mEntryLink, newCursor);
+                }
+                if (contentText == null) {
+                    contentText = "";
+                }
+
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                contentText = "Context too large";
+            }
+        }
+
+        mActivity = activity;
+        if ( !mLoadTitleOnly && contentText.length() == mLastContentLength ) {
             EndStatus();
-            return;
+            return isFullTextShown;
         }
         mLastContentLength = contentText.length();
-        mWasAutoUnStar = wasAutoUnStar;
         //getSettings().setBlockNetworkLoads(true);
         getSettings().setUseWideViewPort( true );
         getSettings().setSupportZoom( false );
@@ -315,15 +344,17 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             getSettings().setTextZoom(100 + (fontSize * 20));
         }
 
+
         final String finalContentText = contentText;
+        final boolean finalIsFullTextShown = isFullTextShown;
         new Thread() {
             @Override
             public void run() {
                 synchronized ( EntryView.this ) {
                     String finalContentText2 = finalContentText;
                     if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
-                        finalContentText2 = HtmlUtils.replaceImageURLs(finalContentText2, entryId, link, true);
-                    mData = generateHtmlContent(feedID, title, link, finalContentText2, enclosure, author, timestamp, preferFullText);
+                        finalContentText2 = HtmlUtils.replaceImageURLs(finalContentText2, mEntryId, mEntryLink, true);
+                    mData = generateHtmlContent(feedID, title, mEntryLink, finalContentText2, enclosure, author, timestamp, finalIsFullTextShown);
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
@@ -334,6 +365,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             }
         }.start();
         timer.End();
+        return isFullTextShown;
     }
 
     public void InvalidateContentCache() {
