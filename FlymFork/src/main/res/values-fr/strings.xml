@@ -391,6 +391,7 @@
     <string name="article_menu_show_by_tap_descr">Lorsque la barre d\'action est masquée - sinon vous trouverez le menu uniquement sur la barre d\'action</string>
     <string name="menu_go_back">Retour</string>
     <string name="menu_go_top">Défiler vers le haut</string>
+    <string name="menu_close">Fermer</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
