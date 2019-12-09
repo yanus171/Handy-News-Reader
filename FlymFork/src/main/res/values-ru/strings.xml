@@ -432,6 +432,7 @@
     <string name="article_menu_show_by_tap_descr">Когда панель действий скрыта - иначе меню доступно только из панели действий</string>
     <string name="menu_go_back">Назад</string>
     <string name="menu_go_top">На верх</string>
+    <string name="menu_close">Закрыть</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
