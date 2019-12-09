@@ -1269,8 +1269,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             activity.setFullScreen(true, true);
                         if ( position == mCurrentPagerPos ) {
                             EntryView view = mEntryPagerAdapter.GetEntryView( position );
-                            view.mLoadTitleOnly = false;
-                            getLoaderManager().restartLoader( position, null, EntryFragment.this );
+                            if ( view.mLoadTitleOnly ) {
+                                view.mLoadTitleOnly = false;
+                                getLoaderManager().restartLoader(position, null, EntryFragment.this);
+                            }
                         }
                     }
                 }
@@ -1387,7 +1389,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);
-
+            view.mLoadTitleOnly = true;
             getLoaderManager().restartLoader(position, null, EntryFragment.this);
 
             return view;
@@ -1498,6 +1500,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
                     return;
                 if ( view.mWasAutoUnStar )
+                    return;
+                if ( view.mLoadTitleOnly )
                     return;
                 if ( view.IsScrollAtBottom() ) {
                     final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());

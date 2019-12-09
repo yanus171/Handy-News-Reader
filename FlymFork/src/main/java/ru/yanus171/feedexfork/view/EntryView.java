@@ -146,7 +146,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private final Handler mHandler = new Handler( this );
     private int mScrollY = 0;
     private int mStatus = 0 ;
-    public boolean mLoadTitleOnly = true;
+    public boolean mLoadTitleOnly = false;
 
     private static String GetCSS( String text ) { return "<head><style type='text/css'> "
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
@@ -274,11 +274,11 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mEntryViewMgr = manager;
     }
 
-    public boolean setHtml(final long entryId,
-                        Cursor newCursor,
-                        boolean isFullTextShown,
-                        boolean forceUpdate,
-                        EntryActivity activity) {
+    public boolean setHtml( final long entryId,
+                            Cursor newCursor,
+                            boolean isFullTextShown,
+                            boolean forceUpdate,
+                            EntryActivity activity) {
         Timer timer = new Timer( "EntryView.setHtml" );
 
         mEntryId = entryId;
