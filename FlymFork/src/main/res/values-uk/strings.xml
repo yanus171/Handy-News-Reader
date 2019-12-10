@@ -431,6 +431,7 @@
     <string name="article_menu_show_by_tap_descr">Коли панель дій прихована - в іншому випадку ви знайдете її тільки там</string>
     <string name="menu_go_back">Назад</string>
     <string name="menu_go_top">Прокрутити на початок</string>
+    <string name="menu_close">Закрити</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
