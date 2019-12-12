@@ -432,6 +432,7 @@
     <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está ocultada - caso contrário você encontrará o menu somente na Barra de Ação</string>
     <string name="menu_go_back">Voltar</string>
     <string name="menu_go_top">Rolar para o topo</string>
+    <string name="menu_close">Fechar</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
