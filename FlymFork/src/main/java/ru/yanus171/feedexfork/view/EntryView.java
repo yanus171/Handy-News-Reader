@@ -140,69 +140,72 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private long mEntryId = -1;
     private String mEntryLink = "";
     public Runnable mScrollChangeListener = null;
-    private double mOldContentHeight = 0;
     private int mLastContentLength = 0;
     private Stack<Integer> mHistoryAchorScrollY = new Stack<>();
-    private final Handler mHandler = new Handler( this );
+    private final Handler mHandler = new Handler(this);
     private int mScrollY = 0;
-    private int mStatus = 0 ;
+    private int mStatus = 0;
     public boolean mLoadTitleOnly = false;
+    private boolean mContentWasLoaded = false;
+    private double mLastContentHeight = 0;
 
-    private static String GetCSS( String text ) { return "<head><style type='text/css'> "
-            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
-            + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; line-height: 120%} "
-            + "* {max-width: 100%; word-break: break-word}"
-            + "h1, h2 {font-weight: normal; line-height: 120%} "
-            + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
-            + "h2 {font-size: 120%} "
-            + "a.no_draw_link {color: " + Theme.GetTextColor()  + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
-            + "a {color: " + Theme.GetColor( LINK_COLOR, R.string.default_link_color )  + "; background: " + Theme.GetColor( LINK_COLOR_BACKGROUND , R.string.default_text_color_background ) +
-            ( PrefUtils.getBoolean( "underline_links", true ) ? "" : "; text-decoration: none" ) + "}"
-            + "h1 {color: inherit; text-decoration: none}"
-            + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "} "
-            + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
-            + "pre {white-space: pre-wrap;} "
-            + "blockquote {border-left: thick solid " + Theme.GetColor( QUOTE_LEFT_COLOR, android.R.color.black ) + "; background-color:" + Theme.GetColor( QUOTE_BACKGROUND_COLOR, android.R.color.black  ) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
-            + "td {font-weight: " + getFontBold() + "} "
-            + "hr {width: 100%; color: #777777; align: center; size: 1} "
-            + "p {margin: 0.8em 0 0.8em 0} "
-            + "p.subtitle {color: " + Theme.GetColor( SUBTITLE_COLOR, android.R.color.black ) + "; border-top:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black  ) + "; border-bottom:1px " + Theme.GetColor( SUBTITLE_BORDER_COLOR, android.R.color.black ) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
-            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
-            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
-            + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
-            + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
-            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-            + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
-            + ".tag_button i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor( BUTTON_COLOR, android.R.color.black  ) + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + ".tag_button_full_text i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + ".tag_button_hidden i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "</style><meta name='viewport' content='width=device-width'/></head>"; }
+    private static String GetCSS(String text) {
+        return "<head><style type='text/css'> "
+                + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
+                + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; line-height: 120%} "
+                + "* {max-width: 100%; word-break: break-word}"
+                + "h1, h2 {font-weight: normal; line-height: 120%} "
+                + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
+                + "h2 {font-size: 120%} "
+                + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
+                + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
+                (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}"
+                + "h1 {color: inherit; text-decoration: none}"
+                + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "} "
+                + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
+                + "pre {white-space: pre-wrap;} "
+                + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
+                + "td {font-weight: " + getFontBold() + "} "
+                + "hr {width: 100%; color: #777777; align: center; size: 1} "
+                + "p {margin: 0.8em 0 0.8em 0} "
+                + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
+                + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
+                + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
+                + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
+                + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
+                + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
+                + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor(BUTTON_COLOR, android.R.color.black) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
+                + ".tag_button i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor(BUTTON_COLOR, android.R.color.black) + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+                + ".tag_button_full_text i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+                + ".tag_button_hidden i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+                + "</style><meta name='viewport' content='width=device-width'/></head>";
+    }
 
 
     private static String getFontBold() {
-        if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) )
+        if (PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false))
             return "bold;";
         else
             return "normal;";
     }
 
     private static String getMargins() {
-        if ( PrefUtils.getBoolean( PrefUtils.ENTRY_MAGRINS, true ) )
+        if (PrefUtils.getBoolean(PrefUtils.ENTRY_MAGRINS, true))
             return "4%";
         else
             return "0.1cm";
     }
 
-    private static String getAlign( String text ) {
-        if ( isTextRTL( text ) )
+    private static String getAlign(String text) {
+        if (isTextRTL(text))
             return "right";
-        else if ( PrefUtils.getBoolean( PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false ) )
+        else if (PrefUtils.getBoolean(PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false))
             return "justify";
         else
             return "left";
     }
 
-    private static boolean isWordRTL ( String s ) {
+    private static boolean isWordRTL(String s) {
         if (s.isEmpty()) {
             return false;
         }
@@ -210,18 +213,18 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         return c >= 0x590 && c <= 0x6ff;
     }
 
-    private static boolean isTextRTL ( String text ) {
-        String[] list =  TextUtils.split( text, " " );
-        for ( String item: list )
-            if ( isWordRTL( item ) )
+    private static boolean isTextRTL(String text) {
+        String[] list = TextUtils.split(text, " ");
+        for (String item : list)
+            if (isWordRTL(item))
                 return true;
         return false;
     }
-    
+
     public static boolean isRTL(String text) {
         final int directionality = Character.getDirectionality(Locale.getDefault().getDisplayName().charAt(0));
-        return ( directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC ) && isTextRTL( text );
+        return (directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) && isTextRTL(text);
     }
 
     private static final String BODY_START = "<body dir=\"%s\">";
@@ -243,7 +246,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private static final String LINK_BUTTON_MIDDLE = "'>";
     private static final String LINK_BUTTON_END = "</a></p>";
     private static final String IMAGE_ENCLOSURE = "[@]image/";
-    private static final long TAP_TIMEOUT  = 300;
+    private static final long TAP_TIMEOUT = 300;
 
     private final JavaScriptObject mInjectedJSObject = new JavaScriptObject();
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
@@ -274,15 +277,15 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mEntryViewMgr = manager;
     }
 
-    public boolean setHtml( final long entryId,
-                            Cursor newCursor,
-                            boolean isFullTextShown,
-                            boolean forceUpdate,
-                            EntryActivity activity) {
-        Timer timer = new Timer( "EntryView.setHtml" );
+    public boolean setHtml(final long entryId,
+                           Cursor newCursor,
+                           boolean isFullTextShown,
+                           boolean forceUpdate,
+                           EntryActivity activity) {
+        Timer timer = new Timer("EntryView.setHtml");
 
         mEntryId = entryId;
-        mEntryLink =  newCursor.getString( newCursor.getColumnIndex(FeedData.EntryColumns.LINK) );
+        mEntryLink = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.LINK));
 
         final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
@@ -290,12 +293,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         final String title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
-        mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS) ) ?
-            newCursor.getDouble( newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
+        mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
+                newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
 
-        String contentText = "";
-        if ( mLoadTitleOnly)
-            contentText = getContext().getString( R.string.loading );
+        String contentText;
+        if (mLoadTitleOnly)
+            contentText = getContext().getString(R.string.loading);
         else {
             try {
                 if (!feedID.equals(GetExtrenalLinkFeedID()) &&
@@ -317,14 +320,14 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         }
 
         mActivity = activity;
-        if ( !mLoadTitleOnly && contentText.length() == mLastContentLength ) {
+        if (!mLoadTitleOnly && contentText.length() == mLastContentLength) {
             EndStatus();
             return isFullTextShown;
         }
         mLastContentLength = contentText.length();
         //getSettings().setBlockNetworkLoads(true);
-        getSettings().setUseWideViewPort( true );
-        getSettings().setSupportZoom( false );
+        getSettings().setUseWideViewPort(true);
+        getSettings().setSupportZoom(false);
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true)) {
             if (getSettings().getBlockNetworkImage()) {
@@ -350,7 +353,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         new Thread() {
             @Override
             public void run() {
-                synchronized ( EntryView.this ) {
+                synchronized (EntryView.this) {
                     String finalContentText2 = finalContentText;
                     if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
                         finalContentText2 = HtmlUtils.replaceImageURLs(finalContentText2, mEntryId, mEntryLink, true);
@@ -375,14 +378,14 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS( title )).append(String.format(  BODY_START, isTextRTL(title) ? "rtl" : "inherit" ) );
+        StringBuilder content = new StringBuilder(GetCSS(title)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
 
         if (link == null) {
             link = "";
         }
 
-        if ( PrefUtils.getBoolean( "entry_text_title_link", true ) )
-            content.append(String.format( TITLE_START_WITH_LINK, link + NO_MENU )).append(title).append(TITLE_END_WITH_LINK);
+        if (PrefUtils.getBoolean("entry_text_title_link", true))
+            content.append(String.format(TITLE_START_WITH_LINK, link + NO_MENU)).append(title).append(TITLE_END_WITH_LINK);
         else
             content.append(TITLE_START).append(title).append(TITLE_END);
 
@@ -411,7 +414,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             content.append(BUTTON_END);
         }
 
-        if ( preferFullText )
+        if (preferFullText)
             content.append(BUTTON_START).append(context.getString(R.string.menu_reload_full_text)).append(BUTTON_MIDDLE)
                     .append("injectedJSObject.onReloadFullText();").append(BUTTON_END);
         if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
@@ -436,12 +439,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         //StatusStartPageLoading();
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
 
-        Timer timer = new Timer( "EntryView.init" );
+        Timer timer = new Timer("EntryView.init");
 
         mImageDownloadObservable.addObserver(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            setTextDirection( TEXT_DIRECTION_LOCALE );
+            setTextDirection(TEXT_DIRECTION_LOCALE);
         // For scrolling
         setHorizontalScrollBarEnabled(false);
         setVerticalScrollBarEnabled(true);
@@ -505,26 +508,22 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     mEntryViewMgr.onEndVideoFullScreen();
                 }
             }
+
             @Override
             public Bitmap getDefaultVideoPoster() {
                 Bitmap result = super.getDefaultVideoPoster();
-                if ( result == null )
-                    result =  BitmapFactory.decodeResource( MainApplication.getContext().getResources(), android.R.drawable.presence_video_online );
+                if (result == null)
+                    result = BitmapFactory.decodeResource(MainApplication.getContext().getResources(), android.R.drawable.presence_video_online);
                 return result;
             }
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                synchronized ( EntryView.this ) {
-                    if (progress == 100) {
-                        EndStatus();
-                    } else if (mStatus != 0) {
+                synchronized (EntryView.this) {
+                    if (mStatus != 0 && progress != 100 )
                         FetcherService.Status().Change(mStatus, getContext().getString(R.string.web_page_loading) + " " + progress + " %");
-                    }
                 }
             }
-
-
 
 
         });
@@ -544,25 +543,27 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
                         context.startActivity(intent);
-                    } else if ( url.contains( "#" ) ) {
+                    } else if (url.contains("#")) {
                         String hash = url.substring(url.indexOf('#') + 1);
                         hash = URLDecoder.decode(hash);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
-                            mHistoryAchorScrollY.push( getScrollY() );
+                            mHistoryAchorScrollY.push(getScrollY());
                         }
-                    } else if ( url.contains( NO_MENU ) ) {
+                    } else if (url.contains(NO_MENU)) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        getContext().startActivity(intent.setData( Uri.parse(url.replace( NO_MENU,"" ))));
+                        getContext().startActivity(intent.setData(Uri.parse(url.replace(NO_MENU, ""))));
                     } else {
 
-                        class Item{
+                        class Item {
                             public final String text;
                             public final int icon;
+
                             private Item(int textID, Integer icon) {
-                                this.text = getContext().getString( textID );
+                                this.text = getContext().getString(textID);
                                 this.icon = icon;
                             }
+
                             @Override
                             public String toString() {
                                 return text;
@@ -575,13 +576,13 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                                 new Item(R.string.open_link, android.R.drawable.ic_menu_send)
                         };
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext() );
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                        builder.setAdapter( new ArrayAdapter<Item>(
-                                            getContext(),
-                                            android.R.layout.select_dialog_item,
-                                            android.R.id.text1,
-                                            items ){
+                        builder.setAdapter(new ArrayAdapter<Item>(
+                                getContext(),
+                                android.R.layout.select_dialog_item,
+                                android.R.id.text1,
+                                items) {
                             @NonNull
                             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                                 //Use super class to create the View
@@ -593,7 +594,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                                 Drawable dr = getResources().getDrawable(items[position].icon);
                                 Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
                                 Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
-                                d.setBounds( 0, 0, dp50, dp50);
+                                d.setBounds(0, 0, dp50, dp50);
                                 tv.setCompoundDrawables(d, null, null, null);
 
                                 //Add margin between image and text (support various screen densities)
@@ -606,13 +607,13 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                             public void onClick(DialogInterface dialog, int item) {
                                 final Intent intent;
                                 if (item == 0)
-                                    intent = new Intent(getContext(), EntryActivity.class );
-                                else if ( item == 1 )
-                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class );
+                                    intent = new Intent(getContext(), EntryActivity.class);
+                                else if (item == 1)
+                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class);
                                 else
                                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
-                                getContext().startActivity(intent.setData( Uri.parse(url) ));
+                                getContext().startActivity(intent.setData(Uri.parse(url)));
                             }
                         });
 
@@ -627,57 +628,63 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             }
 
             @Override
-            public void onPageStarted (WebView view, String url, Bitmap favicon) {
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                if (!mLoadTitleOnly)
+                    mContentWasLoaded = true;
+                else
+                    EndStatus();
                 ScheduleScrollTo(view);
             }
 
             private void ScheduleScrollTo(final WebView view) {
-                Dog.v(TAG, "EntryView.this.scrollTo " + mScrollPartY + ", GetScrollY() = " + GetScrollY());
-                if (mScrollPartY != 0 /*&& getContentHeight() != getScrollY()*/ ) {
-                    if ( GetContentHeight() > 0 ) {
+                StatusStartPageLoading();
+                Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
+                    double newContentHeight = GetContentHeight();
+                    if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                         ScrollToY();
                         EndStatus();
                     } else
                         view.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ScheduleScrollTo( view );
+                                ScheduleScrollTo(view);
                             }
                             // Delay the scrollTo to make it work
-                        }, 50);
-                }
+                        }, 150);
+                    mLastContentHeight = newContentHeight;
             }
         });
 
-        setOnTouchListener(new View.OnTouchListener(){
+        setOnTouchListener(new View.OnTouchListener() {
             private float mPressedY;
             private float mPressedX;
             private long mPressedTime = 0;
+
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if ( event.getAction() == MotionEvent.ACTION_DOWN ){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mPressedX = event.getX();
                     mPressedY = event.getY();
                     mPressedTime = System.currentTimeMillis();
                     //Log.v( TAG, "ACTION_DOWN mPressedTime=" + mPressedTime );
-                } else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
-                    if ( Math.abs( event.getX() - mPressedX ) > TOUCH_PRESS_POS_DELTA ||
-                         Math.abs( event.getY() - mPressedY ) > TOUCH_PRESS_POS_DELTA )
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (Math.abs(event.getX() - mPressedX) > TOUCH_PRESS_POS_DELTA ||
+                            Math.abs(event.getY() - mPressedY) > TOUCH_PRESS_POS_DELTA)
                         mPressedTime = 0;
-                } else  if ( event.getAction() == MotionEvent.ACTION_UP ) {
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //Log.v( TAG, "ACTION_DOWN time delta=" + ( System.currentTimeMillis() - mPressedTime ) );
-                    if ( System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
-                         Math.abs( event.getX() - mPressedX ) < TOUCH_PRESS_POS_DELTA &&
-                         Math.abs( event.getY() - mPressedY ) < TOUCH_PRESS_POS_DELTA &&
-                         PrefUtils.getBoolean( "article_menu_show_by_tap", true ) &&
-                         EntryActivity.GetIsActionBarHidden() &&
-                         !mActivity.mHasSelection ) {
+                    if (System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
+                            Math.abs(event.getX() - mPressedX) < TOUCH_PRESS_POS_DELTA &&
+                            Math.abs(event.getY() - mPressedY) < TOUCH_PRESS_POS_DELTA &&
+                            PrefUtils.getBoolean("article_menu_show_by_tap", true) &&
+                            EntryActivity.GetIsActionBarHidden() &&
+                            !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
                         mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 200);
@@ -690,28 +697,23 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
         timer.End();
     }
-    public void Destroy() {
-        EntryView.mImageDownloadObservable.deleteObserver( this );
-        SaveScrollPos();
-        EndStatus();
-    }
 
     private void EndStatus() {
-        synchronized ( EntryView.this ) {
+        synchronized (EntryView.this) {
             if (mStatus != 0)
-                FetcherService.Status().End( mStatus );
+                FetcherService.Status().End(mStatus);
             mStatus = 0;
         }
     }
 
     @Override
     public boolean handleMessage(Message msg) {
-        if (msg.what == CLICK_ON_URL){
+        if (msg.what == CLICK_ON_URL) {
             mHandler.removeMessages(CLICK_ON_WEBVIEW);
             mActivity.closeContextMenu();
             return true;
         }
-        if (msg.what == CLICK_ON_WEBVIEW){
+        if (msg.what == CLICK_ON_WEBVIEW) {
             mActivity.openOptionsMenu();
             return true;
         }
@@ -719,13 +721,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }
 
     private void ScrollToY() {
-        final double newHeight = GetContentHeight();
-        if ( newHeight > mOldContentHeight && mOldContentHeight > 0 ) {
-            mScrollPartY += (double) GetScrollY() / newHeight - mScrollPartY;
-            Dog.v("EntryView", "EntryView.onPageFinished new ScrollPartY =" + mScrollPartY + ", GetScrollY() = " + GetScrollY() );
-        }
-        if ( GetScrollY() > 0 )
-            EntryView.this.scrollTo(0, GetScrollY() );
+        Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+        if (GetScrollY() > 0)
+            EntryView.this.scrollTo(0, GetScrollY());
     }
 
 
@@ -739,39 +737,42 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }*/
 
     public String GetData() {
-        synchronized ( EntryView.this ) {
+        synchronized (EntryView.this) {
             return mData;
         }
     }
 
     @Override
-    protected void onScrollChanged (int l, int t, int oldl, int oldt) {
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         FetcherService.Status().HideByScroll();
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
         mActivity.mEntryFragment.UpdateFooter();
-        if ( mScrollChangeListener != null )
+        if (mScrollChangeListener != null)
             mScrollChangeListener.run();
     }
 
     public boolean IsScrollAtBottom() {
         return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight()) - getMeasuredHeight() * 0.4;
     }
+
     @Override
     public void update(Observable observable, Object data) {
-        if ( data != null &&
-            (( Entry)data ).mID == mEntryId &&
-            ((Entry) data).mLink.equals(mEntryLink) )  {
-            Dog.v( "EntryView", "EntryView.update() " + mEntryId );
+        if (data != null &&
+                ((Entry) data).mID == mEntryId &&
+                ((Entry) data).mLink.equals(mEntryLink)) {
+            Dog.v("EntryView", "EntryView.update() " + mEntryId);
             new Thread() {
                 @Override
                 public void run() {
-                    synchronized ( EntryView.this ) {
+                    synchronized (EntryView.this) {
                         mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
                     }
                     UiUtils.RunOnGuiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if ( !IsStatusStartPageLoading() )
+                                mScrollY = getScrollY();
                             LoadData();
                         }
                     });
@@ -781,68 +782,74 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }
 
     public void UpdateTags() {
-        final int status = FetcherService.Status().Start( getContext().getString( R.string.last_update) );
+        final int status = FetcherService.Status().Start(getContext().getString(R.string.last_update));
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
-        Element root = FindBestElement( doc, mEntryLink, "", true );
-        AddTagButtons( doc, mEntryLink,  root );
-        synchronized ( EntryView.this ) {
-            mData = generateHtmlContent( "-1", "", mEntryLink,  doc.toString(), "", "", 0, true );
+        Element root = FindBestElement(doc, mEntryLink, "", true);
+        AddTagButtons(doc, mEntryLink, root);
+        synchronized (EntryView.this) {
+            mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", 0, true);
         }
         LoadData();
-        FetcherService.Status().End( status );
+        FetcherService.Status().End(status);
     }
 
     private void LoadData() {
-        if ( GetViewScrollPartY() > 0 ) {
+        if (mContentWasLoaded && GetViewScrollPartY() > 0)
             mScrollPartY = GetViewScrollPartY();
-            mScrollY = getScrollY();
-            mOldContentHeight = GetContentHeight();
-        }
         StatusStartPageLoading();
-        synchronized ( EntryView.this ) {
+        synchronized (EntryView.this) {
+            mLastContentHeight = 0;
             loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
         }
     }
 
     public void StatusStartPageLoading() {
-        synchronized ( EntryView.this ) {
+        synchronized (EntryView.this) {
             if (mStatus == 0)
                 mStatus = FetcherService.Status().Start(R.string.web_page_loading);
         }
     }
+    private boolean IsStatusStartPageLoading() {
+        synchronized (EntryView.this) {
+            return mStatus == 0;
+        }
+    }
 
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
-    public static void NotifyToUpdate( final long entryId, final String entryLink ) {
-            UiUtils.RunOnGuiThread( new Runnable() {
-                    @Override
-                    public void run() {
-                        ScheduledNotifyObservers( entryId, entryLink );
 
-                    }
-                }, NOTIFY_OBSERVERS_DELAY_MS);
+    public static void NotifyToUpdate(final long entryId, final String entryLink) {
+        UiUtils.RunOnGuiThread(new Runnable() {
+            @Override
+            public void run() {
+                ScheduledNotifyObservers(entryId, entryLink);
+
+            }
+        }, NOTIFY_OBSERVERS_DELAY_MS);
     }
 
     static HashMap<Long, Long> mLastNotifyObserversTime = new HashMap<>();
     static HashMap<Long, Boolean> mLastNotifyObserversScheduled = new HashMap<>();
 
-    static void ScheduledNotifyObservers( final long entryId, final String entryLink ) {
-        mLastNotifyObserversTime.put( entryId, new Date().getTime() );
-        if (!mLastNotifyObserversScheduled.containsKey( entryId )) {
-            mLastNotifyObserversScheduled.put( entryId, true );
-            UiUtils.RunOnGuiThread( new ScheduledEnrtyNotifyObservers( entryId, entryLink ), NOTIFY_OBSERVERS_DELAY_MS);
+    static void ScheduledNotifyObservers(final long entryId, final String entryLink) {
+        mLastNotifyObserversTime.put(entryId, new Date().getTime());
+        if (!mLastNotifyObserversScheduled.containsKey(entryId)) {
+            mLastNotifyObserversScheduled.put(entryId, true);
+            UiUtils.RunOnGuiThread(new ScheduledEnrtyNotifyObservers(entryId, entryLink), NOTIFY_OBSERVERS_DELAY_MS);
         }
     }
 
     public boolean CanGoBack() {
         return canGoBack() && !mHistoryAchorScrollY.isEmpty();
     }
+
     public void GoBack() {
-        if ( CanGoBack() )
-            scrollTo(0, mHistoryAchorScrollY.pop() );
+        if (CanGoBack())
+            scrollTo(0, mHistoryAchorScrollY.pop());
     }
+
     public void GoTop() {
-        mHistoryAchorScrollY.push( getScrollY() );
-        scrollTo(0, 0 );
+        mHistoryAchorScrollY.push(getScrollY());
+        scrollTo(0, 0);
     }
 
 
@@ -900,6 +907,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             DoNotShowMenu();
             mEntryViewMgr.onReloadFullText();
         }
+
         @JavascriptInterface
         public void onClose() {
             DoNotShowMenu();
@@ -919,7 +927,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         }
 
         @JavascriptInterface
-        public void downloadImage( String url ) {
+        public void downloadImage(String url) {
             DoNotShowMenu();
             mEntryViewMgr.downloadImage(url);
         }
@@ -932,7 +940,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         }
 
         @JavascriptInterface
-        public void openTagMenu(String className, String baseUrl, String paramValue){
+        public void openTagMenu(String className, String baseUrl, String paramValue) {
             DoNotShowMenu();
             mEntryViewMgr.openTagMenu(className, baseUrl, paramValue);
         }
@@ -940,16 +948,16 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
     public static class ImageDownloadObservable extends Observable {
         @Override
-        public boolean hasChanged () {
+        public boolean hasChanged() {
             return true;
         }
     }
 
 
     private int GetScrollY() {
-        if ( mScrollY != 0 )
+        if (mScrollY != 0)
             return mScrollY;
-        return GetContentHeight() * mScrollPartY != 0 ? ( int )( GetContentHeight() * mScrollPartY ) : 0;
+        return GetContentHeight() * mScrollPartY != 0 ? (int) (GetContentHeight() * mScrollPartY) : 0;
     }
 
     public double GetContentHeight() {
@@ -957,22 +965,32 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }
 
     public double GetViewScrollPartY() {
-        return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0 ;
+        return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0;
     }
 
-    public void PageChange( int delta, StatusText statusText ) {
+    public void PageChange(int delta, StatusText statusText) {
         ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
-                (int) ( getScrollY() + delta * ( getHeight() - statusText.GetHeight() ) *
-                        ( PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98 ) ));
+                (int) (getScrollY() + delta * (getHeight() - statusText.GetHeight()) *
+                        (PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
         anim.setDuration(450);
-        anim.setInterpolator( new AccelerateDecelerateInterpolator() );
+        anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Dog.d( "WebView.onPause " + mEntryId );
+        SaveScrollPos();
+        EndStatus();
+    }
+
     public void SaveScrollPos() {
+        if ( !mContentWasLoaded )
+            return;
         mScrollPartY = GetViewScrollPartY();
         if ( mScrollPartY > 0.0001 ) {
-            Dog.v(TAG, String.format("EntryPagerAdapter.SaveScrollPos (entry %d) getScrollY() = %d, view.getContentHeight() = %f", mEntryId, getScrollY(), GetContentHeight()));
+            Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
 //            new Thread() {
 //                @Override
 //                public void run() {
@@ -983,7 +1001,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
                     cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
                     FeedDataContentProvider.mNotifyEnabled = true;
-                    Dog.v("EntryView", String.format("EntryPagerAdapter.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
+                    //Dog.v("EntryView", String.format("EntryView.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();
         }

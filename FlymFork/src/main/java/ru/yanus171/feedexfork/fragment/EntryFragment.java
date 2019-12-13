@@ -837,6 +837,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
             mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
+            mCurrentPagerPos = 0;
         }
 
 
@@ -1296,9 +1297,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }*/
 
     public abstract class BaseEntryPagerAdapter extends PagerAdapter {
-        abstract void onResume();
-        abstract void onPause();
-        public abstract EntryView GetEntryView( int pagerPos );
+        protected final SparseArray<EntryView> mEntryViews = new SparseArray<>();
 
         Cursor getCursor(int pagerPos) {
             EntryView view = GetEntryView( pagerPos );
@@ -1355,28 +1354,31 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
             }
         }
-    }
 
-    public class EntryPagerAdapter extends BaseEntryPagerAdapter {
-
-        private final SparseArray<EntryView> mEntryViews = new SparseArray<>();
-
-        EntryPagerAdapter() { }
-
-        @Override
-        public int getCount() {
-            synchronized ( this ) {
-                return mEntriesIds != null ? mEntriesIds.length : 0;
+        void onResume() {
+            for (int i = 0; i < mEntryViews.size(); i++) {
+                mEntryViews.valueAt(i).onResume();
             }
         }
+
+        void onPause() {
+            for (int i = 0; i < mEntryViews.size(); i++) {
+                mEntryViews.valueAt(i).onPause();
+            }
+        }
+
+        public EntryView GetEntryView( int pagerPos ) {
+            return mEntryViews.get(pagerPos);
+        }
+
 
         @Override
         public void destroyItem(ViewGroup container, final int position, Object object) {
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
             FetcherService.removeActiveEntryID( GetEntry( position ).mID );
             getLoaderManager().destroyLoader(position);
+            EntryView.mImageDownloadObservable.deleteObserver( GetEntryView( position ) );
             container.removeView((View) object);
-            GetEntryView( position ).Destroy();
             mEntryViews.delete(position);
         }
 
@@ -1385,14 +1387,30 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            FetcherService.addActiveEntryID( GetEntry( position ).mID );
+
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);
             view.mLoadTitleOnly = true;
-            getLoaderManager().restartLoader(position, null, EntryFragment.this);
-
+            Entry entry = GetEntry( position );
+            if ( entry != null ) {
+                FetcherService.addActiveEntryID(entry.mID);
+                getLoaderManager().restartLoader(position, null, EntryFragment.this);
+            }
             return view;
+        }
+    }
+
+    public class EntryPagerAdapter extends BaseEntryPagerAdapter {
+
+
+        EntryPagerAdapter() { }
+
+        @Override
+        public int getCount() {
+            synchronized ( this ) {
+                return mEntriesIds != null ? mEntriesIds.length : 0;
+            }
         }
 
 
@@ -1407,32 +1425,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        @Override
-        void onResume() {
-            if (mEntriesIds != null) {
-                EntryView view = mEntryViews.get(mCurrentPagerPos);
-                if (view != null) {
-                    view.onResume();
-                }
-            }
-        }
-
-        @Override
-        void onPause() {
-            for (int i = 0; i < mEntryViews.size(); i++) {
-                mEntryViews.valueAt(i).onPause();
-            }
-        }
-
-        @Override
-        public EntryView GetEntryView( int pagerPos ) {
-            return mEntryViews.get(pagerPos);
-        }
     }
 
     public class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
-        EntryView mEntryView = null;
-
         SingleEntryPagerAdapter() {
 
         }
@@ -1442,45 +1437,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return 1;
         }
 
-        @Override
-        public EntryView GetEntryView(int pagerPos) {
-            return mEntryView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, final int position, Object object) {
-            Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
-            getLoaderManager().destroyLoader(position);
-            container.removeView((View) object);
-            EntryView.mImageDownloadObservable.deleteObserver(mEntryView);
-            mEntryView.SaveScrollPos();
-        }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            final EntryView view = CreateEntryView();
-            container.addView(view);
-            Entry entry = GetEntry( position );
-            if ( entry != null ) {
-                FetcherService.addActiveEntryID(entry.mID);
-                getLoaderManager().restartLoader(position, null, EntryFragment.this);
-            }
-            mEntryView = view;
+            final EntryView view = (EntryView) super.instantiateItem(container, position);
+            view.mLoadTitleOnly = false;
             return view;
-        }
-
-
-        @Override
-        void onResume() {
-            if ( mEntryView != null )
-                mEntryView.onResume();
-        }
-
-        @Override
-        void onPause() {
-            mEntryView.onPause();
         }
     }
 

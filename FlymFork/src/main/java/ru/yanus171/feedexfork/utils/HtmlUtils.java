@@ -232,8 +232,6 @@ public class HtmlUtils {
         } finally {
             Status().End( status );
         }
-
-
     }
 
     private static String getDownloadImageHtml(String match) {

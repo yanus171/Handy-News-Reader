@@ -169,7 +169,7 @@ public class FetcherService extends IntentService {
     private boolean mDeleteOld = true;
 
     public static StatusText.FetcherObservable Status() {
-        if (mStatusText == null) {
+        if ( mStatusText == null ) {
             mStatusText = new StatusText.FetcherObservable();
         }
         return mStatusText;

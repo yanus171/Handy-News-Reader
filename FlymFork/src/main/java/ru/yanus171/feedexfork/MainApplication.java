@@ -37,6 +37,8 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.DebugApp;
 
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+
 public class MainApplication extends Application {
 
     private static Context mContext;
@@ -51,6 +53,9 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+
+
+        Status();
 
         BaseActivity.InitLocale( mContext );
 
