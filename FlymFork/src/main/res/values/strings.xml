@@ -446,6 +446,7 @@
     <string name="menu_go_back">Go back</string>
     <string name="menu_go_top">Scroll to top</string>
     <string name="menu_close">Close</string>
+    <string name="reading_file_list">Reading file list</string>
 
 
     <plurals name="number_of_new_entries">

@@ -87,6 +87,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
@@ -429,19 +431,38 @@ public class FetcherService extends IntentService {
     private void deleteGhostImages(  final HashSet<String> mapEntryID ) {
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
-        String[] fileNames = FileUtils.INSTANCE.GetImagesFolder().list();
-        if (fileNames != null  )
-            for (String fileName : fileNames) {
-                String[] list = TextUtils.split( fileName, "_" );
-                if ( list.length != 3 || list.length >= 2 && !mapEntryID.contains( list[0] ) ) {
-                    if ( new File( folder, fileName ).delete() )
+        final int status = Status().Start( R.string.reading_file_list );
+        File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
+        final int FIRST_COUNT_TO_DELETE = files.length - 60000;
+        if ( FIRST_COUNT_TO_DELETE > 0 )
+            Arrays.sort( files, new Comparator<File>() {
+
+                @Override
+                public int compare(File f1, File f2) {
+                    return Long.valueOf( f1.lastModified() ).compareTo( f2.lastModified() );
+                }
+            });
+        Status().End( status );
+        if (files != null  ) {
+            int index = 0;
+            for (File file : files) {
+                final String fileName = file.getName();
+                final String[] list = TextUtils.split(fileName, "_");
+                if ( fileName.equals( ".nomedia" ) )
+                    continue;
+                if ( index < FIRST_COUNT_TO_DELETE ||
+                        list.length != 3 ||
+                        list.length >= 2 && !mapEntryID.contains(list[0])) {
+                    if (new File(folder, fileName).delete())
                         deletedCount++;
-                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format( " %d", deletedCount ) );
+                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format(" %d", deletedCount));
                     if (FetcherService.isCancelRefresh())
                         break;
 
                 }
+                index ++;
             }
+        }
         Status().ChangeProgress( "" );
         //Status().End( status );
     }
