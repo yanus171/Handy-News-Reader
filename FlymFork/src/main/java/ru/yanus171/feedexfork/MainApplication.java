@@ -80,7 +80,6 @@ public class MainApplication extends Application {
             notificationManager.createNotificationChannel(channel);
         }
 
-
     }
 
 

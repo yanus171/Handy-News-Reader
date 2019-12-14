@@ -54,10 +54,10 @@
             android:theme="@style/Theme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts"/>
 
         </activity>
         <activity
@@ -159,10 +159,10 @@
         </activity>
         <activity
             android:name=".activity.EditFeedActivity"
+            android:theme="@style/Theme.Dark"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
-
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="vnd.android.cursor.item/vnd.flymfork.feed" />
