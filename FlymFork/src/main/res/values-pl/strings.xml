@@ -194,6 +194,7 @@ GENERAL]]></string>
     <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w prawo, przesuń w lewo by dodać do Ulubionych</string>
     <string name="undo">Cofnij</string>
     <string name="marked_as_read">Oznaczono jako przeczytane</string>
+    <string name="image_count">Licznik obrazków</string>
     <!-- WIDGET -->
     <string name="red">Czerwony</string>
     <string name="green">Zielony</string>
@@ -320,7 +321,8 @@ GENERAL]]></string>
     <string name="all_feeds">Wszystkie kanały (w tym przyszłe)</string>
     <string name="downloadImage">Pobieranie obrazków</string>
     <string name="loadFullText">Wczytywanie pełnej treści</string>
-    <string name="deleteOldEntries">Usuń stare artykuły</string>
+    <string name="deleteOldEntries">Usuwanie starych artykułów</string>
+    <string name="deleting_ghost_entries">Usuwanie starych plików</string>
     <string name="AllImages">Wszystkie obrazki</string>
     <string name="EntryImages">Obrazki artykułu</string>
     <string name="mobilizeAll">Mobilizacja</string>
@@ -438,6 +440,7 @@ GENERAL]]></string>
     <string name="menu_go_back">Wstecz</string>
     <string name="menu_go_top">Przewiń na górę</string>
     <string name="menu_close">Zamknij</string>
+    <string name="reading_file_list">Lista czytanych</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
