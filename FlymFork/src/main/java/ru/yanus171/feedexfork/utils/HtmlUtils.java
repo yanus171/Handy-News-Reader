@@ -228,10 +228,13 @@ public class HtmlUtils {
                 }
 
             }
-            return content;
+        } catch ( Exception e ) {
+            Status().SetError( null, "", String.valueOf(entryId), e  );
         } finally {
             Status().End( status );
         }
+
+        return content;
     }
 
     private static String getDownloadImageHtml(String match) {

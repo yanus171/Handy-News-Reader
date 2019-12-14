@@ -894,13 +894,17 @@ public class FetcherService extends IntentService {
                 try {
                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    obs.SetError( "", "", String.valueOf(entryId), e );
                 } finally {
                     obs.End(status1);
                 }
             }
             EntryView.NotifyToUpdate( entryId, entryLink );
-        } finally { obs.End( status ); }
+        } catch ( Exception e ) {
+            obs.SetError(null, "", String.valueOf(entryId), e);
+        } finally {
+            obs.End(status);
+        }
     }
 
 

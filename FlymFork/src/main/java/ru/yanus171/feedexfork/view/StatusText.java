@@ -38,8 +38,8 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 
 public class StatusText implements Observer {
-    private static final String SEP = "__";
-    public static final String DELIMITER = ", ";
+    private static final String SEP = "__#__";
+    public static final String DELIMITER = " ";
     private String mFeedID = "";
     private String mEntryID = "";
     private TextView mView;
@@ -77,7 +77,6 @@ public class StatusText implements Observer {
             v.setVisibility(View.GONE);
             }
         });
-        mErrorView.setLines( 2 );
     }
 
     private void SetFeedID(String feedID) {
@@ -111,28 +110,14 @@ public class StatusText implements Observer {
             errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
             errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
 
-        mView.post (new Runnable() {
-            private String mError;
-            private String mText;
-
-            @Override
-            public void run() {
-                if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || mText.trim().isEmpty() )
-                    mView.setVisibility(View.GONE);
-                else {
-                    mView.setText(mText);
-                    mView.setVisibility(View.VISIBLE);
-                }
-                mErrorView.setText(mError);
-                mErrorView.setVisibility( mError.isEmpty() ? View.GONE : View.VISIBLE );
-            }
-            Runnable init( String text, String error ) {
-                mText = text;
-                mError = error;
-                return this;
-            }
-        }.init(text, error));
-
+        if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || text.trim().isEmpty() )
+            mView.setVisibility(View.GONE);
+        else {
+            mView.setText(text);
+            mView.setVisibility(View.VISIBLE);
+        }
+        mErrorView.setText(error);
+        mErrorView.setVisibility( error.isEmpty() ? View.GONE : View.VISIBLE );
     }
 
 
