@@ -146,7 +146,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private int mScrollY = 0;
     private int mStatus = 0;
     public boolean mLoadTitleOnly = false;
-    private boolean mContentWasLoaded = false;
+    public boolean mContentWasLoaded = false;
     private double mLastContentHeight = 0;
 
     private static String GetCSS(String text) {

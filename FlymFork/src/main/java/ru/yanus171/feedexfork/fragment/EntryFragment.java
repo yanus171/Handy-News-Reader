@@ -1463,7 +1463,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     return;
                 if ( view.mWasAutoUnStar )
                     return;
-                if ( view.mLoadTitleOnly )
+                if ( !view.mContentWasLoaded )
                     return;
                 if ( view.IsScrollAtBottom() ) {
                     final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
