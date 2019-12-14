@@ -399,6 +399,7 @@ public class FetcherService extends IntentService {
     }
 
     private void deleteGhost() {
+        final int status = Status().Start( R.string.deleting_ghost_entries );
         final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns.LINK},null, null, null );
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
         while  ( cursor.moveToNext() )
@@ -406,10 +407,13 @@ public class FetcherService extends IntentService {
         cursor.close();
         deleteGhostHtmlFiles( mapEntryLinkHash );
         deleteGhostImages( mapEntryLinkHash );
+        Status().End( status );
     }
 
 
     private void deleteGhostHtmlFiles( final HashSet<String> mapEntryLink ) {
+        if ( isCancelRefresh() )
+            return;
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetHTMLFolder();
         String[] fileNames = folder.list();
@@ -429,11 +433,13 @@ public class FetcherService extends IntentService {
     }
 
     private void deleteGhostImages(  final HashSet<String> mapEntryID ) {
+        if ( isCancelRefresh() )
+            return;
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
-        final int status = Status().Start( R.string.reading_file_list );
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
-        final int FIRST_COUNT_TO_DELETE = files.length - 60000;
+        final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length) );
+        final int FIRST_COUNT_TO_DELETE = files.length - 55000;
         if ( FIRST_COUNT_TO_DELETE > 0 )
             Arrays.sort( files, new Comparator<File>() {
 
@@ -443,6 +449,8 @@ public class FetcherService extends IntentService {
                 }
             });
         Status().End( status );
+        if ( isCancelRefresh() )
+            return;
         if (files != null  ) {
             int index = 0;
             for (File file : files) {
@@ -930,34 +938,33 @@ public class FetcherService extends IntentService {
 
 
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
-        //if ( !mIsDeletingOld ) {
-            int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
-            final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
-                    new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
-                    FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
-            try {
-                //mIsDeletingOld = true;
-                while (cursor.moveToNext()) {
-                    long keepDateBorderTime = defaultKeepDateBorderTime;
-                    final String jsonText = cursor.isNull( 1 ) ? "" : cursor.getString(1);
-                    if ( !jsonText.isEmpty() )
-                        try {
-                            JSONObject jsonOptions = new JSONObject(jsonText);
-                            if (jsonOptions.has(CUSTOM_KEEP_TIME))
-                                keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    final long feedID = cursor.getLong(0);
-                    DeleteOldEntries(feedID, keepDateBorderTime);
-                }
-            } finally {
-                Status().End(status);
-                cursor.close();
-                //mIsDeletingOld = false;
+        if ( isCancelRefresh() )
+            return;
+        int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
+                new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
+                FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
+        try {
+            //mIsDeletingOld = true;
+            while (cursor.moveToNext()) {
+                long keepDateBorderTime = defaultKeepDateBorderTime;
+                final String jsonText = cursor.isNull( 1 ) ? "" : cursor.getString(1);
+                if ( !jsonText.isEmpty() )
+                    try {
+                        JSONObject jsonOptions = new JSONObject(jsonText);
+                        if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                            keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                final long feedID = cursor.getLong(0);
+                DeleteOldEntries(feedID, keepDateBorderTime);
             }
-        //}
+        } finally {
+            Status().End(status);
+            cursor.close();
+        }
     }
 
     private void DeleteOldEntries(final long feedID, final long keepDateBorderTime) {
