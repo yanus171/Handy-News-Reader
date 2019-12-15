@@ -189,6 +189,7 @@
     <string name="tip_sentence">Suggerimento: fai scorrere a sinistra per segnare come letto</string>
     <string name="undo">Annulla</string>
     <string name="marked_as_read">Segna come già letto</string>
+    <string name="image_count">Numero delle immagini</string>
     <!-- WIDGET -->
     <string name="red">Rosso</string>
     <string name="green">Verde</string>
@@ -315,6 +316,7 @@
     <string name="downloadImage">Download delle immagini in corso</string>
     <string name="loadFullText">Caricamento testo completo</string>
     <string name="deleteOldEntries">Elimina articoli vecchi</string>
+    <string name="deleting_ghost_entries">Eliminazione vecchi file</string>
     <string name="AllImages">Tutte le immagini</string>
     <string name="EntryImages">Immagini di ingresso</string>
     <string name="mobilizeAll">Mobilizing</string>
@@ -432,6 +434,7 @@
     <string name="menu_go_back">Torna indietro</string>
     <string name="menu_go_top">Vai in alto</string>
     <string name="menu_close">Chiudi</string>
+    <string name="reading_file_list">Lettura elenco file</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
