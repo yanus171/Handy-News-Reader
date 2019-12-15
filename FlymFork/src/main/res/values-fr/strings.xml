@@ -354,6 +354,7 @@
     <string name="show_progress_info">Informations techniques détaillées sur la progression</string>
     <string name="show_progress_info_descr">Afficher les informations détaillées sur l\'opération en cours</string>
     <string name="vibrate_on_article_list_entry_swype">Vibrer lors du glissement</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Lors de l\'ajout aux favoris dans la liste d\'entrée des articles et dans la fenêtre de texte de l\'article</string>
     <string name="entry_marked_unfavourite">L\'article a été retiré des Favoris</string>
     <string name="entry_marked_favourite">L\'article a été ajouté aux Favoris</string>
     <string name="new_feed_was_added">Nouveau flux ajouté</string>
@@ -429,11 +430,13 @@
     <string name="settings_add_google_news_dialog_descr">Décochez pour contourner la sélection du type de flux lors de l\'ajout d\'un flux</string>
     <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
     <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (montrer|cacher|racine), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
+    <string name="article_menu_show_by_tap">Afficher le menu des articles en appuyant</string>
     <string name="web_page_loading">Chargement de la page</string>
     <string name="article_menu_show_by_tap_descr">Lorsque la barre d\'action est masquée - sinon vous trouverez le menu uniquement sur la barre d\'action</string>
     <string name="menu_go_back">Retour</string>
     <string name="menu_go_top">Défiler vers le haut</string>
     <string name="menu_close">Fermer</string>
+    <string name="reading_file_list">Lecture de la liste des fichiers</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
