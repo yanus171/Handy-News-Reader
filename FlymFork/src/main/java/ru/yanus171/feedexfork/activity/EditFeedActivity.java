@@ -385,7 +385,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             mKeepTimeCB.setChecked( false );
             UpdateSpinnerKeepTime();
 
-        } else if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+        } else if ( intent.getAction().equals(Intent.ACTION_VIEW) ) {
             setTitle(R.string.new_feed_title);
 
             tabWidget.setVisibility(View.GONE);

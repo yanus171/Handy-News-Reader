@@ -103,6 +103,7 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.parser.HTMLParser;
 import ru.yanus171.feedexfork.parser.OPML;
@@ -361,7 +362,7 @@ public class FetcherService extends IntentService {
 
                                 ShowNotification(item.mCaption,
                                         R.string.markedAsStarred,
-                                        new Intent(Intent.ACTION_VIEW, entryUri),
+                                        GetActionIntent( Intent.ACTION_VIEW, entryUri),
                                         ID);
                             }
                     }
@@ -741,7 +742,12 @@ public class FetcherService extends IntentService {
     }
 
 
-
+    public static Intent GetActionIntent( String action, Uri uri, Class<?> class1 ) {
+        return new Intent(action, uri).setPackage( MainApplication.getContext().getPackageName() ).setClass( MainApplication.getContext(), class1 );
+    }
+    public static Intent GetActionIntent( String action, Uri uri ) {
+        return GetActionIntent( action, uri, EntryActivity.class );
+    }
     public static Intent GetIntent( String extra ) {
         return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
     }

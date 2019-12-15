@@ -79,6 +79,7 @@ import java.util.Calendar;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -94,6 +95,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
+import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getString;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
@@ -247,7 +249,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                  Math.abs( paddingX ) < minX &&
                                  Math.abs( paddingY ) < minY &&
                                  android.os.SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() )
-                                v.getContext().startActivity(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, holder.entryID)));
+                                v.getContext().startActivity(
+                                        GetActionIntent( Intent.ACTION_VIEW,
+                                                         ContentUris.withAppendedId(mUri, holder.entryID) ) );
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
                                 toggleReadState(holder.entryID, view);
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
@@ -641,6 +645,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         return -1;
     }
+
 }
 
 /*class MarkAsRadThread extends Thread  {

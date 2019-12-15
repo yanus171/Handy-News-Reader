@@ -540,7 +540,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
                         File extTmpFile = new File(context.getExternalCacheDir(), file.getName());
                         FileUtils.INSTANCE.copy(file, extTmpFile);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        Intent intent = new Intent( Intent.ACTION_VIEW );
                         intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
                         context.startActivity(intent);
                     } else if (url.contains("#")) {
