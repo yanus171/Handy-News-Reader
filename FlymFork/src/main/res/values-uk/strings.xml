@@ -189,6 +189,7 @@
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
     <string name="undo">Скасувати</string>
     <string name="marked_as_read">Позначити як прочитане</string>
+    <string name="image_count">Кількість зображень</string>
     <!-- WIDGET -->
     <string name="red">Червоний</string>
     <string name="green">Зелений</string>
@@ -315,6 +316,7 @@
     <string name="downloadImage">Завантаження зображень</string>
     <string name="loadFullText">Завантаження усього тексту</string>
     <string name="deleteOldEntries">Вилучення старих статей</string>
+    <string name="deleting_ghost_entries">Видалення старих файлів</string>
     <string name="AllImages">Всі зображення</string>
     <string name="EntryImages">Завантаження зображень статті</string>
     <string name="mobilizeAll">Завантаження повних текстів</string>
@@ -432,6 +434,7 @@
     <string name="menu_go_back">Назад</string>
     <string name="menu_go_top">Прокрутити на початок</string>
     <string name="menu_close">Закрити</string>
+    <string name="reading_file_list">Список для читання</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
