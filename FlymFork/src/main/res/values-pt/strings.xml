@@ -283,7 +283,7 @@
     <string name="settings_show_tap_zones">Zonas de Toque visíveis</string>
     <string name="settings_show_tap_zone_description">Como quadrados transparentes na visualização de entrada</string>
     <string name="settings_tapZones">Prever Zonas de Toque</string>
-    <string name="settings_volume_buttons_action">Ação por botões de volume</string>
+    <string name="settings_volume_buttons_action">Ação dos botões de volume</string>
     <string name="brightness_gesture">Gesto de mudança de brilho</string>
     <string name="brightness_gesture_descr">Marque esta opção para ajustar o brilho deslizando para cima/para baixo ao longo da borda esquerda da tela</string>
     <string name="brightness_with_dim_activity">Sobreposição de software</string>
@@ -353,7 +353,7 @@
     <string name="show_progress_info">Informações técnicas detalhadas de progresso</string>
     <string name="show_progress_info_descr">Mostrar informações detalhadas sobre a operação atual</string>
     <string name="vibrate_on_article_list_entry_swype">Vibrar ao deslizar</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">Na entrada da lista de artigos e na janela de texto do artigo quando favorito</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Na entrada da lista de artigos e na janela de texto do artigo, quando favoritar</string>
     <string name="entry_marked_unfavourite">O artigo foi removido dos Favoritos</string>
     <string name="entry_marked_favourite">O artigo foi adicionado aos Favoritos</string>
     <string name="new_feed_was_added">Novo feed foi adicionado</string>
@@ -409,7 +409,7 @@
     <string name="fullTextRoot">Raiz de texto completo</string>
     <string name="fullTextReloadStarted">Recarga completa do texto foi iniciada</string>
     <string name="brightness_update_from_system_period_min">Tempo de atualização do brilho</string>
-    <string name="brightness_update_from_system_period_min_descr">(em minutos) Após esse período de tempo, o brilho (ao deslizar) será restaurado do nível do sistema atual (0 - desligado)</string>
+    <string name="brightness_update_from_system_period_min_descr">(em minutos) Após esse período de tempo, o brilho (ao deslizar) será restaurado para o nível do sistema atual (0 - desligado)</string>
     <string name="menu_add_feed_shortcut">Criar atalho na Tela inicial</string>
     <string name="new_feed_shortcut_added">Novo atalho foi criado na Tela inicial</string>
     <string name="new_feed_shortcut_add_failed">Seu launcher é incapaz de criar um atalho</string>
@@ -431,7 +431,7 @@
     <string name="reload_fulltext_after_tag_editing_descr">se desmarcado, o texto completo não será recarregado após cada edição de tag (mostrar|ocultar|root), para que você possa introduzir várias alterações mais facilmente (nos casos em que você precise recarregar manualmente o texto completo uma vez que você termine a edição)</string>
     <string name="article_menu_show_by_tap">Mostrar menu do artigo ao tocar</string>
     <string name="web_page_loading">Carregando página...</string>
-    <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está ocultada - caso contrário você encontrará o menu somente na Barra de Ação</string>
+    <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está oculta - caso contrário, você encontrará o menu somente na Barra de Ação</string>
     <string name="menu_go_back">Voltar</string>
     <string name="menu_go_top">Rolar para o topo</string>
     <string name="menu_close">Fechar</string>
