@@ -190,6 +190,7 @@
     <string name="tip_sentence">Dica: deslize para a direita para marcar como lido, deslize para a esquerda para adicionar aos Favoritos</string>
     <string name="undo">Desfazer</string>
     <string name="marked_as_read">Marcado como lido</string>
+    <string name="image_count">Contagem de imagens</string>
     <!-- WIDGET -->
     <string name="red">Vermelho</string>
     <string name="green">Verde</string>
@@ -316,6 +317,7 @@
     <string name="downloadImage">Baixando imagens</string>
     <string name="loadFullText">Carregando texto completo</string>
     <string name="deleteOldEntries">Excluir artigos antigos</string>
+    <string name="deleting_ghost_entries">Apagando arquivos antigos</string>
     <string name="AllImages">Todas as imagens</string>
     <string name="EntryImages">Imagens de postagem</string>
     <string name="mobilizeAll">Mobilizing</string>
@@ -433,6 +435,7 @@
     <string name="menu_go_back">Voltar</string>
     <string name="menu_go_top">Rolar para o topo</string>
     <string name="menu_close">Fechar</string>
+    <string name="reading_file_list">Lendo lista de arquivos</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
