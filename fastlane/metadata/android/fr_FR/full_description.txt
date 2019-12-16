@@ -1,11 +1,11 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Rester en contact avec tous Mes Intérêts n'a jamais été aussi facile".</i>
 
-<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Handy News Reader</i> : sans publicité/logiciel libre sous licence <i>GNU GPL</i> .</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>concevez le Magazine de Vos Rêves !</b></li>
+	<li><b>articles intéressants directement dans Vos mains</b></li>
+	<li><b>et profitez finalement de la lecture</b></li>
 </ul>
 
 ...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
