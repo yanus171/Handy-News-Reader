@@ -440,8 +440,8 @@ public class FetcherService extends IntentService {
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
         final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length) );
-        final int FIRST_COUNT_TO_DELETE = files.length - 55000;
-        if ( FIRST_COUNT_TO_DELETE > 0 )
+        final int FIRST_COUNT_TO_DELETE = files.length - 8000;
+        if ( FIRST_COUNT_TO_DELETE > 500 )
             Arrays.sort( files, new Comparator<File>() {
 
                 @Override
