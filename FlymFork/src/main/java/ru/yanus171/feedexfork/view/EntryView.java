@@ -148,6 +148,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     public boolean mLoadTitleOnly = false;
     public boolean mContentWasLoaded = false;
     private double mLastContentHeight = 0;
+    private long mLastTimeScrolled = 0;
 
     private static String GetCSS(String text) {
         return "<head><style type='text/css'> "
@@ -682,6 +683,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     if (System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
                             Math.abs(event.getX() - mPressedX) < TOUCH_PRESS_POS_DELTA &&
                             Math.abs(event.getY() - mPressedY) < TOUCH_PRESS_POS_DELTA &&
+                            System.currentTimeMillis() - mLastTimeScrolled > 500 &&
                             PrefUtils.getBoolean("article_menu_show_by_tap", true) &&
                             EntryActivity.GetIsActionBarHidden() &&
                             !mActivity.mHasSelection) {
@@ -748,6 +750,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
         mActivity.mEntryFragment.UpdateFooter();
+        mLastTimeScrolled = System.currentTimeMillis();
         if (mScrollChangeListener != null)
             mScrollChangeListener.run();
     }
