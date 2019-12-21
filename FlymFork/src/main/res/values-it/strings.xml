@@ -435,6 +435,8 @@
     <string name="menu_go_top">Vai in alto</string>
     <string name="menu_close">Chiudi</string>
     <string name="reading_file_list">Lettura elenco file</string>
+    <string name="add_entry_shortcut">Aggiungi scorciatoia articolo</string>
+    <string name="new_entry_shortcut_added">La scorciatoia del nuovo articolo è stata creata nella schermata Home</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
