@@ -35,7 +35,9 @@ import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -44,6 +46,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
+import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -65,6 +68,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -84,6 +90,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
+import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -100,6 +107,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
@@ -721,6 +729,46 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     startActivity( new Intent( Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI ).putExtra(EXTRA_WEB_SEARCH, true) );
                     break;
                 }
+
+                case R.id.menu_add_entry_shortcut: {
+                    if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
+                        //Adding shortcut for MainActivity on Home screen
+                        Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                        if (cursor != null) {
+                            final String name = cursor.getString(mTitlePos);
+                            final long entryID = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
+                            //final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                            final Uri uri = Uri.parse( cursor.getString(mLinkPos) );
+                            final String iconUrl = cursor.getString(cursor.getColumnIndex( EntryColumns.IMAGE_URL ));
+
+                            new WaitDialog(getActivity(), R.string.downloadImage, new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
+                                    final IconCompat icon =  IconCompat.createWithBitmap(bitmap);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), String.valueOf(entryID))
+                                                    .setIcon(icon)
+                                                    .setShortLabel(name)
+                                                    .setIntent(new Intent(getContext(), EntryActivity.class).setAction(Intent.ACTION_VIEW).setData(uri))
+                                                    .build();
+                                            ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                                            if (Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)
+                                                Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            }).execute();
+                        }
+                    } else
+                        Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
+                    break;
+                }
+
             }
         }
 

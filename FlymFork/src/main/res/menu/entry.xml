@@ -102,5 +102,8 @@
     <item
         android:id="@+id/menu_show_html"
         android:title="@string/show_html"/>
+    <item
+        android:id="@+id/menu_add_entry_shortcut"
+        android:title="@string/add_entry_shortcut"/>
 </menu>
 

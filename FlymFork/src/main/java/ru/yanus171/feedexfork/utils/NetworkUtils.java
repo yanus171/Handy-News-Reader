@@ -306,7 +306,26 @@ public class NetworkUtils {
         return setupConnection1(new URL(url));
     }
 
+    public static Bitmap downloadImage(String url) {
+        Bitmap bitmap = null;
+        Connection connection = new Connection( url ); try {
 
+            byte[] iconBytes = getBytes(connection.getInputStream());
+            if (iconBytes != null && iconBytes.length > 0) {
+                bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
+                if (bitmap != null) {
+                    if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
+                        ContentValues values = new ContentValues();
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+
+        } finally {
+            connection.disconnect();
+        }
+        return bitmap;
+    }
 
     public static HttpURLConnection setupConnection1(URL url) throws IOException {
         FetcherService.Status().ChangeProgress(R.string.setupConnection);
