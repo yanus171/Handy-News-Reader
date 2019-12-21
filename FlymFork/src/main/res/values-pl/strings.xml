@@ -441,6 +441,8 @@ GENERAL]]></string>
     <string name="menu_go_top">Przewiń na górę</string>
     <string name="menu_close">Zamknij</string>
     <string name="reading_file_list">Lista czytanych</string>
+    <string name="add_entry_shortcut">Skrót dodawania artykułu</string>
+    <string name="new_entry_shortcut_added">Skrót nowego artykułu został utworzony na pulpicie</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
