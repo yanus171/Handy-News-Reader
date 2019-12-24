@@ -429,6 +429,8 @@
     <string name="reload_fulltext_after_tag_editing">Перезавантажити текст після редагування мітки</string>
     <string name="reload_fulltext_after_tag_editing_descr">якщо вимкнено, то весь текст не буде перезавантажений після кожного редагування мітки (показати|сховати|root), таким чином Ви можете ввести кілька змін легше (в іншому випадку потрібно вручну перезавантажити повний текст після завершення редагування)</string>
     <string name="article_menu_show_by_tap">Показувати меню статті дотиком</string>
+    <string name="article_list_loading">Завантаження списку статей</string>
+    <string name="article_opening">Відкриття статті</string>
     <string name="web_page_loading">Завантаження сторінки...</string>
     <string name="article_menu_show_by_tap_descr">Коли панель дій прихована - в іншому випадку ви знайдете її тільки там</string>
     <string name="menu_go_back">Назад</string>
