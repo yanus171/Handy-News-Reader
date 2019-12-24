@@ -400,7 +400,7 @@ public class FetcherService extends IntentService {
     }
 
     private void deleteGhost() {
-        final int status = Status().Start( R.string.deleting_ghost_entries );
+        final int status = Status().Start( R.string.deleting_ghost_entries, false );
         final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns.LINK},null, null, null );
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
         while  ( cursor.moveToNext() )
@@ -439,7 +439,7 @@ public class FetcherService extends IntentService {
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
-        final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length) );
+        final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length), false );
         final int FIRST_COUNT_TO_DELETE = files.length - 8000;
         if ( FIRST_COUNT_TO_DELETE > 500 )
             Arrays.sort( files, new Comparator<File>() {
@@ -566,7 +566,7 @@ public class FetcherService extends IntentService {
     }
 
     private void mobilizeAllEntries( boolean fromAutoRefresh) {
-        int status = Status().Start(getString(R.string.mobilizeAll)); try {
+        int status = Status().Start(getString(R.string.mobilizeAll), false); try {
             ContentResolver cr = getContentResolver();
             //Status().ChangeProgress("query DB");
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{TaskColumns._ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
@@ -575,7 +575,7 @@ public class FetcherService extends IntentService {
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
             while (cursor.moveToNext() && !isCancelRefresh()) {
-                int status1 = Status().Start(String.format("%d/%d", cursor.getPosition(), cursor.getCount())); try {
+                int status1 = Status().Start(String.format("%d/%d", cursor.getPosition(), cursor.getCount()), false); try {
                     long taskId = cursor.getLong(0);
                     long entryId = cursor.getLong(1);
                     int nbAttempt = 0;
@@ -794,7 +794,7 @@ public class FetcherService extends IntentService {
                                              final boolean isShowError ) {
         boolean load;
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
-        int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink)); try {
+        int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
             Uri entryUri = GetEnryUri( url );
             if ( entryUri != null ) {
                 load = (forceReload == ForceReload.Yes);
@@ -862,7 +862,7 @@ public class FetcherService extends IntentService {
 
     private static void downloadAllImages() {
         StatusText.FetcherObservable obs = Status();
-        int status = obs.Start(MainApplication.getContext().getString(R.string.AllImages)); try {
+        int status = obs.Start(MainApplication.getContext().getString(R.string.AllImages), false); try {
 
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{TaskColumns._ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
@@ -870,7 +870,7 @@ public class FetcherService extends IntentService {
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
             while (cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
-                int status1 = obs.Start(String.format("%d/%d", cursor.getPosition() + 1, cursor.getCount())); try {
+                int status1 = obs.Start(String.format("%d/%d", cursor.getPosition() + 1, cursor.getCount()), false); try {
                 //int status1 = obs.Start(String.format("%d", cursor.getPosition() + 1, cursor.getCount())); try {
                     long taskId = cursor.getLong(0);
                     long entryId = cursor.getLong(1);
@@ -921,11 +921,11 @@ public class FetcherService extends IntentService {
 
     public static void downloadEntryImages( long entryId, String entryLink, ArrayList<String> imageList ) {
         StatusText.FetcherObservable obs = Status();
-        int status = obs.Start(MainApplication.getContext().getString(R.string.EntryImages)); try {
+        int status = obs.Start(MainApplication.getContext().getString(R.string.EntryImages), false); try {
             for( String imgPath: imageList ) {
                 if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
                     break;
-                int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
+                int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()), false);
                 try {
                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                 } catch (Exception e) {
@@ -946,7 +946,7 @@ public class FetcherService extends IntentService {
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
         if ( isCancelRefresh() )
             return;
-        int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries));
+        int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries), false);
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                 new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
@@ -1066,7 +1066,7 @@ public class FetcherService extends IntentService {
 
             String id = cursor.getString(idPosition);
             String feedUrl = cursor.getString(urlPosition);
-            int status = Status().Start(cursor.getString(titlePosition));
+            int status = Status().Start(cursor.getString(titlePosition), false);
             try {
 
                 if ( isRss )
@@ -1374,7 +1374,7 @@ public class FetcherService extends IntentService {
         }
 
         public static void deleteAllFeedEntries ( Uri uri ){
-            int status = Status().Start("deleteAllFeedEntries");
+            int status = Status().Start("deleteAllFeedEntries", true);
             try {
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.delete(uri, WHERE_NOT_FAVORITE, null);
@@ -1392,7 +1392,7 @@ public class FetcherService extends IntentService {
         }
 
         public static void createTestData () {
-            int status = Status().Start("createTestData");
+            int status = Status().Start("createTestData", true);
             try {
                 {
                     final String testFeedID = "10000";

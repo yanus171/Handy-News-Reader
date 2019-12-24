@@ -96,6 +96,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getString;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
@@ -111,6 +112,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
     private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
+    public static int mEntryActivityStartingStatus = 0;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -245,14 +247,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if ( event.getAction() == MotionEvent.ACTION_UP ) {
                             Dog.v("onTouch ACTION_UP" );
-                            if ( currentx > MIN_X_TO_VIEW_ARTICLE &&
+                            if ( mEntryActivityStartingStatus == 0 &&
+                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                  Math.abs( paddingX ) < minX &&
                                  Math.abs( paddingY ) < minY &&
-                                 android.os.SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() )
+                                 android.os.SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
+                                mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 v.getContext().startActivity(
-                                        GetActionIntent( Intent.ACTION_VIEW,
-                                                         ContentUris.withAppendedId(mUri, holder.entryID) ) );
-                            else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
+                                        GetActionIntent(Intent.ACTION_VIEW,
+                                                ContentUris.withAppendedId(mUri, holder.entryID)));
+                            } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
                                 toggleReadState(holder.entryID, view);
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
                                 toggleFavoriteState( holder.entryID, view );

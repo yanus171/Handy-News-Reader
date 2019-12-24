@@ -80,6 +80,8 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
@@ -104,7 +106,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private FloatingActionButton mFab;
     private ListView mListView;
     private ProgressBar mProgressBar = null;
-    private ProgressBar mProgressBarLoader = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
@@ -126,8 +127,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             String[] projection = mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
             CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
             cursorLoader.setUpdateThrottle(150);
-            if ( mProgressBarLoader != null )
-                mProgressBarLoader.setVisibility( View.VISIBLE );
+            Status().End( mStatus );
+            mStatus = Status().Start( R.string.article_list_loading, true );
             return cursorLoader;
         }
 
@@ -148,15 +149,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
             }
             getActivity().setProgressBarIndeterminateVisibility( false );
-            if ( mProgressBarLoader != null )
-                mProgressBarLoader.setVisibility( View.GONE );
+            Status().End( mStatus );
             timer.End();
         }
 
         @Override
         public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-            if ( mProgressBarLoader != null )
-                mProgressBarLoader.setVisibility( View.VISIBLE );
+            Status().End( mStatus );
             //getActivity().setProgressBarIndeterminateVisibility( true );
             mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
         }
@@ -173,6 +172,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     };
     private StatusText mStatusText = null;
     public static Uri mSearchQueryUri = null;
+    private int mStatus = 0;
 
     private void UpdateActions() {
         if ( mMenu == null )
@@ -308,10 +308,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
                         (TextView)rootView.findViewById( R.id.errorText ),
-                        FetcherService.Status());
+                        (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
+                        Status());
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
-        mProgressBarLoader = rootView.findViewById(R.id.progressBarLoader);
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override

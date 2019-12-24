@@ -196,6 +196,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mStatusText = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
                                       (TextView)mRootView.findViewById( R.id.errorText ),
+                                      (ProgressBar) mRootView.findViewById( R.id.progressBarLoader),
                                       FetcherService.Status());
         mRootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -683,7 +684,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_reload_full_text_without_mobilizer: {
 
-                    int status = FetcherService.Status().Start("Reload fulltext"); try {
+                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
                         LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
                     } finally { FetcherService.Status().End( status ); }
                     break;
@@ -691,7 +692,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_reload_full_text_with_tags: {
 
-                    int status = FetcherService.Status().Start("Reload fulltext"); try {
+                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
                         LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true );
 
                     } finally { FetcherService.Status().End( status ); }
@@ -777,7 +778,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     private void ReloadFullText() {
-        int status = FetcherService.Status().Start("Reload fulltext");
+        int status = FetcherService.Status().Start("Reload fulltext", true);
         try {
             LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true );
         } finally { FetcherService.Status().End( status ); }
@@ -1059,7 +1060,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             new Thread() {
                 @Override
                 public void run() {
-                    int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText)); try {
+                    int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText), true); try {
                         FetcherService.mobilizeEntry( getContext().getContentResolver(),
                                                       getCurrentEntryID(),
                                                       mobilize,
@@ -1245,7 +1246,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public void run() {
                 FetcherService.mCancelRefresh = false;
-                int status = FetcherService.Status().Start( getString(R.string.downloadImage) ); try {
+                int status = FetcherService.Status().Start( getString(R.string.downloadImage), true ); try {
                     NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
                 } catch (IOException e) {
                     //FetcherService.Status().End( status );

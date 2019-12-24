@@ -149,7 +149,7 @@ public class HtmlUtils {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
-        final int status = Status().Start("Reading images"); try {
+        final int status = Status().Start("Reading images", true); try {
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
             if (!TextUtils.isEmpty(content)) {

@@ -35,6 +35,8 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -65,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( mBrightness != null ) {
             mBrightness.OnResume();
         }
+        Status().UpdateText();
     }
 
     @Override
@@ -72,6 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( mBrightness != null ) {
             mBrightness.OnPause();
         }
+        Status().ClearProgress();
         super.onPause();
     }
     // ----------------------------------------------------------------

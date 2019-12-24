@@ -437,7 +437,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void init() {
 
-        //StatusStartPageLoading();
+        StatusStartPageLoading();
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
 
         Timer timer = new Timer("EntryView.init");
@@ -641,11 +641,11 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     mContentWasLoaded = true;
                 else
                     EndStatus();
+                StatusStartPageLoading();
                 ScheduleScrollTo(view);
             }
 
             private void ScheduleScrollTo(final WebView view) {
-                StatusStartPageLoading();
                 Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                     double newContentHeight = GetContentHeight();
                     if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
@@ -787,7 +787,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     }
 
     public void UpdateTags() {
-        final int status = FetcherService.Status().Start(getContext().getString(R.string.last_update));
+        final int status = FetcherService.Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement(doc, mEntryLink, "", true);
         AddTagButtons(doc, mEntryLink, root);
@@ -801,7 +801,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private void LoadData() {
         if (mContentWasLoaded && GetViewScrollPartY() > 0)
             mScrollPartY = GetViewScrollPartY();
-        StatusStartPageLoading();
+        //StatusStartPageLoading();
         synchronized (EntryView.this) {
             mLastContentHeight = 0;
             loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
@@ -811,7 +811,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     public void StatusStartPageLoading() {
         synchronized (EntryView.this) {
             if (mStatus == 0)
-                mStatus = FetcherService.Status().Start(R.string.web_page_loading);
+                mStatus = FetcherService.Status().Start(R.string.web_page_loading, true);
         }
     }
     private boolean IsStatusStartPageLoading() {

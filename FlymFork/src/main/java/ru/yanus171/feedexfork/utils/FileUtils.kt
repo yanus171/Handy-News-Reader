@@ -162,7 +162,7 @@ object FileUtils {
     private const val MIN_MOBILIZED_LEN = 10
 
     fun loadMobilizedHTML(link: String, cursor: Cursor) : String {
-        val status = FetcherService.Status().Start("Reading article file")
+        val status = FetcherService.Status().Start("Reading article file", true)
         try {
 
             val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)

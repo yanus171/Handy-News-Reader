@@ -170,7 +170,7 @@ public class HTMLParser {
 		for ( Item item: listItem ) {
 			if ( FetcherService.isCancelRefresh() )
 				break;
-			int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ) ); try {
+			int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ), false ); try {
 				Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false);
 				Uri uri = load.first;
 				if ( load.second ) {

@@ -40,6 +40,7 @@ import java.util.regex.Matcher;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -55,6 +56,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -249,7 +251,8 @@ public class EntryActivity extends BaseActivity {
         super.onResume();
 
         setFullScreen();
-
+        Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
+        EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
     }
 
     public void setFullScreen() {
