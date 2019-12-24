@@ -429,6 +429,8 @@
     <string name="reload_fulltext_after_tag_editing">Ricarica il testo dopo la modifica dei tag</string>
     <string name="reload_fulltext_after_tag_editing_descr">se deselezionato il testo completo non sarà ricaricato dopo ogni modifica di un tag (mostra|nascondi|root), quindi sarebbe facile fare più modifiche. In questo caso dovresti avviare manualmente il ricaricamento completo dopo la modifica completata</string>
     <string name="article_menu_show_by_tap">Mostra menù articolo con tocco</string>
+    <string name="article_list_loading">Caricamento elenco articoli</string>
+    <string name="article_opening">Apertura articolo</string>
     <string name="web_page_loading">Caricamento pagina...</string>
     <string name="article_menu_show_by_tap_descr">Quando la barra delle azioni è nascosta - altrimenti la troverai solo lì</string>
     <string name="menu_go_back">Torna indietro</string>
