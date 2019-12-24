@@ -435,6 +435,8 @@ GENERAL]]></string>
     <string name="reload_fulltext_after_tag_editing">Przeładuj tekst po edycji tagów</string>
     <string name="reload_fulltext_after_tag_editing_descr">gdy odznaczone, tekst nie będzie przeładowywany przy każdej pojedynczej edycji tagów (pokaż|ukryj|źródło), stąd łatwiej przeprowadzisz kilka zmian naraz (w takim przypadku potrzebujesz ręcznie przeładować pełny tekst, gdy zakończysz pracę nad edycją)</string>
     <string name="article_menu_show_by_tap">Dotknij, by pokazać menu</string>
+    <string name="article_list_loading">Wczytywanie listy artykułów</string>
+    <string name="article_opening">Otwieranie artykułu</string>
     <string name="web_page_loading">Wczytywanie strony...</string>
     <string name="article_menu_show_by_tap_descr">Gdy Pasek Akcji jest ukryty - w przeciwnym razie znajdziesz je tylko tam</string>
     <string name="menu_go_back">Wstecz</string>
