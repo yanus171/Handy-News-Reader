@@ -430,6 +430,8 @@
     <string name="reload_fulltext_after_tag_editing">Перезагружать текст после редактирования тегов</string>
     <string name="reload_fulltext_after_tag_editing_descr">если флажок снят, полный текст не будет перезагружен после редактирования тегов (Показать|Спрятать|Выбрать полный текст), поэтому вы можете внести несколько изменений (в таком случае вам нужно вручную перезагрузить полный текст после завершения редактирования)</string>
     <string name="article_menu_show_by_tap">Показывать меню статьи по нажатию на тексте статьи</string>
+    <string name="article_list_loading">Загрузка списка статей</string>
+    <string name="article_opening">Открытие статьи</string>
     <string name="web_page_loading">Загрузка страницы</string>
     <string name="article_menu_show_by_tap_descr">Когда панель действий скрыта - иначе меню доступно только из панели действий</string>
     <string name="menu_go_back">Назад</string>
