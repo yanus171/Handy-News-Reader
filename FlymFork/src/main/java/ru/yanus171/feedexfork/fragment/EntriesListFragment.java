@@ -307,9 +307,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
 
         mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
-                        (TextView)rootView.findViewById( R.id.errorText ),
-                        (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
-                        Status());
+                                       (TextView)rootView.findViewById( R.id.errorText ),
+                                       (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
+                                       (TextView)rootView.findViewById( R.id.progressText ),
+                                       Status());
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
         mListView = rootView.findViewById(android.R.id.list);

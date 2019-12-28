@@ -316,7 +316,7 @@
     <string name="loadFullText">Chargement du texte complet</string>
     <string name="deleteOldEntries">Supprimer les anciens articles</string>
     <string name="AllImages">Toutes les images</string>
-    <string name="EntryImages">Images de saisie</string>
+    <string name="article_images_downloading">Images de saisie</string>
     <string name="mobilizeAll">Mobilisation</string>
     <string name="RefreshFeeds">Mise à jour des flux</string>
     <string name="deleteImages">Suppression des images :</string>

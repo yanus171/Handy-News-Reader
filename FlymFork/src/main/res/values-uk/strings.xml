@@ -316,7 +316,7 @@
     <string name="loadFullText">Завантаження усього тексту</string>
     <string name="deleteOldEntries">Вилучення старих статей</string>
     <string name="AllImages">Всі зображення</string>
-    <string name="EntryImages">Завантаження зображень статті</string>
+    <string name="article_images_downloading">Завантаження зображень статті</string>
     <string name="mobilizeAll">Завантаження повних текстів</string>
     <string name="RefreshFeeds">Оновлення статей</string>
     <string name="deleteImages">Вилучення зображень:</string>

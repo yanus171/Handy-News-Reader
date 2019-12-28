@@ -128,7 +128,6 @@ public class UiUtils {
         synchronized ( mHandler ) {
             mHandler.post( r );
         }
-
     }
     public static void RunOnGuiThread( final Runnable r, int delay ) {
         if ( mHandler == null )
@@ -138,6 +137,11 @@ public class UiUtils {
         }
 
     }
+    public static void RemoveFromGuiThread( final Runnable r ) {
+        if ( mHandler != null )
+            mHandler.removeCallbacks( r );
+    }
+
     public static void RunOnGuiThreadInFront( final Runnable r ) {
         if ( mHandler == null )
             mHandler  = new Handler(Looper.getMainLooper());

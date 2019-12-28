@@ -921,7 +921,7 @@ public class FetcherService extends IntentService {
 
     public static void downloadEntryImages( long entryId, String entryLink, ArrayList<String> imageList ) {
         StatusText.FetcherObservable obs = Status();
-        int status = obs.Start(MainApplication.getContext().getString(R.string.EntryImages), false); try {
+        int status = obs.Start(MainApplication.getContext().getString(R.string.article_images_downloading), true); try {
             for( String imgPath: imageList ) {
                 if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
                     break;

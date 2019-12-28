@@ -332,7 +332,7 @@
     <string name="deleteOldEntries">Deleting old articles</string>
     <string name="deleting_ghost_entries">Deleting old files</string>
     <string name="AllImages">All images</string>
-    <string name="EntryImages">Entry images</string>
+    <string name="article_images_downloading">Article images downloading</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Updating feeds</string>
     <string name="deleteImages">Images deleting:</string>

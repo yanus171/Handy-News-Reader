@@ -316,7 +316,7 @@
     <string name="loadFullText">Caricamento testo completo</string>
     <string name="deleteOldEntries">Elimina articoli vecchi</string>
     <string name="AllImages">Tutte le immagini</string>
-    <string name="EntryImages">Immagini di ingresso</string>
+    <string name="article_images_downloading">Immagini di ingresso</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Aggiornamento feed</string>
     <string name="deleteImages">Elimina immagini</string>

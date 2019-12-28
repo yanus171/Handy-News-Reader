@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:gravity="start|top">
     <Button
         android:id="@+id/refreshListBtn"
@@ -31,7 +32,6 @@
         android:id="@+id/statusText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:text="status"
         android:visibility="visible"
         android:layout_gravity="start|top"
@@ -40,14 +40,13 @@
         android:id="@+id/errorText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:text="error"
         android:textColor="#FF0000"
         android:visibility="visible"
         android:layout_gravity="start|top"
         android:gravity="start|top" />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -58,7 +57,8 @@
             android:clickable="true"
             android:gravity="center"
             android:text="@string/no_entries"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:focusable="true" />
 
         <ListView
             android:id="@android:id/list"
@@ -74,12 +74,29 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/progressBarLoader"
-            android:layout_gravity="top|right"
+            android:layout_gravity="top|end"
             android:padding="10dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/progressbar_background"
             android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/spinner_ring" />
-    </FrameLayout>
+            android:indeterminateDrawable="@drawable/spinner_ring"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/progressBarLoader"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toStartOf="@+id/progressBarLoader"
+            android:layout_toLeftOf="@+id/progressBarLoader"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/progresstext_background"
+            android:text="info"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
     </LinearLayout>
 

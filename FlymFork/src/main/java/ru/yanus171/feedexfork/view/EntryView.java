@@ -808,10 +808,19 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         }
     }
 
+    private final Runnable EndStatusRunnable = new Runnable() {
+        @Override
+        public void run() {
+            EndStatus();
+        }
+    };
     public void StatusStartPageLoading() {
         synchronized (EntryView.this) {
-            if (mStatus == 0)
+            if (mStatus == 0) {
                 mStatus = FetcherService.Status().Start(R.string.web_page_loading, true);
+                UiUtils.RemoveFromGuiThread( EndStatusRunnable );
+                UiUtils.RunOnGuiThread( EndStatusRunnable, 5000 );
+            }
         }
     }
     private boolean IsStatusStartPageLoading() {

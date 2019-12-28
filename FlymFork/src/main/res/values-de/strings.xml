@@ -319,7 +319,7 @@
     <string name="loadFullText">Laden des gesamten Textes</string>
     <string name="deleteOldEntries">Alte Artikel löschen</string>
     <string name="AllImages">Alle Bilder</string>
-    <string name="EntryImages">Artikelbilder</string>
+    <string name="article_images_downloading">Artikelbilder</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Feeds aktualisieren</string>
     <string name="deleteImages">Bilder löschen:</string>

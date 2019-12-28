@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -54,9 +54,9 @@
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/pager"
-                android:background="@android:color/transparent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
 
             <include layout="@layout/brightness_slider_layout" />
 
@@ -145,7 +145,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/progressBarLoader"
-                android:layout_below="@+id/entryNextBtn"
+                android:layout_below="@id/entryNextBtn"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
                 android:layout_marginRight="10dp"
@@ -154,6 +154,21 @@
                 android:indeterminateDrawable="@drawable/spinner_ring"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/progressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/progressBarLoader"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toStartOf="@+id/progressBarLoader"
+                android:layout_toLeftOf="@+id/progressBarLoader"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/progresstext_background"
+                android:text="info"
+                tools:ignore="RtlHardcoded" />
 
             <FrameLayout
                 android:id="@+id/videoLayout"

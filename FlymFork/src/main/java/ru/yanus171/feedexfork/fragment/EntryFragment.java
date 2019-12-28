@@ -197,6 +197,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mStatusText = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
                                       (TextView)mRootView.findViewById( R.id.errorText ),
                                       (ProgressBar) mRootView.findViewById( R.id.progressBarLoader),
+                                      (TextView) mRootView.findViewById( R.id.progressText),
                                       FetcherService.Status());
         mRootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -325,7 +325,7 @@
     <string name="loadFullText">جارِ تحميل النص الكامل</string>
     <string name="deleteOldEntries">حذف المقالات القديمة</string>
     <string name="AllImages">كل الصور</string>
-    <string name="EntryImages">صور المقال</string>
+    <string name="article_images_downloading">صور المقال</string>
     <string name="mobilizeAll">تعبئة</string>
     <string name="RefreshFeeds">جارِ تحديث الخلاصات</string>
     <string name="deleteImages">حذف الصور:</string>

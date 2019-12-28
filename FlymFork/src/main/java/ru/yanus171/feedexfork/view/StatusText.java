@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.TreeSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -34,6 +35,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.utils.PrefUtils.toggleBoolean;
 
 /**
  * Created by Admin on 03.06.2016.
@@ -43,6 +45,7 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 public class StatusText implements Observer {
     private static final String SEP = "__#__";
     public static final String DELIMITER = " ";
+    private final TextView mProgressText;
     private String mFeedID = "";
     private String mEntryID = "";
     private TextView mView;
@@ -51,7 +54,11 @@ public class StatusText implements Observer {
     private static int MaxID = 0;
     private ProgressBar mProgressBar = null;
 
-    public StatusText(final TextView view, final TextView errorView, final ProgressBar progressBar, final Observable observable ) {
+    public StatusText(final TextView view,
+                      final TextView errorView,
+                      final ProgressBar progressBar,
+                      final TextView progressText,
+                      final Observable observable ) {
         //mOnRefreshListener = onRefreshListener;
         observable.addObserver( this );
         mView = view;
@@ -83,13 +90,15 @@ public class StatusText implements Observer {
         });
 
         mProgressBar = progressBar;
-        mView.setOnClickListener(new View.OnClickListener() {
+        mProgressBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FetcherObservable status = (FetcherObservable)observable;
-                status.Clear();
+                status.ToggleProgressTextVisibility();
             }
         });
+
+        mProgressText = progressText;
     }
 
     private void SetFeedID(String feedID) {
@@ -123,6 +132,7 @@ public class StatusText implements Observer {
             errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
             errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
         final boolean showProgress = Boolean.valueOf( list[4] );
+        final String progressText = list[5];
 
         if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || text.trim().isEmpty() )
             mView.setVisibility(View.GONE);
@@ -133,6 +143,11 @@ public class StatusText implements Observer {
         mErrorView.setText(error);
         mErrorView.setVisibility( error.isEmpty() ? View.GONE : View.VISIBLE );
         mProgressBar.setVisibility( showProgress ? View.VISIBLE : View.GONE  );
+
+        if ( mProgressText != null ) {
+            mProgressText.setVisibility(!progressText.isEmpty() ? View.VISIBLE : View.GONE);
+            mProgressText.setText(progressText);
+        }
     }
 
 
@@ -146,7 +161,9 @@ public class StatusText implements Observer {
         private String mNotificationTitle = "";
         private String mErrorFeedID;
         private String mErrorEntryID;
-        HashSet<Integer> mProgressBarStatusList = new HashSet<>();
+        TreeSet<Integer> mProgressBarStatusList = new TreeSet<>();
+        private boolean mIsProgressTextVisible = false;
+
         @Override
         public boolean hasChanged () {
             return true;
@@ -183,7 +200,11 @@ public class StatusText implements Observer {
                     HashSet<Integer> temp = new HashSet<>( mList.keySet() );
                     temp.retainAll( mProgressBarStatusList );
                     final boolean showProgress = !temp.isEmpty();
-                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgress );
+                    if ( !showProgress )
+                        mIsProgressTextVisible = false;
+                    final String progressText = mIsProgressTextVisible && !mProgressBarStatusList.isEmpty() ?
+                                    mList.get( mProgressBarStatusList.first() )  : "";
+                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgress, progressText );
                     Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
 
 
@@ -192,8 +213,8 @@ public class StatusText implements Observer {
             });
         }
 
-        void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID, boolean showProgressBar ) {
-            notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID + SEP + showProgressBar );
+        void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID, boolean showProgressBar, String progressText ) {
+            notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID + SEP + showProgressBar + SEP + progressText );
         }
 
         void Clear() {
@@ -292,7 +313,7 @@ public class StatusText implements Observer {
                 synchronized (mList) {
                     if ( mList.isEmpty() ) {
                         mBytesRecievedLast = 0;
-                        NotifyObservers( "", "", "", "", false );
+                        NotifyObservers( "", "", "", "", false, "" );
                     }
                 }
                 }
@@ -305,6 +326,11 @@ public class StatusText implements Observer {
                     mList.remove( id );
                 mProgressBarStatusList.clear();
             }
+            UpdateText();
+        }
+
+        public void ToggleProgressTextVisibility() {
+            mIsProgressTextVisible = ! mIsProgressTextVisible;
             UpdateText();
         }
     }
