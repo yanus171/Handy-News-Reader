@@ -319,7 +319,6 @@
     <string name="deleteOldEntries">Удаление старых статей</string>
     <string name="deleting_ghost_entries">Удаление старых файлов</string>
     <string name="AllImages">Загрузка картинок</string>
-    <string name="article_images_downloading">Загрузка картинок статьи</string>
     <string name="mobilizeAll">Загрузка полных текстов</string>
     <string name="RefreshFeeds">Обновление статей</string>
     <string name="deleteImages">Удаление картинок</string>
