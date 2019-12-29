@@ -38,8 +38,8 @@
     <br/>
     • groupes de flux dépliants<br/>
     • boutons page haut|bas invisibles et sur tout l\'écran<br/>
-    • nombre d\'images téléchargées maximales par flux<br/>
-    • possibilité d\'annuler l\'actualisation<br/>
+    • nombre d'images téléchargées maximales par flux<br/>
+    • possibilité d\'annuler l'actualisation<br/>
     • et bien d\'autres<br/>
     <br/>
     <b><big>Où nous trouver</big></b>
@@ -320,7 +320,6 @@
     <string name="deleteOldEntries">Supprimer les anciens articles</string>
     <string name="deleting_ghost_entries">Suppression des anciens fichiers</string>
     <string name="AllImages">Toutes les images</string>
-    <string name="article_images_downloading">Images de saisie</string>
     <string name="mobilizeAll">Mobilisation</string>
     <string name="RefreshFeeds">Mise à jour des flux</string>
     <string name="deleteImages">Suppression des images :</string>
