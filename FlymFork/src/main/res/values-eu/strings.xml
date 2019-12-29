@@ -317,7 +317,6 @@
     <string name="loadFullText">Testu osoa kargatzen</string>
     <string name="deleteOldEntries">Ezabatu artikulu zaharrak</string>
     <string name="AllImages">Irudi guztiak</string>
-    <string name="article_images_downloading">Sarreraren irudiak</string>
     <string name="mobilizeAll">Mugikorrera egokitzen</string>
     <string name="RefreshFeeds">Jarioak eguneratzen</string>
     <string name="deleteImages">Ezabatu irudiak</string>
