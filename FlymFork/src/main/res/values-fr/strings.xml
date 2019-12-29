@@ -38,8 +38,8 @@
     <br/>
     • groupes de flux dépliants<br/>
     • boutons page haut|bas invisibles et sur tout l\'écran<br/>
-    • compteur d\'images téléchargées maximales par flux<br/>
-    • possibilité d\'annuler le rafraîchissement<br/>
+    • nombre d'images téléchargées maximales par flux<br/>
+    • possibilité d\'annuler l'actualisation<br/>
     • et bien d\'autres<br/>
     <br/>
     <b><big>Où nous trouver</big></b>
@@ -191,6 +191,7 @@
     <string name="tip_sentence">Astuce: glisser vers la gauche pour marquer comme lu et</string>
     <string name="undo">Annuler</string>
     <string name="marked_as_read">Marqués comme lus</string>
+    <string name="image_count">Nombre d\'images</string>
     <!-- WIDGET -->
     <string name="red">Rouge</string>
     <string name="green">Vert</string>
@@ -235,7 +236,7 @@
     <string name="settings_display_oldest_first">Ordre des articles</string>
     <string name="settings_display_oldest_first_description">Affiche les plus vieux en premier</string>
     <string name="show_mark_all_as_read_button">Bouton Marquer tout comme lu</string>
-    <string name="show_mark_all_as_read_button_summary">Afficher le bouton Marquer tous les articles comme lus - autrement vous trouverez cette option dans le menu</string>
+    <string name="show_mark_all_as_read_button_summary">Afficher le bouton Marquer tous les articles comme lus - sinon, vous trouverez cette option dans le menu</string>
     <string name="show_read_checkbox">Case lu</string>
     <string name="show_read_checkbox_descr">Afficher la petite case à cocher pour indiquer que l\'article est lu</string>
     <string name="show_full_text_indicator">Indicateur de texte complet</string>
@@ -306,6 +307,8 @@
     <string name="auto_unstart_at_bottom_descr">Retirer automatiquement des favoris lorsque le bas de l\'article a été atteint</string>
     <string name="settings_category_advanced">Avancés</string>
     <string name="settings_category_advanced_summary">Fonctionnalités supplémentaires (telles que la sauvegarde, les filtres et plus encore)</string>
+    <string name="settings_autobackup_enabled">Activer la sauvegarde automatique</string>
+    <string name="settings_autobackup_enabled_descr">Pour enregistrer périodiquement votre flux et votre liste d\'articles favoris dans un fichier .opml</string>
     <string name="settings_category_content_presentation">Présentation des flux</string>
     <string name="settings_display_text_color">Luminosité du texte</string>
     <string name="settings_visible_feeds">Flux visibles</string>
@@ -315,12 +318,23 @@
     <string name="downloadImage">Téléchargement des images</string>
     <string name="loadFullText">Chargement du texte complet</string>
     <string name="deleteOldEntries">Supprimer les anciens articles</string>
+    <string name="deleting_ghost_entries">Suppression des anciens fichiers</string>
     <string name="AllImages">Toutes les images</string>
     <string name="EntryImages">Images de saisie</string>
     <string name="mobilizeAll">Mobilisation</string>
     <string name="RefreshFeeds">Mise à jour des flux</string>
     <string name="deleteImages">Suppression des images :</string>
     <string name="deleteFullTexts">Suppression des textes complets :</string>
+    <string name="applyOperations">Appliquer les opérations</string>
+    <string name="extractContent">Extraction du contenu</string>
+    <string name="improveHtmlContent">Amélioration du contenu HTML</string>
+    <string name="parseXml">Analyse XML</string>
+    <string name="setupConnection">Configurer la connexion</string>
+    <string name="settings_content_extract_rules">Règles d\'extraction de contenu</string>
+    <string name="settings_content_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
+    <string name="settings_tap_zones_dialogtitle">uniquement pour les informations, les modifications ne sont pas disponibles</string>
+    <string name="downloadNext">"Télécharger le suivant "</string>
+    <string name="loadingLink">Chargement des liens</string>
     <string name="loadLink">Lire maintenant</string>
     <string name="loadLinkLater">Lire plus tard</string>
     <string name="addFeed">Ajouter un flux</string>
@@ -337,6 +351,10 @@
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
     <string name="auto_image_load">Chargement des images auto</string>
+    <string name="show_progress_info">Informations techniques détaillées sur la progression</string>
+    <string name="show_progress_info_descr">Afficher les informations détaillées sur l\'opération en cours</string>
+    <string name="vibrate_on_article_list_entry_swype">Vibrer lors du glissement</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Lors de l\'ajout aux favoris dans la liste d\'entrée des articles et dans la fenêtre de texte de l\'article</string>
     <string name="entry_marked_unfavourite">L\'article a été retiré des Favoris</string>
     <string name="entry_marked_favourite">L\'article a été ajouté aux Favoris</string>
     <string name="new_feed_was_added">Nouveau flux ajouté</string>
@@ -352,6 +370,13 @@
     <string name="loadTypeWeb">Web (charger tous les liens de la page)</string>
     <string name="loadTypeRSS">RSS (flux ou lien du site ou mots clés)</string>
     <string name="loadTypeWebPageSearch">Recherche de page Web DuckDuckGo (trouver et charger un article)</string>
+    <string name="loadType">Type de chargement :</string>
+    <string name="global_filter">Filtre global&#8230;</string>
+    <string name="global_filter_descr">Un filtre qui s\'applique à chaque flux - laissez le texte du filtre (et le texte regex) vide pour désactiver</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">sinon, appliquer au contenu</string>
+    <string name="rule_text">Texte de la règle</string>
+    <string name="global_marks_as_star_filter_rule_descr">une règle par ligne</string>
+    <string name="customKeepTime">Personnaliser la durée de conservation des articles</string>
     <string name="menu_toggle_theme">Changer de thème</string>
     <string name="turnOn">Activer</string>
     <string name="brightness">Luminosité</string>
@@ -364,17 +389,35 @@
     <string name="exportingToFile">Exporter vers un fichier</string>
     <string name="importingFromFile">Importer à partir du fichier</string>
     <string name="autobackup_interval">Intervalle de sauvegarde auto</string>
+    <string name="autobackup_interval_descr">Fréquence de création d\'un fichier de sauvegarde des flux et des articles</string>
+    <string name="create_auto_backup">Créer une sauvegarde auto</string>
+    <string name="auto_backup_opml_file_created">Fichier de sauvegarde automatique .opml créé :</string>
+    <string name="use_standard_file_manager">Utiliser un gestionnaire de fichiers standard</string>
+    <string name="use_standard_file_manager_descr">sinon sélectionner le fichier .opml à importer - uniquement depuis le dossier feedex (via le dialogue interne)</string>
     <string name="settings">Paramètres</string>
     <string name="entry_go_prev">Article précédent</string>
     <string name="entry_go_next">Article suivant</string>
+    <string name="colorSlotSaveLongTapHint">Astuce : pour sauvegarder la couleur actuelle, faites un appui long sur l\'une des cellules</string>
+    <string name="colorSlotSaved">La couleur a été enregistrée dans la cellule</string>
+    <string name="text">Texte</string>
     <string name="background1">Arrière-plan</string>
     <string name="auto_refresh_requires_charging">Seulement pendant la charge de la batterie</string>
     <string name="global_class_list_to_remove_from_article_text">Supprimer les règlages de texte</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">nom de classe par ligne</string>
     <string name="hide">Masquer</string>
     <string name="show">Afficher</string>
     <string name="setFullTextRoot">Choisir comme racine pour le texte complet</string>
     <string name="fullTextRoot">Racine pour le texte complet</string>
     <string name="fullTextReloadStarted">Le rechargement du texte complet a commencé</string>
+    <string name="brightness_update_from_system_period_min">Délai de mise à jour de la luminosité</string>
+    <string name="brightness_update_from_system_period_min_descr">(en minutes) Après cette durée, la luminosité (par glissement) sera restaurée à partir du niveau actuel du système (0 - désactivé)</string>
+    <string name="menu_add_feed_shortcut">Créer un raccourci sur l\'écran d\'accueil</string>
+    <string name="new_feed_shortcut_added">Le nouveau raccourci a été créé sur l\'écran d\'accueil</string>
+    <string name="new_feed_shortcut_add_failed">Votre lanceur ne peut pas créer de raccourci</string>
+    <string name="custom_data_folder">Personnaliser le chemin des fichiers externes</string>
+    <string name="custom_data_folder_descr">(vide - par défaut) chemin du dossier feedex pour stocker les images téléchargées et sauvegarder</string>
+    <string name="entry_text_title_link">Lien du titre</string>
+    <string name="entry_text_title_link_description">permet d\'ouvrir la page web dans le navigateur en appuyant sur le titre</string>
     <string name="delete_read_articles">Supprimer les articles lus</string>
     <string name="delete_read_articles_descr">quel que soit le temps de conservation des articles</string>
     <string name="data_folder">Dossier de données</string>
@@ -387,10 +430,13 @@
     <string name="settings_add_google_news_dialog_descr">Décochez pour contourner la sélection du type de flux lors de l\'ajout d\'un flux</string>
     <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
     <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (montrer|cacher|racine), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
+    <string name="article_menu_show_by_tap">Afficher le menu des articles en appuyant</string>
     <string name="web_page_loading">Chargement de la page</string>
     <string name="article_menu_show_by_tap_descr">Lorsque la barre d\'action est masquée - sinon vous trouverez le menu uniquement sur la barre d\'action</string>
     <string name="menu_go_back">Retour</string>
     <string name="menu_go_top">Défiler vers le haut</string>
+    <string name="menu_close">Fermer</string>
+    <string name="reading_file_list">Lecture de la liste des fichiers</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>

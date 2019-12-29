@@ -194,6 +194,7 @@ GENERAL]]></string>
     <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w prawo, przesuń w lewo by dodać do Ulubionych</string>
     <string name="undo">Cofnij</string>
     <string name="marked_as_read">Oznaczono jako przeczytane</string>
+    <string name="image_count">Licznik obrazków</string>
     <!-- WIDGET -->
     <string name="red">Czerwony</string>
     <string name="green">Zielony</string>
@@ -320,7 +321,8 @@ GENERAL]]></string>
     <string name="all_feeds">Wszystkie kanały (w tym przyszłe)</string>
     <string name="downloadImage">Pobieranie obrazków</string>
     <string name="loadFullText">Wczytywanie pełnej treści</string>
-    <string name="deleteOldEntries">Usuń stare artykuły</string>
+    <string name="deleteOldEntries">Usuwanie starych artykułów</string>
+    <string name="deleting_ghost_entries">Usuwanie starych plików</string>
     <string name="AllImages">Wszystkie obrazki</string>
     <string name="EntryImages">Obrazki artykułu</string>
     <string name="mobilizeAll">Mobilizacja</string>
@@ -433,10 +435,16 @@ GENERAL]]></string>
     <string name="reload_fulltext_after_tag_editing">Przeładuj tekst po edycji tagów</string>
     <string name="reload_fulltext_after_tag_editing_descr">gdy odznaczone, tekst nie będzie przeładowywany przy każdej pojedynczej edycji tagów (pokaż|ukryj|źródło), stąd łatwiej przeprowadzisz kilka zmian naraz (w takim przypadku potrzebujesz ręcznie przeładować pełny tekst, gdy zakończysz pracę nad edycją)</string>
     <string name="article_menu_show_by_tap">Dotknij, by pokazać menu</string>
+    <string name="article_list_loading">Wczytywanie listy artykułów</string>
+    <string name="article_opening">Otwieranie artykułu</string>
     <string name="web_page_loading">Wczytywanie strony...</string>
     <string name="article_menu_show_by_tap_descr">Gdy Pasek Akcji jest ukryty - w przeciwnym razie znajdziesz je tylko tam</string>
     <string name="menu_go_back">Wstecz</string>
     <string name="menu_go_top">Przewiń na górę</string>
+    <string name="menu_close">Zamknij</string>
+    <string name="reading_file_list">Lista czytanych</string>
+    <string name="add_entry_shortcut">Skrót dodawania artykułu</string>
+    <string name="new_entry_shortcut_added">Skrót nowego artykułu został utworzony na pulpicie</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
