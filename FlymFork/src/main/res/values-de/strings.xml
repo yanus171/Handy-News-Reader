@@ -191,6 +191,7 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
+    <string name="image_count">Anzahl Grafiken</string>
     <!-- WIDGET -->
     <string name="red">Rot</string>
     <string name="green">Grün</string>
@@ -318,6 +319,7 @@
     <string name="downloadImage">Herunterladen der Bilder</string>
     <string name="loadFullText">Laden des gesamten Textes</string>
     <string name="deleteOldEntries">Alte Artikel löschen</string>
+    <string name="deleting_ghost_entries">Alte Dateien löschen</string>
     <string name="AllImages">Alle Bilder</string>
     <string name="article_images_downloading">Artikelbilder</string>
     <string name="mobilizeAll">Mobilizing</string>
@@ -430,10 +432,16 @@
     <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
     <string name="reload_fulltext_after_tag_editing_descr">Wenn das Kontrollkästchen deaktiviert ist, wird der Volltext nicht nach jeder Schlagwort-Bearbeitung neu geladen (Anzeigen|Ausblenden|Stamm), so dass es einfach wäre, mehrere Bearbeitungen durchzuführen. In diesem Fall sollten Sie den Volltext nach Abschluss der Bearbeitung manuell neu laden.</string>
     <string name="article_menu_show_by_tap">Artikelmenü durch Antippen anzeigen</string>
+    <string name="article_list_loading">Artikelliste wird geladen</string>
+    <string name="article_opening">Artikel wird geöffnet</string>
     <string name="web_page_loading">Seite wird geladen …</string>
     <string name="article_menu_show_by_tap_descr">Wenn die Aktionsleiste ausgeblendet ist. Andernfalls wäre das Menü nur in der Aktionsleiste verfügbar.</string>
     <string name="menu_go_back">Zurück</string>
     <string name="menu_go_top">Zum Seitenanfang</string>
+    <string name="menu_close">Schließen</string>
+    <string name="reading_file_list">Dateiliste wird gelesen</string>
+    <string name="add_entry_shortcut">Artikelverknüpfung hinzufügen</string>
+    <string name="new_entry_shortcut_added">Neue Artikelverknüpfung wurde auf dem Startbildschirm erstellt</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

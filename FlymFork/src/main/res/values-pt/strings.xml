@@ -59,7 +59,7 @@
     <b><big>Seu apoio</big></b>
     <br/>
     Se você tem uma ideia para uma nova função, você pode:<br/>
-    • abrir um chamado na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">página de chamados do GitHub</a></b> or<br/>
+    • abrir um chamado na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">página de chamados do GitHub</a></b> ou<br/>
     • enviar um <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail para o desenvolvedor</a></b><br/>
     <br/>
     <b>Se você considera este app útil, por favor avalie-o no <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
@@ -67,14 +67,14 @@
     <b><big>Traduções</big></b>
     <br/>
     Você pode ajudar na tradução para sua própria língua no <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
-    Se sua língua não\está disponível, por favor envie um <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail para o desenvolvedor</a></b>.<br/>
+    Se sua língua não está disponível, por favor envie um <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail para o desenvolvedor</a></b>.<br/>
     <br/>
     <b><big>Agradecimentos</big></b>
     <br/>
     <b>Desenvolvedores:</b><br/>
     ***developerList***
     <br/>
-    <b>Translators:</b><br/>
+    <b>Tradutores:</b><br/>
     ***translatorList***
     <br/>
     ]]></string>
@@ -190,6 +190,7 @@
     <string name="tip_sentence">Dica: deslize para a direita para marcar como lido, deslize para a esquerda para adicionar aos Favoritos</string>
     <string name="undo">Desfazer</string>
     <string name="marked_as_read">Marcado como lido</string>
+    <string name="image_count">Contagem de imagens</string>
     <!-- WIDGET -->
     <string name="red">Vermelho</string>
     <string name="green">Verde</string>
@@ -200,7 +201,7 @@
     <string name="settings_category_common_summary">Tema</string>
     <string name="theme">Tema</string>
     <string name="customColors">Cores personalizadas</string>
-    <string name="fontColorsNotFromThemeSummary">caso contrário usar cores do tema</string>
+    <string name="fontColorsNotFromThemeSummary">caso contrário, usar cores do tema</string>
     <string name="textColor">Cor de texto e plano de fundo</string>
     <string name="settings_color_text_sample_short">Texto</string>
     <string name="settings_color_text_sample_long">\u201cQuando você flerta com uma garota legal, uma hora parece um segundo. Quando você se senta em brasas, um segundo parece uma hora. Isso é relatividade.\u201d\n(Albert Einstein)</string>
@@ -270,7 +271,7 @@
     <string name="article_text_footer_clock_color_descr">Cor do relógio de rodapé</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_footer_show_progress">Lendo barra de progresso</string>
+    <string name="article_text_footer_show_progress">Barra de progresso de leitura</string>
     <string name="article_text_footer_show_progress_descr">Exibe o progresso da leitura de um artigo no topo</string>
     <string name="article_text_footer_progress_height">Altura da barra de progresso</string>
     <string name="article_text_footer_progress_color">Cor do progresso</string>
@@ -282,7 +283,7 @@
     <string name="settings_show_tap_zones">Zonas de Toque visíveis</string>
     <string name="settings_show_tap_zone_description">Como quadrados transparentes na visualização de entrada</string>
     <string name="settings_tapZones">Prever Zonas de Toque</string>
-    <string name="settings_volume_buttons_action">Ação por botões de volume</string>
+    <string name="settings_volume_buttons_action">Ação dos botões de volume</string>
     <string name="brightness_gesture">Gesto de mudança de brilho</string>
     <string name="brightness_gesture_descr">Marque esta opção para ajustar o brilho deslizando para cima/para baixo ao longo da borda esquerda da tela</string>
     <string name="brightness_with_dim_activity">Sobreposição de software</string>
@@ -316,6 +317,7 @@
     <string name="downloadImage">Baixando imagens</string>
     <string name="loadFullText">Carregando texto completo</string>
     <string name="deleteOldEntries">Excluir artigos antigos</string>
+    <string name="deleting_ghost_entries">Apagando arquivos antigos</string>
     <string name="AllImages">Todas as imagens</string>
     <string name="article_images_downloading">Imagens de postagem</string>
     <string name="mobilizeAll">Mobilizing</string>
@@ -351,7 +353,7 @@
     <string name="show_progress_info">Informações técnicas detalhadas de progresso</string>
     <string name="show_progress_info_descr">Mostrar informações detalhadas sobre a operação atual</string>
     <string name="vibrate_on_article_list_entry_swype">Vibrar ao deslizar</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">Na entrada da lista de artigos e na janela de texto do artigo quando favorito</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Na entrada da lista de artigos e na janela de texto do artigo, quando favoritar</string>
     <string name="entry_marked_unfavourite">O artigo foi removido dos Favoritos</string>
     <string name="entry_marked_favourite">O artigo foi adicionado aos Favoritos</string>
     <string name="new_feed_was_added">Novo feed foi adicionado</string>
@@ -407,14 +409,14 @@
     <string name="fullTextRoot">Raiz de texto completo</string>
     <string name="fullTextReloadStarted">Recarga completa do texto foi iniciada</string>
     <string name="brightness_update_from_system_period_min">Tempo de atualização do brilho</string>
-    <string name="brightness_update_from_system_period_min_descr">(em minutos) Após esse período de tempo, o brilho (ao deslizar) será restaurado do nível do sistema atual (0 - desligado)</string>
+    <string name="brightness_update_from_system_period_min_descr">(em minutos) Após esse período de tempo, o brilho (ao deslizar) será restaurado para o nível do sistema atual (0 - desligado)</string>
     <string name="menu_add_feed_shortcut">Criar atalho na Tela inicial</string>
     <string name="new_feed_shortcut_added">Novo atalho foi criado na Tela inicial</string>
     <string name="new_feed_shortcut_add_failed">Seu launcher é incapaz de criar um atalho</string>
     <string name="custom_data_folder">Caminho personalizado de arquivos externos</string>
     <string name="custom_data_folder_descr">(vazio - usar padrão) caminho para a pasta feedex para armazenar as imagens baixadas e o backup</string>
     <string name="entry_text_title_link">Link do título</string>
-    <string name="entry_text_title_link_description">permite abrir página web no navegador ao tocar no título</string>
+    <string name="entry_text_title_link_description">permite abrir uma página web no navegador ao tocar no título</string>
     <string name="delete_read_articles">Excluir artigos lidos</string>
     <string name="delete_read_articles_descr">independente do tempo de manutenção dos artigos</string>
     <string name="data_folder">Pasta de dados</string>
@@ -429,9 +431,11 @@
     <string name="reload_fulltext_after_tag_editing_descr">se desmarcado, o texto completo não será recarregado após cada edição de tag (mostrar|ocultar|root), para que você possa introduzir várias alterações mais facilmente (nos casos em que você precise recarregar manualmente o texto completo uma vez que você termine a edição)</string>
     <string name="article_menu_show_by_tap">Mostrar menu do artigo ao tocar</string>
     <string name="web_page_loading">Carregando página...</string>
-    <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está ocultada - caso contrário você encontrará o menu somente na Barra de Ação</string>
+    <string name="article_menu_show_by_tap_descr">Quando a Barra de Ação está oculta - caso contrário, você encontrará o menu somente na Barra de Ação</string>
     <string name="menu_go_back">Voltar</string>
     <string name="menu_go_top">Rolar para o topo</string>
+    <string name="menu_close">Fechar</string>
+    <string name="reading_file_list">Lendo lista de arquivos</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
