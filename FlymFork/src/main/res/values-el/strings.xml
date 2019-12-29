@@ -328,7 +328,6 @@
     <string name="loadFullText">Φόρτωση ολόκληρου του κειμένου</string>
     <string name="deleteOldEntries">Διαγραφή παλαιών άρθρων</string>
     <string name="AllImages">Όλες οι εικόνες</string>
-    <string name="article_images_downloading">Εισαγωγή εικόνων</string>
     <string name="mobilizeAll">Θέμα φορητών συσκευών</string>
     <string name="RefreshFeeds">Ανανέωση Ροών</string>
     <string name="deleteImages">Διαγραφή εικόνων</string>
