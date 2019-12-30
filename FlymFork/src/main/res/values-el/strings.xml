@@ -201,6 +201,7 @@
     <string name="tip_sentence">Συμβουλή: Σύρετε δεξιά για σημείωση ως διαβασμένο, αριστερά για προσθήκη στα αγαπημένα</string>
     <string name="undo">Αναίρεση</string>
     <string name="marked_as_read">Σημείωση ως διαβασμένο</string>
+    <string name="image_count">Καταμέτρηση Εικόνας</string>
     <!-- WIDGET -->
     <string name="red">Κόκκινο</string>
     <string name="green">Πράσινο</string>
@@ -327,7 +328,9 @@
     <string name="downloadImage">Λήψη εικόνων</string>
     <string name="loadFullText">Φόρτωση ολόκληρου του κειμένου</string>
     <string name="deleteOldEntries">Διαγραφή παλαιών άρθρων</string>
+    <string name="deleting_ghost_entries">Διαγραφή παλαιών αρχείων</string>
     <string name="AllImages">Όλες οι εικόνες</string>
+    <string name="article_images_downloading">Κατέβασμα εικόνων των άρθρων</string>
     <string name="mobilizeAll">Θέμα φορητών συσκευών</string>
     <string name="RefreshFeeds">Ανανέωση Ροών</string>
     <string name="deleteImages">Διαγραφή εικόνων</string>
@@ -438,6 +441,7 @@
     <string name="reload_fulltext_after_tag_editing">Επαναφόρτωση κειμένου μετά την επεξεργασία ετικετών</string>
     <string name="reload_fulltext_after_tag_editing_descr">αν αποεπιλεχθεί, ολοκλήρο το κείμενο δε θα φορτωθεί μετά την επεξεργασία των ετικετών (προβολή|απόκρυψη|root), έτσι μπορείτε να κάνετε πολλαπλές αλλαγές ευκολότερα (σε περίπτωση που θέλετε χειροκίνητα να φορτώσετε το κείμενο όταν τελειώσετε την επεξεργασία)</string>
     <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
+    <string name="article_list_loading">Φόρτωση λίστας άρθρων</string>
     <string name="web_page_loading">Φόρτωση σελίδας...</string>
     <string name="article_menu_show_by_tap_descr">Όταν η μπάρα ενεργειών είναι κρυμένη- αλλιώς θα τη βρείτε μόνο στο μενού ενεργειών</string>
     <string name="menu_go_back">Επιστροφή</string>
