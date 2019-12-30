@@ -323,7 +323,7 @@
     <string name="all_feeds">كل الخلاصات (بما في ذلك. المستقبلية)</string>
     <string name="downloadImage">جارِ تحميل الصور</string>
     <string name="loadFullText">جارِ تحميل النص الكامل</string>
-    <string name="deleteOldEntries">حذف المقالات القديمة</string>
+    <string name="deleteOldEntries">جَارٍ حَذْفِ الْمَقَالَاتِ الْقَدِيمَةِ</string>
     <string name="AllImages">كل الصور</string>
     <string name="mobilizeAll">تعبئة</string>
     <string name="RefreshFeeds">جارِ تحديث الخلاصات</string>
