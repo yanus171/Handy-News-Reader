@@ -442,10 +442,15 @@
     <string name="reload_fulltext_after_tag_editing_descr">αν αποεπιλεχθεί, ολοκλήρο το κείμενο δε θα φορτωθεί μετά την επεξεργασία των ετικετών (προβολή|απόκρυψη|root), έτσι μπορείτε να κάνετε πολλαπλές αλλαγές ευκολότερα (σε περίπτωση που θέλετε χειροκίνητα να φορτώσετε το κείμενο όταν τελειώσετε την επεξεργασία)</string>
     <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
     <string name="article_list_loading">Φόρτωση λίστας άρθρων</string>
+    <string name="article_opening">Άνοιγμα άρθρου</string>
     <string name="web_page_loading">Φόρτωση σελίδας...</string>
     <string name="article_menu_show_by_tap_descr">Όταν η μπάρα ενεργειών είναι κρυμένη- αλλιώς θα τη βρείτε μόνο στο μενού ενεργειών</string>
     <string name="menu_go_back">Επιστροφή</string>
     <string name="menu_go_top">Κύλιση στην αρχή</string>
+    <string name="menu_close">Κλείσιμο</string>
+    <string name="reading_file_list">Προσπέλαση λίστας αρχείων</string>
+    <string name="add_entry_shortcut">Προσθήκη συντόμευσης άρθρου</string>
+    <string name="new_entry_shortcut_added">Μία νέα συντόμευση άρθρου προστέθηκε στην αρχική οθόνη</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
