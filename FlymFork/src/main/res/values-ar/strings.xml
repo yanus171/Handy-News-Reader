@@ -443,6 +443,8 @@
     <string name="web_page_loading">جَارٍ تَحْمِيلِ الصَّفْحَةِ</string>
     <string name="article_menu_show_by_tap_descr">عِنْدَمَا يَكونُ شَريطُ العَمَلِ مَخْفيًّا</string>
     <string name="menu_go_back">رُجوعٌ لِلْقَائِمَةِ</string>
+    <string name="menu_go_top">إنْتِقْالٌ إلَى الأَعْلَى</string>
+    <string name="menu_close">إنْهاءٌ</string>
     <string name="reading_file_list">جَارٍ قِرَاءةِ قَائِمَةِ الْمَلَفَّاتِ</string>
     <string name="add_entry_shortcut">إِنْشاءُ إِخْتِصَارٍ لِلْمَقَالِ</string>
     <string name="new_entry_shortcut_added">تَمَّ انْشَاءُ إخْتِصارٍ جَديدٍ لِمَقالٍ عَلَى الشّاشَةِ الرَّئيسيَّةِ</string>
