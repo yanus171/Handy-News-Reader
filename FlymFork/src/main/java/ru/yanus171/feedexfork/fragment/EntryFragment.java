@@ -637,7 +637,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_load_all_images: {
                     FetcherService.mMaxImageDownloadCount = 0;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    GetSelectedEntryView().UpdateImages( true );
                     break;
                 }
                 case R.id.menu_go_back: {
@@ -1250,7 +1250,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 int status = FetcherService.Status().Start( getString(R.string.downloadImage), true ); try {
                     NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
                 } catch (IOException e) {
-                    //FetcherService.Status().End( status );
                     e.printStackTrace();
                 } finally {
                     FetcherService.Status().End( status );
@@ -1258,7 +1257,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             }
         }).start();
-        //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
     }
 
     @Override
@@ -1266,8 +1264,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+            FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
+            GetSelectedEntryView().UpdateImages( true );
             }
         });
 

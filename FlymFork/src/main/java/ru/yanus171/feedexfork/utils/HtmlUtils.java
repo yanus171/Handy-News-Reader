@@ -155,7 +155,7 @@ public class HtmlUtils {
             if (!TextUtils.isEmpty(content)) {
 
                 // <img> in <a> tag
-                final Pattern A_HREF_WITH_IMG = Pattern.compile("href=(.[^>]+(jpg|png).)", Pattern.CASE_INSENSITIVE);
+                final Pattern A_HREF_WITH_IMG = Pattern.compile("href=(.[^>]+\\.(jpeg|jpg|png).)", Pattern.CASE_INSENSITIVE);
 
                 Matcher matcher = A_IMG_PATTERN.matcher(content);
                 while (matcher.find()) {
@@ -170,52 +170,42 @@ public class HtmlUtils {
                     }
                 }
 
-                boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);//NetworkUtils.needDownloadPictures();
+                boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 final ArrayList<String> imagesToDl = new ArrayList<>();
 
 
                 matcher = IMG_PATTERN.matcher(content);
                 int index = 0;
                 while (matcher.find()) {
-                    String srcText = matcher.group(1);
-                    srcText = srcText.replace(" ", URL_SPACE);
-                    final String imgTagText = matcher.group(0);
-                    if (srcText.startsWith(Constants.FILE_SCHEME)) {
-                        content = content.replace(getDownloadImageHtml(srcText), "");
-                        content = content.replace(imgTagText, GetLinkStartTag(srcText) + imgTagText + LINK_TAG_END);
-                    } else {
-                        final String imgPath = NetworkUtils.getDownloadedImagePath(entryLink, srcText);
-                        index++;
-                        if (new File(imgPath).exists()) {
-                            content = content.replace(imgTagText,
-                                    GetLinkStartTag(imgPath) +
-                                            imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath) +
-                                            LINK_TAG_END);
-
-                        } else if (needDownloadPictures) {
-                            if ((index <= FetcherService.mMaxImageDownloadCount) || (FetcherService.mMaxImageDownloadCount == 0)) {
-                                if (isDownLoadImages)
-                                    imagesToDl.add(srcText);
-                                content = content.replace(imgTagText,
-                                        imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath)
-                                                .replaceAll("alt=\"[^\"]+?\"", "alt=\"" + getString(R.string.downloadOneImage) + "\" ")
-                                                .replace("alt=\"\"", "alt=\"" + getString(R.string.downloadOneImage) + "\" ")
-                                                .replace("<img ", "<img onclick=\"downloadImage('" + srcText + "')\" ") +
-                                                "</a>");
-
-                            } else {
-                                String htmlButtons = getDownloadImageHtml(srcText) + "<br/>";
-                                if (index == FetcherService.mMaxImageDownloadCount + 1)
-                                    htmlButtons += getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
-                                content = content.replace(imgTagText, htmlButtons + imgTagText.replace(srcText, Constants.FILE_SCHEME + imgPath));
-                            }
+                    index++;
+                    String srcUrl = matcher.group(1);
+                    srcUrl = srcUrl.replace(" ", URL_SPACE);
+                    final String imgWebTag = matcher.group(0);
+                    final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
+                    final boolean isImageToLoad = (index <= FetcherService.mMaxImageDownloadCount) || (FetcherService.mMaxImageDownloadCount == 0);
+                    final String imgFileTag =
+                            GetLinkStartTag(imgFilePath) +
+                                    imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
+                                    LINK_TAG_END;
+                    final boolean isFileExists = new File(imgFilePath).exists();
+                    if ( needDownloadPictures ) {
+                        if ( isDownLoadImages && !isFileExists && isImageToLoad )
+                            imagesToDl.add(srcUrl);
+                        String btnLoadNext = "";
+                        if ( index == FetcherService.mMaxImageDownloadCount + 1 )
+                            btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
+                        if ( isFileExists || isImageToLoad )
+                            content = content.replace(imgWebTag, imgFileTag + btnLoadNext);
+                        else if ( !isFileExists ) {
+                            String htmlButtons = getDownloadImageHtml(srcUrl) + "<br/>";
+                            content = content.replace(imgWebTag, htmlButtons + btnLoadNext + imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath));
                         }
-                    }
+                    } else
+                        content = content.replace(imgWebTag, "");
                 }
 
                 content = content.replaceAll("width=\\\"\\d+\\\"", "");
                 content = content.replaceAll("height=\\\"\\d+\\\"", "");
-                //FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
 
                 // Download the images if needed
                 if (!imagesToDl.isEmpty()) {

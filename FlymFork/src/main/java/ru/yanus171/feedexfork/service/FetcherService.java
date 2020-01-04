@@ -929,7 +929,7 @@ public class FetcherService extends IntentService {
                 try {
                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                 } catch (Exception e) {
-                    obs.SetError( "", "", String.valueOf(entryId), e );
+                    obs.SetError( entryLink, "", String.valueOf(entryId), e );
                 } finally {
                     obs.End(status1);
                 }

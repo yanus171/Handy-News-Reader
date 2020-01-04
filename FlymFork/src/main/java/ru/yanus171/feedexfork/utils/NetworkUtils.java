@@ -315,7 +315,7 @@ public class NetworkUtils {
                 bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
                 if (bitmap != null) {
                     if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
-                        ContentValues values = new ContentValues();
+
                     }
                 }
             }

@@ -149,6 +149,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     public boolean mContentWasLoaded = false;
     private double mLastContentHeight = 0;
     private long mLastTimeScrolled = 0;
+    private String mDataWithWebLinks = "";
 
     private static String GetCSS(String text) {
         return "<head><style type='text/css'> "
@@ -355,10 +356,10 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             @Override
             public void run() {
                 synchronized (EntryView.this) {
-                    String finalContentText2 = finalContentText;
+                    mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown);
+                    mData = mDataWithWebLinks;
                     if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
-                        finalContentText2 = HtmlUtils.replaceImageURLs(finalContentText2, mEntryId, mEntryLink, true);
-                    mData = generateHtmlContent(feedID, title, mEntryLink, finalContentText2, enclosure, author, timestamp, finalIsFullTextShown);
+                        mData = HtmlUtils.replaceImageURLs(mDataWithWebLinks, mEntryId, mEntryLink, true);
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
@@ -641,7 +642,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     mContentWasLoaded = true;
                 else
                     EndStatus();
-                StatusStartPageLoading();
+                //if ( mActivity.mEntryFragment.getCurrentEntryID() == mEntryId )
+                    StatusStartPageLoading();
                 ScheduleScrollTo(view);
             }
 
@@ -767,23 +769,28 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 ((Entry) data).mID == mEntryId &&
                 ((Entry) data).mLink.equals(mEntryLink)) {
             Dog.v("EntryView", "EntryView.update() " + mEntryId);
-            new Thread() {
-                @Override
-                public void run() {
-                    synchronized (EntryView.this) {
-                        mData = HtmlUtils.replaceImageURLs(mData, mEntryId, mEntryLink, false);
-                    }
-                    UiUtils.RunOnGuiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if ( !IsStatusStartPageLoading() )
-                                mScrollY = getScrollY();
-                            LoadData();
-                        }
-                    });
-                }
-            }.start();
+            UpdateImages( false );
         }
+    }
+
+    public void UpdateImages( final boolean downloadImages ) {
+        StatusStartPageLoading();
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized (EntryView.this) {
+                    mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, downloadImages);
+                }
+                UiUtils.RunOnGuiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ( !IsStatusStartPageLoading() )
+                            mScrollY = getScrollY();
+                        LoadData();
+                    }
+                });
+            }
+        }.start();
     }
 
     public void UpdateTags() {
