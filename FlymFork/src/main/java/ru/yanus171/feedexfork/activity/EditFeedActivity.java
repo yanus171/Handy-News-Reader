@@ -56,6 +56,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
@@ -130,6 +131,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private static final String[] FEED_PROJECTION =
         new String[]{FeedColumns.NAME, FeedColumns.URL, FeedColumns.RETRIEVE_FULLTEXT, FeedColumns.IS_GROUP, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, FeedColumns.IS_AUTO_REFRESH, FeedColumns.GROUP_ID, FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS  };
     public static final String STATE_WEB_SEARCH_TEXT = "WEB_SEARCH_TEXT";
+    public static final String DIALOG_IS_SHOWN = "EDIT_FEED_USER_SELECTION_DIALOG_IS_SHOWN";
     private String[] mKeepTimeValues;
 
 
@@ -199,6 +201,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     };
     private Spinner mKeepTimeSpinner = null;
     private CheckBox mKeepTimeCB = null;
+    private AlertDialog mUserSelectionDialog = null;
 
     private void EditFilter() {
         Cursor c = mFiltersCursorAdapter.getCursor();
@@ -375,9 +378,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
             tabWidget.setVisibility(View.GONE);
 
-            if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+            if (intent.hasExtra(Intent.EXTRA_TEXT))
                 mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
-            }
             mHasGroupCb.setChecked(false);
             mIsAutoImageLoadCb.setChecked( true );
 
@@ -497,6 +499,13 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         if ( IsAdd() ) {
             mUrlEditText.requestFocus();
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+        if ( PrefUtils.getBoolean(DIALOG_IS_SHOWN, false )  &&
+                ( mUserSelectionDialog == null || !mUserSelectionDialog.isShowing() ) &&
+             mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
+            final String urlOrSearch = mUrlEditText.getText().toString().trim();
+            GetWebSearchDuckDuckGoResultsLoader loader = new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch );
+            AddFeedFromUserSelection("", getString(R.string.web_page_search_duckduckgo) + "\n" + loader.mUrl, loader );
         }
     }
 
@@ -753,7 +762,22 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
 
                     });
-                    builder.show();
+                    builder.setOnCancelListener( new AlertDialog.OnCancelListener(){
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            mUserSelectionDialog = null;
+                            PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
+                        }
+                    } );
+                    if (Build.VERSION.SDK_INT >= 17 )
+                        builder.setOnDismissListener( new AlertDialog.OnDismissListener(){
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                mUserSelectionDialog = null;
+                            }
+                        } );
+                    PrefUtils.putBoolean( DIALOG_IS_SHOWN, true );
+                    mUserSelectionDialog = builder.show();
                 }
             }
 

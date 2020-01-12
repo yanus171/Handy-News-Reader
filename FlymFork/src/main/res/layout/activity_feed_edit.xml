@@ -79,6 +79,7 @@
                                         android:layout_below="@id/url_textview"
                                         android:layout_marginTop="5dp"
                                         android:hint="@string/website_or_feed"
+                                        android:selectAllOnFocus="true"
                                         android:inputType="textUri"
                                         android:singleLine="true" />
 

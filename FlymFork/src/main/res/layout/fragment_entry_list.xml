@@ -75,6 +75,7 @@
             android:layout_height="40dp"
             android:id="@+id/progressBarLoader"
             android:layout_gravity="top|end"
+            android:layout_margin="10dp"
             android:padding="10dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/progressbar_background"
