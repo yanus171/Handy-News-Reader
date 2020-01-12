@@ -338,7 +338,7 @@
     <string name="loadLink">Lire maintenant</string>
     <string name="loadLinkLater">Lire plus tard</string>
     <string name="addFeed">Ajouter un flux</string>
-    <string name="externalLinks">Lire plus tard</string>
+    <string name="externalLinks">A lire plus tard</string>
     <string name="markAllAsRead">Marquer tout comme lu</string>
     <string name="pageUp">page précédente / glisser vers le bas pour retirer l\'étoile</string>
     <string name="pageDown">page suivante</string>
