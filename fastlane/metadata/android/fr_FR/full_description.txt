@@ -27,8 +27,8 @@ Découvrez <i>Handy NR</i> - un lecteur <i>RSS</i> hors-ligne aux nombreuses fon
 	<li><b>hautement personnalisable</b>: de la taille des <i>Zones d'appui</i> à la couleur des hyperliens et du soulignement - un tas de détails que Vous pouvez adapter exactement à Vos Propres goûts et besoins</li>
 	<li><b>fonctionnalités avancées</b> : sauvegarde automatique (export/import vers/depuis un format <i>.opml</i>), apport de contenu de sites non-<i>RSS</i>,</li>
 	<li><b>plus de fonctionnalités intéressantes</b> "en magasin" - visitez notre site web pour en savoir plus :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b><u>important</u>:</b> cette application ne se synchronise PAS avec les lecteurs de flux d'actualités en ligne (i.e. <i>Feedly</i>),</li>
+	<li><b>commentaires et suggestions sont les bienvenus ;</b></li>
 </ul>
 
 <ul>
