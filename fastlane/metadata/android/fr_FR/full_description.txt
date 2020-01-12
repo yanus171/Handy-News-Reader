@@ -16,12 +16,12 @@ Découvrez <i>Handy NR</i> - un lecteur <i>RSS</i> hors-ligne aux nombreuses fon
 <b><u>Fonctionnalités</u>:</b>
 	<li><b><u>articles complets</u> à portée de main</b>: pas besoin d'utiliser un navigateur web externe pour accéder au texte intégral.</li>
 	<li><b>lecture <u>pratique</u></b>: changement d'article par boutons de volume ou balayage, <i>Zones de contact</i>, rappel de la position de lecture <u>pour chaque article</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
+	<li><b>notification d'articles importants</b>: Vous ne manquerez plus rien que Vous trouvez particulièrement important,</li>
+	<li><b><i>"A lire plus tard"</i></b>: Vous pouvez rapidement faire défiler les articles - <b>en marquant (par étoile) ceux à lire plus tard</b> dans Votre temps libre - ou simplement à conserver,</li>
+	<li><b><i>"Supprimer une fois terminé"</i></b> - une fois que Vous avez terminé un article - il peut être automatiquement supprimé des <i>'Favoris'</i> (=<i>'A lire plus tard'</i>),</li>
+	<li><b>prêt à passer hors ligne</b> - plongez dans une lecture intéressante sans distractions : une fois mis à jour, il n'y a pas besoin de chargement supplémentaire - ça marchera vraiment sans Internet :),</li>
+	<li><b>économisez la bande passante</b>: ne vous connectez que pour les nouveaux articles - pas pour charger leur version complète à chaque fois ; contrôlez ce qui doit être téléchargé - et à quel degré,</li>
+	<li><b>adapté aux mouvements sur l'écran</b>: par ex. glisser vers le haut pour ajouter/supprimer un article aux <i>Favoris</i>, glisser le long du bord gauche de l'écran pour ajuster la luminosité du texte,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
