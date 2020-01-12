@@ -190,6 +190,7 @@
     <string name="tip_sentence">Aholkua: Pasatu hatza eskuinera irakurrita bezala markatzeko, ezkerrera gogokoetara gehitzeko</string>
     <string name="undo">Desegin</string>
     <string name="marked_as_read">Markatu irakurrita bezala</string>
+    <string name="image_count">Irudi kopurua</string>
     <!-- WIDGET -->
     <string name="red">Gorria</string>
     <string name="green">Berdea</string>
@@ -316,7 +317,9 @@
     <string name="downloadImage">Irudiak deskargatzen</string>
     <string name="loadFullText">Testu osoa kargatzen</string>
     <string name="deleteOldEntries">Ezabatu artikulu zaharrak</string>
+    <string name="deleting_ghost_entries">Fitxategi zaharrak ezabatzen</string>
     <string name="AllImages">Irudi guztiak</string>
+    <string name="article_images_downloading">Artikulu-irudien deskarga</string>
     <string name="mobilizeAll">Mugikorrera egokitzen</string>
     <string name="RefreshFeeds">Jarioak eguneratzen</string>
     <string name="deleteImages">Ezabatu irudiak</string>
@@ -424,8 +427,11 @@
     <string name="image_white_background">Irudiaren atzealde zuria</string>
     <string name="settings_add_google_news_dialog">Gehitu Google News elkarrizketa-koadroa</string>
     <string name="settings_add_google_news_dialog_descr">Desmarkatu jarioa gehitzean jario mota aukeratzeko elkarrizketa-koadroa saltatzeko</string>
+    <string name="reload_fulltext_after_tag_editing">Birkargatu testua etiketa editatu eta gero</string>
     <string name="menu_go_back">Joan atzera</string>
     <string name="menu_go_top">Korritu gora</string>
+    <string name="menu_close">Itxi</string>
+    <string name="reading_file_list">Fitxategi zerrenda irakurtzen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>
