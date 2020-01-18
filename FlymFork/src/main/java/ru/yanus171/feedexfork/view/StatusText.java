@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import ru.yanus171.feedexfork.Constants;
@@ -161,7 +162,7 @@ public class StatusText implements Observer {
         private String mNotificationTitle = "";
         private String mErrorFeedID;
         private String mErrorEntryID;
-        TreeSet<Integer> mProgressBarStatusList = new TreeSet<>();
+        ArrayList<Integer> mProgressBarStatusList = new ArrayList<>();
         private boolean mIsProgressTextVisible = false;
 
         @Override
@@ -203,7 +204,7 @@ public class StatusText implements Observer {
                     if ( !showProgress )
                         mIsProgressTextVisible = false;
                     final String progressText = mIsProgressTextVisible && !mProgressBarStatusList.isEmpty() ?
-                                    mList.get( mProgressBarStatusList.first() )  : "";
+                                    mList.get( mProgressBarStatusList.get(0) )  : "";
                     NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgress, progressText );
                     Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
 
@@ -256,7 +257,11 @@ public class StatusText implements Observer {
             synchronized ( mList ) {
                 mProgressText = "";
                 mList.remove( id );
-                mProgressBarStatusList.remove( id );
+                {
+                    int index = mProgressBarStatusList.indexOf(id);
+                    if (index >= 0)
+                        mProgressBarStatusList.remove(index);
+                }
             }
             UpdateText();
         }
