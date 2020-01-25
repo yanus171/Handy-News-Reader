@@ -192,8 +192,10 @@ public class HtmlUtils {
                         if ( isDownLoadImages && !isFileExists && isImageToLoad )
                             imagesToDl.add(srcUrl);
                         String btnLoadNext = "";
-                        if ( index == FetcherService.mMaxImageDownloadCount + 1 )
+                        if ( index == FetcherService.mMaxImageDownloadCount + 1 ) {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
+                            btnLoadNext += getButtonHtml("downloadAllImages()", getString(R.string.downloadAll), "download_all");
+                        }
                         if ( isFileExists || isImageToLoad )
                             content = content.replace(imgWebTag, imgFileTag + btnLoadNext);
                         else if ( !isFileExists ) {

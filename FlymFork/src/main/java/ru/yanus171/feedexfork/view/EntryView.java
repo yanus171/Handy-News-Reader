@@ -577,6 +577,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                         final Item[] items = {
                                 new Item(R.string.loadLink, R.drawable.load_now),
                                 new Item(R.string.loadLinkLater, R.drawable.load_later),
+                                new Item(R.string.loadLinkLaterStarred, R.drawable.load_later),
                                 new Item(R.string.open_link, android.R.drawable.ic_menu_send)
                         };
 
@@ -614,6 +615,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                                     intent = new Intent(getContext(), EntryActivity.class);
                                 else if (item == 1)
                                     intent = new Intent(getContext(), LoadLinkLaterActivity.class);
+                                else if (item == 2)
+                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class).putExtra(FetcherService.EXTRA_STAR, true );
                                 else
                                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
@@ -693,7 +696,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                             !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
-                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 200);
+                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 300);
                     }
                 }
                 return false;
@@ -896,6 +899,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         void openTagMenu(String className, String baseUrl, String paramValue);
 
         void downloadNextImages();
+
+        void downloadAllImages();
     }
 
     private class JavaScriptObject {
@@ -938,6 +943,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
     private void DoNotShowMenu() {
         mHandler.sendEmptyMessage(CLICK_ON_URL);
+        mActivity.closeOptionsMenu();
     }
 
     private class ImageDownloadJavaScriptObject {
@@ -957,6 +963,13 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         public void downloadNextImages() {
             DoNotShowMenu();
             mEntryViewMgr.downloadNextImages();
+
+        }
+
+        @JavascriptInterface
+        public void downloadAllImages() {
+            DoNotShowMenu();
+            mEntryViewMgr.downloadAllImages();
 
         }
 

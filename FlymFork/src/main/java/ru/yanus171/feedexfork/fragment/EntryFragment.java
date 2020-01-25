@@ -1271,6 +1271,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     }
 
+    @Override
+    public void downloadAllImages() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                FetcherService.mMaxImageDownloadCount = 0;
+                GetSelectedEntryView().UpdateImages( true );
+            }
+        });
+
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

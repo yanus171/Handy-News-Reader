@@ -146,7 +146,7 @@ public class EntryActivity extends BaseActivity {
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false);
                 } else
                     SetEntryID( entryUri, url );
             }

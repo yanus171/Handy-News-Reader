@@ -139,7 +139,7 @@ public class FetcherService extends IntentService {
     public static final String ACTION_REFRESH_FEEDS = FeedData.PACKAGE_NAME + ".REFRESH";
     public static final String ACTION_MOBILIZE_FEEDS = FeedData.PACKAGE_NAME + ".MOBILIZE_FEEDS";
     private static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
-    //public static final String ACTION_DOWNLOAD_IMAGES = FeedData.PACKAGE_NAME + ".DOWNLOAD_IMAGES";
+    public static final String EXTRA_STAR = "STAR";
 
     private static final int THREAD_NUMBER = 3;
     private static final int MAX_TASK_ATTEMPT = 3;
@@ -315,7 +315,9 @@ public class FetcherService extends IntentService {
                             intent.getStringExtra(Constants.TITLE_TO_LOAD),
                             FetcherService.ForceReload.No,
                             true,
-                            true);
+                            true,
+                             intent.getBooleanExtra( EXTRA_STAR, false ));
+
                     downloadAllImages();
                 }
             } );
@@ -751,11 +753,12 @@ public class FetcherService extends IntentService {
     public static Intent GetIntent( String extra ) {
         return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
     }
-    public static void StartServiceOpenExternalLink( final String url, final String title) {
+    public static void StartServiceLoadExternalLink(String url, String title, boolean star) {
         FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
-                .putExtra(Constants.TITLE_TO_LOAD, url) );
+                .putExtra(Constants.TITLE_TO_LOAD, title)
+                .putExtra( EXTRA_STAR, star ));
     }
 
     public enum ForceReload {Yes, No}
@@ -791,7 +794,8 @@ public class FetcherService extends IntentService {
                                              final String title,
                                              final ForceReload forceReload,
                                              final boolean isCorrectTitle,
-                                             final boolean isShowError ) {
+                                             final boolean isShowError,
+                                             final boolean isStarred) {
         boolean load;
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
         int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
@@ -814,6 +818,8 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
                 values.put(EntryColumns.LINK, url);
+                if ( isStarred )
+                    values.put(EntryColumns.IS_FAVORITE, 1);
 
                 //values.put(EntryColumns.MOBILIZED_HTML, enclosureString);
                 //values.put(EntryColumns.ENCLOSURE, enclosureString);

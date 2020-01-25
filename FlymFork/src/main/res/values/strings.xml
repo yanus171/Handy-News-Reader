@@ -345,10 +345,12 @@
     <string name="settings_content_extract_rules">Content extract rules</string>
     <string name="settings_content_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_tap_zones_dialogtitle">only for info, changes unavailable</string>
-    <string name="downloadNext">"Download next "</string>
+    <string name="downloadNext">", Next "</string>
+    <string name="downloadAll">", All"</string>
     <string name="loadingLink">Loading links</string>
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
+    <string name="loadLinkLaterStarred">Read later in favourities</string>
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Read It Later</string>
     <string name="markAllAsRead">Mark all as read</string>

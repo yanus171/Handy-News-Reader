@@ -115,7 +115,7 @@ public class HTMLParser {
 				connection.disconnect();
 		}
 
-		Uri uriMainEntry = FetcherService.LoadLink( feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false).first;
+		Uri uriMainEntry = FetcherService.LoadLink( feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false, false).first;
             
 		ContentResolver cr = MainApplication.getContext().getContentResolver();
 		{
@@ -171,7 +171,7 @@ public class HTMLParser {
 			if ( FetcherService.isCancelRefresh() )
 				break;
 			int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ), false ); try {
-				Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false);
+				Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false);
 				Uri uri = load.first;
 				if ( load.second ) {
 					result++;
