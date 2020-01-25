@@ -8,12 +8,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,9 +22,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -35,9 +33,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
-import static ru.yanus171.feedexfork.utils.PrefUtils.toggleBoolean;
-
 /**
  * Created by Admin on 03.06.2016.
  */
@@ -45,7 +40,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.toggleBoolean;
 
 public class StatusText implements Observer {
     private static final String SEP = "__#__";
-    public static final String DELIMITER = " ";
+    private static final String DELIMITER = " ";
     private final TextView mProgressText;
     private String mFeedID = "";
     private String mEntryID = "";
@@ -53,7 +48,7 @@ public class StatusText implements Observer {
     private TextView mErrorView;
     //SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private static int MaxID = 0;
-    private ProgressBar mProgressBar = null;
+    private ProgressBar mProgressBar;
 
     public StatusText(final TextView view,
                       final TextView errorView,
@@ -114,7 +109,7 @@ public class StatusText implements Observer {
         FetcherService.Status().UpdateText();
     }
 
-    public int GetHeight() {
+    int GetHeight() {
         int result = 0;
         if ( mView.getVisibility() == View.VISIBLE )
             result += mView.getHeight();
@@ -307,11 +302,11 @@ public class StatusText implements Observer {
             UpdateText();
         }
         public void AddBytes(int bytes) {
-            //synchronized ( mList ) {
+            synchronized ( mList ) {
                 mBytesRecievedLast += bytes;
-            //}
+            }
         }
-        public void HideByScroll() {
+        void HideByScroll() {
             UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
@@ -334,7 +329,7 @@ public class StatusText implements Observer {
             UpdateText();
         }
 
-        public void ToggleProgressTextVisibility() {
+        void ToggleProgressTextVisibility() {
             mIsProgressTextVisible = ! mIsProgressTextVisible;
             UpdateText();
         }
@@ -352,7 +347,7 @@ public class StatusText implements Observer {
                     new Notification.BigTextStyle();
             bigTextStyle.bigText(text);
             bigTextStyle.setBigContentTitle(title);
-            builder = new Notification.Builder(MainApplication.getContext(), NOTIFICATION_CHANNEL_ID) //
+            builder = new Notification.Builder(MainApplication.getContext(), MainApplication.NOTIFICATION_CHANNEL_ID) //
                     .setSmallIcon(R.drawable.refresh) //
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
                     .setStyle( bigTextStyle )

@@ -134,7 +134,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -142,7 +142,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private long mInitialEntryId = -1;
     private Entry[] mEntriesIds = new Entry[1];
 
-    private boolean mFavorite, mIsFullTextShown = true;
+    private boolean mFavorite, mIsWithTables, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
@@ -535,16 +535,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 item.setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
             updateMenuWithIcon(item);
         }
-        //menu.findItem(R.id.menu_mark_as_favorite).setVisible( !mFavorite );
-        //menu.findItem(R.id.menu_mark_as_unfavorite).setVisible(mFavorite);
-
-
-
-//        if (mFavorite)
-//            menu.findItem(R.id.menu_mark_as_favorite ).setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
-//        else
-//            menu.findItem(R.id.menu_mark_as_unfavorite).setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -555,6 +545,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
@@ -691,6 +682,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
 
+                case R.id.menu_reload_with_tables_toggle: {
+                    int status = FetcherService.Status().Start("Reload with|out tables", true); try {
+                        SetIsWithTables( !mIsWithTables );
+                        item.setChecked( mIsWithTables );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
+                    } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+
                 case R.id.menu_reload_full_text_with_tags: {
 
                     int status = FetcherService.Status().Start("Reload fulltext", true); try {
@@ -785,6 +785,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         } finally { FetcherService.Status().End( status ); }
     }
 
+    private void SetIsWithTables(final boolean withTables) {
+        if ( mIsWithTables == withTables )
+            return;
+        mIsWithTables = withTables;
+        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+        ContentValues values = new ContentValues();
+        values.put(EntryColumns.IS_WITH_TABLES, mIsWithTables? 1 : 0);
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        cr.update(uri, values, null, null);
+        getActivity().invalidateOptionsMenu();
+    }
     private void SetIsFavourite(final boolean favorite) {
         if ( mFavorite == favorite )
             return;
@@ -908,6 +919,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 				activity.setTitle("");//activity.setTitle(feedTitle);
 
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
+                mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
                 //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
 
 
@@ -1307,6 +1319,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mMobilizedHtmlPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
                         mLinkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
+                        mIsWithTablePos= cursor.getColumnIndex(EntryColumns.IS_WITH_TABLES);
                         mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
                         mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
                         mIsWasAutoUnStarPos = cursor.getColumnIndex(EntryColumns.IS_WAS_AUTO_UNSTAR);

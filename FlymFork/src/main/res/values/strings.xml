@@ -455,6 +455,7 @@
     <string name="reading_file_list">Reading file list</string>
     <string name="add_entry_shortcut">Add article shortcut</string>
     <string name="new_entry_shortcut_added">New article shortcut has been created on Home Screen</string>
+    <string name="menu_reload_with_tables_toggle">With tables</string>
 
 
     <plurals name="number_of_new_entries">

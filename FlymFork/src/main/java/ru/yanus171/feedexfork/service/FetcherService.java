@@ -682,7 +682,12 @@ public class FetcherService extends IntentService {
                             title = titleEls.first().text();
                     }
 
-                    mobilizedHtml = ArticleTextExtractor.extractContent(doc, link, contentIndicator, mobilize, !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ) );
+                    mobilizedHtml = ArticleTextExtractor.extractContent(doc,
+                                                                        link,
+                                                                        contentIndicator,
+                                                                        mobilize,
+                                                                        !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ),
+                                                                        entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES) ) == 1);
 
                     Status().ChangeProgress("");
 
@@ -818,6 +823,7 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
                 values.put(EntryColumns.LINK, url);
+                values.put(EntryColumns.IS_WITH_TABLES, 1);
                 if ( isStarred )
                     values.put(EntryColumns.IS_FAVORITE, 1);
 

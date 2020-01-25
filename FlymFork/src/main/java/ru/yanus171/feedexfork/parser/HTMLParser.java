@@ -138,7 +138,7 @@ public class HTMLParser {
 			}
 		}
 		ArrayList<Item> listItem = new ArrayList<>();
-		String content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false);
+		String content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false, false);
 		doc = Jsoup.parse(content);
 		{
 			Elements list = doc.select("a");

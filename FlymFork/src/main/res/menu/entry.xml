@@ -69,6 +69,11 @@
         android:id="@+id/menu_reload_full_text_with_tags"
         android:title="@string/reload_full_text_with_tags"/>
     <item
+        android:id="@+id/menu_reload_with_tables_toggle"
+        android:checkable="true"
+        android:title="@string/menu_reload_with_tables_toggle"/>
+
+    <item
         android:id="@+id/menu_load_all_images"
         android:icon="@android:drawable/ic_menu_gallery"
         android:title="@string/menu_load_all_images"/>
