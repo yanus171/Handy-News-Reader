@@ -331,9 +331,11 @@
     <string name="settings_content_extract_rules_description">Встановлюються для кожного сайту (необхідні базові знання HTML)</string>
     <string name="settings_tap_zones_dialogtitle">для інформації, зміна неможлива</string>
     <string name="downloadNext">"Завантажити наступні "</string>
+    <string name="downloadAll">", Все"</string>
     <string name="loadingLink">Завантаження посилань</string>
     <string name="loadLink">Читати зараз</string>
     <string name="loadLinkLater">Читати пізніше</string>
+    <string name="loadLinkLaterStarred">Прочитати пізніше в обраних</string>
     <string name="addFeed">Додати стрічку</string>
     <string name="externalLinks">Зовнішні посилання</string>
     <string name="markAllAsRead">Помітити все як прочитане</string>
@@ -438,6 +440,7 @@
     <string name="reading_file_list">Список для читання</string>
     <string name="add_entry_shortcut">Додати ярлик статті</string>
     <string name="new_entry_shortcut_added">Новий ярлик статті був створений на домашньому екрані</string>
+    <string name="menu_reload_with_tables_toggle">З таблицями</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
