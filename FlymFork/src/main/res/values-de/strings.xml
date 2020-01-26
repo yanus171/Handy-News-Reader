@@ -337,6 +337,7 @@
     <string name="loadingLink">Links laden</string>
     <string name="loadLink">Jetzt Lesen</string>
     <string name="loadLinkLater">Später lesen</string>
+    <string name="loadLinkLaterStarred">Später in den Favoriten lesen</string>
     <string name="addFeed">Feed hinzufügen</string>
     <string name="externalLinks">Zurückstellen</string>
     <string name="markAllAsRead">Alle als gelesen markieren</string>
@@ -441,6 +442,7 @@
     <string name="reading_file_list">Dateiliste wird gelesen</string>
     <string name="add_entry_shortcut">Artikelverknüpfung hinzufügen</string>
     <string name="new_entry_shortcut_added">Neue Artikelverknüpfung wurde auf dem Startbildschirm erstellt</string>
+    <string name="menu_reload_with_tables_toggle">Mit Tabellen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
