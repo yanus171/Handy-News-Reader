@@ -333,7 +333,7 @@
     <string name="settings_content_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
     <string name="downloadNext">"Загрузить следующие "</string>
-    <string name="downloadAll">"Все"</string>
+    <string name="downloadAll">", Все"</string>
     <string name="loadingLink">Загрузка ссылки</string>
     <string name="loadLink">Читать сейчас</string>
     <string name="loadLinkLater">Читать позже</string>
