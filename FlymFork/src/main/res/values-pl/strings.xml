@@ -337,11 +337,12 @@ GENERAL]]></string>
     <string name="settings_content_extract_rules">Reguły pozyskiwania treści</string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
-    <string name="downloadNext">"Pobierz następny"</string>
+    <string name="downloadNext">", Następny "</string>
     <string name="downloadAll">", Wszystko"</string>
     <string name="loadingLink">Wczytuję linki</string>
     <string name="loadLink">Czytaj teraz</string>
     <string name="loadLinkLater">Przeczytaj później</string>
+    <string name="loadLinkLaterStarred">Przeczytaj później w Ulubionych</string>
     <string name="addFeed">Dodaj kanał</string>
     <string name="externalLinks">Przeczytaj Później</string>
     <string name="markAllAsRead">Oznacz wszystko jako przeczytane</string>
@@ -446,6 +447,7 @@ GENERAL]]></string>
     <string name="reading_file_list">Lista czytanych</string>
     <string name="add_entry_shortcut">Skrót dodawania artykułu</string>
     <string name="new_entry_shortcut_added">Skrót nowego artykułu został utworzony na pulpicie</string>
+    <string name="menu_reload_with_tables_toggle">Z tabelami</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
