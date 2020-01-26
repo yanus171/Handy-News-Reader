@@ -577,7 +577,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                         final Item[] items = {
                                 new Item(R.string.loadLink, R.drawable.load_now),
                                 new Item(R.string.loadLinkLater, R.drawable.load_later),
-                                new Item(R.string.loadLinkLaterStarred, R.drawable.load_later),
+                                new Item(R.string.loadLinkLaterStarred, R.drawable.load_later_star),
                                 new Item(R.string.open_link, android.R.drawable.ic_menu_send)
                         };
 
