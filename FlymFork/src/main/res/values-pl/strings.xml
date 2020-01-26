@@ -338,6 +338,7 @@ GENERAL]]></string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
     <string name="downloadNext">"Pobierz następny"</string>
+    <string name="downloadAll">", Wszystko"</string>
     <string name="loadingLink">Wczytuję linki</string>
     <string name="loadLink">Czytaj teraz</string>
     <string name="loadLinkLater">Przeczytaj później</string>
