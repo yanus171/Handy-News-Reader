@@ -126,7 +126,7 @@ public class HtmlUtils {
         return content;
     }
 
-    public static ArrayList<String> getImageURLs(String content) {
+    public static ArrayList<String> getImageURLs1(String content) {
         ArrayList<String> images = new ArrayList<>();
 
         if (!TextUtils.isEmpty(content)) {
@@ -149,29 +149,20 @@ public class HtmlUtils {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
+        final ArrayList<String> imagesToDl = new ArrayList<>();
+        return replaceImageURLs(content, entryId, entryLink, isDownLoadImages, imagesToDl );
+
+    }
+    public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages, final ArrayList<String> imagesToDl) {
         final int status = Status().Start("Reading images", true); try {
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
 
             if (!TextUtils.isEmpty(content)) {
-
-                // <img> in <a> tag
-                final Pattern A_HREF_WITH_IMG = Pattern.compile("href=(.[^>]+\\.(jpeg|jpg|png).)", Pattern.CASE_INSENSITIVE);
-
-                Matcher matcher = A_IMG_PATTERN.matcher(content);
-                while (matcher.find()) {
-                    String match = matcher.group();
-                    Matcher matcherHrefImg = A_HREF_WITH_IMG.matcher(match);
-                    if (matcherHrefImg.find()) {
-                        String newText = "<img src=" + matcherHrefImg.group(1) + " />";
-                        content = content.replace(match, newText);
-                    } else {
-                        String replace = match.replaceAll("<a([^>]+)>", "").replaceAll("</a>", "");
-                        content = content.replace(match, replace);
-                    }
-                }
+                content = ReplaceImagesWithALink(content);
+                Matcher matcher;
 
                 boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
-                final ArrayList<String> imagesToDl = new ArrayList<>();
+                //final ArrayList<String> imagesToDl = new ArrayList<>();
 
 
                 matcher = IMG_PATTERN.matcher(content);
@@ -210,7 +201,7 @@ public class HtmlUtils {
                 content = content.replaceAll("height=\\\"\\d+\\\"", "");
 
                 // Download the images if needed
-                if (!imagesToDl.isEmpty()) {
+                if (!imagesToDl.isEmpty() && entryId != -1 ) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -226,6 +217,24 @@ public class HtmlUtils {
             Status().End( status );
         }
 
+        return content;
+    }
+
+    private static String ReplaceImagesWithALink(String content) {
+        // <img> in <a> tag
+        final Pattern A_HREF_WITH_IMG = Pattern.compile("href=(.[^>]+\\.(jpeg|jpg|png).)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = A_IMG_PATTERN.matcher(content);
+        while (matcher.find()) {
+            String match = matcher.group();
+            Matcher matcherHrefImg = A_HREF_WITH_IMG.matcher(match);
+            if (matcherHrefImg.find()) {
+                String newText = "<img src=" + matcherHrefImg.group(1) + " />";
+                content = content.replace(match, newText);
+            } else {
+                String replace = match.replaceAll("<a([^>]+)>", "").replaceAll("</a>", "");
+                content = content.replace(match, replace);
+            }
+        }
         return content;
     }
 
@@ -247,6 +256,7 @@ public class HtmlUtils {
 
     public static String getMainImageURL(String content) {
         if (!TextUtils.isEmpty(content)) {
+            content = ReplaceImagesWithALink(content);
             Matcher matcher = IMG_PATTERN.matcher(content);
 
             while (matcher.find()) {

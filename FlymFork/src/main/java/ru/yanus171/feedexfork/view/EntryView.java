@@ -89,6 +89,7 @@ import org.jsoup.nodes.Element;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -359,7 +360,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown);
                     mData = mDataWithWebLinks;
                     if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
-                        mData = HtmlUtils.replaceImageURLs(mDataWithWebLinks, mEntryId, mEntryLink, true);
+                        mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override

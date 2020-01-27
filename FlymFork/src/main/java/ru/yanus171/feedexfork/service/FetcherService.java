@@ -697,13 +697,14 @@ public class FetcherService extends IntentService {
                         if ( title != null )
                             values.put(EntryColumns.TITLE, title);
 
-                        ArrayList<String> imgUrlsToDownload = null;
+                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
-                            imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
+                            //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
+                            HtmlUtils.replaceImageURLs( mobilizedHtml, -1, link, true, imgUrlsToDownload );
                         }
 
                         String mainImgUrl;
-                        if (imgUrlsToDownload != null) {
+                        if (!imgUrlsToDownload.isEmpty() ) {
                             mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
                         } else {
                             mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
