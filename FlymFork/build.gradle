@@ -14,10 +14,10 @@ android {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 193
-        versionName '0.11.9'
+        versionCode 194
+        versionName '0.11.10'
     }
-    lintOptions {
+    lintOptions {   
         checkReleaseBuilds false
         // if true, stop the gradle build if errors are found
         abortOnError false
