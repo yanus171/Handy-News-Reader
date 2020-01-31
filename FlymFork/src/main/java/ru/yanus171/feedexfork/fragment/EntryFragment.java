@@ -37,7 +37,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -90,7 +89,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
-import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -509,20 +507,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.entry, menu);
 
-        //int color = ContextCompat.getColor(getContext(), R.color.common_google_signin_btn_text_dark);
-        //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_favorite));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_unfavorite));
-        updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
-        updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_without_mobilizer));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_with_tags));
-        updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
-        updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
-        updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
+        updateMenuWithIcon(menu.findItem(R.id.menu_share_group));
         updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
         updateMenuWithIcon(menu.findItem(R.id.menu_setting));
         updateMenuWithIcon(menu.findItem(R.id.menu_add_feed));
         updateMenuWithIcon(menu.findItem(R.id.menu_close));
+        updateMenuWithIcon(menu.findItem(R.id.menu_reload));
+        updateMenuWithIcon(menu.findItem(R.id.menu_display_options));
 
         //EntryActivity activity = (EntryActivity) getActivity();
         menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );

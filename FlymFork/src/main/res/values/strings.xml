@@ -456,6 +456,8 @@
     <string name="add_entry_shortcut">Add article shortcut</string>
     <string name="new_entry_shortcut_added">New article shortcut has been created on Home Screen</string>
     <string name="menu_reload_with_tables_toggle">With tables</string>
+    <string name="menu_display_options">Display options</string>
+    <string name="menu_reload">Reload ...</string>
 
 
     <plurals name="number_of_new_entries">
