@@ -443,6 +443,8 @@
     <string name="add_entry_shortcut">Adicionar atalho para artigo</string>
     <string name="new_entry_shortcut_added">Um novo atalho para o artigo foi criado na Tela Inicial</string>
     <string name="menu_reload_with_tables_toggle">Com tabelas</string>
+    <string name="menu_display_options">Opções de exibição</string>
+    <string name="menu_reload">Recarregar...</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
