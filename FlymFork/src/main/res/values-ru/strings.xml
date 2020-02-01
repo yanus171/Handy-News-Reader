@@ -443,6 +443,8 @@
     <string name="add_entry_shortcut">Добавить ярлык на статью</string>
     <string name="new_entry_shortcut_added">На главном экране создан ярлык на новую статью</string>
     <string name="menu_reload_with_tables_toggle">Таблицы</string>
+    <string name="menu_display_options">Отображение</string>
+    <string name="menu_reload">Обновление</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
