@@ -81,6 +81,10 @@
                 android:checkable="true"
                 android:title="@string/image_white_background" />
             <item
+                android:id="@+id/menu_show_progress_info"
+                android:checkable="true"
+                android:title="@string/show_progress_info" />
+            <item
                 android:id="@+id/menu_toggle_theme"
                 android:title="@string/menu_toggle_theme"
                 android:visible="true"
