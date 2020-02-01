@@ -442,6 +442,8 @@
     <string name="add_entry_shortcut">Aggiungi scorciatoia articolo</string>
     <string name="new_entry_shortcut_added">La scorciatoia del nuovo articolo è stata creata nella schermata Home</string>
     <string name="menu_reload_with_tables_toggle">Con tabelle</string>
+    <string name="menu_display_options">Mostra opzioni</string>
+    <string name="menu_reload">Ricaricando...</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
