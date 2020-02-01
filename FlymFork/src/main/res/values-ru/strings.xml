@@ -319,7 +319,7 @@
     <string name="deleteOldEntries">Удаление старых статей</string>
     <string name="deleting_ghost_entries">Удаление старых файлов</string>
     <string name="AllImages">Загрузка картинок</string>
-    <string name="article_images_downloading">Загрузка картинок статьи</string>
+    <string name="article_images_downloading">Загрузка изображений статей</string>
     <string name="mobilizeAll">Загрузка полных текстов</string>
     <string name="RefreshFeeds">Обновление статей</string>
     <string name="deleteImages">Удаление картинок</string>
@@ -332,9 +332,12 @@
     <string name="settings_content_extract_rules">Правила поиска полных текстов</string>
     <string name="settings_content_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
+    <string name="downloadNext">"Загрузить следующие "</string>
+    <string name="downloadAll">", Все"</string>
     <string name="loadingLink">Загрузка ссылки</string>
     <string name="loadLink">Читать сейчас</string>
     <string name="loadLinkLater">Читать позже</string>
+    <string name="loadLinkLaterStarred">Читать позже в избранном</string>
     <string name="addFeed">Добавить канал</string>
     <string name="externalLinks">Внешние ссылки</string>
     <string name="markAllAsRead">Отметить все как прочитанные</string>
@@ -439,6 +442,7 @@
     <string name="reading_file_list">Чтение списка файлов</string>
     <string name="add_entry_shortcut">Добавить ярлык на статью</string>
     <string name="new_entry_shortcut_added">На главном экране создан ярлык на новую статью</string>
+    <string name="menu_reload_with_tables_toggle">Таблицы</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>

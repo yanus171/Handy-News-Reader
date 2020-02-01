@@ -318,7 +318,7 @@
     <string name="deleteOldEntries">Elimina articoli vecchi</string>
     <string name="deleting_ghost_entries">Eliminazione vecchi file</string>
     <string name="AllImages">Tutte le immagini</string>
-    <string name="article_images_downloading">Immagini di ingresso</string>
+    <string name="article_images_downloading">Scaricamento immagini articolo</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Aggiornamento feed</string>
     <string name="deleteImages">Elimina immagini</string>
@@ -332,9 +332,11 @@
     <string name="settings_content_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
     <string name="settings_tap_zones_dialogtitle">solo per le informazioni, le modifiche non sono disponibili</string>
     <string name="downloadNext">"Scarica il prossimo "</string>
+    <string name="downloadAll">", Tutti"</string>
     <string name="loadingLink">Caricamento link</string>
     <string name="loadLink">Leggi ora</string>
     <string name="loadLinkLater">Leggi più tardi</string>
+    <string name="loadLinkLaterStarred">Leggi più tardi nei preferiti</string>
     <string name="addFeed">Aggiungi feed</string>
     <string name="externalLinks">Link esterni</string>
     <string name="markAllAsRead">Segna tutti come letti</string>
@@ -439,6 +441,9 @@
     <string name="reading_file_list">Lettura elenco file</string>
     <string name="add_entry_shortcut">Aggiungi scorciatoia articolo</string>
     <string name="new_entry_shortcut_added">La scorciatoia del nuovo articolo è stata creata nella schermata Home</string>
+    <string name="menu_reload_with_tables_toggle">Con tabelle</string>
+    <string name="menu_display_options">Mostra opzioni</string>
+    <string name="menu_reload">Ricaricando...</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
