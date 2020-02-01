@@ -229,6 +229,7 @@ public class FeedData {
         public static final String SCROLL_POS = "scroll_pos";
         public static final String IS_NEW = "new";
         public static final String IS_WAS_AUTO_UNSTAR = "was_auto_unstar";
+        public static final String IS_WITH_TABLES = "with_tables";
 
 
         private static final String MOB_LENGTH_EXPR( String fieldName ) {
@@ -251,6 +252,7 @@ public class FeedData {
                              EntryColumns.SCROLL_POS,
                              EntryColumns.IS_NEW,
                              EntryColumns.IS_WAS_AUTO_UNSTAR,
+                             EntryColumns.IS_WITH_TABLES,
                              EntryColumns.TITLE,
                              EntryColumns.DATE,
                              String.format( "substr( %s, 1, 10 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
@@ -270,6 +272,7 @@ public class FeedData {
                         EntryColumns.SCROLL_POS,
                         EntryColumns.IS_NEW,
                         EntryColumns.IS_WAS_AUTO_UNSTAR,
+                        EntryColumns.IS_WITH_TABLES,
                         EntryColumns.TITLE,
                         EntryColumns.DATE,
                         EntryColumns.ABSTRACT,
@@ -295,7 +298,7 @@ public class FeedData {
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {FEED_ID, TYPE_EXTERNAL_ID}, {TITLE, TYPE_TEXT},
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
-                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN} };
+                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN} };
 
         public static Uri UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/unread_entries");

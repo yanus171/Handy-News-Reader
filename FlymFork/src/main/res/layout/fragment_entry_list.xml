@@ -28,24 +28,6 @@
         android:layout_gravity="center_horizontal"
         android:indeterminate="true" />
 
-    <TextView
-        android:id="@+id/statusText1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="status"
-        android:visibility="visible"
-        android:layout_gravity="start|top"
-        android:gravity="start|top" />
-    <TextView
-        android:id="@+id/errorText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="error"
-        android:textColor="#FF0000"
-        android:visibility="visible"
-        android:layout_gravity="start|top"
-        android:gravity="start|top" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -69,19 +51,6 @@
             android:dividerHeight="5dp"
             android:footerDividersEnabled="false"/>
 
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/progressBarLoader"
-            android:layout_gravity="top|end"
-            android:padding="10dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/progressbar_background"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/spinner_ring"
-            android:layout_alignParentEnd="true" />
-
         <TextView
             android:id="@+id/progressText"
             android:layout_width="wrap_content"
@@ -96,6 +65,38 @@
             android:background="@drawable/progresstext_background"
             android:text="info"
             tools:ignore="RtlHardcoded" />
+        <TextView
+            android:id="@+id/statusText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="status"
+            android:visibility="visible"
+            android:layout_gravity="start|top"
+            android:gravity="start|top" />
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="error"
+            android:textColor="#FF0000"
+            android:visibility="visible"
+            android:layout_below="@id/statusText1"
+            android:gravity="start|top" />
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progressBarLoader"
+            android:layout_gravity="top|end"
+            android:layout_below="@id/errorText"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/progressbar_background"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/spinner_ring"
+            android:layout_alignParentEnd="true" />
+
 
     </RelativeLayout>
     </LinearLayout>

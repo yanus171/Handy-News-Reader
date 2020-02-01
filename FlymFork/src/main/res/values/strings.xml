@@ -180,7 +180,7 @@
     <string name="menu_reload_full_text_without_mobilizer">Reload without Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: starred entries</string>
     <string name="copied_clipboard">Link copied</string>
-    <string name="get_full_text">Load full articles</string>
+    <string name="get_full_text">Load full article</string>
     <string name="show_text_in_entry_list">Show original text on article list</string>
     <string name="original_text">Show original text</string>
     <string name="see_enclosure">Load the attachment</string>
@@ -345,10 +345,12 @@
     <string name="settings_content_extract_rules">Content extract rules</string>
     <string name="settings_content_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_tap_zones_dialogtitle">only for info, changes unavailable</string>
-    <string name="downloadNext">"Download next "</string>
+    <string name="downloadNext">", Next "</string>
+    <string name="downloadAll">", All"</string>
     <string name="loadingLink">Loading links</string>
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
+    <string name="loadLinkLaterStarred">Read later in favourities</string>
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Read It Later</string>
     <string name="markAllAsRead">Mark all as read</string>
@@ -453,6 +455,9 @@
     <string name="reading_file_list">Reading file list</string>
     <string name="add_entry_shortcut">Add article shortcut</string>
     <string name="new_entry_shortcut_added">New article shortcut has been created on Home Screen</string>
+    <string name="menu_reload_with_tables_toggle">With tables</string>
+    <string name="menu_display_options">Display options</string>
+    <string name="menu_reload">Reload ...</string>
 
 
     <plurals name="number_of_new_entries">

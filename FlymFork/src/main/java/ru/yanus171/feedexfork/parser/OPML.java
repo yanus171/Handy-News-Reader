@@ -264,7 +264,8 @@ public class OPML {
     private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
-            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR };
+            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR,
+            EntryColumns.IS_WITH_TABLES};
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -306,6 +307,7 @@ public class OPML {
 //                }
                 WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
                 WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
+                WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
                 writer.write(TAG_CLOSING);
             }
             writer.write("\t");
@@ -512,6 +514,7 @@ public class OPML {
                     values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
                     values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
                     values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
+                    values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( mFeedId ), values);

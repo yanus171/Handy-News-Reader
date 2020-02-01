@@ -139,6 +139,7 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.SCROLL_POS, 0);
                     values.put(EntryColumns.DATE, (new Date()).getTime());
                     values.put(EntryColumns.ABSTRACT, text);
+                    values.put(EntryColumns.IS_WITH_TABLES, 1);
                     FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
                     SetEntryID(entryUri, url);
@@ -146,7 +147,7 @@ public class EntryActivity extends BaseActivity {
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false);
                 } else
                     SetEntryID( entryUri, url );
             }

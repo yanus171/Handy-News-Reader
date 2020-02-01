@@ -63,15 +63,26 @@ public class ArticleTextExtractor {
      * @param contentIndicator a text which should be included into the extracted content, or null
      * @return extracted article, all HTML tags stripped
      */
-    public static String extractContent(InputStream input, final String url, String contentIndicator, MobilizeType mobilize, boolean isFindBEstElement) throws Exception {
-        return extractContent(Jsoup.parse(input, null, ""), url, contentIndicator, mobilize, isFindBEstElement);
+    public static String extractContent(InputStream input,
+                                        final String url,
+                                        String contentIndicator,
+                                        MobilizeType mobilize,
+                                        boolean isFindBEstElement,
+                                        boolean isWithTables ) throws Exception {
+        return extractContent(Jsoup.parse(input, null, ""),
+                              url,
+                              contentIndicator,
+                              mobilize,
+                              isFindBEstElement,
+                              isWithTables);
     }
 
     public static String extractContent(Document doc,
                                         final String url,
                                         String contentIndicator,
                                         MobilizeType mobilize,
-                                        boolean isFindBestElement) {
+                                        boolean isFindBestElement,
+                                        boolean isWithTables) {
         if (doc == null)
             throw new NullPointerException("missing document");
 
@@ -133,7 +144,7 @@ public class ArticleTextExtractor {
             }
         }
 
-        if ( mobilize != MobilizeType.No ) {
+        if ( !isWithTables ) {
             ret = ret.replaceAll("<table(.)*?>", "<p>");
             ret = ret.replaceAll("</table>", "</p>");
 
@@ -164,12 +175,11 @@ public class ArticleTextExtractor {
 
     public static Element FindBestElement(Document doc, String url, String contentIndicator, boolean isFindBestElement) {
 
-        Element bestMatchElement = doc;
         // init elements
         Collection<Element> nodes = getNodes(doc);
         int maxWeight = 0;
 
-        bestMatchElement = getBestElementFromFile(doc, url);
+        Element bestMatchElement = getBestElementFromFile(doc, url);
         if (bestMatchElement == null && isFindBestElement) {
             for (Element entry : nodes) {
                 int currentWeight = getWeight(entry, contentIndicator);

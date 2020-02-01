@@ -139,7 +139,7 @@ public class FetcherService extends IntentService {
     public static final String ACTION_REFRESH_FEEDS = FeedData.PACKAGE_NAME + ".REFRESH";
     public static final String ACTION_MOBILIZE_FEEDS = FeedData.PACKAGE_NAME + ".MOBILIZE_FEEDS";
     private static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
-    //public static final String ACTION_DOWNLOAD_IMAGES = FeedData.PACKAGE_NAME + ".DOWNLOAD_IMAGES";
+    public static final String EXTRA_STAR = "STAR";
 
     private static final int THREAD_NUMBER = 3;
     private static final int MAX_TASK_ATTEMPT = 3;
@@ -315,7 +315,9 @@ public class FetcherService extends IntentService {
                             intent.getStringExtra(Constants.TITLE_TO_LOAD),
                             FetcherService.ForceReload.No,
                             true,
-                            true);
+                            true,
+                             intent.getBooleanExtra( EXTRA_STAR, false ));
+
                     downloadAllImages();
                 }
             } );
@@ -680,7 +682,12 @@ public class FetcherService extends IntentService {
                             title = titleEls.first().text();
                     }
 
-                    mobilizedHtml = ArticleTextExtractor.extractContent(doc, link, contentIndicator, mobilize, !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ) );
+                    mobilizedHtml = ArticleTextExtractor.extractContent(doc,
+                                                                        link,
+                                                                        contentIndicator,
+                                                                        mobilize,
+                                                                        !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ),
+                                                                        entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES) ) == 1);
 
                     Status().ChangeProgress("");
 
@@ -690,13 +697,14 @@ public class FetcherService extends IntentService {
                         if ( title != null )
                             values.put(EntryColumns.TITLE, title);
 
-                        ArrayList<String> imgUrlsToDownload = null;
+                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
-                            imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
+                            //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
+                            HtmlUtils.replaceImageURLs( mobilizedHtml, -1, link, true, imgUrlsToDownload );
                         }
 
                         String mainImgUrl;
-                        if (imgUrlsToDownload != null) {
+                        if (!imgUrlsToDownload.isEmpty() ) {
                             mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
                         } else {
                             mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
@@ -751,11 +759,12 @@ public class FetcherService extends IntentService {
     public static Intent GetIntent( String extra ) {
         return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
     }
-    public static void StartServiceOpenExternalLink( final String url, final String title) {
+    public static void StartServiceLoadExternalLink(String url, String title, boolean star) {
         FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
-                .putExtra(Constants.TITLE_TO_LOAD, url) );
+                .putExtra(Constants.TITLE_TO_LOAD, title)
+                .putExtra( EXTRA_STAR, star ));
     }
 
     public enum ForceReload {Yes, No}
@@ -791,7 +800,8 @@ public class FetcherService extends IntentService {
                                              final String title,
                                              final ForceReload forceReload,
                                              final boolean isCorrectTitle,
-                                             final boolean isShowError ) {
+                                             final boolean isShowError,
+                                             final boolean isStarred) {
         boolean load;
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
         int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
@@ -814,6 +824,9 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
                 values.put(EntryColumns.LINK, url);
+                values.put(EntryColumns.IS_WITH_TABLES, 1);
+                if ( isStarred )
+                    values.put(EntryColumns.IS_FAVORITE, 1);
 
                 //values.put(EntryColumns.MOBILIZED_HTML, enclosureString);
                 //values.put(EntryColumns.ENCLOSURE, enclosureString);
@@ -929,7 +942,7 @@ public class FetcherService extends IntentService {
                 try {
                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                 } catch (Exception e) {
-                    obs.SetError( "", "", String.valueOf(entryId), e );
+                    obs.SetError( entryLink, "", String.valueOf(entryId), e );
                 } finally {
                     obs.End(status1);
                 }

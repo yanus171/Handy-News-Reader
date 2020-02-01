@@ -37,7 +37,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -90,7 +89,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
-import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -134,7 +132,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -142,7 +140,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private long mInitialEntryId = -1;
     private Entry[] mEntriesIds = new Entry[1];
 
-    private boolean mFavorite, mIsFullTextShown = true;
+    private boolean mFavorite, mIsWithTables, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
@@ -509,20 +507,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.entry, menu);
 
-        //int color = ContextCompat.getColor(getContext(), R.color.common_google_signin_btn_text_dark);
-        //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_favorite));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_unfavorite));
-        updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
-        updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_without_mobilizer));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_with_tags));
-        updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
-        updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
-        updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
+        //updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
+        updateMenuWithIcon(menu.findItem(R.id.menu_share_group));
         updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
         updateMenuWithIcon(menu.findItem(R.id.menu_setting));
         updateMenuWithIcon(menu.findItem(R.id.menu_add_feed));
         updateMenuWithIcon(menu.findItem(R.id.menu_close));
+        updateMenuWithIcon(menu.findItem(R.id.menu_reload));
+        updateMenuWithIcon(menu.findItem(R.id.menu_display_options));
 
         //EntryActivity activity = (EntryActivity) getActivity();
         menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
@@ -535,16 +531,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 item.setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
             updateMenuWithIcon(item);
         }
-        //menu.findItem(R.id.menu_mark_as_favorite).setVisible( !mFavorite );
-        //menu.findItem(R.id.menu_mark_as_unfavorite).setVisible(mFavorite);
-
-
-
-//        if (mFavorite)
-//            menu.findItem(R.id.menu_mark_as_favorite ).setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
-//        else
-//            menu.findItem(R.id.menu_mark_as_unfavorite).setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -555,6 +541,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
@@ -637,7 +624,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_load_all_images: {
                     FetcherService.mMaxImageDownloadCount = 0;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    GetSelectedEntryView().UpdateImages( true );
                     break;
                 }
                 case R.id.menu_go_back: {
@@ -686,6 +673,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_reload_full_text_without_mobilizer: {
 
                     int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
+                    } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+
+                case R.id.menu_reload_with_tables_toggle: {
+                    int status = FetcherService.Status().Start("Reload with|out tables", true); try {
+                        SetIsWithTables( !mIsWithTables );
+                        item.setChecked( mIsWithTables );
                         LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
                     } finally { FetcherService.Status().End( status ); }
                     break;
@@ -785,6 +781,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         } finally { FetcherService.Status().End( status ); }
     }
 
+    private void SetIsWithTables(final boolean withTables) {
+        if ( mIsWithTables == withTables )
+            return;
+        mIsWithTables = withTables;
+        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+        ContentValues values = new ContentValues();
+        values.put(EntryColumns.IS_WITH_TABLES, mIsWithTables? 1 : 0);
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        cr.update(uri, values, null, null);
+        getActivity().invalidateOptionsMenu();
+    }
     private void SetIsFavourite(final boolean favorite) {
         if ( mFavorite == favorite )
             return;
@@ -908,6 +915,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 				activity.setTitle("");//activity.setTitle(feedTitle);
 
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
+                mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
                 //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
 
 
@@ -1250,7 +1258,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 int status = FetcherService.Status().Start( getString(R.string.downloadImage), true ); try {
                     NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
                 } catch (IOException e) {
-                    //FetcherService.Status().End( status );
                     e.printStackTrace();
                 } finally {
                     FetcherService.Status().End( status );
@@ -1258,7 +1265,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             }
         }).start();
-        //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
     }
 
     @Override
@@ -1266,13 +1272,24 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+            FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
+            GetSelectedEntryView().UpdateImages( true );
             }
         });
 
     }
 
+    @Override
+    public void downloadAllImages() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                FetcherService.mMaxImageDownloadCount = 0;
+                GetSelectedEntryView().UpdateImages( true );
+            }
+        });
+
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -1298,6 +1315,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mMobilizedHtmlPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
                         mLinkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
+                        mIsWithTablePos= cursor.getColumnIndex(EntryColumns.IS_WITH_TABLES);
                         mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
                         mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
                         mIsWasAutoUnStarPos = cursor.getColumnIndex(EntryColumns.IS_WAS_AUTO_UNSTAR);

@@ -146,7 +146,7 @@ public class UiUtils {
         if ( mHandler == null )
             mHandler  = new Handler(Looper.getMainLooper());
         synchronized ( mHandler ) {
-            mHandler.postAtFrontOfQueue( r );
+            mHandler.post( r );
         }
 
     }
