@@ -333,9 +333,11 @@
     <string name="settings_content_extract_rules_description">Ezarri gune bakoitzeko (HTML jakin behar da)</string>
     <string name="settings_tap_zones_dialogtitle">informaziorako bakarrik, aldaketak ez eskuragarri</string>
     <string name="downloadNext">"Deskargatu hurrengoa "</string>
+    <string name="downloadAll">", Denak"</string>
     <string name="loadingLink">Estekek kargatzen</string>
     <string name="loadLink">Irakurri orain</string>
     <string name="loadLinkLater">Irakurri geroago</string>
+    <string name="loadLinkLaterStarred">Irakurri gero gogokoetan</string>
     <string name="addFeed">Gehitu jario bat</string>
     <string name="externalLinks">Irakurri geroago</string>
     <string name="markAllAsRead">Markatu denak irakurrita bezala</string>
@@ -440,6 +442,9 @@
     <string name="reading_file_list">Fitxategi zerrenda irakurtzen</string>
     <string name="add_entry_shortcut">Gehitu artikulu lasterbidea</string>
     <string name="new_entry_shortcut_added">Artikulu lasterbide berri bat gehitu da hasiera pantailara</string>
+    <string name="menu_reload_with_tables_toggle">Taulekin</string>
+    <string name="menu_display_options">Bistaratze aukerak</string>
+    <string name="menu_reload">Birkargatu ...</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>
