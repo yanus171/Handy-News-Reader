@@ -334,9 +334,11 @@
     <string name="settings_content_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
     <string name="settings_tap_zones_dialogtitle">uniquement pour les informations, les modifications ne sont pas disponibles</string>
     <string name="downloadNext">"Télécharger le suivant "</string>
+    <string name="downloadAll">", Tous"</string>
     <string name="loadingLink">Chargement des liens</string>
     <string name="loadLink">Lire maintenant</string>
     <string name="loadLinkLater">Lire plus tard</string>
+    <string name="loadLinkLaterStarred">Lire plus tard dans les favoris</string>
     <string name="addFeed">Ajouter un flux</string>
     <string name="externalLinks">A lire plus tard</string>
     <string name="markAllAsRead">Marquer tout comme lu</string>
@@ -441,6 +443,9 @@
     <string name="reading_file_list">Lecture de la liste des fichiers</string>
     <string name="add_entry_shortcut">Ajouter un raccourci d\'article</string>
     <string name="new_entry_shortcut_added">Le nouveau raccourci d\'article a été créé sur l\'écran d\'accueil</string>
+    <string name="menu_reload_with_tables_toggle">Avec tables</string>
+    <string name="menu_display_options">Options d\'affichage</string>
+    <string name="menu_reload">Rechargement...</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
