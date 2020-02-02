@@ -105,6 +105,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.parser.HTMLParser;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.parser.RssAtomParser;
@@ -128,6 +129,7 @@ import ru.yanus171.feedexfork.view.StorageItem;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
@@ -295,6 +297,9 @@ public class FetcherService extends IntentService {
                     }
                 }
             });
+            return;
+        } else if (intent.hasExtra( Constants.FROM_IMPORT )) {
+            EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
             return;
         }
 
@@ -1513,6 +1518,5 @@ public class FetcherService extends IntentService {
         return new Intent(MainApplication.getContext(), FetcherService.class)
                 .setAction( FetcherService.ACTION_REFRESH_FEEDS );
     }
-
 
 }

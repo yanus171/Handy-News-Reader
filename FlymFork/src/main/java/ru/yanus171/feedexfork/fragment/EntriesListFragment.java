@@ -113,7 +113,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private Menu mMenu = null;
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
-    private final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
+    private final ArrayList<String> mWasVisibleList = new ArrayList<>();
 
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -325,9 +325,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 if ( mEntriesCursorAdapter == null )
                     return;
                 for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
-                    Uri uri = GetUri( i );
-                    if( !mWasVisibleList.contains( uri ) )
-                        mWasVisibleList.add( uri );
+                    String uri = GetUri( i ).toString();
+                    synchronized ( mWasVisibleList ) {
+                        if (!mWasVisibleList.contains(uri))
+                            mWasVisibleList.add(uri);
+                    }
                 }
                 SetIsRead( firstVisibleItem - 2);
                 if ( !mShowTextInEntryList && firstVisibleItem > 0 ) {
@@ -382,26 +384,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         mNeedSetSelection = true;
     }
 
-    private void SetVisibleItemsAsOld() {
-        if ( mEntriesCursorAdapter != null ) {
-            final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
-            for (Uri uri : mWasVisibleList)
-                updates.add(
-                        ContentProviderOperation.newUpdate(uri)
-                                .withValues(FeedData.getOldContentValues())
-                                .withSelection(EntryColumns.WHERE_NEW, null)
-                                .build());
-            mWasVisibleList.clear();
-            if (!updates.isEmpty()) {
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                try {
-                    cr.applyBatch(FeedData.AUTHORITY, updates);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+
 
 
     private void SetIsRead(final int pos) {
@@ -465,7 +448,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
             mJustMarkedAsReadEntries.close();
         }
-        SetVisibleItemsAsOld();
+
+        synchronized ( mWasVisibleList ) {
+            FetcherService.StartService(FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
+                                            .putStringArrayListExtra(Constants.URL_LIST, mWasVisibleList));
+            mWasVisibleList.clear();
+        }
         mFab = null;
 
         super.onStop();
@@ -783,7 +771,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
-        SetVisibleItemsAsOld();
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized ( mWasVisibleList ) {
+                    SetVisibleItemsAsOld(mWasVisibleList);
+                    mWasVisibleList.clear();
+                }
+            }
+        }.start();
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
         SetListViewAdapter();
         //if ( mListView instanceof ListView )
@@ -820,5 +816,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             mRefreshListBtn.setVisibility(View.GONE);
         }
     }*/
+    public static void SetVisibleItemsAsOld(ArrayList<String> uriList) {
+        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
+        for (String uri : uriList)
+            updates.add(
+                ContentProviderOperation.newUpdate(Uri.parse( uri) )
+                    .withValues(FeedData.getOldContentValues())
+                    .withSelection(EntryColumns.WHERE_NEW, null)
+                    .build());
+        if (!updates.isEmpty()) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try {
+                cr.applyBatch(FeedData.AUTHORITY, updates);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 }

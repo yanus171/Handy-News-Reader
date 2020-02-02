@@ -74,6 +74,8 @@ public final class Constants {
     public static final String FROM_AUTO_REFRESH = "from_auto_refresh";
     public static final String FROM_AUTO_BACKUP = "from_auto_backup";
     public static final String FROM_IMPORT = "from_import";
+    public static final String SET_VISIBLE_ITEMS_AS_OLD = "set_visible_items_as_old";
+    public static final String URL_LIST = "url_list";
     //public static final String OPEN_ACTIVITY = "open_activity";
     public static final String URL_TO_LOAD = "url_to_load";
     public static final String TITLE_TO_LOAD = "title_to_load";

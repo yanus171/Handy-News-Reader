@@ -55,6 +55,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -68,7 +69,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -76,6 +76,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -85,15 +86,15 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -103,7 +104,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment;
@@ -120,11 +120,19 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.IS_READ_STUMB;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_DESC;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_ICON;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_TITLE;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_URL;
+
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_WEB_SEARCH = "EXTRA_WEB_SEARCH";
-    static final String FEED_SEARCH_TITLE = "title";
-    static final String FEED_SEARCH_URL = "feedId";//"website";//"url";
-    static final String FEED_SEARCH_DESC = "description";//"contentSnippet";
+    static final String ITEM_TITLE = "title";
+    static final String ITEM_URL = "feedId";
+    static final String ITEM_DESC = "description";
+    static final String ITEM_ISREAD = "read";
+    static final String ITEM_ICON = "icon";
     private static final String STATE_CURRENT_TAB = "STATE_CURRENT_TAB";
     private static final String STATE_FEED_EDIT_LOAD_TYPE_ID = "STATE_FEED_EDIT_LOAD_TYPE_ID";
     public static final String DUCKDUCKGO_SEARCH_URL = "http://duckduckgo.com/html/?q=";
@@ -132,6 +140,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         new String[]{FeedColumns.NAME, FeedColumns.URL, FeedColumns.RETRIEVE_FULLTEXT, FeedColumns.IS_GROUP, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, FeedColumns.IS_AUTO_REFRESH, FeedColumns.GROUP_ID, FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS  };
     public static final String STATE_WEB_SEARCH_TEXT = "WEB_SEARCH_TEXT";
     public static final String DIALOG_IS_SHOWN = "EDIT_FEED_USER_SELECTION_DIALOG_IS_SHOWN";
+    static final String IS_READ_STUMB = "[IS_READ]";
     private String[] mKeepTimeValues;
 
 
@@ -372,6 +381,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mGroupSpinner.setAdapter( adapter );
 
         mIsAutoImageLoadCb.setVisibility( PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true) ? View.VISIBLE : View.GONE );
+        PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
 
         if (IsAdd()) {
             setTitle(R.string.new_feed_title);
@@ -387,11 +397,10 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             mKeepTimeCB.setChecked( false );
             UpdateSpinnerKeepTime();
 
-        } else if ( intent.getAction().equals(Intent.ACTION_VIEW) ) {
-            setTitle(R.string.new_feed_title);
-
-            tabWidget.setVisibility(View.GONE);
-            mUrlEditText.setText(intent.getDataString());
+//        } else if ( intent.getAction().equals(Intent.ACTION_SEARCH) ) {
+//            setTitle(R.string.new_feed_title);
+//            tabWidget.setVisibility(View.GONE);
+//            mUrlEditText.setText(intent.getDataString());
         } else if (intent.getAction().equals(Intent.ACTION_EDIT)) {
             setTitle(R.string.edit_feed_title);
 
@@ -528,7 +537,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         findViewById( R.id.name_textview ).setVisibility( visibility );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
         if ( !IsAdd() && isWebPageSearch )
-            mLoadTypeRG.check( R.id.rbRss );
+            mLoadTypeRG.check( R.id.rbWebPageSearch );
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
@@ -749,11 +758,41 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         builder.setCustomTitle( textView );
                     }
                     // create the grid item mapping
-                    String[] from = new String[]{FEED_SEARCH_TITLE, FEED_SEARCH_DESC, FEED_SEARCH_URL};
-                    int[] to = new int[]{android.R.id.text1, android.R.id.text2, R.id.textUrl};
+                    String[] from = new String[]{ITEM_TITLE, ITEM_DESC, ITEM_URL, ITEM_ICON};
+                    int[] to = new int[]{R.id.search_item_title, R.id.search_item_descr, R.id.search_item_url, R.id.search_item_icon};
 
                     // fill in the grid_item layout
                     SimpleAdapter adapter = new SimpleAdapter(EditFeedActivity.this, data, R.layout.item_search_result, from, to);
+
+                    adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+                        @Override
+                        public boolean setViewValue(View view, Object data, String s) {
+                            String value = (String) data;
+                            if ( view.getId() == R.id.search_item_icon ) {
+                                if (value != null) {
+                                    Glide.with(EditFeedActivity.this ).load(value).centerCrop().into((ImageView) view);
+                                } else {
+                                    Glide.with(EditFeedActivity.this ).clear(view);
+                                    (( ImageView)view ).setImageResource( R.drawable.cup_empty );
+                                }
+                                return true;
+                            } else if ( view.getId() == R.id.search_item_title ) {
+                                String text = value;
+                                TextView textView = ( ( TextView )view );
+                                if ( text.startsWith( IS_READ_STUMB ) )
+                                    //textView.setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.secondary_text_dark ) );
+                                    textView.setTextColor(Color.DKGRAY );
+                                else
+                                    textView.setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.primary_text_dark) );
+                                if ( text.startsWith( IS_READ_STUMB ) )
+                                    text = text.replace( IS_READ_STUMB, "" );
+                                textView.setText( text );
+                                return true;
+                            } else
+                                return false;
+                        }
+                    });
+
                     builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -788,13 +827,13 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             private void AddFeed(HashMap<String, String> dataItem) {
                 if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
                     Intent intent = new Intent(EditFeedActivity.this, EntryActivity.class );
-                    EditFeedActivity.this.startActivity(intent.setData( Uri.parse(dataItem.get(FEED_SEARCH_URL)) ));
+                    EditFeedActivity.this.startActivity(intent.setData( Uri.parse(dataItem.get(ITEM_URL)) ));
                     return;
                 }
                 Pair<Uri, Boolean> result =
                     FeedDataContentProvider.addFeed(EditFeedActivity.this,
-                        dataItem.get(FEED_SEARCH_URL),
-                        name.isEmpty() ? dataItem.get(FEED_SEARCH_TITLE) : name,
+                        dataItem.get(ITEM_URL),
+                        name.isEmpty() ? dataItem.get(ITEM_TITLE) : name,
                         mHasGroupCb.isChecked() ? mGroupSpinner.getSelectedItemId() : null,
                         mRetrieveFulltextCb.isChecked(),
                         mShowTextInEntryListCb.isChecked(),
@@ -872,13 +911,13 @@ class GetFeedSearchResultsLoader extends BaseLoader<ArrayList<HashMap<String, St
                 for (int i = 0; i < entries.length(); i++) {
                     try {
                         JSONObject entry = (JSONObject) entries.get(i);
-                        String url = entry.get(EditFeedActivity.FEED_SEARCH_URL).toString().replaceFirst( "feed/http", "http"  );
+                        String url = entry.get(ITEM_URL).toString().replaceFirst("feed/http", "http"  );
                         if (!url.isEmpty()) {
                             HashMap<String, String> map = new HashMap<>();
-                            map.put(EditFeedActivity.FEED_SEARCH_TITLE, Html.fromHtml(entry.get(EditFeedActivity.FEED_SEARCH_TITLE).toString())
+                            map.put(ITEM_TITLE, Html.fromHtml(entry.get(ITEM_TITLE).toString())
                                     .toString());
-                            map.put(EditFeedActivity.FEED_SEARCH_URL, url);
-                            map.put(EditFeedActivity.FEED_SEARCH_DESC, Html.fromHtml(entry.get(EditFeedActivity.FEED_SEARCH_DESC).toString()).toString());
+                            map.put(ITEM_URL, url);
+                            map.put(ITEM_DESC, Html.fromHtml(entry.get(ITEM_DESC).toString()).toString());
 
                             results.add(map);
                         }
@@ -946,16 +985,16 @@ class GetSiteAlternateListLoader extends BaseLoader<ArrayList<HashMap<String, St
                         final Matcher titleMatcher = TITLE_PATTERN.matcher( line );
                         final String title = titleMatcher.find() ?  titleMatcher.group( 1 ) : url;
                         HashMap<String, String> map = new HashMap<>();
-                        map.put(EditFeedActivity.FEED_SEARCH_TITLE, title);
-                        map.put(EditFeedActivity.FEED_SEARCH_DESC, url);
-                        map.put(EditFeedActivity.FEED_SEARCH_URL, url);
+                        map.put(ITEM_TITLE, title);
+                        map.put(ITEM_DESC, url);
+                        map.put(ITEM_URL, url);
                         results.add(map);
                     }
                 }
                 if ( results.isEmpty() ) {
                     HashMap<String, String> map = new HashMap<>();
-                    map.put(EditFeedActivity.FEED_SEARCH_TITLE, "");
-                    map.put(EditFeedActivity.FEED_SEARCH_URL, mUrl);
+                    map.put(ITEM_TITLE, "");
+                    map.put(ITEM_URL, mUrl);
                     results.add(map);
                 }
                 return results;
@@ -1001,10 +1040,14 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                         String url = el.getElementsByClass( "result__title" ).first().getElementsByTag( "a" ).first().attr( "href" );
                         url = URLDecoder.decode( url.substring( url.indexOf( "http" ) ) );
                         final String descr = el.getElementsByClass( "result__snippet" ).text();
+                        String icon = el.getElementsByClass( "result__icon__img" ).first().attr( "src" );
+                        if ( !icon.startsWith( "https:" ) )
+                            icon = "https:" + icon;
                         HashMap<String, String> map = new HashMap<>();
-                        map.put(EditFeedActivity.FEED_SEARCH_TITLE, title);
-                        map.put(EditFeedActivity.FEED_SEARCH_URL, url);
-                        map.put(EditFeedActivity.FEED_SEARCH_DESC, descr);
+                        map.put(ITEM_TITLE, ( FetcherService.GetEnryUri(url ) != null ? IS_READ_STUMB : "" ) + title );
+                        map.put(ITEM_URL, url);
+                        map.put(ITEM_DESC, descr);
+                        map.put(ITEM_ICON, icon);
                         results.add(map);
                     } catch (Exception e) {
                         e.printStackTrace();
