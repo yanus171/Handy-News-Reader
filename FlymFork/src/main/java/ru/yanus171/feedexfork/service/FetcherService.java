@@ -298,8 +298,10 @@ public class FetcherService extends IntentService {
                 }
             });
             return;
-        } else if (intent.hasExtra( Constants.FROM_IMPORT )) {
+        } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", ""));
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
+            stopForeground(true);
             return;
         }
 
@@ -519,6 +521,9 @@ public class FetcherService extends IntentService {
         ConnectivityManager cm = (ConnectivityManager) MainApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI );
+    }
+    public static boolean isNotCancelRefresh() {
+        return !isCancelRefresh();
     }
     public static boolean isCancelRefresh() {
         synchronized (mCancelRefresh) {

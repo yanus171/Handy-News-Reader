@@ -330,7 +330,12 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
         });
         mLoadTypeRG = findViewById(R.id.rgLoadType);
-        mLoadTypeRG.check( PrefUtils.getInt( STATE_FEED_EDIT_LOAD_TYPE_ID, R.id.rbRss ) );
+        if ( intent.getAction().equals(Intent.ACTION_WEB_SEARCH) )
+            mLoadTypeRG.check( R.id.rbWebPageSearch );
+        else
+            mLoadTypeRG.check( PrefUtils.getInt( STATE_FEED_EDIT_LOAD_TYPE_ID, R.id.rbRss ) );
+        if ( mLoadTypeRG.getId() == R.id.rbWebPageSearch )
+            setTitle(R.string.new_feed_title);
         View tabWidget = findViewById(android.R.id.tabs);
 
 
@@ -397,10 +402,6 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             mKeepTimeCB.setChecked( false );
             UpdateSpinnerKeepTime();
 
-//        } else if ( intent.getAction().equals(Intent.ACTION_SEARCH) ) {
-//            setTitle(R.string.new_feed_title);
-//            tabWidget.setVisibility(View.GONE);
-//            mUrlEditText.setText(intent.getDataString());
         } else if (intent.getAction().equals(Intent.ACTION_EDIT)) {
             setTitle(R.string.edit_feed_title);
 
@@ -542,7 +543,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     }
 
     private boolean IsAdd() {
-        return getIntent().getAction().equals(Intent.ACTION_INSERT) || getIntent().getAction().equals(Intent.ACTION_SEND);
+        return getIntent().getAction().equals(Intent.ACTION_INSERT) ||
+            getIntent().getAction().equals(Intent.ACTION_SEND) ||
+            getIntent().getAction().equals(Intent.ACTION_WEB_SEARCH );
     }
 
     private void UpdateSpinnerGroup() {
@@ -768,25 +771,28 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         @Override
                         public boolean setViewValue(View view, Object data, String s) {
                             String value = (String) data;
-                            if ( view.getId() == R.id.search_item_icon ) {
+                            if ( view instanceof TextView && value.startsWith(IS_READ_STUMB) ) {
+                                String text = value;
+                                ( ( TextView )view ).setTextColor(Color.DKGRAY);
+                                text = text.replace( IS_READ_STUMB, "" );
+                                ( ( TextView )view ).setText( text );
+                                return true;
+                            } else if ( view.getId() == R.id.search_item_title ) {
+                                ( ( TextView )view ).setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.primary_text_dark ) );
+                                return false;
+                            } else if ( view.getId() == R.id.search_item_descr ) {
+                                ( ( TextView )view ).setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.secondary_text_dark ) );
+                                return false;
+                            } else if ( view.getId() == R.id.search_item_url ) {
+                                ( ( TextView )view ).setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.tertiary_text_dark ) );
+                                return false;
+                            } else if ( view.getId() == R.id.search_item_icon ) {
                                 if (value != null) {
                                     Glide.with(EditFeedActivity.this ).load(value).centerCrop().into((ImageView) view);
                                 } else {
                                     Glide.with(EditFeedActivity.this ).clear(view);
                                     (( ImageView)view ).setImageResource( R.drawable.cup_empty );
                                 }
-                                return true;
-                            } else if ( view.getId() == R.id.search_item_title ) {
-                                String text = value;
-                                TextView textView = ( ( TextView )view );
-                                if ( text.startsWith( IS_READ_STUMB ) )
-                                    //textView.setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.secondary_text_dark ) );
-                                    textView.setTextColor(Color.DKGRAY );
-                                else
-                                    textView.setTextColor( EditFeedActivity.this.getResources().getColor( android.R.color.primary_text_dark) );
-                                if ( text.startsWith( IS_READ_STUMB ) )
-                                    text = text.replace( IS_READ_STUMB, "" );
-                                textView.setText( text );
                                 return true;
                             } else
                                 return false;
@@ -1044,9 +1050,10 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                         if ( !icon.startsWith( "https:" ) )
                             icon = "https:" + icon;
                         HashMap<String, String> map = new HashMap<>();
-                        map.put(ITEM_TITLE, ( FetcherService.GetEnryUri(url ) != null ? IS_READ_STUMB : "" ) + title );
-                        map.put(ITEM_URL, url);
-                        map.put(ITEM_DESC, descr);
+                        final String read = ( FetcherService.GetEnryUri(url ) != null ? IS_READ_STUMB : "" );
+                        map.put(ITEM_TITLE, read + title );
+                        map.put(ITEM_URL, read + url);
+                        map.put(ITEM_DESC, read + descr);
                         map.put(ITEM_ICON, icon);
                         results.add(map);
                     } catch (Exception e) {

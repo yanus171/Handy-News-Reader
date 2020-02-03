@@ -5,7 +5,7 @@
         android:shortcutShortLabel="@string/menu_add_feed"
         android:icon="@drawable/add_feed"
         tools:targetApi="n_mr1">
-        <intent android:action="android.intent.action.INSERT"
+        <intent android:action="android.intent.action.WEB_SEARCH"
             android:targetPackage="ru.yanus171.feedexfork"
             android:targetClass="ru.yanus171.feedexfork.activity.EditFeedActivity"/>
     </shortcut>
