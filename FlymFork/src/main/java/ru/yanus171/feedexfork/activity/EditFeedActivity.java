@@ -330,12 +330,6 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
         });
         mLoadTypeRG = findViewById(R.id.rgLoadType);
-        if ( intent.getAction().equals(Intent.ACTION_WEB_SEARCH) )
-            mLoadTypeRG.check( R.id.rbWebPageSearch );
-        else
-            mLoadTypeRG.check( PrefUtils.getInt( STATE_FEED_EDIT_LOAD_TYPE_ID, R.id.rbRss ) );
-        if ( mLoadTypeRG.getId() == R.id.rbWebPageSearch )
-            setTitle(R.string.new_feed_title);
         View tabWidget = findViewById(android.R.id.tabs);
 
 
@@ -388,22 +382,28 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mIsAutoImageLoadCb.setVisibility( PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true) ? View.VISIBLE : View.GONE );
         PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
 
-        if (IsAdd()) {
-            setTitle(R.string.new_feed_title);
+        setTitle( R.string.new_feed_title );
+        tabWidget.setVisibility(View.GONE);
 
-            tabWidget.setVisibility(View.GONE);
-
+        if ( intent.getAction().equals(Intent.ACTION_INSERT) ||
+             intent.getAction().equals(Intent.ACTION_SEND) ) {
             if (intent.hasExtra(Intent.EXTRA_TEXT))
                 mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
             mHasGroupCb.setChecked(false);
             mIsAutoImageLoadCb.setChecked( true );
-
-            UpdateSpinnerGroup();
             mKeepTimeCB.setChecked( false );
-            UpdateSpinnerKeepTime();
+
+        } else if ( intent.getAction().equals(Intent.ACTION_VIEW) ) {
+            tabWidget.setVisibility(View.GONE);
+            mUrlEditText.setText(intent.getDataString());
+            mLoadTypeRG.check( R.id.rbRss );
+
+        } else if (intent.getAction().equals(Intent.ACTION_WEB_SEARCH)) {
+            mLoadTypeRG.check( R.id.rbWebPageSearch );
 
         } else if (intent.getAction().equals(Intent.ACTION_EDIT)) {
             setTitle(R.string.edit_feed_title);
+            tabWidget.setVisibility(View.VISIBLE);
 
             mFiltersCursorAdapter = new FiltersCursorAdapter(this, Constants.EMPTY_CURSOR);
             mFiltersListView.setAdapter(mFiltersCursorAdapter);
@@ -427,14 +427,10 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 }
             });
 
-
             getLoaderManager().initLoader(0, null, this);
-
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
             if (savedInstanceState == null) {
                 Cursor cursor = getContentResolver().query(intent.getData(), FEED_PROJECTION, null, null, null);
-
                 if (cursor != null && cursor.moveToNext()) {
                     mNameEditText.setText(cursor.getString(0));
                     mUrlEditText.setText(cursor.getString(1));
@@ -537,14 +533,15 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mNameEditText.setVisibility( visibility );
         findViewById( R.id.name_textview ).setVisibility( visibility );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
-        if ( !IsAdd() && isWebPageSearch )
-            mLoadTypeRG.check( R.id.rbWebPageSearch );
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        UpdateSpinnerGroup();
+        UpdateSpinnerKeepTime();
     }
 
     private boolean IsAdd() {
         return getIntent().getAction().equals(Intent.ACTION_INSERT) ||
             getIntent().getAction().equals(Intent.ACTION_SEND) ||
+            getIntent().getAction().equals(Intent.ACTION_VIEW) ||
             getIntent().getAction().equals(Intent.ACTION_WEB_SEARCH );
     }
 
