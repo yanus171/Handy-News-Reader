@@ -522,12 +522,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                synchronized (EntryView.this) {
+                //synchronized (EntryView.this) {
                     //if ( progress == 100 )
                     //    EndStatus();
                     //else if (mStatus != 0 )
                     //    FetcherService.Status().Change(mStatus, getContext().getString(R.string.web_page_loading) + " " + progress + " %");
-                }
+                //}
             }
 
 
