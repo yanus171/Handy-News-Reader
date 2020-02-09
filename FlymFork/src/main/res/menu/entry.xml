@@ -23,6 +23,10 @@
         android:id="@+id/menu_go_back"
         android:title="@string/menu_go_back" />
     <item
+        android:id="@+id/menu_menu_by_tap_enabled"
+        android:checkable="true"
+        android:title="@string/menu_by_tap_enabled" />
+    <item
         android:id="@+id/menu_share_group"
         android:icon="@android:drawable/ic_menu_send"
         android:title="@string/menu_share">

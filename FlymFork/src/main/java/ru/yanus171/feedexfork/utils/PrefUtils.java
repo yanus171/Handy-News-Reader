@@ -117,6 +117,11 @@ public class PrefUtils {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
     }
 
+    public static final String PREF_MENU_SHOW_BY_TAP = "article_menu_show_by_tap";
+    public static Boolean isMenuByTap() {
+        return PrefUtils.getBoolean( PREF_MENU_SHOW_BY_TAP, true );
+    }
+
     public static int getFontSizeFooterClock() {
         return Integer.parseInt(PrefUtils.getString("article_text_footer_show_clock_fontsize", "0"));
     }

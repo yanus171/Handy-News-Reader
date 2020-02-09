@@ -458,6 +458,7 @@
     <string name="menu_reload_with_tables_toggle">With tables</string>
     <string name="menu_display_options">Display options</string>
     <string name="menu_reload">Reload ...</string>
+    <string name="menu_by_tap_enabled">Menu by tap</string>
 
 
     <plurals name="number_of_new_entries">

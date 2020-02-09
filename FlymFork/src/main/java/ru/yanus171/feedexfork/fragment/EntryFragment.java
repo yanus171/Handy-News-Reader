@@ -117,6 +117,7 @@ import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_MENU_SHOW_BY_TAP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
@@ -544,6 +545,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
+        menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(PrefUtils.isMenuByTap());
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
@@ -719,6 +721,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_show_progress_info: {
                     PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO ) ;
                     item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
+                    break;
+                }
+                case R.id.menu_menu_by_tap_enabled: {
+                    PrefUtils.toggleBoolean(PREF_MENU_SHOW_BY_TAP) ;
+                    item.setChecked( PrefUtils.isMenuByTap() );
                     break;
                 }
 
