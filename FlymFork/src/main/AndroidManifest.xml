@@ -160,6 +160,7 @@
         <activity
             android:name=".activity.EditFeedActivity"
             android:theme="@style/Theme.Dark"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />

@@ -944,10 +944,12 @@ public class FetcherService extends IntentService {
 
     public static void downloadEntryImages( long entryId, String entryLink, ArrayList<String> imageList ) {
         StatusText.FetcherObservable obs = Status();
-        int status = obs.Start(MainApplication.getContext().getString(R.string.article_images_downloading), true); try {
+        final String statusText = MainApplication.getContext().getString(R.string.article_images_downloading);
+        int status = obs.Start( statusText, true); try {
             for( String imgPath: imageList ) {
                 if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
                     break;
+                obs.Change( status, statusText + String.format( ": %d / %d", imageList.indexOf( imgPath ) + 1, imageList.size() ) );
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()), false);
                 try {
                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
