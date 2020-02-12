@@ -445,6 +445,8 @@
     <string name="menu_reload_with_tables_toggle">Taulekin</string>
     <string name="menu_display_options">Bistaratze aukerak</string>
     <string name="menu_reload">Birkargatu ...</string>
+    <string name="article_tap_enabled">Sakatze ekintzak gaituta</string>
+    <string name="article_tap_enabled_summary">sakatze zonetan eta esteka ez diren tokietan (menua erakusteko)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Artikulu berri bat.</item>
         <item quantity="other">%d artikulu berri.</item>
