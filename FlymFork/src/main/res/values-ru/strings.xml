@@ -332,7 +332,7 @@
     <string name="settings_content_extract_rules">Правила поиска полных текстов</string>
     <string name="settings_content_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
-    <string name="downloadNext">"Загрузить следующие "</string>
+    <string name="downloadNext">", След. "</string>
     <string name="downloadAll">", Все"</string>
     <string name="loadingLink">Загрузка ссылки</string>
     <string name="loadLink">Читать сейчас</string>
@@ -444,7 +444,9 @@
     <string name="new_entry_shortcut_added">На главном экране создан ярлык на новую статью</string>
     <string name="menu_reload_with_tables_toggle">Таблицы</string>
     <string name="menu_display_options">Отображение</string>
-    <string name="menu_reload">Обновление</string>
+    <string name="menu_reload">Загрузка</string>
+    <string name="article_tap_enabled">Действия по нажатию</string>
+    <string name="article_tap_enabled_summary">на тап зоны и на обычный текст (для показа меню)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
