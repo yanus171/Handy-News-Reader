@@ -446,7 +446,6 @@
     <string name="menu_reload_with_tables_toggle">Avec tables</string>
     <string name="menu_display_options">Options d\'affichage</string>
     <string name="menu_reload">Rechargement...</string>
-    <string name="menu_by_tap_enabled">Menu par appui</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
