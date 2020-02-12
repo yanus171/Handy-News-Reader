@@ -318,6 +318,7 @@
     <string name="deleteOldEntries">Вилучення старих статей</string>
     <string name="deleting_ghost_entries">Видалення старих файлів</string>
     <string name="AllImages">Всі зображення</string>
+    <string name="article_images_downloading">Завантаження зображень статті</string>
     <string name="mobilizeAll">Завантаження повних текстів</string>
     <string name="RefreshFeeds">Оновлення статей</string>
     <string name="deleteImages">Вилучення зображень:</string>
@@ -443,6 +444,8 @@
     <string name="menu_reload_with_tables_toggle">З таблицями</string>
     <string name="menu_display_options">Параметри відображення</string>
     <string name="menu_reload">Оновлення...</string>
+    <string name="article_tap_enabled">Дії дотиком увімкнено</string>
+    <string name="article_tap_enabled_summary">для зон натискань та інших, крім посилань (для показу меню)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
