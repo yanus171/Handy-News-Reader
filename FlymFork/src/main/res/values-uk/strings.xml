@@ -277,11 +277,11 @@
     <string name="article_text_footer_progress_color_descr">Колір смуги прогресу читання статті</string>
     <string name="settings_category_operation">Операції</string>
     <string name="settings_category_operation_summary">Налаштування</string>
-    <string name="tap_zone_size">Розмір зони натиснення</string>
+    <string name="tap_zone_size">Розмір зони натискань</string>
     <string name="tap_zone_size_descr">Ширина або висота зон натискань в міліметрах</string>
     <string name="settings_show_tap_zones">Зони натискань видно</string>
     <string name="settings_show_tap_zone_description">Напівпрозорі квадратики у вікні читання статті</string>
-    <string name="settings_tapZones">Зони натискань (предпоказ)</string>
+    <string name="settings_tapZones">Зони натискань (попередній показ)</string>
     <string name="settings_volume_buttons_action">Дія кнопок гучності</string>
     <string name="brightness_gesture">Зміна яскравості жестом</string>
     <string name="brightness_gesture_descr">Якщо галочка є, то рух пальцем догори/додолу по лівому краю екрану статті змінює яскравість</string>
