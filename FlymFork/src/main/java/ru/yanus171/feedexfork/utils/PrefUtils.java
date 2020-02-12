@@ -117,9 +117,9 @@ public class PrefUtils {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
     }
 
-    public static final String PREF_MENU_SHOW_BY_TAP = "article_menu_show_by_tap";
-    public static Boolean isMenuByTap() {
-        return PrefUtils.getBoolean( PREF_MENU_SHOW_BY_TAP, true );
+    public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
+    public static Boolean isArticleTapEnabled() {
+        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true );
     }
 
     public static int getFontSizeFooterClock() {
@@ -282,6 +282,8 @@ public class PrefUtils {
     }
 
     public static int GetTapZoneSize() {
+        if ( !isArticleTapEnabled() )
+            return 0;
         return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
     }
     // ------------------------------------------------------------------------------------

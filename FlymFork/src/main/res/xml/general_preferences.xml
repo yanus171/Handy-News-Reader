@@ -270,21 +270,31 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_operation">
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_tap_enabled"
+                android:title="@string/article_tap_enabled"
+                android:summary="@string/article_tap_enabled_summary"/>
+
             <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
                 android:key="tap_zone_size"
                 android:inputType="number"
                 android:defaultValue="7"
+                android:dependency="article_tap_enabled"
                 android:title="@string/tap_zone_size"
                 android:summary="@string/tap_zone_size_descr"/>
 
             <CheckBoxPreference
                 android:key="settings_tap_zones_visible"
+                android:dependency="article_tap_enabled"
                 android:defaultValue="true"
                 android:title="@string/settings_show_tap_zones"
                 android:summary="@string/settings_show_tap_zone_description"/>
 
             <ru.yanus171.feedexfork.view.TapZonePreviewPreference
                 android:key="settings_tap_zones"
+                android:dependency="article_tap_enabled"
                 android:inputType="none"
                 android:dialogLayout="@layout/fragment_entry"
                 android:dialogTitle="@string/settings_tap_zones_dialogtitle"
@@ -371,11 +381,6 @@
                 android:key="entry_auto_unstart_at_bottom"
                 android:summary="@string/auto_unstart_at_bottom_descr"
                 android:title="@string/auto_unstart_at_bottom"/>
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="article_menu_show_by_tap"
-                android:title="@string/article_menu_show_by_tap"
-                android:summary="@string/article_menu_show_by_tap_descr"/>
 
         </PreferenceCategory>
     </PreferenceScreen>

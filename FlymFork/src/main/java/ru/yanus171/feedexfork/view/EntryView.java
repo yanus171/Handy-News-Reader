@@ -698,7 +698,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                             Math.abs(event.getX() - mPressedX) < TOUCH_PRESS_POS_DELTA &&
                             Math.abs(event.getY() - mPressedY) < TOUCH_PRESS_POS_DELTA &&
                             System.currentTimeMillis() - mLastTimeScrolled > 500 &&
-                            PrefUtils.getBoolean("article_menu_show_by_tap", true) &&
+                            PrefUtils.isArticleTapEnabled() &&
                             EntryActivity.GetIsActionBarHidden() &&
                             !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();

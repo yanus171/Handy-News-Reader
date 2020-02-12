@@ -14,6 +14,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
 public final class TapZonePreviewPreference extends DialogPreference {
@@ -29,18 +30,24 @@ public final class TapZonePreviewPreference extends DialogPreference {
         return view;
     }
 
-    public static void SetupZoneSizes(View view) {
+    public static void SetupZoneSizes(View parentView) {
         final int size = GetTapZoneSize();
-        SetSize( view, R.id.pageUpBtn, MATCH_PARENT, size );
-        SetSize( view, R.id.pageDownBtn, MATCH_PARENT, size );
-        SetSize( view, R.id.pageDownBtnVert, size, MATCH_PARENT );
-        SetSize( view, R.id.brightnessSlider, size, MATCH_PARENT );
-        SetSize( view, R.id.entryPrevBtn, size, size );
-        SetSize( view, R.id.entryNextBtn, size, size );
-        SetSize( view, R.id.toggleFullScreenStatusBarBtn, size, size );
-        SetSize( view, R.id.toggleFullscreenBtn, size, size );
+        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT);
+        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT);
+        SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSlider, size);
+        SetupZone(parentView, size, R.id.entryPrevBtn, size);
+        SetupZone(parentView, size, R.id.entryNextBtn, size);
+        SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size);
+        SetupZone(parentView, size, R.id.toggleFullscreenBtn, size);
     }
 
+    public static void SetupZone(View parentView, int size, int viewID, int matchParent) {
+        if ( isArticleTapEnabled() )
+            SetSize(parentView, viewID, matchParent, size);
+        else
+            parentView.findViewById( viewID ).setVisibility( View.GONE );
+    }
 
 
 }

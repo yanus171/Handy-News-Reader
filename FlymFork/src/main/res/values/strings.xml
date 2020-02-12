@@ -457,8 +457,9 @@
     <string name="new_entry_shortcut_added">New article shortcut has been created on Home Screen</string>
     <string name="menu_reload_with_tables_toggle">With tables</string>
     <string name="menu_display_options">Display options</string>
-    <string name="menu_reload">Reload ...</string>
-    <string name="menu_by_tap_enabled">Menu by tap</string>
+    <string name="menu_reload">Reload</string>
+    <string name="article_tap_enabled">Tap actions enabled</string>
+    <string name="article_tap_enabled_summary">on tap zones and in non link areas (for menu show)</string>
 
 
     <plurals name="number_of_new_entries">
