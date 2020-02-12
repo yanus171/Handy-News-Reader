@@ -140,6 +140,7 @@ public class FeedData {
         public static final String IS_GROUP_EXPANDED = "is_group_expanded";
         public static final String IS_AUTO_REFRESH = "is_auto_refresh";
         public static final String IS_IMAGE_AUTO_LOAD = "is_image_auto_load";
+        public static final String IMAGES_SIZE = "images_size";
         public static final String OPTIONS = "options";
         public static final String[] PROJECTION_ID = new String[]{FeedColumns._ID};
         public static final String[] PROJECTION_GROUP_ID = new String[]{FeedColumns.GROUP_ID};
@@ -158,7 +159,8 @@ public class FeedData {
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {URL, TYPE_TEXT_UNIQUE}, {NAME, TYPE_TEXT}, {IS_GROUP, TYPE_BOOLEAN},
                 {GROUP_ID, TYPE_EXTERNAL_ID}, {LAST_UPDATE, TYPE_DATE_TIME}, {REAL_LAST_UPDATE, TYPE_DATE_TIME}, {RETRIEVE_FULLTEXT, TYPE_BOOLEAN},
                 {ICON, "BLOB"}, {ERROR, TYPE_TEXT}, {PRIORITY, TYPE_INT}, {FETCH_MODE, TYPE_INT}, {SHOW_TEXT_IN_ENTRY_LIST, TYPE_BOOLEAN},
-                {IS_GROUP_EXPANDED, TYPE_BOOLEAN}, {IS_AUTO_REFRESH, TYPE_BOOLEAN}, {IS_IMAGE_AUTO_LOAD, TYPE_BOOLEAN}, {OPTIONS, TYPE_TEXT}};
+                {IS_GROUP_EXPANDED, TYPE_BOOLEAN}, {IS_AUTO_REFRESH, TYPE_BOOLEAN}, {IS_IMAGE_AUTO_LOAD, TYPE_BOOLEAN}, {IMAGES_SIZE, TYPE_INT},
+                {OPTIONS, TYPE_TEXT}};
 
         public static Uri GROUPS_CONTENT_URI(String groupId) {
             return Uri.parse(CONTENT_AUTHORITY + "/groups/" + groupId);
@@ -230,6 +232,7 @@ public class FeedData {
         public static final String IS_NEW = "new";
         public static final String IS_WAS_AUTO_UNSTAR = "was_auto_unstar";
         public static final String IS_WITH_TABLES = "with_tables";
+        public static final String IMAGES_SIZE = "images_size";
 
 
         private static final String MOB_LENGTH_EXPR( String fieldName ) {
@@ -253,6 +256,7 @@ public class FeedData {
                              EntryColumns.IS_NEW,
                              EntryColumns.IS_WAS_AUTO_UNSTAR,
                              EntryColumns.IS_WITH_TABLES,
+                             EntryColumns.IMAGES_SIZE,
                              EntryColumns.TITLE,
                              EntryColumns.DATE,
                              String.format( "substr( %s, 1, 10 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
@@ -273,6 +277,7 @@ public class FeedData {
                         EntryColumns.IS_NEW,
                         EntryColumns.IS_WAS_AUTO_UNSTAR,
                         EntryColumns.IS_WITH_TABLES,
+                        EntryColumns.IMAGES_SIZE,
                         EntryColumns.TITLE,
                         EntryColumns.DATE,
                         EntryColumns.ABSTRACT,
@@ -298,7 +303,7 @@ public class FeedData {
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {FEED_ID, TYPE_EXTERNAL_ID}, {TITLE, TYPE_TEXT},
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
-                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN} };
+                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN}, {IMAGES_SIZE, TYPE_INT} };
 
         public static Uri UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/unread_entries");
