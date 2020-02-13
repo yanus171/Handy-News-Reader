@@ -445,6 +445,8 @@
     <string name="menu_reload_with_tables_toggle">Com tabelas</string>
     <string name="menu_display_options">Opções de exibição</string>
     <string name="menu_reload">Recarregar...</string>
+    <string name="article_tap_enabled">Ações de toque habilitadas</string>
+    <string name="article_tap_enabled_summary">em zonas de toque e em áreas sem link (para exibição de menu)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
