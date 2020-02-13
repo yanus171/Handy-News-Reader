@@ -333,9 +333,11 @@
     <string name="settings_content_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
     <string name="settings_tap_zones_dialogtitle">μόνο για ενημέρωσή σας, δεν γίνονται αλλαγές</string>
     <string name="downloadNext">"Λήψη κειμένου "</string>
+    <string name="downloadAll">", Όλα"</string>
     <string name="loadingLink">Φόρτωση συνδέσμων</string>
     <string name="loadLink">Διάβασμα τώρα</string>
     <string name="loadLinkLater">Διάβασμα αργότερα</string>
+    <string name="loadLinkLaterStarred">Διάβασμα αργότερα στα αγαπημένα</string>
     <string name="addFeed">Προσθήκη Ροής</string>
     <string name="externalLinks">Εξωτερικοί σύνδεσμοι</string>
     <string name="markAllAsRead">Σημείωση όλων ως αναγνωσμένα</string>
@@ -440,6 +442,11 @@
     <string name="reading_file_list">Προσπέλαση λίστας αρχείων</string>
     <string name="add_entry_shortcut">Προσθήκη συντόμευσης άρθρου</string>
     <string name="new_entry_shortcut_added">Μία νέα συντόμευση άρθρου προστέθηκε στην αρχική οθόνη</string>
+    <string name="menu_reload_with_tables_toggle">Με πίνακες</string>
+    <string name="menu_display_options">Επιλογές προβολής</string>
+    <string name="menu_reload">Ανανέωση</string>
+    <string name="article_tap_enabled">Ενέργειες αφής ενεργοποιημένες</string>
+    <string name="article_tap_enabled_summary">στις ζώνες αφής και σε περιοχές χωρίς υπερσυνδέσμους (για προβολή του μενού)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
