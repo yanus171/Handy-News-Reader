@@ -60,7 +60,9 @@ import static ru.yanus171.feedexfork.Constants.DB_IS_FALSE;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.DB_SUM;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
@@ -87,6 +89,18 @@ public class FeedData {
     public static final String EXTERNAL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
     public static final String EXTERNAL_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + DB_AND + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
     public static final String EXTERNAL_READ_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_READ + DB_AND + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
+    public static String ALL_IMAGESSIZE_NUMBER() {
+        return PrefUtils.CALCULATE_IMAGES_SIZE() ? "(SELECT " + DB_SUM(IMAGES_SIZE) + " FROM " + EntryColumns.TABLE_NAME + ")" : "0";
+    }
+    public static String ALL_UNREAD_IMAGESSIZE_NUMBER() {
+        return PrefUtils.CALCULATE_IMAGES_SIZE() ? "(SELECT " + DB_SUM(IMAGES_SIZE) + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + ")" : "0";
+    }
+    public static String FAVORITES_IMAGESSIZE_NUMBER() {
+        return PrefUtils.CALCULATE_IMAGES_SIZE() ? "(SELECT " + DB_SUM(IMAGES_SIZE) + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_FAVORITE + ")" : "0";
+    }
+    public static String EXTERNAL_IMAGESSIZE_NUMBER() {
+        return PrefUtils.CALCULATE_IMAGES_SIZE() ? "(SELECT " + DB_SUM(IMAGES_SIZE) + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")" : "0";
+    }
     private static final String TYPE_PRIMARY_KEY = "INTEGER PRIMARY KEY AUTOINCREMENT";
     private static final String TYPE_EXTERNAL_ID = "INTEGER(7)";
     static final String TYPE_TEXT = "TEXT";

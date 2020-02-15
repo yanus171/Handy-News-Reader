@@ -86,6 +86,8 @@ public class PrefUtils {
 
     public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
 
+    public static boolean CALCULATE_IMAGES_SIZE() {return getBoolean("calculate_images_size", false );}
+
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
     public static final String LAST_ENTRY_ID = "last_entry_id";

@@ -511,6 +511,12 @@
                 android:summary="@string/show_progress_info_descr"/>
 
             <CheckBoxPreference
+                android:key="calculate_images_size"
+                android:defaultValue="false"
+                android:title="@string/setting_calculate_image_sizes"
+                android:summary="@string/setting_calculate_image_sizes_descr"/>
+
+            <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="vibrate_on_article_list_entry_swype"
                 android:summary="@string/vibrate_on_article_list_entry_swype_summary"

@@ -44,6 +44,7 @@ public final class Constants {
     public static final String DB_ARG = "=?";
     public static final String DB_AND = " AND ";
     public static final String DB_OR = " OR ";
+    public static String DB_SUM( String fieldName ) { return " SUM(" + fieldName + ") "; }
 
     public static final String HTTP_SCHEME = "http://";
     public static final String HTTPS_SCHEME = "https://";
@@ -99,4 +100,5 @@ public final class Constants {
     public static final int VIBRATE_DURATION = 25;
 
     public static final String EXTRA_FILENAME = "FileName";
+    public static final String CALCULATE_IMAGE_SIZES = "CalculateImageSizes";
 }
