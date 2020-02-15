@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -28,17 +29,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -52,6 +47,21 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -69,6 +79,8 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
+
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
@@ -101,9 +113,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private Menu mMenu = null;
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
-    private final ArrayList<Uri> mWasVisibleList = new ArrayList<>();
+    private final ArrayList<String> mWasVisibleList = new ArrayList<>();
+
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
+        @NonNull
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader" );
@@ -113,11 +127,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             String[] projection = mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
             CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
             cursorLoader.setUpdateThrottle(150);
+            Status().End( mStatus );
+            mStatus = Status().Start( R.string.article_list_loading, true );
             return cursorLoader;
         }
 
         @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
             Timer.End(ENTRIES_LOADER_ID);
             Timer timer = new Timer( "EntriesListFragment.onCreateLoader" );
 
@@ -132,11 +148,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                         ( pos > mListView.getLastVisiblePosition() || pos < mListView.getFirstVisiblePosition() )  )
                     mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
             }
+            getActivity().setProgressBarIndeterminateVisibility( false );
+            Status().End( mStatus );
             timer.End();
         }
 
         @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
+        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+            Status().End( mStatus );
+            //getActivity().setProgressBarIndeterminateVisibility( true );
             mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
         }
 
@@ -151,6 +171,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
     };
     private StatusText mStatusText = null;
+    public static Uri mSearchQueryUri = null;
+    private int mStatus = 0;
 
     private void UpdateActions() {
         if ( mMenu == null )
@@ -196,46 +218,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
     }
 
-    /*private int mNewEntriesNumber, mOldUnreadEntriesNumber = -1;
-    private boolean mAutoRefreshDisplayDate = false;
-    private final LoaderManager.LoaderCallbacks<Cursor> mEntriesNumberLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
-        @Override
-        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.mEntriesNumberLoader" );
-            final String EXPR_READ_COUNT = "SUM(" + EntryColumns.FETCH_DATE + '>' + mListDisplayDate + ")";
-            final String EXPR_UNREAD_COUNT = "SUM(" + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + Constants.DB_AND + EntryColumns.WHERE_UNREAD + ")";
-            CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, new String[]{ EXPR_READ_COUNT, EXPR_UNREAD_COUNT}, null, null, null);
-            cursorLoader.setUpdateThrottle(150);
-            return cursorLoader;
-        }
-
-        @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            Timer.End(NEW_ENTRIES_NUMBER_LOADER_ID);
-            if ( data == null )
-                return;
-
-            data.moveToFirst();
-            mNewEntriesNumber = data.getInt(0);
-            mOldUnreadEntriesNumber = data.getInt(1);
-
-            if (mAutoRefreshDisplayDate && mNewEntriesNumber != 0 && mOldUnreadEntriesNumber == 0) {
-                mListDisplayDate = new Date().getTime();
-                restartLoaders();
-            } else {
-                refreshUI();
-            }
-
-            mAutoRefreshDisplayDate = false;
-
-        }
-
-        @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
-        }
-    };
-    private Button mRefreshListBtn;*/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreate" );
@@ -248,11 +230,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         if (savedInstanceState != null) {
             mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
-            //mStatusText.SetFeedID( mCurrentUri );
             mOriginalUri = savedInstanceState.getParcelable(STATE_ORIGINAL_URI);
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
-            //mListDisplayDate = savedInstanceState.getLong(STATE_LIST_DISPLAY_DATE);
             mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
             mShowUnRead = savedInstanceState.getBoolean(STATE_SHOW_UNREAD, PrefUtils.getBoolean( STATE_SHOW_UNREAD, false ));
             Dog.v( String.format( "EntriesListFragment.onCreate mShowUnRead = %b", mShowUnRead ) );
@@ -327,11 +307,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
 
         mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
-                        (TextView)rootView.findViewById( R.id.errorText ),
-                        FetcherService.Status());
+                                       (TextView)rootView.findViewById( R.id.errorText ),
+                                       (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
+                                       (TextView)rootView.findViewById( R.id.progressText ),
+                                       Status());
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
-
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -344,11 +325,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 if ( mEntriesCursorAdapter == null )
                     return;
                 for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
-                    Uri uri = GetUri( i );
-                    if( !mWasVisibleList.contains( uri ) )
-                        mWasVisibleList.add( uri );
+                    String uri = GetUri( i ).toString();
+                    synchronized ( mWasVisibleList ) {
+                        if (!mWasVisibleList.contains(uri))
+                            mWasVisibleList.add(uri);
+                    }
                 }
-                SetIsRead( firstVisibleItem - 2, true );
+                SetIsRead( firstVisibleItem - 2);
                 if ( !mShowTextInEntryList && firstVisibleItem > 0 ) {
                     mLastVisibleTopEntryID = mEntriesCursorAdapter.getItemId(firstVisibleItem);
                     View v = mListView.getChildAt(0);
@@ -401,29 +384,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         mNeedSetSelection = true;
     }
 
-    private void SetVisibleItemsAsOld() {
-        if ( mEntriesCursorAdapter != null ) {
-            final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
-            for (Uri uri : mWasVisibleList)
-                updates.add(
-                        ContentProviderOperation.newUpdate(uri)
-                                .withValues(FeedData.getOldContentValues())
-                                .withSelection(EntryColumns.WHERE_NEW, null)
-                                .build());
-            mWasVisibleList.clear();
-            if (!updates.isEmpty()) {
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                try {
-                    cr.applyBatch(FeedData.AUTHORITY, updates);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
 
-    private void SetIsRead( final int pos, final boolean wait ) {
+
+    private void SetIsRead(final int pos) {
         if ( !mShowTextInEntryList )
             return;
         final Uri uri = GetUri( pos );
@@ -448,10 +412,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 }
             }
         }
-        if ( wait )
-            UiUtils.RunOnGuiThread(  new Run( pos ), 2000);
-        else
-            new Run( pos ).run();
+        UiUtils.RunOnGuiThread(  new Run( pos ), 2000);
+
     }
 
     public static void ShowDeleteDialog(Context context, final String title, final long id) {
@@ -486,7 +448,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
             mJustMarkedAsReadEntries.close();
         }
-        SetVisibleItemsAsOld();
+
+        synchronized ( mWasVisibleList ) {
+            FetcherService.StartService(FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
+                                            .putStringArrayListExtra(Constants.URL_LIST, mWasVisibleList));
+            mWasVisibleList.clear();
+        }
         mFab = null;
 
         super.onStop();
@@ -525,7 +492,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         inflater.inflate(R.menu.entry_list, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        final MenuItem searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         if (EntryColumns.isSearchUri(mCurrentUri)) {
             searchItem.expandActionView();
@@ -546,11 +513,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    setData(mOriginalUri, true, true, mOriginalUriShownEntryText);
-                } else {
+                if (!TextUtils.isEmpty(newText))
                     setData(EntryColumns.SEARCH_URI(newText), true, true, false);
-                }
                 return false;
             }
         });
@@ -610,7 +574,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
 
             case R.id.menu_delete_all: {
-                if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
+                //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
                     new AlertDialog.Builder(getContext()) //
                             .setIcon(android.R.drawable.ic_dialog_alert) //
                             .setTitle( R.string.question ) //
@@ -621,12 +585,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                                     new Thread() {
                                         @Override
                                         public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri.getPathSegments().get(1));
+                                            FetcherService.deleteAllFeedEntries(mCurrentUri);
                                         }
                                     }.start();
                                 }
                             }).setNegativeButton(android.R.string.no, null).show();
-                }
+                //}
                 return true;
             }
             case R.id.menu_mark_all_as_read: {
@@ -641,6 +605,54 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
             case R.id.menu_create_test_data: {
                 FetcherService.createTestData();
+                return true;
+            }
+            case R.id.menu_calculate_sizes: {
+                FetcherService.StartService(FetcherService.GetIntent(Constants.CALCULATE_IMAGE_SIZES) );
+                return true;
+            }
+            case R.id.menu_add_feed_shortcut: {
+                if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
+                    //Adding shortcut for MainActivity on Home screen
+
+                    String name = "";
+                    IconCompat image = null;
+                    if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString(R.string.all_entries);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_empty);
+                    } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString(R.string.favorites);
+                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_with_star );
+                    } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString( R.string.unread_entries );
+                        image = IconCompat.createWithResource(getContext(), R.mipmap.ic_launcher);
+                    } else if ( FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
+                        name = getContext().getString( R.string.externalLinks );
+                        image = IconCompat.createWithResource(getContext(), R.drawable.load_later);
+                    } else {
+                        long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
+                        Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),
+                                new String[]{FeedData.FeedColumns.NAME, FeedData.FeedColumns.ICON},
+                                null, null, null);
+                        if (cursor.moveToFirst()) {
+                            name = cursor.getString(0);
+                            if (!cursor.isNull(1))
+                                image = IconCompat.createWithBitmap(new BitmapDrawable(getContext().getResources(),
+                                        UiUtils.getScaledBitmap(cursor.getBlob(1), 32)).getBitmap());
+                        }
+                        cursor.close();
+                    }
+
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString())
+                            .setIcon(image)
+                            .setShortLabel(name)
+                            .setIntent(new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri ))
+                            .build();
+                    ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                    if ( Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O )
+                        Toast.makeText( getContext(), R.string.new_feed_shortcut_added, Toast.LENGTH_LONG ).show();
+                } else
+                    Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {
@@ -665,6 +677,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     }
 
 
+    @SuppressLint("PrivateResource")
     private void markAllAsRead() {
         if (mEntriesCursorAdapter != null) {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
@@ -752,14 +765,25 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         Dog.v( String.format( "EntriesListFragment.setData( %s )", uri.toString() ) );
         mCurrentUri = uri;
-        if (!isSearchUri) {
+        if ( isSearchUri )
+            mSearchQueryUri = uri;
+        else  {
+            mSearchQueryUri = null;
             mOriginalUri = mCurrentUri;
             mOriginalUriShownEntryText = showTextInEntryList;
         }
 
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
-        SetVisibleItemsAsOld();
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized ( mWasVisibleList ) {
+                    SetVisibleItemsAsOld(mWasVisibleList);
+                    mWasVisibleList.clear();
+                }
+            }
+        }.start();
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
         SetListViewAdapter();
         //if ( mListView instanceof ListView )
@@ -776,7 +800,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
     private void restartLoaders() {
 
-        LoaderManager loaderManager = getLoaderManager();
+        LoaderManager loaderManager = LoaderManager.getInstance( this );
 
         //HACK: 2 times to workaround a hard-to-reproduce bug with non-refreshing loaders...
         Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesLoader" );
@@ -796,5 +820,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             mRefreshListBtn.setVisibility(View.GONE);
         }
     }*/
+    public static void SetVisibleItemsAsOld(ArrayList<String> uriList) {
+        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
+        for (String uri : uriList)
+            updates.add(
+                ContentProviderOperation.newUpdate(Uri.parse( uri) )
+                    .withValues(FeedData.getOldContentValues())
+                    .withSelection(EntryColumns.WHERE_NEW, null)
+                    .build());
+        if (!updates.isEmpty()) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try {
+                cr.applyBatch(FeedData.AUTHORITY, updates);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 }

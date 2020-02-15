@@ -74,6 +74,7 @@ import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 
+import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 
@@ -87,11 +88,12 @@ public class HTMLParser {
 		int result = 0;
         FetcherService.Status().ChangeProgress( "Loading main page");
 
-		final boolean isTomorrow = feedUrl.contains( TOMORROW_YYYY_MM_DD );
+        Calendar cal = Calendar.getInstance();
+		final boolean isTomorrow = feedUrl.contains( TOMORROW_YYYY_MM_DD ) && cal.get( Calendar.HOUR_OF_DAY ) >= 16;
 		{
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.DATE, 1);
-			feedUrl = feedUrl.replace(TOMORROW_YYYY_MM_DD, new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date( date.getTimeInMillis() ) ) );
+			feedUrl = feedUrl.replace( TOMORROW_YYYY_MM_DD, isTomorrow ? new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date( date.getTimeInMillis() ) ) : "" );
 		}
 
 		/* check and optionally find favicon */
@@ -101,10 +103,10 @@ public class HTMLParser {
 		}
 
 
-		HttpURLConnection connection = null;
+		Connection connection = null;
 		Document doc = null;
 		try {
-			connection = NetworkUtils.setupConnection(feedUrl);
+			connection = new Connection(feedUrl);
 			doc = Jsoup.parse(connection.getInputStream(), null, "");
 		} catch (Exception e) {
 			FetcherService.Status().SetError( e.getLocalizedMessage(), feedID, "", e );
@@ -113,7 +115,7 @@ public class HTMLParser {
 				connection.disconnect();
 		}
 
-		Uri uriMainEntry = FetcherService.LoadLink( feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false).first;
+		Uri uriMainEntry = FetcherService.LoadLink( feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false, false).first;
             
 		ContentResolver cr = MainApplication.getContext().getContentResolver();
 		{
@@ -136,7 +138,7 @@ public class HTMLParser {
 			}
 		}
 		ArrayList<Item> listItem = new ArrayList<>();
-		String content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false);
+		String content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false, false);
 		doc = Jsoup.parse(content);
 		{
 			Elements list = doc.select("a");
@@ -150,7 +152,7 @@ public class HTMLParser {
 				if (!matcher.find()) {
 					matcher = BASE_URL.matcher(feedUrl);
 					if (matcher.find()) {
-						link = matcher.group() + link;
+						link = matcher.group() + "/" + link;
 						link = link.replace( "//", "/" );
 					}
 				}
@@ -168,8 +170,8 @@ public class HTMLParser {
 		for ( Item item: listItem ) {
 			if ( FetcherService.isCancelRefresh() )
 				break;
-			int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ) ); try {
-				Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false);
+			int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ), false ); try {
+				Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false);
 				Uri uri = load.first;
 				if ( load.second ) {
 					result++;

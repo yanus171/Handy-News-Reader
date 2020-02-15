@@ -1,6 +1,6 @@
 <i>"Залишатись з тим що мене цікавить ніколи не було так легко".</i>
 
-<b><i>Handy News Reader</i>: без реклами/вільне програмне забеспечення по <i>GNU GPL</i> ліцензії.</b>
+<b><i>Handy News Reader</i>: без реклами/вільне програмне забеспечення згідно <i>GNU GPL</i> ліцензії.</b>
 
 <ul>
 	<li><b>зробіть Свій омріяний Журнал!</b></li>
@@ -14,18 +14,19 @@
 
 <ul>
 <b><u>Можливості</u>:</b>
-	<li><b><u>повні статті</u>під руками</b>: немає потреби в використанні браузера, щоб побачити весь текст статті</li>
-	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
-	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
-	<li><b><i>"Remove When Finished"</i></b> - once You've finished such an article - it may be automatically removed from the <i>'Favorites'</i> (=<i>'Read It Later'</i>) set,</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
-	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
+	<li><b><u>повні статті</u>під руками</b>: немає потреби у використанні браузера, щоб побачити весь текст статті</li>
+	<li><b><u>зручне</u>читання</b>:
+перемикання статей кнопками гучності або свайпами, <i>Зони натискань</i>, запам'ятовування місця читання<u>в кожній статті</u>,</li>
+	<li><b>сповіщення про важливі статті</b>: Ви ніколи не пропустите нічого важливого,</li>
+	<li><b><i>"Прочитати пізніше"</i></b>: Ви можете швидко пробіжатись по статтям - <b> позначаючи (обираючи) яку прочитати пізніше</b> у Ваш вільний час, чи просто зберегти,</li>
+	<li><b><i>"Вилучити по завершені"</i></b> - як тільки Ви завершили читати статтю - вона може автоматично вилучатись зі списків<i> 'Обрані'</i>(=<i>'Прочитати пізніше'</i>) </li>
+	<li><b>готовий працювати без доступу до мережі</b>зануртись у читання без відволікань, один раз оновити і більше немає потреби щось завантажувати - буде працювати без інтернету :),</li>
+	<li><b>зберегти пропускну здатність</b>: перейти on-line лише для нових статей - не завантажувати їх повної версії кожен раз; контролюйте, що потрібно завантажити - і до якого рівня,</li>
+	<li><b>управління жестами</b>:напр. проведіть пальцем донизу, щоб додати/вилучити статтю з <i>Обраного</i>, проведіть по лівому краю екрану, щоб змінити яскравість тексту,</li>
+	<li><b>зручний</b>: дбайте про ваші очі використовуючи темну тему, регулюйте розмір тексту, колір і яскравість для задоволення ваших індивідуальних потреб,</li>
+	<li><b>охайність</b>: заголовки статей без гіперпосилань більше не заважатимуть;) ; прокрутка сторінок на 90% їхньої висоти може зробити читання менш заплутаним = більш зручним</li>
+	<li><b> налаштовується</b>: від <i>розміру Тап зон </i> до кольору посилань та підкреслень - є багато деталей, які Ви можете пристосувати саме до власних смаків й потреб,</li>
+	<li><b>додаткові можливості</b>:автоматичне резервування (експорт/імпорт в/з файл<i>.opml</i>), надання вмісту з без <i>RSS</i> вебсайтів, </li>
 	<li><b>багато цікавого</b> "in store" - завітайте на наш вебсайт щоб знайти більше :) !,</li>
 	<li><b><u>важливо</u>:</b> цей додаток НЕ синхронізується з online читалками новин (наприклад <i>Feedly</i>),</li>
 	<li><b>завжди раді відгукам та пропозиціям;</b></li>

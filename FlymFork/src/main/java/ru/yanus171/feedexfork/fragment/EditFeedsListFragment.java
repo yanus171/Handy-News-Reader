@@ -55,11 +55,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ListFragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.ListFragment;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -608,7 +608,7 @@ public class EditFeedsListFragment extends ListFragment {
         builder.setTitle(R.string.select_file);
 
         try {
-            final String[] fileNames = FileUtils.GetFolder().list(new FilenameFilter() {
+            final String[] fileNames = FileUtils.INSTANCE.getFolder().list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
                     return new File(dir, filename).isFile();
@@ -618,7 +618,7 @@ public class EditFeedsListFragment extends ListFragment {
                 @Override
                 public void onClick(DialogInterface dialog, final int which) {
                     FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).
-                            putExtra( Constants.EXTRA_FILENAME, FileUtils.GetFolder().toString() + File.separator
+                            putExtra( Constants.EXTRA_FILENAME, FileUtils.INSTANCE.getFolder().toString() + File.separator
                                     + fileNames[which]) );
                 }
             });
@@ -632,7 +632,7 @@ public class EditFeedsListFragment extends ListFragment {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
                 || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 
-            if (PrefUtils.getBoolean("use_standard_file_manager", true)) {
+            if (PrefUtils.getBoolean("use_standard_file_manager", false)) {
                 // First, try to use a file app
                 try {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -659,7 +659,7 @@ public class EditFeedsListFragment extends ListFragment {
                 public void run() {
                     try {
                         final String dateTimeStr = new SimpleDateFormat( "yyyyMMdd_HHmmss" ).format( new Date( System.currentTimeMillis() ) );
-                        final String filename =  FileUtils.GetFolder() +  "/HandyNewsReader_" + dateTimeStr + ".opml";
+                        final String filename =  FileUtils.INSTANCE.getFolder() +  "/HandyNewsReader_" + dateTimeStr + ".opml";
 
                         OPML.exportToFile(filename);
                         getActivity().runOnUiThread(new Runnable() {

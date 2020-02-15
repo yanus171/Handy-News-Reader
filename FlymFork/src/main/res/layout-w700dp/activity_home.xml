@@ -4,13 +4,13 @@
 
     <include layout="@layout/view_left_drawer" />
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:background="@color/dark_background"
         android:layout_height="match_parent">
 
         <include layout="@layout/view_home" />
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

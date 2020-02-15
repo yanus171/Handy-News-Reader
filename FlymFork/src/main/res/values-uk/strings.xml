@@ -31,10 +31,11 @@
 -->
 <resources>
     <!-- GENERAL -->
-    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Ліцензії та інформація</big></b><br/>
- Цей додаток вільний; Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
+    <string name="about_us_content" translatable="true"><![CDATA[ <b><big>Ліцензії та інформація</big></b> 
+ <br/>
+ Цей додаток вільне програмне забезпечення: Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
  <br/> 
- Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано:<br/>
+ Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано: <br/>
  <br/>
  • згортання груп стрічок<br/> 
  • невидимі  тап зони для переходу на наступну/попередню сторінку при читанні статті<br/>
@@ -42,27 +43,28 @@
  • можливість зупинити процес оновлення стрічок<br/>
  • та багато іншого<br/>
   <br/>
-  <b><big>Ви можете знайти нас</big></b>
+  <b><big>Ви можете знайти нас </big></b>
   <br/>
  • Завітайте на наш <b><a href="https://handynewsreader.blogspot.com">вебсайт</a></b> щоб  бути в курсі новин<br/>
- • Ви можете завантажити додаток<b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
- • Ви можете завантажити додаток <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
- • Розділ на<b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/>
+ • Ви можете завантажити додаток з <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+ • Ви можете завантажити додаток  з <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+ • Розділ на <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/>
  • Початкові коди на <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
  <br/>
  <b><big>Наша підтримка</big></b>
  <br/>
-  Якщо є проблеми з додатком тоді <br/>
- • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
- • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b><br/>
+  Якщо є проблеми з додатком тоді: <br/>
+ • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b> 
+ <br/>
  <br/>
  <b><big>Ваша підтримка</big></b>
  <br/>
- Ящо є  ідеї з додаванням нових можливостей:<br/>
- • звертайтесь на<b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
- • напишіть<b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
+ Якщо є  ідеї з додаванням нових можливостей: <br/>
+ • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
  <br/>
- <b>Якщо додаток виявився корисним, оцініть, будь ласка <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+ <b>Якщо додаток виявився корисним, оцініть, будь ласка, на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
  <br/>
  <b><big>Переклади</big></b>
  <br/>
@@ -80,12 +82,12 @@
     <string name="about_flym">Про додаток / Допомога / Зв’язок</string>
     <string name="welcome_title">Додати стрічку?</string>
     <string name="never">ніколи</string>
-    <string name="update">Оновлення</string>
+    <string name="last_update">Оновлення</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="flym_feeds">Стрічки</string>
     <string name="error">Помилка</string>
-    <string name="network_error">Немає підключення до мережі</string>
+    <string name="network_error">Немає підключення до мережі.</string>
     <string name="loading">Завантаження…</string>
     <string name="no_result">Немає результатів</string>
     <string name="drawer_open">Відкрити меню навігації</string>
@@ -110,8 +112,8 @@
     <string name="error_feed_export">Експорт не вдався. Переконайтесь, що карта пам’яті має можливість запису.</string>
     <string name="error_external_storage_not_available">Зовнішне сховище (наприклад, карта пам’яті) недосяжно.</string>
     <string name="feed_url">URL-адреса</string>
-    <string name="optional">(не обов’язково)</string>
-    <string name="website_or_feed">(стрічки новин або ключове слово)</string>
+    <string name="optional">(необов’язково)</string>
+    <string name="website_or_feed">(URL-адреса стрічки або ключове слово)</string>
     <string name="tab_feed_title">Стрічку</string>
     <string name="tab_filters_title">Фільтри</string>
     <string name="feed_title">НАЗВА</string>
@@ -119,12 +121,13 @@
     <string name="filter_add_title">Додати правило</string>
     <string name="filter_delete_title">Вилучити правило</string>
     <string name="filter_edit_title">Редагувати правило</string>
-    <string name="filter_is_regex">це регулярний вираз</string>
+    <string name="filter_is_regex">&#8230;це регулярний вираз</string>
     <string name="filter_apply_to_title">Застосувати до заголовків або адрес</string>
     <string name="filter_apply_to_content">Застосувати до вмісту</string>
     <string name="accept">ПРИЙНЯТИ</string>
     <string name="reject">ВІДХИЛИТИ</string>
     <string name="feed_search">Пошук стрічок</string>
+    <string name="web_page_search_duckduckgo">Веб-пошук сторінок (Duck Duck Go)</string>
     <string name="select_file">Вибрати файл (корінь SD-карти)</string>
     <string name="question_delete_feed">Ви дійсно бажаєте вилучити цю стрічку?</string>
     <string name="question_delete_group">Ви дійсно бажаєте вилучити цю групу та всі ії стрічки?</string>
@@ -133,16 +136,16 @@
     <string name="edit_group_title">Редагувати назву групи</string>
     <string name="message_exported_to">Експортовано в %s.</string>
     <string name="to_group_title">Перенос стрічки</string>
-    <string name="to_group_message">Ви можете розмістити стрічку всередені цієї групи, або поза нею. Що бажаєте?</string>
+    <string name="to_group_message">Ви можете розмістити стрічку в ці групі, або поза нею. Що бажаєте?</string>
     <string name="to_group_above">Поза групою</string>
-    <string name="to_group_into">Всередину групи</string>
-    <string name="add_custom_feed">Додати стрічку за адресою або назвою</string>
+    <string name="to_group_into">В групі</string>
+    <string name="add_custom_feed">Додати стрічку або шукати нову</string>
     <string name="google_news_title">Google News</string>
     <string name="google_news_indicator">Виберіть одну або кілька категорій.</string>
     <string name="google_news_top_stories">Популярне</string>
     <string name="google_news_world">Світ</string>
     <string name="google_news_business">Бізнес</string>
-    <string name="google_news_technology">Технолгії</string>
+    <string name="google_news_technology">Технології</string>
     <string name="google_news_entertainment">Розваги</string>
     <string name="google_news_sports">Спорт</string>
     <string name="google_news_science">Наука</string>
@@ -159,6 +162,7 @@
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
     <string name="menu_full_screen">Весь екран</string>
+    <string name="menu_actionbar_visible">Смуга подій</string>
     <string name="menu_font_bold">Жирний шрифт</string>
     <string name="menu_copy_clipboard">Скопіювати посилання</string>
     <string name="menu_cancel_refresh">Скасувати оновлення</string>
@@ -167,8 +171,8 @@
     <string name="menu_load_all_images">Завантажити всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
     <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
-    <string name="menu_mark_as_unread">Помітити як непрочитане</string>
-    <string name="menu_reload_full_text">Перезавантажити весь текст</string>
+    <string name="menu_mark_as_unread">Позначити непрочитаним</string>
+    <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
     <string name="copied_clipboard">Посилання скопійовано</string>
@@ -185,6 +189,7 @@
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
     <string name="undo">Скасувати</string>
     <string name="marked_as_read">Позначити як прочитане</string>
+    <string name="image_count">Кількість зображень</string>
     <!-- WIDGET -->
     <string name="red">Червоний</string>
     <string name="green">Зелений</string>
@@ -195,7 +200,7 @@
     <string name="settings_category_common_summary">Тема</string>
     <string name="theme">Тема</string>
     <string name="customColors">Власні кольори</string>
-    <string name="fontColorsNotFromThemeSummary">інакше використовувати кольори теми</string>
+    <string name="fontColorsNotFromThemeSummary">інакше використовуються кольори теми</string>
     <string name="textColor">Колір тексту</string>
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКоли зустрічаєшся з гарною дівчиною година проходить за секунду. Коли сидиш на гарячій сковороді секунда здається годиною. Це теорія відносності.\u201d\n(Альберт Енштейн)</string>
@@ -205,7 +210,7 @@
     <string name="settings_refresh_interval">Інтервал оновлення</string>
     <string name="settings_min_update_battery_level">Мін. рівень заряду</string>
     <string name="settings_refresh_only_selected">Тільки вибрані</string>
-    <string name="settings_refresh_only_selected_summary">автоматично оновлювати тільки вибрані стрічки</string>
+    <string name="settings_refresh_only_selected_summary">Автоматично оновлювати тільки вибрані стрічки</string>
     <string name="settings_refresh_on_open">Оновлювати при запуску</string>
     <string name="settings_refresh_on_open_description">Оновлювати всі стрічки під час запуску додатка</string>
     <string name="settings_refresh_wifi_only">Оновлювати тільки через WiFi</string>
@@ -213,18 +218,18 @@
     <string name="settings_keep_time">Час зберігання новин</string>
     <string name="settings_preload_image_mode">Завчасно завантажувати зображення</string>
     <string name="settings_max_image_download_count">Макс. число завантажень зображень</string>
-    <string name="settings_max_image_download_count_description">на одну статтю</string>
+    <string name="settings_max_image_download_count_description">На одну статтю</string>
     <string name="settings_max_image_download_size_kb">Макс. розмір зображення</string>
     <string name="settings_max_image_download_size_kb_summary">(в kb). Не завантажувати автоматично зображення, що мають більший розмір</string>
     <string name="max_single_refresh_traffic_mb">Max трафік оновлення</string>
     <string name="max_single_refresh_traffic_mb_descr">Оновлення зупиниться, коли трафік перевищить максимальне значення та немає WiFi (в МБ)</string>
     <string name="settings_load_comments">Завантажувати коментарі</string>
-    <string name="settings_load_comments_description">в повних текстах статей</string>
+    <string name="settings_load_comments_description">В повних текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
     <string name="settings_category_article_list_summary">Вигляд списку статей</string>
     <string name="settings_font_size">Розмір шрифту</string>
     <string name="show_article_icon">Показувати іконки статей</string>
-    <string name="show_article_icon_descr">вимкніть для економії місця на екрані</string>
+    <string name="show_article_icon_descr">Вимкніть для економії місця на екрані</string>
     <string name="show_article_url">Показувати адресу статті</string>
     <string name="settings_display_oldest_first">Порядок статей</string>
     <string name="settings_display_oldest_first_description">Старі спочатку</string>
@@ -235,9 +240,9 @@
     <string name="show_full_text_indicator">Індикація повного тексту</string>
     <string name="show_full_text_indicator_descr">Показувати іконку маленької дискети, якщо для статті завантажений весь текст</string>
     <string name="show_new_icon">Іконка нової статті</string>
-    <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назви яких ще ніколи не були видимі)</string>
+    <string name="show_new_icon_descr">Маленька іконка з полюсом на нових статтях (назв яких ще ніколи не було)</string>
     <string name="show_read_article_count">Число прочитаних статей стрічок</string>
-    <string name="show_read_article_count_descr">в списку стрічок</string>
+    <string name="show_read_article_count_descr">В списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
     <string name="show_group_entries_count_descr">може знизити швидкодію</string>
     <string name="textColorRead">Прочитані статті</string>
@@ -247,12 +252,12 @@
     <string name="settings_category_article_text">Текст статті</string>
     <string name="settings_category_article_text_summary">Вигляд тексту статті</string>
     <string name="settings_display_images">Показувати зображення</string>
-    <string name="settings_display_images_description">в тексті статей</string>
+    <string name="settings_display_images_description">В тексті статей</string>
     <string name="settings_display_entries_fullscreen">Статті на весь екран</string>
     <string name="settings_entry_margins">Відступи</string>
-    <string name="settings_entry_margins_description">з боків</string>
+    <string name="settings_entry_margins_description">З боків</string>
     <string name="entry_text_align_justify">Вирівнювати за вмістом</string>
-    <string name="entry_text_align_justify_description">інакше по лівому краю</string>
+    <string name="entry_text_align_justify_description">Інакше по лівому краю</string>
     <string name="linkColor">Колір посилань</string>
     <string name="linkColor_descr">Колір Посилання</string>
     <string name="settings_color_link_sample_short">Посилання</string>
@@ -273,9 +278,9 @@
     <string name="settings_category_operation">Операції</string>
     <string name="settings_category_operation_summary">Налаштування</string>
     <string name="tap_zone_size">Розмір зони натиснення</string>
-    <string name="tap_zone_size_descr">Ширина або висота зон натиснення в міліметрах</string>
+    <string name="tap_zone_size_descr">Ширина або висота зон натискань в міліметрах</string>
     <string name="settings_show_tap_zones">Зони натискань видно</string>
-    <string name="settings_show_tap_zone_description">напівпрозорі квадратики у вікні читання статті</string>
+    <string name="settings_show_tap_zone_description">Напівпрозорі квадратики у вікні читання статті</string>
     <string name="settings_tapZones">Зони натискань (предпоказ)</string>
     <string name="settings_volume_buttons_action">Дія кнопок гучності</string>
     <string name="brightness_gesture">Зміна яскравості жестом</string>
@@ -295,13 +300,13 @@
     <string name="page_up_down_90_pct">Прокрутка сторінки 90 %</string>
     <string name="page_up_down_90_pct_descr">Щоб залишати кілька рядків з попередньої сторінки, якщо вимкнуто, то гортається ціла сторінка</string>
     <string name="settings_remember_last_entry">Запам’ятовувати останню статтю</string>
-    <string name="settings_remeber_last_entry_description">Відкривати останню переглянуту статтю при запуску, інакше список непрочитанних статей</string>
+    <string name="settings_remeber_last_entry_description">Відкривати останню статтю під час запуску, інакше список непрочитанних статей</string>
     <string name="auto_unstart_at_bottom">Забирати з обраних коли прочитано</string>
-    <string name="auto_unstart_at_bottom_descr">Автоматично забирати статтю з обраного при досягненні ії нижнього краю</string>
+    <string name="auto_unstart_at_bottom_descr">Автоматично вилучати статтю з обраного при досягненні ії нижнього краю</string>
     <string name="settings_category_advanced">Додатково</string>
     <string name="settings_category_advanced_summary">Додаткові можливості (резервування, фільтри...)</string>
     <string name="settings_autobackup_enabled">Автоматичне резервне копіювання</string>
-    <string name="settings_autobackup_enabled_descr">Періодично зберігати OPML файл з даними стрічок та обраних статей</string>
+    <string name="settings_autobackup_enabled_descr">Періодично зберігати .opml файл з даними стрічок та обраних статей</string>
     <string name="settings_category_content_presentation">Представлення вмісту</string>
     <string name="settings_display_text_color">Яскравість тексту</string>
     <string name="settings_visible_feeds">Видимі стрічки</string>
@@ -311,11 +316,12 @@
     <string name="downloadImage">Завантаження зображень</string>
     <string name="loadFullText">Завантаження усього тексту</string>
     <string name="deleteOldEntries">Вилучення старих статей</string>
+    <string name="deleting_ghost_entries">Видалення старих файлів</string>
     <string name="AllImages">Всі зображення</string>
-    <string name="EntryImages">Завантаження зображень статті</string>
     <string name="mobilizeAll">Завантаження повних текстів</string>
     <string name="RefreshFeeds">Оновлення статей</string>
-    <string name="deleteImages">Вилучити зображення</string>
+    <string name="deleteImages">Вилучення зображень:</string>
+    <string name="deleteFullTexts">Вилучення повного тексту:</string>
     <string name="applyOperations">Застосувати операції</string>
     <string name="extractContent">Форматування тексту</string>
     <string name="improveHtmlContent">Оптимізація HTML тексту</string>
@@ -323,17 +329,19 @@
     <string name="setupConnection">Налагодження з’єднання</string>
     <string name="settings_content_extract_rules">Правила пошуку повних текстів</string>
     <string name="settings_content_extract_rules_description">Встановлюються для кожного сайту (необхідні базові знання HTML)</string>
-    <string name="settings_tap_zones_dialogtitle">Для інформації, зміна неможлива</string>
+    <string name="settings_tap_zones_dialogtitle">для інформації, зміна неможлива</string>
     <string name="downloadNext">"Завантажити наступні "</string>
+    <string name="downloadAll">", Все"</string>
     <string name="loadingLink">Завантаження посилань</string>
     <string name="loadLink">Читати зараз</string>
     <string name="loadLinkLater">Читати пізніше</string>
+    <string name="loadLinkLaterStarred">Прочитати пізніше в обраних</string>
     <string name="addFeed">Додати стрічку</string>
     <string name="externalLinks">Зовнішні посилання</string>
     <string name="markAllAsRead">Помітити все як прочитане</string>
     <string name="pageUp">сторінка догори / Свайп до низу щоб помітити обраною</string>
-    <string name="pageDown">Сторінка вниз</string>
-    <string name="fullScreenToggle">Прмк. весь экран</string>
+    <string name="pageDown">сторінка вниз</string>
+    <string name="fullScreenToggle">Прмк. весь екран</string>
     <string name="auto_refresh_feed">Оновлювати автоматично</string>
     <string name="actionBarToggle">Прмк. панелі дій</string>
     <string name="standard">Стандартно</string>
@@ -352,14 +360,15 @@
     <string name="entry_marked_unread">Стаття помічена як непрочитана</string>
     <string name="lock_orientation">Горизонтальна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
-    <string name="markedAsStarred">Стаття помічена обраною</string>
+    <string name="markedAsStarred">Стаття помічена обраною: </string>
     <string name="deleteAllEntries">Вилучити всі статті крім обраних</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з мітками</string>
     <string name="filter_hint">Всі фільтри об’єднуються по Або. Прийняти переважує Відхилити</string>
-    <string name="keyword">Ключеве слово(а)</string>
+    <string name="keyword">ключеве слово(а)</string>
     <string name="loadTypeWeb">Web (завантажувати всі посилання із сторінки)</string>
     <string name="loadTypeRSS">RSS (адреса стрічки або сайту або ключеве слово)</string>
+    <string name="loadTypeWebPageSearch">Веб-пошук сторінок DuckDuckGo (знайти і завантажити одну статтю)</string>
     <string name="loadType">Тип завантаження:</string>
     <string name="global_filter">Глобальний фільтр &#8230;</string>
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
@@ -372,7 +381,7 @@
     <string name="brightness">Яскравість</string>
     <string name="brightness_change">Зміна яскравості</string>
     <string name="criticalErrorOccured">Виникла помилка. Надішліть цей текст розробнику</string>
-    <string name="criticalErrorSending">Надсилаю звіт…</string>
+    <string name="criticalErrorSending">Надіслати звіт…</string>
     <string name="copyToClipboard">В буфер</string>
     <string name="sendEmail">Надіслати email</string>
     <string name="toastAppCrashed">Додаток несподівано зупинився. Будь ласка надішліть звіт розробнику</string>
@@ -396,6 +405,42 @@
     <string name="global_class_list_to_remove_from_article_text_summary">ім\'я класу на кожен рядок</string>
     <string name="hide">Приховати</string>
     <string name="show">Показати</string>
+    <string name="setFullTextRoot">Вибрати як джерело для повного тексту</string>
+    <string name="fullTextRoot">Джерело повного тексту</string>
+    <string name="fullTextReloadStarted">Весь текст перезавантажується</string>
+    <string name="brightness_update_from_system_period_min">Час відновлення яскравості</string>
+    <string name="brightness_update_from_system_period_min_descr">(в хвилинах) Через який час яскравість змінена за допомогою свайпа буде відновлена до існуючого загального рівня</string>
+    <string name="menu_add_feed_shortcut">Додати ярлик стрічки на домашній екран</string>
+    <string name="new_feed_shortcut_added">Новий ярлик стрічки був доданий на домашній екран</string>
+    <string name="new_feed_shortcut_add_failed">Лаунчер не може створити ярлик</string>
+    <string name="custom_data_folder">Власна тека для зовнішних файлів</string>
+    <string name="custom_data_folder_descr">(порожньо - використовувати за замовчуванням) шлях до теки де будуть зберігатись завантажені зображення та резервні копії</string>
+    <string name="entry_text_title_link">Посилання у заголовку</string>
+    <string name="entry_text_title_link_description">відкриття сторінки із статтею у браузері при натисканні на заголовок</string>
+    <string name="delete_read_articles">Вилучити прочитані статті</string>
+    <string name="delete_read_articles_descr">незалежно від часу зберігання статей</string>
+    <string name="data_folder">Тека даних</string>
+    <string name="data_folder_descr">Місце для збереження завантажених текстів та зображень статей</string>
+    <string name="internalMemory">Внутрішня пам\'ять (Кеш)</string>
+    <string name="externalMemory">Зовнішня пам’ять</string>
+    <string name="show_html">Показати html</string>
+    <string name="image_white_background">Білий фон зображень</string>
+    <string name="settings_add_google_news_dialog">Додати діалогове вікно Google News</string>
+    <string name="settings_add_google_news_dialog_descr">Зніміть позначку, щоб обминути діалогове вікно вибору типу новин</string>
+    <string name="reload_fulltext_after_tag_editing">Перезавантажити текст після редагування мітки</string>
+    <string name="reload_fulltext_after_tag_editing_descr">якщо вимкнено, то весь текст не буде перезавантажений після кожного редагування мітки (показати|сховати|root), таким чином Ви можете ввести кілька змін легше (в іншому випадку потрібно вручну перезавантажити повний текст після завершення редагування)</string>
+    <string name="article_menu_show_by_tap">Показувати меню статті дотиком</string>
+    <string name="article_list_loading">Завантаження списку статей</string>
+    <string name="article_opening">Відкриття статті</string>
+    <string name="web_page_loading">Завантаження сторінки...</string>
+    <string name="article_menu_show_by_tap_descr">Коли панель дій прихована - в іншому випадку ви знайдете її тільки там</string>
+    <string name="menu_go_back">Назад</string>
+    <string name="menu_go_top">Прокрутити на початок</string>
+    <string name="menu_close">Закрити</string>
+    <string name="reading_file_list">Список для читання</string>
+    <string name="add_entry_shortcut">Додати ярлик статті</string>
+    <string name="new_entry_shortcut_added">Новий ярлик статті був створений на домашньому екрані</string>
+    <string name="menu_reload_with_tables_toggle">З таблицями</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>

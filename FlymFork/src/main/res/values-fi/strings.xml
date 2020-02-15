@@ -33,7 +33,6 @@
     <!-- GENERAL -->
     <string name="welcome_title">Tervetuloa Handy News Reader:iin. Haluaisitko lisätä syötteen?</string>
     <string name="never">ei koskaan</string>
-    <string name="update">Päivitetty</string>
     <string name="menu_settings">Asetukset</string>
     <string name="menu_refresh">Päivitä</string>
     <string name="flym_feeds">Handy News Reader-syötteet</string>

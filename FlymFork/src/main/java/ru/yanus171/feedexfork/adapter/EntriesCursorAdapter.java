@@ -54,8 +54,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Vibrator;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -68,10 +66,12 @@ import android.widget.LinearLayout;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
-
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,17 +85,18 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.ColorPreference;
 
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
+import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getString;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
@@ -108,7 +109,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
-    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
+    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
+    public static int mEntryActivityStartingStatus = 0;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -157,6 +159,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             else
                 holder.dateTextView = view.findViewById(android.R.id.text2);
             holder.authorTextView = view.findViewById(R.id.textAuthor);
+            holder.imageSizeTextView = view.findViewById(R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
             holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
@@ -243,12 +246,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if ( event.getAction() == MotionEvent.ACTION_UP ) {
                             Dog.v("onTouch ACTION_UP" );
-                            if ( currentx > MIN_X_TO_VIEW_ARTICLE &&
+                            if ( mEntryActivityStartingStatus == 0 &&
+                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                  Math.abs( paddingX ) < minX &&
                                  Math.abs( paddingY ) < minY &&
-                                 android.os.SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() )
-                                v.getContext().startActivity(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, holder.entryID)));
-                            else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
+                                 android.os.SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
+                                mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
+                                v.getContext().startActivity(
+                                        GetActionIntent(Intent.ACTION_VIEW,
+                                                ContentUris.withAppendedId(mUri, holder.entryID)));
+                            } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
                                 toggleReadState(holder.entryID, view);
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
                                 toggleFavoriteState( holder.entryID, view );
@@ -320,6 +327,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
+        holder.entryLink = cursor.getString(mUrlPos);
 
         final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
 
@@ -349,7 +357,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( /*!mShowEntryText && */PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
-            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryID, mainImgUrl);
+            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
@@ -357,9 +365,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
             if (mainImgUrl != null) {
                 Glide.with(context).load(mainImgUrl).centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
-                //Glide.with(context).load(mainImgUrl).apply( new RequestOptions().centerCrop().placeholder(letterDrawable).error(letterDrawable) ).into(holder.mainImgView);
             } else {
-                Glide.clear(holder.mainImgView);
+                Glide.with(context).clear(holder.mainImgView);
                 holder.mainImgView.setImageDrawable(letterDrawable);
             }
         } else
@@ -367,10 +374,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
-        holder.isMobilized = !cursor.isNull(mMobilizedPos);
+        holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos, mIdPos );
 
-        int size = (int) (cursor.getFloat( mTextLenPos ) / 1024);
-        String sizeText = size > 0 ? String.format( ", %d KB", size ) : "";
+        String sizeText = " " + GetTextSizeText( cursor.getInt( mTextLenPos) );
         if (mShowFeedInfo && mFeedNamePos > -1) {
             if (feedName != null) {
                 holder.dateTextView.setText(Html.fromHtml("<font color='#247ab0'>" + feedName + "</font>" + Constants.COMMA_SPACE + StringUtils.getDateTimeString(cursor.getLong(mDatePos))) + sizeText);
@@ -380,6 +386,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         } else {
             holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
         }
+
+        final int imageSize = cursor.getInt( mImageSizePos );
+        if ( PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize  != 0 ) {
+            holder.imageSizeTextView.setVisibility( View.VISIBLE );
+            holder.imageSizeTextView.setText(GetImageSizeText(imageSize));
+        } else
+            holder.imageSizeTextView.setVisibility( View.GONE );
+
         holder.authorTextView.setText( cursor.getString( mAuthorPos ) );
         holder.titleTextView.setEnabled(isUnread);
         holder.dateTextView.setEnabled(isUnread);
@@ -438,6 +452,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         {
             final int color = Color.parseColor( isUnread ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
+            holder.imageSizeTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
@@ -445,6 +460,17 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.urlTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
         }
+    }
+
+    static private String GetImageSizeText(int imageSize) {
+        final double MEGABYTE = 1024.0 * 1024.0;
+        return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > 1024 * 100 ?
+            String.format( "%.1f M", imageSize / MEGABYTE ).replace( ",", "." ) : "";
+    }
+
+    static private String GetTextSizeText(int imageSize) {
+        final int KBYTE = 1024;
+        return imageSize > KBYTE ? String.format( "%d K", imageSize / KBYTE ) : "";
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
@@ -584,6 +610,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mDatePos = cursor.getColumnIndex(EntryColumns.DATE);
             mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
             mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
+            mImageSizePos = cursor.getColumnIndex(EntryColumns.IMAGES_SIZE);
             mFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
             mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
             mMobilizedPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
@@ -601,6 +628,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView textTextView;
         TextView dateTextView;
         TextView authorTextView;
+        TextView imageSizeTextView;
         ImageView mainImgView;
         View mainImgLayout;
         ImageView starImgView;
@@ -614,6 +642,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isFavorite;
         boolean isMobilized;
         long entryID = -1;
+        String entryLink;
     }
 
     public int GetFirstUnReadPos() {
@@ -635,6 +664,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         return -1;
     }
+
 }
 
 /*class MarkAsRadThread extends Thread  {

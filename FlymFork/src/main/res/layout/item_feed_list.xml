@@ -10,7 +10,8 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp" />
 
     <TextView
         android:id="@android:id/text1"
@@ -26,7 +27,11 @@
         android:minHeight="30dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textIsSelectable="false"/>
+        android:textIsSelectable="false"
+        android:layout_toStartOf="@+id/sortItem"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/indicator" />
 
     <ImageView
         android:id="@+id/sortItem"
@@ -35,6 +40,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
-        android:src="@drawable/sort"/>
+        android:src="@drawable/sort"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp" />
 
 </RelativeLayout>

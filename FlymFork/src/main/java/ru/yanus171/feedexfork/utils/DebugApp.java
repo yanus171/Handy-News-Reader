@@ -225,7 +225,7 @@ public class DebugApp {
 					.setText(st.toString());
 			Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
 			context.startActivity(
-					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)));
+					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
 		}
 		//if (mOldHandler != null) {
 			// mOldHandler.uncaughtException(thread, throwable);
@@ -347,7 +347,7 @@ public class DebugApp {
 	}
 
 	// ------------------------------------------------------------------------
-	private static void AddErrorToLog(String text, Exception e) {
+	public static void AddErrorToLog(String text, Exception e) {
 		AddErrorToLog(text, e, true);
 	}
 	// ------------------------------------------------------------------------
@@ -372,7 +372,7 @@ public class DebugApp {
 	}
 
 	 //--------------------------------------------------------------------------------
-	private static Uri CreateFileUri(String dir, String fileName, String text) {
+	public static Uri CreateFileUri(String dir, String fileName, String text) {
 
 		Uri result = null;
 		fileName = fileName.replace(",", "_");
@@ -381,7 +381,7 @@ public class DebugApp {
 		if (fileName.startsWith("/"))
 			file = new File(fileName);
 		else {
-			file = FileUtils.GetFolder();
+			file = FileUtils.INSTANCE.getFolder();
 			file.mkdirs();
 			file = new File(file, dir);
 			file.mkdirs();

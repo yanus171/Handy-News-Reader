@@ -89,6 +89,7 @@
 
     <string-array name="languageList" translatable="false">
         <item>System</item>
+        <item>Basque</item>
         <item>Català</item>
         <item>Český</item>
         <item>Deutsch</item>
@@ -99,7 +100,9 @@
         <item>Français</item>
         <item>Italiano</item>
         <item>한국어</item>
+        <item>العَرَبِيَّة‎‎</item>
         <item>Polski</item>
+        <item>Portuguese Brazilian</item>
         <item>Русский</item>
         <item>Slovenskej</item>
         <item>Српски</item>
@@ -110,6 +113,7 @@
     </string-array>
     <string-array name="languageValueList" translatable="false">
         <item>System</item>
+        <item>eu</item>
         <item>ca</item>
         <item>cs</item>
         <item>de</item>
@@ -120,7 +124,9 @@
         <item>fr</item>
         <item>it</item>
         <item>ko</item>
+        <item>ar</item>
         <item>pl</item>
+        <item>pt-BR</item>
         <item>ru</item>
         <item>sk</item>
         <item>sr</item>

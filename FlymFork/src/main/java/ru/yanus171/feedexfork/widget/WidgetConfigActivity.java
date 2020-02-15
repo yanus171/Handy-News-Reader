@@ -46,7 +46,7 @@ package ru.yanus171.feedexfork.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import ru.yanus171.feedexfork.R;
 

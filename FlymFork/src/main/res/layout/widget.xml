@@ -12,7 +12,9 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="30dp"
         android:background="#7C000000"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp" />
 
     <ImageView
         android:id="@+id/feed_icon"
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

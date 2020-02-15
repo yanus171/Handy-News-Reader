@@ -26,7 +26,9 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,11 +40,14 @@ import java.util.regex.Matcher;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -51,6 +56,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -59,6 +65,7 @@ public class EntryActivity extends BaseActivity {
     public EntryFragment mEntryFragment = null;
 
     private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
+    public boolean mHasSelection = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,23 +138,24 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.TITLE, title);
                     values.put(EntryColumns.SCROLL_POS, 0);
                     values.put(EntryColumns.DATE, (new Date()).getTime());
-                    values.put(EntryColumns.LINK, url);
                     values.put(EntryColumns.ABSTRACT, text);
-                    values.put(EntryColumns.MOBILIZED_HTML, text);
+                    values.put(EntryColumns.IS_WITH_TABLES, 1);
+                    values.put(EntryColumns.IMAGES_SIZE, 0);
+                    FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
-                    SetEntryID(entryUri);
+                    SetEntryID(entryUri, url);
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false);
                 } else
-                    SetEntryID( entryUri );
+                    SetEntryID( entryUri, url );
             }
 
-            private void SetEntryID(Uri entryUri) {
+            private void SetEntryID(Uri entryUri, String entryLink) {
                 final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
-                mEntryFragment.SetEntryID( 0, entryID );
+                mEntryFragment.SetEntryID( 0, entryID, entryLink );
                 FetcherService.addActiveEntryID(entryID);
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
@@ -199,26 +207,30 @@ public class EntryActivity extends BaseActivity {
         editor.putLong(PrefUtils.LAST_ENTRY_ID, 0);
         editor.putString(PrefUtils.LAST_ENTRY_URI, "");
         editor.commit();*/
+
+        mEntryFragment.mIsFinishing = true;
+        //if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().onBackPressed()  )
+        //    return;
+
         PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
         PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
         FetcherService.clearActiveEntryID();
         new Thread() {
             @Override
             public void run() {
+                FeedDataContentProvider.mNotifyEnabled = false;
                 ContentResolver cr = getContentResolver();
                 cr.delete(FeedData.TaskColumns.CONTENT_URI, FeedData.TaskColumns.ENTRY_ID + " = " + mEntryFragment.getCurrentEntryID(), null);
                 FetcherService.setDownloadImageCursorNeedsRequery(true);
-
+                FeedDataContentProvider.mNotifyEnabled = true;
                 if ( !mEntryFragment.mMarkAsUnreadOnFinish )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 )
                         cr.update(EntryColumns.CONTENT_URI(  mEntryFragment.getCurrentEntryID() ), FeedData.getReadContentValues(), null, null);
-
-
             }
         }.start();
 
-        //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPagerAdapter.SaveScrollPos( true );
+        //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPager.getCurrentItem() ).SaveScrollPos();
         super.onBackPressed();
     }
 
@@ -241,6 +253,8 @@ public class EntryActivity extends BaseActivity {
         super.onResume();
 
         setFullScreen();
+        Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
+        EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
     }
 
     public void setFullScreen() {
@@ -349,5 +363,15 @@ public class EntryActivity extends BaseActivity {
         return getResources().getAssets();
     }
 
+    @Override
+    public void onActionModeStarted (ActionMode mode) {
+        super.onActionModeStarted(mode);
+        mHasSelection = true;
+    }
 
+    @Override
+    public void onActionModeFinished (ActionMode mode) {
+        super.onActionModeFinished(mode);
+        mHasSelection = false;
+    }
 }

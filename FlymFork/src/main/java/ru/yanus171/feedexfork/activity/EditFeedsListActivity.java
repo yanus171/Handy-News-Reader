@@ -20,11 +20,10 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class EditFeedsListActivity extends BaseActivity {
 

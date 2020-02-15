@@ -24,7 +24,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.Locale;
@@ -34,6 +34,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
+
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -65,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( mBrightness != null ) {
             mBrightness.OnResume();
         }
+        Status().UpdateText();
     }
 
     @Override
@@ -72,6 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( mBrightness != null ) {
             mBrightness.OnPause();
         }
+        Status().ClearProgress();
         super.onPause();
     }
     // ----------------------------------------------------------------

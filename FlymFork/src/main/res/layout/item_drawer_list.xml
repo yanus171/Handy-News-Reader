@@ -25,7 +25,8 @@
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:orientation="vertical"
         android:layout_toStartOf="@+id/layoutCount"
-        android:layout_toLeftOf="@+id/layoutCount">
+        android:layout_toLeftOf="@+id/layoutCount"
+        android:layout_toEndOf="@android:id/icon">
 
         <TextView
             android:id="@android:id/text1"
@@ -42,6 +43,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/imageSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#EEEEEE"
+                android:text="ImSize"
+                android:textIsSelectable="false"/>
 
             <TextView
                 android:id="@android:id/text2"
@@ -72,7 +84,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/read_count"
@@ -84,7 +97,9 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:text="AC"
             android:textColor="#EEEEEE"
-            android:layout_marginLeft="12dp" />
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
 
         <TextView
             android:id="@+id/unread_count"
@@ -94,7 +109,8 @@
             android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:text="UC"
-            android:textColor="#EEEEEE"/>
+            android:textColor="#EEEEEE"
+            android:layout_marginEnd="12dp" />
 
     </LinearLayout>
 

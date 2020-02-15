@@ -21,12 +21,14 @@ package ru.yanus171.feedexfork.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.regex.Matcher;
 
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+
+import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_STAR;
 
 public class LoadLinkLaterActivity extends AppCompatActivity {
 
@@ -41,10 +43,12 @@ public class LoadLinkLaterActivity extends AppCompatActivity {
             //Pattern p = Pattern.compile("((https?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[/.]|[~])*)");
             Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
             if (m.find())
-                FetcherService.StartServiceOpenExternalLink(text.substring(m.start(), m.end()), text.substring(0, m.start()) );
+                FetcherService.StartServiceLoadExternalLink(text.substring(m.start(), m.end()), text.substring(0, m.start()), false );
 
         } else if (intent.getScheme() != null && intent.getScheme().startsWith("http"))
-            FetcherService.StartServiceOpenExternalLink( intent.getDataString(), intent.getDataString() );
+            FetcherService.StartServiceLoadExternalLink( intent.getDataString(),
+                                                         intent.getDataString(),
+                                                         intent.getBooleanExtra( EXTRA_STAR, false ) );
 
 
 

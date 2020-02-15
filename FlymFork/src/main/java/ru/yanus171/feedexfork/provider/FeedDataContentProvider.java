@@ -49,6 +49,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -57,8 +58,9 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -67,13 +69,19 @@ import ru.yanus171.feedexfork.BuildConfig;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
+
+import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 
 public class FeedDataContentProvider extends ContentProvider {
 
@@ -152,24 +160,30 @@ public class FeedDataContentProvider extends ContentProvider {
 
     private DatabaseHelper mDatabaseHelper;
 
-    public static Uri addFeed(Context context, String url, String name, Long groupID,
-                              boolean retrieveFullText,
-                              boolean showTextInEntryList,
-                              boolean imageAutoLoad,
-                              String options) {
+    public static Pair<Uri, Boolean> addFeed(Context context, String url, String name, Long groupID,
+                                             boolean retrieveFullText,
+                                             boolean showTextInEntryList,
+                                             boolean imageAutoLoad,
+                                             String options) {
+        boolean added = false;
         ContentResolver cr = context.getContentResolver();
 
         if (!url.startsWith(Constants.HTTP_SCHEME) && !url.startsWith(Constants.HTTPS_SCHEME)) {
             url = Constants.HTTP_SCHEME + url;
         }
 
-        Cursor cursor = cr.query(FeedColumns.CONTENT_URI, null, FeedColumns.URL + Constants.DB_ARG,
+        Cursor cursor = cr.query(FeedColumns.CONTENT_URI, new String[] {_ID}, FeedColumns.URL + Constants.DB_ARG,
                 new String[]{url}, null);
 
         Uri result = Uri.EMPTY;
         if (cursor.moveToFirst()) {
-            cursor.close();
             Toast.makeText(context, R.string.error_feed_url_exists, Toast.LENGTH_SHORT).show();
+            final long feedId = cursor.getLong(0);
+            result = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( feedId );
+            context.startActivity( new Intent( context, HomeActivity.class )
+                    .setAction(Intent.ACTION_MAIN)
+                    .setData( result ) );
+            cursor.close();
         } else {
             cursor.close();
             ContentValues values = new ContentValues();
@@ -191,8 +205,9 @@ public class FeedDataContentProvider extends ContentProvider {
             values.put(FeedColumns.OPTIONS, options);
 
             result = cr.insert(FeedColumns.CONTENT_URI, values);
+            added = true;
         }
-        return result;
+        return new Pair<>(result, added);
     }
 
     private static String getSearchWhereClause(String uriSearchParam) {
@@ -200,7 +215,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
         if (!uriSearchParam.isEmpty()) {
             uriSearchParam = DatabaseUtils.sqlEscapeString("%" + Uri.decode(uriSearchParam) + "%");
-            return EntryColumns.TITLE + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.ABSTRACT + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.MOBILIZED_HTML + " LIKE " + uriSearchParam;
+            return EntryColumns.TITLE + " LIKE " + uriSearchParam; //+ Constants.DB_OR + EntryColumns.ABSTRACT + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.MOBILIZED_HTML + " LIKE " + uriSearchParam;
         } else {
             return "1 = 2"; // to have 0 result with an empty search
         }
@@ -281,7 +296,7 @@ public class FeedDataContentProvider extends ContentProvider {
         switch (matchCode) {
             case URI_GROUPED_FEEDS: {
                 queryBuilder.setTables(FeedData.FEEDS_TABLE_WITH_GROUP_PRIORITY);
-                sortOrder = "IFNULL(group_priority, " + FeedColumns.PRIORITY + "), IFNULL(" + FeedColumns.GROUP_ID + ", " + FeedColumns._ID + "), " + FeedColumns.IS_GROUP + " DESC, " + FeedColumns.PRIORITY;
+                sortOrder = "IFNULL(group_priority, " + FeedColumns.PRIORITY + "), IFNULL(" + FeedColumns.GROUP_ID + ", " + _ID + "), " + FeedColumns.IS_GROUP + " DESC, " + FeedColumns.PRIORITY;
                 break;
             }
             case URI_GROUPS: {
@@ -304,7 +319,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_GROUP:
             case URI_FEED: {
                 queryBuilder.setTables(FeedColumns.TABLE_NAME);
-                queryBuilder.appendWhere(new StringBuilder(FeedColumns._ID).append('=').append(uri.getPathSegments().get(1)));
+                queryBuilder.appendWhere(new StringBuilder(_ID).append('=').append(uri.getPathSegments().get(1)));
                 break;
             }
             case URI_FEEDS: {
@@ -327,7 +342,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_ENTRY_FOR_GROUP:
             case URI_SEARCH_ENTRY: {
                 queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
-                queryBuilder.appendWhere(new StringBuilder(EntryColumns._ID).append('=').append(uri.getPathSegments().get(3)));
+                queryBuilder.appendWhere(new StringBuilder(_ID).append('=').append(uri.getPathSegments().get(3)));
                 break;
             }
             case URI_ENTRIES_FOR_FEED: {
@@ -372,7 +387,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES_ENTRY:
             case URI_ENTRY: {
                 queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
-                queryBuilder.appendWhere(new StringBuilder(EntryColumns._ID).append('=').append(uri.getPathSegments().get(1)));
+                queryBuilder.appendWhere(new StringBuilder(_ID).append('=').append(uri.getPathSegments().get(1)));
                 break;
             }
             case URI_FAVORITES: {
@@ -381,12 +396,13 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_TASKS: {
-                queryBuilder.setTables(TaskColumns.TABLE_NAME);
+                queryBuilder.setTables(FeedData.TASKS_WITH_FEED_INFO);
                 break;
             }
+
             case URI_TASK: {
                 queryBuilder.setTables(TaskColumns.TABLE_NAME);
-                queryBuilder.appendWhere(new StringBuilder(EntryColumns._ID).append('=').append(uri.getPathSegments().get(1)));
+                queryBuilder.appendWhere(new StringBuilder(_ID).append('=').append(uri.getPathSegments().get(1)));
                 break;
             }
             default:
@@ -498,11 +514,11 @@ public class FeedDataContentProvider extends ContentProvider {
                 table = FeedColumns.TABLE_NAME;
 
                 long feedId = Long.parseLong(uri.getPathSegments().get(1));
-                where.append(FeedColumns._ID).append('=').append(feedId);
+                where.append(_ID).append('=').append(feedId);
 
                 if (values.containsKey(FeedColumns.PRIORITY) && mPriorityManagement ) {
                     Cursor priorityCursor = database.query(FeedColumns.TABLE_NAME, new String[]{FeedColumns.PRIORITY, FeedColumns.GROUP_ID},
-                            FeedColumns._ID + "=" + feedId, null, null, null, null);
+                            _ID + "=" + feedId, null, null, null, null);
                     if (priorityCursor.moveToNext()) {
                         int oldPriority = priorityCursor.getInt(0);
                         String oldGroupId = priorityCursor.getString(1);
@@ -571,7 +587,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_ENTRY_FOR_GROUP:
             case URI_SEARCH_ENTRY: {
                 table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns._ID).append('=').append(uri.getPathSegments().get(3));
+                where.append(_ID).append('=').append(uri.getPathSegments().get(3));
                 break;
             }
             case URI_UNREAD_ENTRIES_FOR_FEED:
@@ -582,7 +598,7 @@ public class FeedDataContentProvider extends ContentProvider {
             }
             case URI_ENTRIES_FOR_GROUP: {
                 table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns.FEED_ID).append(" IN (SELECT ").append(FeedColumns._ID).append(" FROM ").append(FeedColumns.TABLE_NAME).append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
+                where.append(EntryColumns.FEED_ID).append(" IN (SELECT ").append(_ID).append(" FROM ").append(FeedColumns.TABLE_NAME).append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
                 break;
             }
             case URI_ENTRIES: {
@@ -603,7 +619,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES_ENTRY:
             case URI_ENTRY: {
                 table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns._ID).append('=').append(uri.getPathSegments().get(1));
+                where.append(_ID).append('=').append(uri.getPathSegments().get(1));
                 break;
             }
             case URI_FAVORITES: {
@@ -617,7 +633,7 @@ public class FeedDataContentProvider extends ContentProvider {
             }
             case URI_TASK: {
                 table = TaskColumns.TABLE_NAME;
-                where.append(TaskColumns._ID).append('=').append(uri.getPathSegments().get(1));
+                where.append(_ID).append('=').append(uri.getPathSegments().get(1));
                 break;
             }
             default:
@@ -662,7 +678,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
                 String groupId = uri.getPathSegments().get(1);
 
-                where.append(FeedColumns._ID).append('=').append(groupId);
+                where.append(_ID).append('=').append(groupId);
 
                 // Delete the sub feeds & their entries
                 Cursor subFeedsCursor = database.query(FeedColumns.TABLE_NAME, FeedColumns.PROJECTION_ID, FeedColumns.GROUP_ID + "=" + groupId, null,
@@ -674,7 +690,7 @@ public class FeedDataContentProvider extends ContentProvider {
                 subFeedsCursor.close();
 
                 // Update the priorities
-                Cursor priorityCursor = database.query(FeedColumns.TABLE_NAME, FeedColumns.PROJECTION_PRIORITY, FeedColumns._ID + "=" + groupId, null,
+                Cursor priorityCursor = database.query(FeedColumns.TABLE_NAME, FeedColumns.PROJECTION_PRIORITY, _ID + "=" + groupId, null,
                         null, null, null);
 
                 if (priorityCursor.moveToNext()) {
@@ -703,11 +719,11 @@ public class FeedDataContentProvider extends ContentProvider {
                     }
                 }.start();
 
-                where.append(FeedColumns._ID).append('=').append(feedId);
+                where.append(_ID).append('=').append(feedId);
 
                 // Update the priorities
                 Cursor priorityCursor = database.query(FeedColumns.TABLE_NAME, new String[]{FeedColumns.PRIORITY, FeedColumns.GROUP_ID},
-                        FeedColumns._ID + '=' + feedId, null, null, null, null);
+                        _ID + '=' + feedId, null, null, null, null);
 
                 if (priorityCursor.moveToNext()) {
                     int priority = priorityCursor.getInt(0);
@@ -742,7 +758,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_SEARCH_ENTRY: {
                 table = EntryColumns.TABLE_NAME;
                 final String entryId = uri.getPathSegments().get(3);
-                where.append(EntryColumns._ID).append('=').append(entryId);
+                where.append(_ID).append('=').append(entryId);
 
                 // Also remove the associated tasks
                 new Thread() {
@@ -764,20 +780,40 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES_FOR_FEED: {
                 table = EntryColumns.TABLE_NAME;
                 where.append(EntryColumns.FEED_ID).append('=').append(uri.getPathSegments().get(1));
+                    //TODO also remove tasks
 
+                break;
+            }
+            case URI_UNREAD_ENTRIES: {
+                table = EntryColumns.TABLE_NAME;
+                where.append(EntryColumns.WHERE_UNREAD);
                 //TODO also remove tasks
 
                 break;
             }
             case URI_ENTRIES_FOR_GROUP: {
                 table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns.FEED_ID).append(" IN (SELECT ").append(FeedColumns._ID).append(" FROM ").append(FeedColumns.TABLE_NAME).append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
+                where.append(EntryColumns.FEED_ID)
+                        .append(" IN (SELECT ").append(_ID)
+                        .append(" FROM ").append(FeedColumns.TABLE_NAME)
+                        .append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
 
                 //TODO also remove tasks
 
                 break;
             }
-            case URI_ENTRIES: {
+            case URI_UNREAD_ENTRIES_FOR_GROUP: {
+                table = EntryColumns.TABLE_NAME;
+                where.append(EntryColumns.FEED_ID)
+                        .append(" IN (SELECT ").append(_ID)
+                        .append(" FROM ").append(FeedColumns.TABLE_NAME)
+                        .append(" WHERE ").append(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)).append(')');
+                where.append(Constants.DB_AND);
+                where.append(EntryColumns.WHERE_UNREAD);
+                //TODO also remove tasks
+
+                break;
+            } case URI_ENTRIES: {
                 table = EntryColumns.TABLE_NAME;
 
                 // Also remove all tasks
@@ -793,7 +829,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES_ENTRY:
             case URI_ENTRY: {
                 table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns._ID).append('=').append(uri.getPathSegments().get(1));
+                where.append(_ID).append('=').append(uri.getPathSegments().get(1));
                 break;
             }
             case URI_FAVORITES: {
@@ -807,7 +843,7 @@ public class FeedDataContentProvider extends ContentProvider {
             }
             case URI_TASK: {
                 table = TaskColumns.TABLE_NAME;
-                where.append(TaskColumns._ID).append('=').append(uri.getPathSegments().get(1));
+                where.append(_ID).append('=').append(uri.getPathSegments().get(1));
                 break;
             }
             default:
@@ -824,12 +860,17 @@ public class FeedDataContentProvider extends ContentProvider {
         // If it's an entry deletion, delete associated cache files
         // Need to be done before the real entry deletion
         if (EntryColumns.TABLE_NAME.equals(table)) {
-            NetworkUtils.deleteEntriesImagesCache(uri, where.toString(), selectionArgs);
+//            Cursor cursor = getContext().getContentResolver().query( uri, new String[]{ _ID, LINK }, where.toString(), null, null );
+//            while( cursor.moveToNext() )
+//                FileUtils.INSTANCE.deleteMobilized( cursor.getString( 1 ), EntryColumns.CONTENT_URI( cursor.getLong( 0 ) ) );
+
+
+            //NetworkUtils.deleteEntriesImagesCache(uri, where.toString(), selectionArgs);
         }
 
         int count = database.delete(table, where.toString(), selectionArgs);
 
-        if (count > 0) {
+        if (count > 0 && mNotifyEnabled ) {
 //            if (FeedColumns.TABLE_NAME.equals(table)) {
 //                mDatabaseHelper.exportToOPML();
 //            }
@@ -854,6 +895,9 @@ public class FeedDataContentProvider extends ContentProvider {
             cr.notifyChange(FeedColumns.GROUPS_CONTENT_URI, null);
             cr.notifyChange(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, null);
         }
+        if ( EntriesListFragment.mSearchQueryUri != null )
+            cr.notifyChange(EntriesListFragment.mSearchQueryUri, null);
+
     }
 
 
