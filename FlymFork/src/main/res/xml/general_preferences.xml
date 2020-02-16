@@ -25,11 +25,10 @@
     <PreferenceScreen
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:summary="@string/settings_category_common_summary"
-        android:title="@string/settings_category_common">
+        android:title="@string/settings_category_theme">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_common">
+            android:title="@string/settings_category_theme">
 
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="Dark"
@@ -72,82 +71,81 @@
         android:title="@string/settings_category_article_list">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_article_list">
+            android:title="@string/settings_category_article_list"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:defaultValue="0"
-                android:entries="@array/settings_font_sizes"
-                android:entryValues="@array/settings_font_size_values"
-                android:inputType="number"
-                android:key="fontsize_entrylist"
-                android:title="@string/settings_font_size"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="0"
+            android:entries="@array/settings_font_sizes"
+            android:entryValues="@array/settings_font_size_values"
+            android:inputType="number"
+            android:key="fontsize_entrylist"
+            android:title="@string/settings_font_size"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="setting_show_article_icon"
-                android:title="@string/show_article_icon"
-                android:summary="@string/show_article_icon_descr"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting_show_article_icon"
+            android:title="@string/show_article_icon"
+            android:summary="@string/show_article_icon_descr"/>
 
-            <CheckBoxPreference
-                android:key="settings_show_article_url"
-                android:defaultValue="false"
-                android:title="@string/show_article_url"/>
+        <CheckBoxPreference
+            android:key="settings_show_article_url"
+            android:defaultValue="false"
+            android:title="@string/show_article_url"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="display_oldest_first"
-                android:summary="@string/settings_display_oldest_first_description"
-                android:title="@string/settings_display_oldest_first"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="display_oldest_first"
+            android:summary="@string/settings_display_oldest_first_description"
+            android:title="@string/settings_display_oldest_first"/>
 
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="show_mark_all_as_read_button"
-                android:summary="@string/show_mark_all_as_read_button_summary"
-                android:title="@string/show_mark_all_as_read_button"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_mark_all_as_read_button"
+            android:summary="@string/show_mark_all_as_read_button_summary"
+            android:title="@string/show_mark_all_as_read_button"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="show_read_checkbox"
-                android:summary="@string/show_read_checkbox_descr"
-                android:title="@string/show_read_checkbox"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_read_checkbox"
+            android:summary="@string/show_read_checkbox_descr"
+            android:title="@string/show_read_checkbox"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="show_full_text_indicator"
-                android:summary="@string/show_full_text_indicator_descr"
-                android:title="@string/show_full_text_indicator"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_full_text_indicator"
+            android:summary="@string/show_full_text_indicator_descr"
+            android:title="@string/show_full_text_indicator"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="show_new_icon"
-                android:summary="@string/show_new_icon_descr"
-                android:title="@string/show_new_icon"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_new_icon"
+            android:summary="@string/show_new_icon_descr"
+            android:title="@string/show_new_icon"/>
 
-            <CheckBoxPreference
-                android:key="show_read_article_count"
-                android:defaultValue="false"
-                android:title="@string/show_read_article_count"
-                android:summary="@string/show_read_article_count_descr"/>
+        <CheckBoxPreference
+            android:key="show_read_article_count"
+            android:defaultValue="false"
+            android:title="@string/show_read_article_count"
+            android:summary="@string/show_read_article_count_descr"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="show_group_entries_count"
-                android:title="@string/show_group_entrries_count"
-                android:summary="@string/show_group_entries_count_descr" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_group_entries_count"
+            android:title="@string/show_group_entrries_count"
+            android:summary="@string/show_group_entries_count_descr" />
 
-            <ru.yanus171.feedexfork.view.ColorPreference
-                android:defaultValue="@string/default_read_color"
-                android:dependency="customColors"
-                android:key="textColorRead"
-                android:title="@string/textColorRead"
-                android:summary="@string/textColorRead_descr"
-                colorPreference:backgroundColor1="@string/default_text_color_background"
-                colorPreference:istransparency="true"
-                colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
-                colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
+        <ru.yanus171.feedexfork.view.ColorPreference
+            android:defaultValue="@string/default_read_color"
+            android:dependency="customColors"
+            android:key="textColorRead"
+            android:title="@string/textColorRead"
+            android:summary="@string/textColorRead_descr"
+            colorPreference:backgroundColor1="@string/default_text_color_background"
+            colorPreference:istransparency="true"
+            colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
+            colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
 
-        </PreferenceCategory>
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -157,109 +155,120 @@
         android:title="@string/settings_category_article_text">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_article_text">
+            android:title="@string/settings_category_article_text"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:defaultValue="0"
-                android:entries="@array/settings_font_sizes"
-                android:entryValues="@array/settings_font_size_values"
-                android:inputType="number"
-                android:key="fontsize"
-                android:title="@string/settings_font_size"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="0"
+            android:entries="@array/settings_font_sizes"
+            android:entryValues="@array/settings_font_size_values"
+            android:inputType="number"
+            android:key="fontsize"
+            android:title="@string/settings_font_size"/>
 
-            <!--<ru.yanus171.feedexfork.view.AutoSummaryEditPreference-->
-                <!--android:key="text_color_brightness"-->
-                <!--android:inputType="number"-->
-                <!--android:title="@string/settings_display_text_color"-->
-                <!--android:summary="@string/settings_display_text_color_description"/>-->
+        <!--<ru.yanus171.feedexfork.view.AutoSummaryEditPreference-->
+            <!--android:key="text_color_brightness"-->
+            <!--android:inputType="number"-->
+            <!--android:title="@string/settings_display_text_color"-->
+            <!--android:summary="@string/settings_display_text_color_description"/>-->
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="display_images"
-                android:title="@string/settings_display_images"/>
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="display_entries_fullscreen"
-                android:title="@string/settings_display_entries_fullscreen"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="display_images"
+            android:title="@string/settings_display_images"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="display_entries_fullscreen"
+            android:title="@string/settings_display_entries_fullscreen"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="entry_margins"
-                android:summary="@string/settings_entry_margins_description"
-                android:title="@string/settings_entry_margins"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="entry_margins"
+            android:summary="@string/settings_entry_margins_description"
+            android:title="@string/settings_entry_margins"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="entry_text_align_justify"
-                android:summary="@string/entry_text_align_justify_description"
-                android:title="@string/entry_text_align_justify"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="entry_text_align_justify"
+            android:summary="@string/entry_text_align_justify_description"
+            android:title="@string/entry_text_align_justify"/>
 
-            <ru.yanus171.feedexfork.view.ColorPreference
-                android:defaultValue="@string/default_text_color"
-                colorPreference:backgroundColor1="@string/transparent_color"
-                android:key="linkColor"
-                android:title="@string/linkColor"
-                android:summary="@string/linkColor_descr"
-                colorPreference:istransparency="false"
-                colorPreference:sampletextShort="@string/settings_color_link_sample_short"
-                colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
+        <ru.yanus171.feedexfork.view.ColorPreference
+            android:defaultValue="@string/default_text_color"
+            colorPreference:backgroundColor1="@string/transparent_color"
+            android:key="linkColor"
+            android:title="@string/linkColor"
+            android:summary="@string/linkColor_descr"
+            colorPreference:istransparency="false"
+            colorPreference:sampletextShort="@string/settings_color_link_sample_short"
+            colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="underline_links"
+            android:title="@string/underline_links" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="entry_text_title_link"
+            android:summary="@string/entry_text_title_link_description"
+            android:title="@string/entry_text_title_link"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="entry_auto_unstart_at_bottom"
+            android:summary="@string/auto_unstart_at_bottom_descr"
+            android:title="@string/auto_unstart_at_bottom"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="remember_last_entry"
+            android:summary="@string/settings_remeber_last_entry_description"
+            android:title="@string/settings_remember_last_entry"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="underline_links"
-                android:title="@string/underline_links" />
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_header"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="article_text_footer_show_clock"
+            android:summary="@string/article_text_footer_show_clock_description"
+            android:title="@string/article_text_footer_show_clock" />
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="0"
+            android:dependency="article_text_footer_show_clock"
+            android:entries="@array/settings_font_sizes"
+            android:entryValues="@array/settings_font_size_values"
+            android:inputType="number"
+            android:key="article_text_footer_show_clock_fontsize"
+            android:title="@string/settings_clock_size" />
+        <ru.yanus171.feedexfork.view.ColorPreference
+            android:defaultValue="@string/default_article_text_footer_color"
+            android:dependency="article_text_footer_show_clock"
+            android:key="article_text_footer_clock_color"
+            android:title="@string/article_text_footer_clock_color"
+            android:summary="@string/article_text_footer_clock_color_descr"
+            colorPreference:backgroundColor1="@string/transparent_color"
+            colorPreference:istransparency="true"
+            colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
+            colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="article_text_footer_show_progress"
+            android:title="@string/article_text_footer_show_progress"
+            android:summary="@string/article_text_footer_show_progress_descr"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:key="article_text_footer_progress_height"
+            android:dependency="article_text_footer_show_progress"
+            android:entries="@array/settings_footer_progress_height"
+            android:entryValues="@array/settings_footer_progress_height_values"
+            android:defaultValue="1"
+            android:title="@string/article_text_footer_progress_height"/>
+        <ru.yanus171.feedexfork.view.ColorPreference
+            android:defaultValue="@string/default_article_text_footer_color"
+            android:dependency="article_text_footer_show_progress"
+            android:key="article_text_footer_progress_color"
+            android:title="@string/article_text_footer_progress_color"
+            android:summary="@string/article_text_footer_progress_color_descr"
+            colorPreference:istransparency="true"
+            colorPreference:sampletextShort=" "
+            colorPreference:sampletextLong=" " />
 
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="article_text_footer_show_clock"
-                android:summary="@string/article_text_footer_show_clock_description"
-                android:title="@string/article_text_footer_show_clock" />
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:defaultValue="0"
-                android:dependency="article_text_footer_show_clock"
-                android:entries="@array/settings_font_sizes"
-                android:entryValues="@array/settings_font_size_values"
-                android:inputType="number"
-                android:key="article_text_footer_show_clock_fontsize"
-                android:title="@string/settings_clock_size" />
-            <ru.yanus171.feedexfork.view.ColorPreference
-                android:defaultValue="@string/default_article_text_footer_color"
-                android:dependency="article_text_footer_show_clock"
-                android:key="article_text_footer_clock_color"
-                android:title="@string/article_text_footer_clock_color"
-                android:summary="@string/article_text_footer_clock_color_descr"
-                colorPreference:backgroundColor1="@string/transparent_color"
-                colorPreference:istransparency="true"
-                colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
-                colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="article_text_footer_show_progress"
-                android:title="@string/article_text_footer_show_progress"
-                android:summary="@string/article_text_footer_show_progress_descr"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:key="article_text_footer_progress_height"
-                android:dependency="article_text_footer_show_progress"
-                android:entries="@array/settings_footer_progress_height"
-                android:entryValues="@array/settings_footer_progress_height_values"
-                android:defaultValue="1"
-                android:title="@string/article_text_footer_progress_height"/>
-            <ru.yanus171.feedexfork.view.ColorPreference
-                android:defaultValue="@string/default_article_text_footer_color"
-                android:dependency="article_text_footer_show_progress"
-                android:key="article_text_footer_progress_color"
-                android:title="@string/article_text_footer_progress_color"
-                android:summary="@string/article_text_footer_progress_color_descr"
-                colorPreference:istransparency="true"
-                colorPreference:sampletextShort=" "
-                colorPreference:sampletextLong=" " />
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="entry_text_title_link"
-                android:summary="@string/entry_text_title_link_description"
-                android:title="@string/entry_text_title_link"/>
-        </PreferenceCategory>
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -306,6 +315,11 @@
                 android:entryValues="@array/settings_volume_buttons_action_values"
                 android:key="volume_buttons_action"
                 android:title="@string/settings_volume_buttons_action"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="page_up_down_90_pct"
+                android:summary="@string/page_up_down_90_pct_descr"
+                android:title="@string/page_up_down_90_pct"/>
 
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -364,23 +378,6 @@
                 android:key="notifications.light"
                 android:summary="@string/settings_notifications_light_description"
                 android:title="@string/settings_notifications_light"/>
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="page_up_down_90_pct"
-                android:summary="@string/page_up_down_90_pct_descr"
-                android:title="@string/page_up_down_90_pct"/>
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="remember_last_entry"
-                android:summary="@string/settings_remeber_last_entry_description"
-                android:title="@string/settings_remember_last_entry"/>
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="entry_auto_unstart_at_bottom"
-                android:summary="@string/auto_unstart_at_bottom_descr"
-                android:title="@string/auto_unstart_at_bottom"/>
 
         </PreferenceCategory>
     </PreferenceScreen>
