@@ -139,6 +139,7 @@ import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
@@ -311,14 +312,6 @@ public class FetcherService extends IntentService {
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
-        } else if (intent.hasExtra( Constants.CALCULATE_IMAGE_SIZES )) {
-            LongOper(R.string.menu_calculate_image_sizes, new Runnable() {
-                @Override
-                public void run() {
-                 CalculateImageSizes();
-                }
-            });
-            return;
         }
 
         mIsWiFi = GetIsWifi();
@@ -428,7 +421,7 @@ public class FetcherService extends IntentService {
 
     private void deleteGhost() {
         final int status = Status().Start( R.string.deleting_ghost_entries, false );
-        final Cursor cursor = MainApplication.getContext().getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null );
+        final Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null );
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
         while  ( cursor.moveToNext() )
             mapEntryLinkHash.add( FileUtils.INSTANCE.getLinkHash( cursor.getString( 0 ) ) );
@@ -460,9 +453,14 @@ public class FetcherService extends IntentService {
         //Status().End( status );
     }
 
-    private void deleteGhostImages(  final HashSet<String> mapEntryID ) {
+    private void deleteGhostImages(  final HashSet<String> setEntryLinkHash ) {
         if ( isCancelRefresh() )
             return;
+        HashSet<String> setEntryLinkHashFavorities = new HashSet<>();
+        Cursor cursor = getContentResolver().query( EntryColumns.FAVORITES_CONTENT_URI, new String[] {LINK}, null, null, null );
+        while ( cursor.moveToNext() )
+            setEntryLinkHashFavorities.add( cursor.getString( 0 ) );
+        cursor.close();
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
@@ -478,24 +476,20 @@ public class FetcherService extends IntentService {
                 });
             if (isCancelRefresh())
                 return;
-            if (files != null) {
-                int index = 0;
-                for (File file : files) {
-                    final String fileName = file.getName();
-                    final String[] list = TextUtils.split(fileName, "_");
-                    if (fileName.equals(".nomedia"))
-                        continue;
-                    if (index < FIRST_COUNT_TO_DELETE ||
-                        list.length != 3 ||
-                        list.length >= 2 && !mapEntryID.contains(list[0])) {
-                        if (new File(folder, fileName).delete())
-                            deletedCount++;
-                        Status().ChangeProgress(getString(R.string.deleteImages) + String.format(" %d", deletedCount));
-                        if (FetcherService.isCancelRefresh())
-                            break;
-
-                    }
-                    index++;
+            for (File file : files) {
+                final String fileName = file.getName();
+                final String[] list = TextUtils.split(fileName, "_");
+                if (fileName.equals(".nomedia"))
+                    continue;
+                String linkHash = list[0];
+                if ( deletedCount < FIRST_COUNT_TO_DELETE && !setEntryLinkHashFavorities.contains(linkHash) ||
+                     list.length != 3 ||
+                     list.length >= 2 && !setEntryLinkHash.contains(linkHash) ){
+                    if (new File(folder, fileName).delete())
+                        deletedCount++;
+                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format(" %d", deletedCount));
+                    if (FetcherService.isCancelRefresh())
+                        break;
                 }
             }
         } finally {
@@ -1436,72 +1430,72 @@ public class FetcherService extends IntentService {
 
         }
 
-        public static void createTestData () {
-            int status = Status().Start("createTestData", true);
-            try {
-                {
-                    final String testFeedID = "10000";
-                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
-                    String testAbstract = "";
-                    for (int i = 0; i < 10; i++)
-                        testAbstract += testAbstract1;
-                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
-
-                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
-
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(_ID, testFeedID);
-                    values.put(FeedColumns.NAME, "testFeed");
-                    values.putNull(FeedColumns.IS_GROUP);
-                    //values.putNull(FeedColumns.GROUP_ID);
-                    values.putNull(FeedColumns.LAST_UPDATE);
-                    values.put(FeedColumns.FETCH_MODE, 0);
-                    cr.insert(FeedColumns.CONTENT_URI, values);
-
-                    for (int i = 0; i < 30; i++) {
-                        values.clear();
-                        values.put(_ID, i);
-                        values.put(EntryColumns.ABSTRACT, testAbstract);
-                        values.put(EntryColumns.TITLE, "testTitle" + i);
-                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
-                    }
-                }
-
-                {
-                    // small
-                    final String testFeedID = "10001";
-                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
-                    String testAbstract = "";
-                    for (int i = 0; i < 1; i++)
-                        testAbstract += testAbstract1;
-                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
-
-                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
-
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(_ID, testFeedID);
-                    values.put(FeedColumns.NAME, "testFeedSmall");
-                    values.putNull(FeedColumns.IS_GROUP);
-                    //values.putNull(FeedColumns.GROUP_ID);
-                    values.putNull(FeedColumns.LAST_UPDATE);
-                    values.put(FeedColumns.FETCH_MODE, 0);
-                    cr.insert(FeedColumns.CONTENT_URI, values);
-
-                    for (int i = 0; i < 30; i++) {
-                        values.clear();
-                        values.put(_ID, 100 + i);
-                        values.put(EntryColumns.ABSTRACT, testAbstract);
-                        values.put(EntryColumns.TITLE, "testTitleSmall" + i);
-                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
-                    }
-                }
-            } finally {
-                Status().End(status);
-            }
-
-        }
+//        public static void createTestData () {
+//            int status = Status().Start("createTestData", true);
+//            try {
+//                {
+//                    final String testFeedID = "10000";
+//                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
+//                    String testAbstract = "";
+//                    for (int i = 0; i < 10; i++)
+//                        testAbstract += testAbstract1;
+//                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
+//
+//                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
+//
+//                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+//                    ContentValues values = new ContentValues();
+//                    values.put(_ID, testFeedID);
+//                    values.put(FeedColumns.NAME, "testFeed");
+//                    values.putNull(FeedColumns.IS_GROUP);
+//                    //values.putNull(FeedColumns.GROUP_ID);
+//                    values.putNull(FeedColumns.LAST_UPDATE);
+//                    values.put(FeedColumns.FETCH_MODE, 0);
+//                    cr.insert(FeedColumns.CONTENT_URI, values);
+//
+//                    for (int i = 0; i < 30; i++) {
+//                        values.clear();
+//                        values.put(_ID, i);
+//                        values.put(EntryColumns.ABSTRACT, testAbstract);
+//                        values.put(EntryColumns.TITLE, "testTitle" + i);
+//                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
+//                    }
+//                }
+//
+//                {
+//                    // small
+//                    final String testFeedID = "10001";
+//                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
+//                    String testAbstract = "";
+//                    for (int i = 0; i < 1; i++)
+//                        testAbstract += testAbstract1;
+//                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
+//
+//                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
+//
+//                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+//                    ContentValues values = new ContentValues();
+//                    values.put(_ID, testFeedID);
+//                    values.put(FeedColumns.NAME, "testFeedSmall");
+//                    values.putNull(FeedColumns.IS_GROUP);
+//                    //values.putNull(FeedColumns.GROUP_ID);
+//                    values.putNull(FeedColumns.LAST_UPDATE);
+//                    values.put(FeedColumns.FETCH_MODE, 0);
+//                    cr.insert(FeedColumns.CONTENT_URI, values);
+//
+//                    for (int i = 0; i < 30; i++) {
+//                        values.clear();
+//                        values.put(_ID, 100 + i);
+//                        values.put(EntryColumns.ABSTRACT, testAbstract);
+//                        values.put(EntryColumns.TITLE, "testTitleSmall" + i);
+//                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
+//                    }
+//                }
+//            } finally {
+//                Status().End(status);
+//            }
+//
+//        }
 
     public static void StartService(Intent intent) {
         final Context context = MainApplication.getContext();
@@ -1548,6 +1542,12 @@ public class FetcherService extends IntentService {
 
     void CalculateImageSizes() {
         final int status = Status().Start(R.string.setting_calculate_image_sizes, false ); try {
+            {
+                ContentValues values = new ContentValues();
+                values.put( IMAGES_SIZE, 0 );
+                getContentResolver().update( FeedColumns.CONTENT_URI, values, null, null );
+            }
+
             final HashMap<Long, Long> mapEntryIDToSize = new HashMap<>();
             final HashMap<Long, Long> mapFeedIDToSize = new HashMap<>();
 
@@ -1572,47 +1572,45 @@ public class FetcherService extends IntentService {
             Status().ChangeProgress(getString(R.string.image_count) + String.format(": %d", files.length));
             if (isCancelRefresh())
                 return;
-            if (files != null) {
-                int index = 0;
-                for (File file : files) {
-                    final String fileName = file.getName();
-                    final String[] list = TextUtils.split(fileName, "_");
-                    if (fileName.equals(".nomedia"))
+            int index = 0;
+            for (File file : files) {
+                final String fileName = file.getName();
+                final String[] list = TextUtils.split(fileName, "_");
+                if (fileName.equals(".nomedia"))
+                    continue;
+                if (list.length >= 2) {
+                    final String entryLinkHash = list[0];
+                    if (!mapEntryLinkHashToID.containsKey(entryLinkHash))
                         continue;
-                    if (list.length >= 2) {
-                        final String entryLinkHash = list[0];
-                        if (!mapEntryLinkHashToID.containsKey(entryLinkHash))
-                            continue;
-                        final long entryID = mapEntryLinkHashToID.get(entryLinkHash);
-                        final long feedID = mapEntryLinkHashToFeedID.get(entryLinkHash);
-                        final long groupID = mapFeedIDToGroupID.containsKey(feedID) ? mapFeedIDToGroupID.get(feedID) : -1L;
-                        final long size = file.length();
+                    final long entryID = mapEntryLinkHashToID.get(entryLinkHash);
+                    final long feedID = mapEntryLinkHashToFeedID.get(entryLinkHash);
+                    final long groupID = mapFeedIDToGroupID.containsKey(feedID) ? mapFeedIDToGroupID.get(feedID) : -1L;
+                    final long size = file.length();
 
-                        if (!mapEntryIDToSize.containsKey(entryID))
-                            mapEntryIDToSize.put(entryID, size);
+                    if (!mapEntryIDToSize.containsKey(entryID))
+                        mapEntryIDToSize.put(entryID, size);
+                    else
+                        mapEntryIDToSize.put(entryID, mapEntryIDToSize.get(entryID) + size);
+
+                    if (!mapFeedIDToSize.containsKey(feedID))
+                        mapFeedIDToSize.put(feedID, size);
+                    else
+                        mapFeedIDToSize.put(feedID, mapFeedIDToSize.get(feedID) + size);
+
+                    if (groupID != -1) {
+                        if (!mapFeedIDToSize.containsKey(groupID))
+                            mapFeedIDToSize.put(groupID, size);
                         else
-                            mapEntryIDToSize.put(entryID, mapEntryIDToSize.get(entryID) + size);
-
-                        if (!mapFeedIDToSize.containsKey(feedID))
-                            mapFeedIDToSize.put(feedID, size);
-                        else
-                            mapFeedIDToSize.put(feedID, mapFeedIDToSize.get(feedID) + size);
-
-                        if (groupID != -1) {
-                            if (!mapFeedIDToSize.containsKey(groupID))
-                                mapFeedIDToSize.put(groupID, size);
-                            else
-                                mapFeedIDToSize.put(groupID, mapFeedIDToSize.get(groupID) + size);
-                        }
+                            mapFeedIDToSize.put(groupID, mapFeedIDToSize.get(groupID) + size);
                     }
-                    //                if ( index % 100 == 0 ) {
-                    //                    Status().ChangeProgress(String.format(" %d", index));
-                    //                    if (FetcherService.isCancelRefresh())
-                    //                        break;
-                    //                }
-
-                    index++;
                 }
+                //                if ( index % 100 == 0 ) {
+                //                    Status().ChangeProgress(String.format(" %d", index));
+                //                    if (FetcherService.isCancelRefresh())
+                //                        break;
+                //                }
+
+                index++;
             }
 
             Status().ChangeProgress(R.string.applyOperations);

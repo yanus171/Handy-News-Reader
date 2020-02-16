@@ -300,7 +300,7 @@ public class FeedData {
                         TEXT_LEN_EXPR };
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
-        static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
+        public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
         public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ')';
         public static final String WHERE_NEW = "(" + EntryColumns.IS_NEW + DB_IS_NULL + DB_OR + IS_NEW + DB_IS_TRUE  + ")";
 

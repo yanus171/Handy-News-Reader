@@ -602,15 +602,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
                 return true;
             }
-
-            case R.id.menu_create_test_data: {
-                FetcherService.createTestData();
-                return true;
-            }
-            case R.id.menu_calculate_sizes: {
-                FetcherService.StartService(FetcherService.GetIntent(Constants.CALCULATE_IMAGE_SIZES) );
-                return true;
-            }
             case R.id.menu_add_feed_shortcut: {
                 if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
                     //Adding shortcut for MainActivity on Home screen

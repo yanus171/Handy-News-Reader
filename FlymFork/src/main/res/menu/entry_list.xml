@@ -31,9 +31,6 @@
         android:title="@string/menu_toogle_unread_all"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/menu_create_test_data"
-        android:title="Create test data"/>
-    <item
         android:id="@+id/menu_create_auto_backup"
         android:title="@string/create_auto_backup"/>
     <item
@@ -47,9 +44,6 @@
         android:icon="@drawable/social_share"
         android:title="@string/context_menu_share_starred"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_calculate_sizes"
-        android:title="@string/menu_calculate_image_sizes"/>
     <item
         android:id="@+id/menu_add_feed_shortcut"
         android:title="@string/menu_add_feed_shortcut"/>

@@ -55,7 +55,7 @@
                 android:dependency="customColors"
                 android:key="textColor"
                 android:title="@string/textColor"
-                colorPreference:backgroundColor="@string/default_text_color_background"
+                colorPreference:backgroundColor1="@string/default_text_color_background"
                 colorPreference:istransparency="false"
                 colorPreference:sampletextShort="@string/settings_color_text_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
@@ -142,7 +142,7 @@
                 android:key="textColorRead"
                 android:title="@string/textColorRead"
                 android:summary="@string/textColorRead_descr"
-                colorPreference:backgroundColor="@string/default_text_color_background"
+                colorPreference:backgroundColor1="@string/default_text_color_background"
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
@@ -196,7 +196,7 @@
 
             <ru.yanus171.feedexfork.view.ColorPreference
                 android:defaultValue="@string/default_text_color"
-                colorPreference:backgroundColor="@string/transparent_color"
+                colorPreference:backgroundColor1="@string/transparent_color"
                 android:key="linkColor"
                 android:title="@string/linkColor"
                 android:summary="@string/linkColor_descr"
@@ -229,7 +229,7 @@
                 android:key="article_text_footer_clock_color"
                 android:title="@string/article_text_footer_clock_color"
                 android:summary="@string/article_text_footer_clock_color_descr"
-                colorPreference:backgroundColor="@string/transparent_color"
+                colorPreference:backgroundColor1="@string/transparent_color"
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
