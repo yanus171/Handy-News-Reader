@@ -117,6 +117,8 @@ import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
@@ -506,7 +508,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.entry, menu);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            menu.setGroupDividerEnabled( true );
         //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
         //updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
         //updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
@@ -539,9 +542,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
+        menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
         menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
+        menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(PrefUtils.isArticleTapEnabled());
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
@@ -714,6 +719,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                     break;
                 }
+                case R.id.menu_show_progress_info: {
+                    PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO ) ;
+                    item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
+                    break;
+                }
+                case R.id.menu_menu_by_tap_enabled: {
+                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED) ;
+                    item.setChecked( PrefUtils.isArticleTapEnabled() );
+                    TapZonePreviewPreference.SetupZoneSizes( mRootView );
+                    break;
+                }
 
                 case R.id.menu_show_html: {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -828,7 +844,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return -1;
     }
 
-    String getCurrentEntryLink() {
+    private String getCurrentEntryLink() {
         Entry entry = GetEntry( mCurrentPagerPos );
         if ( entry != null )
             return entry.mLink;

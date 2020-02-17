@@ -6,17 +6,29 @@
               android:orientation="vertical"
               android:padding="10dp">
 
-    <TextView
-        android:id="@android:id/text1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/primary_text_dark"/>
-
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <ImageView
+            android:id="@+id/search_item_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:id="@+id/search_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/primary_text_dark"/>
+    </LinearLayout>
     <TextView
-        android:id="@android:id/text2"
+        android:id="@+id/search_item_descr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -24,7 +36,7 @@
         android:textColor="@android:color/secondary_text_dark"/>
 
     <TextView
-        android:id="@+id/textUrl"
+        android:id="@+id/search_item_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"

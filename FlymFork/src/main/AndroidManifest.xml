@@ -160,6 +160,7 @@
         <activity
             android:name=".activity.EditFeedActivity"
             android:theme="@style/Theme.Dark"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -169,10 +170,12 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="vnd.android.cursor.dir/vnd.flymfork.feed" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.WEB_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter android:label="@string/addFeed" android:icon="@drawable/add_feed">
                 <action android:name="android.intent.action.SEND" />

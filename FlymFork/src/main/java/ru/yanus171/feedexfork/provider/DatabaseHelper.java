@@ -63,7 +63,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 23;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -156,7 +156,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
             executeCatchedSQL(database, ALTER_TABLE + FeedColumns.TABLE_NAME + ADD + FeedColumns.OPTIONS + ' ' + FeedData.TYPE_TEXT);
 
 
-
         if (oldVersion < 18)
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_NEW + ' ' + FeedData.TYPE_BOOLEAN);
 
@@ -169,7 +168,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_WAS_AUTO_UNSTAR + ' ' + FeedData.TYPE_BOOLEAN);
 
         if (oldVersion < 22)
-            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_WITH_TABLES+ ' ' + FeedData.TYPE_BOOLEAN);
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_WITH_TABLES + ' ' + FeedData.TYPE_BOOLEAN);
+
+        if (oldVersion < 23) {
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IMAGES_SIZE + ' ' + FeedData.TYPE_INT);
+            executeCatchedSQL(database, ALTER_TABLE + FeedColumns.TABLE_NAME + ADD + FeedColumns.IMAGES_SIZE + ' ' + FeedData.TYPE_INT);
+        }
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
         try {

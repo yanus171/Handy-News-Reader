@@ -75,6 +75,7 @@ import static ru.yanus171.feedexfork.Constants.DB_COUNT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
@@ -369,7 +370,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
                                 FeedColumns.IS_GROUP, FeedColumns.ICON, FeedColumns.LAST_UPDATE,
                                 FeedColumns.ERROR, EXPR_NUMBER( EntryColumns.WHERE_UNREAD ), EXPR_FEED_ALL_NUMBER, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
-                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS},
+                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL + Constants.DB_OR +
                                 FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
                                 " FROM " + FeedColumns.TABLE_NAME +

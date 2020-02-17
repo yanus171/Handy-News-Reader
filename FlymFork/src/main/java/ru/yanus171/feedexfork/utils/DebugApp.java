@@ -225,7 +225,7 @@ public class DebugApp {
 					.setText(st.toString());
 			Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
 			context.startActivity(
-					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)));
+					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
 		}
 		//if (mOldHandler != null) {
 			// mOldHandler.uncaughtException(thread, throwable);

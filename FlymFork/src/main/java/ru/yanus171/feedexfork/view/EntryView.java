@@ -250,6 +250,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private static final String LINK_BUTTON_END = "</a></p>";
     private static final String IMAGE_ENCLOSURE = "[@]image/";
     private static final long TAP_TIMEOUT = 300;
+    private static final long MOVE_TIMEOUT = 800;
 
     private final JavaScriptObject mInjectedJSObject = new JavaScriptObject();
     private final ImageDownloadJavaScriptObject mImageDownloadObject = new ImageDownloadJavaScriptObject();
@@ -259,6 +260,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     public double mScrollPartY = 0;
 
     private EntryActivity mActivity;
+    private long mPressedTime = 0;
+    private long mMovedTime = 0;
+
 
 
     public EntryView(Context context) {
@@ -522,12 +526,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                synchronized (EntryView.this) {
+                //synchronized (EntryView.this) {
                     //if ( progress == 100 )
                     //    EndStatus();
                     //else if (mStatus != 0 )
                     //    FetcherService.Status().Change(mStatus, getContext().getString(R.string.web_page_loading) + " " + progress + " %");
-                }
+                //}
             }
 
 
@@ -538,9 +542,10 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
                 DoNotShowMenu();
+                if ( System.currentTimeMillis() - mMovedTime < MOVE_TIMEOUT  )
+                    return true;
                 final Context context = getContext();
                 try {
-
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
                         File extTmpFile = new File(context.getExternalCacheDir(), file.getName());
@@ -672,7 +677,6 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         setOnTouchListener(new View.OnTouchListener() {
             private float mPressedY;
             private float mPressedX;
-            private long mPressedTime = 0;
 
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -684,15 +688,17 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                     //Log.v( TAG, "ACTION_DOWN mPressedTime=" + mPressedTime );
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if (Math.abs(event.getX() - mPressedX) > TOUCH_PRESS_POS_DELTA ||
-                            Math.abs(event.getY() - mPressedY) > TOUCH_PRESS_POS_DELTA)
+                            Math.abs(event.getY() - mPressedY) > TOUCH_PRESS_POS_DELTA) {
                         mPressedTime = 0;
+                        mMovedTime = System.currentTimeMillis();
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //Log.v( TAG, "ACTION_DOWN time delta=" + ( System.currentTimeMillis() - mPressedTime ) );
-                    if (System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
+                    if ( System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&
                             Math.abs(event.getX() - mPressedX) < TOUCH_PRESS_POS_DELTA &&
                             Math.abs(event.getY() - mPressedY) < TOUCH_PRESS_POS_DELTA &&
                             System.currentTimeMillis() - mLastTimeScrolled > 500 &&
-                            PrefUtils.getBoolean("article_menu_show_by_tap", true) &&
+                            PrefUtils.isArticleTapEnabled() &&
                             EntryActivity.GetIsActionBarHidden() &&
                             !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();

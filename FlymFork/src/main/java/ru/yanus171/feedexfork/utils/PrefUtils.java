@@ -86,6 +86,8 @@ public class PrefUtils {
 
     public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
 
+    public static boolean CALCULATE_IMAGES_SIZE() {return getBoolean("calculate_images_size", false );}
+
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
     public static final String LAST_ENTRY_ID = "last_entry_id";
@@ -115,6 +117,11 @@ public class PrefUtils {
     public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
     public static Boolean isImageWhiteBackground() {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
+    }
+
+    public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
+    public static Boolean isArticleTapEnabled() {
+        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true );
     }
 
     public static int getFontSizeFooterClock() {
@@ -277,6 +284,8 @@ public class PrefUtils {
     }
 
     public static int GetTapZoneSize() {
+        if ( !isArticleTapEnabled() )
+            return 0;
         return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
     }
     // ------------------------------------------------------------------------------------

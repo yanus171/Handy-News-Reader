@@ -96,6 +96,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.RETRIEVE_FULL
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.SHOW_TEXT_IN_ENTRY_LIST;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
+import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
+import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
 
 public class OPML {
 
@@ -167,6 +169,7 @@ public class OPML {
         if ( GetAutoBackupOPMLFileName().equals(filename) && !IsAutoBackupEnabled() )
             return;
 
+
         final Context context = MainApplication.getContext();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         //final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) );
@@ -181,12 +184,14 @@ public class OPML {
 
             {
                 Cursor cursor = context.getContentResolver().query(CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
-                if ( cursor.moveToFirst() )
+                if ( cursor.moveToFirst() && isNotCancelRefresh() )
                     ExportFeed(writer, cursor);
                 cursor.close();
             }
 
             while (cursorGroupsAndRoot.moveToNext()) {
+                if ( isCancelRefresh() )
+                    break;
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
                     writer.write( OUTLINE_TITLE);
                     writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));

@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:id="@+id/menu_go_top"
-        android:title="@string/menu_go_top" />
-    <item
-        android:id="@+id/menu_go_back"
-        android:title="@string/menu_go_back" />
-    <item
         android:id="@+id/menu_star"
         android:icon="@drawable/rating_not_important"
         android:title="@string/menu_star"
@@ -22,6 +16,16 @@
         android:id="@+id/menu_add_feed"
         android:icon="@drawable/content_new"
         android:title="@string/menu_add_feed" />
+    <item
+        android:id="@+id/menu_go_top"
+        android:title="@string/menu_go_top" />
+    <item
+        android:id="@+id/menu_go_back"
+        android:title="@string/menu_go_back" />
+    <item
+        android:id="@+id/menu_menu_by_tap_enabled"
+        android:checkable="true"
+        android:title="@string/article_tap_enabled" />
     <item
         android:id="@+id/menu_share_group"
         android:icon="@android:drawable/ic_menu_send"
@@ -80,6 +84,10 @@
                 android:id="@+id/menu_image_white_background"
                 android:checkable="true"
                 android:title="@string/image_white_background" />
+            <item
+                android:id="@+id/menu_show_progress_info"
+                android:checkable="true"
+                android:title="@string/show_progress_info" />
             <item
                 android:id="@+id/menu_toggle_theme"
                 android:title="@string/menu_toggle_theme"

@@ -127,6 +127,19 @@
                             android:text="info"
                             android:textIsSelectable="false"/>
                         <TextView
+                            android:id="@+id/imageSize"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.7"
+                            android:drawablePadding="3dp"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorReadState"
+                            android:text="image_size"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:paddingStart="10dp" />
+                        <TextView
                             android:id="@+id/textAuthor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

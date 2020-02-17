@@ -140,6 +140,7 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.DATE, (new Date()).getTime());
                     values.put(EntryColumns.ABSTRACT, text);
                     values.put(EntryColumns.IS_WITH_TABLES, 1);
+                    values.put(EntryColumns.IMAGES_SIZE, 0);
                     FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
                     SetEntryID(entryUri, url);

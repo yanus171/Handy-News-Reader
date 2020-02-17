@@ -14,8 +14,8 @@ android {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 194
-        versionName '0.11.10'
+        versionCode 198
+        versionName '0.11.14'
     }
     lintOptions {
         checkReleaseBuilds false
@@ -70,7 +70,7 @@ android {
             signingConfig signingConfigs.release
         }
         releaseDebugkey {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
@@ -85,11 +85,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //implementation "androidx.legacy:legacy-preference-v14:1.0.0"
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'org.jsoup:jsoup:1.10.3'
     implementation 'com.github.bumptech.glide:glide:+'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:+'
-    //implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.5'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

@@ -171,20 +171,17 @@ public class StatusText implements Observer {
                 public void run() {
                 synchronized ( mList ) {
                     ArrayList<String> s = new ArrayList<>();
-                    if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) )
-                        for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
-                                s.add( item.getValue() );
+                    for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
+                            s.add( item.getValue() );
 
-                    if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
-                        if (!mProgressText.isEmpty())
-                            s.add( mProgressText );
-                        if (!mList.isEmpty() && !mDBText.isEmpty())
-                            s.add( mDBText );
-                        if (!mList.isEmpty() && FetcherService.mCancelRefresh)
-                            s.add( "\n cancel Refresh" );
-                        if (mBytesRecievedLast > 0)
-                            s.add(0, String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) );
-                    }
+                    if (!mProgressText.isEmpty())
+                        s.add( mProgressText );
+                    if (!mList.isEmpty() && !mDBText.isEmpty())
+                        s.add( mDBText );
+                    if (!mList.isEmpty() && FetcherService.mCancelRefresh)
+                        s.add( "\n cancel Refresh" );
+                    if (mBytesRecievedLast > 0)
+                        s.add(0, String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) );
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 

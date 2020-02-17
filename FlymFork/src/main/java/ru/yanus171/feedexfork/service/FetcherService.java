@@ -61,6 +61,7 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
+
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -90,7 +91,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
@@ -105,6 +108,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.parser.HTMLParser;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.parser.RssAtomParser;
@@ -126,10 +130,17 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
 
+import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.GROUP_ID;
+import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
@@ -296,6 +307,11 @@ public class FetcherService extends IntentService {
                 }
             });
             return;
+        } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", ""));
+            EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
+            stopForeground(true);
+            return;
         }
 
         mIsWiFi = GetIsWifi();
@@ -394,6 +410,8 @@ public class FetcherService extends IntentService {
                         deleteOldEntries(keepDateBorderTime);
                         deleteGhost();
                     }
+                    if ( PrefUtils.CALCULATE_IMAGES_SIZE() )
+                        CalculateImageSizes();
                     if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
                         PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
                 }
@@ -403,7 +421,7 @@ public class FetcherService extends IntentService {
 
     private void deleteGhost() {
         final int status = Status().Start( R.string.deleting_ghost_entries, false );
-        final Cursor cursor = MainApplication.getContext().getContentResolver().query( EntryColumns.CONTENT_URI, new String[] {EntryColumns.LINK},null, null, null );
+        final Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null );
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
         while  ( cursor.moveToNext() )
             mapEntryLinkHash.add( FileUtils.INSTANCE.getLinkHash( cursor.getString( 0 ) ) );
@@ -435,47 +453,49 @@ public class FetcherService extends IntentService {
         //Status().End( status );
     }
 
-    private void deleteGhostImages(  final HashSet<String> mapEntryID ) {
+    private void deleteGhostImages(  final HashSet<String> setEntryLinkHash ) {
         if ( isCancelRefresh() )
             return;
+        HashSet<String> setEntryLinkHashFavorities = new HashSet<>();
+        Cursor cursor = getContentResolver().query( EntryColumns.FAVORITES_CONTENT_URI, new String[] {LINK}, null, null, null );
+        while ( cursor.moveToNext() )
+            setEntryLinkHashFavorities.add( cursor.getString( 0 ) );
+        cursor.close();
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
-        final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length), false );
-        final int FIRST_COUNT_TO_DELETE = files.length - 8000;
-        if ( FIRST_COUNT_TO_DELETE > 500 )
-            Arrays.sort( files, new Comparator<File>() {
+        final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length), false ); try {
+            final int FIRST_COUNT_TO_DELETE = files.length - 8000;
+            if (FIRST_COUNT_TO_DELETE > 500)
+                Arrays.sort(files, new Comparator<File>() {
 
-                @Override
-                public int compare(File f1, File f2) {
-                    return Long.valueOf( f1.lastModified() ).compareTo( f2.lastModified() );
-                }
-            });
-        Status().End( status );
-        if ( isCancelRefresh() )
-            return;
-        if (files != null  ) {
-            int index = 0;
+                    @Override
+                    public int compare(File f1, File f2) {
+                        return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+                    }
+                });
+            if (isCancelRefresh())
+                return;
             for (File file : files) {
                 final String fileName = file.getName();
                 final String[] list = TextUtils.split(fileName, "_");
-                if ( fileName.equals( ".nomedia" ) )
+                if (fileName.equals(".nomedia"))
                     continue;
-                if ( index < FIRST_COUNT_TO_DELETE ||
-                        list.length != 3 ||
-                        list.length >= 2 && !mapEntryID.contains(list[0])) {
+                String linkHash = list[0];
+                if ( deletedCount < FIRST_COUNT_TO_DELETE && !setEntryLinkHashFavorities.contains(linkHash) ||
+                     list.length != 3 ||
+                     list.length >= 2 && !setEntryLinkHash.contains(linkHash) ){
                     if (new File(folder, fileName).delete())
                         deletedCount++;
                     Status().ChangeProgress(getString(R.string.deleteImages) + String.format(" %d", deletedCount));
                     if (FetcherService.isCancelRefresh())
                         break;
-
                 }
-                index ++;
             }
+        } finally {
+            Status().ChangeProgress( "" );
+            Status().End( status );
         }
-        Status().ChangeProgress( "" );
-        //Status().End( status );
     }
 
     private void LongOper( int textID, Runnable oper ) {
@@ -514,6 +534,9 @@ public class FetcherService extends IntentService {
         ConnectivityManager cm = (ConnectivityManager) MainApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI );
+    }
+    public static boolean isNotCancelRefresh() {
+        return !isCancelRefresh();
     }
     public static boolean isCancelRefresh() {
         synchronized (mCancelRefresh) {
@@ -571,7 +594,7 @@ public class FetcherService extends IntentService {
         int status = Status().Start(getString(R.string.mobilizeAll), false); try {
             ContentResolver cr = getContentResolver();
             //Status().ChangeProgress("query DB");
-            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{TaskColumns._ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
+            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
                     TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
             Status().ChangeProgress("");
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
@@ -646,7 +669,7 @@ public class FetcherService extends IntentService {
         Cursor entryCursor = cr.query(entryUri, null, null, null, null);
 
         if (entryCursor.moveToFirst()) {
-            int linkPos = entryCursor.getColumnIndex(EntryColumns.LINK);
+            int linkPos = entryCursor.getColumnIndex(LINK);
             final String link = entryCursor.getString(linkPos);
             if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
@@ -782,8 +805,8 @@ public class FetcherService extends IntentService {
         String url2 = url.replace("http:", "https:");
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         Cursor cursor = cr.query(EntryColumns.CONTENT_URI,
-                new String[]{EntryColumns._ID, EntryColumns.FEED_ID},
-                EntryColumns.LINK + "='" + url1 + "'" + DB_OR + EntryColumns.LINK + "='" + url2 + "'",
+                new String[]{_ID, EntryColumns.FEED_ID},
+                LINK + "='" + url1 + "'" + DB_OR + LINK + "='" + url2 + "'",
                 null,
                 null);
         try {
@@ -823,8 +846,9 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.AUTHOR, NULL);
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
-                values.put(EntryColumns.LINK, url);
+                values.put(LINK, url);
                 values.put(EntryColumns.IS_WITH_TABLES, 1);
+                values.put(EntryColumns.IMAGES_SIZE, 0);
                 if ( isStarred )
                     values.put(EntryColumns.IS_FAVORITE, 1);
 
@@ -878,8 +902,8 @@ public class FetcherService extends IntentService {
         int status = obs.Start(MainApplication.getContext().getString(R.string.AllImages), false); try {
 
             ContentResolver cr = MainApplication.getContext().getContentResolver();
-            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{TaskColumns._ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
-                    TaskColumns.NUMBER_ATTEMPT, EntryColumns.LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
+            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
+                    TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
             while (cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
@@ -934,10 +958,12 @@ public class FetcherService extends IntentService {
 
     public static void downloadEntryImages( long entryId, String entryLink, ArrayList<String> imageList ) {
         StatusText.FetcherObservable obs = Status();
-        int status = obs.Start(MainApplication.getContext().getString(R.string.article_images_downloading), true); try {
+        final String statusText = MainApplication.getContext().getString(R.string.article_images_downloading);
+        int status = obs.Start( statusText, true); try {
             for( String imgPath: imageList ) {
                 if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
                     break;
+                obs.Change( status, statusText + String.format( ": %d / %d", imageList.indexOf( imgPath ) + 1, imageList.size() ) );
                 int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()), false);
                 try {
                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
@@ -962,7 +988,7 @@ public class FetcherService extends IntentService {
         int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries), false);
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
-                new String[]{FeedColumns._ID, FeedColumns.OPTIONS},
+                new String[]{_ID, FeedColumns.OPTIONS},
                 FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
         try {
             //mIsDeletingOld = true;
@@ -1061,7 +1087,7 @@ public class FetcherService extends IntentService {
 
         if (cursor.moveToFirst()) {
             int urlPosition = cursor.getColumnIndex(FeedColumns.URL);
-            int idPosition = cursor.getColumnIndex(FeedColumns._ID);
+            int idPosition = cursor.getColumnIndex(_ID);
             int titlePosition = cursor.getColumnIndex(FeedColumns.NAME);
             if ( cursor.isNull( cursor.getColumnIndex(FeedColumns.REAL_LAST_UPDATE) ) ) {
                 mDeleteOld = false;
@@ -1139,8 +1165,8 @@ public class FetcherService extends IntentService {
         Uri entryUri = null;
         Cursor cursor = MainApplication.getContext().getContentResolver().query(
                 EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID),
-                new String[]{EntryColumns._ID},
-                EntryColumns.LINK + "='" + entryLink + "'",
+                new String[]{_ID},
+                LINK + "='" + entryLink + "'",
                 null,
                 null);
         if (cursor.moveToFirst())
@@ -1404,72 +1430,72 @@ public class FetcherService extends IntentService {
 
         }
 
-        public static void createTestData () {
-            int status = Status().Start("createTestData", true);
-            try {
-                {
-                    final String testFeedID = "10000";
-                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
-                    String testAbstract = "";
-                    for (int i = 0; i < 10; i++)
-                        testAbstract += testAbstract1;
-                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
-
-                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
-
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(FeedColumns._ID, testFeedID);
-                    values.put(FeedColumns.NAME, "testFeed");
-                    values.putNull(FeedColumns.IS_GROUP);
-                    //values.putNull(FeedColumns.GROUP_ID);
-                    values.putNull(FeedColumns.LAST_UPDATE);
-                    values.put(FeedColumns.FETCH_MODE, 0);
-                    cr.insert(FeedColumns.CONTENT_URI, values);
-
-                    for (int i = 0; i < 30; i++) {
-                        values.clear();
-                        values.put(EntryColumns._ID, i);
-                        values.put(EntryColumns.ABSTRACT, testAbstract);
-                        values.put(EntryColumns.TITLE, "testTitle" + i);
-                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
-                    }
-                }
-
-                {
-                    // small
-                    final String testFeedID = "10001";
-                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
-                    String testAbstract = "";
-                    for (int i = 0; i < 1; i++)
-                        testAbstract += testAbstract1;
-                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
-
-                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
-
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(FeedColumns._ID, testFeedID);
-                    values.put(FeedColumns.NAME, "testFeedSmall");
-                    values.putNull(FeedColumns.IS_GROUP);
-                    //values.putNull(FeedColumns.GROUP_ID);
-                    values.putNull(FeedColumns.LAST_UPDATE);
-                    values.put(FeedColumns.FETCH_MODE, 0);
-                    cr.insert(FeedColumns.CONTENT_URI, values);
-
-                    for (int i = 0; i < 30; i++) {
-                        values.clear();
-                        values.put(EntryColumns._ID, 100 + i);
-                        values.put(EntryColumns.ABSTRACT, testAbstract);
-                        values.put(EntryColumns.TITLE, "testTitleSmall" + i);
-                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
-                    }
-                }
-            } finally {
-                Status().End(status);
-            }
-
-        }
+//        public static void createTestData () {
+//            int status = Status().Start("createTestData", true);
+//            try {
+//                {
+//                    final String testFeedID = "10000";
+//                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
+//                    String testAbstract = "";
+//                    for (int i = 0; i < 10; i++)
+//                        testAbstract += testAbstract1;
+//                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
+//
+//                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
+//
+//                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+//                    ContentValues values = new ContentValues();
+//                    values.put(_ID, testFeedID);
+//                    values.put(FeedColumns.NAME, "testFeed");
+//                    values.putNull(FeedColumns.IS_GROUP);
+//                    //values.putNull(FeedColumns.GROUP_ID);
+//                    values.putNull(FeedColumns.LAST_UPDATE);
+//                    values.put(FeedColumns.FETCH_MODE, 0);
+//                    cr.insert(FeedColumns.CONTENT_URI, values);
+//
+//                    for (int i = 0; i < 30; i++) {
+//                        values.clear();
+//                        values.put(_ID, i);
+//                        values.put(EntryColumns.ABSTRACT, testAbstract);
+//                        values.put(EntryColumns.TITLE, "testTitle" + i);
+//                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
+//                    }
+//                }
+//
+//                {
+//                    // small
+//                    final String testFeedID = "10001";
+//                    final String testAbstract1 = "safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd safdkhfgsadjkhgfsakdhgfasdhkgf sadfdasfdsafasdfasd ";
+//                    String testAbstract = "";
+//                    for (int i = 0; i < 1; i++)
+//                        testAbstract += testAbstract1;
+//                    //final String testAbstract2 = "sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs sfdsdafsdafs fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff fffffffffffffff";
+//
+//                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
+//
+//                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+//                    ContentValues values = new ContentValues();
+//                    values.put(_ID, testFeedID);
+//                    values.put(FeedColumns.NAME, "testFeedSmall");
+//                    values.putNull(FeedColumns.IS_GROUP);
+//                    //values.putNull(FeedColumns.GROUP_ID);
+//                    values.putNull(FeedColumns.LAST_UPDATE);
+//                    values.put(FeedColumns.FETCH_MODE, 0);
+//                    cr.insert(FeedColumns.CONTENT_URI, values);
+//
+//                    for (int i = 0; i < 30; i++) {
+//                        values.clear();
+//                        values.put(_ID, 100 + i);
+//                        values.put(EntryColumns.ABSTRACT, testAbstract);
+//                        values.put(EntryColumns.TITLE, "testTitleSmall" + i);
+//                        cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(testFeedID), values);
+//                    }
+//                }
+//            } finally {
+//                Status().End(status);
+//            }
+//
+//        }
 
     public static void StartService(Intent intent) {
         final Context context = MainApplication.getContext();
@@ -1514,5 +1540,107 @@ public class FetcherService extends IntentService {
                 .setAction( FetcherService.ACTION_REFRESH_FEEDS );
     }
 
+    void CalculateImageSizes() {
+        final int status = Status().Start(R.string.setting_calculate_image_sizes, false ); try {
+            {
+                ContentValues values = new ContentValues();
+                values.put( IMAGES_SIZE, 0 );
+                getContentResolver().update( FeedColumns.CONTENT_URI, values, null, null );
+            }
 
+            final HashMap<Long, Long> mapEntryIDToSize = new HashMap<>();
+            final HashMap<Long, Long> mapFeedIDToSize = new HashMap<>();
+
+            final HashMap<String, Long> mapEntryLinkHashToID = new HashMap<>();
+            final HashMap<String, Long> mapEntryLinkHashToFeedID = new HashMap<>();
+            Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{_ID, LINK, FEED_ID}, null, null, null);
+            while (cursor.moveToNext()) {
+                final String linkHash = FileUtils.INSTANCE.getLinkHash(cursor.getString(1));
+                mapEntryLinkHashToID.put(linkHash, cursor.getLong(0));
+                mapEntryLinkHashToFeedID.put(linkHash, cursor.getLong(2));
+            }
+            cursor.close();
+
+            final HashMap<Long, Long> mapFeedIDToGroupID = new HashMap<>();
+            cursor = getContentResolver().query(FeedColumns.CONTENT_URI, new String[]{_ID, GROUP_ID}, GROUP_ID + DB_IS_NOT_NULL, null, null);
+            while (cursor.moveToNext())
+                if (!cursor.isNull(1))
+                    mapFeedIDToGroupID.put(cursor.getLong(0), cursor.getLong(1));
+            cursor.close();
+
+            File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
+            Status().ChangeProgress(getString(R.string.image_count) + String.format(": %d", files.length));
+            if (isCancelRefresh())
+                return;
+            int index = 0;
+            for (File file : files) {
+                final String fileName = file.getName();
+                final String[] list = TextUtils.split(fileName, "_");
+                if (fileName.equals(".nomedia"))
+                    continue;
+                if (list.length >= 2) {
+                    final String entryLinkHash = list[0];
+                    if (!mapEntryLinkHashToID.containsKey(entryLinkHash))
+                        continue;
+                    final long entryID = mapEntryLinkHashToID.get(entryLinkHash);
+                    final long feedID = mapEntryLinkHashToFeedID.get(entryLinkHash);
+                    final long groupID = mapFeedIDToGroupID.containsKey(feedID) ? mapFeedIDToGroupID.get(feedID) : -1L;
+                    final long size = file.length();
+
+                    if (!mapEntryIDToSize.containsKey(entryID))
+                        mapEntryIDToSize.put(entryID, size);
+                    else
+                        mapEntryIDToSize.put(entryID, mapEntryIDToSize.get(entryID) + size);
+
+                    if (!mapFeedIDToSize.containsKey(feedID))
+                        mapFeedIDToSize.put(feedID, size);
+                    else
+                        mapFeedIDToSize.put(feedID, mapFeedIDToSize.get(feedID) + size);
+
+                    if (groupID != -1) {
+                        if (!mapFeedIDToSize.containsKey(groupID))
+                            mapFeedIDToSize.put(groupID, size);
+                        else
+                            mapFeedIDToSize.put(groupID, mapFeedIDToSize.get(groupID) + size);
+                    }
+                }
+                //                if ( index % 100 == 0 ) {
+                //                    Status().ChangeProgress(String.format(" %d", index));
+                //                    if (FetcherService.isCancelRefresh())
+                //                        break;
+                //                }
+
+                index++;
+            }
+
+            Status().ChangeProgress(R.string.applyOperations);
+            if (FetcherService.isCancelRefresh())
+                return;
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+            for (Map.Entry<Long, Long> item : mapEntryIDToSize.entrySet())
+                operations.add(ContentProviderOperation.newUpdate(EntryColumns.CONTENT_URI(item.getKey()))
+                                   .withValue(EntryColumns.IMAGES_SIZE, item.getValue()).build());
+            if (FetcherService.isCancelRefresh())
+                return;
+            for (Map.Entry<Long, Long> item : mapFeedIDToSize.entrySet())
+                operations.add(ContentProviderOperation.newUpdate(FeedColumns.CONTENT_URI(item.getKey()))
+                                   .withValue(FeedColumns.IMAGES_SIZE, item.getValue()).build());
+            if (FetcherService.isCancelRefresh())
+                return;
+
+            if (!operations.isEmpty())
+                try {
+                    FeedDataContentProvider.mNotifyEnabled = false;
+                    getContentResolver().applyBatch(FeedData.AUTHORITY, operations);
+                    FeedDataContentProvider.mNotifyEnabled = true;
+                    getContentResolver().notifyChange(FeedColumns.GROUPED_FEEDS_CONTENT_URI, null);
+                } catch (Exception e) {
+                    DebugApp.AddErrorToLog(null, e);
+                }
+        } finally {
+            Status().ChangeProgress( "" );
+            Status().End( status );
+        }
+
+    }
 }
