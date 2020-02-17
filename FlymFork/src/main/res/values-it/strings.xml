@@ -29,7 +29,6 @@
  THE SOFTWARE.
 -->
 <resources>
-    <!-- GENERAL -->
     <string name="about_us_content" translatable="true"><![CDATA[<b> <big> Licenza e informazioni </ big> </ b> <br/>
     Questo programma è un software libero: è possibile ridistribuirlo e / o modificarlo secondo i termini della GNU General Public License pubblicata dalla Free Software Foundation, sia la versione 3 della licenza, sia (a propria scelta) qualsiasi versione successiva. Vedi http://www.gnu.org/licenses <br/>
     <br/>
