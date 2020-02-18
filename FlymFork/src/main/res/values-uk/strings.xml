@@ -446,6 +446,9 @@
     <string name="article_tap_enabled_summary">для зон натискань та інших, крім посилань (для показу меню)</string>
     <string name="menu_calculate_image_sizes">Розрахунок розмірів зображень</string>
     <string name="setting_calculate_image_sizes">Розміри збережених зображень</string>
+    <string name="setting_calculate_image_sizes_descr">Порахувати і показати загальний розмір завантажених зображень в статті, стрічці, групі і т. д. (дані оновлюються під час оновлення)</string>
+    <string name="settings_category_theme">Тема</string>
+    <string name="settings_category_header">Заголовок сторінки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
