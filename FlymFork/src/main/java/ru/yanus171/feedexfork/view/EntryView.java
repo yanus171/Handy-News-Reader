@@ -61,6 +61,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -81,6 +82,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -115,6 +118,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
@@ -548,10 +552,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                        File extTmpFile = new File(context.getExternalCacheDir(), file.getName());
+                        File extTmpFile = new File(context.getCacheDir(), file.getName());
                         FileUtils.INSTANCE.copy(file, extTmpFile);
-                        Intent intent = new Intent( Intent.ACTION_VIEW );
-                        intent.setDataAndType(Uri.fromFile(extTmpFile), "image/jpeg");
+                        Uri contentUri = getUriForFile(getContext(), FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setDataAndType(contentUri, "image/*");
                         context.startActivity(intent);
                     } else if (url.contains("#")) {
                         String hash = url.substring(url.indexOf('#') + 1);

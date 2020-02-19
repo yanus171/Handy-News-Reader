@@ -47,6 +47,16 @@
             android:exported="false"
             android:writePermission="ru.yanus171.feedexfork.provider.WRITE_PERMISSION" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="ru.yanus171.feedexfork.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name"

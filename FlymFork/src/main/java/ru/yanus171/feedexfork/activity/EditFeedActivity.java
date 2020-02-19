@@ -826,7 +826,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             private void AddFeed(HashMap<String, String> dataItem) {
                 if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
                     Intent intent = new Intent(EditFeedActivity.this, EntryActivity.class );
-                    EditFeedActivity.this.startActivity(intent.setData( Uri.parse(dataItem.get(ITEM_URL)) ));
+                    EditFeedActivity.this.startActivity(intent.setData( Uri.parse(dataItem.get(ITEM_URL).replace( IS_READ_STUMB, "" )) ));
                     return;
                 }
                 Pair<Uri, Boolean> result =
