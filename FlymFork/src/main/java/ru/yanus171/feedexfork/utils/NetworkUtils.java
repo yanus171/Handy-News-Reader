@@ -126,7 +126,7 @@ public class NetworkUtils {
                             final int cStep = 1024 * 10;
                             byte[] buffer = new byte[2048];
                             int bufferLength;
-                            FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
+                            //FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
                             while (!FetcherService.isCancelRefresh() && ( bufferLength = inputStream.read(buffer) ) > 0) {
                                 if (isSizeLimit && size > maxImageDownloadSize) {
                                     abort = true;
@@ -137,7 +137,7 @@ public class NetworkUtils {
                                 progressBytes += bufferLength;
                                 if (progressBytes >= cStep) {
                                     progressBytes = 0;
-                                    FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
+                                    //FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
                                 }
                             }
                             success = true;

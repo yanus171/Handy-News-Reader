@@ -196,7 +196,7 @@ public class StatusText implements Observer {
                     if ( !showProgress )
                         mIsProgressTextVisible = false;
                     final String progressText = mIsProgressTextVisible && !mProgressBarStatusList.isEmpty() ?
-                                    mList.get( mProgressBarStatusList.get(0) )  : "";
+                                    mList.get( mProgressBarStatusList.get(0) ) + " " + mProgressText  : "";
                     NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgress, progressText );
                     Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
 

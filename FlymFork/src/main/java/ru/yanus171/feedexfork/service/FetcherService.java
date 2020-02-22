@@ -101,6 +101,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -152,7 +153,7 @@ public class FetcherService extends IntentService {
     private static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
     public static final String EXTRA_STAR = "STAR";
 
-    private static final int THREAD_NUMBER = 3;
+    private static final int THREAD_NUMBER = 10;
     private static final int MAX_TASK_ATTEMPT = 3;
 
     private static final int FETCHMODE_DIRECT = 1;
@@ -956,23 +957,41 @@ public class FetcherService extends IntentService {
         }
     }
 
-    public static void downloadEntryImages( long entryId, String entryLink, ArrayList<String> imageList ) {
-        StatusText.FetcherObservable obs = Status();
+    public static void downloadEntryImages(final long entryId, final String entryLink, final ArrayList<String> imageList ) {
+        final StatusText.FetcherObservable obs = Status();
         final String statusText = MainApplication.getContext().getString(R.string.article_images_downloading);
         int status = obs.Start( statusText, true); try {
-            for( String imgPath: imageList ) {
-                if ( isCancelRefresh() || !isEntryIDActive( entryId ) )
-                    break;
-                obs.Change( status, statusText + String.format( ": %d / %d", imageList.indexOf( imgPath ) + 1, imageList.size() ) );
-                int status1 = obs.Start(String.format("%d/%d", imageList.indexOf(imgPath) + 1, imageList.size()), false);
-                try {
-                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-                } catch (Exception e) {
-                    obs.SetError( entryLink, "", String.valueOf(entryId), e );
-                } finally {
-                    obs.End(status1);
-                }
+
+            ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBER, new ThreadFactory() {
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread t = new Thread(r);
+                    t.setPriority(Thread.MIN_PRIORITY);
+                    return t;
+                    }
+            });
+
+            CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
+
+            for( final String imgPath: imageList ) {
+                completionService.submit(new Callable<Void>() {
+                    @Override
+                    public Void call() {
+                        if ( !isCancelRefresh() && isEntryIDActive( entryId ) ) {
+                            try {
+                                NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
+                            } catch (Exception e) {
+                                obs.SetError(entryLink, "", String.valueOf(entryId), e);
+                            }
+                        }
+                        return null;
+                    } } );
             }
+            for( final String imgPath: imageList ) {
+                completionService.take();
+                obs.Change(status, statusText + String.format(" %d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
+            }
+            executor.shutdownNow();
             EntryView.NotifyToUpdate( entryId, entryLink );
         } catch ( Exception e ) {
             obs.SetError(null, "", String.valueOf(entryId), e);
