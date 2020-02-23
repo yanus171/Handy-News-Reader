@@ -203,7 +203,7 @@
     <string name="textColor">Цвет текста</string>
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКогда вы ухаживаете за хорошенькой девушкой, час кажется секундой. Когда вы сидите на раскаленных углях, секунда кажется часом. Это и есть относительность.\u201d\n(Альберт Эйнштейн)</string>
-    <string name="settings_category_refresh">Автоматическое обновление</string>
+    <string name="settings_category_refresh">Обновление статей</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
     <string name="settings_refresh_interval">Интервал обновления</string>
@@ -445,6 +445,12 @@
     <string name="menu_reload">Загрузка</string>
     <string name="article_tap_enabled">Действия по нажатию</string>
     <string name="article_tap_enabled_summary">на тап зоны и на обычный текст (для показа меню)</string>
+    <string name="menu_calculate_image_sizes">Расчет размера картниок</string>
+    <string name="setting_calculate_image_sizes">Размер хранящихся картинок</string>
+    <string name="setting_calculate_image_sizes_descr">Расчитывать и показывать суммарный размер на карте памяти загруженных картинок для статей, лент, групп и т.д. (данные обновляются во время обновления)</string>
+    <string name="settings_category_theme">Тема</string>
+    <string name="settings_category_header">Заголовок страницы</string>
+    <string name="tasks_to_download">К загрузке</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
