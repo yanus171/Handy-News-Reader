@@ -449,6 +449,7 @@
     <string name="setting_calculate_image_sizes_descr">Calcola e mostra la dimensione delle immagini caricate sulla memoria per articolo, feed, gruppo ed ecc (i numeri vengono aggiornati durante l\'aggiornamento)</string>
     <string name="settings_category_theme">Tema</string>
     <string name="settings_category_header">Intestazione di pagina</string>
+    <string name="tasks_to_download">Da caricare</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
