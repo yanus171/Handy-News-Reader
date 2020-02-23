@@ -451,6 +451,7 @@
     <string name="setting_calculate_image_sizes_descr">Расчитывать и показывать суммарный размер на карте памяти загруженных картинок для статей, лент, групп и т.д. (данные обновляются во время обновления)</string>
     <string name="settings_category_theme">Тема</string>
     <string name="settings_category_header">Заголовок страницы</string>
+    <string name="tasks_to_download">К загрузке</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>

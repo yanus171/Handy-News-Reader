@@ -1086,8 +1086,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText), true); try {
-                        FetcherService.mobilizeEntry( getContext().getContentResolver(),
-                                                      getCurrentEntryID(),
+                        FetcherService.mobilizeEntry( getCurrentEntryID(),
                                                       mobilize,
                                                       FetcherService.AutoDownloadEntryImages.Yes,
                                                       true,

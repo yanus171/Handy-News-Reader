@@ -464,6 +464,7 @@
     <string name="setting_calculate_image_sizes_descr">Calculate and show loaded images sum size on storage per article, feed, group and etc (numbers are updated during refresh)</string>
     <string name="settings_category_theme">Theme</string>
     <string name="settings_category_header">Page header</string>
+    <string name="tasks_to_download">To load</string>
 
 
     <plurals name="number_of_new_entries">

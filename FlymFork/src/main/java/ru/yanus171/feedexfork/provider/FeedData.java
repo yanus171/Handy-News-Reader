@@ -57,6 +57,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
 import static ru.yanus171.feedexfork.Constants.DB_IS_FALSE;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
@@ -390,6 +391,11 @@ public class FeedData {
                 {NUMBER_ATTEMPT, TYPE_INT}, {"UNIQUE", "(" + ENTRY_ID + ", " + IMG_URL_TO_DL + ") ON CONFLICT IGNORE"}};
 
         public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/tasks");
+
+        public static final String TEXT_COUNT = "(SELECT " + DB_COUNT + " FROM " + TaskColumns.TABLE_NAME + " WHERE " + IMG_URL_TO_DL + DB_IS_NULL + ")";
+        public static final String IMAGE_COUNT = "(SELECT " + DB_COUNT + " FROM " + TaskColumns.TABLE_NAME + " WHERE " + IMG_URL_TO_DL + DB_IS_NOT_NULL + ")";
+
+
     }
 
     public static String getWhereNotExternal() {

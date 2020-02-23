@@ -60,13 +60,13 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
-import androidx.core.app.NotificationCompat;
-
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.Xml;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -95,13 +95,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -321,21 +318,27 @@ public class FetcherService extends IntentService {
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
-            mobilizeAllEntries(isFromAutoRefresh);
-            downloadAllImages();
+            ExecutorService executor = CreateExecutorService(); try {
+                mobilizeAllEntries(executor, isFromAutoRefresh);
+                downloadAllImages(executor);
+            } finally {
+                executor.shutdown();
+            }
         } else if (ACTION_LOAD_LINK.equals(intent.getAction())) {
             LongOper(R.string.loadingLink, new Runnable() {
                 @Override
                 public void run() {
-                    LoadLink(GetExtrenalLinkFeedID(),
-                            intent.getStringExtra(Constants.URL_TO_LOAD),
-                            intent.getStringExtra(Constants.TITLE_TO_LOAD),
-                            FetcherService.ForceReload.No,
-                            true,
-                            true,
-                             intent.getBooleanExtra( EXTRA_STAR, false ));
+                    ExecutorService executor = CreateExecutorService(); try {
+                        LoadLink(GetExtrenalLinkFeedID(),
+                                 intent.getStringExtra(Constants.URL_TO_LOAD),
+                                 intent.getStringExtra(Constants.TITLE_TO_LOAD),
+                                 FetcherService.ForceReload.No,
+                                 true,
+                                 true,
+                                 intent.getBooleanExtra(EXTRA_STAR, false));
 
-                    downloadAllImages();
+                        downloadAllImages(executor);
+                    } finally { executor.shutdown(); }
                 }
             } );
 
@@ -353,60 +356,64 @@ public class FetcherService extends IntentService {
 
                     mMarkAsStarredFoundList.clear();
                     int newCount;
-                    try {
-                        newCount = (feedId == null ?
-                                refreshFeeds(keepDateBorderTime, groupId, isFromAutoRefresh) :
-                                refreshFeed(feedId, keepDateBorderTime, isFromAutoRefresh));
+                    ExecutorService executor = CreateExecutorService(); try {
+                        try {
+                            newCount = (feedId == null ?
+                                    refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
+                                    refreshFeed( executor, feedId, keepDateBorderTime, isFromAutoRefresh));
 
-                    } finally {
-                        if (mMarkAsStarredFoundList.size() > 5) {
-                            ArrayList<String> list = new ArrayList<>();
-                            for (MarkItem item : mMarkAsStarredFoundList)
-                                list.add(item.mCaption);
-                            ShowNotification(TextUtils.join(", ", list),
-                                    R.string.markedAsStarred,
-                                    new Intent(FetcherService.this, HomeActivity.class),
-                                    Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
-                        } else if (mMarkAsStarredFoundList.size() > 0)
-                            for (MarkItem item : mMarkAsStarredFoundList) {
-                                Uri entryUri = getEntryUri(item.mLink, item.mFeedID);
-
-                                int ID = -1;
-                                try {
-                                    if (entryUri != null)
-                                        ID = Integer.parseInt(entryUri.getLastPathSegment());
-                                } catch (Throwable ignored) {
-
-                                }
-
-                                ShowNotification(item.mCaption,
+                        } finally {
+                            if (mMarkAsStarredFoundList.size() > 5) {
+                                ArrayList<String> list = new ArrayList<>();
+                                for (MarkItem item : mMarkAsStarredFoundList)
+                                    list.add(item.mCaption);
+                                ShowNotification(TextUtils.join(", ", list),
                                         R.string.markedAsStarred,
-                                        GetActionIntent( Intent.ACTION_VIEW, entryUri),
-                                        ID);
-                            }
-                    }
-
-                    if (newCount > 0) {
-                        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true)) {
-                            Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{Constants.DB_COUNT}, EntryColumns.WHERE_UNREAD, null, null);
-
-                            cursor.moveToFirst();
-                            newCount = cursor.getInt(0); // The number has possibly changed
-                            cursor.close();
-
-                            if (newCount > 0) {
-                                ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
-                                        R.string.flym_feeds,
                                         new Intent(FetcherService.this, HomeActivity.class),
-                                        Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
-                            }
-                        } else if (Constants.NOTIF_MGR != null) {
-                            Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
-                        }
-                    }
+                                        Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
+                            } else if (mMarkAsStarredFoundList.size() > 0)
+                                for (MarkItem item : mMarkAsStarredFoundList) {
+                                    Uri entryUri = getEntryUri(item.mLink, item.mFeedID);
 
-                    mobilizeAllEntries(isFromAutoRefresh);
-                    downloadAllImages();
+                                    int ID = -1;
+                                    try {
+                                        if (entryUri != null)
+                                            ID = Integer.parseInt(entryUri.getLastPathSegment());
+                                    } catch (Throwable ignored) {
+
+                                    }
+
+                                    ShowNotification(item.mCaption,
+                                            R.string.markedAsStarred,
+                                            GetActionIntent( Intent.ACTION_VIEW, entryUri),
+                                            ID);
+                                }
+                        }
+
+                        if (newCount > 0) {
+                            if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true)) {
+                                Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{Constants.DB_COUNT}, EntryColumns.WHERE_UNREAD, null, null);
+
+                                cursor.moveToFirst();
+                                newCount = cursor.getInt(0); // The number has possibly changed
+                                cursor.close();
+
+                                if (newCount > 0) {
+                                    ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
+                                            R.string.flym_feeds,
+                                            new Intent(FetcherService.this, HomeActivity.class),
+                                            Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                                }
+                            } else if (Constants.NOTIF_MGR != null) {
+                                Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                            }
+                        }
+
+                        mobilizeAllEntries( executor, isFromAutoRefresh);
+                        downloadAllImages( executor );
+                    } finally {
+                        executor.shutdown();
+                    }
                     if ( mDeleteOld ) {
                         deleteOldEntries(keepDateBorderTime);
                         deleteGhost();
@@ -591,40 +598,45 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private void mobilizeAllEntries( boolean fromAutoRefresh) {
-        int status = Status().Start(getString(R.string.mobilizeAll), false); try {
-            ContentResolver cr = getContentResolver();
-            //Status().ChangeProgress("query DB");
+    private void mobilizeAllEntries( ExecutorService executor, final boolean fromAutoRefresh) {
+        final String statusText = getString(R.string.mobilizeAll);
+        int status = Status().Start(statusText, false); try {
+            final ContentResolver cr = getContentResolver();
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
                     TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
             Status().ChangeProgress("");
-            ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+            final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
+            ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
 
             while (cursor.moveToNext() && !isCancelRefresh()) {
-                int status1 = Status().Start(String.format("%d/%d", cursor.getPosition(), cursor.getCount()), false); try {
-                    long taskId = cursor.getLong(0);
-                    long entryId = cursor.getLong(1);
-                    int nbAttempt = 0;
-                    if (!cursor.isNull(2)) {
-                        nbAttempt = cursor.getInt(2);
-                    }
-
-                    if ( mobilizeEntry(cr, entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, false, false)) {
-                        cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                    } else {
-                        if (nbAttempt + 1 > MAX_TASK_ATTEMPT) {
-                            operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                        } else {
-                            ContentValues values = new ContentValues();
-                            values.put(TaskColumns.NUMBER_ATTEMPT, nbAttempt + 1);
-                            operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(taskId)).withValues(values).build());
-                        }
-                    }
-
-                } finally {
-                    Status().End( status1 );
+                final long taskId = cursor.getLong(0);
+                final long entryId = cursor.getLong(1);
+                int attemptCount = 0;
+                if (!cursor.isNull(2)) {
+                    attemptCount = cursor.getInt(2);
                 }
+
+                final int finalAttemptCount = attemptCount;
+                futures.add( executor.submit( new Callable<DownloadResult>() {
+                    @Override
+                    public DownloadResult call() {
+                        DownloadResult result = new DownloadResult();
+                        result.mAttemptNumber = finalAttemptCount;
+                        result.mTaskID = taskId;
+                        result.mOK = false;
+
+                        if ( mobilizeEntry( entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, false, false)) {
+                            ContentResolver cr = MainApplication.getContext().getContentResolver();
+                            cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
+                            result.mOK = true;
+                        }
+                        return result;
+                    }
+                }) );
             }
+
+            FinishExecutionService( statusText, status,  operations, futures );
 
             cursor.close();
 
@@ -657,15 +669,14 @@ public class FetcherService extends IntentService {
 
     public enum AutoDownloadEntryImages {Yes, No}
 
-    public static boolean mobilizeEntry(final ContentResolver cr,
-                                        final long entryId,
+    public static boolean mobilizeEntry(final long entryId,
                                         final ArticleTextExtractor.MobilizeType mobilize,
                                         final AutoDownloadEntryImages autoDownloadEntryImages,
                                         final boolean isCorrectTitle,
                                         final boolean isShowError,
                                         final boolean isForceReload ) {
         boolean success = false;
-
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
         Cursor entryCursor = cr.query(entryUri, null, null, null, null);
 
@@ -863,7 +874,7 @@ public class FetcherService extends IntentService {
                 FileUtils.INSTANCE.deleteMobilized( entryUri );
 
             if ( load && !FetcherService.isCancelRefresh() )
-                mobilizeEntry(cr, Long.parseLong(entryUri.getLastPathSegment()),
+                mobilizeEntry(Long.parseLong(entryUri.getLastPathSegment()),
                               ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError, false);
             return new Pair<>(entryUri, load);
         } finally {
@@ -898,50 +909,58 @@ public class FetcherService extends IntentService {
         return mExtrenalLinkFeedID;
     }
 
-    private static void downloadAllImages() {
+    public static class DownloadResult{
+        public Long mTaskID;
+        public Integer mAttemptNumber;
+        public Boolean mOK;
+
+    }
+    private static void downloadAllImages( ExecutorService executor ) {
         StatusText.FetcherObservable obs = Status();
-        int status = obs.Start(MainApplication.getContext().getString(R.string.AllImages), false); try {
+        final String statusText = MainApplication.getContext().getString(R.string.AllImages);
+        int status = obs.Start(statusText, false); try {
 
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
                     TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-            while (cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
-                int status1 = obs.Start(String.format("%d/%d", cursor.getPosition() + 1, cursor.getCount()), false); try {
-                //int status1 = obs.Start(String.format("%d", cursor.getPosition() + 1, cursor.getCount())); try {
-                    long taskId = cursor.getLong(0);
-                    long entryId = cursor.getLong(1);
-                    String entryLink = cursor.getString(4);
-                    String imgPath = cursor.getString(2);
-                    int nbAttempt = 0;
-                    if (!cursor.isNull(3)) {
-                        nbAttempt = cursor.getInt(3);
-                    }
-
-                    try {
-                        NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-
-                        // If we are here, everything is OK
-                        operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                    } catch (Exception e) {
-                        if (nbAttempt + 1 > MAX_TASK_ATTEMPT) {
-                            operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                        } else {
-                            ContentValues values = new ContentValues();
-                            values.put(TaskColumns.NUMBER_ATTEMPT, nbAttempt + 1);
-                            operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(taskId)).withValues(values).build());
-                        }
-                    }
-                } finally {
-                    obs.End( status1 );
+            //executor.
+            //CompletionService<DownloadResult> completionService = new ExecutorCompletionService<>(executor);
+            ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
+            while (cursor != null && cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
+                final long taskId = cursor.getLong(0);
+                final long entryId = cursor.getLong(1);
+                final String entryLink = cursor.getString(4);
+                final String imgPath = cursor.getString(2);
+                int attemptNum = 0;
+                if (!cursor.isNull(3)) {
+                    attemptNum = cursor.getInt(3);
                 }
-
+                final int finalNbAttempt = attemptNum;
+                futures.add( executor.submit(new Callable<DownloadResult>() {
+                    @Override
+                    public DownloadResult call() {
+                        DownloadResult result = new DownloadResult();
+                        result.mAttemptNumber = finalNbAttempt;
+                        result.mTaskID = taskId;
+                        result.mOK = false;
+                        try {
+                            NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
+                            result.mOK = true;
+                        } catch ( Exception e ) {
+                            Status().SetError( "", "", "", e );
+                        }
+                        return result;
+                    }
+                }) );
             }
+            FinishExecutionService( statusText, status, operations, futures);
 
             cursor.close();
 
             if (!operations.isEmpty()) {
+                //obs.Change( status, statusText );
                 obs.ChangeProgress(R.string.applyOperations);
                 try {
                     cr.applyBatch(FeedData.AUTHORITY, operations);
@@ -953,51 +972,86 @@ public class FetcherService extends IntentService {
 
         if ( isDownloadImageCursorNeedsRequery() ) {
             setDownloadImageCursorNeedsRequery( false );
-            downloadAllImages();
+            downloadAllImages( executor );
         }
     }
-
+    public static int FinishExecutionService(String statusText,
+                                              int status,
+                                              ArrayList<ContentProviderOperation> operations,
+                                              ArrayList<Future<DownloadResult>> futures) {
+        int countOK = 0;
+        for ( Future<DownloadResult> item: futures ) {
+            try {
+                final DownloadResult result = item.get();
+                if ( operations != null ) {
+                    if (result.mOK) {
+                        countOK++;// If we are here, everything WAS OK
+                        operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
+                    } else {
+                        if (result.mAttemptNumber + 1 > MAX_TASK_ATTEMPT) {
+                            operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
+                        } else {
+                            ContentValues values = new ContentValues();
+                            values.put(TaskColumns.NUMBER_ATTEMPT, result.mAttemptNumber + 1);
+                            operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(result.mTaskID)).withValues(values).build());
+                        }
+                    }
+                }
+                Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
+            } catch (Exception ignored) {
+            }
+        }
+        return countOK;
+    }
     public static void downloadEntryImages(final long entryId, final String entryLink, final ArrayList<String> imageList ) {
         final StatusText.FetcherObservable obs = Status();
         final String statusText = MainApplication.getContext().getString(R.string.article_images_downloading);
         int status = obs.Start( statusText, true); try {
 
-            ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBER, new ThreadFactory() {
-                @Override
-                public Thread newThread(Runnable r) {
-                    Thread t = new Thread(r);
-                    t.setPriority(Thread.MIN_PRIORITY);
-                    return t;
-                    }
-            });
+            ExecutorService executor = CreateExecutorService(); try {
 
-            CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
+                ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
 
-            for( final String imgPath: imageList ) {
-                completionService.submit(new Callable<Void>() {
-                    @Override
-                    public Void call() {
-                        if ( !isCancelRefresh() && isEntryIDActive( entryId ) ) {
-                            try {
-                                NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-                            } catch (Exception e) {
-                                obs.SetError(entryLink, "", String.valueOf(entryId), e);
+                for( final String imgPath: imageList ) {
+                    futures.add( executor.submit( new Callable<DownloadResult>() {
+                        @Override
+                        public DownloadResult call() {
+                            DownloadResult result = new DownloadResult();
+                            result.mOK = false;
+                            if ( !isCancelRefresh() && isEntryIDActive( entryId ) ) {
+                                try {
+                                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
+                                    result.mOK = true;
+                                } catch (Exception e) {
+                                    obs.SetError(entryLink, "", String.valueOf(entryId), e);
+                                }
                             }
-                        }
-                        return null;
-                    } } );
+                            return result;
+                        } } ) );
+                }
+                FinishExecutionService(statusText, status, null, futures );
+            } finally {
+                executor.shutdown();
             }
-            for( final String imgPath: imageList ) {
-                completionService.take();
-                obs.Change(status, statusText + String.format(" %d/%d", imageList.indexOf(imgPath) + 1, imageList.size()));
-            }
-            executor.shutdownNow();
             EntryView.NotifyToUpdate( entryId, entryLink );
         } catch ( Exception e ) {
             obs.SetError(null, "", String.valueOf(entryId), e);
         } finally {
             obs.End(status);
         }
+    }
+
+    private static ExecutorService CreateExecutorService() {
+        return Executors.newFixedThreadPool(THREAD_NUMBER);
+        //return Executors.newCachedThreadPool();
+//        return Executors.newFixedThreadPool(THREAD_NUMBER, new ThreadFactory() {
+//            @Override
+//            public Thread newThread(Runnable r) {
+//                Thread t = new Thread(r);
+//                t.setPriority(Thread.MIN_PRIORITY);
+//                return t;
+//            }
+//        });
     }
 
 
@@ -1041,59 +1095,45 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private int refreshFeeds(final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
+    private int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
+        String statusText = "";
+        int status = Status().Start( statusText, false ); try {
+            ContentResolver cr = getContentResolver();
+            final Cursor cursor;
+            String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
+            if (groupID != null)
+                cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), FeedColumns.PROJECTION_ID, null, null, null);
+            else
+                cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID, where, null, null);
 
-        ContentResolver cr = getContentResolver();
-        final Cursor cursor;
-        String where = PrefUtils.getBoolean( PrefUtils.REFRESH_ONLY_SELECTED, false ) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
-        if ( groupID != null )
-            cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), FeedColumns.PROJECTION_ID, null, null, null);
-        else
-            cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID, where, null, null);
-        int nbFeed = cursor.getCount();
+            ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                //Status().Start(String.format("%d from %d", cursor.getPosition(), cursor.getCount()));
+                final String feedId = cursor.getString(0);
+                futures.add(executor.submit(new Callable<DownloadResult>() {
+                    @Override
+                    public DownloadResult call() {
+                        DownloadResult result = new DownloadResult();
+                        result.mOK = false;
+                        try {
+                            if (!isCancelRefresh()) {
+                                refreshFeed(executor, feedId, keepDateBorderTime, isFromAutoRefresh);
+                                result.mOK = true;
+                            }
+                        } catch (Exception ignored) {
 
-        ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBER, new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = new Thread(r);
-                t.setPriority(Thread.MIN_PRIORITY);
-                return t;
-            }
-        });
-        int globalResult = 0;
-        CompletionService<Integer> completionService = new ExecutorCompletionService<>(executor);
-        while (cursor.moveToNext()) {
-            //Status().Start(String.format("%d from %d", cursor.getPosition(), cursor.getCount()));
-            final String feedId = cursor.getString(0);
-            completionService.submit(new Callable<Integer>() {
-                @Override
-                public Integer call() {
-                    int result = 0;
-                    try {
-                        if (!isCancelRefresh())
-                            result = refreshFeed(feedId, keepDateBorderTime, isFromAutoRefresh);
-                    } catch (Exception ignored) {
+                        }
+                        return result;
                     }
-                    return result;
-                }
-            });
-            //Status().End();
-        }
-        cursor.close();
-
-        for (int i = 0; i < nbFeed; i++) {
-            try {
-                Future<Integer> f = completionService.take();
-                globalResult += f.get();
-            } catch (Exception ignored) {
+                }));
+                //Status().End();
             }
-        }
-
-        executor.shutdownNow(); // To purge all threads
-        return globalResult;
+            cursor.close();
+            return FinishExecutionService( statusText, status, null, futures );
+        } finally { Status().End( status ); }
     }
 
-    private int refreshFeed(String feedId, long keepDateBorderTime, boolean fromAutoRefresh) {
+    private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime, boolean fromAutoRefresh) {
 
 
         int newCount = 0;
@@ -1124,13 +1164,11 @@ public class FetcherService extends IntentService {
 
             String id = cursor.getString(idPosition);
             String feedUrl = cursor.getString(urlPosition);
-            int status = Status().Start(cursor.getString(titlePosition), false);
-            try {
-
+            int status = Status().Start(cursor.getString(titlePosition), false); try {
                 if ( isRss )
                     newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, id, fromAutoRefresh);
                 else
-                    newCount = HTMLParser.Parse(cursor.getString(idPosition), feedUrl);
+                    newCount = HTMLParser.Parse(executor, cursor.getString(idPosition), feedUrl);
             } finally {
                 Status().End(status);
             }
@@ -1588,11 +1626,16 @@ public class FetcherService extends IntentService {
             cursor.close();
 
             File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
-            Status().ChangeProgress(getString(R.string.image_count) + String.format(": %d", files.length));
             if (isCancelRefresh())
                 return;
             int index = 0;
             for (File file : files) {
+                index++;
+                if ( index % 71 == 0 ) {
+                    Status().ChangeProgress(String.format("%d/%d", index, files.length));
+                    if (FetcherService.isCancelRefresh())
+                        break;
+                }
                 final String fileName = file.getName();
                 final String[] list = TextUtils.split(fileName, "_");
                 if (fileName.equals(".nomedia"))
@@ -1623,13 +1666,6 @@ public class FetcherService extends IntentService {
                             mapFeedIDToSize.put(groupID, mapFeedIDToSize.get(groupID) + size);
                     }
                 }
-                //                if ( index % 100 == 0 ) {
-                //                    Status().ChangeProgress(String.format(" %d", index));
-                //                    if (FetcherService.isCancelRefresh())
-                //                        break;
-                //                }
-
-                index++;
             }
 
             Status().ChangeProgress(R.string.applyOperations);

@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.parser;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -62,11 +63,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
@@ -78,15 +84,18 @@ import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 
+import static ru.yanus171.feedexfork.service.FetcherService.FinishExecutionService;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+
 
 public class HTMLParser {
 
 	private static final String TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}";
 
-	static public int Parse(final String feedID, String feedUrl ) {
+	static public int Parse( ExecutorService executor, final String feedID, String feedUrl ) {
 		//if (!TextUtils.isEmpty(content)) {
-		int result = 0;
-        FetcherService.Status().ChangeProgress( "Loading main page");
+		int newEntries = 0;
+        Status().ChangeProgress( "Loading main page");
 
         Calendar cal = Calendar.getInstance();
 		final boolean isTomorrow = feedUrl.contains( TOMORROW_YYYY_MM_DD ) && cal.get( Calendar.HOUR_OF_DAY ) >= 16;
@@ -109,7 +118,7 @@ public class HTMLParser {
 			connection = new Connection(feedUrl);
 			doc = Jsoup.parse(connection.getInputStream(), null, "");
 		} catch (Exception e) {
-			FetcherService.Status().SetError( e.getLocalizedMessage(), feedID, "", e );
+			Status().SetError( e.getLocalizedMessage(), feedID, "", e );
 		} finally {
 			if (connection != null)
 				connection.disconnect();
@@ -117,7 +126,7 @@ public class HTMLParser {
 
 		Uri uriMainEntry = FetcherService.LoadLink( feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false, false).first;
             
-		ContentResolver cr = MainApplication.getContext().getContentResolver();
+		final ContentResolver cr = MainApplication.getContext().getContentResolver();
 		{
 			Cursor cursor = cr.query(uriMainEntry, new String[]{EntryColumns.TITLE}, null, null, null);
 			if (cursor.moveToFirst()) {
@@ -127,7 +136,7 @@ public class HTMLParser {
 			}
 			cursor.close();
 		}
-		FeedFilters filters = new FeedFilters(String.valueOf( feedID ) );
+		final FeedFilters filters = new FeedFilters(String.valueOf(feedID ) );
 
 		class Item {
 			String mUrl;
@@ -167,38 +176,55 @@ public class HTMLParser {
 
 			}
 		}
-		for ( Item item: listItem ) {
-			if ( FetcherService.isCancelRefresh() )
-				break;
-			int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ), false ); try {
-				Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false);
-				Uri uri = load.first;
-				if ( load.second ) {
-					result++;
-					Cursor cursor = cr.query(uri, new String[]{EntryColumns.TITLE, EntryColumns.AUTHOR}, null, null, null);
-					cursor.moveToFirst();
+        final String statusText = "";//MainApplication.getContext().getString(R.string.loadingLink );
+        int status = Status().Start(statusText, false); try {
 
-					if (filters.isMarkAsStarred(cursor.getString(0), cursor.getString(1), item.mUrl, "")) {
-						synchronized ( FetcherService.mMarkAsStarredFoundList ) {
-							FetcherService.mMarkAsStarredFoundList.add(new MarkItem(feedID, cursor.getString(0),  item.mUrl));
-						}
-						ContentValues values = new ContentValues();
-						values.put(EntryColumns.IS_FAVORITE, 1);
-						cr.update(uri, values, null, null);
-					}
-					if (  isTomorrow ) {
-						ContentValues values = new ContentValues();
-						values.put( EntryColumns.DATE, System.currentTimeMillis() + Constants.MILLS_IN_DAY );
-						cr.update( uri, values, null, null);
-					}
-					cursor.close();
+            ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
+            for ( final Item item: listItem ) {
+                if ( FetcherService.isCancelRefresh() )
+                    break;
 
-				}
-			} finally { FetcherService.Status().End(status); }
-		}
-		synchronized ( FetcherService.mCancelRefresh ) {
-			FetcherService.mCancelRefresh = false;
-		}
+                //int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ), false ); try {
+                futures.add( executor.submit(new Callable<FetcherService.DownloadResult>() {
+                    @Override
+                    public FetcherService.DownloadResult call() {
+                    	FetcherService.DownloadResult result = new FetcherService.DownloadResult();
+						result.mAttemptNumber = 0;
+						result.mTaskID = 0L;
+						result.mOK = false;
+
+                        Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false);
+                        Uri uri = load.first;
+                        if (load.second) {
+							result.mOK = true;
+							Cursor cursor = cr.query(uri, new String[]{EntryColumns.TITLE, EntryColumns.AUTHOR}, null, null, null);
+                            cursor.moveToFirst();
+
+                            if (filters.isMarkAsStarred(cursor.getString(0), cursor.getString(1), item.mUrl, "")) {
+                                synchronized (FetcherService.mMarkAsStarredFoundList) {
+                                    FetcherService.mMarkAsStarredFoundList.add(new MarkItem(feedID, cursor.getString(0), item.mUrl));
+                                }
+                                ContentValues values = new ContentValues();
+                                values.put(EntryColumns.IS_FAVORITE, 1);
+                                cr.update(uri, values, null, null);
+                            }
+                            if (isTomorrow) {
+                                ContentValues values = new ContentValues();
+                                values.put(EntryColumns.DATE, System.currentTimeMillis() + Constants.MILLS_IN_DAY);
+                                cr.update(uri, values, null, null);
+                            }
+                            cursor.close();
+                        }
+                        return result;
+                    }
+                }) );
+				newEntries = FinishExecutionService( statusText, status, null, futures );
+            }
+        } finally { Status().End( status ); }
+
+//        synchronized ( FetcherService.mCancelRefresh ) {
+//			FetcherService.mCancelRefresh = false;
+//		}
 
 		{
 			ContentValues values = new ContentValues();
@@ -222,6 +248,6 @@ public class HTMLParser {
 		}*/
 
 
-		return result;
+		return newEntries;
 	}
 }
