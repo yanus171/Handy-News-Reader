@@ -136,10 +136,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
                 screen.getPreference(i).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        PreferenceScreen screen = (PreferenceScreen) preference;
-                        Brightness br = activity.mBrightness;
-                        if (screen.getDialog() != null)
-                            Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow());
+                        SetupBrightness(preference, activity);
                         return false;
                     }
                 });
@@ -183,11 +180,16 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if ( preference instanceof PreferenceScreen ) {
-            PreferenceScreen screen = (PreferenceScreen) preference;
-            Brightness br =  ((BaseActivity) getActivity() ).mBrightness;
-            Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow() );
-        }
+        SetupBrightness(preference, getActivity());
         return true;
+    }
+
+    private static void SetupBrightness(Preference preference, Activity activity) {
+        if ( preference instanceof PreferenceScreen) {
+            PreferenceScreen screen = (PreferenceScreen) preference;
+            Brightness br =  ((BaseActivity) activity ).mBrightness;
+            if (screen.getDialog() != null)
+                Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow() );
+        }
     }
 }
