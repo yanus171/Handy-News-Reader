@@ -445,6 +445,11 @@
     <string name="menu_reload">Recarregar...</string>
     <string name="article_tap_enabled">Ações de toque habilitadas</string>
     <string name="article_tap_enabled_summary">em zonas de toque e em áreas sem link (para exibição de menu)</string>
+    <string name="menu_calculate_image_sizes">Calcular tamanho das imagens</string>
+    <string name="setting_calculate_image_sizes">Tamanhos da imagens armazenadas</string>
+    <string name="setting_calculate_image_sizes_descr">Calcular e mostrar o tamanho da soma de imagens carregadas no armazenamento para cada artigo, feed, grupo, etc (os números são atualizados durante a atualização)</string>
+    <string name="settings_category_theme">Tema</string>
+    <string name="settings_category_header">Cabeçalho da página</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
