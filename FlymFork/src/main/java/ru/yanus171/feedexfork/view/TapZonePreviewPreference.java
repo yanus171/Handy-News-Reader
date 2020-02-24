@@ -43,9 +43,10 @@ public final class TapZonePreviewPreference extends DialogPreference {
     }
 
     public static void SetupZone(View parentView, int size, int viewID, int matchParent) {
-        if ( isArticleTapEnabled() )
+        if ( isArticleTapEnabled() ) {
+            parentView.findViewById( viewID ).setVisibility( View.VISIBLE );
             SetSize(parentView, viewID, matchParent, size);
-        else
+        } else
             parentView.findViewById( viewID ).setVisibility( View.GONE );
     }
 

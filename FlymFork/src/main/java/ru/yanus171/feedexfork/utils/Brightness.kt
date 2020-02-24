@@ -20,7 +20,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
 import kotlin.math.abs
 
-class Brightness(private val mActivity: Activity, rootView: View) {
+class Brightness( private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
     private val mInfo: TextView? = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha : Float = 128F
