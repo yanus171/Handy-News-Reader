@@ -115,6 +115,8 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
+import static ru.yanus171.feedexfork.provider.FeedData.ENTRIES_TABLE_WITH_FEED_INFO;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
@@ -123,6 +125,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>, EntryView.EntryViewManager {
@@ -443,16 +446,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
 
-        final boolean tapZonesVisible = PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true );
-        View rootView = getView().getRootView();
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
+        HideTapZonesText(getView().getRootView());
     }
+
 
     @Override
     public void onPause() {

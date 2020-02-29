@@ -50,6 +50,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -69,6 +70,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
@@ -80,6 +82,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRI
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -212,7 +215,38 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
+
+        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root));
+        findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+            }
+        });
+        findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+            }
+        });
+
+        findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PageUpDown( -1 );
+            }
+        });
+        findViewById(R.id.pageDownBtn).setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PageUpDown( 1 );
+            }
+        });
         timer.End();
+    }
+
+    private void PageUpDown( int downOrUp ) {
+        mEntriesFragment.mListView.smoothScrollBy( downOrUp * mEntriesFragment.mListView.getHeight(), PAGE_SCROLL_DURATION_MSEC * 2 );
     }
 
     private void CloseDrawer() {
@@ -270,6 +304,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
+        setFullScreen();
+        HideTapZonesText(findViewById(R.id.layout_root));
         timer.End();
     }
 

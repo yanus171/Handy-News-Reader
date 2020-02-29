@@ -53,8 +53,11 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.Html;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -109,7 +112,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
-    private int mIdPos, mTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
+    private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
     public static int mEntryActivityStartingStatus = 0;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
@@ -201,7 +204,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         initialy = (int) event.getY();
                         currentx = (int) event.getX();
                         currenty = (int) event.getY();
-                        downTime = android.os.SystemClock.elapsedRealtime();
+                        downTime = SystemClock.elapsedRealtime();
                         //wasMove = false;
                         view.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -250,7 +253,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                  currentx > MIN_X_TO_VIEW_ARTICLE &&
                                  Math.abs( paddingX ) < minX &&
                                  Math.abs( paddingY ) < minY &&
-                                 android.os.SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
+                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 v.getContext().startActivity(
                                         GetActionIntent(Intent.ACTION_VIEW,
@@ -342,7 +345,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.dateTextView.setVisibility(View.VISIBLE);
 
-        String titleText = cursor.getString(mTitlePos);
+        String titleText = cursor.getString(mTitlePos).replace( cursor.getString(mFeedTitlePos), "" );
         holder.titleTextView.setText(titleText);
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
@@ -438,6 +441,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( mShowEntryText ) {
             holder.textTextView.setVisibility(View.VISIBLE);
             holder.textTextView.setText(Html.fromHtml( cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos) ));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                holder.textTextView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD );
             holder.textTextView.setEnabled(!holder.isRead);
         } else
             holder.textTextView.setVisibility(View.GONE);
@@ -516,9 +521,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    public String GetTitle( AbsListView lv, int position ) {
-        return ( ( Cursor )lv.getItemAtPosition( position ) ).getString( mTitlePos );
-    }
+//    public String GetTitle( AbsListView lv, int position ) {
+//        return ( ( Cursor )lv.getItemAtPosition( position ) ).getString( mTitlePos );
+//    }
 
     private static void SetIsRead(final Uri entryUri, final boolean isRead, final int sleepMsec) {
         new Thread() {
@@ -605,6 +610,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if (cursor != null && cursor.getCount() > 0) {
             mIdPos = cursor.getColumnIndex(EntryColumns._ID);
             mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
+            mFeedTitlePos = cursor.getColumnIndex(FeedColumns.NAME);
             mUrlPos = cursor.getColumnIndex(EntryColumns.LINK);
             mMainImgPos = cursor.getColumnIndex(EntryColumns.IMAGE_URL);
             mDatePos = cursor.getColumnIndex(EntryColumns.DATE);

@@ -1,15 +1,12 @@
 package ru.yanus171.feedexfork.utils
 
 import android.os.Build
+import okhttp3.*
 
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import org.jsoup.Jsoup
 import org.w3c.dom.Document
 import ru.yanus171.feedexfork.service.FetcherService
@@ -60,7 +57,7 @@ class Connection(url: String) {
 
     fun disconnect() {
         if (IsOkHttp()) {
-
+            mResponse?.close()
         } else {
             mConnection?.disconnect()
             mConnection = null
