@@ -119,6 +119,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static androidx.core.content.FileProvider.getUriForFile;
+import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
@@ -301,7 +302,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
-        final String title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+        final String feedTitle = newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME));
+        final String title =
+            newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE)).replace( feedTitle, "" );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -1019,7 +1022,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
                 (int) (getScrollY() + delta * (getHeight() - statusText.GetHeight()) *
                         (PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
-        anim.setDuration(450);
+        anim.setDuration(PAGE_SCROLL_DURATION_MSEC);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
     }

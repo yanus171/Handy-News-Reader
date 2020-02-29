@@ -137,7 +137,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     static final String ITEM_ICON = "icon";
     private static final String STATE_CURRENT_TAB = "STATE_CURRENT_TAB";
     private static final String STATE_FEED_EDIT_LOAD_TYPE_ID = "STATE_FEED_EDIT_LOAD_TYPE_ID";
-    public static final String DUCKDUCKGO_SEARCH_URL = "http://duckduckgo.com/html/?q=";
+    public static final String DUCKDUCKGO_SEARCH_URL = "https://duckduckgo.com/html/?q=";
     private static final String[] FEED_PROJECTION =
         new String[]{FeedColumns.NAME, FeedColumns.URL, FeedColumns.RETRIEVE_FULLTEXT, FeedColumns.IS_GROUP, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, FeedColumns.IS_AUTO_REFRESH, FeedColumns.GROUP_ID, FeedColumns.IS_IMAGE_AUTO_LOAD, FeedColumns.OPTIONS  };
     public static final String STATE_WEB_SEARCH_TEXT = "WEB_SEARCH_TEXT";

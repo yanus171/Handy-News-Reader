@@ -1,3 +1,4 @@
+
 /**
  * Flym
  * <p>
@@ -68,6 +69,8 @@ import java.util.ArrayList;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.BaseActivity;
+import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -79,8 +82,11 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
+import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static ru.yanus171.feedexfork.activity.BaseActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
@@ -104,7 +110,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private EntriesCursorAdapter mEntriesCursorAdapter;
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
-    private ListView mListView;
+    public ListView mListView;
     private ProgressBar mProgressBar = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
@@ -371,11 +377,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         emptyView.setText( getString( R.string.no_entries ) );
         mListView.setEmptyView( emptyView );
 
-
         timer.End();
         return rootView;
     }
 
+
+
+
+    private BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
+    }
 
     private void SetListViewAdapter() {
 

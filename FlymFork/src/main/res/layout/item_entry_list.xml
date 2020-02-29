@@ -34,33 +34,36 @@
         android:id="@+id/layout_ontouch"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/layout_vertval"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark_background">
+            android:background="@color/dark_background"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/layout_with_background"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/main_icon_layout"
                     android:layout_width="@dimen/entry_img_width"
                     android:layout_height="@dimen/entry_img_height"
+                    android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginStart="5dp">
+                    android:layout_marginBottom="5dp">
+
                     <ImageView
                         android:id="@+id/main_icon"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentTop="true"
-                        android:src="#00000000"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop"
+                        android:src="#00000000" />
 
                     <ImageView
                         android:id="@+id/new_icon"
@@ -69,20 +72,22 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/new_entry_icon" />
                 </FrameLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/textLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingBottom="5dp">
+
                         <TextView
                             android:id="@android:id/text1"
                             android:layout_width="wrap_content"
@@ -91,30 +96,32 @@
                             android:ellipsize="end"
                             android:gravity="start"
                             android:maxLines="5"
-                            android:textColor="?attr/colorReadState"
                             android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
-                            android:textIsSelectable="false" />
-                        <TextView
-                            android:id="@+id/textDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:drawablePadding="3dp"
-                            android:singleLine="true"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="?attr/colorReadState"
-                            android:text="date"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:paddingStart="10dp" />
+                            android:textIsSelectable="false" />
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"
+                        android:drawablePadding="3dp"
+                        android:paddingStart="10dp"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:text="date"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="?attr/colorReadState"
+                        android:textIsSelectable="false" />
 
                     <LinearLayout
                         android:id="@+id/text2Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@android:id/text2"
                             android:layout_width="wrap_content"
@@ -122,67 +129,71 @@
                             android:alpha="0.7"
                             android:drawablePadding="3dp"
                             android:singleLine="true"
+                            android:text="info"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="?attr/colorReadState"
-                            android:text="info"
-                            android:textIsSelectable="false"/>
+                            android:textIsSelectable="false" />
+
                         <TextView
                             android:id="@+id/imageSize"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:alpha="0.7"
                             android:drawablePadding="3dp"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
                             android:singleLine="true"
+                            android:text="image_size"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="?attr/colorReadState"
-                            android:text="image_size"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:paddingStart="10dp" />
+                            android:textIsSelectable="false" />
+
                         <TextView
                             android:id="@+id/textAuthor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:alpha="0.7"
                             android:drawablePadding="3dp"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
                             android:singleLine="true"
+                            android:text="author"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="?attr/colorReadState"
-                            android:text="author"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:paddingStart="10dp" />
+                            android:textIsSelectable="false" />
                     </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/textUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:alpha="0.7"
                 android:drawablePadding="3dp"
                 android:singleLine="false"
-                android:textColor="?attr/colorReadState"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
                 android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
-                android:textIsSelectable="false"
-                android:layout_marginStart="5dp" />
+                android:textColor="?attr/colorReadState"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/textSource"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:alpha="0.7"
                 android:drawablePadding="3dp"
                 android:singleLine="false"
+                android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?attr/colorReadState"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
-                android:textIsSelectable="false"
-                android:layout_marginStart="5dp" />
+                android:textIsSelectable="false" />
         </LinearLayout>
 
         <include layout="@layout/item_entry_list_btn"/>

@@ -153,11 +153,13 @@ public class UiUtils {
 
     public static void HideButtonText(View rootView, int ID, boolean transparent) {
         TextView btn = rootView.findViewById(ID);
-        if ( transparent )
-            btn.setBackgroundColor(Color.TRANSPARENT);
-        else
-            btn.setBackgroundResource( R.drawable.round_background );
-        btn.setText("");
+        if ( btn != null ) {
+            if (transparent)
+                btn.setBackgroundColor(Color.TRANSPARENT);
+            else
+                btn.setBackgroundResource(R.drawable.round_background);
+            btn.setText("");
+        }
     }
 
     public static void SetSize( View parent, int ID, int width, int height ) {

@@ -97,7 +97,6 @@
             android:indeterminateDrawable="@drawable/spinner_ring"
             android:layout_alignParentEnd="true" />
 
-
     </RelativeLayout>
     </LinearLayout>
 
