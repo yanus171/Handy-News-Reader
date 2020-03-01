@@ -107,10 +107,6 @@
         app:showAsAction="never">
         <menu>
             <item
-                android:id="@+id/menu_reload_full_text"
-                android:icon="@drawable/refresh"
-                android:title="@string/menu_reload_full_text" />
-            <item
                 android:id="@+id/menu_reload_full_text_without_mobilizer"
                 android:title="@string/menu_reload_full_text_without_mobilizer" />
             <item
@@ -125,6 +121,10 @@
                 android:id="@+id/menu_load_all_images"
                 android:icon="@android:drawable/ic_menu_gallery"
                 android:title="@string/menu_load_all_images" />
+            <item
+                android:id="@+id/menu_reload_full_text"
+                android:icon="@drawable/refresh"
+                android:title="@string/menu_reload_full_text" />
         </menu>
     </item>
     <item
