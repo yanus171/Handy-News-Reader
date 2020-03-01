@@ -446,6 +446,8 @@ GENERAL]]></string>
     <string name="add_entry_shortcut">Skrót dodawania artykułu</string>
     <string name="new_entry_shortcut_added">Skrót nowego artykułu został utworzony na pulpicie</string>
     <string name="menu_reload_with_tables_toggle">Z tabelami</string>
+    <string name="menu_display_options">Opcje wyświetlania</string>
+    <string name="menu_reload">Przeładuj</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
