@@ -24,7 +24,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarRefresh"
         android:layout_gravity="center_horizontal"
         android:indeterminate="true" />
 
@@ -42,14 +42,55 @@
             android:visibility="gone"
             android:focusable="true" />
 
-        <ListView
-            android:id="@android:id/list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="fill"
-            android:divider="#66888888"
-            android:dividerHeight="5dp"
-            android:footerDividersEnabled="false"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <LinearLayout
+                android:id="@+id/layoutColontitul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_weight="0.6"
+                    android:layout_width="0dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="0dp"
+                    android:indeterminate="false"
+                    android:indeterminateOnly="false"
+                    android:max="100"
+                    android:padding="0dp"
+                    android:paddingTop="0dp"
+                    android:progress="33"
+                    android:progressBackgroundTint="#00000000"
+                    android:progressTint="#FF777777" />
+                <TextView
+                    android:id="@+id/textClock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:text="21:26"
+                    android:textSize="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp" />
+            </LinearLayout>
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="fill"
+                android:divider="#66888888"
+                android:dividerHeight="5dp"
+                android:footerDividersEnabled="false"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/progressText"

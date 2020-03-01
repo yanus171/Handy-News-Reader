@@ -20,21 +20,31 @@ package ru.yanus171.feedexfork.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.EntryView;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
 
@@ -150,4 +160,28 @@ public abstract class BaseActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+
+    public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock) {
+        if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
+            progressBar.setVisibility( View.VISIBLE );
+            progressBar.setMax( max );
+            progressBar.setProgress( progress );
+            ( (LinearLayout) progressBar.getParent() ).setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
+            String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
+            if (Build.VERSION.SDK_INT >= 21 )
+                progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(color )));
+            progressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
+        } else {
+            progressBar.setVisibility( View.GONE );
+        }
+
+        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && GetIsStatusBarHidden() ) {
+            labelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
+            labelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
+            labelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
+            labelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
+        } else {
+            labelClock.setText( "" );
+        }
+    }
 }

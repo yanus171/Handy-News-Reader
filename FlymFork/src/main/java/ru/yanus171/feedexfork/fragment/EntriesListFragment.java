@@ -70,7 +70,6 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -82,11 +81,8 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
-import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static ru.yanus171.feedexfork.activity.BaseActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
@@ -111,7 +107,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
+    private ProgressBar mProgressBarRefresh = null;
     private ProgressBar mProgressBar = null;
+    private TextView mLabelClock = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
@@ -216,11 +214,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
 
 
-        if ( mProgressBar != null ) {
+        if ( mProgressBarRefresh != null ) {
             if (isRefresh)
-                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBarRefresh.setVisibility(View.VISIBLE);
             else
-                mProgressBar.setVisibility(View.GONE);
+                mProgressBarRefresh.setVisibility(View.GONE);
         }
     }
 
@@ -318,7 +316,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                                        (TextView)rootView.findViewById( R.id.progressText ),
                                        Status());
 
-        mProgressBar = rootView.findViewById(R.id.progressBar);
+        mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -343,6 +341,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     View v = mListView.getChildAt(0);
                     mLastListViewTopOffset = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
                 }
+                UpdateFooter();
             }
         });
 
@@ -377,12 +376,22 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         emptyView.setText( getString( R.string.no_entries ) );
         mListView.setEmptyView( emptyView );
 
+        mProgressBar = rootView.findViewById(R.id.progressBar);
+        mProgressBar.setProgress( 0 );
+        mLabelClock = rootView.findViewById(R.id.textClock);
+        mLabelClock.setText("");
+
         timer.End();
         return rootView;
     }
 
 
-
+    public void UpdateFooter() {
+        BaseActivity.UpdateFooter(mProgressBar,
+                                  mEntriesCursorAdapter.getCount(),
+                                  mListView.getFirstVisiblePosition(),
+                                  mLabelClock);
+    }
 
     private BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
@@ -796,6 +805,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
         //refreshUI();
+        UpdateFooter();
         mStatusText.SetFeedID( mCurrentUri );
         timer.End();
     }

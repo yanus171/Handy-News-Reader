@@ -151,9 +151,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
 
-    private View mStarFrame;
-    private ProgressBar mProgressBar;
-    private TextView mLabelClock;
+    private View mStarFrame = null;
+    private ProgressBar mProgressBar = null;
+    private TextView mLabelClock = null;
 
     private StatusText mStatusText = null;
 
@@ -1010,33 +1010,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }*/
 
     public void UpdateFooter() {
-        EntryView entryView = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem());
+        EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
         if (entryView != null) {
-            if ( PrefUtils.getBoolean( "article_text_footer_show_progress", true ) ) {
-                mProgressBar.setVisibility( View.VISIBLE );
-                int webViewHeight = entryView.getMeasuredHeight();
-                int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
-                mProgressBar.setMax(contentHeight - webViewHeight);
-                mProgressBar.setProgress(entryView.getScrollY());
-                mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( Color.parseColor(Theme.GetBackgroundColor() ) );
-                String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
-                if (Build.VERSION.SDK_INT >= 21 )
-                    mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));
-                mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
-            } else {
-                mProgressBar.setVisibility( View.GONE );
-            }
-        }
-
-        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) ) {
-            mLabelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
-            mLabelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
-            mLabelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
-            mLabelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
-            mLabelClock.setText( "" );
+            int webViewHeight = entryView.getMeasuredHeight();
+            int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
+            BaseActivity.UpdateFooter(mProgressBar,
+                                      contentHeight - webViewHeight,
+                                      entryView.getScrollY(),
+                                      mLabelClock);
         }
     }
+
 
     @Override
     public void onClickOriginalText() {

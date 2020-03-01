@@ -221,6 +221,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             @Override
             public void onClick(View view) {
                 setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+                if (mEntriesFragment != null)
+                    mEntriesFragment.UpdateFooter();
             }
         });
         findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {

@@ -179,6 +179,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
                 + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
                 + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
+                + "div {text-align:" + getAlign(text) + "} "
                 + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"

@@ -257,7 +257,6 @@ public class EntryActivity extends BaseActivity {
         setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden());
         if (mEntryFragment != null)
             mEntryFragment.UpdateFooter();
-
     }
 
 

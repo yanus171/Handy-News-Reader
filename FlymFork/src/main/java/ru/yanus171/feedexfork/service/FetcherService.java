@@ -859,7 +859,7 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
                 values.put(LINK, url);
-                values.put(EntryColumns.IS_WITH_TABLES, 1);
+                values.put(EntryColumns.IS_WITH_TABLES, 0);
                 values.put(EntryColumns.IMAGES_SIZE, 0);
                 if ( isStarred )
                     values.put(EntryColumns.IS_FAVORITE, 1);
