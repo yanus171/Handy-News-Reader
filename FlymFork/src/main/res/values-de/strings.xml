@@ -448,7 +448,7 @@
     <string name="article_tap_enabled">Aktionen für Antippen aktiviert</string>
     <string name="menu_calculate_image_sizes">Größe der Grafiken berechnen</string>
     <string name="setting_calculate_image_sizes">Größe der Grafiken im Speicher</string>
-    <string name="setting_calculate_image_sizes_descr">Berechnete Gesamtgröße der geladenen Aufnahmen im Speicher pro Artikel, Feed, Gruppe usw. anzeigen (die Werte werden bei der Aktualisierung angepasst).</string>
+    <string name="setting_calculate_image_sizes_descr">Speicherbedarf geladener Grafiken pro Artikel, Feed, Gruppe usw. berechnen und anzeigen (die Werte werden während der Aktualisierung neu berechnet)</string>
     <string name="settings_category_theme">Theme</string>
     <string name="settings_category_header">Seitenkopf</string>
     <plurals name="number_of_new_entries">
