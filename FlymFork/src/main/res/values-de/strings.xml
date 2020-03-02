@@ -434,7 +434,7 @@
     <string name="article_menu_show_by_tap">Artikelmenü durch Antippen anzeigen</string>
     <string name="article_list_loading">Artikelliste wird geladen</string>
     <string name="article_opening">Artikel wird geöffnet</string>
-    <string name="web_page_loading">Seite wird geladen …</string>
+    <string name="web_page_loading">Seite wird geladen</string>
     <string name="article_menu_show_by_tap_descr">Wenn die Aktionsleiste ausgeblendet ist. Andernfalls wäre das Menü nur in der Aktionsleiste verfügbar.</string>
     <string name="menu_go_back">Zurück</string>
     <string name="menu_go_top">Zum Seitenanfang</string>
