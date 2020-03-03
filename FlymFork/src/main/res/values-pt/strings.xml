@@ -450,6 +450,7 @@
     <string name="setting_calculate_image_sizes_descr">Calcular e mostrar o tamanho da soma de imagens carregadas no armazenamento para cada artigo, feed, grupo, etc (os números são atualizados durante a atualização)</string>
     <string name="settings_category_theme">Tema</string>
     <string name="settings_category_header">Cabeçalho da página</string>
+    <string name="tasks_to_download">Para carregar</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>

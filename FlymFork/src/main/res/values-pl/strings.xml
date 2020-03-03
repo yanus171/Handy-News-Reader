@@ -446,6 +446,16 @@ GENERAL]]></string>
     <string name="add_entry_shortcut">Skrót dodawania artykułu</string>
     <string name="new_entry_shortcut_added">Skrót nowego artykułu został utworzony na pulpicie</string>
     <string name="menu_reload_with_tables_toggle">Z tabelami</string>
+    <string name="menu_display_options">Opcje wyświetlania</string>
+    <string name="menu_reload">Przeładuj</string>
+    <string name="article_tap_enabled">Akcje dotykowe aktywne</string>
+    <string name="article_tap_enabled_summary">na Strefach Aktywnych oraz obszarach które nie są linkami (by pokazać menu)</string>
+    <string name="menu_calculate_image_sizes">Oblicz rozmiar obrazków</string>
+    <string name="setting_calculate_image_sizes">Rozmiar obrazków w pamięci urządzenia</string>
+    <string name="setting_calculate_image_sizes_descr">Oblicz i pokaż łączną sumę wczytywanych do pamięci obrazków dla każdego artykułu, kanału, grupy, itp. (liczby są aktualizowane podczas odświeżania)</string>
+    <string name="settings_category_theme">Motyw</string>
+    <string name="settings_category_header">Nagłówek strony</string>
+    <string name="tasks_to_download">Do załadowania</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
