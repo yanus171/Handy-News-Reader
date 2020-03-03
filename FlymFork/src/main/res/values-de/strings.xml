@@ -141,7 +141,7 @@
     <string name="to_group_into">In die Gruppe</string>
     <string name="add_custom_feed">Feed hinzufügen oder suchen</string>
     <string name="google_news_title">Google News Themen</string>
-    <string name="google_news_indicator">Wähle ein oder mehrere Themen aus. Möglicherweise werden sie von Google nicht in deiner Sprache angeboten.</string>
+    <string name="google_news_indicator">Ein oder mehrere Themen auswählen. Möglicherweise bietet Google einige davon nicht in Ihrer Sprache an.</string>
     <string name="google_news_top_stories">Top-Meldungen</string>
     <string name="google_news_world">Welt</string>
     <string name="google_news_business">Wirtschaft</string>
@@ -266,7 +266,7 @@
     <string name="underline_links">Links unterstreichen</string>
     <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
-    <string name="settings_clock_size">Schriftgröße der Fußzeilen-Uhrzeit</string>
+    <string name="settings_clock_size">Schriftgröße der Uhrzeit</string>
     <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
     <string name="article_text_footer_clock_color_descr">Farbe der Uhrzeit in der Fußzeile</string>
     <string name="settings_color_clock_sample_short">08:15</string>
@@ -279,7 +279,7 @@
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
-    <string name="tap_zone_size_descr">Höhe und Breite der Tipp-Zonen in Millimeter\n</string>
+    <string name="tap_zone_size_descr">Höhe und Breite der Tipp-Zonen in Millimeter (Artikelansicht)</string>
     <string name="settings_show_tap_zones">Tipp-Zonen anzeigen</string>
     <string name="settings_show_tap_zone_description">als transparente Quadrate in der Artikelansicht</string>
     <string name="settings_tapZones">Tipp-Zonen-Vorschau</string>
@@ -291,7 +291,7 @@
     <string name="settings_category_behavior">Benachrichtigungen \u0026 Verhalten</string>
     <string name="settings_category_behavior_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
-    <string name="settings_notifications_enabled_description">Aktiviert Benachrichtigungen bei neuen Artikeln</string>
+    <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
     <string name="settings_notifications_ringtone_none">Keiner</string>
     <string name="settings_notifications_vibrate">Vibration</string>
@@ -363,7 +363,7 @@
     <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatische Favoriten</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="deleteAllEntries">Alle nicht markierten Artikel löschen</string>
+    <string name="deleteAllEntries">Alle nicht als Favorit markierten Artikel löschen</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Mit Tags erneut laden</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
