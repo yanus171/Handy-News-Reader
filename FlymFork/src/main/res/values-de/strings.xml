@@ -264,7 +264,7 @@
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Farbe der Links</string>
     <string name="underline_links">Links unterstreichen</string>
-    <string name="article_text_footer_show_clock">Uhrzeit in der Fußzeile</string>
+    <string name="article_text_footer_show_clock">Uhrzeit anzeigen</string>
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
     <string name="settings_clock_size">Schriftgröße der Uhrzeit</string>
     <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
