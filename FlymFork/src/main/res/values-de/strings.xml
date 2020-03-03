@@ -198,7 +198,7 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Allgemeine Einstellungen</string>
     <string name="settings_category_common_summary">Thema</string>
-    <string name="theme">Thema</string>
+    <string name="theme">Design</string>
     <string name="customColors">Benutzerdefinierte Farben</string>
     <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
     <string name="textColor">Text- und Hintergrundfarbe</string>
@@ -307,7 +307,7 @@
     <string name="settings_category_advanced">Erweitert</string>
     <string name="settings_category_advanced_summary">Zusätzliche Funktionen wie Backup, Filter und mehr</string>
     <string name="settings_autobackup_enabled">Automatisches Backup aktivieren</string>
-    <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine .opml-Datei</string>
+    <string name="settings_autobackup_enabled_descr">Dient der regelmäßigen Sicherung aller Feeds und Favoriten in eine OPML-Datei</string>
     <string name="settings_category_content_presentation">Anzeige der Inhalte</string>
     <string name="settings_display_text_color">Textintensität</string>
     <string name="settings_visible_feeds">Sichtbare Feeds</string>
@@ -394,7 +394,7 @@
     <string name="create_auto_backup">Automatisches Backup</string>
     <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
-    <string name="use_standard_file_manager_descr">andernfalls die zu importierende .opml-Datei auswählen - nur außerhalb des feedex-Ordners (über den internen Dialog)</string>
+    <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog)</string>
     <string name="settings">Einstellungen</string>
     <string name="entry_go_prev">Vorheriger Artikel</string>
     <string name="entry_go_next">Nächster Artikel</string>
