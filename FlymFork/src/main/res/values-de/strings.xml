@@ -94,12 +94,12 @@
     <string name="drawer_close">Navigationsleiste schließen</string>
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
-    <string name="menu_add_feed">Feed hinzufügen</string>
+    <string name="menu_add_feed">Feed/Artikel hinzufügen</string>
     <string name="no_feeds">Keine Feeds</string>
     <string name="no_filters">Keine Filter</string>
     <string name="context_menu_delete">Löschen</string>
     <string name="edit_feed_title">Feed bearbeiten</string>
-    <string name="new_feed_title">Neuer Feed</string>
+    <string name="new_feed_title">Neuer Feed oder Artikel</string>
     <string name="context_menu_edit">Bearbeiten</string>
     <string name="menu_add_group">Gruppe erstellen</string>
     <string name="menu_import">OPML-Datei importieren</string>
