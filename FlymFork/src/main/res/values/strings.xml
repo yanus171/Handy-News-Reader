@@ -349,7 +349,7 @@
     <string name="loadingLink">Loading links</string>
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
-    <string name="loadLinkLaterStarred">Read later in favourites</string>
+    <string name="loadLinkLaterStarred">Read later in favorites</string>
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Read It Later</string>
     <string name="markAllAsRead">Mark all as read</string>
