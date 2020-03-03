@@ -197,10 +197,10 @@
     <string name="transparency">Transparenz</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">Allgemeine Einstellungen</string>
-    <string name="settings_category_common_summary">Thema</string>
+    <string name="settings_category_common_summary">Design</string>
     <string name="theme">Design</string>
     <string name="customColors">Benutzerdefinierte Farben</string>
-    <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Themas verwendet</string>
+    <string name="fontColorsNotFromThemeSummary">Wenn nicht aktiviert, werden die Farben des Designs verwendet</string>
     <string name="textColor">Text- und Hintergrundfarbe</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem heißen Ofen, meint man, es wären zwei Stunden. Das ist Relativität.\u201c\n(Albert Einstein)</string>
@@ -222,7 +222,7 @@
     <string name="settings_max_image_download_size_kb">Maximale Bildgröße (kB)</string>
     <string name="settings_max_image_download_size_kb_summary">Größere Bilder nicht automatisch laden\n</string>
     <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
-    <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht\n</string>
+    <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
     <string name="settings_load_comments">Kommentare laden</string>
     <string name="settings_load_comments_description">im gesamten Artikeltext</string>
     <string name="settings_category_article_list">Artikelliste</string>
