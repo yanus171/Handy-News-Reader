@@ -76,7 +76,10 @@
     <string name="filter_is_regex">es una expresión regular</string>
     <string name="filter_apply_to_title">Aplicar al título (or link adress)</string>
     <string name="filter_apply_to_content">Aplicar al contenido</string>
+    <string name="accept">ACEPTAR</string>
+    <string name="reject">RECHAZAR</string>
     <string name="feed_search">Buscar fuentes</string>
+    <string name="web_page_search_duckduckgo">Búsqueda de página web (Duck Duck Go)</string>
     <string name="select_file">Seleccionar archivo</string>
     <string name="question_delete_feed">¿Seguro que quiere eliminar esta fuente?</string>
     <string name="question_delete_group">¿Seguro que quiere eliminar este grupo de fuentes?</string>
@@ -88,6 +91,8 @@
     <string name="to_group_message">Puede mover la fuente al grupo o encima del grupo. ¿Qué desea hacer?</string>
     <string name="to_group_above">Encima del grupo</string>
     <string name="to_group_into">Al grupo</string>
+    <string name="add_custom_feed">Añadir un feed personalizado o buscar uno</string>
+    <string name="google_news_title">Temas de Google News</string>
     <string name="google_news_business">Negocio</string>
     <string name="google_news_technology">Tecnología</string>
     <string name="google_news_entertainment">Entretenimiento</string>
