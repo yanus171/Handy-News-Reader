@@ -189,7 +189,7 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
-    <string name="image_count">Anzahl Grafiken</string>
+    <string name="image_count">Anzahl Bilder</string>
     <!-- WIDGET -->
     <string name="red">Rot</string>
     <string name="green">Grün</string>
@@ -387,7 +387,7 @@
     <string name="copyToClipboard">In die Zwischenablage</string>
     <string name="sendEmail">E-Mail senden</string>
     <string name="toastAppCrashed">Die Anwendung wurde unerwartet beendet: (Bitte senden Sie eine E-Mail an den Entwickler)</string>
-    <string name="exportingToFile">Exportiere in Datei&#8230;</string>
+    <string name="exportingToFile">In Datei exportieren&#8230;</string>
     <string name="importingFromFile">Aus Datei importieren&#8230;</string>
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
     <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird\n</string>
@@ -426,7 +426,7 @@
     <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
-    <string name="image_white_background">Abbildung mit weißem Hintergrund</string>
+    <string name="image_white_background">Bilder mit weißem Hintergrund</string>
     <string name="settings_add_google_news_dialog">Google News Dialog hinzufügen</string>
     <string name="settings_add_google_news_dialog_descr">Deaktivieren Sie das Kontrollkästchen, um einen Dialog zur Auswahl des Feedtyps zu umgehen, wenn Sie einen Feed hinzufügen.</string>
     <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
@@ -447,8 +447,8 @@
     <string name="menu_reload">Neu laden …</string>
     <string name="article_tap_enabled">Aktionen für Antippen aktiviert</string>
     <string name="article_tap_enabled_summary">in Tipp-Zonen und Bereichen ohne Links (zur Menüanzeige)</string>
-    <string name="menu_calculate_image_sizes">Größe der Grafiken berechnen</string>
-    <string name="setting_calculate_image_sizes">Größe der Grafiken im Speicher</string>
+    <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
+    <string name="setting_calculate_image_sizes">Größe der Bilder im Speicher</string>
     <string name="setting_calculate_image_sizes_descr">Speicherbedarf geladener Bilder pro Artikel, Feed, Gruppe usw. berechnen und anzeigen (die Werte werden während der Aktualisierung neu berechnet)</string>
     <string name="settings_category_theme">Design</string>
     <string name="settings_category_header">Seitenkopf</string>
