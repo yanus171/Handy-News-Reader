@@ -427,7 +427,7 @@
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Bilder mit weißem Hintergrund</string>
-    <string name="settings_add_google_news_dialog">Google News Dialog hinzufügen</string>
+    <string name="settings_add_google_news_dialog">Google News Themen</string>
     <string name="settings_add_google_news_dialog_descr">Deaktivieren Sie das Kontrollkästchen, um einen Dialog zur Auswahl des Feedtyps zu umgehen, wenn Sie einen Feed hinzufügen.</string>
     <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
     <string name="reload_fulltext_after_tag_editing_descr">Wenn das Kontrollkästchen deaktiviert ist, wird der Volltext nicht nach jeder Schlagwort-Bearbeitung neu geladen (Anzeigen|Ausblenden|Stamm), damit mehrere Änderungen einfacher durchgeführt werden können. In diesem Fall sollten Sie den Volltext nach Abschluss der Bearbeitung manuell neu laden.</string>
@@ -444,7 +444,7 @@
     <string name="new_entry_shortcut_added">Neue Artikelverknüpfung wurde auf dem Startbildschirm erstellt</string>
     <string name="menu_reload_with_tables_toggle">Mit Tabellen</string>
     <string name="menu_display_options">Anzeigeoptionen</string>
-    <string name="menu_reload">Neu laden …</string>
+    <string name="menu_reload">Neu laden&#8230;</string>
     <string name="article_tap_enabled">Aktionen für Antippen aktiviert</string>
     <string name="article_tap_enabled_summary">in Tipp-Zonen und Bereichen ohne Links (zur Menüanzeige)</string>
     <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
