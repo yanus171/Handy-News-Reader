@@ -268,7 +268,7 @@
     <string name="article_text_footer_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
     <string name="settings_clock_size">Schriftgröße der Uhrzeit</string>
     <string name="article_text_footer_clock_color">Farbe der Uhrzeit</string>
-    <string name="article_text_footer_clock_color_descr">Farbe der Uhrzeit in der Fußzeile</string>
+    <string name="article_text_footer_clock_color_descr">Farbe und Hintergrund der Uhranzeige</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Lese-Fortschrittsbalken</string>
