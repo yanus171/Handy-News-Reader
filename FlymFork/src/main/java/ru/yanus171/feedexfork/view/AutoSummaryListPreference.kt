@@ -26,6 +26,7 @@ package ru.yanus171.feedexfork.view
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
+import ru.yanus171.feedexfork.R
 
 import java.util.ArrayList
 
@@ -51,7 +52,7 @@ open class AutoSummaryListPreference(context: Context, attrs: AttributeSet) : an
             e.printStackTrace()
         }
 
-        return TextUtils.join("\n", list)
+        return TextUtils.join(context.getString(R.string.settings_current_setting)+": ", list)
     }
 
     override fun onSetInitialValue(restoreValue: Boolean, defaultValue: Any?) {
