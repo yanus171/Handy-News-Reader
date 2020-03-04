@@ -96,10 +96,14 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.RETRIEVE_FULL
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.SHOW_TEXT_IN_ENTRY_LIST;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
+import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
+import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
 
 public class OPML {
 
-    public static String GetAutoBackupOPMLFileName() { return  FileUtils.GetFolder() + "/HandyNewsReader_auto_backup.opml"; }
+    public static final String AUTO_BACKUP_OPML_FILENAME = "HandyNewsReader_auto_backup.opml";
+
+    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.getFolder() + "/" + AUTO_BACKUP_OPML_FILENAME; }
 
     private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
@@ -165,6 +169,7 @@ public class OPML {
         if ( GetAutoBackupOPMLFileName().equals(filename) && !IsAutoBackupEnabled() )
             return;
 
+
         final Context context = MainApplication.getContext();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         //final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) );
@@ -179,12 +184,14 @@ public class OPML {
 
             {
                 Cursor cursor = context.getContentResolver().query(CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
-                if ( cursor.moveToFirst() )
+                if ( cursor.moveToFirst() && isNotCancelRefresh() )
                     ExportFeed(writer, cursor);
                 cursor.close();
             }
 
             while (cursorGroupsAndRoot.moveToNext()) {
+                if ( isCancelRefresh() )
+                    break;
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
                     writer.write( OUTLINE_TITLE);
                     writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
@@ -262,7 +269,8 @@ public class OPML {
     private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
-            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID };
+            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR,
+            EntryColumns.IS_WITH_TABLES};
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -303,6 +311,8 @@ public class OPML {
 //                    writer.write(text == null ? "" : TextUtils.htmlEncode(text));
 //                }
                 WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
+                WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
+                WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
                 writer.write(TAG_CLOSING);
             }
             writer.write("\t");
@@ -497,9 +507,10 @@ public class OPML {
                     values.put(EntryColumns.IS_NEW, GetBool( attributes, EntryColumns.IS_NEW));
                     values.put(EntryColumns.IS_READ, GetBool( attributes, EntryColumns.IS_READ));
                     values.put(EntryColumns.IS_FAVORITE, GetBool( attributes, EntryColumns.IS_FAVORITE));
-                    values.put(EntryColumns.LINK, GetText( attributes, EntryColumns.LINK ));
                     values.put(EntryColumns.ABSTRACT, GetText( attributes, EntryColumns.ABSTRACT));
-                    values.put(EntryColumns.MOBILIZED_HTML, GetText( attributes, EntryColumns.MOBILIZED_HTML));
+                    final String link = GetText( attributes, EntryColumns.LINK );
+                    final String mobHtml = GetText( attributes, EntryColumns.MOBILIZED_HTML);
+                    FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
                     values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
                     values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
                     values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));
@@ -507,6 +518,8 @@ public class OPML {
                     values.put(EntryColumns.AUTHOR, GetText( attributes, EntryColumns.AUTHOR) );
                     values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
                     values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
+                    values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
+                    values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( mFeedId ), values);
@@ -525,9 +538,6 @@ public class OPML {
                     mEditor.putLong(key, Long.parseLong(value));
                 } else if (className.contains(PREF_CLASS_FLOAT)) {
                     mEditor.putFloat(key, Float.parseFloat(value));
-                } else {
-                    // throw new ClassNotFoundException("Unknown type: "
-                    // + prefClass);
                 }
                 mEditor.apply();
             }

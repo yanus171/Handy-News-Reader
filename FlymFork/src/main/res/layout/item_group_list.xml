@@ -7,7 +7,9 @@
               android:background="?android:attr/activatedBackgroundIndicator"
               android:orientation="vertical"
               android:paddingBottom="7dip"
-              android:paddingTop="5dip">
+              android:paddingTop="5dip"
+    android:layout_marginEnd="5dip"
+    android:layout_marginStart="5dip">
 
     <TextView
         android:id="@android:id/text1"

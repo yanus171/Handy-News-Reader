@@ -24,7 +24,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.Locale;
@@ -35,11 +35,15 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     View mDecorView;
     public Brightness mBrightness = null;
+
+    public static final int PAGE_SCROLL_DURATION_MSEC = 450;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( mBrightness != null ) {
             mBrightness.OnResume();
         }
+        Status().UpdateText();
     }
 
     @Override
@@ -72,6 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( mBrightness != null ) {
             mBrightness.OnPause();
         }
+        Status().ClearProgress();
         super.onPause();
     }
     // ----------------------------------------------------------------
@@ -104,4 +110,44 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext( InitLocale( base ));
     }
+
+    private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
+    private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
+
+    static public boolean GetIsStatusBarHidden() {
+        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_HIDDEN, false);
+    }
+    static public boolean GetIsActionBarHidden() {
+        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_HIDDEN, false);
+    }
+    public void setFullScreen() {
+        setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden());
+    }
+
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden) {
+        PrefUtils.putBoolean(STATE_IS_STATUSBAR_HIDDEN, statusBarHidden);
+        PrefUtils.putBoolean(STATE_IS_ACTIONBAR_HIDDEN, actionBarHidden);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (statusBarHidden) {
+                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+            } else {
+                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+//        } else {
+//            setFullScreenOld(statusBarHidden);
+        }
+
+        if (getSupportActionBar() != null) {
+            if (actionBarHidden)
+                getSupportActionBar().hide();
+            else
+                getSupportActionBar().show();
+        }
+
+        invalidateOptionsMenu();
+    }
+
 }

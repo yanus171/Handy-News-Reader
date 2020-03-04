@@ -19,31 +19,26 @@
 
 package ru.yanus171.feedexfork.utils;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v4.util.LongSparseArray;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.collection.LongSparseArray;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,6 +78,10 @@ public class UiUtils {
 
     static public void SetFontSize(TextView textView) {
         textView.setTextSize(COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
+    }
+
+    static public void SetSmallFontSize(TextView textView) {
+        textView.setTextSize(COMPLEX_UNIT_DIP, 14 + PrefUtils.getFontSizeEntryList() );
     }
 
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
@@ -129,7 +128,6 @@ public class UiUtils {
         synchronized ( mHandler ) {
             mHandler.post( r );
         }
-
     }
     public static void RunOnGuiThread( final Runnable r, int delay ) {
         if ( mHandler == null )
@@ -139,22 +137,29 @@ public class UiUtils {
         }
 
     }
+    public static void RemoveFromGuiThread( final Runnable r ) {
+        if ( mHandler != null )
+            mHandler.removeCallbacks( r );
+    }
+
     public static void RunOnGuiThreadInFront( final Runnable r ) {
         if ( mHandler == null )
             mHandler  = new Handler(Looper.getMainLooper());
         synchronized ( mHandler ) {
-            mHandler.postAtFrontOfQueue( r );
+            mHandler.post( r );
         }
 
     }
 
     public static void HideButtonText(View rootView, int ID, boolean transparent) {
         TextView btn = rootView.findViewById(ID);
-        if ( transparent )
-            btn.setBackgroundColor(Color.TRANSPARENT);
-        else
-            btn.setBackgroundResource( R.drawable.round_background );
-        btn.setText("");
+        if ( btn != null ) {
+            if (transparent)
+                btn.setBackgroundColor(Color.TRANSPARENT);
+            else
+                btn.setBackgroundResource(R.drawable.round_background);
+            btn.setText("");
+        }
     }
 
     public static void SetSize( View parent, int ID, int width, int height ) {
@@ -168,13 +173,17 @@ public class UiUtils {
     static TextView AddSmallText(LinearLayout layout, int textID) {
         return AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(textID));
     }
-    static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
-        TextView result = new TextView(layout.getContext());
+    public static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
+        TextView result = CreateSmallText( layout.getContext(), gravity, color, text );
         if (lp != null) {
             layout.addView(result, lp);
         } else {
             layout.addView(result);
         }
+        return result;
+    }
+    public static TextView CreateSmallText(Context context, int gravity, ColorTB color, String text) {
+        TextView result = new TextView(context);
         result.setAutoLinkMask(Linkify.ALL);
         result.setLinkTextColor(Color.LTGRAY);
         result.setText(text);
@@ -188,7 +197,7 @@ public class UiUtils {
         result.setPadding(10, 0, 10, 0);
 
         result.setTextColor(color != null ? color.Text : Theme.GetMenuFontColor());
-
+        SetSmallFontSize( result );
         return result;
     }
 

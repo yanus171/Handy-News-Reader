@@ -22,8 +22,6 @@ package ru.yanus171.feedexfork.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,21 +36,23 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import java.io.File;
-import java.util.Date;
-import java.util.regex.Matcher;
+import java.util.List;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -67,28 +67,33 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
-import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
+@SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
-    private View mDimFrame;
 
-    private static final String FEED_NUMBER( final String where ) {
+    private static String FEED_NUMBER(final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
                 where + DB_AND  + EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
     }
-    private static final String GROUP_NUMBER( final String where ) {
+    private static String GROUP_NUMBER(final String where ) {
         if ( PrefUtils.getBoolean( "show_group_entries_count", false ) )
             return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
                     where + DB_AND + EntryColumns.FEED_ID + " IN ( SELECT " + FeedColumns._ID +  " FROM " +
@@ -98,7 +103,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         return "0";
 
     }
-    private final String EXPR_NUMBER ( final String where ) {
+    private String EXPR_NUMBER (final String where ) {
         return "CASE WHEN " + FeedColumns.WHERE_GROUP + " THEN " + GROUP_NUMBER( where ) +
                " ELSE " + FEED_NUMBER( where ) + " END";
     }
@@ -121,6 +126,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "HomeActivity.onCreate" );
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS );
         super.onCreate(savedInstanceState);
 
         if ( getIntent().hasCategory( "LoadLinkLater" ) )
@@ -209,7 +215,38 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
+
+        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root));
+        findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+            }
+        });
+        findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+            }
+        });
+
+        findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PageUpDown( -1 );
+            }
+        });
+        findViewById(R.id.pageDownBtn).setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PageUpDown( 1 );
+            }
+        });
         timer.End();
+    }
+
+    private void PageUpDown( int downOrUp ) {
+        mEntriesFragment.mListView.smoothScrollBy( downOrUp * mEntriesFragment.mListView.getHeight(), PAGE_SCROLL_DURATION_MSEC * 2 );
     }
 
     private void CloseDrawer() {
@@ -239,12 +276,25 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         final Intent intent = getIntent();
         setIntent( new Intent() );
 
-        if ( intent.getData() != null && intent.getData().equals( FAVORITES_CONTENT_URI ) ) {
-            selectDrawerItem( 2 );
+        if ( intent.getData() != null ) {
+            if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
+                selectDrawerItem( 2 );
+            else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
+                selectDrawerItem( 0 );
+            else if ( intent.getData().equals( CONTENT_URI ) )
+                selectDrawerItem( 1 );
+            else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
+                selectDrawerItem( 3 );
+            else {
+                if ( mDrawerAdapter == null )
+                    mNewFeedUri = intent.getData();
+                else
+                    selectDrawerItem(mDrawerAdapter.getItemPosition(GetFeedID(intent.getData())));
+            }
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(lastUri)));
+                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ));
             }
         }
 
@@ -254,7 +304,14 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
+        setFullScreen();
+        HideTapZonesText(findViewById(R.id.layout_root));
         timer.End();
+    }
+
+    private long GetFeedID(Uri uri) {
+        final String result = GetSecondLastSegment(uri);
+        return Long.parseLong( result );
     }
 
     @Override
@@ -298,7 +355,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     public void onClickAdd(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.menu_add_feed)
+        if ( !PrefUtils.getBoolean("settings_add_google_news_dialog", true ) )
+            startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
+        else
+            builder.setTitle(R.string.menu_add_feed)
                 .setItems(new CharSequence[]{getString(R.string.add_custom_feed), getString(R.string.google_news_title)}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
@@ -307,8 +367,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                             startActivity(new Intent(HomeActivity.this, AddGoogleNewsActivity.class));
                         }
                     }
-                });
-        builder.show();
+                }).show();
     }
 
     public void onClickSettings(View view) {
@@ -347,7 +406,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
                                 FeedColumns.IS_GROUP, FeedColumns.ICON, FeedColumns.LAST_UPDATE,
                                 FeedColumns.ERROR, EXPR_NUMBER( EntryColumns.WHERE_UNREAD ), EXPR_FEED_ALL_NUMBER, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
-                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS},
+                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL + Constants.DB_OR +
                                 FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
                                 " FROM " + FeedColumns.TABLE_NAME +
@@ -364,38 +423,45 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Timer.End( LOADER_ID );
         Timer timer = new Timer( "HomeActivity.onLoadFinished" );
-        synchronized (GeneralPrefsFragment.mSetupChanged) {
-            boolean needSelect = false;
-            if (mDrawerAdapter != null ) {
-                mDrawerAdapter.setCursor(cursor);
-            } else {
-                mDrawerAdapter = new DrawerAdapter(this, cursor);
-                mDrawerList.setAdapter(mDrawerAdapter);
-                // We don't have any menu yet, we need to display it
-                needSelect = true;
-            }
-            if ( GeneralPrefsFragment.mSetupChanged ) {
-                GeneralPrefsFragment.mSetupChanged = false;
-                needSelect = true;
-            }
-
-            if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
-                mCurrentDrawerPos = mDrawerAdapter.getItemPosition( Long.parseLong( mNewFeedUri.getLastPathSegment() ) );
-                needSelect = true;
-                mDrawerList.smoothScrollToPosition( mCurrentDrawerPos );
-                CloseDrawer();
-                mNewFeedUri = Uri.EMPTY;
-            }
-
-            if ( needSelect )
-                mDrawerList.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        selectDrawerItem(mCurrentDrawerPos);
-                    }
-                });
+        boolean needSelect = false;
+        if (mDrawerAdapter != null ) {
+            mDrawerAdapter.setCursor(cursor);
+        } else {
+            mDrawerAdapter = new DrawerAdapter(this, cursor);
+            mDrawerList.setAdapter(mDrawerAdapter);
+            // We don't have any menu yet, we need to display it
+            needSelect = true;
         }
+        if ( GeneralPrefsFragment.mSetupChanged ) {
+            GeneralPrefsFragment.mSetupChanged = false;
+            needSelect = true;
+        }
+
+        if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
+            mCurrentDrawerPos = mDrawerAdapter.getItemPosition( GetFeedID( mNewFeedUri ) );
+            needSelect = true;
+            mDrawerList.smoothScrollToPosition( mCurrentDrawerPos );
+            CloseDrawer();
+            mNewFeedUri = Uri.EMPTY;
+        }
+
+        if ( needSelect )
+            mDrawerList.post(new Runnable() {
+                @Override
+                public void run() {
+                    selectDrawerItem(mCurrentDrawerPos);
+                }
+            });
+
         timer.End();
+    }
+
+    private String GetSecondLastSegment( final Uri uri) {
+        List<String> list = uri.getPathSegments();
+        if ( list.size() == 3 )
+            return list.get(list.size() - 2);
+        else
+            return "";
     }
 
     @Override
@@ -419,7 +485,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 newUri = EntryColumns.CONTENT_URI;
                 break;
             case 2:
-                newUri = FAVORITES_CONTENT_URI;
+                newUri = EntryColumns.FAVORITES_CONTENT_URI;
                 break;
             case 3:
                 newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );
@@ -528,16 +594,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_IMPORT_FROM_OPML: {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
-                }
-                return;
-            }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
         }
     }
 

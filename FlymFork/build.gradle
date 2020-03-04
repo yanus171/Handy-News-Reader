@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
 
@@ -7,14 +9,13 @@ android {
         //incremental true
     }*/
 
-    compileSdkVersion 26
-    //buildToolsVersion '26.0.2'
+    compileSdkVersion 28
     defaultConfig {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 162
-        versionName '0.9.0'
+        targetSdkVersion 28
+        versionCode 201
+        versionName '0.12.2'
     }
     lintOptions {
         checkReleaseBuilds false
@@ -69,8 +70,8 @@ android {
             signingConfig signingConfigs.release
         }
         releaseDebugkey {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
@@ -82,12 +83,15 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    //implementation 'com.android.support:design:26+'
-    implementation 'com.android.support:design:26.1.0'
-    //implementation 'org.jsoup:jsoup:+'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    //implementation "androidx.legacy:legacy-preference-v14:1.0.0"
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'org.jsoup:jsoup:1.10.3'
-    implementation 'com.github.bumptech.glide:glide:3.6.1'
+    implementation 'com.github.bumptech.glide:glide:+'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:+'
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.1'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4+'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

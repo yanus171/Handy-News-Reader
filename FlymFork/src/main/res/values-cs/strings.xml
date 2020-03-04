@@ -27,7 +27,7 @@
     <string name="about_flym">O aplikaci / Help / Contact developer </string>
     <string name="welcome_title">Vítejte v aplikaci Handy News Reader. Chcete přidat nový zdroj?</string>
     <string name="never">nikdy</string>
-    <string name="update">aktualizováno</string>
+    <string name="last_update">aktualizováno</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Nastavení</string>
     <string name="menu_refresh">Obnovit</string>

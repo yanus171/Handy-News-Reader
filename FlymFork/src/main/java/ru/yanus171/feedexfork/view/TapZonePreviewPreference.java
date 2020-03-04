@@ -14,6 +14,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
 public final class TapZonePreviewPreference extends DialogPreference {
@@ -29,18 +30,38 @@ public final class TapZonePreviewPreference extends DialogPreference {
         return view;
     }
 
-    public static void SetupZoneSizes(View view) {
+    public static void SetupZoneSizes(View parentView) {
         final int size = GetTapZoneSize();
-        SetSize( view, R.id.pageUpBtn, MATCH_PARENT, size );
-        SetSize( view, R.id.pageDownBtn, MATCH_PARENT, size );
-        SetSize( view, R.id.pageDownBtnVert, size, MATCH_PARENT );
-        SetSize( view, R.id.brightnessSlider, size, MATCH_PARENT );
-        SetSize( view, R.id.entryPrevBtn, size, size );
-        SetSize( view, R.id.entryNextBtn, size, size );
-        SetSize( view, R.id.toggleFullScreenStatusBarBtn, size, size );
-        SetSize( view, R.id.toggleFullscreenBtn, size, size );
+        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT);
+        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT);
+        SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSlider, size);
+        SetupZone(parentView, size, R.id.entryPrevBtn, size);
+        SetupZone(parentView, size, R.id.entryNextBtn, size);
+        SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size);
+        SetupZone(parentView, size, R.id.toggleFullscreenBtn, size);
     }
 
+    private static void SetupZone(View parentView, int size, int viewID, int matchParent) {
+        View view = parentView.findViewById( viewID );
+        if ( view != null ) {
+            if (isArticleTapEnabled()) {
+                view.setVisibility(View.VISIBLE);
+                SetSize(parentView, viewID, matchParent, size);
+            } else
+                view.setVisibility(View.GONE);
+        }
+    }
 
+    static public void HideTapZonesText( View rootView ) {
+        final boolean tapZonesVisible = PrefUtils.getBoolean(PrefUtils.TAP_ZONES_VISIBLE, true );
+        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
+        UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
+        UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
+        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
+    }
 
 }

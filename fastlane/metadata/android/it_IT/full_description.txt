@@ -1,39 +1,39 @@
-<i>"Rimani in contatto con tutti i Miei interessi non è mai stato così facile".</i>
+<i>"Rimanere in contatto con tutti i Miei interessi non è mai stato così facile".</i>
 
-<b><i>Handy News Reader</i>:nessuna pubblicità/software gratuito libero sotto <i>licenza GNU GPL</i> .</b>
+<b><i>Handy News Reader</i>: nessuna pubblicità/software gratuito sotto <i>licenza GNU GPL</i>.</b>
 
 <ul>
 	<li><b>crea la tua rivista dei sogni!</b></li>
 	<li><b>articoli interessanti direttamente nelle Tue mani</b></li>
-	<li><b>finalmente goditi la lettura</b></li>
+	<li><b>goditi finalmente la lettura</b></li>
 </ul>
 
-...goditi la tua vita <b>diventa libero dalle distrazioni - e aggiornato con i tuoi interessi</b> nello stesso tempo. Concentrati sull'Essenziale...
+...goditi la vita <b>libero da distrazioni - e aggiornato con i tuoi interessi</b> allo stesso tempo. Concentrati sull'Essenziale...
 
-Conosci <i>Handy NR</i> - ricco di funzionalità, un lettore <i>RSS</i> offline che <b>rispetta il tuo tempo e la tua Pace Interna</b>: evita di spostare l'attenzione a distrazioni che oggi sono così note quando pensi ai dispositivi mobile.
+Scopri <i>Handy NR</i> - un lettore <i>RSS</i> offline, ricco di funzionalità, che <b>rispetta il tuo tempo e la tua Pace Interiore</b>: evita di perdere la concentrazione e le distrazioni che oggi sono così comuni quando pensi ai dispositivi mobile.
 
 <ul>
-<b><u>Funzioni</u>:</b>
-	<li><b><u>articoli completi</u> a portata di mano</b>: senza bisogno di utilizzare un browser web esterni per raggiungere il testo completo,</li>
-	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Zone da toccare</i>, ricorda la posizione della lettura <u>per articolo</u>,</li>
-	<li><b>segna articoli importanti</b>: non perderai più nulla che trovi particolarmente importante,</li>
-	<li><b><i>"Leggilo dopo"</i></b>: Puoi scorrere rapidamente attraverso gli articoli - <b>marchiando (starring) la scelta per leggelo più tardi</b> nel tuo tempo di riposo - o solo da preservare,</li>
-	<li><b><i>"Rimuovi quando finito"</i></b> - una volta finito un articolo - potrebbe essere automaticamente rimosso da <i>'Preferiti'</i> (=<i>'Leggilo dopo'</i>) impostato,</li>
-	<li><b>pronto ad andare offline</b> - immergiti in un lettura interessante senza distrazioni: una volta aggiornato, non c'è bisogno di caricare nulla - farà davvero senza Internet :),</li>
-	<li><b>salva la larghezza di banda</b>: vai online solo per i nuovi articoli - non per caricare la loro versione completa ogni volta; controlla cosa deve essere scaricato - e in quale grado,</li>
-	<li><b>gesti-semplici</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
-	<li><b>facile-utilizzo</b>: teniamo cura dei tuoi occhi con un tema scuro, regolazione della dimensione del testo, colore e luminosità per soddisfare le tue esigenze individuali,</li>
-	<li><b>idee concise</b>: le intestazioni degli articoli non hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli del 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
-	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
-	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+<b><u>Funzionalità</u>:</b>
+	<li><b><u>articoli completi</u> a portata di mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
+	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Tap Zones</i>, ricorda la posizione della lettura <u>per singolo articolo</u>,</li>
+	<li><b>notifiche per gli articoli importanti</b>: non ti perderai più nulla di ciò che ritieni particolarmente importante,</li>
+	<li><b><i>"Leggilo dopo"</i></b>: Puoi scorrere rapidamente tra gli articoli - <b>marcando (mettendo la stella) quelli scelti per essere letti più tardi</b> nel tuo tempo libero - o solamente da conservare,</li>
+	<li><b><i>"Rimuovi quando finito"</i></b> - una volta finito un articolo - può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggilo dopo'</i>),</li>
+	<li><b>pronto per andare offline</b> - immergiti in una lettura interessante senza distrazioni: una volta aggiornato, non c'è bisogno di caricare nulla - funzionerà davvero senza Internet :),</li>
+	<li><b>risparmia sulla larghezza di banda</b>: vai online solo per i nuovi articoli - non per caricare la loro versione completa ogni singola volta; gestisci cosa deve essere scaricato - e in quale maniera,</li>
+	<li><b>supporto per le gesture</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
+	<li><b>facile da usare</b>: prenditi cura dei tuoi occhi con un tema scuro, regola dimensione, colore e luminosità del testo per soddisfare le tue esigenze personali,</li>
+	<li><b>idee interessanti</b>: le intestazioni degli articoli senza hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli per il 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
+	<li><b>altamente personalizzabile</b>: dalla dimensione delle <i>Zone di tocco'</i> al colore e alla sottolineatura degli hyperlink - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>
+	<li><b>funzionalità avanzate</b>: backup automatico (esporta/importa da/in un file <i>.opml</i>), ottenere contenuti da siti web non-<i>RSS</i>, </li>
+	<li><b>altre funzionalità interessanti</b> "in negozio" - visita il nostro sito per saperne di più :) !,</li>
+	<li><b><u>importante</u>:</b> questa app NON sincronizza con lettori di notizie online (es. <i>Feedly</i>),</li>
+	<li><b>feedback e suggerimenti sono benvenuti;</b></li>
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
+<b>Dove puoi trovarci:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">codice sorgente su <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">traduzioni</a>;</li>
 </ul>

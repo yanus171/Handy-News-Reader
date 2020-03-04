@@ -46,14 +46,13 @@ package ru.yanus171.feedexfork.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Theme;
-import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class GeneralPrefsActivity extends BaseActivity {
 
@@ -81,9 +80,7 @@ public class GeneralPrefsActivity extends BaseActivity {
     }
 
     public void onBackPressed() {
-        synchronized (GeneralPrefsFragment.mSetupChanged ) {
-            GeneralPrefsFragment.mSetupChanged = true;
-        }
+        GeneralPrefsFragment.mSetupChanged = true;
         if (Build.VERSION.SDK_INT >= 21 )
             AutoJobService.init( this );
         Theme.ReInit();

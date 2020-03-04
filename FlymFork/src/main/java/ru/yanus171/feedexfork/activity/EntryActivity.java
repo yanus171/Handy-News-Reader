@@ -26,7 +26,9 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,11 +40,14 @@ import java.util.regex.Matcher;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -51,6 +56,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -58,7 +64,7 @@ public class EntryActivity extends BaseActivity {
 
     public EntryFragment mEntryFragment = null;
 
-    private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
+    public boolean mHasSelection = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +122,7 @@ public class EntryActivity extends BaseActivity {
                 });
 
         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
-            setFullScreen(true, true);
+            setFullScreen( true, true );
     }
     private void LoadAndOpenLink(final String url, final String title, final String text) {
         new Thread(new Runnable() {
@@ -131,23 +137,24 @@ public class EntryActivity extends BaseActivity {
                     values.put(EntryColumns.TITLE, title);
                     values.put(EntryColumns.SCROLL_POS, 0);
                     values.put(EntryColumns.DATE, (new Date()).getTime());
-                    values.put(EntryColumns.LINK, url);
                     values.put(EntryColumns.ABSTRACT, text);
-                    values.put(EntryColumns.MOBILIZED_HTML, text);
+                    values.put(EntryColumns.IS_WITH_TABLES, 1);
+                    values.put(EntryColumns.IMAGES_SIZE, 0);
+                    FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
-                    SetEntryID(entryUri);
+                    SetEntryID(entryUri, url);
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true);
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false);
                 } else
-                    SetEntryID( entryUri );
+                    SetEntryID( entryUri, url );
             }
 
-            private void SetEntryID(Uri entryUri) {
+            private void SetEntryID(Uri entryUri, String entryLink) {
                 final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
-                mEntryFragment.SetEntryID( 0, entryID );
+                mEntryFragment.SetEntryID( 0, entryID, entryLink );
                 FetcherService.addActiveEntryID(entryID);
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
@@ -165,9 +172,6 @@ public class EntryActivity extends BaseActivity {
         if (hasFocus)
             setFullScreen();
     }
-
-    private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
-
 
     //public boolean mIsStatusBarHidden, mIsActionBarHidden;
 
@@ -199,26 +203,30 @@ public class EntryActivity extends BaseActivity {
         editor.putLong(PrefUtils.LAST_ENTRY_ID, 0);
         editor.putString(PrefUtils.LAST_ENTRY_URI, "");
         editor.commit();*/
+
+        mEntryFragment.mIsFinishing = true;
+        //if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().onBackPressed()  )
+        //    return;
+
         PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
         PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
         FetcherService.clearActiveEntryID();
         new Thread() {
             @Override
             public void run() {
+                FeedDataContentProvider.mNotifyEnabled = false;
                 ContentResolver cr = getContentResolver();
                 cr.delete(FeedData.TaskColumns.CONTENT_URI, FeedData.TaskColumns.ENTRY_ID + " = " + mEntryFragment.getCurrentEntryID(), null);
                 FetcherService.setDownloadImageCursorNeedsRequery(true);
-
+                FeedDataContentProvider.mNotifyEnabled = true;
                 if ( !mEntryFragment.mMarkAsUnreadOnFinish )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 )
                         cr.update(EntryColumns.CONTENT_URI(  mEntryFragment.getCurrentEntryID() ), FeedData.getReadContentValues(), null, null);
-
-
             }
         }.start();
 
-        //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPagerAdapter.SaveScrollPos( true );
+        //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPager.getCurrentItem() ).SaveScrollPos();
         super.onBackPressed();
     }
 
@@ -241,47 +249,19 @@ public class EntryActivity extends BaseActivity {
         super.onResume();
 
         setFullScreen();
+        Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
+        EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
     }
 
     public void setFullScreen() {
-        setFullScreen(GetIsStatusBarHidden(), GetIsActionBarHidden());
-    }
-
-    static public boolean GetIsStatusBarHidden() {
-        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_HIDDEN, false);
-    }
-
-    static public boolean GetIsActionBarHidden() {
-        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_HIDDEN, false);
-    }
-
-    public void setFullScreen(boolean statusBarHidden, boolean actionBarHidden) {
-        PrefUtils.putBoolean(STATE_IS_STATUSBAR_HIDDEN, statusBarHidden);
-        PrefUtils.putBoolean(STATE_IS_ACTIONBAR_HIDDEN, actionBarHidden);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (statusBarHidden) {
-                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-            } else {
-                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
-        } else {
-            setFullScreenOld(statusBarHidden);
-        }
-
-        if (getSupportActionBar() != null) {
-            if (actionBarHidden)
-                getSupportActionBar().hide();
-            else
-                getSupportActionBar().show();
-        }
+        setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden());
         if (mEntryFragment != null)
             mEntryFragment.UpdateFooter();
 
-        invalidateOptionsMenu();
     }
+
+
+
 
 //    public void setFullScreenWithNavBar() {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -294,22 +274,22 @@ public class EntryActivity extends BaseActivity {
 //        }
 //
 //    }
-
-    private void setFullScreenOld(boolean fullScreen) {
-        if (fullScreen) {
-
-            if (GetIsStatusBarHidden()) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            } else {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            }
-        } else {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-    }
+//
+//    private void setFullScreenOld(boolean fullScreen) {
+//        if (fullScreen) {
+//
+//            if (GetIsStatusBarHidden()) {
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            } else {
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//            }
+//        } else {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        }
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -349,5 +329,15 @@ public class EntryActivity extends BaseActivity {
         return getResources().getAssets();
     }
 
+    @Override
+    public void onActionModeStarted (ActionMode mode) {
+        super.onActionModeStarted(mode);
+        mHasSelection = true;
+    }
 
+    @Override
+    public void onActionModeFinished (ActionMode mode) {
+        super.onActionModeFinished(mode);
+        mHasSelection = false;
+    }
 }

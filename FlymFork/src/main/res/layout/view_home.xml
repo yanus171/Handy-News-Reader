@@ -17,6 +17,7 @@
 
 
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layout_root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -29,10 +30,38 @@
 
                 <include layout="@layout/brightness_slider_layout" />
 
+                <TextView
+                    android:id="@+id/pageUpBtn"
+                    style="@style/TapZone"
+                    android:layout_width="match_parent"
+                    android:layout_height="10mm"
+                    android:layout_gravity="top"
+                    android:text="@string/pageUp" />
+
+                <TextView
+                    android:id="@+id/pageDownBtn"
+                    style="@style/TapZone"
+                    android:layout_width="match_parent"
+                    android:layout_height="10mm"
+                    android:layout_gravity="bottom"
+                    android:text="@string/pageDown" />
+
+                <TextView
+                    android:id="@+id/toggleFullScreenStatusBarBtn"
+                    style="@style/TapZoneBtn"
+                    android:layout_gravity="start|bottom"
+                    android:text="@string/fullScreenToggle" />
+
+                <TextView
+                    android:id="@+id/toggleFullscreenBtn"
+                    style="@style/TapZoneBtn"
+                    android:layout_gravity="end|bottom"
+                    android:text="@string/actionBarToggle" />
+
             </FrameLayout>
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

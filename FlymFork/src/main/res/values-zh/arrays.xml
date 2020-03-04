@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="settings_intervals">
         <item>1分钟</item>
         <item>5分钟</item>
@@ -13,19 +12,6 @@
         <item>12小时</item>
         <item>1天</item>
     </string-array>
-
-    <string-array name="settings_battery_level">
-        <item>50 %</item>
-        <item>40 %</item>
-        <item>30 %</item>
-        <item>20 %</item>
-        <item>15 %</item>
-        <item>10 %</item>
-        <item>5 %</item>
-        <item>3 %</item>
-        <item>0 %</item>
-    </string-array>
-
     <string-array name="settings_keep_times">
         <item>1小时</item>
         <item>12小时</item>
@@ -39,31 +25,14 @@
         <item>3个月</item>
         <item>永久</item>
     </string-array>
-
-    <string-array name="settings_font_sizes">
-        <item>-2</item>
-        <item>-1</item>
-        <item>@string/standard</item>
-        <item>+1</item>
-        <item>+2</item>
-        <item>+3</item>
-        <item>+4</item>
-        <item>+5</item>
-        <item>+6</item>
-        <item>+7</item>
-        <item>+8</item>
-    </string-array>
-
     <string-array name="settings_volume_buttons_action">
         <item>默认</item>
         <item>切换到下一篇|前一篇文章</item>
         <item>页面上移|下滑 </item>
     </string-array>
-
     <string-array name="settings_preload_image_modes">
         <item>从不</item>
         <item>仅通过WIFI</item>
         <item>始终</item>
     </string-array>
-
 </resources>

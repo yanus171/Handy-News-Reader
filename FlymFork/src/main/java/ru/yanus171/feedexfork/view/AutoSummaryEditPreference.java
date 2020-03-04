@@ -41,7 +41,7 @@ public class AutoSummaryEditPreference extends android.preference.EditTextPrefer
         }
     }
 
-    private CharSequence GetSummary() {
+    protected CharSequence GetSummary() {
         ArrayList<CharSequence> list = new ArrayList<>();
         if ( mSummary != null  )
             list.add( mSummary );

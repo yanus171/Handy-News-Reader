@@ -8,13 +8,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.app.NotificationCompat;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -26,9 +30,8 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-
-import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 /**
  * Created by Admin on 03.06.2016.
@@ -36,22 +39,29 @@ import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
 
 
 public class StatusText implements Observer {
-    private static final String SEP = "__";
+    private static final String SEP = "__#__";
+    private static final String DELIMITER = " ";
+    private final TextView mProgressText;
     private String mFeedID = "";
     private String mEntryID = "";
     private TextView mView;
     private TextView mErrorView;
     //SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private static int MaxID = 0;
+    private ProgressBar mProgressBar;
 
-    public StatusText(final TextView view, final TextView errorView, final Observable observable ) {
+    public StatusText(final TextView view,
+                      final TextView errorView,
+                      final ProgressBar progressBar,
+                      final TextView progressText,
+                      final Observable observable ) {
         //mOnRefreshListener = onRefreshListener;
         observable.addObserver( this );
         mView = view;
         mErrorView = errorView;
         mView.setVisibility(View.GONE);
         mView.setGravity(Gravity.LEFT | Gravity.TOP);
-        mView.setBackgroundColor(Color.TRANSPARENT );
+        mView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,20 +75,29 @@ public class StatusText implements Observer {
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);
-        mErrorView.setBackgroundColor(Color.TRANSPARENT );
+        mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FetcherObservable status = (FetcherObservable)observable;
-                status.ClearError();
-                v.setVisibility(View.GONE);
-
+            FetcherObservable status = (FetcherObservable)observable;
+            status.ClearError();
+            v.setVisibility(View.GONE);
             }
         });
-        mErrorView.setLines( 2 );
+
+        mProgressBar = progressBar;
+        mProgressBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FetcherObservable status = (FetcherObservable)observable;
+                status.ToggleProgressTextVisibility();
+            }
+        });
+
+        mProgressText = progressText;
     }
 
-    public void SetFeedID( String feedID ) {
+    private void SetFeedID(String feedID) {
         mFeedID = feedID;
         FetcherService.Status().UpdateText();
     }
@@ -90,6 +109,14 @@ public class StatusText implements Observer {
         FetcherService.Status().UpdateText();
     }
 
+    int GetHeight() {
+        int result = 0;
+        if ( mView.getVisibility() == View.VISIBLE )
+            result += mView.getHeight();
+        if ( mErrorView.getVisibility() == View.VISIBLE )
+            result += mErrorView.getHeight();
+        return result;
+    }
 
     @Override
     public void update(Observable observable, Object data) {
@@ -100,29 +127,23 @@ public class StatusText implements Observer {
         final String error =
             errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
             errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
+        final boolean showProgress = Boolean.valueOf( list[4] );
+        final String progressText = list[5];
 
-        mView.post (new Runnable() {
-            private String mError;
-            private String mText;
+        if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || text.trim().isEmpty() )
+            mView.setVisibility(View.GONE);
+        else {
+            mView.setText(text);
+            mView.setVisibility(View.VISIBLE);
+        }
+        mErrorView.setText(error);
+        mErrorView.setVisibility( error.isEmpty() ? View.GONE : View.VISIBLE );
+        mProgressBar.setVisibility( showProgress ? View.VISIBLE : View.GONE  );
 
-            @Override
-            public void run() {
-                if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || mText.trim().isEmpty() )
-                    mView.setVisibility(View.GONE);
-                else {
-                    mView.setText(mText);
-                    mView.setVisibility(View.VISIBLE);
-                }
-                mErrorView.setText(mError);
-                mErrorView.setVisibility( mError.isEmpty() ? View.GONE : View.VISIBLE );
-            }
-            Runnable init( String text, String error ) {
-                mText = text;
-                mError = error;
-                return this;
-            }
-        }.init(text, error));
-
+        if ( mProgressText != null ) {
+            mProgressText.setVisibility(!progressText.isEmpty() ? View.VISIBLE : View.GONE);
+            mProgressText.setText(progressText);
+        }
     }
 
 
@@ -136,84 +157,115 @@ public class StatusText implements Observer {
         private String mNotificationTitle = "";
         private String mErrorFeedID;
         private String mErrorEntryID;
+        ArrayList<Integer> mProgressBarStatusList = new ArrayList<>();
+        private boolean mIsProgressTextVisible = false;
+
         @Override
         public boolean hasChanged () {
             return true;
         }
 
-        void UpdateText() {
+        public void UpdateText() {
             UiUtils.RunOnGuiThreadInFront(new Runnable() {
                 @Override
                 public void run() {
                 synchronized ( mList ) {
-                    String s = "";
-                    if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) )
-                        for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
-                                s += item.getValue() + " ";
+                    ArrayList<String> s = new ArrayList<>();
+                    for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
+                            s.add( item.getValue() );
 
-                    if ( PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) ) {
-                        if (!mProgressText.isEmpty())
-                            s += " " + mProgressText;
-                        if (!mList.isEmpty() && !mDBText.isEmpty())
-                            s += " " + mDBText;
-                        if (!mList.isEmpty() && FetcherService.mCancelRefresh)
-                            s += "\n cancel Refresh";
-                        if (mBytesRecievedLast > 0)
-                            s = String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) + s;
-                    }
+                    if (!mProgressText.isEmpty())
+                        s.add( mProgressText );
+                    if (!mList.isEmpty() && !mDBText.isEmpty())
+                        s.add( mDBText );
+                    if (!mList.isEmpty() && FetcherService.mCancelRefresh)
+                        s.add( "\n cancel Refresh" );
+                    if (mBytesRecievedLast > 0)
+                        s.add(0, String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) );
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(s, mNotificationTitle));
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
                     if ( !mNotificationTitle.isEmpty() )
-                        s = mNotificationTitle + " " + s;
-                    NotifyObservers(s, mErrorText, mErrorFeedID, mErrorEntryID);
-                    Dog.v("Status Update " + s.replace("\n", " "));
+                        s.add( 0, mNotificationTitle );
+                    HashSet<Integer> temp = new HashSet<>( mList.keySet() );
+                    temp.retainAll( mProgressBarStatusList );
+                    final boolean showProgress = !temp.isEmpty();
+                    if ( !showProgress )
+                        mIsProgressTextVisible = false;
+                    final String progressText = mIsProgressTextVisible && !mProgressBarStatusList.isEmpty() ?
+                                    mList.get( mProgressBarStatusList.get(0) ) + " " + mProgressText  : "";
+                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgress, progressText );
+                    Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
+
+
                 }
                 }
             });
         }
 
-        public void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID) {
-            notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID);
+        void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID, boolean showProgressBar, String progressText ) {
+            notifyObservers(text + SEP + error + SEP + errorFeedID + SEP + errorEntryID + SEP + showProgressBar + SEP + progressText );
         }
 
         void Clear() {
             synchronized ( mList ) {
                 mList.clear();
+                mProgressBarStatusList.clear();
                 mProgressText = "";
                 mDBText = "";
                 //mErrorText = "";
                 mBytesRecievedLast = 0;
             }
+            UpdateText();
         }
         public void ClearError() {
             synchronized ( mList ) {
                 mErrorText = "";
             }
+            UpdateText();
         }
-        public int Start( final String text ) {
-            Dog.v("Status Start " + text);
+        public int Start( final int textId, boolean startProgress ) {
+            return Start( MainApplication.getContext().getString( textId ), startProgress );
+        }
+        public int Start( final String text, boolean startProgress ) {
             synchronized ( mList ) {
-                if ( mList.isEmpty() )
+                if ( mList.isEmpty() ) {
                     mBytesRecievedLast = 0;
+                }
                 MaxID++;
                 mList.put(MaxID, text );
+                if ( startProgress )
+                    mProgressBarStatusList.add( MaxID );
+                Dog.v("Status Start " + text + " id = " + MaxID );
             }
             UpdateText();
             return MaxID;
         }
         public void End( int id ) {
-            Dog.v( "Status End " );
+            Dog.v( "Status End " + id );
             synchronized ( mList ) {
                 mProgressText = "";
                 mList.remove( id );
+                {
+                    int index = mProgressBarStatusList.indexOf(id);
+                    if (index >= 0)
+                        mProgressBarStatusList.remove(index);
+                }
             }
             UpdateText();
         }
 
+        public void Change( int id, String newText ) {
+            Dog.v( "Status change " + newText + " id = " + id );
+            synchronized ( mList ) {
+                mProgressText = "";
+                mList.put( id, newText );
+            }
+            UpdateText();
+        }
         public void ChangeProgress(String text) {
             synchronized ( mList ) {
                 mProgressText = text;
@@ -247,22 +299,36 @@ public class StatusText implements Observer {
             UpdateText();
         }
         public void AddBytes(int bytes) {
-            //synchronized ( mList ) {
+            synchronized ( mList ) {
                 mBytesRecievedLast += bytes;
-            //}
+            }
         }
-        public void HideByScroll() {
+        void HideByScroll() {
             UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
                 synchronized (mList) {
                     if ( mList.isEmpty() ) {
                         mBytesRecievedLast = 0;
-                        NotifyObservers( "", "", "", "" );
+                        NotifyObservers( "", "", "", "", false, "" );
                     }
                 }
                 }
             });
+        }
+
+        public void ClearProgress() {
+            synchronized ( mList ) {
+                for ( int id: mProgressBarStatusList )
+                    mList.remove( id );
+                mProgressBarStatusList.clear();
+            }
+            UpdateText();
+        }
+
+        void ToggleProgressTextVisibility() {
+            mIsProgressTextVisible = ! mIsProgressTextVisible;
+            UpdateText();
         }
     }
 
@@ -278,7 +344,7 @@ public class StatusText implements Observer {
                     new Notification.BigTextStyle();
             bigTextStyle.bigText(text);
             bigTextStyle.setBigContentTitle(title);
-            builder = new Notification.Builder(MainApplication.getContext(), NOTIFICATION_CHANNEL_ID) //
+            builder = new Notification.Builder(MainApplication.getContext(), MainApplication.NOTIFICATION_CHANNEL_ID) //
                     .setSmallIcon(R.drawable.refresh) //
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
                     .setStyle( bigTextStyle )
@@ -289,8 +355,8 @@ public class StatusText implements Observer {
                     new NotificationCompat.BigTextStyle();
             bigTextStyle.bigText(text);
             bigTextStyle.setBigContentTitle(title);
-            android.support.v4.app.NotificationCompat.Builder builder =
-                    new android.support.v4.app.NotificationCompat.Builder(MainApplication.getContext()) //
+            androidx.core.app.NotificationCompat.Builder builder =
+                    new androidx.core.app.NotificationCompat.Builder(MainApplication.getContext()) //
                             .setSmallIcon(R.drawable.refresh) //
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
                             .setStyle(bigTextStyle)

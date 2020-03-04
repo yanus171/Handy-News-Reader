@@ -29,7 +29,6 @@
 -->
 <resources>
 
-    <!-- GENERAL -->
     <string name="about_us_content" translatable="true"><![CDATA[
     <b><big>License and information</big></b><br/>
     This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See http://www.gnu.org/licenses<br/>
@@ -83,7 +82,7 @@
     <string name="about_flym">About the app / Help / Contact the developer </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
-    <string name="update">Update</string>
+    <string name="last_update">Update</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
@@ -97,12 +96,12 @@
 
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
-    <string name="menu_add_feed">Add a feed</string>
+    <string name="menu_add_feed">Article Web Search</string>
     <string name="no_feeds">No feeds</string>
     <string name="no_filters">No rules</string>
     <string name="context_menu_delete">Delete</string>
     <string name="edit_feed_title">Edit a feed</string>
-    <string name="new_feed_title">New feed</string>
+    <string name="new_feed_title">New feed or article</string>
     <string name="context_menu_edit">Edit</string>
     <string name="menu_add_group">Add a group</string>
     <string name="menu_import">Import from an .opml file</string>
@@ -130,6 +129,7 @@
     <string name="accept">ACCEPT</string>
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
+    <string name="web_page_search_duckduckgo">Web page search (Duck Duck Go)</string>
     <string name="select_file">Select a file (SD-root)</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
@@ -165,6 +165,7 @@
     <string name="menu_unstar">Unstar</string>
     <string name="menu_share">Share</string>
     <string name="menu_full_screen">Full screen</string>
+    <string name="menu_actionbar_visible">Action Bar</string>
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
@@ -178,8 +179,8 @@
     <string name="menu_reload_full_text_without_mobilizer">Reload without Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: starred entries</string>
     <string name="copied_clipboard">Link copied</string>
-    <string name="get_full_text">Load full article.</string>
-    <string name="show_text_in_entry_list">Show original text on article list.</string>
+    <string name="get_full_text">Load full article</string>
+    <string name="show_text_in_entry_list">Show original text on article list</string>
     <string name="original_text">Show original text</string>
     <string name="see_enclosure">Load the attachment</string>
     <string name="see_link">View in browser</string>
@@ -191,6 +192,7 @@
     <string name="tip_sentence">Tip: swipe right to mark as read, swipe left to add to Favorites</string>
     <string name="undo">Undo</string>
     <string name="marked_as_read">Marked as read</string>
+    <string name="image_count">Image count</string>
 
     <!-- WIDGET -->
     <string name="red">Red</string>
@@ -202,14 +204,14 @@
     <string name="settings_category_common">Common settings</string>
     <string name="settings_category_common_summary">Theme</string>
     <string name="theme">Theme</string>
-    <string name="customColors">Custom font colors</string>
+    <string name="customColors">Custom colors</string>
     <string name="fontColorsNotFromThemeSummary">otherwise use theme colors</string>
-    <string name="textColor">Text color</string>
+    <string name="textColor">Text and background color</string>
     <string name="settings_color_text_sample_short">Text</string>
     <string name="settings_color_text_sample_long">\u201cWhen you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\u201d\n(Albert Einstein)</string>
 
-    <string name="settings_category_refresh">Automatic refresh</string>
-    <string name="settings_category_refresh_summary">Automatic refresh and time to keep of articles</string>
+    <string name="settings_category_refresh">Article refresh</string>
+    <string name="settings_category_refresh_summary">Automatic refresh and time to keep the articles</string>
     <string name="settings_refresh_enabled">Enable automatic refresh</string>
     <string name="settings_refresh_interval">Refresh interval</string>
     <string name="settings_min_update_battery_level">Min. battery level</string>
@@ -251,7 +253,7 @@
     <string name="show_group_entrries_count">Group article count</string>
     <string name="show_group_entries_count_descr">may reduce performance</string>
     <string name="textColorRead">Read articles</string>
-    <string name="textColorRead_descr">Color of read articles</string>
+    <string name="textColorRead_descr">Read articles text and background color</string>
     <string name="settings_color_text_read_sample_short">Read</string>
     <string name="settings_color_text_read_sample_long">Read articles</string>
 
@@ -265,20 +267,20 @@
     <string name="settings_entry_margins_description">Left | right</string>
     <string name="entry_text_align_justify">Justified text</string>
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
-    <string name="linkColor">Link color</string>
-    <string name="linkColor_descr">Hyperlinks color</string>
+    <string name="linkColor">Link color and background</string>
+    <string name="linkColor_descr">Hyperlinks color and background</string>
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Color of links</string>
     <string name="underline_links">Underline links</string>
-    <string name="article_text_footer_show_clock">Footer-Clock</string>
-    <string name="article_text_footer_show_clock_description">Displays the current time at the bottom left corner in fullscreen mode</string>
-    <string name="settings_clock_size">Text size of the Footer-Clock</string>
-    <string name="article_text_footer_clock_color">Clock color</string>
-    <string name="article_text_footer_clock_color_descr">Color of the footer clock</string>
+    <string name="article_text_footer_show_clock">Show Clock</string>
+    <string name="article_text_footer_show_clock_description">Displays the current time at the top right corner in fullscreen mode</string>
+    <string name="settings_clock_size">Text size of the clock</string>
+    <string name="article_text_footer_clock_color">Clock color and background</string>
+    <string name="article_text_footer_clock_color_descr">Color of the clock</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_footer_show_progress">Reading progress bar</string>
-    <string name="article_text_footer_show_progress_descr">Displays the progress of reading an article at the bottom</string>
+    <string name="article_text_footer_show_progress_descr">Displays the progress of reading an article at the top</string>
     <string name="article_text_footer_progress_height">Progress bar height</string>
     <string name="article_text_footer_progress_color">Progress color</string>
     <string name="article_text_footer_progress_color_descr">Color of the reading progress bar</string>
@@ -326,12 +328,14 @@
     <string name="all_feeds">All feeds (incl. future)</string>
     <string name="downloadImage">Downloading images</string>
     <string name="loadFullText">Loading full text</string>
-    <string name="deleteOldEntries">Delete old articles</string>
+    <string name="deleteOldEntries">Deleting old articles</string>
+    <string name="deleting_ghost_entries">Deleting old files</string>
     <string name="AllImages">All images</string>
-    <string name="EntryImages">Entry images</string>
+    <string name="article_images_downloading">Article images downloading</string>
     <string name="mobilizeAll">Mobilizing</string>
     <string name="RefreshFeeds">Updating feeds</string>
-    <string name="deleteImages">Delete images</string>
+    <string name="deleteImages">Images deleting:</string>
+    <string name="deleteFullTexts">Full texts deleting:</string>
     <string name="applyOperations">Apply operations</string>
     <string name="extractContent">Extracting content</string>
     <string name="improveHtmlContent">Improving HTML content</string>
@@ -340,18 +344,20 @@
     <string name="settings_content_extract_rules">Content extract rules</string>
     <string name="settings_content_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_tap_zones_dialogtitle">only for info, changes unavailable</string>
-    <string name="downloadNext">"Download next "</string>
+    <string name="downloadNext">", Next "</string>
+    <string name="downloadAll">", All"</string>
     <string name="loadingLink">Loading links</string>
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
+    <string name="loadLinkLaterStarred">Read later in favorites</string>
     <string name="addFeed">Add a feed</string>
-    <string name="externalLinks">External links</string>
+    <string name="externalLinks">Read It Later</string>
     <string name="markAllAsRead">Mark all as read</string>
     <string name="pageUp">page up / swipe down to (un)star</string>
     <string name="pageDown">page down</string>
     <string name="fullScreenToggle">Full screen toggle</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">Toggle action bar</string>
+    <string name="actionBarToggle">Toggle Action Bar</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article\'s list</string>
     <string name="question_delete_entry">Delete this article?</string>
@@ -369,13 +375,14 @@
     <string name="lock_orientation">Landscape orientation</string>
     <string name="markAsStarred">Mark as starred</string>
     <string name="markedAsStarred">The article was marked as starred: </string>
-    <string name="deleteAllEntries">Delete all feed non starred entries</string>
+    <string name="deleteAllEntries">Delete all non starred showing articles</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Reload with tags</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb">Web (load all links from page)</string>
     <string name="loadTypeRSS">RSS (feed or site link or keywords)</string>
+    <string name="loadTypeWebPageSearch">Web page search DuckDuckGo (find and load one article)</string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
@@ -401,13 +408,64 @@
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
     <string name="settings">Settings</string>
-    <string name="entry_go_prev">Previous page</string>
-    <string name="entry_go_next">Next page</string>
+    <string name="entry_go_prev">Previous article</string>
+    <string name="entry_go_next">Next article</string>
     <string name="colorSlotSaveLongTapHint">Tip: to save the current color make a long tap on one of the cells</string>
     <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
     <string name="background1">Background</string>
     <string name="auto_refresh_requires_charging">Only while charging</string>
+    <string name="global_class_list_to_remove_from_article_text">Remove text rules</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">class name per line</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+    <string name="setFullTextRoot">Choose as full text root</string>
+    <string name="fullTextRoot">Full text root</string>
+    <string name="fullTextReloadStarted">Full text reload has started</string>
+    <string name="brightness_update_from_system_period_min">Brightness update time</string>
+    <string name="brightness_update_from_system_period_min_descr">(in minutes) After that time period the brightness (by swipe) will be restored from the current system level (0 - off)</string>
+    <string name="menu_add_feed_shortcut">Create a shortcut on Home Screen</string>
+    <string name="new_feed_shortcut_added">New shortcut has been created on Home Screen</string>
+    <string name="new_feed_shortcut_add_failed">Your launcher is unable to create a shortcut</string>
+    <string name="custom_data_folder">Custom external files path</string>
+    <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backup</string>
+    <string name="entry_text_title_link">Title link</string>
+    <string name="entry_text_title_link_description">allows to open web page in browser by tap on the title</string>
+    <string name="delete_read_articles">Delete read articles</string>
+    <string name="delete_read_articles_descr">regardless of the articles keep time</string>
+    <string name="data_folder">Data folder</string>
+    <string name="data_folder_descr">Where to store downloaded articles texts and images</string>
+    <string name="internalMemory">Internal memory (Cache)</string>
+    <string name="externalMemory">External memory</string>
+    <string name="show_html">Show html</string>
+    <string name="image_white_background">Image white background</string>
+    <string name="settings_add_google_news_dialog">Add Google News dialog</string>
+    <string name="settings_add_google_news_dialog_descr">Uncheck to bypass a select feed type dialog when adding a feed</string>
+    <string name="reload_fulltext_after_tag_editing">Reload text after tag editing</string>
+    <string name="reload_fulltext_after_tag_editing_descr">if unchecked, the full text won\'t be reloaded after each tag editing (show|hide|root), so You can introduce multiple changes easier (in such a case you need to manually reload full text once You finish the editing)</string>
+    <string name="article_menu_show_by_tap">Show article menu by tap</string>
+    <string name="article_list_loading">Article list loading</string>
+    <string name="article_opening">Article opening</string>
+    <string name="web_page_loading">Page loading</string>
+    <string name="article_menu_show_by_tap_descr">When Action Bar is hidden - otherwise You\'ll find the menu only on the Action Bar</string>
+    <string name="menu_go_back">Go back</string>
+    <string name="menu_go_top">Scroll to top</string>
+    <string name="menu_close">Close</string>
+    <string name="reading_file_list">Reading file list</string>
+    <string name="add_entry_shortcut">Add article shortcut</string>
+    <string name="new_entry_shortcut_added">New article shortcut has been created on Home Screen</string>
+    <string name="menu_reload_with_tables_toggle">With tables</string>
+    <string name="menu_display_options">Display options</string>
+    <string name="menu_reload">Reload</string>
+    <string name="article_tap_enabled">Tap actions enabled</string>
+    <string name="article_tap_enabled_summary">on Tap Zones and in non link areas (for menu show)</string>
+    <string name="menu_calculate_image_sizes">Calculate images sizes</string>
+    <string name="setting_calculate_image_sizes">Image sizes on storage</string>
+    <string name="setting_calculate_image_sizes_descr">Calculate and show loaded images sum size on storage per article, feed, group, etc. (numbers are updated during refresh)</string>
+    <string name="settings_category_theme">Theme</string>
+    <string name="settings_category_header">Page header</string>
+    <string name="tasks_to_download">To load</string>
+
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

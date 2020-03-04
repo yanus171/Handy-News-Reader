@@ -54,7 +54,7 @@ public class ColorPreference extends Preference implements SeekBar.OnSeekBarChan
 
 		IsBackGround = false;
 		DefaultBackgroundColor = Color.TRANSPARENT;
-		s = attrs.getAttributeValue(NS, "backgroundColor");
+		s = attrs.getAttributeValue(NS, "backgroundColor1");
 		if (s != null) {
 			DefaultBackgroundColor = GetDefaultColorFromPrefString(s);
 			IsBackGround = true;

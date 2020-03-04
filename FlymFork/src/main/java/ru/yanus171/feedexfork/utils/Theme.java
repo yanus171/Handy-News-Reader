@@ -32,7 +32,7 @@ public class Theme {
 	public static final String SUBTITLE_COLOR = "subtitle_color";
 	public static final String SUBTITLE_BORDER_COLOR = "subtitle_border_color";
 	//public static final String ENTRY_LIST_BACKGROUND = "entry_list_background";
-	static final String STYLE_THEME = "style_theme";
+	public static final String STYLE_THEME = "style_theme";
 	private static HashMap<String, HashMap<String, String>> ThemeList = null;
 	static final String THEME_CUSTOM = "Custom";
 	public static String mTheme = DARK;
@@ -50,14 +50,14 @@ public class Theme {
 		if (ThemeList == null) {
 			ThemeList = new HashMap<>();
 
-			{ 
+			{
 				HashMap<String, String> theme = new HashMap<String, String>();
-				theme.put(TEXT_COLOR, "#000000");
+				theme.put(TEXT_COLOR, "#555555");
 				theme.put(TEXT_COLOR_BACKGROUND, "#f6f6f6");
 				theme.put(MENU_FONT_COLOR, "#000000");
-				theme.put(MENU_BACKGROUND_COLOR, "#FFFFFF");
+				theme.put(MENU_BACKGROUND_COLOR, "#CCCCCC");
 				theme.put(QUOTE_BACKGROUND_COLOR, "#e6e6e6");
-				theme.put(QUOTE_LEFT_COLOR, "#a6a6a6");
+				theme.put(QUOTE_LEFT_COLOR, "#FFA500");
 				theme.put(BUTTON_COLOR, "#52A7DF");
 				theme.put(SUBTITLE_COLOR, "#666666");
 				theme.put(SUBTITLE_BORDER_COLOR, "#dddddd");
@@ -75,9 +75,9 @@ public class Theme {
 				theme.put(TEXT_COLOR, "#FFFFFF");
 				theme.put(TEXT_COLOR_BACKGROUND, "#181b1f");
 				theme.put(MENU_FONT_COLOR, "#FFFFFF");
-				theme.put(MENU_BACKGROUND_COLOR, "#000000");
-				theme.put(QUOTE_BACKGROUND_COLOR, "#383b3f");
-				theme.put(QUOTE_LEFT_COLOR, "#686b6f");
+				theme.put(MENU_BACKGROUND_COLOR, "#222222");
+				theme.put(QUOTE_BACKGROUND_COLOR, "#000000");
+				theme.put(QUOTE_LEFT_COLOR, "#FFA500");
 				theme.put(BUTTON_COLOR, "#1A5A81");
 				theme.put(SUBTITLE_COLOR, "#8c8c8c");
 				theme.put(SUBTITLE_BORDER_COLOR, "#303030");
@@ -93,6 +93,8 @@ public class Theme {
 				theme.put("notificationBackgroundColor", theme.get(MENU_BACKGROUND_COLOR) );
 				theme.put(TEXT_COLOR_READ, MainApplication.getContext().getString( R.string.default_read_color ));
 				theme.put(LINK_COLOR, MainApplication.getContext().getString( R.string.default_link_color ) );
+				theme.put(LINK_COLOR_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
+				theme.put(TEXT_COLOR_READ_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
 			}
 			mTheme = PrefUtils.getString( THEME, DARK);
 		}
@@ -106,6 +108,11 @@ public class Theme {
 		//else
 		//	return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
 	}
+
+	public static String GetBackgroundColor() {
+		return Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
+	}
+
 
 	public static boolean IsLight() {
 		return GetTheme().equals( LIGHT );
@@ -216,7 +223,7 @@ public class Theme {
 			return def;
 	}
 
-	static AlertDialog.Builder CreateDialog(Context context) {
+	public static AlertDialog.Builder CreateDialog(Context context) {
 		if ( Build.VERSION.SDK_INT >= 11 )
 			return new AlertDialog.Builder(context, GetThemeDialog());
 		else

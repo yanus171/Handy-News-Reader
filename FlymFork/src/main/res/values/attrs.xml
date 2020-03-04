@@ -6,7 +6,7 @@
     <declare-styleable name="ru.yanus171.feedexfork.view.ColorPreference">
         <attr name="istransparency" format="boolean" />
         <attr name="text" format="string" />
-        <attr name="backgroundColor" format="string" />
+        <attr name="backgroundColor1" format="string" />
         <attr name="sampletextShort" format="string" />
         <attr name="sampletextLong" format="string" />
     </declare-styleable>

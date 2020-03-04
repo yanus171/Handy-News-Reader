@@ -44,6 +44,8 @@
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
 </ul>
 
+<a href="https://money.yandex.ru/to/41001574414913" target="_blank">Yandex money donate</a>
+
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork)

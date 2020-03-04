@@ -35,6 +35,7 @@ import android.widget.TextView;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -45,6 +46,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getInt;
 
 public class DrawerAdapter extends BaseAdapter {
 
@@ -60,6 +62,7 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_IS_SHOW_TEXT_IN_ENTRY_LIST = 9;
     private static final int POS_IS_GROUP_EXPANDED = 10;
     private static final int POS_IS_AUTO_RESRESH = 11;
+    private static final int POS_IMAGESIZE = 13;
 
     public static final int FIRST_ENTRY_POS = 4;
 
@@ -79,6 +82,8 @@ public class DrawerAdapter extends BaseAdapter {
     private final Context mContext;
     private Cursor mFeedsCursor;
     private int mAllUnreadNumber, mFavoritesUnreadNumber, mFavoritesReadNumber, mAllNumber, mExternalUnreadNumber, mExternalReadNumber;
+    private int mAllImagesSize, mAllUnreadImagesSize, mFavoritiesImagesSize, mExternalImagesSize;
+    private int mTextTaskCount, mImageTaskCount;
 
     public DrawerAdapter(Context context, Cursor feedCursor) {
         mContext = context;
@@ -103,8 +108,10 @@ public class DrawerAdapter extends BaseAdapter {
             holder.iconView = convertView.findViewById(android.R.id.icon);
             holder.titleTxt = convertView.findViewById(android.R.id.text1);
             holder.stateTxt = convertView.findViewById(android.R.id.text2);
+            holder.imageSizeTxt = convertView.findViewById(R.id.imageSize);
             holder.unreadTxt = convertView.findViewById(R.id.unread_count);
             holder.readTxt = convertView.findViewById(R.id.read_count);
+            holder.tasksTxt = convertView.findViewById(R.id.tasks);
             holder.autoRefreshIcon = convertView.findViewById(R.id.auto_refresh_icon);
             holder.separator = convertView.findViewById(R.id.separator);
             convertView.setTag(R.id.holder, holder);
@@ -126,6 +133,8 @@ public class DrawerAdapter extends BaseAdapter {
         convertView.setPadding(0, 0, 0, 0);
         holder.separator.setVisibility(View.GONE);
         holder.autoRefreshIcon.setVisibility( View.GONE );
+        holder.imageSizeTxt.setVisibility( View.GONE );
+        holder.tasksTxt.setVisibility( View.GONE );
 
         if (position == 0 || position == 1 || position == 2 || position == 3 ) {
             switch (position) {
@@ -134,12 +143,25 @@ public class DrawerAdapter extends BaseAdapter {
                     holder.iconView.setImageResource(R.mipmap.ic_launcher);
                     if (mAllUnreadNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllUnreadNumber));
+                    SetImageSizeText(holder, mAllUnreadImagesSize);
                     break;
                 case 1:
                     holder.titleTxt.setText(R.string.all_entries);
                     holder.iconView.setImageResource(R.drawable.cup_empty);
                     if (mAllNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllNumber));
+                    holder.unreadTxt.setText(String.valueOf(mAllNumber));
+                    holder.readTxt.setText( "" );
+                    SetImageSizeText(holder, mAllImagesSize);
+                    String taskInfo = "";
+                    if ( mTextTaskCount != 0 )
+                        taskInfo += String.format( " T:%d", mTextTaskCount );
+                    if ( mImageTaskCount != 0 )
+                        taskInfo += String.format( " I:%d", mImageTaskCount );
+                    if ( !taskInfo.isEmpty() ) {
+                        holder.tasksTxt.setVisibility( View.VISIBLE );
+                        holder.tasksTxt.setText( MainApplication.getContext().getString( R.string.tasks_to_download ) + ": " + taskInfo);
+                    }
                     break;
                 case 2:
                     holder.titleTxt.setText(R.string.favorites);
@@ -148,6 +170,7 @@ public class DrawerAdapter extends BaseAdapter {
                         holder.unreadTxt.setText(String.valueOf(mFavoritesUnreadNumber));
                     if (mFavoritesReadNumber != 0)
                         holder.readTxt.setText(String.valueOf(mFavoritesReadNumber));
+                    SetImageSizeText(holder, mFavoritiesImagesSize);
                     break;
                 case 3:
                     holder.titleTxt.setText(R.string.externalLinks);
@@ -156,6 +179,7 @@ public class DrawerAdapter extends BaseAdapter {
                         holder.unreadTxt.setText(String.valueOf(mExternalUnreadNumber));
                     if (mExternalReadNumber != 0)
                         holder.readTxt.setText(String.valueOf(mExternalReadNumber));
+                    SetImageSizeText(holder, mExternalImagesSize);
                     break;
             }
         }
@@ -186,7 +210,7 @@ public class DrawerAdapter extends BaseAdapter {
                     String formattedDate = mFormattedDateCache.get(timestamp);
                     if (formattedDate == null) {
 
-                        formattedDate = mContext.getString(R.string.update) + COLON;
+                        formattedDate = "";//mContext.getString(R.string.last_update) + COLON;
 
                         if (timestamp == 0) {
                             formattedDate += mContext.getString(R.string.never);
@@ -222,9 +246,25 @@ public class DrawerAdapter extends BaseAdapter {
             int read = mFeedsCursor.getInt(POS_ALL) - mFeedsCursor.getInt(POS_UNREAD);
             if ( read > 0 )
                 holder.readTxt.setText( String.valueOf(read) );
+
+            SetImageSizeText(holder, mFeedsCursor.getInt( POS_IMAGESIZE ));
         }
 
         return convertView;
+    }
+
+    static private void SetImageSizeText(ViewHolder holder, int size) {
+        if ( PrefUtils.CALCULATE_IMAGES_SIZE() && size != 0 ) {
+            holder.imageSizeTxt.setVisibility( View.VISIBLE );
+            holder.imageSizeTxt.setText(GetImageSizeText(size));
+        } else
+            holder.imageSizeTxt.setVisibility( View.GONE );
+    }
+
+    static private String GetImageSizeText(int imageSize) {
+        final int MEGABYTE = 1024 * 1024;
+        return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > MEGABYTE ?
+            String.format( "%d M ", imageSize / MEGABYTE ).replace( ",", "." ) : "";
     }
 
     @Override
@@ -293,37 +333,61 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     private void updateNumbers() {
+        ContentResolver cr = mContext.getContentResolver();
         mAllUnreadNumber = mFavoritesUnreadNumber = mFavoritesReadNumber = mAllNumber = mExternalReadNumber = mExternalUnreadNumber = 0;
-        Timer timer = new Timer( "updateNumbers()" );
+        mAllImagesSize = 0;
+        Timer timer = new Timer("updateNumbers()");
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
-        Cursor numbers = mContext.getContentResolver().query(EntryColumns.CONTENT_URI,
-                new String[]{FeedData.ALL_UNREAD_NUMBER,
-                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.FAVORITES_READ_NUMBER : "0",
-                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
-                             FeedData.ALL_NUMBER,
-                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
-                             PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? FeedData.EXTERNAL_READ_NUMBER : "0"},
-                null, null, null);
+        Cursor numbers = cr.query(EntryColumns.CONTENT_URI,
+                                  new String[]{FeedData.ALL_UNREAD_NUMBER,
+                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_READ_NUMBER : "0",
+                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
+                                      FeedData.ALL_NUMBER,
+                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
+                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_READ_NUMBER : "0",
+                                      FeedData.ALL_IMAGESSIZE_NUMBER(),
+                                      FeedData.ALL_UNREAD_IMAGESSIZE_NUMBER(),
+                                      FeedData.FAVORITES_IMAGESSIZE_NUMBER(),
+                                      FeedData.EXTERNAL_IMAGESSIZE_NUMBER()},
+                                  null, null, null);
         if (numbers != null) {
             if (numbers.moveToFirst()) {
                 mAllUnreadNumber = numbers.getInt(0);
                 mFavoritesReadNumber = numbers.getInt(1);
                 mFavoritesUnreadNumber = numbers.getInt(2);
-                mAllNumber = numbers.getInt( 3 );
-                mExternalUnreadNumber = numbers.getInt( 4 );
-                mExternalReadNumber = numbers.getInt( 5 );
+                mAllNumber = numbers.getInt(3);
+                mExternalUnreadNumber = numbers.getInt(4);
+                mExternalReadNumber = numbers.getInt(5);
+                mAllImagesSize = numbers.getInt(6);
+                mAllUnreadImagesSize = numbers.getInt(7);
+                mFavoritiesImagesSize = numbers.getInt(8);
+                mExternalImagesSize = numbers.getInt(9);
             }
             numbers.close();
         }
         timer.End();
-    }
 
+        timer = new Timer("updateTaskNumbers()");
+        Cursor tasks = cr.query(FeedData.TaskColumns.CONTENT_URI,
+                                new String[]{FeedData.TaskColumns.TEXT_COUNT, FeedData.TaskColumns.IMAGE_COUNT},
+                                null, null, null);
+        if (tasks != null) {
+            if (tasks.moveToFirst()) {
+                mTextTaskCount = tasks.getInt(0);
+                mImageTaskCount = tasks.getInt(1);
+            }
+            tasks.close();
+        }
+        timer.End();
+    }
     private static class ViewHolder {
         ImageView iconView;
         TextView titleTxt;
         TextView stateTxt;
+        TextView imageSizeTxt;
         TextView unreadTxt;
         TextView readTxt;
+        TextView tasksTxt;
         ImageView autoRefreshIcon;
 
         View separator;

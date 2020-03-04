@@ -28,11 +28,14 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import androidx.annotation.NonNull;
+import android.text.TextUtils;
+
+import java.util.ArrayList;
 
 import ru.yanus171.feedexfork.MainApplication;
 
 import static ru.yanus171.feedexfork.utils.Theme.DARK;
-import static ru.yanus171.feedexfork.utils.Theme.LIGHT;
 
 public class PrefUtils {
 
@@ -70,6 +73,8 @@ public class PrefUtils {
     public static final String ENTRY_MAGRINS = "entry_margins";
     public static final String ENTRY_TEXT_ALIGN_JUSTIFY = "entry_text_align_justify";
     public static final String LANGUAGE = "language";
+    public static final String DATA_FOLDER = "data_folder";
+
 
     public static final String CONTENT_EXTRACT_RULES = "content_extract_rules";
     public static final String LOAD_COMMENTS = "load_comments";
@@ -79,11 +84,15 @@ public class PrefUtils {
     public static final String VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE = "vibrate_on_article_list_entry_swype";
     public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";
 
+    public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
+
+    public static boolean CALCULATE_IMAGES_SIZE() {return getBoolean("calculate_images_size", false );}
 
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
     public static final String LAST_ENTRY_ID = "last_entry_id";
-    public static final String LAST_BRIGHTNESS = "last_brightness";
+    public static final String LAST_BRIGHTNESS_FLOAT = "last_brightness_float";
+    public static final String LAST_BRIGHTNESS_ONPAUSE_TIME = "last_brightness_onpause_time";
 
 
     public static final String VOLUME_BUTTONS_ACTION_DEFAULT = "Default";
@@ -103,6 +112,16 @@ public class PrefUtils {
     }
     public static int getFontSizeEntryList() {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
+    }
+
+    public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
+    public static Boolean isImageWhiteBackground() {
+        return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
+    }
+
+    public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
+    public static Boolean isArticleTapEnabled() {
+        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true );
     }
 
     public static int getFontSizeFooterClock() {
@@ -148,9 +167,19 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static void toggleBoolean(String key) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(key, !pref.getBoolean(key, false ));
+        editor.apply();
+    }
     public static int getInt(String key, int defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.getInt(key, defValue);
+    }
+    public static Float getFloat(String key, Float defValue) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        return settings.getFloat( key, defValue);
     }
     public static int getIntFromText(String key, int defValue) {
         int result = defValue;
@@ -178,6 +207,11 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static void putFloat(String key, Float value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
+        editor.putFloat(key, value);
+        editor.apply();
+    }
     public static boolean contains(String key) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.contains( key );
@@ -205,7 +239,7 @@ public class PrefUtils {
     }
 
     @SuppressLint("ApplySharedPref")
-    static void putStringCommit(String key, String value) {
+    public static void putStringCommit(String key, String value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
         editor.putString(key, value);
         editor.commit();
@@ -250,6 +284,8 @@ public class PrefUtils {
     }
 
     public static int GetTapZoneSize() {
+        if ( !isArticleTapEnabled() )
+            return 0;
         return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
     }
     // ------------------------------------------------------------------------------------
@@ -262,4 +298,14 @@ public class PrefUtils {
         }
     }
 
+    @NonNull
+    public static ArrayList<String> GetRemoveClassList() {
+        final ArrayList<String> removeClassList = new ArrayList<>();
+        for (String item : TextUtils.split(PrefUtils.getString(GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, ""), "\n"))
+            if (!item.isEmpty()) {
+                for (String item2 : TextUtils.split(item, " "))
+                    removeClassList.add(item2);
+            }
+        return removeClassList;
+    }
 }
