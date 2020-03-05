@@ -173,17 +173,9 @@
     <string name="settings_color_link_sample_short">Enlaces</string>
     <string name="settings_color_link_sample_long">Color de los enlaces</string>
     <string name="underline_links">Subrayar enlaces</string>
-    <string name="article_text_footer_show_clock">Reloj de pie de página</string>
-    <string name="article_text_footer_show_clock_description">Muestra la hora actual en la esquina inferior izquierda en modo de pantalla completa</string>
     <string name="settings_clock_size">Tamaño del texto del reloj de pie de página</string>
-    <string name="article_text_footer_clock_color">Color del reloj</string>
-    <string name="article_text_footer_clock_color_descr">Color del reloj de pie de página.</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_footer_show_progress">Barra de progreso de lectura</string>
-    <string name="article_text_footer_show_progress_descr">Muestra el progreso de la lectura de un artículo en la parte inferior</string>
-    <string name="article_text_footer_progress_height">Altura de barra de progreso</string>
-    <string name="article_text_footer_progress_color">Color del progreso</string>
     <string name="settings_notifications_enabled">Habilitar notificaciones</string>
     <string name="settings_notifications_enabled_description">Habilita las notificaciones de nuevas entradas</string>
     <string name="settings_notifications_ringtone">Tono</string>
