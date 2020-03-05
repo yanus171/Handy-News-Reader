@@ -166,7 +166,6 @@
     <string name="menu_font_bold">Fettschrift</string>
     <string name="menu_copy_clipboard">Link kopieren</string>
     <string name="menu_cancel_refresh">Aktualisierung abbrechen</string>
-    <string name="menu_delete_all">Alle löschen</string>
     <string name="menu_toogle_unread_all">Ungelesen|Alle</string>
     <string name="menu_load_all_images">Alle Bilder laden</string>
     <string name="menu_mark_as_favorite">Als Favorit markieren</string>
