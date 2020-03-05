@@ -262,9 +262,18 @@
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Cor dos links</string>
     <string name="underline_links">Sublinhar links</string>
+    <string name="article_text_show_clock">Mostrar relógio</string>
+    <string name="article_text_show_clock_description">Exibe a hora atual no canto superior direito em modo de tela cheia</string>
     <string name="settings_clock_size">Tamanho do texto do relógio de rodapé</string>
+    <string name="article_text_clock_color">Cor do relógio e fundo</string>
+    <string name="article_text_clock_color_descr">Cor do relógio</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_show_progress">Lendo barra de progresso</string>
+    <string name="article_text_show_progress_descr">Exibe o progresso da leitura de um artigo no topo</string>
+    <string name="article_text_progress_height">Altura da barra de progresso</string>
+    <string name="article_text_progress_color">Cor do progresso</string>
+    <string name="article_text_progress_color_descr">Cor da barra de progresso de leitura</string>
     <string name="settings_category_operation">Operação</string>
     <string name="settings_category_operation_summary">Configurações de operações</string>
     <string name="tap_zone_size">Tamanho da Zona de Toque</string>
@@ -442,6 +451,7 @@
     <string name="settings_category_theme">Tema</string>
     <string name="settings_category_header">Cabeçalho da página</string>
     <string name="tasks_to_download">Para carregar</string>
+    <string name="settings_current_setting">Configuração atual</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
