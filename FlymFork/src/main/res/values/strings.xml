@@ -169,7 +169,7 @@
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
-    <string name="menu_delete_all">Delete all</string>
+    <string name="menu_delete_non_starred">Delete non starred</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
     <string name="menu_load_all_images">Load all images</string>
     <string name="menu_mark_as_favorite">Mark as Favorite</string>
@@ -276,7 +276,7 @@
     <string name="article_text_show_clock_description">Displays the current time at the top right corner in fullscreen mode</string>
     <string name="settings_clock_size">Text size of the clock</string>
     <string name="article_text_clock_color">Clock color and background</string>
-    <string name="article_text_clock_color_descr">Color of the clock</string>
+    <string name="article_text_clock_color_descr">Color and background of the clock in page header</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Reading progress bar</string>
