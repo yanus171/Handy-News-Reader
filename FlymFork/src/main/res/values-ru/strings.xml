@@ -165,7 +165,6 @@
     <string name="menu_font_bold">Жирный шрифт</string>
     <string name="menu_copy_clipboard">Скопировать ссылку</string>
     <string name="menu_cancel_refresh">Отменить обновление</string>
-    <string name="menu_delete_all">Удалить все</string>
     <string name="menu_toogle_unread_all">Прочитанные|Все</string>
     <string name="menu_load_all_images">Загрузить все картинки</string>
     <string name="menu_mark_as_favorite">В избранное</string>
