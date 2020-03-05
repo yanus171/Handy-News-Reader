@@ -165,7 +165,6 @@
     <string name="menu_font_bold">Letra lodia</string>
     <string name="menu_copy_clipboard">Kopiatu esteka</string>
     <string name="menu_cancel_refresh">Ezeztatu eguneraketa</string>
-    <string name="menu_delete_all">Ezabatu denak</string>
     <string name="menu_toogle_unread_all">Irakurri gabe | denak</string>
     <string name="menu_load_all_images">Kargatu irudi guztiak</string>
     <string name="menu_mark_as_favorite">Markatu gogoko bezala</string>
