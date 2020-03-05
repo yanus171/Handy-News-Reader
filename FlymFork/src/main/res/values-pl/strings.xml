@@ -169,7 +169,6 @@ GENERAL]]></string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
     <string name="menu_copy_clipboard">Kopiuj link do schowka</string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
-    <string name="menu_delete_all">Usuń wszystko</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
     <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
     <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
