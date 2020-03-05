@@ -164,7 +164,6 @@
     <string name="menu_font_bold">Жирний шрифт</string>
     <string name="menu_copy_clipboard">Скопіювати посилання</string>
     <string name="menu_cancel_refresh">Скасувати оновлення</string>
-    <string name="menu_delete_all">Вилучити все</string>
     <string name="menu_toogle_unread_all">Прочитані|Всі</string>
     <string name="menu_load_all_images">Завантажити всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
