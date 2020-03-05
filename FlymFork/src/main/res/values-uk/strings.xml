@@ -261,6 +261,7 @@
     <string name="settings_color_link_sample_short">Посилання</string>
     <string name="settings_color_link_sample_long">Колір посилань</string>
     <string name="underline_links">Підкреслювати посилання</string>
+    <string name="article_text_show_clock">Показати годинник</string>
     <string name="settings_clock_size">Розмір шрифту годинника в колонтитулі</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
