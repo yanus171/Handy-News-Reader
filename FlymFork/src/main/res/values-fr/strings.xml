@@ -166,7 +166,6 @@
     <string name="menu_font_bold">Gras</string>
     <string name="menu_copy_clipboard">Copier le lien</string>
     <string name="menu_cancel_refresh">Annuler la mise à jour</string>
-    <string name="menu_delete_all">Tout supprimer</string>
     <string name="menu_toogle_unread_all">Marquer tous comme non lus</string>
     <string name="menu_load_all_images">Charger toutes les images</string>
     <string name="menu_mark_as_favorite">Ajouter aux Favoris</string>
