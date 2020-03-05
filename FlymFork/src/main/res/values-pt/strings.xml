@@ -165,7 +165,6 @@
     <string name="menu_font_bold">Fonte em negrito</string>
     <string name="menu_copy_clipboard">Copiar link</string>
     <string name="menu_cancel_refresh">Cancelar atualização</string>
-    <string name="menu_delete_all">Apagar tudo</string>
     <string name="menu_toogle_unread_all">Não Lido|Todos</string>
     <string name="menu_load_all_images">Carregar todas as imagens</string>
     <string name="menu_mark_as_favorite">Marcar como favorito</string>

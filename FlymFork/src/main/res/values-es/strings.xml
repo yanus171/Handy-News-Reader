@@ -114,7 +114,6 @@
     <string name="menu_font_bold">Negrita</string>
     <string name="menu_copy_clipboard">Copiar enlace</string>
     <string name="menu_cancel_refresh">Cancelar actualización</string>
-    <string name="menu_delete_all">Eliminar todo</string>
     <string name="menu_toogle_unread_all">No leído | todos</string>
     <string name="menu_load_all_images">Cargar todas las imagenes</string>
     <string name="menu_mark_as_favorite">Marcar como favorito</string>

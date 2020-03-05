@@ -165,7 +165,6 @@
     <string name="menu_font_bold">Έντονη γραμματοσειρά</string>
     <string name="menu_copy_clipboard">Αντιγραφή συνδέσμου</string>
     <string name="menu_cancel_refresh">Ακύρωση ενημέρωσης</string>
-    <string name="menu_delete_all">Διαγραφή όλων</string>
     <string name="menu_toogle_unread_all">Μη διαβασμένα|Όλα</string>
     <string name="menu_load_all_images">Φόρτωμα όλων των εικόνων</string>
     <string name="menu_mark_as_favorite">Σημείωση ως αγαπημένο</string>
