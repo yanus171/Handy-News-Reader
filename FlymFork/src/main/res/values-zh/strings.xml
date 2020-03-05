@@ -106,7 +106,6 @@
     <string name="menu_font_bold">粗体</string>
     <string name="menu_copy_clipboard">复制链接</string>
     <string name="menu_cancel_refresh">取消更新</string>
-    <string name="menu_delete_all">删除所有</string>
     <string name="menu_toogle_unread_all">未读|全部</string>
     <string name="menu_load_all_images">加载所有图片</string>
     <string name="menu_mark_as_unread">标为未读</string>
