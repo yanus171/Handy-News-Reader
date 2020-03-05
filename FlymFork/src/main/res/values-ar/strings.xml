@@ -172,7 +172,6 @@
     <string name="menu_font_bold">خط عريض</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
-    <string name="menu_delete_all">حذف الكُل</string>
     <string name="menu_toogle_unread_all">غير المقروءة|الكل</string>
     <string name="menu_load_all_images">تحميل كل الصور</string>
     <string name="menu_mark_as_favorite">تحديده كمُميّز</string>
