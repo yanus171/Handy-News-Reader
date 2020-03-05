@@ -275,7 +275,7 @@
     <string name="article_text_show_progress_descr">Wenn aktiviert, wird am Oberrand der Lesefortschritt des aktuellen Artikels angezeigt</string>
     <string name="article_text_progress_height">Höhe des Fortschrittsbalkens</string>
     <string name="article_text_progress_color">Farbe des Fortschrittsbalkens</string>
-    <string name="article_text_progress_color_descr">Farbe des Fortschrittsbalkens in der Fußzeile</string>
+    <string name="article_text_progress_color_descr">Farbe des Fortschrittsbalkens am Oberrand</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
