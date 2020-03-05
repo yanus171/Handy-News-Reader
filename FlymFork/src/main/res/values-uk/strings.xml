@@ -261,7 +261,7 @@
     <string name="settings_color_link_sample_short">Посилання</string>
     <string name="settings_color_link_sample_long">Колір посилань</string>
     <string name="underline_links">Підкреслювати посилання</string>
-    <string name="article_text_show_clock">Показати годинник</string>
+    <string name="article_text_show_clock">Показувати годинник</string>
     <string name="article_text_show_clock_description">Показувати годинник в правому верхньому куті в повноекранному режимі</string>
     <string name="settings_clock_size">Розмір шрифту годинника в колонтитулі</string>
     <string name="article_text_clock_color">Колір годинника та фону</string>
@@ -269,9 +269,9 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Смуга прочитаного</string>
-    <string name="article_text_show_progress_descr">Показує прогрес читання статті зверху</string>
+    <string name="article_text_show_progress_descr">Показує прогрес читання статті вгорі</string>
     <string name="article_text_progress_height">Висота смуги</string>
-    <string name="article_text_progress_color">Колір смуги прогресу читання</string>
+    <string name="article_text_progress_color">Колір смуги</string>
     <string name="article_text_progress_color_descr">Колір смуги прогресу читання</string>
     <string name="settings_category_operation">Операції</string>
     <string name="settings_category_operation_summary">Налаштування</string>
