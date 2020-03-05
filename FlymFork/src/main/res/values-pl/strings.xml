@@ -169,6 +169,7 @@ GENERAL]]></string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
     <string name="menu_copy_clipboard">Kopiuj link do schowka</string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
+    <string name="menu_delete_non_starred">Usuń niezagwiazdkowane</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
     <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
     <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
@@ -270,7 +271,7 @@ GENERAL]]></string>
     <string name="article_text_show_clock_description">Wyświetla aktualny czas w prawym górnym rogu trybu pełnoekranowego</string>
     <string name="settings_clock_size">Rozmiar tekstu zegarka w stopce</string>
     <string name="article_text_clock_color">Kolor i tło zegarka</string>
-    <string name="article_text_clock_color_descr">Kolor zegarka</string>
+    <string name="article_text_clock_color_descr">Kolor i tło zegarka w nagłówku</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Pasek postępu lektury</string>
