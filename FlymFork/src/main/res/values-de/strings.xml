@@ -363,7 +363,7 @@
     <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatische Favoriten</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="deleteAllEntries">Alle nicht als Favorit markierten Artikel löschen</string>
+    <string name="deleteAllEntries">Alle nicht als Favorit markierten Artikel löschen?</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Mit Tags erneut laden</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
