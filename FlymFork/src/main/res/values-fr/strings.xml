@@ -352,7 +352,7 @@
     <string name="lock_orientation">Orientation paysage</string>
     <string name="markAsStarred">Ajouter aux favoris</string>
     <string name="markedAsStarred">L\'article a été ajouté aux favoris : </string>
-    <string name="deleteAllEntries">Supprimer tous les articles non favoris</string>
+    <string name="deleteAllEntries">Supprimer tous les articles non favoris?</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Recharger avec les tags</string>
     <string name="filter_hint">L\'action d\'un filtre sera lancée si au moins une condition (règle) est remplie. \'Accepter\' prévaut sur \'Rejeter\'</string>
