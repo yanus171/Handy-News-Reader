@@ -164,6 +164,7 @@
     <string name="menu_font_bold">Grassetto</string>
     <string name="menu_copy_clipboard">Copia link</string>
     <string name="menu_cancel_refresh">Annulla aggiornamento</string>
+    <string name="menu_delete_non_starred">Elimina non preferiti</string>
     <string name="menu_toogle_unread_all">Non letti|Tutto</string>
     <string name="menu_load_all_images">Carica tutte le immagini</string>
     <string name="menu_mark_as_favorite">Segna come Preferito</string>
