@@ -112,7 +112,7 @@
     <string name="error_feed_export">L\'export a échoué. Assurez-vous d\'avoir une carte SD montée et autorisée en écriture.</string>
     <string name="error_external_storage_not_available">Le stockage externe (comme la carte SD) n\'est pas disponible.</string>
     <string name="feed_url">Adresse URL</string>
-    <string name="optional">(optionel)</string>
+    <string name="optional">(optionnel)</string>
     <string name="website_or_feed">(site web ou flux)</string>
     <string name="tab_feed_title">Flux</string>
     <string name="tab_filters_title">Filtres</string>
@@ -162,7 +162,7 @@
     <string name="menu_unstar">Enlever des favoris</string>
     <string name="menu_share">Partager</string>
     <string name="menu_full_screen">Plein écran</string>
-    <string name="menu_actionbar_visible">Barre d’actions</string>
+    <string name="menu_actionbar_visible">Barre d\’actions</string>
     <string name="menu_font_bold">Gras</string>
     <string name="menu_copy_clipboard">Copier le lien</string>
     <string name="menu_cancel_refresh">Annuler la mise à jour</string>
@@ -182,11 +182,11 @@
     <string name="see_enclosure">Voir le fichier joint</string>
     <string name="see_link">Ouvrir dans le navigateur web</string>
     <string name="cant_open_link">Aucune application trouvée pour ce lien</string>
-    <string name="open_enclosure">Ouvrir piève jointe</string>
+    <string name="open_enclosure">Ouvrir pièce jointe</string>
     <string name="file">Fichier</string>
     <string name="download_and_save">Télécharger et sauvegarder</string>
     <string name="open_link">Ouvrir le lien</string>
-    <string name="tip_sentence">Astuce: glisser vers la gauche pour marquer comme lu et</string>
+    <string name="tip_sentence">Astuce: glisser vers la droite pour marquer comme lu et glisser vers la gauche pour ajouter aux Favoris</string>
     <string name="undo">Annuler</string>
     <string name="marked_as_read">Marqués comme lus</string>
     <string name="image_count">Nombre d\'images</string>
@@ -286,7 +286,7 @@
     <string name="brightness_gesture">Geste de changement de luminosité</string>
     <string name="brightness_gesture_descr">Cochez cette case pour ajuster la luminosité en glissant vers le haut/bas le long du bord gauche de l\'écran</string>
     <string name="brightness_with_dim_activity">Superposition du logiciel</string>
-    <string name="brightness_with_dim_activity_descr">Baisser la luminosité en réduisant la transparence de la couleur d\'arrière-plan de la fenêtre (à cochez si le changement de luminosité ne fonctionne pas)</string>
+    <string name="brightness_with_dim_activity_descr">Baisser la luminosité en réduisant la transparence de la couleur d\'arrière-plan de la fenêtre (à cocher si le changement de luminosité ne fonctionne pas)</string>
     <string name="settings_category_behavior">Comportement des notifications \u0026</string>
     <string name="settings_category_behavior_summary">Notifications sur les nouveaux articles et le comportement de l\'application</string>
     <string name="settings_notifications_enabled">Activer les notifications</string>
