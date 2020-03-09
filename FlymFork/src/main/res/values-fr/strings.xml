@@ -402,7 +402,7 @@
     <string name="text">Texte</string>
     <string name="background1">Arrière-plan</string>
     <string name="auto_refresh_requires_charging">Seulement pendant la charge de la batterie</string>
-    <string name="global_class_list_to_remove_from_article_text">Supprimer les règlages de texte</string>
+    <string name="global_class_list_to_remove_from_article_text">Supprimer les réglages de texte</string>
     <string name="global_class_list_to_remove_from_article_text_summary">nom de classe par ligne</string>
     <string name="hide">Masquer</string>
     <string name="show">Afficher</string>
@@ -431,7 +431,7 @@
     <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
     <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (montrer|cacher|racine), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
     <string name="article_menu_show_by_tap">Afficher le menu des articles en appuyant</string>
-    <string name="article_list_loading">Chargement de la liste d\'articles</string>
+    <string name="article_list_loading">Chargement de la liste des articles</string>
     <string name="article_opening">Ouverture de l\'article</string>
     <string name="web_page_loading">Chargement de la page</string>
     <string name="article_menu_show_by_tap_descr">Lorsque la barre d\'action est masquée - sinon vous trouverez le menu uniquement sur la barre d\'action</string>
