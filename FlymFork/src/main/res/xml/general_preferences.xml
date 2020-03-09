@@ -227,8 +227,8 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="article_text_footer_show_clock"
-            android:summary="@string/article_text_footer_show_clock_description"
-            android:title="@string/article_text_footer_show_clock" />
+            android:summary="@string/article_text_show_clock_description"
+            android:title="@string/article_text_show_clock" />
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
             android:defaultValue="0"
             android:dependency="article_text_footer_show_clock"
@@ -241,8 +241,8 @@
             android:defaultValue="@string/default_article_text_footer_color"
             android:dependency="article_text_footer_show_clock"
             android:key="article_text_footer_clock_color"
-            android:title="@string/article_text_footer_clock_color"
-            android:summary="@string/article_text_footer_clock_color_descr"
+            android:title="@string/article_text_clock_color"
+            android:summary="@string/article_text_clock_color_descr"
             colorPreference:backgroundColor1="@string/transparent_color"
             colorPreference:istransparency="true"
             colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
@@ -250,21 +250,21 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="article_text_footer_show_progress"
-            android:title="@string/article_text_footer_show_progress"
-            android:summary="@string/article_text_footer_show_progress_descr"/>
+            android:title="@string/article_text_show_progress"
+            android:summary="@string/article_text_show_progress_descr"/>
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
             android:key="article_text_footer_progress_height"
             android:dependency="article_text_footer_show_progress"
             android:entries="@array/settings_footer_progress_height"
             android:entryValues="@array/settings_footer_progress_height_values"
             android:defaultValue="1"
-            android:title="@string/article_text_footer_progress_height"/>
+            android:title="@string/article_text_progress_height"/>
         <ru.yanus171.feedexfork.view.ColorPreference
             android:defaultValue="@string/default_article_text_footer_color"
             android:dependency="article_text_footer_show_progress"
             android:key="article_text_footer_progress_color"
-            android:title="@string/article_text_footer_progress_color"
-            android:summary="@string/article_text_footer_progress_color_descr"
+            android:title="@string/article_text_progress_color"
+            android:summary="@string/article_text_progress_color_descr"
             colorPreference:istransparency="true"
             colorPreference:sampletextShort=" "
             colorPreference:sampletextLong=" " />

@@ -172,7 +172,6 @@
     <string name="menu_font_bold">خط عريض</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
-    <string name="menu_delete_all">حذف الكُل</string>
     <string name="menu_toogle_unread_all">غير المقروءة|الكل</string>
     <string name="menu_load_all_images">تحميل كل الصور</string>
     <string name="menu_mark_as_favorite">تحديده كمُميّز</string>
@@ -270,18 +269,9 @@
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
-    <string name="article_text_footer_show_clock">ساعة تذييل الصفحة</string>
-    <string name="article_text_footer_show_clock_description">عَرْضُ الْوَقْتِ الْحَالِيِّ فِي الرُّكْنِ الْأَيْسَرِ الْعَلَوِيِّ</string>
     <string name="settings_clock_size">حجم نص ساعة التذييل</string>
-    <string name="article_text_footer_clock_color">لونُ الساعه والخلفية</string>
-    <string name="article_text_footer_clock_color_descr">لون ساعة التذييل</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_footer_show_progress">شريط التقَدُم بالقراءة</string>
-    <string name="article_text_footer_show_progress_descr">يَعْرِضُ التَقَدُمَ المُحْرَز بقِرآءَةِ الْمَقَالِ فِي الْأعْلَى</string>
-    <string name="article_text_footer_progress_height">إرتفاع شريط التقَدُم</string>
-    <string name="article_text_footer_progress_color">لون التقَدُم</string>
-    <string name="article_text_footer_progress_color_descr">لون شريط التقَدُم بالقراءة</string>
     <string name="settings_category_operation">العمليّات</string>
     <string name="settings_category_operation_summary">الإعدادات التشغيلية</string>
     <string name="tap_zone_size">حجم مناطق النقر النَشِطة</string>

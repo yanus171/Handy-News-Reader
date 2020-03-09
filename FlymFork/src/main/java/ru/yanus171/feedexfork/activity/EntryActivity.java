@@ -257,9 +257,6 @@ public class EntryActivity extends BaseActivity {
             mEntryFragment.UpdateFooter();
     }
 
-
-
-
 //    public void setFullScreenWithNavBar() {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE |

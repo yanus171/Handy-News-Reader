@@ -82,8 +82,11 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
+import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static ru.yanus171.feedexfork.activity.BaseActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
