@@ -44,6 +44,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -437,7 +438,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     }
 
     public static void ShowDeleteDialog(Context context, final String title, final long id) {
-        new AlertDialog.Builder(context) //
+        AlertDialog dialog = new AlertDialog.Builder(context) //
                 .setIcon(android.R.drawable.ic_dialog_alert) //
                 .setTitle( R.string.question_delete_entry ) //
                 .setMessage( title ) //
@@ -452,7 +453,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                             }
                         }.start();
                     }
-                }).setNegativeButton(android.R.string.no, null).show();
+                }).setNegativeButton(android.R.string.no, null).create();
+        dialog.getWindow().setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        dialog.show();
     }
 
 

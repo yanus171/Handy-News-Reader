@@ -95,6 +95,7 @@ import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
@@ -367,7 +368,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
             TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
             if (mainImgUrl != null) {
-                Glide.with(context).load(mainImgUrl).centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
+                final int dim = UiUtils.dpToPixel(50);
+                Glide.with(context).load(mainImgUrl)
+                    .override(dim, dim)
+                    .centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
             } else {
                 Glide.with(context).clear(holder.mainImgView);
                 holder.mainImgView.setImageDrawable(letterDrawable);

@@ -24,7 +24,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
@@ -32,7 +31,6 @@ import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -147,7 +145,7 @@ public class EntryActivity extends BaseActivity {
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false);
+                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false, FetcherService.AutoDownloadEntryImages.Yes);
                 } else
                     SetEntryID( entryUri, url );
             }

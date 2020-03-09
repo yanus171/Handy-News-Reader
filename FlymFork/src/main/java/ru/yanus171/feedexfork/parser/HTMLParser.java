@@ -44,7 +44,6 @@
 
 package ru.yanus171.feedexfork.parser;
 
-import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -57,7 +56,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,8 +69,6 @@ import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
@@ -85,6 +81,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 
 import static ru.yanus171.feedexfork.service.FetcherService.FinishExecutionService;
+import static ru.yanus171.feedexfork.service.FetcherService.IsAutoDownloadImages;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
 
@@ -92,7 +89,7 @@ public class HTMLParser {
 
 	private static final String TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}";
 
-	static public int Parse( ExecutorService executor, final String feedID, String feedUrl ) {
+	static public int Parse(ExecutorService executor, final String feedID, String feedUrl ) {
 		//if (!TextUtils.isEmpty(content)) {
 		int newEntries = 0;
         Status().ChangeProgress( "Loading main page");
@@ -123,8 +120,7 @@ public class HTMLParser {
 			if (connection != null)
 				connection.disconnect();
 		}
-
-		Uri uriMainEntry = FetcherService.LoadLink( feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false, false).first;
+		Uri uriMainEntry = FetcherService.LoadLink(feedID, feedUrl, "", FetcherService.ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID) ).first;
             
 		final ContentResolver cr = MainApplication.getContext().getContentResolver();
 		{
@@ -193,7 +189,7 @@ public class HTMLParser {
 						result.mTaskID = 0L;
 						result.mOK = false;
 
-                        Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false);
+                        Pair<Uri, Boolean> load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false, IsAutoDownloadImages(feedID));
                         Uri uri = load.first;
                         if (load.second) {
 							result.mOK = true;

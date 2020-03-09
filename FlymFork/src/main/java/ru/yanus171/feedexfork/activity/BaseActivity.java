@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static Locale GetLocale(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String lang = prefs.getString(PrefUtils.LANGUAGE, defaultLanguage);
-        if (lang.equals(defaultLanguage)) {
+        if (defaultLanguage.equals(lang)) {
             if (context.getResources().getConfiguration().locale != null) {
                 lang = context.getResources().getConfiguration().locale.getLanguage();
             }
@@ -139,18 +139,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         PrefUtils.putBoolean(STATE_IS_ACTIONBAR_HIDDEN, actionBarHidden);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (statusBarHidden) {
-                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-            } else {
+                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                                     View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            } else
                 mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
-//        } else {
-//            setFullScreenOld(statusBarHidden);
-        }
 
-        if (getSupportActionBar() != null) {
+//        } else
+//            setFullScreenOld(statusBarHidden)
+
+        if (getSupportActionBar() != null)
             if (actionBarHidden)
                 getSupportActionBar().hide();
             else
@@ -162,6 +163,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock) {
+        if ( progressBar == null || labelClock == null )
+            return;
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
             progressBar.setVisibility( View.VISIBLE );
             progressBar.setMax( max );

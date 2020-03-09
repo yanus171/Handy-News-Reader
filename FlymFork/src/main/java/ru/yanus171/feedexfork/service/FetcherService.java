@@ -95,7 +95,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -319,7 +318,7 @@ public class FetcherService extends IntentService {
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
             ExecutorService executor = CreateExecutorService(); try {
-                mobilizeAllEntries(executor, isFromAutoRefresh);
+                mobilizeAllEntries(executor);
                 downloadAllImages(executor);
             } finally {
                 executor.shutdown();
@@ -335,7 +334,7 @@ public class FetcherService extends IntentService {
                                  FetcherService.ForceReload.No,
                                  true,
                                  true,
-                                 intent.getBooleanExtra(EXTRA_STAR, false));
+                                 intent.getBooleanExtra(EXTRA_STAR, false), AutoDownloadEntryImages.Yes);
 
                         downloadAllImages(executor);
                     } finally { executor.shutdown(); }
@@ -360,7 +359,7 @@ public class FetcherService extends IntentService {
                         try {
                             newCount = (feedId == null ?
                                     refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
-                                    refreshFeed( executor, feedId, keepDateBorderTime, isFromAutoRefresh));
+                                    refreshFeed( executor, feedId, keepDateBorderTime));
 
                         } finally {
                             if (mMarkAsStarredFoundList.size() > 5) {
@@ -409,7 +408,7 @@ public class FetcherService extends IntentService {
                             }
                         }
 
-                        mobilizeAllEntries( executor, isFromAutoRefresh);
+                        mobilizeAllEntries( executor );
                         downloadAllImages( executor );
                     } finally {
                         executor.shutdown();
@@ -598,7 +597,7 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private void mobilizeAllEntries( ExecutorService executor, final boolean fromAutoRefresh) {
+    private void mobilizeAllEntries( ExecutorService executor) {
         final String statusText = getString(R.string.mobilizeAll);
         int status = Status().Start(statusText, false); try {
             final ContentResolver cr = getContentResolver();
@@ -626,7 +625,10 @@ public class FetcherService extends IntentService {
                         result.mTaskID = taskId;
                         result.mOK = false;
 
-                        if ( mobilizeEntry( entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(fromAutoRefresh, cr, entryId), true, false, false)) {
+                        Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null);
+                        final String feedID = curEntry.getString( 0 );
+                        curEntry.close();
+                        if ( mobilizeEntry( entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false)) {
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                             result.mOK = true;
@@ -652,18 +654,13 @@ public class FetcherService extends IntentService {
 
     }
 
-    private AutoDownloadEntryImages IsAutoDownloadImages(boolean fromAutoRefresh, ContentResolver cr, long entryId) {
+    public static AutoDownloadEntryImages IsAutoDownloadImages(String feedId) {
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
         AutoDownloadEntryImages result = AutoDownloadEntryImages.Yes;
-        if ( fromAutoRefresh ) {
-            Cursor curEntry = cr.query( EntryColumns.CONTENT_URI( entryId ), new String[] { EntryColumns.FEED_ID }, null, null, null );
-            if ( curEntry.moveToFirst() ) {
-                Cursor curFeed = cr.query( FeedColumns.CONTENT_URI( curEntry.getInt( 0 ) ), new String[] { FeedColumns.IS_IMAGE_AUTO_LOAD }, null, null, null );
-                if ( curFeed.moveToFirst() )
-                    result = curFeed.isNull( 0 ) || curFeed.getInt( 0 ) == 1 ? AutoDownloadEntryImages.Yes : AutoDownloadEntryImages.No;
-                curFeed.close();
-            }
-            curEntry.close();
-        }
+        Cursor curFeed = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[] { FeedColumns.IS_IMAGE_AUTO_LOAD }, null, null, null );
+        if ( curFeed.moveToFirst() )
+            result = curFeed.isNull( 0 ) || curFeed.getInt( 0 ) == 1 ? AutoDownloadEntryImages.Yes : AutoDownloadEntryImages.No;
+        curFeed.close();
         return result;
     }
 
@@ -836,7 +833,8 @@ public class FetcherService extends IntentService {
                                              final ForceReload forceReload,
                                              final boolean isCorrectTitle,
                                              final boolean isShowError,
-                                             final boolean isStarred) {
+                                             final boolean isStarred,
+                                             AutoDownloadEntryImages autoDownloadEntryImages) {
         boolean load;
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
         int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
@@ -875,7 +873,7 @@ public class FetcherService extends IntentService {
 
             if ( load && !FetcherService.isCancelRefresh() )
                 mobilizeEntry(Long.parseLong(entryUri.getLastPathSegment()),
-                              ArticleTextExtractor.MobilizeType.Yes, AutoDownloadEntryImages.Yes,  isCorrectTitle, isShowError, false);
+                              ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages,  isCorrectTitle, isShowError, false);
             return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);
@@ -1117,7 +1115,7 @@ public class FetcherService extends IntentService {
                         result.mOK = false;
                         try {
                             if (!isCancelRefresh()) {
-                                refreshFeed(executor, feedId, keepDateBorderTime, isFromAutoRefresh);
+                                refreshFeed(executor, feedId, keepDateBorderTime);
                                 result.mOK = true;
                             }
                         } catch (Exception ignored) {
@@ -1133,7 +1131,7 @@ public class FetcherService extends IntentService {
         } finally { Status().End( status ); }
     }
 
-    private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime, boolean fromAutoRefresh) {
+    private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime) {
 
 
         int newCount = 0;
@@ -1166,7 +1164,7 @@ public class FetcherService extends IntentService {
             String feedUrl = cursor.getString(urlPosition);
             int status = Status().Start(cursor.getString(titlePosition), false); try {
                 if ( isRss )
-                    newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, id, fromAutoRefresh);
+                    newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, id);
                 else
                     newCount = HTMLParser.Parse(executor, cursor.getString(idPosition), feedUrl);
             } finally {
@@ -1254,7 +1252,7 @@ public class FetcherService extends IntentService {
     }
 
 
-    private int ParseRSSAndAddEntries(String feedUrl, Cursor cursor, long keepDateBorderTime, String feedId, boolean fromAutoRefresh) {
+    private int ParseRSSAndAddEntries(String feedUrl, Cursor cursor, long keepDateBorderTime, String feedId) {
         RssAtomParser handler = null;
 
         int fetchModePosition = cursor.getColumnIndex(FeedColumns.FETCH_MODE);
@@ -1332,7 +1330,7 @@ public class FetcherService extends IntentService {
                     cursor.getString(titlePosition),
                     feedUrl,
                     cursor.getInt(retrieveFullscreenPosition) == 1);
-            handler.setFetchImages(NetworkUtils.needDownloadPictures() && !(fromAutoRefresh && !autoDownloadImages));
+            handler.setFetchImages(NetworkUtils.needDownloadPictures() && autoDownloadImages);
 
             InputStream inputStream = connection.getInputStream();
 
