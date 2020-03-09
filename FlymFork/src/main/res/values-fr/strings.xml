@@ -331,7 +331,7 @@
     <string name="settings_content_extract_rules">Règles d\'extraction de contenu</string>
     <string name="settings_content_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
     <string name="settings_tap_zones_dialogtitle">uniquement pour les informations, les modifications ne sont pas disponibles</string>
-    <string name="downloadNext">"Télécharger le suivant "</string>
+    <string name="downloadNext">", Suivant "</string>
     <string name="downloadAll">", Tous"</string>
     <string name="loadingLink">Chargement des liens</string>
     <string name="loadLink">Lire maintenant</string>
@@ -346,7 +346,7 @@
     <string name="auto_refresh_feed">Actualiser automatiquement les flux</string>
     <string name="actionBarToggle">Activer/désactiver la barre d\'actions</string>
     <string name="standard">Standard</string>
-    <string name="fontsize_entrylist">Taille de police de la liste d\'article</string>
+    <string name="fontsize_entrylist">Taille de police de la liste des articles</string>
     <string name="question_delete_entry">Supprimer cet article?</string>
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
@@ -362,7 +362,7 @@
     <string name="lock_orientation">Orientation paysage</string>
     <string name="markAsStarred">Ajouter aux favoris</string>
     <string name="markedAsStarred">L\'article a été ajouté aux favoris : </string>
-    <string name="deleteAllEntries">Supprimer tous les articles non favoris?</string>
+    <string name="deleteAllEntries">Supprimer tous les articles non favoris ?</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Recharger avec les tags</string>
     <string name="filter_hint">L\'action d\'un filtre sera lancée si au moins une condition (règle) est remplie. \'Accepter\' prévaut sur \'Rejeter\'</string>
