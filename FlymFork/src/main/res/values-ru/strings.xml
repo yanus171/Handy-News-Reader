@@ -165,6 +165,7 @@
     <string name="menu_font_bold">Жирный шрифт</string>
     <string name="menu_copy_clipboard">Скопировать ссылку</string>
     <string name="menu_cancel_refresh">Отменить обновление</string>
+    <string name="menu_delete_non_starred">Удалить не избранное</string>
     <string name="menu_toogle_unread_all">Прочитанные|Все</string>
     <string name="menu_load_all_images">Загрузить все картинки</string>
     <string name="menu_mark_as_favorite">В избранное</string>
@@ -261,9 +262,18 @@
     <string name="settings_color_link_sample_short">Ссылки</string>
     <string name="settings_color_link_sample_long">Цвет ссылки</string>
     <string name="underline_links">Подчеркивать ссылки</string>
+    <string name="article_text_show_clock">Показать часы</string>
+    <string name="article_text_show_clock_description">Отображать текущее время в верхнем правом углу в полноэкранном режиме</string>
     <string name="settings_clock_size">Размер шрифта часов вверху текста статьи</string>
+    <string name="article_text_clock_color">Цвет и фон часов</string>
+    <string name="article_text_clock_color_descr">Цвет и фон часов в заголовке страницы</string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
+    <string name="article_text_show_progress">Полоса прочитанного</string>
+    <string name="article_text_show_progress_descr">Показывать полосу прочитанного вверху окна текста статьи</string>
+    <string name="article_text_progress_height">Высота полосы</string>
+    <string name="article_text_progress_color">Цвет полосы прочитанного</string>
+    <string name="article_text_progress_color_descr">Цвет полосы прочитанного</string>
     <string name="settings_category_operation">Операции</string>
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
@@ -441,6 +451,7 @@
     <string name="settings_category_theme">Тема</string>
     <string name="settings_category_header">Заголовок страницы</string>
     <string name="tasks_to_download">К загрузке</string>
+    <string name="settings_current_setting">Текущие настройки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
