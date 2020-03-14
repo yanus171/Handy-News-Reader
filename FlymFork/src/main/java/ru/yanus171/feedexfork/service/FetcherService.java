@@ -838,7 +838,7 @@ public class FetcherService extends IntentService {
                                              AutoDownloadEntryImages autoDownloadEntryImages) {
         boolean load;
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
-        int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
+        final int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
             Uri entryUri = GetEnryUri( url );
             if ( entryUri != null ) {
                 load = (forceReload == ForceReload.Yes);
@@ -996,7 +996,7 @@ public class FetcherService extends IntentService {
                 }
                 Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
             } catch (Exception e) {
-                DebugApp.AddErrorToLog( null ,e );
+                e.printStackTrace();//DebugApp.AddErrorToLog( null ,e );
             }
         }
         return countOK;

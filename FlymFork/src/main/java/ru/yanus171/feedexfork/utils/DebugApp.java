@@ -35,6 +35,7 @@ import java.util.Map;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.SendErrorActivity;
+import ru.yanus171.feedexfork.service.FetcherService;
 
 //****************************************************************************
 public class DebugApp {
@@ -348,15 +349,10 @@ public class DebugApp {
 
 	// ------------------------------------------------------------------------
 	public static void AddErrorToLog(String text, Exception e) {
-		AddErrorToLog(text, e, true);
-	}
-	// ------------------------------------------------------------------------
-	private static void AddErrorToLog(String text, Exception e, boolean printStackTrace) {
 		ErrorLog.append("----------------------\n");
 		ErrorLog.append(GetErrorInfo(text, e));
-		if ( printStackTrace )
-			( e == null ? new Exception() : e ).printStackTrace();
-
+		( e == null ? new Exception() : e ).printStackTrace();
+		FetcherService.Status().SetError( text, "", "", e );
 	}
 
 	// ------------------------------------------------------------------------

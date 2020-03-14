@@ -240,9 +240,10 @@ public class StatusText implements Observer {
                 if ( startProgress )
                     mProgressBarStatusList.add( MaxID );
                 Dog.v("Status Start " + text + " id = " + MaxID );
+
+                UpdateText();
+                return MaxID;
             }
-            UpdateText();
-            return MaxID;
         }
         public void End( int id ) {
             Dog.v( "Status End " + id );

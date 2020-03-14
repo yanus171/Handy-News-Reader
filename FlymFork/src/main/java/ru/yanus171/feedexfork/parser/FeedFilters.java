@@ -111,7 +111,7 @@ class FeedFilters {
                         result = m.find();
                     }
                 } catch ( PatternSyntaxException e ) {
-                    FetcherService.Status().SetError( null, null, null, e  );
+                    DebugApp.AddErrorToLog( null, e  );
                 }
             } else if ((isAppliedToTitle && (title != null && title.toLowerCase().contains(filterText.toLowerCase()) ||
                                              author.toLowerCase().contains(filterText.toLowerCase()) ||

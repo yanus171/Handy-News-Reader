@@ -346,7 +346,7 @@
     <string name="settings_tap_zones_dialogtitle">only for info, changes unavailable</string>
     <string name="downloadNext">", Next "</string>
     <string name="downloadAll">", All"</string>
-    <string name="loadingLink">Loading links</string>
+    <string name="loadingLink">Loading link</string>
     <string name="loadLink">Read now</string>
     <string name="loadLinkLater">Read later</string>
     <string name="loadLinkLaterStarred">Read later in favorites</string>

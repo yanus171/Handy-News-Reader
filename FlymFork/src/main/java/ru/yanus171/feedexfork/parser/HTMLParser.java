@@ -214,9 +214,9 @@ public class HTMLParser {
                         return result;
                     }
                 }) );
-				newEntries = FinishExecutionService( statusText, status, null, futures );
             }
-        } finally { Status().End( status ); }
+			newEntries = FinishExecutionService( statusText, status, null, futures );
+		} finally { Status().End( status ); }
 
 //        synchronized ( FetcherService.mCancelRefresh ) {
 //			FetcherService.mCancelRefresh = false;
