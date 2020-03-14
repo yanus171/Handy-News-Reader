@@ -366,7 +366,7 @@ GENERAL]]></string>
     <string name="lock_orientation">Orientacja pozioma</string>
     <string name="markAsStarred">Oznacz jako Ulubione</string>
     <string name="markedAsStarred">Artykuł został dodany do Ulubionych:</string>
-    <string name="deleteAllEntries">Usuń wszystkie artykuły poza Ulubionymi</string>
+    <string name="deleteAllEntries">Usunąć wszystkie niezagwiazdkowane artykuły?</string>
     <string name="question">Pytanie</string>
     <string name="reload_full_text_with_tags">Przeładuj z tagami</string>
     <string name="filter_hint">Akcja przypisana filtrom zostanie wykonana przy spełnieniu co najmniej jednego z warunków (reguł). \'Akceptuj\' nadpisuje \'Odrzuć\'</string>
@@ -457,6 +457,7 @@ GENERAL]]></string>
     <string name="settings_category_header">Nagłówek strony</string>
     <string name="tasks_to_download">Do załadowania</string>
     <string name="settings_current_setting">Aktualne ustawienia</string>
+    <string name="unable_to_load_article_icon">Nie można załadować ikonki artykułu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
