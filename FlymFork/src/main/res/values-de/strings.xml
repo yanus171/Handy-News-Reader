@@ -334,7 +334,7 @@
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
     <string name="downloadNext">", Nächste "</string>
     <string name="downloadAll">", Alle"</string>
-    <string name="loadingLink">Links laden</string>
+    <string name="loadingLink">Links werden geladen</string>
     <string name="loadLink">Jetzt Lesen</string>
     <string name="loadLinkLater">Später lesen</string>
     <string name="loadLinkLaterStarred">Später in den Favoriten lesen</string>
@@ -454,6 +454,7 @@
     <string name="settings_category_header">Seitenkopf</string>
     <string name="tasks_to_download">Zu laden</string>
     <string name="settings_current_setting">Aktuelle Einstellung</string>
+    <string name="unable_to_load_article_icon">Artikel-Symbol konnte nicht geladen werden</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
