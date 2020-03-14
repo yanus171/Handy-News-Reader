@@ -626,6 +626,7 @@ public class FetcherService extends IntentService {
                         result.mOK = false;
 
                         Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null);
+                        curEntry.moveToFirst();
                         final String feedID = curEntry.getString( 0 );
                         curEntry.close();
                         if ( mobilizeEntry( entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false)) {
@@ -923,8 +924,6 @@ public class FetcherService extends IntentService {
                     TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-            //executor.
-            //CompletionService<DownloadResult> completionService = new ExecutorCompletionService<>(executor);
             ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
             while (cursor != null && cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
                 final long taskId = cursor.getLong(0);
@@ -996,7 +995,8 @@ public class FetcherService extends IntentService {
                     }
                 }
                 Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                DebugApp.AddErrorToLog( null ,e );
             }
         }
         return countOK;
