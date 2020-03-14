@@ -308,21 +308,23 @@ public class NetworkUtils {
 
     public static Bitmap downloadImage(String url) {
         Bitmap bitmap = null;
-        Connection connection = new Connection( url ); try {
+        try {
+            Connection connection = new Connection( url ); try {
 
-            byte[] iconBytes = getBytes(connection.getInputStream());
-            if (iconBytes != null && iconBytes.length > 0) {
-                bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
-                if (bitmap != null) {
-                    if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
+                byte[] iconBytes = getBytes(connection.getInputStream());
+                if (iconBytes != null && iconBytes.length > 0) {
+                    bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
+                    if (bitmap != null) {
+                        if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
 
+                        }
                     }
                 }
+            } finally {
+                connection.disconnect();
             }
-        } catch (Throwable ignored) {
-
-        } finally {
-            connection.disconnect();
+        } catch (Exception e) {
+            DebugApp.AddErrorToLog(null, e);
         }
         return bitmap;
     }

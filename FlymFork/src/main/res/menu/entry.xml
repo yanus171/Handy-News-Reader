@@ -10,8 +10,7 @@
     <item
         android:id="@+id/menu_mark_as_unread"
         android:icon="@drawable/rounded_checbox_white"
-        android:title="@string/menu_mark_as_unread"
-        app:showAsAction="ifRoom" />
+        android:title="@string/menu_mark_as_unread" />
     <item
         android:id="@+id/menu_add_feed"
         android:icon="@drawable/content_new"

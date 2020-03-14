@@ -7,9 +7,12 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
 class FeedFilters {
@@ -96,18 +99,22 @@ class FeedFilters {
             boolean result = false;
             author = author == null ? "" : author;
             if (isRegex) {
-                Pattern p = Pattern.compile(filterText);
-                if (isAppliedToTitle) {
-                    Matcher mT = p.matcher(title);
-                    Matcher mA = p.matcher(author);
-                    Matcher mU = p.matcher(url);
-                    result = mT.find() || mA.find() || mU.find();
-                } else if (content != null) {
-                    Matcher m = p.matcher(content);
-                    result = m.find();
+                try {
+                    Pattern p = Pattern.compile(filterText);
+                    if (isAppliedToTitle) {
+                        Matcher mT = p.matcher(title);
+                        Matcher mA = p.matcher(author);
+                        Matcher mU = p.matcher(url);
+                        result = mT.find() || mA.find() || mU.find();
+                    } else if (content != null) {
+                        Matcher m = p.matcher(content);
+                        result = m.find();
+                    }
+                } catch ( PatternSyntaxException e ) {
+                    FetcherService.Status().SetError( null, null, null, e  );
                 }
             } else if ((isAppliedToTitle && (title != null && title.toLowerCase().contains(filterText.toLowerCase()) ||
-                                             author != null && author.toLowerCase().contains(filterText.toLowerCase()) ||
+                                             author.toLowerCase().contains(filterText.toLowerCase()) ||
                                              url.contains(filterText))) ||
                     (!isAppliedToTitle && content != null && content.toLowerCase().contains(filterText.toLowerCase()))) {
                 result = true;

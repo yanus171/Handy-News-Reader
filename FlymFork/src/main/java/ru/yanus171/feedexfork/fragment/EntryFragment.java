@@ -757,7 +757,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                 public void run() {
 
                                     final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
-                                    final IconCompat icon =  IconCompat.createWithBitmap(bitmap);
+                                    if ( bitmap == null )
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText( getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show();
+                                            }
+                                        });
+                                    final IconCompat icon = (bitmap == null) ?
+                                        IconCompat.createWithResource( getContext(), R.mipmap.ic_launcher ) :
+                                        IconCompat.createWithBitmap(bitmap);
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -767,6 +776,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                                     .setShortLabel(name)
                                                     .setIntent(new Intent(getContext(), EntryActivity.class).setAction(Intent.ACTION_VIEW).setData(uri))
                                                     .build();
+
                                             ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
                                             if (Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)
                                                 Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
