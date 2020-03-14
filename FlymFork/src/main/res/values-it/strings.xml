@@ -451,6 +451,7 @@
     <string name="settings_category_header">Intestazione di pagina</string>
     <string name="tasks_to_download">Da caricare</string>
     <string name="settings_current_setting">Impostazioni correnti</string>
+    <string name="unable_to_load_article_icon">Impossibile caricare l\'icona dell\'articolo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
