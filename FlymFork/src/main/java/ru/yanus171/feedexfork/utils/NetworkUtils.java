@@ -84,6 +84,8 @@ public class NetworkUtils {
     private static String getDownloadedImagePath( String entryLink, String prefix, String imgUrl ) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
         String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
+        if ( fileExtension.isEmpty() && imgUrl.contains("/svg/") )
+            fileExtension = ".svg";
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
 
