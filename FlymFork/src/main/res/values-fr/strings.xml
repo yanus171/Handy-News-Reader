@@ -453,6 +453,7 @@
     <string name="settings_category_header">En-tête de page</string>
     <string name="tasks_to_download">A charger</string>
     <string name="settings_current_setting">Paramètre actuel</string>
+    <string name="unable_to_load_article_icon">Impossible de charger l\'icône de l\'article</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
