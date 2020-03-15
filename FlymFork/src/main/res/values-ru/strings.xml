@@ -452,6 +452,7 @@
     <string name="settings_category_header">Заголовок страницы</string>
     <string name="tasks_to_download">К загрузке</string>
     <string name="settings_current_setting">Текущие настройки</string>
+    <string name="unable_to_load_article_icon">Не удается загрузить значок статьи</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
