@@ -452,6 +452,7 @@
     <string name="settings_category_header">Cabeçalho da página</string>
     <string name="tasks_to_download">Para carregar</string>
     <string name="settings_current_setting">Configuração atual</string>
+    <string name="unable_to_load_article_icon">Não foi possível carregar o ícone do artigo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
