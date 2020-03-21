@@ -52,7 +52,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
@@ -82,11 +84,8 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
-import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static ru.yanus171.feedexfork.activity.BaseActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
@@ -320,8 +319,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                                        (TextView)rootView.findViewById( R.id.progressText ),
                                        Status());
 
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
+        ( ( AppCompatActivity )getActivity() ).setSupportActionBar(toolbar);
+        ( ( AppCompatActivity )getActivity() ).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
         mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
         mListView = rootView.findViewById(android.R.id.list);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mListView.setNestedScrollingEnabled(true);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -394,7 +401,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         BaseActivity.UpdateFooter(mProgressBar,
                                   mEntriesCursorAdapter.getCount(),
                                   mListView.getFirstVisiblePosition(),
-                                  mLabelClock);
+                                  mLabelClock,
+                                  HomeActivity.GetIsStatusBarEntryListHidden() );
     }
 
     private BaseActivity getBaseActivity() {

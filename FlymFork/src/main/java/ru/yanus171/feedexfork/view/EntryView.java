@@ -821,6 +821,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         synchronized (EntryView.this) {
             mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", 0, true);
         }
+        mScrollY = getScrollY();
         LoadData();
         FetcherService.Status().End(status);
     }

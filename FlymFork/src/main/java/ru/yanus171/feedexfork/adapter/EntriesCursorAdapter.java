@@ -346,7 +346,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.dateTextView.setVisibility(View.VISIBLE);
 
-        String titleText = cursor.getString(mTitlePos).replace( cursor.getString(mFeedTitlePos), "" );
+        final String feedTitle = cursor.getString(mFeedTitlePos);
+        String titleText = cursor.getString(mTitlePos).replace( feedTitle == null ? "" : feedTitle, "" );
         holder.titleTextView.setText(titleText);
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));

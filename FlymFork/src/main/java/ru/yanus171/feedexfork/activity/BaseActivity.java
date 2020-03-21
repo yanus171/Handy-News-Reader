@@ -121,22 +121,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.attachBaseContext( InitLocale( base ));
     }
 
-    private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
-    private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
 
-    static public boolean GetIsStatusBarHidden() {
-        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_HIDDEN, false);
-    }
-    static public boolean GetIsActionBarHidden() {
-        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_HIDDEN, false);
-    }
-    public void setFullScreen() {
-        setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden());
-    }
-
-    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden) {
-        PrefUtils.putBoolean(STATE_IS_STATUSBAR_HIDDEN, statusBarHidden);
-        PrefUtils.putBoolean(STATE_IS_ACTIONBAR_HIDDEN, actionBarHidden);
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden,
+                               String keyStatusBarHidden, String keyActionBarHidden) {
+        PrefUtils.putBoolean(keyStatusBarHidden, statusBarHidden);
+        PrefUtils.putBoolean(keyActionBarHidden, actionBarHidden);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (statusBarHidden)
                 mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -162,7 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock) {
+    public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock, boolean isStatusBarHiddent) {
         if ( progressBar == null || labelClock == null )
             return;
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
@@ -178,7 +167,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             progressBar.setVisibility( View.GONE );
         }
 
-        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && GetIsStatusBarHidden() ) {
+        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && isStatusBarHiddent ) {
             labelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             labelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
             labelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );

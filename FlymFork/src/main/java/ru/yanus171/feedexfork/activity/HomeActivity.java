@@ -88,6 +88,8 @@ import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesT
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
+    private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
+    private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
 
     private static String FEED_NUMBER(final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
@@ -140,10 +142,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
 
         mTitle = getTitle();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLeftDrawer = findViewById(R.id.left_drawer);
         //mLeftDrawer.setBackgroundColor(ContextCompat.getColor( this, PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background));
@@ -220,7 +218,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+                setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
                 if (mEntriesFragment != null)
                     mEntriesFragment.UpdateFooter();
             }
@@ -228,7 +226,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+                setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden());
             }
         });
 
@@ -245,6 +243,18 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         });
         timer.End();
+    }
+
+    static public boolean GetIsActionBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN, false);
+    }
+    static public boolean GetIsStatusBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, false);
+    }
+
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
+        setFullScreen( statusBarHidden, actionBarHidden,
+                       STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
     }
 
     private void PageUpDown( int downOrUp ) {
@@ -306,7 +316,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
-        setFullScreen();
+        setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
         HideTapZonesText(findViewById(R.id.layout_root));
         timer.End();
     }

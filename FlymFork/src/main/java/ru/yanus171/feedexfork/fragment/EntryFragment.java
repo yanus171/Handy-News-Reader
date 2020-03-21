@@ -32,11 +32,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -78,7 +76,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -96,14 +93,12 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
-import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
@@ -112,11 +107,10 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
-import static ru.yanus171.feedexfork.provider.FeedData.ENTRIES_TABLE_WITH_FEED_INFO;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES;
+import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
+import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
@@ -135,6 +129,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private static final String STATE_ENTRIES_IDS = "STATE_ENTRIES_IDS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
     private static final String STATE_LOCK_LAND_ORIENTATION = "STATE_LOCK_LAND_ORIENTATION";
+
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
@@ -207,14 +202,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public void onClick(View view) {
                 EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen( EntryActivity.GetIsStatusBarHidden(), !EntryActivity.GetIsActionBarHidden() );
+                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
             }
         });
         mRootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen(!EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden());
+                activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
             }
         });
 
@@ -521,7 +516,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         updateMenuWithIcon(menu.findItem(R.id.menu_display_options));
 
         //EntryActivity activity = (EntryActivity) getActivity();
-        menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
+        menu.findItem(R.id.menu_star).setShowAsAction( GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
 
         {
             MenuItem item = menu.findItem(R.id.menu_star);
@@ -540,8 +535,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
-        menu.findItem(R.id.menu_full_screen).setChecked(EntryActivity.GetIsStatusBarHidden() );
-        menu.findItem(R.id.menu_actionbar_visible).setChecked(!EntryActivity.GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
         menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(PrefUtils.isArticleTapEnabled());
 
@@ -589,14 +584,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_full_screen: {
                     EntryActivity activity1 = (EntryActivity) getActivity();
-                    activity1.setFullScreen( !EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden() );
-                    item.setChecked( EntryActivity.GetIsStatusBarHidden() );
+                    activity1.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden() );
+                    item.setChecked( GetIsStatusBarHidden() );
                     break;
                 }
                 case R.id.menu_actionbar_visible: {
                     EntryActivity activity1 = (EntryActivity) getActivity();
-                    activity1.setFullScreen( EntryActivity.GetIsStatusBarHidden(), !EntryActivity.GetIsActionBarHidden() );
-                    item.setChecked( !EntryActivity.GetIsActionBarHidden() );
+                    activity1.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+                    item.setChecked( !GetIsActionBarHidden() );
                     break;
                 }
 
@@ -1027,7 +1022,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             BaseActivity.UpdateFooter(mProgressBar,
                                       contentHeight - webViewHeight,
                                       entryView.getScrollY(),
-                                      mLabelClock);
+                                      mLabelClock,
+                                      GetIsStatusBarHidden());
         }
     }
 
@@ -1577,5 +1573,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
     }
+
+
 }
 

@@ -147,7 +147,7 @@ public class HTMLParser {
 		doc = Jsoup.parse(content);
 		{
 			Elements list = doc.select("a");
-			final Pattern BASE_URL = Pattern.compile("(http|https).[\\/]+[^/]+");
+			final Pattern BASE_URL = Pattern.compile("(http|https).[\\/]+[^\"]+");
 			for (Element el : list) {
 				if (FetcherService.isCancelRefresh())
 					break;
