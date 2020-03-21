@@ -165,6 +165,7 @@
     <string name="menu_font_bold">Έντονη γραμματοσειρά</string>
     <string name="menu_copy_clipboard">Αντιγραφή συνδέσμου</string>
     <string name="menu_cancel_refresh">Ακύρωση ενημέρωσης</string>
+    <string name="menu_delete_non_starred">Διαγραφή άρθρων χωρίς αστέρι</string>
     <string name="menu_toogle_unread_all">Μη διαβασμένα|Όλα</string>
     <string name="menu_load_all_images">Φόρτωμα όλων των εικόνων</string>
     <string name="menu_mark_as_favorite">Σημείωση ως αγαπημένο</string>
@@ -261,9 +262,18 @@
     <string name="settings_color_link_sample_short">Σύνδεσμοι</string>
     <string name="settings_color_link_sample_long">Χρώμα συνδέσμων</string>
     <string name="underline_links">Υπογράμμιση συνδέσμων</string>
+    <string name="article_text_show_clock">Εμφάνιση ρολογιού</string>
+    <string name="article_text_show_clock_description">Εμφανίζει την ώρα πάνω δεξιά στην λειτουργία πλήρους οθόνης</string>
     <string name="settings_clock_size">Μέγεθος Υποσέλιδου - Ρολογιού</string>
+    <string name="article_text_clock_color">Χρώμα και φόντο ρολογιού</string>
+    <string name="article_text_clock_color_descr">Χρώμα και φόντο στο εικονίδιο του ρολογιού</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_show_progress">Μπάρα προόδου διαβάσματος</string>
+    <string name="article_text_show_progress_descr">Προβολή προόδου διαβάσματος του άρθρου στο πάνω μέρος της οθόνης</string>
+    <string name="article_text_progress_height">Ύψος μπάρας προόδου</string>
+    <string name="article_text_progress_color">Χρώμα γραμμής προόδου</string>
+    <string name="article_text_progress_color_descr">Χρώμα της μπάρας προόδου διαβάσματος</string>
     <string name="settings_category_operation">Λειτουργικότητα</string>
     <string name="settings_category_operation_summary">Ρυθμίσεις λειτουργικότητας</string>
     <string name="tap_zone_size">Μέγεθος ζώνης αφής</string>
@@ -435,6 +445,7 @@
     <string name="menu_reload">Ανανέωση</string>
     <string name="article_tap_enabled">Ενέργειες αφής ενεργοποιημένες</string>
     <string name="article_tap_enabled_summary">στις ζώνες αφής και σε περιοχές χωρίς υπερσυνδέσμους (για προβολή του μενού)</string>
+    <string name="menu_calculate_image_sizes">Υπολογισμός μεγέθους εικόνων</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
