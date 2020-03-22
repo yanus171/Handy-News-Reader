@@ -20,6 +20,7 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -68,6 +69,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -222,7 +224,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mEntryPager = mRootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
         mEntryPager.setAdapter(mEntryPagerAdapter);
-
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        //    mEntryPager.setNestedScrollingEnabled( true );
         if (savedInstanceState != null) {
             mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
             //mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
@@ -305,12 +308,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mRootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         mRootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
-        mLockLandOrientation = PrefUtils.getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
+        mLockLandOrientation = getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
 
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
         mStarFrame = mRootView.findViewById(R.id.frameStar);
         final ImageView frameStarImage  = mRootView.findViewById(R.id.frameStarImage);
-        final boolean prefVibrate = PrefUtils.getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
+        final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
         mRootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
             private int initialy = 0;
             private boolean mWasVibrate = false;
@@ -1337,8 +1340,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mEntryPagerAdapter.displayEntry(position, cursor, false, false);
                         mRetrieveFullText = cursor.getInt(mRetrieveFullTextPos) == 1;
                         EntryActivity activity = (EntryActivity) getActivity();
-                        if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
-                            activity.setFullScreen(true, true);
+                        //if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
+                        //    activity.setFullScreen(true, true);
                         if ( position == mCurrentPagerPos ) {
                             EntryView view = mEntryPagerAdapter.GetEntryView( position );
                             if ( view.mLoadTitleOnly ) {
@@ -1458,7 +1461,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
             container.addView(view);

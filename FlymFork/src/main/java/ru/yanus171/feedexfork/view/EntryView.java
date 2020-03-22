@@ -470,6 +470,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         getSettings().setJavaScriptEnabled(true);
         addJavascriptInterface(mInjectedJSObject, mInjectedJSObject.toString());
         addJavascriptInterface(mImageDownloadObject, mImageDownloadObject.toString());
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        //    setNestedScrollingEnabled(true);
 
 
         // For HTML5 video
@@ -702,6 +704,14 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                         mPressedTime = 0;
                         mMovedTime = System.currentTimeMillis();
                     }
+//                    final int scrollDelta = (int) (event.getY() - mPressedY);
+//                    if ( Math.abs( scrollDelta ) > 50  ) {
+////                        if ( scrollDelta > 0)
+////                            mActivity.getSupportActionBar().show();
+////                        else
+////                            mActivity.mToolbar.hide();
+//                        mActivity.mToolbar.getLayoutParams().height = scrollDelta ;
+//                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //Log.v( TAG, "ACTION_DOWN time delta=" + ( System.currentTimeMillis() - mPressedTime ) );
                     if ( System.currentTimeMillis() - mPressedTime < TAP_TIMEOUT &&

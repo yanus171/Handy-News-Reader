@@ -97,8 +97,7 @@
                     android:layout_height="wrap_content">
                     <include layout="@layout/view_toolbar" />
                 </com.google.android.material.appbar.AppBarLayout>
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
