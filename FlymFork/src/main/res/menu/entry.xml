@@ -6,7 +6,12 @@
         android:id="@+id/menu_star"
         android:icon="@drawable/rating_not_important"
         android:title="@string/menu_star"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_reload_full_text_toolbar"
+        android:icon="@drawable/refresh"
+        android:title="@string/menu_reload_full_text"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_mark_as_unread"
         android:icon="@drawable/rounded_checbox_white"

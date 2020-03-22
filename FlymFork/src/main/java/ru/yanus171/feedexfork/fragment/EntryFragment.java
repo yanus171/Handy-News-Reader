@@ -664,12 +664,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
 
-                case R.id.menu_reload_full_text: {
+                case R.id.menu_reload_full_text:
+                case R.id.menu_reload_full_text_toolbar: {
 
                     ReloadFullText();
                     break;
                 }
-
                 case R.id.menu_reload_full_text_without_mobilizer: {
 
                     int status = FetcherService.Status().Start("Reload fulltext", true); try {
