@@ -12,6 +12,8 @@
         <item>6 hours</item>
         <item>12 hours</item>
         <item>1 day</item>
+        <item>2 day</item>
+        <item>3 day</item>
     </string-array>
 
     <string-array name="settings_battery_level" translatable="false">

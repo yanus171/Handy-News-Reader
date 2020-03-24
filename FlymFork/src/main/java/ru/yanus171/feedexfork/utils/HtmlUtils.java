@@ -115,10 +115,10 @@ public class HtmlUtils {
             }
 
             // xml
-            content = content.replace( "&lt;", "<" );
-            content = content.replace( "&gt;", ">" );
-            content = content.replace( "&amp;", "&" );
-            content = content.replace( "&quot;", "\"" );
+//            content = content.replace( "&lt;", "<" );
+//            content = content.replace( "&gt;", ">" );
+//            content = content.replace( "&amp;", "&" );
+//            content = content.replace( "&quot;", "\"" );
             content = content.replace( "&#39;", "'" );
 
         }

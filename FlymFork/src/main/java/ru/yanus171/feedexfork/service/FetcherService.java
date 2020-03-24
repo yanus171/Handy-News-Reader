@@ -177,7 +177,6 @@ public class FetcherService extends IntentService {
             "[.]*<link[^>]* ((rel=alternate|rel=\"alternate\")[^>]* href=\"[^\"]*\"|href=\"[^\"]*\"[^>]* (rel=alternate|rel=\"alternate\"))[^>]*>",
             Pattern.CASE_INSENSITIVE);
     public static int mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-    private boolean mDeleteOld = true;
 
     public static StatusText.FetcherObservable Status() {
         if ( mStatusText == null ) {
@@ -309,11 +308,24 @@ public class FetcherService extends IntentService {
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
+        } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", ""));
+            long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
+            long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
+            deleteOldEntries(keepDateBorderTime);
+            deleteGhost();
+            if ( PrefUtils.CALCULATE_IMAGES_SIZE() )
+                CalculateImageSizes();
+            if ( Build.VERSION.SDK_INT >= 21 )
+                PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis() );
+            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
+            stopForeground(true);
+            return;
         }
 
         mIsWiFi = GetIsWifi();
 
-        mDeleteOld = intent.getBooleanExtra(Constants.EXTRA_DELETE_OLD, true);
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
@@ -348,7 +360,7 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
-                    long keepDateBorderTime = keepTime > 0 && mDeleteOld ? System.currentTimeMillis() - keepTime : 0;
+                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
                     String feedId = intent.getStringExtra(Constants.FEED_ID);
                     String groupId = intent.getStringExtra(Constants.GROUP_ID);
@@ -413,12 +425,6 @@ public class FetcherService extends IntentService {
                     } finally {
                         executor.shutdown();
                     }
-                    if ( mDeleteOld ) {
-                        deleteOldEntries(keepDateBorderTime);
-                        deleteGhost();
-                    }
-                    if ( PrefUtils.CALCULATE_IMAGES_SIZE() )
-                        CalculateImageSizes();
                     if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
                         PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
                 }
@@ -1147,7 +1153,6 @@ public class FetcherService extends IntentService {
             int idPosition = cursor.getColumnIndex(_ID);
             int titlePosition = cursor.getColumnIndex(FeedColumns.NAME);
             if ( cursor.isNull( cursor.getColumnIndex(FeedColumns.REAL_LAST_UPDATE) ) ) {
-                mDeleteOld = false;
                 keepDateBorderTime = 0;
             }
             boolean isRss = true;

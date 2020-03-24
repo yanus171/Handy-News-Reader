@@ -26,6 +26,8 @@
         <item>21600000</item>
         <item>43200000</item>
         <item>86400000</item>
+        <item>172800000</item>
+        <item>259200000</item>
     </string-array>
     <string-array name="settings_keep_time_values" translatable="false">
         <item>0.04</item>

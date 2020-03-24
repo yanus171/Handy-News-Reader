@@ -52,6 +52,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 import java.util.List;
 
 import ru.yanus171.feedexfork.Constants;
@@ -592,6 +594,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         PrefUtils.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 
+        ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
         // Put the good menu
         invalidateOptionsMenu();
         timer.End();
