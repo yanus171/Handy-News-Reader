@@ -23,11 +23,13 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,10 +44,10 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -78,6 +80,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         if ( mBrightness != null ) {
             mBrightness.OnResume();
+        }
+        if ( getSupportActionBar() != null )
+            getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS );
+            getWindow().setStatusBarColor(GetToolBarColorInt());
         }
         Status().UpdateText();
     }

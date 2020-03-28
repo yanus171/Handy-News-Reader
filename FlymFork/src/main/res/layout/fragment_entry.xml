@@ -10,43 +10,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/layoutColontitul"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_weight="0.6"
-                android:layout_width="0dp"
-                android:layout_height="4dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="0dp"
-                android:indeterminate="false"
-                android:indeterminateOnly="false"
-                android:max="100"
-                android:padding="0dp"
-                android:paddingTop="0dp"
-                android:progress="33"
-                android:progressBackgroundTint="#00000000"
-                android:progressTint="#FF777777" />
-            <TextView
-                android:id="@+id/textClock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:text="21:26"
-                android:textSize="8dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp" />
-
-        </LinearLayout>
-
 
 <!--        <RelativeLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -65,10 +28,13 @@
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content">-->
 
-                    <include layout="@layout/view_toolbar" />
+            <include layout="@layout/view_toolbar" />
 <!--                </com.google.android.material.appbar.AppBarLayout>-->
 
-                <RelativeLayout
+        <include layout="@layout/colontitul" />
+
+
+        <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -79,33 +45,15 @@
                         android:background="@android:color/transparent"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-                    <TextView
-                        android:id="@+id/errorText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_gravity="start|top"
-                        android:gravity="start|top"
-                        android:text="error"
-                        android:textColor="#FF0000"
-                        android:visibility="invisible" />
+            <include layout="@layout/status_view" />
 
-                    <TextView
-                        android:id="@+id/statusText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|top"
-                        android:gravity="start|top"
-                        android:layout_below="@+id/errorText"
-                        android:text="status"
-                        android:visibility="invisible" />
-
+                    <include layout="@layout/brightness_slider_layout" />
                     <TextView
                         android:id="@+id/pageUpBtn"
                         style="@style/TapZone"
                         android:layout_width="match_parent"
                         android:layout_height="10mm"
-                        android:layout_below="@+id/statusText"
+                        android:layout_alignParentTop="true"
                         android:text="@string/pageUp" />
 
                     <TextView
@@ -127,22 +75,6 @@
                         android:layout_alignParentEnd="true" />
 
                     <TextView
-                        android:id="@+id/toggleFullScreenStatusBarBtn"
-                        style="@style/TapZoneBtn"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="@string/fullScreenToggle"
-                        android:layout_alignParentStart="true" />
-
-                    <TextView
-                        android:id="@+id/toggleFullscreenBtn"
-                        style="@style/TapZoneBtn"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="@string/actionBarToggle"
-                        android:layout_alignParentEnd="true" />
-
-                    <TextView
                         android:id="@+id/entryPrevBtn"
                         style="@style/TapZoneBtn"
                         android:layout_alignParentLeft="true"
@@ -158,7 +90,22 @@
                         android:text="@string/entry_go_next"
                         tools:ignore="RtlHardcoded"
                         android:layout_alignParentEnd="true" />
-                    <include layout="@layout/brightness_slider_layout" />
+                    <TextView
+                        android:id="@+id/toggleFullScreenStatusBarBtn"
+                        style="@style/TapZoneBtn"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/fullScreenToggle"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:id="@+id/toggleFullscreenBtn"
+                        style="@style/TapZoneBtn"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/actionBarToggle"
+                        android:layout_alignParentEnd="true" />
+
                     <ProgressBar
                         style="?android:attr/progressBarStyle"
                         android:layout_width="40dp"

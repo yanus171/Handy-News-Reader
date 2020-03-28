@@ -59,6 +59,15 @@
                 colorPreference:sampletextShort="@string/settings_color_text_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@color/light_theme_color_primary"
+                android:dependency="customColors"
+                android:key="toolBarColor"
+                android:title="@string/tool_bar_color"
+                android:summary="@string/tool_bar_color_desc"
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_text_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
         </PreferenceCategory>
     </PreferenceScreen>

@@ -44,10 +44,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,6 +69,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
@@ -79,7 +79,6 @@ import static ru.yanus171.feedexfork.Constants.DB_COUNT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
@@ -221,6 +220,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             @Override
             public void onClick(View view) {
                 setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
+                if ( !GetIsActionBarEntryListHidden() )
+                    ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
                 if (mEntriesFragment != null)
                     mEntriesFragment.UpdateFooter();
             }
@@ -320,6 +321,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         //    selectDrawerItem( mCurrentDrawerPos );
         setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
         HideTapZonesText(findViewById(R.id.layout_root));
+        mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
         timer.End();
     }
 

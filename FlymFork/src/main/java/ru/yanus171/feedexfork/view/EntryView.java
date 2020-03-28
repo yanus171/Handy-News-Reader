@@ -61,7 +61,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -82,8 +81,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ShareCompat;
-import androidx.core.content.FileProvider;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -92,7 +89,6 @@ import org.jsoup.nodes.Element;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -123,7 +119,6 @@ import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
-import static ru.yanus171.feedexfork.utils.Theme.BUTTON_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
@@ -183,8 +178,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-                + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor(BUTTON_COLOR, android.R.color.black) + "; text-decoration: none; border: none; border-radius:0.2cm; padding: 0.3cm} "
-                + ".tag_button i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetColor(BUTTON_COLOR, android.R.color.black) + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+                + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
+                + ".tag_button i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
                 + ".tag_button_full_text i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
                 + ".tag_button_hidden i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
                 + "</style><meta name='viewport' content='width=device-width'/></head>";
@@ -247,9 +242,9 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
     private static final String BUTTON_SECTION_END = "</div>";
-    private static final String BUTTON_START = "<p><input type='button' value='";
+    private static final String BUTTON_START = "<input type='button' value='";
     private static final String BUTTON_MIDDLE = "' onclick='";
-    private static final String BUTTON_END = "'/></p>";
+    private static final String BUTTON_END = "'/>";
     // the separate 'marginfix' selector in the following is only needed because the CSS box model treats <input> and <a> elements differently
     private static final String LINK_BUTTON_START = "<p class='marginfix'><a href='";
     private static final String LINK_BUTTON_MIDDLE = "'>";

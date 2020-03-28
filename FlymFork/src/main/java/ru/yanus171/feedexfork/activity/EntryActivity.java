@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -57,6 +58,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 public class EntryActivity extends BaseActivity {
 
@@ -249,6 +251,7 @@ public class EntryActivity extends BaseActivity {
         super.onResume();
 
         setFullScreen();
+        getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
         Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
         EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
     }

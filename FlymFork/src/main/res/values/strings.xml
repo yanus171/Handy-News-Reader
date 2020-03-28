@@ -471,6 +471,8 @@
     <string name="settings_delete_old_interval_descr">When to delete old articles and calculate article, feed and group images size on sdcard</string>
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>
+    <string name="tool_bar_color">Tool bar color</string>
+    <string name="tool_bar_color_desc">also this color is used for the article text buttons and for status bar</string>
 
 
     <plurals name="number_of_new_entries">

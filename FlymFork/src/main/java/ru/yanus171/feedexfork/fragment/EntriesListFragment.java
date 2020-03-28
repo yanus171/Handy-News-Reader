@@ -313,17 +313,20 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
 
-        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
+        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                        (TextView)rootView.findViewById( R.id.errorText ),
                                        (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
                                        (TextView)rootView.findViewById( R.id.progressText ),
                                        Status());
 
         Toolbar toolbar = rootView.findViewById(R.id.toolbar);
-        ( ( AppCompatActivity )getActivity() ).setSupportActionBar(toolbar);
-        ( ( AppCompatActivity )getActivity() ).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
+        //toolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
+        activity.setSupportActionBar( toolbar );
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //activity.getSupportActionBar().setBackgroundDrawable( new ColorDrawable( Theme.GetColorInt("toolBarColor", R.color.light_theme_color_primary ) ) );
+//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
         mListView = rootView.findViewById(android.R.id.list);
