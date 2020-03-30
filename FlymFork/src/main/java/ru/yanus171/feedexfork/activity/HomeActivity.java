@@ -630,4 +630,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onStop() {
         super.onStop();
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if ( hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+            setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+    }
 }

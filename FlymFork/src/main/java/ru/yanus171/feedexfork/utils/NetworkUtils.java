@@ -43,6 +43,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -167,7 +168,7 @@ public class NetworkUtils {
                 }
             }
 
-            if ( success && !abort && notify )
+            if ( success && !abort && notify && entryId > 0 )
                 EntryView.NotifyToUpdate( entryId, entryUrl );
         }
         //if ( updateGUI )
@@ -222,11 +223,15 @@ public class NetworkUtils {
 
     public static String getBaseUrl(String link) {
         String baseUrl = link;
-        int index = link.lastIndexOf('/'); // this also covers https://
-        if (index > -1) {
-            baseUrl = link.substring(0, index + 1);
+        Pattern p = Pattern.compile("(http?.://[^/]+/)");
+        Matcher m = p.matcher(baseUrl);
+        if (m.find())
+            baseUrl = m.group(1);  // The matched substring
+        else {
+            int index = link.lastIndexOf( '/' ); // this also covers https://
+            if (index > -1)
+                baseUrl = link.substring(0, index + 1);
         }
-
         return baseUrl;
     }
 
