@@ -112,7 +112,7 @@
     <string name="menu_reload_full_text">重新加载全文</string>
     <string name="menu_reload_full_text_without_mobilizer">不以移动版视图重新加载</string>
     <string name="share_favorites_title">Handy News Reader: 已标星条目</string>
-    <string name="copied_clipboard">链接已复制</string>
+    <string name="link_was_copied_to_clipboard">链接已复制</string>
     <string name="get_full_text">加载整篇文章</string>
     <string name="show_text_in_entry_list">在文章列表中显示原文</string>
     <string name="original_text">显示原文</string>

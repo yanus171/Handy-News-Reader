@@ -173,7 +173,7 @@
     <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
-    <string name="copied_clipboard">Посилання скопійовано</string>
+    <string name="link_was_copied_to_clipboard">Посилання скопійовано</string>
     <string name="get_full_text">Весь текст</string>
     <string name="show_text_in_entry_list">Показувати тексти статей у списку статей</string>
     <string name="original_text">Коротко</string>

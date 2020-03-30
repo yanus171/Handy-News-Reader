@@ -115,6 +115,12 @@
                                                 android:text="@string/loadTypeWeb" />
 
                                             <RadioButton
+                                                android:id="@+id/rbOneWebPage"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@string/loadTypeOneWebPage" />
+
+                                            <RadioButton
                                                 android:id="@+id/rbWebPageSearch"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
@@ -224,7 +230,95 @@
                                             android:entries="@array/settings_keep_times" />
                                     </LinearLayout>
 
+                                    <LinearLayout
+                                        android:id="@+id/one_webpage_layout"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:orientation="vertical">
 
+                                        <TextView
+                                            android:id="@+id/one_webpage_hint"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="20dp"
+                                            android:text="@string/one_webpage_hint"
+                                            android:textAppearance="?android:attr/textAppearanceSmall"
+                                            android:textStyle="normal" />
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/one_webpage_article_classname_label"
+                                                style="@style/FeedAttrLabel"/>
+                                            <EditText
+                                                android:id="@+id/one_webpage_article_classname"
+                                                style="@style/FeedAttrEdit"
+                                                android:singleLine="true" />
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/one_webpage_url_classname_label"
+                                                style="@style/FeedAttrLabel"/>
+                                            <EditText
+                                                android:id="@+id/one_webpage_url_classname"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/one_webpage_text_classname_label"
+                                                style="@style/FeedAttrLabel" />
+                                            <EditText
+                                                android:id="@+id/one_webpage_text_classname"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/one_webpage_date_classname_label"
+                                                style="@style/FeedAttrLabel" />
+                                            <EditText
+                                                android:id="@+id/one_webpage_date_classname"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/one_webpage_author_classname_label"
+                                                style="@style/FeedAttrLabel" />
+                                            <EditText
+                                                android:id="@+id/one_webpage_author_classname"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/one_webpage_image_url_classname_label"
+                                                style="@style/FeedAttrLabel" />
+                                            <EditText
+                                                android:id="@+id/one_webpage_image_url_classname"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
+                                    </LinearLayout>
                                 </LinearLayout>
                             </ScrollView>
 

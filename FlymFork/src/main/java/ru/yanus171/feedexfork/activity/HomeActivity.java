@@ -91,6 +91,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
+    public View mPageUpBtn = null;
 
     private static String FEED_NUMBER(final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
@@ -233,7 +234,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         });
 
-        findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+        mPageUpBtn = findViewById(R.id.pageUpBtn);
+        mPageUpBtn.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PageUpDown( -1 );

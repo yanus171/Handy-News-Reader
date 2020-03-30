@@ -108,6 +108,7 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.parser.HTMLParser;
 import ru.yanus171.feedexfork.parser.OPML;
+import ru.yanus171.feedexfork.parser.OneWebPageParser;
 import ru.yanus171.feedexfork.parser.RssAtomParser;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -163,6 +164,7 @@ public class FetcherService extends IntentService {
     private static final String HTML_BODY = "<body";
     private static final String ENCODING = "encoding=\"";
     public static final String CUSTOM_KEEP_TIME = "customKeepTime";
+        public static final String IS_ONE_WEB_PAGE = "isOneWebPage";
 
     public static Boolean mCancelRefresh = false;
     private static final ArrayList<Long> mActiveEntryIDList = new ArrayList<>();
@@ -1156,29 +1158,34 @@ public class FetcherService extends IntentService {
                 keepDateBorderTime = 0;
             }
             boolean isRss = true;
+            boolean isOneWebPage = false;
             try {
                 JSONObject jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
                 isRss = jsonOptions.getBoolean( "isRss" );
+                isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+
+                final String feedID = cursor.getString(idPosition);
+                final String feedUrl = cursor.getString(urlPosition);
+                final boolean isLoadImages  = NetworkUtils.needDownloadPictures() && ( IsAutoDownloadImages( feedID ) == AutoDownloadEntryImages.Yes );
+                final int status = Status().Start(cursor.getString(titlePosition), false); try {
+                    if ( isRss )
+                        newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, feedID);
+                    else if ( isOneWebPage )
+                        newCount = OneWebPageParser.INSTANCE.Parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages );
+                    else
+                        newCount = HTMLParser.Parse(executor, feedID, feedUrl);
+                } finally {
+                    Status().End(status);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            //int showTextInEntryList = cursor.getColumnIndex(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST);
-
-            String id = cursor.getString(idPosition);
-            String feedUrl = cursor.getString(urlPosition);
-            int status = Status().Start(cursor.getString(titlePosition), false); try {
-                if ( isRss )
-                    newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, id);
-                else
-                    newCount = HTMLParser.Parse(executor, cursor.getString(idPosition), feedUrl);
-            } finally {
-                Status().End(status);
-            }
         }
         cursor.close();
         return newCount;
     }
+
 
     private void ShowNotification(String text, int captionID, Intent intent, int ID){
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
@@ -1245,7 +1252,7 @@ public class FetcherService extends IntentService {
 
         int n;
         while ((n = inputStream.read(byteBuffer)) > 0) {
-            FetcherService.Status().AddBytes(n);
+            Status().AddBytes(n);
             outputStream.write(byteBuffer, 0, n);
         }
         String content = outputStream.toString(encoding.name()).replace(" & ", " &amp; ");

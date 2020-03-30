@@ -20,7 +20,6 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -69,7 +68,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -115,7 +113,6 @@ import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
-import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
@@ -605,7 +602,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     ClipData clip = ClipData.newPlainText("Copied Text 1", link);
                     clipboard.setPrimaryClip(clip);
 
-                    UiUtils.toast( getActivity(), R.string.copied_clipboard);
+                    UiUtils.toast( getActivity(), R.string.link_was_copied_to_clipboard);
                     break;
                 }
                 case R.id.menu_mark_as_unread: {
@@ -1216,11 +1213,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext() );
         builder.setTitle(baseUrl + ":class=" + className)
             .setItems(new CharSequence[]{getString(R.string.setFullTextRoot),
-                                         getString(paramValue.equals( "hide" ) ? R.string.hide : R.string.show )},
+                                         getString(paramValue.equals( "hide" ) ? R.string.hide : R.string.show ),
+                                         getString( R.string.copyClassNameToClipboard )   },
                     new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 0)
                         setFullTextRoot(baseUrl, className);
+                    if (which == 2)
+                        copyToClipboard(className);
                     else if ( paramValue.equals( "hide" ) )
                         removeClass( className );
                     else if ( paramValue.equals( "show" ) )
@@ -1233,6 +1233,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     }
 
+    private void copyToClipboard(String text) {
+        ((android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE)).setText(text);
+        Toast.makeText(getActivity(), getActivity().getString( R.string.text_was_copied_to_clipboard ) + ": " + text, Toast.LENGTH_LONG).show();
+    }
     private void setFullTextRoot(String baseUrl, String className) {
         ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ),
                 Pattern.compile( "\\n|\\s" ) );

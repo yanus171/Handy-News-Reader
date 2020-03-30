@@ -109,7 +109,7 @@ public class HtmlUtils {
             //content = START_BR_PATTERN.matcher(content).replaceAll("");
             //content = END_BR_PATTERN.matcher(content).replaceAll("");
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
-            if ( !baseUri.contains( "user" ) ) {
+            if ( !baseUri.contains( "user" ) && mobType != ArticleTextExtractor.MobilizeType.Tags ) {
                 content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
                 //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
             }

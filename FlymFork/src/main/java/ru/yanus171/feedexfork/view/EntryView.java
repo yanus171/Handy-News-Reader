@@ -175,7 +175,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
                 + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
                 + "div {text-align:" + getAlign(text) + "} "
-                + "div.button-section {padding: 0.4cm 0; margin: 0; text-align: center} "
+                + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
                 + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "

@@ -111,7 +111,7 @@
     <string name="menu_copy_clipboard">Копирај везу</string>
     <string name="menu_mark_as_unread">Означи као ново</string>
     <string name="share_favorites_title">Флим: омиљено</string>
-    <string name="copied_clipboard">Веза копирана</string>
+    <string name="link_was_copied_to_clipboard">Веза копирана</string>
     <string name="get_full_text">Добави цео текст</string>
     <string name="original_text">Прикажи оригиналан текст</string>
     <string name="see_enclosure">Погледај прилог</string>

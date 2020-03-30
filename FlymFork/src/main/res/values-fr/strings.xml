@@ -175,7 +175,7 @@
     <string name="menu_reload_full_text">Recharger tout le texte</string>
     <string name="menu_reload_full_text_without_mobilizer">Recharger sans Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: articles favoris</string>
-    <string name="copied_clipboard">Lien copié</string>
+    <string name="link_was_copied_to_clipboard">Lien copié</string>
     <string name="get_full_text">Récupérer complètement les articles</string>
     <string name="show_text_in_entry_list">Afficher le texte original sur la liste des articles</string>
     <string name="original_text">Affiche le texte original</string>

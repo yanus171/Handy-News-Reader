@@ -178,7 +178,7 @@
     <string name="menu_reload_full_text">Reload full text</string>
     <string name="menu_reload_full_text_without_mobilizer">Reload without Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: starred entries</string>
-    <string name="copied_clipboard">Link copied</string>
+    <string name="link_was_copied_to_clipboard">Link copied</string>
     <string name="get_full_text">Load full article</string>
     <string name="show_text_in_entry_list">Show original text on article list</string>
     <string name="original_text">Show original text</string>
@@ -473,6 +473,17 @@
     <string name="settings_category_delete_old">Delete old</string>
     <string name="tool_bar_color">Tool bar color</string>
     <string name="tool_bar_color_desc">also this color is used for the article text buttons and for status bar</string>
+    <string name="one_webpage_hint">the url content is devided into articles by root class name, also there should set classname for article title, date and image</string>
+    <string name="one_webpage_article_classname_label">Article</string>
+    <string name="one_webpage_edittext_classname_hint">Class name</string>
+    <string name="one_webpage_url_classname_label">Url</string>
+    <string name="one_webpage_text_classname_label">Text</string>
+    <string name="one_webpage_author_classname_label">Author</string>
+    <string name="one_webpage_image_url_classname_label">Image URL</string>
+    <string name="loadTypeOneWebPage">All articles in one webpage</string>
+    <string name="one_webpage_date_classname_label">Date</string>
+    <string name="copyClassNameToClipboard">Copy class name to clipboard</string>
+    <string name="text_was_copied_to_clipboard">Text was copied to clipboard</string>
 
 
     <plurals name="number_of_new_entries">

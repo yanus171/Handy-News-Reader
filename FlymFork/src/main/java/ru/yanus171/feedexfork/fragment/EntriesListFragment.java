@@ -22,12 +22,7 @@ package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,21 +31,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AbsListView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -63,12 +45,8 @@ import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -84,6 +62,8 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StatusText;
+
+import java.util.ArrayList;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
@@ -342,6 +322,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if ( mEntriesCursorAdapter == null )
                     return;
+                if ( GetActivity().mPageUpBtn != null )
+                    GetActivity().mPageUpBtn.setVisibility( firstVisibleItem == 0 ? View.GONE : View.VISIBLE );
                 for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
                     String uri = GetUri( i ).toString();
                     synchronized ( mWasVisibleList ) {
@@ -397,6 +379,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         timer.End();
         return rootView;
+    }
+
+    private HomeActivity GetActivity() {
+        return (HomeActivity)getActivity();
     }
 
 

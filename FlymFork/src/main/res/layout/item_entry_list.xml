@@ -190,6 +190,8 @@
                 android:alpha="0.7"
                 android:drawablePadding="3dp"
                 android:singleLine="false"
+                android:maxLines="50"
+                android:ellipsize="end"
                 android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?attr/colorReadState"
