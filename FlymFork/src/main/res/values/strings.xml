@@ -380,9 +380,10 @@
     <string name="reload_full_text_with_tags">Reload with tags</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
-    <string name="loadTypeWeb">Web (load all links from page)</string>
+    <string name="loadTypeWeb">Web links (load all links from page as different articles)</string>
     <string name="loadTypeRSS">RSS (feed or site link or keywords)</string>
     <string name="loadTypeWebPageSearch">Web page search DuckDuckGo (find and load one article)</string>
+    <string name="loadTypeOneWebPage">One page( devide one webpage content into many articles using html class name tags</string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
@@ -480,7 +481,6 @@
     <string name="one_webpage_text_classname_label">Text</string>
     <string name="one_webpage_author_classname_label">Author</string>
     <string name="one_webpage_image_url_classname_label">Image URL</string>
-    <string name="loadTypeOneWebPage">All articles in one webpage</string>
     <string name="one_webpage_date_classname_label">Date</string>
     <string name="copyClassNameToClipboard">Copy class name to clipboard</string>
     <string name="text_was_copied_to_clipboard">Text was copied to clipboard</string>

@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -19,7 +19,7 @@
             android:layout_height="fill_parent"
             android:layout_below="@+id/toolbar">
 
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -49,12 +49,12 @@
                                 android:layout_height="wrap_content">
 
                                 <LinearLayout
+                                    android:scrollY="0dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <LinearLayout
-                                        android:id="@+id/feed_tab"
                                         android:layout_width="fill_parent"
                                         android:layout_height="wrap_content"
                                         android:layoutDirection="ltr"
@@ -122,7 +122,7 @@
 
                                             <RadioButton
                                                 android:id="@+id/rbWebPageSearch"
-                                                android:layout_width="wrap_content"
+                                                  android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="@string/loadTypeWebPageSearch" />*h\
                                         </RadioGroup>
