@@ -473,6 +473,8 @@
     <string name="next_page_classname">Próximo nome da classe da página \n(para carregamento recursivo)</string>
     <string name="articleCountLoaded">artigos carregados</string>
     <string name="next_page_max_count_classname">Número máximo de páginas para processar</string>
+    <string name="menu_copy_feed">Feed atual duplicado</string>
+    <string name="feed_copied">Feed está duplicado</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
