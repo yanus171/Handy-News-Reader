@@ -175,6 +175,7 @@
     <string name="menu_reload_full_text">Gesamten Text neu laden</string>
     <string name="menu_reload_full_text_without_mobilizer">Ohne Mobilizer neu laden</string>
     <string name="share_favorites_title">Handy News Reader: Favoriten</string>
+    <string name="link_was_copied_to_clipboard">Link kopiert</string>
     <string name="get_full_text">Gesamten Artikel laden</string>
     <string name="show_text_in_entry_list">Originaltext in der Artikelliste zeigen.</string>
     <string name="original_text">Originaltext anzeigen</string>
@@ -454,6 +455,18 @@
     <string name="tasks_to_download">Zu laden</string>
     <string name="settings_current_setting">Aktuelle Einstellung</string>
     <string name="unable_to_load_article_icon">Artikel-Symbol konnte nicht geladen werden</string>
+    <string name="settings_delete_old_interval">Altes Intervall löschen</string>
+    <string name="menu_delete_old">Alte Artikel löschen</string>
+    <string name="settings_category_delete_old">Alte löschen</string>
+    <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
+    <string name="one_webpage_article_classname_label">Artikel</string>
+    <string name="one_webpage_url_classname_label">URL</string>
+    <string name="one_webpage_text_classname_label">Text</string>
+    <string name="one_webpage_author_classname_label">Autor</string>
+    <string name="one_webpage_image_url_classname_label">Bild-URL</string>
+    <string name="one_webpage_date_classname_label">Datum</string>
+    <string name="articleCountLoaded">geladene Artikel</string>
+    <string name="next_page_max_count_classname">Maximale Seitenzahl zum Verarbeiten</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
