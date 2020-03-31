@@ -460,6 +460,16 @@
     <string name="settings_category_delete_old">Apagar antigo</string>
     <string name="tool_bar_color">Cor da barra de ferramentas</string>
     <string name="tool_bar_color_desc">esta cor também é usada para os botões de texto do artigo e para a barra de status</string>
+    <string name="one_webpage_hint">o conteúdo url é dividido em artigos por nome da classe raiz, também deve definir o nome da classe para o título, data e imagem do artigo</string>
+    <string name="one_webpage_article_classname_label">Artigo</string>
+    <string name="one_webpage_edittext_classname_hint">Nome da classe</string>
+    <string name="one_webpage_url_classname_label">Url</string>
+    <string name="one_webpage_text_classname_label">Texto</string>
+    <string name="one_webpage_author_classname_label">Autor</string>
+    <string name="one_webpage_image_url_classname_label">URL da imagem</string>
+    <string name="one_webpage_date_classname_label">Data</string>
+    <string name="copyClassNameToClipboard">Copiar nome da classe para área de transferência</string>
+    <string name="text_was_copied_to_clipboard">O texto foi copiado para a área de transferência</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
