@@ -174,7 +174,6 @@
     <string name="menu_reload_full_text">Recarregar texto completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Recarregar sem Mobilizer</string>
     <string name="share_favorites_title">Leitor de Notícias Conveniente: entradas favoritas</string>
-    <string name="copied_clipboard">Link copiado</string>
     <string name="get_full_text">Carregar artigos completos</string>
     <string name="show_text_in_entry_list">Mostrar texto original na lista de artigos</string>
     <string name="original_text">Exibir texto original</string>
