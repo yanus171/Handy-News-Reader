@@ -371,6 +371,7 @@
     <string name="loadTypeWeb">Web (alle Links laden)</string>
     <string name="loadTypeRSS">RSS (Feed, Link oder Schlüsselworte)</string>
     <string name="loadTypeWebPageSearch">Webseitensuche DuckDuckGo (einen Artikel finden und laden)</string>
+    <string name="loadTypeOneWebPage">Eine Seite (Inhalt einer Webseite in viele Artikel unterteilen mithilfe von html-Klassennamenstags)</string>
     <string name="loadType">Art des Ladens:</string>
     <string name="global_filter">Automatische Favoriten&#8230;</string>
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
@@ -456,9 +457,11 @@
     <string name="settings_current_setting">Aktuelle Einstellung</string>
     <string name="unable_to_load_article_icon">Artikel-Symbol konnte nicht geladen werden</string>
     <string name="settings_delete_old_interval">Altes Intervall löschen</string>
+    <string name="settings_delete_old_interval_descr">Wann werden alte Artikel gelöscht und die Größe von Artikeln, Feeds und Gruppenbildern auf der SD-Karte berechnet?</string>
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
     <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
+    <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
     <string name="one_webpage_article_classname_label">Artikel</string>
     <string name="one_webpage_url_classname_label">URL</string>
     <string name="one_webpage_text_classname_label">Text</string>
