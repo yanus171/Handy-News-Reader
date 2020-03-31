@@ -100,7 +100,6 @@ import org.jsoup.nodes.Element;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -480,7 +479,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         else if ( jsonOptions.getBoolean( "isOneWebPage" ) )
                             mLoadTypeRG.check( R.id.rbOneWebPage );
                         else
-                            mLoadTypeRG.check( R.id.rbWeb );
+                            mLoadTypeRG.check( R.id.rbWebLinks);
                         mKeepTimeCB.setChecked( jsonOptions.has( FetcherService.CUSTOM_KEEP_TIME ) );
                         UpdateSpinnerKeepTime();
                         if ( mKeepTimeCB.isChecked() ) {
@@ -554,25 +553,27 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         int i = mLoadTypeRG.getCheckedRadioButtonId();
         final boolean isRss = ( i == R.id.rbRss );
         final boolean isOneWebPage = ( i == R.id.rbOneWebPage );
+        final boolean isWebLinks = ( i == R.id.rbWebLinks);
         final boolean isWebPageSearch = ( i == R.id.rbWebPageSearch );
-        final int visibility = isWebPageSearch ? View.GONE : View.VISIBLE;
+        final int visibilityEditFeed = ( isWebPageSearch ? View.GONE : View.VISIBLE );
         mRetrieveFulltextCb.setEnabled( ( isRss || isOneWebPage ) && !isWebPageSearch );
 
-        mRetrieveFulltextCb.setVisibility( visibility );
-        mHasGroupCb.setVisibility( visibility );
-        mGroupSpinner.setVisibility( visibility );
-        mIsAutoImageLoadCb.setVisibility( visibility );
-        mIsAutoRefreshCb.setVisibility( visibility );
-        mKeepTimeCB.setVisibility( visibility );
-        mKeepTimeSpinner.setVisibility( visibility );
-        mShowTextInEntryListCb.setVisibility( visibility );
-        mNameEditText.setVisibility( visibility );
-        findViewById( R.id.name_textview ).setVisibility( visibility );
+        mRetrieveFulltextCb.setVisibility( visibilityEditFeed );
+        mHasGroupCb.setVisibility( visibilityEditFeed );
+        mGroupSpinner.setVisibility( visibilityEditFeed );
+        mIsAutoImageLoadCb.setVisibility( visibilityEditFeed );
+        mIsAutoRefreshCb.setVisibility( visibilityEditFeed );
+        mKeepTimeCB.setVisibility( visibilityEditFeed );
+        mKeepTimeSpinner.setVisibility( visibilityEditFeed );
+        mShowTextInEntryListCb.setVisibility( visibilityEditFeed );
+        mNameEditText.setVisibility( visibilityEditFeed );
+        findViewById( R.id.name_textview ).setVisibility( visibilityEditFeed );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         UpdateSpinnerGroup();
         UpdateSpinnerKeepTime();
         mOneWebPageLayout.setVisibility( isOneWebPage ? View.VISIBLE : View.GONE );
+        findViewById( R.id.layout_next_page ).setVisibility( isWebLinks || isOneWebPage ? View.VISIBLE : View.GONE );
     }
 
     private boolean IsAdd() {

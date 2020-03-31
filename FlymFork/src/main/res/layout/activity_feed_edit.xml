@@ -109,7 +109,7 @@
                                                 android:text="@string/loadTypeRSS" />
 
                                             <RadioButton
-                                                android:id="@+id/rbWeb"
+                                                android:id="@+id/rbWebLinks"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="@string/loadTypeWeb" />
@@ -231,16 +231,36 @@
                                     </LinearLayout>
 
                                     <LinearLayout
+                                        android:id="@+id/layout_next_page"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:text="@string/next_page_classname"
-                                            style="@style/FeedAttrLabel"/>
-                                        <EditText
-                                            android:id="@+id/next_page_classname"
-                                            style="@style/FeedAttrEdit" />
+                                        android:orientation="vertical">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/next_page_classname"
+                                                style="@style/FeedAttrLabel"/>
+                                            <EditText
+                                                android:id="@+id/next_page_classname"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:text="@string/next_page_max_count_classname"
+                                                style="@style/FeedAttrLabel"/>
+                                            <EditText
+                                                android:id="@+id/next_page_max_count_classname"
+                                                android:inputType="numberDecimal"
+                                                android:text="10"
+                                                style="@style/FeedAttrEdit" />
+                                        </LinearLayout>
                                     </LinearLayout>
                                     <LinearLayout
                                         android:id="@+id/one_webpage_layout"

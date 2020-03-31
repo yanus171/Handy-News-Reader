@@ -486,6 +486,7 @@
     <string name="text_was_copied_to_clipboard">Text was copied to clipboard</string>
     <string name="next_page_classname">Next page class name \n(for recursive load)</string>
     <string name="articleCountLoaded">articles loaded</string>
+    <string name="next_page_max_count_classname">Max page count to process</string>
 
 
     <plurals name="number_of_new_entries">
