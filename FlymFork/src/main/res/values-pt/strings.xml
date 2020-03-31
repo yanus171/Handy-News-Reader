@@ -470,6 +470,9 @@
     <string name="one_webpage_date_classname_label">Data</string>
     <string name="copyClassNameToClipboard">Copiar nome da classe para área de transferência</string>
     <string name="text_was_copied_to_clipboard">O texto foi copiado para a área de transferência</string>
+    <string name="next_page_classname">Próximo nome da classe da página \n(para carregamento recursivo)</string>
+    <string name="articleCountLoaded">artigos carregados</string>
+    <string name="next_page_max_count_classname">Número máximo de páginas para processar</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
