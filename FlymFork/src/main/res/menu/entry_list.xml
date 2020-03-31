@@ -48,6 +48,13 @@
         android:id="@+id/menu_add_feed_shortcut"
         android:title="@string/menu_add_feed_shortcut"/>
     <item
+        android:id="@+id/menu_show_article_url_toggle"
+        android:checkable="true"
+        android:title="@string/show_article_url"/>
+    <item
+        android:id="@+id/menu_copy_feed"
+        android:title="@string/menu_copy_feed"/>
+    <item
         android:id="@+id/menu_delete_old"
         android:title="@string/menu_delete_old"/>
 

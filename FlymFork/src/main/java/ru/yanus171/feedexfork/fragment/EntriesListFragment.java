@@ -55,6 +55,7 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -693,6 +694,32 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 UpdateActions();
                 return true;
             }
+            case R.id.menu_copy_feed: {
+                if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+                    final String feedID = mCurrentUri.getPathSegments().get(1);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedID ), null, null, null, null );
+                    if ( cursor != null ) {
+                        if ( cursor.moveToFirst() ) {
+                            ContentValues values = new ContentValues();
+                            values.put(FeedColumns.GROUP_ID, cursor.getLong( cursor.getColumnIndex( FeedColumns.GROUP_ID )) );
+                            values.put(FeedColumns.ICON, cursor.getBlob( cursor.getColumnIndex( FeedColumns.ICON )) );
+                            values.put(FeedColumns.IS_AUTO_REFRESH, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_AUTO_REFRESH )) );
+                            values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_IMAGE_AUTO_LOAD )) );
+                            values.put(FeedColumns.NAME, cursor.getString( cursor.getColumnIndex( FeedColumns.NAME )) );
+                            values.put(FeedColumns.OPTIONS, cursor.getString( cursor.getColumnIndex( FeedColumns.OPTIONS )) );
+                            values.put(FeedColumns.RETRIEVE_FULLTEXT, cursor.getLong( cursor.getColumnIndex( FeedColumns.RETRIEVE_FULLTEXT )) );
+                            values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, cursor.getLong( cursor.getColumnIndex( FeedColumns.SHOW_TEXT_IN_ENTRY_LIST )) );
+                            values.put(FeedColumns.URL, cursor.getString( cursor.getColumnIndex( FeedColumns.URL )) + "/" );
+                            cr.insert(FeedColumns.CONTENT_URI, values);
+                        }
+                        cursor.close();
+                        UiUtils.toast( getActivity(), R.string.feed_copied );
+                    }
+                }
+                return true;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
