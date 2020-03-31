@@ -174,6 +174,7 @@
     <string name="menu_reload_full_text">Recarregar texto completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Recarregar sem Mobilizer</string>
     <string name="share_favorites_title">Leitor de Notícias Conveniente: entradas favoritas</string>
+    <string name="link_was_copied_to_clipboard">Link copiado</string>
     <string name="get_full_text">Carregar artigos completos</string>
     <string name="show_text_in_entry_list">Mostrar texto original na lista de artigos</string>
     <string name="original_text">Exibir texto original</string>
@@ -368,6 +369,7 @@
     <string name="loadTypeWeb">Web (carregar todos os links da página)</string>
     <string name="loadTypeRSS">RSS (feed ou link do site ou palavras-chave)</string>
     <string name="loadTypeWebPageSearch">Página de busca DuckDuckGo (encontrar e carregar um artigo)</string>
+    <string name="loadTypeOneWebPage">Uma página (dividir o conteúdo de uma página web em muitos artigos usando tags de nome de classe html</string>
     <string name="loadType">Tipo de carga:</string>
     <string name="global_filter">Filtro global&#8230;</string>
     <string name="global_filter_descr">Um filtro que se aplica a todo feed - deixe o texto do filtro (e o texto regex) vazio para desativar</string>
@@ -452,6 +454,12 @@
     <string name="tasks_to_download">Para carregar</string>
     <string name="settings_current_setting">Configuração atual</string>
     <string name="unable_to_load_article_icon">Não foi possível carregar o ícone do artigo</string>
+    <string name="settings_delete_old_interval">Excluir intervalo antigo</string>
+    <string name="settings_delete_old_interval_descr">Quando excluir artigos antigos e calcular artigo, alimentar e agrupar imagens no cartão sd</string>
+    <string name="menu_delete_old">Excluir artigos antigos</string>
+    <string name="settings_category_delete_old">Apagar antigo</string>
+    <string name="tool_bar_color">Cor da barra de ferramentas</string>
+    <string name="tool_bar_color_desc">esta cor também é usada para os botões de texto do artigo e para a barra de status</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
