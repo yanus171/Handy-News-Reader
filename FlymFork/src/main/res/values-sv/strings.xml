@@ -109,7 +109,6 @@
     <string name="menu_copy_clipboard">Kopiera länk</string>
     <string name="menu_mark_as_unread">Markera som oläst</string>
     <string name="share_favorites_title">Handy News Reader: favoriter</string>
-    <string name="copied_clipboard">Länk kopierad</string>
     <string name="get_full_text">Hämta hela texten</string>
     <string name="original_text">Visa originaltexten</string>
     <string name="see_enclosure">Visa bifogad mediafil</string>
