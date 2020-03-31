@@ -173,6 +173,7 @@
     <string name="menu_reload_full_text">Ricarica testo completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Ricarica senza Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: articoli preferiti</string>
+    <string name="link_was_copied_to_clipboard">Link copiato</string>
     <string name="get_full_text">Recupera il testo completo</string>
     <string name="show_text_in_entry_list">Mostra il testo originale nella lista degli articoli.</string>
     <string name="original_text">Mostra testo originale</string>
@@ -367,6 +368,7 @@
     <string name="loadTypeWeb">Web (carica tutti i link dalla pagina)</string>
     <string name="loadTypeRSS">RSS (feed o link al sito o parole chiave)</string>
     <string name="loadTypeWebPageSearch">Pagina di ricerca web Duck Duck Go (trova e carica un articolo)</string>
+    <string name="loadTypeOneWebPage">Una pagina ( sviluppa un contenuto di una pagina web in molti articoli usando i tag di nome html</string>
     <string name="loadType">Tipo di caricamento:</string>
     <string name="global_filter">Filtro globale&#8230;</string>
     <string name="global_filter_descr">Un filtro che si applica ad ogni feed - lascia vuoto il testo del filtro (e il testo regex) per disabilitare</string>
@@ -451,6 +453,12 @@
     <string name="tasks_to_download">Da caricare</string>
     <string name="settings_current_setting">Impostazioni correnti</string>
     <string name="unable_to_load_article_icon">Impossibile caricare l\'icona dell\'articolo</string>
+    <string name="settings_delete_old_interval">Elimina il vecchio intervallo</string>
+    <string name="settings_delete_old_interval_descr">Quando elimina i vecchi articoli e calcola la dimensione delle immagini di gruppo, e quelle del feed sulla sdcard</string>
+    <string name="menu_delete_old">Elimina articoli vecchi</string>
+    <string name="settings_category_delete_old">Elimina i vecchi</string>
+    <string name="tool_bar_color">Colore barra degli strumenti</string>
+    <string name="tool_bar_color_desc">questo colore è già utilizzato anche per i pulsanti di testo dell\'articolo e per la barra di stato</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
