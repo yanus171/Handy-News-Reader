@@ -100,6 +100,7 @@ import org.jsoup.nodes.Element;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -135,6 +136,7 @@ import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_IAMG
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_TEXT_CLASS_NAME;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_URL_CLASS_NAME;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
+import static ru.yanus171.feedexfork.service.FetcherService.URL_NEXT_PAGE_CLASS_NAME;
 
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_WEB_SEARCH = "EXTRA_WEB_SEARCH";
@@ -229,7 +231,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private EditText mOneWebPageAuthorClassName;
     private EditText mOneWebPageDateClassName;
     private EditText mOneWebPageImageUrlClassName;
+    private EditText mNextPageClassName;
     private LinearLayout mOneWebPageLayout;
+
     private void EditFilter() {
         Cursor c = mFiltersCursorAdapter.getCursor();
         if (c.moveToPosition(mFiltersCursorAdapter.getSelectedFilter())) {
@@ -399,6 +403,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mIsAutoImageLoadCb.setVisibility( PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true) ? View.VISIBLE : View.GONE );
         PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
 
+        mNextPageClassName = findViewById(R.id.next_page_classname);
         mOneWebPageLayout = findViewById(R.id.one_webpage_layout);
         mOneWebPageArticleClassName = findViewById(R.id.one_webpage_article_classname);
         mOneWebPageAuthorClassName = findViewById(R.id.one_webpage_author_classname );
@@ -485,6 +490,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     break;
                                 }
                         }
+                        mNextPageClassName.setText( jsonOptions.getString( URL_NEXT_PAGE_CLASS_NAME ) );
                         if ( jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
                             mOneWebPageArticleClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_ARTICLE_CLASS_NAME ) );
                             mOneWebPageTextClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_TEXT_CLASS_NAME ) );
@@ -648,6 +654,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         JSONObject jsonOptions = new JSONObject();
         try {
             jsonOptions.put( "isRss", mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbRss );
+            jsonOptions.put(URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
+
             if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage ) {
                 jsonOptions.put(IS_ONE_WEB_PAGE, true );
                 jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.getText().toString() );
@@ -656,7 +664,6 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 jsonOptions.put(ONE_WEB_PAGE_DATE_CLASS_NAME, mOneWebPageDateClassName.getText().toString() );
                 jsonOptions.put(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME, mOneWebPageImageUrlClassName.getText().toString() );
                 jsonOptions.put(ONE_WEB_PAGE_TEXT_CLASS_NAME, mOneWebPageTextClassName.getText().toString() );
-
             }
             if ( mKeepTimeCB.isChecked()  )
                 jsonOptions.put( FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.getSelectedItemPosition()] );

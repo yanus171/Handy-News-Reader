@@ -223,7 +223,7 @@ public class NetworkUtils {
 
     public static String getBaseUrl(String link) {
         String baseUrl = link;
-        Pattern p = Pattern.compile("(http?.://[^/]+/)");
+        Pattern p = Pattern.compile("(http?.://[^/]+)");
         Matcher m = p.matcher(baseUrl);
         if (m.find())
             baseUrl = m.group(1);  // The matched substring

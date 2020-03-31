@@ -88,7 +88,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
                             android:orientation="vertical">
-                            <include layout="@layout/status_view" />
                             <TextView
                                 android:id="@+id/pageUpBtn"
                                 style="@style/TapZone"
@@ -103,6 +102,7 @@
                             android:layout_height="10mm"
                             android:layout_gravity="bottom"
                             android:text="@string/pageDown" />
+                        <include layout="@layout/status_view" />
 
 
                     </FrameLayout>

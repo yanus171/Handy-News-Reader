@@ -1,5 +1,6 @@
 package ru.yanus171.feedexfork.utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -94,13 +95,7 @@ public class ArticleTextExtractor {
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
             rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
-            final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
-            for (String classItem : removeClassList) {
-                Elements list = rootElement.getElementsByClass(classItem);
-                for (Element item : list) {
-                    item.remove();
-                }
-            }
+            RemoveHiddenElements(rootElement);
         }
 
         if ( rootElement == null )
@@ -145,17 +140,7 @@ public class ArticleTextExtractor {
         }
 
         if ( !isWithTables ) {
-            ret = ret.replaceAll("<table(.)*?>", "<p>");
-            ret = ret.replaceAll("</table>", "</p>");
-
-            ret = ret.replaceAll("<tr(.)*?>", "<p>");
-            ret = ret.replaceAll("</tr>", P_HR);
-
-            ret = ret.replaceAll("<td(.)*?>", "<p>");
-            ret = ret.replaceAll("</td>", "</p>");
-
-            ret = ret.replaceAll("<th(.)*?>", "<p>");
-            ret = ret.replaceAll("</th>", P_HR);
+            ret = RemoveTables(ret);
         }
 
 
@@ -170,6 +155,32 @@ public class ArticleTextExtractor {
         }
 
 
+        return ret;
+    }
+
+    public static void RemoveHiddenElements(Element rootElement) {
+        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+        for (String classItem : removeClassList) {
+            Elements list = rootElement.getElementsByClass(classItem);
+            for (Element item : list) {
+                item.remove();
+            }
+        }
+    }
+
+    @NotNull
+    public static String RemoveTables(String ret) {
+        ret = ret.replaceAll("<table(.)*?>", "<p>");
+        ret = ret.replaceAll("</table>", "</p>");
+
+        ret = ret.replaceAll("<tr(.)*?>", "<p>");
+        ret = ret.replaceAll("</tr>", P_HR);
+
+        ret = ret.replaceAll("<td(.)*?>", "<p>");
+        ret = ret.replaceAll("</td>", "</p>");
+
+        ret = ret.replaceAll("<th(.)*?>", "<p>");
+        ret = ret.replaceAll("</th>", P_HR);
         return ret;
     }
 

@@ -231,8 +231,20 @@
                                     </LinearLayout>
 
                                     <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:text="@string/next_page_classname"
+                                            style="@style/FeedAttrLabel"/>
+                                        <EditText
+                                            android:id="@+id/next_page_classname"
+                                            style="@style/FeedAttrEdit" />
+                                    </LinearLayout>
+                                    <LinearLayout
                                         android:id="@+id/one_webpage_layout"
-                                        android:layout_width="fill_parent"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="10dp"
                                         android:orientation="vertical">
@@ -246,7 +258,7 @@
                                             android:textAppearance="?android:attr/textAppearanceSmall"
                                             android:textStyle="normal" />
                                         <LinearLayout
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
                                             android:orientation="horizontal">
@@ -259,7 +271,7 @@
                                                 android:singleLine="true" />
                                         </LinearLayout>
                                         <LinearLayout
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
                                             android:orientation="horizontal">
@@ -271,7 +283,7 @@
                                                 style="@style/FeedAttrEdit" />
                                         </LinearLayout>
                                         <LinearLayout
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
                                             android:orientation="horizontal">
@@ -283,7 +295,7 @@
                                                 style="@style/FeedAttrEdit" />
                                         </LinearLayout>
                                         <LinearLayout
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
                                             android:orientation="horizontal">
@@ -295,7 +307,7 @@
                                                 style="@style/FeedAttrEdit" />
                                         </LinearLayout>
                                         <LinearLayout
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
                                             android:orientation="horizontal">
@@ -307,7 +319,7 @@
                                                 style="@style/FeedAttrEdit" />
                                         </LinearLayout>
                                         <LinearLayout
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
                                             android:orientation="horizontal">

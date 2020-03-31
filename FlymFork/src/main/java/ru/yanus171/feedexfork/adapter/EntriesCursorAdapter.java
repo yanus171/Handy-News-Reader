@@ -100,6 +100,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
@@ -347,7 +348,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.dateTextView.setVisibility(View.VISIBLE);
 
         final String feedTitle = cursor.getString(mFeedTitlePos);
-        String titleText = cursor.getString(mTitlePos).replace( feedTitle == null ? "" : feedTitle, "" );
+        String titleText = cursor.isNull( mTitlePos ) ? "" : cursor.getString(mTitlePos).replace( feedTitle == null ? "" : feedTitle, "" );
+        holder.titleTextView.setVisibility( titleText.isEmpty() ? View.GONE : View.VISIBLE );
         holder.titleTextView.setText(titleText);
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
@@ -445,7 +447,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         if ( mShowEntryText ) {
             holder.textTextView.setVisibility(View.VISIBLE);
-            holder.textTextView.setText(Html.fromHtml( cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos) ));
+            holder.textTextView.setText(Html.fromHtml( cursor.getString(mAbstractPos) == null ? "" : RemoveTables( cursor.getString(mAbstractPos) ) ));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 holder.textTextView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD );
             holder.textTextView.setEnabled(!holder.isRead);

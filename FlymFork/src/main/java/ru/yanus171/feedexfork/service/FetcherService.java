@@ -164,7 +164,8 @@ public class FetcherService extends IntentService {
     private static final String HTML_BODY = "<body";
     private static final String ENCODING = "encoding=\"";
     public static final String CUSTOM_KEEP_TIME = "customKeepTime";
-        public static final String IS_ONE_WEB_PAGE = "isOneWebPage";
+    public static final String IS_ONE_WEB_PAGE = "isOneWebPage";
+    public static final String URL_NEXT_PAGE_CLASS_NAME = "UrlNextPageClassName";
 
     public static Boolean mCancelRefresh = false;
     private static final ArrayList<Long> mActiveEntryIDList = new ArrayList<>();
@@ -1171,7 +1172,7 @@ public class FetcherService extends IntentService {
                     if ( isRss )
                         newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, feedID);
                     else if ( isOneWebPage )
-                        newCount = OneWebPageParser.INSTANCE.Parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages );
+                        newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages );
                     else
                         newCount = HTMLParser.Parse(executor, feedID, feedUrl);
                 } finally {
