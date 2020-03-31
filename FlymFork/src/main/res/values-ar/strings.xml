@@ -180,7 +180,6 @@
     <string name="menu_reload_full_text">إعادة تحميل النص الكامل</string>
     <string name="menu_reload_full_text_without_mobilizer">إعادة التحميل بدون تعبئة</string>
     <string name="share_favorites_title">Handy News Reader: المقالات المُميّزة</string>
-    <string name="copied_clipboard">تمَّ نسخ الرابط</string>
     <string name="get_full_text">تحميل النص الكامل</string>
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
     <string name="original_text">إظهار النص الأصلي</string>
