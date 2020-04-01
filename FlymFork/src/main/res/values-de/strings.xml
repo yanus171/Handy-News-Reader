@@ -371,7 +371,7 @@
     <string name="loadTypeWeb">Web-Links (alle Links auf einer Seite als unterschiedliche Artikel laden)</string>
     <string name="loadTypeRSS">RSS (Feed, Link oder Schlüsselworte)</string>
     <string name="loadTypeWebPageSearch">Webseitensuche DuckDuckGo (einen Artikel finden und laden)</string>
-    <string name="loadTypeOneWebPage">Eine Seite (Inhalt einer Webseite mithilfe von HTML-Klassennamen-Tags in viele Artikel unterteilen)</string>
+    <string name="loadTypeOneWebPage">Eine Seite (Inhalt einer Webseite mithilfe von HTML-Klassennamen-Tags in mehrere Artikel unterteilen)</string>
     <string name="loadType">Art des Ladens:</string>
     <string name="global_filter">Automatische Favoriten&#8230;</string>
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
