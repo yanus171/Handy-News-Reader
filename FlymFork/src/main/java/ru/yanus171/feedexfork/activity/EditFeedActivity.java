@@ -476,7 +476,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         JSONObject jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
                         if ( jsonOptions.getBoolean( "isRss" ) )
                             mLoadTypeRG.check( R.id.rbRss );
-                        else if ( jsonOptions.getBoolean( "isOneWebPage" ) )
+                        else if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) )
                             mLoadTypeRG.check( R.id.rbOneWebPage );
                         else
                             mLoadTypeRG.check( R.id.rbWebLinks);
@@ -490,7 +490,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                 }
                         }
                         mNextPageClassName.setText( jsonOptions.getString( URL_NEXT_PAGE_CLASS_NAME ) );
-                        if ( jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
+                        if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
                             mOneWebPageArticleClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_ARTICLE_CLASS_NAME ) );
                             mOneWebPageTextClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_TEXT_CLASS_NAME ) );
                             mOneWebPageImageUrlClassName.setText(jsonOptions.getString(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME) );
@@ -655,10 +655,10 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         JSONObject jsonOptions = new JSONObject();
         try {
             jsonOptions.put( "isRss", mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbRss );
-            jsonOptions.put(URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
+            jsonOptions.put( IS_ONE_WEB_PAGE, mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage );
+            jsonOptions.put( URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
 
             if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage ) {
-                jsonOptions.put(IS_ONE_WEB_PAGE, true );
                 jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.getText().toString() );
                 jsonOptions.put(ONE_WEB_PAGE_URL_CLASS_NAME, mOneWebPageUrlClassName.getText().toString() );
                 jsonOptions.put(ONE_WEB_PAGE_AUTHOR_CLASS_NAME, mOneWebPageAuthorClassName.getText().toString() );

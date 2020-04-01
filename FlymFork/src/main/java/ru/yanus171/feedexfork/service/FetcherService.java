@@ -743,7 +743,7 @@ public class FetcherService extends IntentService {
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
                             //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
-                            HtmlUtils.replaceImageURLs( mobilizedHtml, -1, link, true, imgUrlsToDownload );
+                            HtmlUtils.replaceImageURLs( mobilizedHtml, -1, link, true, imgUrlsToDownload, null, 0 );
                         }
 
                         String mainImgUrl;

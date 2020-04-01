@@ -20,6 +20,8 @@
 package ru.yanus171.feedexfork.utils;
 
 import androidx.annotation.NonNull;
+
+import android.net.Uri;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
@@ -27,6 +29,7 @@ import org.jsoup.safety.Whitelist;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -143,27 +146,32 @@ public class HtmlUtils {
         return images;
     }
 
-    static final String LINK_TAG_END = "</a>";
+    private static final String LINK_TAG_END = "</a>";
 
     private static String GetLinkStartTag(String imgPath) {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
         final ArrayList<String> imagesToDl = new ArrayList<>();
-        return replaceImageURLs(content, entryId, entryLink, isDownLoadImages, imagesToDl );
+        return replaceImageURLs(content, entryId, entryLink, isDownLoadImages, imagesToDl, null, 0 );
 
     }
-    public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages, final ArrayList<String> imagesToDl) {
+    public static String replaceImageURLs(String content,
+                                          final long entryId,
+                                          final String entryLink,
+                                          boolean isDownLoadImages,
+                                          final ArrayList<String> imagesToDl,
+                                          final ArrayList<Uri> externalImageList,
+                                          final int maxImageUrlListCount) {
         final int status = Status().Start("Reading images", true); try {
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
-
+            Timer timer = new Timer( "replaceImageURLs" );
             if (!TextUtils.isEmpty(content)) {
                 content = ReplaceImagesWithALink(content);
                 Matcher matcher;
 
                 boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 //final ArrayList<String> imagesToDl = new ArrayList<>();
-
 
                 matcher = IMG_PATTERN.matcher(content);
                 int index = 0;
@@ -173,6 +181,7 @@ public class HtmlUtils {
                     srcUrl = srcUrl.replace(" ", URL_SPACE);
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
+                    final File file = new File( imgFilePath );
                     final boolean isImageToLoad = (index <= FetcherService.mMaxImageDownloadCount) || (FetcherService.mMaxImageDownloadCount == 0);
                     final String imgFileTag =
                             GetLinkStartTag(imgFilePath) +
@@ -187,7 +196,13 @@ public class HtmlUtils {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
                             btnLoadNext += getButtonHtml("downloadAllImages()", getString(R.string.downloadAll), "download_all");
                         }
-                        if ( isFileExists || isImageToLoad )
+                        final boolean isSmall = file.length() < 1024 * 7;
+                        if ( externalImageList != null && externalImageList.size() <= maxImageUrlListCount && !isSmall ) {
+                            externalImageList.add(Uri.fromFile(file));
+                            content = content.replace(imgWebTag, "");
+                        } else if ( externalImageList != null && isSmall )
+                            content = content.replace(imgWebTag, "");
+                        else if ( isImageToLoad || isFileExists )
                             content = content.replace(imgWebTag, imgFileTag + btnLoadNext);
                         else if ( !isFileExists ) {
                             String htmlButtons = getDownloadImageHtml(srcUrl) + "<br/>";
@@ -196,12 +211,11 @@ public class HtmlUtils {
                     } else
                         content = content.replace(imgWebTag, "");
                 }
-
-                content = content.replaceAll("width=\\\"\\d+\\\"", "");
-                content = content.replaceAll("height=\\\"\\d+\\\"", "");
+                content = content.replaceAll("width=\"\\d+\"", "");
+                content = content.replaceAll("height=\"\\d+\"", "");
 
                 // Download the images if needed
-                if (!imagesToDl.isEmpty() && entryId != -1 ) {
+                if (!imagesToDl.isEmpty() && entryId != -1 &&  externalImageList == null ) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -209,14 +223,13 @@ public class HtmlUtils {
                         }
                     }).start();
                 }
-
             }
+            timer.End();
         } catch ( Exception e ) {
             Status().SetError( null, "", String.valueOf(entryId), e  );
         } finally {
             Status().End( status );
         }
-
         return content;
     }
 
@@ -284,17 +297,16 @@ public class HtmlUtils {
         return !imgUrl.endsWith(".gif") && !imgUrl.endsWith(".GIF") && !imgUrl.endsWith(".img") && !imgUrl.endsWith(".IMG");
     }
 
-    static public ArrayList<String> Split( String text, String sep ) {
-        final ArrayList<String> result = new ArrayList<>();
-        for( String item: TextUtils.split(text, sep) )
-            result.add( item );
-        return result;
-
-    }
+//    static public ArrayList<String> Split( String text, String sep ) {
+//        final ArrayList<String> result = new ArrayList<>();
+//        for( String item: TextUtils.split(text, sep) )
+//            result.add( item );
+//        return result;
+//
+//    }
     static public ArrayList<String> Split( String text, Pattern sep ) {
         final ArrayList<String> result = new ArrayList<>();
-        for( String item: TextUtils.split(text, sep) )
-            result.add( item );
+        Collections.addAll(result, TextUtils.split(text, sep));
         return result;
     }
 }

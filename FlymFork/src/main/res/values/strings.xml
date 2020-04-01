@@ -489,6 +489,9 @@
     <string name="next_page_max_count_classname">Max page count to process</string>
     <string name="menu_copy_feed">Dublicate current feed</string>
     <string name="feed_copied">Feed is dublicated</string>
+    <string name="menu_show_entry_text">Article text</string>
+    <string name="read_more">Read more ...</string>
+    <string name="cant_open_image">Cant open image</string>
 
 
     <plurals name="number_of_new_entries">

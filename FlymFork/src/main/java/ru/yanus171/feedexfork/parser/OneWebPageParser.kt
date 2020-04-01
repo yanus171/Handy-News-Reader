@@ -75,8 +75,8 @@ object OneWebPageParser {
                     if ( date == 0L )
                         date = now--
 
-                    val entryUrl = GetUrl(elArticle, urlClassName, "a", "href", feedBaseUrl)
-                    val mainImageUrl = GetUrl(elArticle, imageUrlClassName, "img", "src", feedBaseUrl)
+                    val entryUrl = getUrl(elArticle, urlClassName, "a", "href", feedBaseUrl)
+                    val mainImageUrl = getUrl(elArticle, imageUrlClassName, "img", "src", feedBaseUrl)
                     val textHTML = getValueHTML(textClassName, elArticle)
                     //if ( mainImageUrl.isNotEmpty() )
                     //    textHTML = "<img src='$mainImageUrl'/><p>$textHTML"
@@ -122,11 +122,11 @@ object OneWebPageParser {
                         val imagesToDl = ArrayList<String>()
                         if ( mainImageUrl.isNotEmpty() )
                             imagesToDl.add( mainImageUrl )
-                        HtmlUtils.replaceImageURLs(improvedContent, -1, entryUrl, true, imagesToDl)
+                        HtmlUtils.replaceImageURLs(improvedContent, -1, entryUrl, true, imagesToDl, null, 0)
                         FetcherService.addImagesToDownload(entryID.toString(), imagesToDl)
                     }
                 }
-                urlNextPage = GetUrl(doc, urlNextPageClassName, "a", "href", feedBaseUrl )
+                urlNextPage = getUrl(doc, urlNextPageClassName, "a", "href", feedBaseUrl )
             } catch (e: Exception) {
                 FetcherService.Status().SetError(e.localizedMessage, feedID, "", e)
             } finally {
@@ -165,15 +165,18 @@ object OneWebPageParser {
         return result
     }
 
-    fun GetUrl(elArticle: Element, urlClassName: String, tag: String, attrName: String, feedBaseUrl: String): String {
+    fun getUrl(elArticle: Element, urlClassName: String, tag: String, attrName: String, feedBaseUrl: String): String {
         var result = ""
-        val list = elArticle.getElementsByClass(urlClassName)
-        if (!list.isEmpty()) {
-            val listA = list.first().getElementsByTag(tag)
-            if (!listA.isEmpty()) {
-                result = listA.first().attr(attrName)
-                if (!result.startsWith("http") )
-                    result = feedBaseUrl + result
+        if ( urlClassName.isNotEmpty() ) {
+            val list = elArticle.getElementsByClass(urlClassName)
+            if (!list.isEmpty()) {
+                val listA = list.first().getElementsByTag(tag)
+                if (!listA.isEmpty()) {
+                    result = listA.first().attr(attrName)
+                    if (!result.startsWith("http") )
+                        result = feedBaseUrl + result
+                }
+
             }
         }
         return result

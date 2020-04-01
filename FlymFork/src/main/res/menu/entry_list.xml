@@ -8,6 +8,11 @@
         android:title="@string/menu_refresh"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menu_show_entry_text"
+        android:icon="@drawable/text_white"
+        android:title="@string/menu_show_entry_text"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_cancel_refresh"
         android:icon="@drawable/ic_action_cancel_gray"
         app:showAsAction="always"

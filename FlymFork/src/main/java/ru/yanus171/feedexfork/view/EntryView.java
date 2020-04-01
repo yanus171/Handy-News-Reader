@@ -552,14 +552,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 final Context context = getContext();
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
-                        File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                        File extTmpFile = new File(context.getCacheDir(), file.getName());
-                        FileUtils.INSTANCE.copy(file, extTmpFile);
-                        Uri contentUri = getUriForFile(getContext(), FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(contentUri, "image/*");
-                        context.startActivity(intent);
+                        OpenImage(url, context);
                     } else if (url.contains("#")) {
                         String hash = url.substring(url.indexOf('#') + 1);
                         hash = URLDecoder.decode(hash);
@@ -727,6 +720,17 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
 
         timer.End();
+    }
+
+    public static void OpenImage( String url, Context context ) throws IOException {
+        File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+        File extTmpFile = new File(context.getCacheDir(), file.getName());
+        FileUtils.INSTANCE.copy(file, extTmpFile);
+        Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setDataAndType(contentUri, "image/*");
+        context.startActivity(intent);
     }
 
     private void EndStatus() {

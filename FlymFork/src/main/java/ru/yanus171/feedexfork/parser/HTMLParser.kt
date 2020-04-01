@@ -64,7 +64,6 @@ import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
-import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.*
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor
@@ -83,43 +82,43 @@ import java.util.regex.Pattern
 object HTMLParser {
     private val TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}"
     @JvmStatic
-    fun Parse(executor: ExecutorService, feedID: String, feedUrl: String, jsonOptions: JSONObject, recursionCount: Int): Int {
+    fun Parse(executor: ExecutorService, feedID: String, feedUrlparam: String, jsonOptions: JSONObject, recursionCount: Int): Int {
         //var feedUrl = feedUrl
-        val maxRecursionCount = jsonOptions.getInt(NEXT_PAGE_MAX_COUNT)
+        val maxRecursionCount = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getInt(NEXT_PAGE_MAX_COUNT) else 20
         if (recursionCount > maxRecursionCount)
             return 0
-        val urlNextPageClassName = jsonOptions.getString(URL_NEXT_PAGE_CLASS_NAME)
-        var newEntries = 0
-        FetcherService.Status().ChangeProgress("Loading main page")
+        val urlNextPageClassName = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getString(URL_NEXT_PAGE_CLASS_NAME) else ""
+        val newEntries: Int
+        Status().ChangeProgress("Loading main page")
         val cal = Calendar.getInstance()
-        val isTomorrow = feedUrl.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
-        var feedUrl1: String
+        val isTomorrow = feedUrlparam.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
+        var feedUrl: String
         run {
             val date: Calendar = Calendar.getInstance()
             date.add(Calendar.DATE, 1)
-            feedUrl1 = feedUrl.replace(TOMORROW_YYYY_MM_DD, if (isTomorrow) SimpleDateFormat("yyyy-MM-dd").format(Date(date.getTimeInMillis())) else "")
+            feedUrl = feedUrlparam.replace(TOMORROW_YYYY_MM_DD, if (isTomorrow) SimpleDateFormat("yyyy-MM-dd").format(Date(date.getTimeInMillis())) else "")
         }
         /* check and optionally find favicon */
         try {
-            NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl1), feedID)
+            NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
         } catch (ignored: Throwable) {
         }
         var connection: Connection? = null
         var doc: Document? = null
         try {
-            connection = Connection(feedUrl1)
+            connection = Connection(feedUrl)
             doc = Jsoup.parse(connection.inputStream, null, "")
         } catch (e: Exception) {
-            FetcherService.Status().SetError(e.localizedMessage, feedID, "", e)
+            Status().SetError(e.localizedMessage, feedID, "", e)
         } finally {
             connection?.disconnect()
         }
-        val uriMainEntry = FetcherService.LoadLink(feedID, feedUrl1, "", FetcherService.ForceReload.Yes, true, false, false, FetcherService.IsAutoDownloadImages(feedID)).first
+        val uriMainEntry = LoadLink(feedID, feedUrl, "", ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID)).first
         val cr = MainApplication.getContext().contentResolver
         run {
             val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
             if (cursor.moveToFirst()) {
-                val values: ContentValues = ContentValues()
+                val values = ContentValues()
                 values.put(FeedColumns.NAME, cursor.getString(0))
                 cr.update(FeedColumns.CONTENT_URI(feedID), values, FeedColumns.NAME + Constants.DB_IS_NULL, null)
             }
@@ -131,18 +130,18 @@ object HTMLParser {
 
         val urlNextPage: String
         val listItem = ArrayList<Item>()
-        val content = ArticleTextExtractor.extractContent(doc, feedUrl1, null, ArticleTextExtractor.MobilizeType.Yes, false, false)
+        val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false, false)
         doc = Jsoup.parse(content)
         run {
             val list: Elements = doc.select("a")
-            val BASE_URL: Pattern = Pattern.compile("(http|https).[\\/]+[^\"]+")
+            val BASE_URL: Pattern = Pattern.compile("(http|https).[/]+[^\"]+")
             for (el: Element in list) {
-                if (FetcherService.isCancelRefresh()) break
+                if (isCancelRefresh()) break
                 var link: String = el.attr("href")
                 Dog.v("link before = " + link)
                 var matcher: Matcher = BASE_URL.matcher(link)
                 if (!matcher.find()) {
-                    matcher = BASE_URL.matcher(feedUrl1)
+                    matcher = BASE_URL.matcher(feedUrl)
                     if (matcher.find()) {
                         link = matcher.group() + "/" + link
                         link = link.replace("//", "/")
@@ -153,21 +152,21 @@ object HTMLParser {
                 if (filters.isEntryFiltered(el.text(), "", link, "")) continue
                 listItem.add(Item(link, el.text()))
             }
-            urlNextPage = OneWebPageParser.GetUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl1))
+            urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl))
         }
         val statusText = "" //MainApplication.getContext().getString(R.string.loadingLink );
-        val status = FetcherService.Status().Start(statusText, false)
+        val status = Status().Start(statusText, false)
         try {
             val futures = ArrayList<Future<DownloadResult>>()
             for (item: Item in listItem) {
-                if (FetcherService.isCancelRefresh()) break
+                if (isCancelRefresh()) break
                 //int status = FetcherService.Status().Start(String.format( "Loading page %d/%d", listItem.indexOf( item ) + 1, listItem.size() ), false ); try {
                 futures.add(executor.submit(Callable {
                     val result = DownloadResult()
                     result.mAttemptNumber = 0
                     result.mTaskID = 0L
                     result.mOK = false
-                    val load = FetcherService.LoadLink(feedID, item.mUrl, item.mCaption, FetcherService.ForceReload.No, true, false, false, FetcherService.IsAutoDownloadImages(feedID))
+                    val load = LoadLink(feedID, item.mUrl, item.mCaption, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID))
                     val uri = load.first
                     if (load.second) {
                         result.mOK = true
@@ -175,7 +174,7 @@ object HTMLParser {
                         if ( cursor != null ) {
                             cursor.moveToFirst()
                             if (filters.isMarkAsStarred(cursor.getString(0), cursor.getString(1), item.mUrl, "")) {
-                                synchronized(FetcherService.mMarkAsStarredFoundList) { FetcherService.mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl)) }
+                                synchronized(mMarkAsStarredFoundList) { mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl)) }
                                 val values = ContentValues()
                                 values.put(EntryColumns.IS_FAVORITE, 1)
                                 cr.update(uri, values, null, null)
@@ -191,20 +190,20 @@ object HTMLParser {
                     result
                 }))
             }
-            newEntries = FetcherService.FinishExecutionService(statusText, status, null, futures)
+            newEntries = FinishExecutionService(statusText, status, null, futures)
         } finally {
-            FetcherService.Status().End(status)
+            Status().End(status)
         }
         //        synchronized ( FetcherService.mCancelRefresh ) {
 //			FetcherService.mCancelRefresh = false;
 //		}
         run {
-            val values: ContentValues = ContentValues()
+            val values = ContentValues()
             values.put(FeedColumns.LAST_UPDATE, System.currentTimeMillis())
             cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null)
         }
         run {
-            val values: ContentValues = ContentValues()
+            val values = ContentValues()
             values.put(EntryColumns.DATE, System.currentTimeMillis() + (if (isTomorrow) Constants.MILLS_IN_DAY else 0))
             values.put(EntryColumns.SCROLL_POS, 0)
             values.putNull(EntryColumns.IS_READ)
@@ -220,6 +219,6 @@ object HTMLParser {
         return if ( urlNextPage.isEmpty() )
             newEntries
         else
-            Parse( executor, feedID, feedUrl, jsonOptions, recursionCount + 1 )
+            Parse( executor, feedID, feedUrlparam, jsonOptions, recursionCount + 1 )
     }
 }

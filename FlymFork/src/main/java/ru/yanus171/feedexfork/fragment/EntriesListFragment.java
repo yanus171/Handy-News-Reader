@@ -333,7 +333,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     }
                 }
                 SetIsRead( firstVisibleItem - 2);
-                if ( !mShowTextInEntryList && firstVisibleItem > 0 ) {
+                if ( firstVisibleItem > 0 ) {
                     mLastVisibleTopEntryID = mEntriesCursorAdapter.getItemId(firstVisibleItem);
                     View v = mListView.getChildAt(0);
                     mLastListViewTopOffset = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
@@ -628,6 +628,18 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ) );
                 return true;
 
+            }
+            case R.id.menu_show_entry_text: {
+                if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+                    final String feedID = mCurrentUri.getPathSegments().get(1);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    ContentValues values = new ContentValues();
+                    mShowTextInEntryList = !mShowTextInEntryList;
+                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
+                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                    setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList );
+                }
+                return true;
             }
             case R.id.menu_create_auto_backup: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );

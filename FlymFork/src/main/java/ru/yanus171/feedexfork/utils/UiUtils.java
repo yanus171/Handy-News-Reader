@@ -76,6 +76,10 @@ public class UiUtils {
         Toast.makeText(context, messageId, Toast.LENGTH_LONG).show();
     }
 
+    static public void toast(@NonNull Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
     static public void SetFontSize(TextView textView) {
         textView.setTextSize(COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
     }

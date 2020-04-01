@@ -403,7 +403,7 @@ public class RssAtomParser extends DefaultHandler {
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
                             imagesUrls = new ArrayList<>();
-                            HtmlUtils.replaceImageURLs( improvedContent, -1, mEntryLink.toString(), true, imagesUrls );
+                            HtmlUtils.replaceImageURLs( improvedContent, -1, mEntryLink.toString(), true, imagesUrls, null, 0 );
                             if (!imagesUrls.isEmpty()) {
                                 mainImageUrl = HtmlUtils.getMainImageURL(imagesUrls);
                             }
@@ -500,7 +500,7 @@ public class RssAtomParser extends DefaultHandler {
                         }
                     }
 
-                } else {
+                //} else {
                     //cancel();
                 }
                 mDescription = null;

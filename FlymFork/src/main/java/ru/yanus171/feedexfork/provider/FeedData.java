@@ -296,7 +296,7 @@ public class FeedData {
                         EntryColumns.TITLE,
                         EntryColumns.DATE,
                         EntryColumns.ABSTRACT,
-                        String.format( "substr( %s, 1, 5 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
+                        String.format( "substr( %s, 1, 10 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                         FeedColumns.NAME,
                         TEXT_LEN_EXPR };
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
