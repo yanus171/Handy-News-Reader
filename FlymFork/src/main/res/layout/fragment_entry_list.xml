@@ -95,21 +95,21 @@
                                 android:layout_height="10mm"
                                 android:text="@string/pageUp" />
                             </LinearLayout>
-                        <TextView
-                            android:id="@+id/pageDownBtn"
-                            style="@style/TapZone"
-                            android:layout_width="match_parent"
-                            android:layout_height="10mm"
-                            android:layout_gravity="bottom"
-                            android:text="@string/pageDown" />
-                        <include layout="@layout/status_view" />
-
-
                     </FrameLayout>
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </LinearLayout>
+
+        <include layout="@layout/status_view" />
+        <TextView
+            android:id="@+id/pageDownBtn"
+            style="@style/TapZone"
+            android:layout_width="match_parent"
+            android:layout_height="10mm"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:text="@string/pageDown" />
 
         <TextView
             android:id="@+id/progressText"

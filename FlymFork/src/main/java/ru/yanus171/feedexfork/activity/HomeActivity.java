@@ -592,8 +592,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     getSupportActionBar().setHomeAsUpIndicator( image );
                     break;
             }
-
-            ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
+            if ( mEntriesFragment.getView() != null )
+                ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
         }
         PrefUtils.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 

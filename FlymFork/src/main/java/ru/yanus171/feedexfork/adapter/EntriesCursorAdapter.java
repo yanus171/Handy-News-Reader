@@ -372,7 +372,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
-        holder.titleTextView.setTypeface( isToday ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
+        holder.titleTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
 
         holder.urlTextView.setText(cursor.getString(mUrlPos));
 
