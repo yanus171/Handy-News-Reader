@@ -351,7 +351,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
+        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos ) && !mMarkAsReadList.contains( EntryUri( holder.entryID ) );
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
         final int backgroundColor;

@@ -427,8 +427,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     new Thread() {
                         @Override
                         public void run() {
+                            FeedDataContentProvider.mNotifyEnabled = false;
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             cr.update( uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
+                            FeedDataContentProvider.mNotifyEnabled = true;
                         }
                     }.start();
                 }

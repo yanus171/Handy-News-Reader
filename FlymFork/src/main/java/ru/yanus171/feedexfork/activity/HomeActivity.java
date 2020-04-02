@@ -279,9 +279,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onPause() {
-        synchronized (EntriesCursorAdapter.mMarkAsReadList) {
-            EntriesCursorAdapter.mMarkAsReadList.clear();//SetIsReadMakredList();
-        }
+        EntriesCursorAdapter.mMarkAsReadList.clear();
         super.onPause();
     }
 
