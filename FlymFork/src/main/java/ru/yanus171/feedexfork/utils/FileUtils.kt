@@ -161,15 +161,16 @@ object FileUtils {
 
     private const val MIN_MOBILIZED_LEN = 10
 
-    fun loadMobilizedHTML(link: String, cursor: Cursor) : String {
+    fun loadMobilizedHTML(link: String, cursor: Cursor?) : String {
         val status = FetcherService.Status().Start("Reading article file", true)
         try {
-
-            val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)
-            if (!cursor.isNull(columnIndex)) {
-                val content: String = cursor.getString(columnIndex)
-                if (content.length > MIN_MOBILIZED_LEN)
-                    saveHTMLToFile(link, content)
+            if ( cursor != null ) {
+                val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)
+                if (!cursor.isNull(columnIndex)) {
+                    val content: String = cursor.getString(columnIndex)
+                    if (content.length > MIN_MOBILIZED_LEN)
+                        saveHTMLToFile(link, content)
+                }
             }
             return readHTMLFromFile(link)
         } finally {
@@ -186,8 +187,8 @@ object FileUtils {
         }
     }
 
-    fun isMobilized (link: String, cursor: Cursor, colMob: Int, colID: Int ): Boolean {
-        if ( cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) {
+    fun isMobilized (link: String, cursor: Cursor?, colMob: Int, colID: Int ): Boolean {
+        if ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) {
             val file = LinkToFile( link )
             val mobValue = if ( file.exists() ) {
                 "${file.length()}"
@@ -195,7 +196,8 @@ object FileUtils {
                 EMPTY_MOBILIZED_VALUE
             }
 
-            UpdateMob( mobValue, cursor.getLong( colID ) ).start()
+            if ( cursor != null )
+                UpdateMob( mobValue, cursor.getLong( colID ) ).start()
 //            object : Thread() {
 //                override fun run() {
 //                    cr.update(FeedData.EntryColumns.CONTENT_URI( cursor.getLong( colID ) ), values, null, null)

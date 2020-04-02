@@ -184,6 +184,20 @@ public class ArticleTextExtractor {
         return ret;
     }
 
+    @NotNull
+    public static String RemoveHeaders(String ret) {
+        ret = ret.replaceAll("<h1(.)*?>", "");
+        ret = ret.replaceAll("</h1>", "");
+
+        ret = ret.replaceAll("<h2(.)*?>", "");
+        ret = ret.replaceAll("</h2>", "");
+
+        ret = ret.replaceAll("<h3(.)*?>", "");
+        ret = ret.replaceAll("</h3>", "");
+
+        return ret;
+    }
+
     public static Element FindBestElement(Document doc, String url, String contentIndicator, boolean isFindBestElement) {
 
         // init elements

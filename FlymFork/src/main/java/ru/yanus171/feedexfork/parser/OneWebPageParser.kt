@@ -34,10 +34,14 @@ object OneWebPageParser {
                feedID: String,
                feedUrl: String,
                jsonOptions: JSONObject,
-               fetchImages: Boolean ): Int {
+               fetchImages: Boolean,
+               recursionCount: Int): Int {
+        val maxRecursionCount = if ( jsonOptions.has(FetcherService.NEXT_PAGE_MAX_COUNT) ) jsonOptions.getInt(FetcherService.NEXT_PAGE_MAX_COUNT) else 20
+        if (recursionCount > maxRecursionCount)
+            return 0
         var newCount = 0
         val cr = MainApplication.getContext().contentResolver
-        val status = FetcherService.Status().Start("Loading OneWebPage", false)
+        val status = FetcherService.Status().Start(MainApplication.getContext().getString( R.string.parsing_one_web_page ) + ": " + recursionCount.toString() , false)
         var urlNextPage = ""
         try { /* check and optionally find favicon */
             try {
@@ -63,10 +67,12 @@ object OneWebPageParser {
                 val filters = FeedFilters(feedID)
                 var now = Date().time
                 for (elArticle in articleList) {
+                    if ( FetcherService.isCancelRefresh() )
+                        return newCount;
                     val author = getValue(authorClassName, elArticle)
                     var date = 0L
                     for ( item in dateClassName.split( " " ) ) {
-                        val tempDate = getDate(elArticle, item, now)
+                        val tempDate = getDate(elArticle, item)
                         if ( tempDate > date )
                             date = tempDate
                     }
@@ -136,28 +142,28 @@ object OneWebPageParser {
             //        synchronized ( FetcherService.mCancelRefresh ) {
 //			FetcherService.mCancelRefresh = false;
 //		}
-            if ( urlNextPage.isNotEmpty() )
-                newCount += parse( lastUpdateDate, feedID, urlNextPage, jsonOptions, fetchImages )
-            else {
-                val values = ContentValues()
-                values.put(FeedColumns.LAST_UPDATE, System.currentTimeMillis())
-                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null)
-            }
+
         } finally {
             FetcherService.Status().End(status)
         }
-        FetcherService.Status().ChangeProgress( newCount.toString() + " " + MainApplication.getContext().getString( R.string.articleCountLoaded ) )
+        if ( urlNextPage.isNotEmpty() )
+            newCount += parse( lastUpdateDate, feedID, urlNextPage, jsonOptions, fetchImages, recursionCount + 1 )
+        else {
+            val values = ContentValues()
+            values.put(FeedColumns.LAST_UPDATE, System.currentTimeMillis())
+            cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null)
+        }
         return newCount
     }
 
-    private fun getDate(elArticle: Element, dateClassName: String, now: Long): Long {
+    private fun getDate(elArticle: Element, dateClassName: String ): Long {
         var result = 0L
         val list = elArticle.getElementsByClass(dateClassName)
         if ( list.isNotEmpty() )
             for (item in list.first().allElements)
                 if (item.hasText()) {
                     try {
-                        result = RssAtomParser.parseDate(item.ownText(), now).time
+                        result = RssAtomParser.parseDate(item.ownText(), 0 ).time
                         break
                     } catch (ignored: Exception) {
                     }

@@ -574,6 +574,8 @@ public class RssAtomParser extends DefaultHandler {
         for (DateFormat format : DATE_FORMATS ) {
             try {
                 Date result = format.parse(dateStr);
+                if ( now == 0 )
+                    return result;
                 if ( Math.abs( result.getTime() -  now ) < dateBorder )
                     return (result.getTime() > now ? new Date(now) : result);
             } catch (ParseException ignored) {

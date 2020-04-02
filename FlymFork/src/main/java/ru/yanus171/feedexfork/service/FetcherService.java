@@ -1173,7 +1173,7 @@ public class FetcherService extends IntentService {
                     if ( isRss )
                         newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, feedID);
                     else if ( isOneWebPage )
-                        newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages );
+                        newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages, 0 );
                     else
                         newCount = HTMLParser.Parse(executor, feedID, feedUrl, jsonOptions, 1);
                 } finally {

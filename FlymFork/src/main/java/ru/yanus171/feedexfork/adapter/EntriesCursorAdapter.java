@@ -107,6 +107,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
@@ -467,26 +468,33 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readMore.setVisibility( View.GONE );
         if ( mShowEntryText ) {
             holder.textTextView.setVisibility(View.VISIBLE);
-            final String htmlFinal = cursor.getString(mAbstractPos) == null ? "" : RemoveTables( cursor.getString(mAbstractPos) );
+            final String html1 = cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 holder.textTextView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD );
             holder.textTextView.setEnabled(!holder.isRead);
             holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
-            SetupEntryText(holder, htmlFinal);
-            if ( htmlFinal.contains( "<img" ) )
+            SetupEntryText(holder, html1);
+            final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
+            if ( html1.contains( "<img" ) || isMobilized )
                 new Thread() {
                     @Override
                     public void run() {
                         final ArrayList<String> imagesToDl = new ArrayList<>();
                         final ArrayList<Uri> allImages = new ArrayList<>();
-                        final String html = HtmlUtils.replaceImageURLs( htmlFinal, holder.entryID, holder.entryLink, true, imagesToDl, allImages, 3 );
+                        String temp = html1;
+                        if ( isMobilized )
+                            temp = FileUtils.INSTANCE.loadMobilizedHTML( holder.entryLink, null );
+                        temp = RemoveTables( temp );
+                        temp = RemoveHeaders( temp );
+                        temp = HtmlUtils.replaceImageURLs( temp, holder.entryID, holder.entryLink, true, imagesToDl, allImages, 3 );
+                        final String html2 = temp;
                         UiUtils.RunOnGuiThread(new Runnable() {
                             @Override
                             public void run() {
                             SetContentImage(context, holder.contentImgView1, 0, allImages);
                             SetContentImage(context, holder.contentImgView2, 1, allImages);
                             SetContentImage(context, holder.contentImgView3, 2, allImages);
-                            SetupEntryText(holder, html);
+                            SetupEntryText(holder, html2);
                             }
                         });
                     }
