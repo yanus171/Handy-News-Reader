@@ -173,6 +173,7 @@
     <string name="menu_reload_full_text">Перезавантажити</string>
     <string name="menu_reload_full_text_without_mobilizer">Перезавантажити без мобілайзера</string>
     <string name="share_favorites_title">Обрані новини</string>
+    <string name="link_was_copied_to_clipboard">Посилання скопійовано</string>
     <string name="get_full_text">Весь текст</string>
     <string name="show_text_in_entry_list">Показувати тексти статей у списку статей</string>
     <string name="original_text">Коротко</string>
@@ -367,6 +368,7 @@
     <string name="loadTypeWeb">Web (завантажувати всі посилання із сторінки)</string>
     <string name="loadTypeRSS">RSS (адреса стрічки або сайту або ключеве слово)</string>
     <string name="loadTypeWebPageSearch">Веб-пошук сторінок DuckDuckGo (знайти і завантажити одну статтю)</string>
+    <string name="loadTypeOneWebPage">Одна сторінка (поділити вміст однієї вебсторінки на багато статей використовуючи мітки імен html класу)</string>
     <string name="loadType">Тип завантаження:</string>
     <string name="global_filter">Глобальний фільтр &#8230;</string>
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
@@ -451,6 +453,7 @@
     <string name="tasks_to_download">До завантаження</string>
     <string name="settings_current_setting">Поточні налаштування</string>
     <string name="unable_to_load_article_icon">Не вдається завантажити іконку статті</string>
+    <string name="settings_delete_old_interval">Інтервал вилучення застарілих статей</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
