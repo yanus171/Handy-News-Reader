@@ -454,6 +454,16 @@
     <string name="settings_current_setting">Поточні налаштування</string>
     <string name="unable_to_load_article_icon">Не вдається завантажити іконку статті</string>
     <string name="settings_delete_old_interval">Інтервал вилучення застарілих статей</string>
+    <string name="menu_delete_old">Вилучити старі статті</string>
+    <string name="settings_category_delete_old">Видалити старі</string>
+    <string name="tool_bar_color">Колір панелі інструментів</string>
+    <string name="tool_bar_color_desc">цей колір також використовується для кнопок тексту статті та рядку стану</string>
+    <string name="one_webpage_article_classname_label">Стаття</string>
+    <string name="one_webpage_edittext_classname_hint">Назва класу</string>
+    <string name="one_webpage_url_classname_label">Посилання</string>
+    <string name="one_webpage_text_classname_label">Текст</string>
+    <string name="one_webpage_author_classname_label">Автор</string>
+    <string name="one_webpage_image_url_classname_label">Адреса зображення</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
