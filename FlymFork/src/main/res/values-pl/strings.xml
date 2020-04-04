@@ -368,13 +368,13 @@ GENERAL]]></string>
     <string name="markedAsStarred">Artykuł został dodany do Ulubionych:</string>
     <string name="deleteAllEntries">Usunąć wszystkie niezagwiazdkowane artykuły?</string>
     <string name="question">Pytanie</string>
-    <string name="reload_full_text_with_tags">Przeładuj z tagami</string>
+    <string name="reload_full_text_with_tags">Widok edycji treści</string>
     <string name="filter_hint">Akcja przypisana filtrom zostanie wykonana przy spełnieniu co najmniej jednego z warunków (reguł). \'Akceptuj\' nadpisuje \'Odrzuć\'</string>
     <string name="keyword">słowo/a kluczowe</string>
-    <string name="loadTypeWeb">Web (wczytuj wszystkie linki)</string>
-    <string name="loadTypeRSS">RSS (adres kanału lub strony internetowej) lub słowo kluczowe</string>
-    <string name="loadTypeWebPageSearch">Wyszukiwarka DuckDuckGo (znajdź i wczytaj artykuł)</string>
-    <string name="loadTypeOneWebPage">Jedna strona( dzieli treść strony internetowej na poszczególne artykuły na bazie nazw tagów html</string>
+    <string name="loadTypeWeb"><b>Linki</b> <font color="gray">(załaduj wszystkie linki ze strony jako osobne artykuły)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(kanał lub link do strony lub słowa kluczowe)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Wyszukiwarka DuckDuckGo</b> <font color="gray">(znajdź i wczytaj pojedynczy artykuł)</font></string>
+    <string name="loadTypeOneWebPage"><b>Jedna strona</b><font color="gray"> (podziel treść jednej strony na wiele artykułów na bazie nazwy klasy html)</font></string>
     <string name="loadType">Wczytuj:</string>
     <string name="global_filter">Filtr globalny&#8230;</string>
     <string name="global_filter_descr">Filtr stosowany do wszystkich kanałów - nie wypełniaj pól, jeśli ma być nieaktywny</string>
@@ -479,6 +479,11 @@ GENERAL]]></string>
     <string name="next_page_max_count_classname">Maks. ilość stron do przetworzenia</string>
     <string name="menu_copy_feed">Zdubluj aktualny kanał</string>
     <string name="feed_copied">Kanał zdublowany</string>
+    <string name="menu_show_entry_text">Tekst artykułu</string>
+    <string name="read_more">Czytaj więcej …</string>
+    <string name="cant_open_image">Nie można otworzyć obrazka</string>
+    <string name="parsing_one_web_page">Przetwarzanie jednej strony</string>
+    <string name="end_editing">Koniec edycji</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
