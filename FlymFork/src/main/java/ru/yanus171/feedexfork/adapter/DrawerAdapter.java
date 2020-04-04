@@ -368,6 +368,9 @@ public class DrawerAdapter extends BaseAdapter {
         timer.End();
 
         timer = new Timer("updateTaskNumbers()");
+
+        mTextTaskCount = 0;
+        mImageTaskCount = 0;
         Cursor tasks = cr.query(FeedData.TaskColumns.CONTENT_URI,
                                 new String[]{FeedData.TaskColumns.TEXT_COUNT, FeedData.TaskColumns.IMAGE_COUNT},
                                 null, null, null);

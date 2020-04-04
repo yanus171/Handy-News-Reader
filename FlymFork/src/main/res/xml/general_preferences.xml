@@ -59,6 +59,15 @@
                 colorPreference:sampletextShort="@string/settings_color_text_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@color/light_theme_color_primary"
+                android:dependency="customColors"
+                android:key="toolBarColor"
+                android:title="@string/tool_bar_color"
+                android:summary="@string/tool_bar_color_desc"
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_text_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
         </PreferenceCategory>
     </PreferenceScreen>
@@ -440,21 +449,6 @@
                 android:title="@string/settings_refresh_wifi_only"/>
 
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:defaultValue="4"
-                android:entries="@array/settings_keep_times"
-                android:entryValues="@array/settings_keep_time_values"
-                android:inputType="number"
-                android:key="keeptime"
-                android:title="@string/settings_keep_time"/>
-
-            <CheckBoxPreference
-                android:key="delete_read_articles"
-                android:title="@string/delete_read_articles"
-                android:summary="@string/delete_read_articles_descr"/>
-
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="ALWAYS_PRELOAD"
                 android:dependency="display_images"
                 android:entries="@array/settings_preload_image_modes"
@@ -488,6 +482,39 @@
                 android:key="load_comments"
                 android:title="@string/settings_load_comments"
                 android:summary="@string/settings_load_comments_description"/>
+
+
+        </PreferenceCategory>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_delete_old">
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:key="delete_old_interval"
+                android:defaultValue="86400000"
+                android:dependency="refresh.enabled"
+                android:entries="@array/settings_intervals"
+                android:entryValues="@array/settings_interval_values"
+                android:inputType="number"
+                android:title="@string/settings_delete_old_interval"
+                android:summary="@string/settings_delete_old_interval_descr"/>
+            <CheckBoxPreference
+                android:key="delete_old_requires_charging"
+                android:defaultValue="false"
+                android:dependency="refresh.enabled"
+                android:title="@string/auto_refresh_requires_charging"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:defaultValue="4"
+                android:entries="@array/settings_keep_times"
+                android:entryValues="@array/settings_keep_time_values"
+                android:inputType="number"
+                android:key="keeptime"
+                android:title="@string/settings_keep_time"/>
+            <CheckBoxPreference
+                android:key="delete_read_articles"
+                android:title="@string/delete_read_articles"
+                android:summary="@string/delete_read_articles_descr"/>
         </PreferenceCategory>
     </PreferenceScreen>
 
@@ -525,11 +552,6 @@
                 android:title="@string/settings_autobackup_enabled"
                 android:summary="@string/settings_autobackup_enabled_descr"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="settings_add_google_news_dialog"
-                android:summary="@string/settings_add_google_news_dialog_descr"
-                android:title="@string/settings_add_google_news_dialog" />
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="86400000"
                 android:entries="@array/settings_intervals"
@@ -539,6 +561,11 @@
                 android:dependency="autobackup.enabled"
                 android:title="@string/autobackup_interval"
                 android:summary="@string/autobackup_interval_descr"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="settings_add_google_news_dialog"
+                android:summary="@string/settings_add_google_news_dialog_descr"
+                android:title="@string/settings_add_google_news_dialog" />
 
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -596,12 +623,6 @@
                 android:title="@string/global_class_list_to_remove_from_article_text"
                 android:inputType="text|textMultiLine"
                 android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
-            <CheckBoxPreference
-                android:key="settings_reload_fulltext_after_tag_editing"
-                android:defaultValue="true"
-                android:title="@string/reload_fulltext_after_tag_editing"
-                android:summary= "@string/reload_fulltext_after_tag_editing_descr"/>
-
 
         </PreferenceCategory>
     </PreferenceScreen>

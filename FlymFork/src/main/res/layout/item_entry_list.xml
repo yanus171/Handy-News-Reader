@@ -180,6 +180,27 @@
                 android:textColor="?attr/colorReadState"
                 android:textIsSelectable="false" />
 
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/earth_gray" />
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/earth_gray" />
+            <ImageView
+                android:id="@+id/image3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/earth_gray" />
             <TextView
                 android:id="@+id/textSource"
                 android:layout_width="match_parent"
@@ -190,10 +211,20 @@
                 android:alpha="0.7"
                 android:drawablePadding="3dp"
                 android:singleLine="false"
+                android:ellipsize="end"
                 android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?attr/colorReadState"
                 android:textIsSelectable="false" />
+            <TextView
+                android:id="@+id/textSourceReadMore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/read_more"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?attr/colorReadState"
+                android:textIsSelectable="false" />
+
         </LinearLayout>
 
         <include layout="@layout/item_entry_list_btn"/>

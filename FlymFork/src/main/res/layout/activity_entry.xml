@@ -3,24 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <include layout="@layout/view_toolbar" />
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <fragment
                 android:id="@+id/entry_fragment"
                 class="ru.yanus171.feedexfork.fragment.EntryFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
-
         </FrameLayout>
     </LinearLayout>
 

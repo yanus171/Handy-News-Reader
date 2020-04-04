@@ -44,15 +44,18 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -68,6 +71,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
@@ -77,17 +81,20 @@ import static ru.yanus171.feedexfork.Constants.DB_COUNT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
+    private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
+    private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
+    public View mPageUpBtn = null;
 
     private static String FEED_NUMBER(final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
@@ -140,10 +147,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
 
         mTitle = getTitle();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLeftDrawer = findViewById(R.id.left_drawer);
         //mLeftDrawer.setBackgroundColor(ContextCompat.getColor( this, PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background));
@@ -220,7 +223,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+                setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
+                if ( !GetIsActionBarEntryListHidden() )
+                    ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
                 if (mEntriesFragment != null)
                     mEntriesFragment.UpdateFooter();
             }
@@ -228,11 +233,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+                setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden());
             }
         });
 
-        findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+        mPageUpBtn = findViewById(R.id.pageUpBtn);
+        mPageUpBtn.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PageUpDown( -1 );
@@ -245,6 +251,18 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         });
         timer.End();
+    }
+
+    static public boolean GetIsActionBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN, false);
+    }
+    static public boolean GetIsStatusBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, false);
+    }
+
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
+        setFullScreen( statusBarHidden, actionBarHidden,
+                       STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
     }
 
     private void PageUpDown( int downOrUp ) {
@@ -264,16 +282,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onPause() {
-        synchronized (EntriesCursorAdapter.mMarkAsReadList) {
-            EntriesCursorAdapter.mMarkAsReadList.clear();//SetIsReadMakredList();
-        }
+        EntriesCursorAdapter.mMarkAsReadList.clear();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         Timer timer = new Timer("HomeActivity.onResume");
         final Intent intent = getIntent();
         setIntent( new Intent() );
@@ -306,8 +321,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
-        setFullScreen();
+        setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
         HideTapZonesText(findViewById(R.id.layout_root));
+        mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
         timer.End();
     }
 
@@ -578,8 +594,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     getSupportActionBar().setHomeAsUpIndicator( image );
                     break;
             }
+            if ( mEntriesFragment.getView() != null )
+                ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
         }
-
         PrefUtils.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 
         // Put the good menu
@@ -612,5 +629,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if ( hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+            setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
     }
 }

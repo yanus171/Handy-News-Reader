@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -57,12 +58,15 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 public class EntryActivity extends BaseActivity {
 
     public EntryFragment mEntryFragment = null;
 
     public boolean mHasSelection = false;
+    private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
+    private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +124,7 @@ public class EntryActivity extends BaseActivity {
                 });
 
         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
-            setFullScreen( true, true );
+            setFullScreen( true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN );
     }
     private void LoadAndOpenLink(final String url, final String title, final String text) {
         new Thread(new Runnable() {
@@ -168,7 +172,7 @@ public class EntryActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus)
-            setFullScreen();
+            setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden() );
     }
 
     //public boolean mIsStatusBarHidden, mIsActionBarHidden;
@@ -247,6 +251,7 @@ public class EntryActivity extends BaseActivity {
         super.onResume();
 
         setFullScreen();
+        getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
         Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
         EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
     }
@@ -334,4 +339,16 @@ public class EntryActivity extends BaseActivity {
         super.onActionModeFinished(mode);
         mHasSelection = false;
     }
+
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
+        setFullScreen( statusBarHidden, actionBarHidden,
+                       STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN );
+    }
+    static public boolean GetIsStatusBarHidden() {
+        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_HIDDEN, false);
+    }
+    static public boolean GetIsActionBarHidden() {
+        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_HIDDEN, false);
+    }
+
 }

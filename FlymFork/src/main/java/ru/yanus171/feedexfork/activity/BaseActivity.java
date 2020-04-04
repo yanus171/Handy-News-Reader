@@ -23,11 +23,13 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,10 +44,10 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -78,6 +80,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         if ( mBrightness != null ) {
             mBrightness.OnResume();
+        }
+        if ( getSupportActionBar() != null )
+            getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS );
+            getWindow().setStatusBarColor(GetToolBarColorInt());
         }
         Status().UpdateText();
     }
@@ -121,22 +129,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.attachBaseContext( InitLocale( base ));
     }
 
-    private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
-    private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
 
-    static public boolean GetIsStatusBarHidden() {
-        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_HIDDEN, false);
-    }
-    static public boolean GetIsActionBarHidden() {
-        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_HIDDEN, false);
-    }
-    public void setFullScreen() {
-        setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden());
-    }
-
-    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden) {
-        PrefUtils.putBoolean(STATE_IS_STATUSBAR_HIDDEN, statusBarHidden);
-        PrefUtils.putBoolean(STATE_IS_ACTIONBAR_HIDDEN, actionBarHidden);
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden,
+                               String keyStatusBarHidden, String keyActionBarHidden) {
+        PrefUtils.putBoolean(keyStatusBarHidden, statusBarHidden);
+        PrefUtils.putBoolean(keyActionBarHidden, actionBarHidden);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (statusBarHidden)
                 mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -162,7 +159,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock) {
+    public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock, boolean isStatusBarHiddent) {
         if ( progressBar == null || labelClock == null )
             return;
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
@@ -178,7 +175,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             progressBar.setVisibility( View.GONE );
         }
 
-        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && GetIsStatusBarHidden() ) {
+        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && isStatusBarHiddent ) {
             labelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             labelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
             labelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,166 +10,151 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/layoutColontitul"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible">
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
 
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_weight="0.6"
-                android:layout_width="0dp"
-                android:layout_height="4dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="0dp"
-                android:indeterminate="false"
-                android:indeterminateOnly="false"
-                android:max="100"
-                android:padding="0dp"
-                android:paddingTop="0dp"
-                android:progress="33"
-                android:progressBackgroundTint="#00000000"
-                android:progressTint="#FF777777" />
-            <TextView
-                android:id="@+id/textClock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:text="21:26"
-                android:textSize="8dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp" />
+<!--            <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--                android:id="@+id/coordinator_layout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                app:layout_scrollFlags="scroll|enterAlways">-->
 
-        </LinearLayout>
+<!--                <com.google.android.material.appbar.AppBarLayout-->
+<!--                    android:id="@+id/appBar"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+            <include layout="@layout/view_toolbar" />
+<!--                </com.google.android.material.appbar.AppBarLayout>-->
+
+        <include layout="@layout/colontitul" />
 
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
+                    <include layout="@layout/status_view" />
 
-            <include layout="@layout/brightness_slider_layout" />
+                    <include layout="@layout/brightness_slider_layout" />
+                    <TextView
+                        android:id="@+id/pageUpBtn"
+                        style="@style/TapZone"
+                        android:layout_width="match_parent"
+                        android:layout_height="10mm"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/pageUp" />
 
-            <TextView
-                android:id="@+id/errorText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="start|top"
-                android:gravity="start|top"
-                android:text="error"
-                android:textColor="#FF0000"
-                android:visibility="invisible" />
+                    <TextView
+                        android:id="@+id/pageDownBtn"
+                        style="@style/TapZone"
+                        android:layout_width="match_parent"
+                        android:layout_height="10mm"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/pageDown" />
 
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|top"
-                android:gravity="start|top"
-                android:layout_below="@+id/errorText"
-                android:text="status"
-                android:visibility="invisible" />
+                    <TextView
+                        android:id="@+id/pageDownBtnVert"
+                        style="@style/TapZone"
+                        android:layout_width="10mm"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/pageDown"
+                        android:visibility="gone"
+                        android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:id="@+id/pageUpBtn"
-                style="@style/TapZone"
-                android:layout_width="match_parent"
-                android:layout_height="10mm"
-                android:layout_below="@+id/statusText"
-                android:text="@string/pageUp" />
+                    <TextView
+                        android:id="@+id/entryPrevBtn"
+                        style="@style/TapZoneBtn"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/entry_go_prev"
+                        android:layout_alignParentStart="true" />
 
-            <TextView
-                android:id="@+id/pageDownBtn"
-                style="@style/TapZone"
-                android:layout_width="match_parent"
-                android:layout_height="10mm"
-                android:layout_alignParentBottom="true"
-                android:text="@string/pageDown" />
+                    <TextView
+                        android:id="@+id/entryNextBtn"
+                        style="@style/TapZoneBtn"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/entry_go_next"
+                        tools:ignore="RtlHardcoded"
+                        android:layout_alignParentEnd="true" />
+                    <TextView
+                        android:id="@+id/toggleFullScreenStatusBarBtn"
+                        style="@style/TapZoneBtn"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/fullScreenToggle"
+                        android:layout_alignParentStart="true" />
 
-            <TextView
-                android:id="@+id/pageDownBtnVert"
-                style="@style/TapZone"
-                android:layout_width="10mm"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:text="@string/pageDown"
-                android:visibility="gone"
-                android:layout_alignParentEnd="true" />
+                    <TextView
+                        android:id="@+id/toggleFullscreenBtn"
+                        style="@style/TapZoneBtn"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/actionBarToggle"
+                        android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:id="@+id/toggleFullScreenStatusBarBtn"
-                style="@style/TapZoneBtn"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:text="@string/fullScreenToggle"
-                android:layout_alignParentStart="true" />
+                    <ProgressBar
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/progressBarLoader"
+                        android:layout_below="@id/entryNextBtn"
+                        android:layout_alignParentRight="true"
+                        android:padding="10dp"
+                        android:layout_marginRight="10dp"
+                        android:indeterminate="true"
+                        android:background="@drawable/progressbar_background"
+                        android:indeterminateDrawable="@drawable/spinner_ring"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp" />
 
-            <TextView
-                android:id="@+id/toggleFullscreenBtn"
-                style="@style/TapZoneBtn"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:text="@string/actionBarToggle"
-                android:layout_alignParentEnd="true" />
+                    <TextView
+                        android:id="@+id/btnEndEditing"
+                        style="@style/TapZone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/progressBarLoader"
+                        android:layout_margin="10dp"
+                        android:padding="10dp"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/end_editing"
+                        android:visibility="visible"
+                        android:background="@drawable/btn_background"
+                        android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:id="@+id/entryPrevBtn"
-                style="@style/TapZoneBtn"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/entry_go_prev"
-                android:layout_alignParentStart="true" />
+                    <TextView
+                        android:id="@+id/progressText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/progressBarLoader"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toStartOf="@+id/progressBarLoader"
+                        android:layout_toLeftOf="@+id/progressBarLoader"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:background="@drawable/progresstext_background"
+                        android:text="info"
+                        tools:ignore="RtlHardcoded" />
 
-            <TextView
-                android:id="@+id/entryNextBtn"
-                style="@style/TapZoneBtn"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/entry_go_next"
-                tools:ignore="RtlHardcoded"
-                android:layout_alignParentEnd="true" />
+                </RelativeLayout>
 
-            <ProgressBar
-                style="?android:attr/progressBarStyle"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/progressBarLoader"
-                android:layout_below="@id/entryNextBtn"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:layout_marginRight="10dp"
-                android:indeterminate="true"
-                android:background="@drawable/progressbar_background"
-                android:indeterminateDrawable="@drawable/spinner_ring"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp" />
+<!--            </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
-            <TextView
-                android:id="@+id/progressText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/progressBarLoader"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_toStartOf="@+id/progressBarLoader"
-                android:layout_toLeftOf="@+id/progressBarLoader"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:background="@drawable/progresstext_background"
-                android:text="info"
-                tools:ignore="RtlHardcoded" />
+
 
             <FrameLayout
                 android:id="@+id/videoLayout"
@@ -176,7 +162,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
     </LinearLayout>
 
     <LinearLayout

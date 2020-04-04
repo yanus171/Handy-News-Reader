@@ -122,7 +122,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static boolean  mNotifyEnabled = true;
+    public static boolean mNotifyEnabled = true;
 
     static {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "grouped_feeds", URI_GROUPED_FEEDS);

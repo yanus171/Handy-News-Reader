@@ -43,6 +43,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -84,6 +85,8 @@ public class NetworkUtils {
     private static String getDownloadedImagePath( String entryLink, String prefix, String imgUrl ) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
         String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
+        if ( fileExtension.isEmpty() && imgUrl.contains("/svg/") )
+            fileExtension = ".svg";
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
 
@@ -165,7 +168,7 @@ public class NetworkUtils {
                 }
             }
 
-            if ( success && !abort && notify )
+            if ( success && !abort && notify && entryId > 0 )
                 EntryView.NotifyToUpdate( entryId, entryUrl );
         }
         //if ( updateGUI )
@@ -220,11 +223,15 @@ public class NetworkUtils {
 
     public static String getBaseUrl(String link) {
         String baseUrl = link;
-        int index = link.lastIndexOf('/'); // this also covers https://
-        if (index > -1) {
-            baseUrl = link.substring(0, index + 1);
+        Pattern p = Pattern.compile("(http?.://[^/]+)");
+        Matcher m = p.matcher(baseUrl);
+        if (m.find())
+            baseUrl = m.group(1);  // The matched substring
+        else {
+            int index = link.lastIndexOf( '/' ); // this also covers https://
+            if (index > -1)
+                baseUrl = link.substring(0, index + 1);
         }
-
         return baseUrl;
     }
 
@@ -308,21 +315,23 @@ public class NetworkUtils {
 
     public static Bitmap downloadImage(String url) {
         Bitmap bitmap = null;
-        Connection connection = new Connection( url ); try {
+        try {
+            Connection connection = new Connection( url ); try {
 
-            byte[] iconBytes = getBytes(connection.getInputStream());
-            if (iconBytes != null && iconBytes.length > 0) {
-                bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
-                if (bitmap != null) {
-                    if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
+                byte[] iconBytes = getBytes(connection.getInputStream());
+                if (iconBytes != null && iconBytes.length > 0) {
+                    bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
+                    if (bitmap != null) {
+                        if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
 
+                        }
                     }
                 }
+            } finally {
+                connection.disconnect();
             }
-        } catch (Throwable ignored) {
-
-        } finally {
-            connection.disconnect();
+        } catch (Exception e) {
+            DebugApp.AddErrorToLog(null, e);
         }
         return bitmap;
     }

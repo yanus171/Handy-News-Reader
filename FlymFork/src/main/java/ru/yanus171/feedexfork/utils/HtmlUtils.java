@@ -20,6 +20,8 @@
 package ru.yanus171.feedexfork.utils;
 
 import androidx.annotation.NonNull;
+
+import android.net.Uri;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
@@ -27,6 +29,7 @@ import org.jsoup.safety.Whitelist;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +39,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.isEntryIDActive;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
 
 public class HtmlUtils {
@@ -109,16 +114,16 @@ public class HtmlUtils {
             //content = START_BR_PATTERN.matcher(content).replaceAll("");
             //content = END_BR_PATTERN.matcher(content).replaceAll("");
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
-            if ( !baseUri.contains( "user" ) ) {
+            if ( !baseUri.contains( "user" ) && mobType != ArticleTextExtractor.MobilizeType.Tags ) {
                 content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
                 //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
             }
 
             // xml
-            content = content.replace( "&lt;", "<" );
-            content = content.replace( "&gt;", ">" );
-            content = content.replace( "&amp;", "&" );
-            content = content.replace( "&quot;", "\"" );
+//            content = content.replace( "&lt;", "<" );
+//            content = content.replace( "&gt;", ">" );
+//            content = content.replace( "&amp;", "&" );
+//            content = content.replace( "&quot;", "\"" );
             content = content.replace( "&#39;", "'" );
 
         }
@@ -143,51 +148,65 @@ public class HtmlUtils {
         return images;
     }
 
-    static final String LINK_TAG_END = "</a>";
+    private static final String LINK_TAG_END = "</a>";
 
     private static String GetLinkStartTag(String imgPath) {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
         final ArrayList<String> imagesToDl = new ArrayList<>();
-        return replaceImageURLs(content, entryId, entryLink, isDownLoadImages, imagesToDl );
+        return replaceImageURLs(content, "", entryId, entryLink, isDownLoadImages, imagesToDl, null, mMaxImageDownloadCount );
 
     }
-    public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages, final ArrayList<String> imagesToDl) {
+    public static String replaceImageURLs(String content,
+                                          final String feedId,
+                                          final long entryId,
+                                          final String entryLink,
+                                          boolean isDownLoadImages,
+                                          final ArrayList<String> imagesToDl,
+                                          final ArrayList<Uri> externalImageList,
+                                          final int maxImageDownloadCount) {
         final int status = Status().Start("Reading images", true); try {
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
-
+            Timer timer = new Timer( "replaceImageURLs" );
             if (!TextUtils.isEmpty(content)) {
                 content = ReplaceImagesWithALink(content);
                 Matcher matcher;
 
-                boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
+                boolean needDownloadPictures = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 //final ArrayList<String> imagesToDl = new ArrayList<>();
-
 
                 matcher = IMG_PATTERN.matcher(content);
                 int index = 0;
-                while (matcher.find()) {
+                while ( matcher.find() ) {
                     index++;
                     String srcUrl = matcher.group(1);
                     srcUrl = srcUrl.replace(" ", URL_SPACE);
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
-                    final boolean isImageToLoad = (index <= FetcherService.mMaxImageDownloadCount) || (FetcherService.mMaxImageDownloadCount == 0);
+                    final File file = new File( imgFilePath );
+                    final boolean isImageToLoad = isDownLoadImages && ( index <= maxImageDownloadCount || maxImageDownloadCount == 0);
                     final String imgFileTag =
-                            GetLinkStartTag(imgFilePath) +
-                                    imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
-                                    LINK_TAG_END;
-                    final boolean isFileExists = new File(imgFilePath).exists();
+                        GetLinkStartTag(imgFilePath) +
+                        imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
+                        LINK_TAG_END;
                     if ( needDownloadPictures ) {
-                        if ( isDownLoadImages && !isFileExists && isImageToLoad )
+                        final boolean isFileExists = new File(imgFilePath).exists();
+                        if ( !isFileExists && isImageToLoad )
                             imagesToDl.add(srcUrl);
                         String btnLoadNext = "";
-                        if ( index == FetcherService.mMaxImageDownloadCount + 1 ) {
+                        if ( index == maxImageDownloadCount + 1 ) {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
                             btnLoadNext += getButtonHtml("downloadAllImages()", getString(R.string.downloadAll), "download_all");
                         }
-                        if ( isFileExists || isImageToLoad )
+                        final boolean isSmallForExternalList = file.length() < 1024 * 7;
+                        if ( externalImageList != null && externalImageList.size() <= maxImageDownloadCount &&
+                            ( !isSmallForExternalList || !isFileExists ) ) {
+                            externalImageList.add(Uri.fromFile(file));
+                            content = content.replace(imgWebTag, "");
+                        } else if ( externalImageList != null && isSmallForExternalList )
+                            content = content.replace(imgWebTag, "");
+                        else if ( isImageToLoad || isFileExists )
                             content = content.replace(imgWebTag, imgFileTag + btnLoadNext);
                         else if ( !isFileExists ) {
                             String htmlButtons = getDownloadImageHtml(srcUrl) + "<br/>";
@@ -196,27 +215,25 @@ public class HtmlUtils {
                     } else
                         content = content.replace(imgWebTag, "");
                 }
-
-                content = content.replaceAll("width=\\\"\\d+\\\"", "");
-                content = content.replaceAll("height=\\\"\\d+\\\"", "");
+                content = content.replaceAll("width=\"\\d+\"", "");
+                content = content.replaceAll("height=\"\\d+\"", "");
 
                 // Download the images if needed
                 if (!imagesToDl.isEmpty() && entryId != -1 ) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            FetcherService.downloadEntryImages(entryId, entryLink, imagesToDl);
+                            FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl);
                         }
                     }).start();
                 }
-
             }
+            timer.End();
         } catch ( Exception e ) {
             Status().SetError( null, "", String.valueOf(entryId), e  );
         } finally {
             Status().End( status );
         }
-
         return content;
     }
 
@@ -284,17 +301,16 @@ public class HtmlUtils {
         return !imgUrl.endsWith(".gif") && !imgUrl.endsWith(".GIF") && !imgUrl.endsWith(".img") && !imgUrl.endsWith(".IMG");
     }
 
-    static public ArrayList<String> Split( String text, String sep ) {
-        final ArrayList<String> result = new ArrayList<>();
-        for( String item: TextUtils.split(text, sep) )
-            result.add( item );
-        return result;
-
-    }
+//    static public ArrayList<String> Split( String text, String sep ) {
+//        final ArrayList<String> result = new ArrayList<>();
+//        for( String item: TextUtils.split(text, sep) )
+//            result.add( item );
+//        return result;
+//
+//    }
     static public ArrayList<String> Split( String text, Pattern sep ) {
         final ArrayList<String> result = new ArrayList<>();
-        for( String item: TextUtils.split(text, sep) )
-            result.add( item );
+        Collections.addAll(result, TextUtils.split(text, sep));
         return result;
     }
 }

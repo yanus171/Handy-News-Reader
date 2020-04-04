@@ -58,12 +58,12 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.Html;
 import android.text.Layout;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ResourceCursorAdapter;
@@ -76,8 +76,10 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -89,27 +91,36 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
+import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
+import ru.yanus171.feedexfork.view.EntryView;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.isEntryIDActive;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
+
+    private HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
     private final boolean mShowEntryText, mShowUnread;
     private boolean mBackgroundColorLight = false;
+    final int MAX_TEXT_LEN = 2500;
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
@@ -174,10 +185,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
             holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
             holder.newImgView = view.findViewById(R.id.new_icon);
-
+            holder.contentImgView1 = view.findViewById(R.id.image1);
+            holder.contentImgView2 = view.findViewById(R.id.image2);
+            holder.contentImgView3 = view.findViewById(R.id.image3);
+            holder.readMore = view.findViewById(R.id.textSourceReadMore);
             UiUtils.SetFontSize(holder.titleTextView);
 
             view.setTag(R.id.holder, holder);
+
+            holder.readMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OpenArticle(view.getContext(), holder.entryID);
+                }
+            });
 
             view.findViewById( R.id.layout_ontouch ).setOnTouchListener( new View.OnTouchListener() {
                 private int paddingX = 0;
@@ -250,15 +271,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if ( event.getAction() == MotionEvent.ACTION_UP ) {
                             Dog.v("onTouch ACTION_UP" );
-                            if ( mEntryActivityStartingStatus == 0 &&
+                            if ( !mShowEntryText &&
+                                 mEntryActivityStartingStatus == 0 &&
                                  currentx > MIN_X_TO_VIEW_ARTICLE &&
                                  Math.abs( paddingX ) < minX &&
                                  Math.abs( paddingY ) < minY &&
                                  SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
-                                v.getContext().startActivity(
-                                        GetActionIntent(Intent.ACTION_VIEW,
-                                                ContentUris.withAppendedId(mUri, holder.entryID)));
+                                OpenArticle(v.getContext(), holder.entryID);
                             } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
                                 toggleReadState(holder.entryID, view);
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
@@ -333,7 +353,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos );
+        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos ) && !mMarkAsReadList.contains( EntryUri( holder.entryID ) );
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
         final int backgroundColor;
@@ -346,19 +366,21 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.dateTextView.setVisibility(View.VISIBLE);
 
-        String titleText = cursor.getString(mTitlePos).replace( cursor.getString(mFeedTitlePos), "" );
+        final String feedTitle = cursor.getString(mFeedTitlePos);
+        String titleText = cursor.isNull( mTitlePos ) ? "" : cursor.getString(mTitlePos).replace( feedTitle == null ? "" : feedTitle, "" );
+        holder.titleTextView.setVisibility( titleText.isEmpty() ? View.GONE : View.VISIBLE );
         holder.titleTextView.setText(titleText);
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
-        holder.titleTextView.setTypeface( isToday ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
+        holder.titleTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
 
         holder.urlTextView.setText(cursor.getString(mUrlPos));
 
         String feedName = cursor.getString(mFeedNamePos);
 
-        if ( /*!mShowEntryText && */PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
+        if ( !mShowEntryText && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
@@ -370,7 +392,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if (mainImgUrl != null) {
                 final int dim = UiUtils.dpToPixel(50);
                 Glide.with(context).load(mainImgUrl)
-                    .override(dim, dim)
+                    //.override(dim, dim)
                     .centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
             } else {
                 Glide.with(context).clear(holder.mainImgView);
@@ -442,12 +464,44 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             }
         });
 
+        holder.contentImgView1.setVisibility( View.GONE );
+        holder.contentImgView2.setVisibility( View.GONE );
+        holder.contentImgView3.setVisibility( View.GONE );
+        holder.readMore.setVisibility( View.GONE );
         if ( mShowEntryText ) {
+
             holder.textTextView.setVisibility(View.VISIBLE);
-            holder.textTextView.setText(Html.fromHtml( cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos) ));
+            final String html = cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 holder.textTextView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD );
             holder.textTextView.setEnabled(!holder.isRead);
+            holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
+            SetupEntryText(holder, Html.fromHtml( html ), true );
+            final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
+            if ( html.contains( "<img" ) || isMobilized ) {
+                EntryContent content = mContentVoc.get(holder.entryID);
+                if (content != null && content.GetIsLoaded() ) {
+                    SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList);
+                    SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList);
+                    SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList);
+                    SetupEntryText(holder, content.mText, content.mIsReadMore);
+                } else if ( content == null ) {
+                    content = new EntryContent();
+                    content.mID = holder.entryID;
+                    content.mHTML = html;
+                    content.mIsMobilized = isMobilized;
+                    content.mLink = holder.entryLink;
+                    mContentVoc.put( holder.entryID, content );
+                    final EntryContent contentFinal = content;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            contentFinal.Load();
+                        }
+                    }.start();
+                }
+            }
+
         } else
             holder.textTextView.setVisibility(View.GONE);
 
@@ -465,9 +519,83 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.authorTextView.setTextColor( color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
+            holder.readMore.setTextColor( color );
             holder.titleTextView.setTextColor( color );
             holder.urlTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
+        }
+    }
+
+    class EntryContent {
+        long mID = 0L;
+        String mLink;
+        ArrayList<Uri> mImageUrlList = new ArrayList<>();
+        Spanned mText;
+        String mHTML;
+        boolean mIsLoaded = false;
+        boolean mIsMobilized = false;
+        boolean mIsReadMore = false;
+        boolean GetIsLoaded() {
+            synchronized ( this ) {
+                return mIsLoaded;
+            }
+        }
+        void Load() {
+            //if ( !isEntryIDActive( holder.entryID ) )
+            //    return;
+            final ArrayList<String> imagesToDl = new ArrayList<>();
+            final ArrayList<Uri> allImages = new ArrayList<>();
+            String temp = mHTML;
+            if ( mIsMobilized )
+                temp = FileUtils.INSTANCE.loadMobilizedHTML( mLink, null );
+            temp = RemoveTables( temp );
+            temp = RemoveHeaders( temp );
+            temp = HtmlUtils.replaceImageURLs( temp,
+                                               "",
+                                               mID,
+                                               mLink,
+                                               true,
+                                               imagesToDl,
+                                               mImageUrlList,
+                                               3 );
+            mText = Html.fromHtml( temp );
+            mIsReadMore = temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
+            synchronized ( this ) {
+                mIsLoaded = true;
+            }
+            EntryView.NotifyToUpdate( mID, mLink );
+        }
+    }
+
+    private void OpenArticle(Context context, long entryID) {
+        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
+    }
+
+    private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
+        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) : text );
+        if ( isReadMore )
+            holder.readMore.setVisibility(View.VISIBLE );
+    }
+
+    private static void SetContentImage(Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
+        if ( allImages.size() > index ) {
+            final Uri uri = allImages.get( index );
+            imageView.setVisibility(View.VISIBLE);
+//                Glide.with(context).load( uri )
+//                    .fitCenter()
+//                    .into(imageView);
+            imageView.setImageURI( uri );
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        EntryView.OpenImage( uri.toString(), view.getContext() );
+                    } catch (IOException e) {
+                        UiUtils.toast( view.getContext(), view.getContext().getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 
@@ -593,7 +721,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     @Override
     public Cursor swapCursor(Cursor newCursor) {
-        //SetIsReadMakredList();
+        mContentVoc.clear();
         reinit(newCursor);
         return super.swapCursor(newCursor);
     }
@@ -653,6 +781,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isMobilized;
         long entryID = -1;
         String entryLink;
+        ImageView contentImgView1;
+        ImageView contentImgView2;
+        ImageView contentImgView3;
+        TextView readMore;
     }
 
     public int GetFirstUnReadPos() {
@@ -661,7 +793,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( !EntryColumns.IsRead( cursor, mIsReadPos ) )
                 return i;
         }
-        return -1;
+        return getCount();
     }
     public int GetPosByID( long id ) {
         if ( !isEmpty() ) {

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="start|top">
+
+
     <Button
         android:id="@+id/refreshListBtn"
         android:layout_width="match_parent"
@@ -20,13 +23,6 @@
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBarRefresh"
-        android:layout_gravity="center_horizontal"
-        android:indeterminate="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,51 +43,93 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible">
-            <LinearLayout
-                android:id="@+id/layoutColontitul"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible">
 
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_weight="0.6"
-                    android:layout_width="0dp"
-                    android:layout_height="4dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="0dp"
-                    android:indeterminate="false"
-                    android:indeterminateOnly="false"
-                    android:max="100"
-                    android:padding="0dp"
-                    android:paddingTop="0dp"
-                    android:progress="33"
-                    android:progressBackgroundTint="#00000000"
-                    android:progressTint="#FF777777" />
-                <TextView
-                    android:id="@+id/textClock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="21:26"
-                    android:textSize="8dp"
-                    android:paddingStart="2dp"
-                    android:paddingEnd="2dp" />
-            </LinearLayout>
-            <ListView
-                android:id="@android:id/list"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinator_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="fill"
-                android:divider="#66888888"
-                android:dividerHeight="5dp"
-                android:footerDividersEnabled="false"/>
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include layout="@layout/view_toolbar" />
+                </com.google.android.material.appbar.AppBarLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    <include layout="@layout/colontitul" />
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/progressBarRefresh"
+                        android:layout_gravity="center_horizontal"
+                        android:indeterminate="true" />
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <ListView
+                            android:id="@android:id/list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="fill"
+                            android:divider="#66888888"
+                            android:dividerHeight="5dp"
+                            android:footerDividersEnabled="false"/>
+
+                        <include layout="@layout/brightness_slider_layout" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/pageUpBtn"
+                                style="@style/TapZone"
+                                android:layout_width="match_parent"
+                                android:layout_height="10mm"
+                                android:text="@string/pageUp" />
+                            </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/pageDownBtn"
+                style="@style/TapZone"
+                android:layout_width="match_parent"
+                android:layout_height="10mm"
+                android:layout_gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:text="@string/pageDown" />
+            <include layout="@layout/status_view" />
+
+        </LinearLayout>
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progressBarLoader"
+            android:layout_gravity="top|end"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/progressbar_background"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/spinner_ring"
+            android:layout_alignParentEnd="true" />
         <TextView
             android:id="@+id/progressText"
             android:layout_width="wrap_content"
@@ -107,36 +145,23 @@
             android:text="info"
             tools:ignore="RtlHardcoded" />
         <TextView
-            android:id="@+id/statusText1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="status"
-            android:visibility="visible"
-            android:layout_gravity="start|top"
-            android:gravity="start|top" />
+            android:id="@+id/toggleFullScreenStatusBarBtn"
+            style="@style/TapZoneBtn"
+            android:layout_gravity="start|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:text="@string/fullScreenToggle"
+             />
+
         <TextView
-            android:id="@+id/errorText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="error"
-            android:textColor="#FF0000"
-            android:visibility="visible"
-            android:layout_below="@id/statusText1"
-            android:gravity="start|top" />
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/progressBarLoader"
-            android:layout_gravity="top|end"
-            android:layout_below="@id/errorText"
-            android:layout_margin="10dp"
-            android:padding="10dp"
+            android:id="@+id/toggleFullscreenBtn"
+            style="@style/TapZoneBtn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/progressbar_background"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/spinner_ring"
-            android:layout_alignParentEnd="true" />
+            android:layout_gravity="end|bottom"
+            android:text="@string/actionBarToggle" />
 
     </RelativeLayout>
     </LinearLayout>

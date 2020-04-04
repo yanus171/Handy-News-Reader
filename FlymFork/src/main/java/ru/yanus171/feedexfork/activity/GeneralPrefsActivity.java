@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -53,6 +54,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Theme;
+
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 public class GeneralPrefsActivity extends BaseActivity {
 
@@ -65,8 +68,8 @@ public class GeneralPrefsActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.menu_settings);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

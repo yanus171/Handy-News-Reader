@@ -28,7 +28,7 @@ public class Theme {
 	public static final String LINK_COLOR_BACKGROUND = LINK_COLOR + BACKGROUND;
 	public static final String QUOTE_BACKGROUND_COLOR = "quote_background_color";
 	public static final String QUOTE_LEFT_COLOR = "quote_left_color";
-	public static final String BUTTON_COLOR = "button_color";
+	//public static final String BUTTON_COLOR = "button_color";
 	public static final String SUBTITLE_COLOR = "subtitle_color";
 	public static final String SUBTITLE_BORDER_COLOR = "subtitle_border_color";
 	//public static final String ENTRY_LIST_BACKGROUND = "entry_list_background";
@@ -58,7 +58,7 @@ public class Theme {
 				theme.put(MENU_BACKGROUND_COLOR, "#CCCCCC");
 				theme.put(QUOTE_BACKGROUND_COLOR, "#e6e6e6");
 				theme.put(QUOTE_LEFT_COLOR, "#FFA500");
-				theme.put(BUTTON_COLOR, "#52A7DF");
+				//theme.put(BUTTON_COLOR, "#52A7DF");
 				theme.put(SUBTITLE_COLOR, "#666666");
 				theme.put(SUBTITLE_BORDER_COLOR, "#dddddd");
 
@@ -78,7 +78,7 @@ public class Theme {
 				theme.put(MENU_BACKGROUND_COLOR, "#222222");
 				theme.put(QUOTE_BACKGROUND_COLOR, "#000000");
 				theme.put(QUOTE_LEFT_COLOR, "#FFA500");
-				theme.put(BUTTON_COLOR, "#1A5A81");
+				//theme.put(BUTTON_COLOR, "#1A5A81");
 				theme.put(SUBTITLE_COLOR, "#8c8c8c");
 				theme.put(SUBTITLE_BORDER_COLOR, "#303030");
 				//theme.put(ENTRY_LIST_BACKGROUND, "#ff202020");
@@ -95,6 +95,7 @@ public class Theme {
 				theme.put(LINK_COLOR, MainApplication.getContext().getString( R.string.default_link_color ) );
 				theme.put(LINK_COLOR_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
 				theme.put(TEXT_COLOR_READ_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
+				theme.put("toolBarColor", MainApplication.getContext().getString( R.string.default_toolbar_color));
 			}
 			mTheme = PrefUtils.getString( THEME, DARK);
 		}
@@ -144,6 +145,14 @@ public class Theme {
 	//-------------------------------------------------------------------
 	public static int GetMenuFontColor() {
 		return GetColorInt (MENU_FONT_COLOR, R.color.light_theme_color_primary);
+	}
+	//-------------------------------------------------------------------
+	public static int GetToolBarColorInt() {
+		return Theme.GetColorInt("toolBarColor", R.string.default_toolbar_color );
+	}
+	//-------------------------------------------------------------------
+	public static String GetToolBarColor() {
+		return Theme.GetColor("toolBarColor", R.string.default_toolbar_color );
 	}
 	//-------------------------------------------------------------------
 	public static int GetMenuBackgroundColor() {

@@ -166,7 +166,7 @@ public class StatusText implements Observer {
         }
 
         public void UpdateText() {
-            UiUtils.RunOnGuiThreadInFront(new Runnable() {
+            UiUtils.RunOnGuiThread(new Runnable() {
                 @Override
                 public void run() {
                 synchronized ( mList ) {
@@ -240,9 +240,10 @@ public class StatusText implements Observer {
                 if ( startProgress )
                     mProgressBarStatusList.add( MaxID );
                 Dog.v("Status Start " + text + " id = " + MaxID );
+
+                UpdateText();
+                return MaxID;
             }
-            UpdateText();
-            return MaxID;
         }
         public void End( int id ) {
             Dog.v( "Status End " + id );
@@ -303,13 +304,19 @@ public class StatusText implements Observer {
                 mBytesRecievedLast += bytes;
             }
         }
-        void HideByScroll() {
+        public void ResetBytes() {
+            synchronized ( mList ) {
+                mBytesRecievedLast = 0;
+            }
+        }
+        public void HideByScroll() {
             UiUtils.RunOnGuiThread( new Runnable() {
                     @Override
                     public void run() {
                 synchronized (mList) {
                     if ( mList.isEmpty() ) {
                         mBytesRecievedLast = 0;
+                        mErrorText = "";
                         NotifyObservers( "", "", "", "", false, "" );
                     }
                 }

@@ -22,12 +22,7 @@ package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,23 +31,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AbsListView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
@@ -61,12 +45,8 @@ import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -75,20 +55,24 @@ import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
-import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static ru.yanus171.feedexfork.activity.BaseActivity.GetIsStatusBarHidden;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
-public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
+public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
@@ -150,12 +134,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 mNeedSetSelection = false;
                 mListView.setSelection(mEntriesCursorAdapter.GetFirstUnReadPos());
             }
-            if ( mLastVisibleTopEntryID != -1 ) {
-                int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
-                if ( pos != -1 &&
-                        ( pos > mListView.getLastVisiblePosition() || pos < mListView.getFirstVisiblePosition() )  )
-                    mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
-            }
+            RestoreListScrollPosition();
             getActivity().setProgressBarIndeterminateVisibility( false );
             Status().End( mStatus );
             timer.End();
@@ -169,6 +148,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
     };
+
+    public void RestoreListScrollPosition() {
+        if ( mLastVisibleTopEntryID != -1 ) {
+            int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
+            if ( pos != -1 )
+                mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
+        }
+    }
 
     private final OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
         @Override
@@ -296,10 +283,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mImageDownloadObservable.addObserver(this);
     }
 
     @Override
     public void onPause() {
+        mImageDownloadObservable.deleteObserver( this);
         super.onPause();
     }
 
@@ -314,14 +303,25 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
 
-        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText1 ),
+        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                        (TextView)rootView.findViewById( R.id.errorText ),
                                        (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
                                        (TextView)rootView.findViewById( R.id.progressText ),
                                        Status());
 
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
+        AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
+        //toolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
+        activity.setSupportActionBar( toolbar );
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //activity.getSupportActionBar().setBackgroundDrawable( new ColorDrawable( Theme.GetColorInt("toolBarColor", R.color.light_theme_color_primary ) ) );
+//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
         mListView = rootView.findViewById(android.R.id.list);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mListView.setNestedScrollingEnabled(true);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -332,6 +332,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if ( mEntriesCursorAdapter == null )
                     return;
+                if ( GetActivity().mPageUpBtn != null )
+                    GetActivity().mPageUpBtn.setVisibility( firstVisibleItem == 0 ? View.GONE : View.VISIBLE );
                 for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
                     String uri = GetUri( i ).toString();
                     synchronized ( mWasVisibleList ) {
@@ -340,12 +342,20 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     }
                 }
                 SetIsRead( firstVisibleItem - 2);
-                if ( !mShowTextInEntryList && firstVisibleItem > 0 ) {
+                if ( firstVisibleItem > 0 ) {
                     mLastVisibleTopEntryID = mEntriesCursorAdapter.getItemId(firstVisibleItem);
                     View v = mListView.getChildAt(0);
                     mLastListViewTopOffset = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
                 }
+                if ( mShowTextInEntryList ) {
+                    ArrayList<Long> list = new ArrayList<>();
+                    for ( int pos = firstVisibleItem; pos < firstVisibleItem + visibleItemCount; pos++ )
+                        list.add( mEntriesCursorAdapter.getItemId( pos ) );
+                    FetcherService.setEntryIDActiveList( list );
+                }
                 UpdateFooter();
+                Status().HideByScroll();
+                Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
             }
         });
 
@@ -389,12 +399,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         return rootView;
     }
 
+    private HomeActivity GetActivity() {
+        return (HomeActivity)getActivity();
+    }
+
 
     public void UpdateFooter() {
         BaseActivity.UpdateFooter(mProgressBar,
                                   mEntriesCursorAdapter.getCount(),
                                   mListView.getFirstVisiblePosition(),
-                                  mLabelClock);
+                                  mLabelClock,
+                                  HomeActivity.GetIsStatusBarEntryListHidden() );
     }
 
     private BaseActivity getBaseActivity() {
@@ -429,8 +444,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     new Thread() {
                         @Override
                         public void run() {
+                            FeedDataContentProvider.mNotifyEnabled = false;
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             cr.update( uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
+                            FeedDataContentProvider.mNotifyEnabled = true;
                         }
                     }.start();
                 }
@@ -626,6 +643,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 return true;
 
             }
+            case R.id.menu_delete_old: {
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ) );
+                return true;
+
+            }
+            case R.id.menu_show_entry_text: {
+                if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+                    final String feedID = mCurrentUri.getPathSegments().get(1);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    ContentValues values = new ContentValues();
+                    mShowTextInEntryList = !mShowTextInEntryList;
+                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
+                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                    setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList );
+                }
+                return true;
+            }
             case R.id.menu_create_auto_backup: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
                 return true;
@@ -691,6 +725,32 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 UpdateActions();
                 return true;
             }
+            case R.id.menu_copy_feed: {
+                if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+                    final String feedID = mCurrentUri.getPathSegments().get(1);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedID ), null, null, null, null );
+                    if ( cursor != null ) {
+                        if ( cursor.moveToFirst() ) {
+                            ContentValues values = new ContentValues();
+                            values.put(FeedColumns.GROUP_ID, cursor.getLong( cursor.getColumnIndex( FeedColumns.GROUP_ID )) );
+                            values.put(FeedColumns.ICON, cursor.getBlob( cursor.getColumnIndex( FeedColumns.ICON )) );
+                            values.put(FeedColumns.IS_AUTO_REFRESH, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_AUTO_REFRESH )) );
+                            values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_IMAGE_AUTO_LOAD )) );
+                            values.put(FeedColumns.NAME, cursor.getString( cursor.getColumnIndex( FeedColumns.NAME )) );
+                            values.put(FeedColumns.OPTIONS, cursor.getString( cursor.getColumnIndex( FeedColumns.OPTIONS )) );
+                            values.put(FeedColumns.RETRIEVE_FULLTEXT, cursor.getLong( cursor.getColumnIndex( FeedColumns.RETRIEVE_FULLTEXT )) );
+                            values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, cursor.getLong( cursor.getColumnIndex( FeedColumns.SHOW_TEXT_IN_ENTRY_LIST )) );
+                            values.put(FeedColumns.URL, cursor.getString( cursor.getColumnIndex( FeedColumns.URL )) + "/" );
+                            cr.insert(FeedColumns.CONTENT_URI, values);
+                        }
+                        cursor.close();
+                        UiUtils.toast( getActivity(), R.string.feed_copied );
+                    }
+                }
+                return true;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -858,5 +918,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
     }
-
+    @Override
+    public void update(Observable observable, Object o) {
+        if ( !mShowTextInEntryList )
+            return;
+        final Entry entry = (Entry)o;
+        final int pos = mEntriesCursorAdapter.GetPosByID( entry.mID );
+        if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition() ) {
+            mEntriesCursorAdapter.notifyDataSetChanged();
+            RestoreListScrollPosition();
+        }
+    }
 }

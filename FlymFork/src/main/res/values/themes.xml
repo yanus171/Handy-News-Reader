@@ -39,6 +39,23 @@
         <item name="android:background">@drawable/round_background</item>
 
     </style>
+    <style name="FeedAttrEdit" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:hint">@string/one_webpage_edittext_classname_hint</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="singleLine">true</item>
+        <item name="android:visibility">visible</item>
+    </style>
+    <style name="FeedAttrLabel" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:hint">@string/one_webpage_edittext_classname_hint</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:visibility">visible</item>
+    </style>
 
     <style name="PrefCat" >
         <item name="android:background">#FFAAAAAA</item>

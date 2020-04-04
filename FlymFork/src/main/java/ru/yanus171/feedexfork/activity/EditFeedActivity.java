@@ -76,6 +76,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -127,6 +128,14 @@ import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_DESC;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_ICON;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_TITLE;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_URL;
+import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_ARTICLE_CLASS_NAME;
+import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_AUTHOR_CLASS_NAME;
+import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_DATE_CLASS_NAME;
+import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME;
+import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_TEXT_CLASS_NAME;
+import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_URL_CLASS_NAME;
+import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
+import static ru.yanus171.feedexfork.service.FetcherService.URL_NEXT_PAGE_CLASS_NAME;
 
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_WEB_SEARCH = "EXTRA_WEB_SEARCH";
@@ -215,6 +224,14 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private Spinner mKeepTimeSpinner = null;
     private CheckBox mKeepTimeCB = null;
     private AlertDialog mUserSelectionDialog = null;
+    private EditText mOneWebPageArticleClassName;
+    private EditText mOneWebPageUrlClassName;
+    private EditText mOneWebPageTextClassName;
+    private EditText mOneWebPageAuthorClassName;
+    private EditText mOneWebPageDateClassName;
+    private EditText mOneWebPageImageUrlClassName;
+    private EditText mNextPageClassName;
+    private LinearLayout mOneWebPageLayout;
 
     private void EditFilter() {
         Cursor c = mFiltersCursorAdapter.getCursor();
@@ -385,23 +402,32 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mIsAutoImageLoadCb.setVisibility( PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true) ? View.VISIBLE : View.GONE );
         PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
 
+        mNextPageClassName = findViewById(R.id.next_page_classname);
+        mOneWebPageLayout = findViewById(R.id.one_webpage_layout);
+        mOneWebPageArticleClassName = findViewById(R.id.one_webpage_article_classname);
+        mOneWebPageAuthorClassName = findViewById(R.id.one_webpage_author_classname );
+        mOneWebPageDateClassName  = findViewById(R.id.one_webpage_date_classname );
+        mOneWebPageImageUrlClassName = findViewById(R.id.one_webpage_image_url_classname);
+        mOneWebPageTextClassName = findViewById(R.id.one_webpage_text_classname);
+        mOneWebPageUrlClassName = findViewById(R.id.one_webpage_url_classname);
+
         setTitle( R.string.new_feed_title );
         tabWidget.setVisibility(View.GONE);
 
-        if ( intent.getAction().equals(Intent.ACTION_INSERT) ) {
+        if ( Intent.ACTION_INSERT.equals(intent.getAction()) ) {
             mHasGroupCb.setChecked(false);
             mIsAutoImageLoadCb.setChecked( true );
             mKeepTimeCB.setChecked( false );
             mLoadTypeRG.check( PrefUtils.getInt( STATE_LAST_LOAD_TYPE, R.id.rbRss ) );
-        } else if ( intent.getAction().equals(Intent.ACTION_SEND) || intent.getAction().equals(Intent.ACTION_VIEW) ) {
+        } else if ( Intent.ACTION_SEND.equals(intent.getAction()) || Intent.ACTION_VIEW.equals(intent.getAction()) ) {
             if (intent.hasExtra(Intent.EXTRA_TEXT))
                 mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
             else if ( intent.getDataString() != null )
                 mUrlEditText.setText(intent.getDataString());
             mLoadTypeRG.check( R.id.rbRss );
-        } else if (intent.getAction().equals(Intent.ACTION_WEB_SEARCH)) {
+        } else if (Intent.ACTION_WEB_SEARCH.equals(intent.getAction())) {
             mLoadTypeRG.check( R.id.rbWebPageSearch );
-        } else if (intent.getAction().equals(Intent.ACTION_EDIT)) {
+        } else if (Intent.ACTION_EDIT.equals(intent.getAction())) {
             setTitle(R.string.edit_feed_title);
             tabWidget.setVisibility(View.VISIBLE);
             mFiltersCursorAdapter = new FiltersCursorAdapter(this, Constants.EMPTY_CURSOR);
@@ -448,7 +474,12 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
                     try {
                         JSONObject jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
-                        mLoadTypeRG.check( jsonOptions.getBoolean( "isRss" ) ? R.id.rbRss : R.id.rbWeb );
+                        if ( jsonOptions.getBoolean( "isRss" ) )
+                            mLoadTypeRG.check( R.id.rbRss );
+                        else if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) )
+                            mLoadTypeRG.check( R.id.rbOneWebPage );
+                        else
+                            mLoadTypeRG.check( R.id.rbWebLinks);
                         mKeepTimeCB.setChecked( jsonOptions.has( FetcherService.CUSTOM_KEEP_TIME ) );
                         UpdateSpinnerKeepTime();
                         if ( mKeepTimeCB.isChecked() ) {
@@ -457,6 +488,15 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     mKeepTimeSpinner.setSelection( i );
                                     break;
                                 }
+                        }
+                        mNextPageClassName.setText( jsonOptions.getString( URL_NEXT_PAGE_CLASS_NAME ) );
+                        if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
+                            mOneWebPageArticleClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_ARTICLE_CLASS_NAME ) );
+                            mOneWebPageTextClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_TEXT_CLASS_NAME ) );
+                            mOneWebPageImageUrlClassName.setText(jsonOptions.getString(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME) );
+                            mOneWebPageDateClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_DATE_CLASS_NAME ) );
+                            mOneWebPageAuthorClassName.setText( jsonOptions.getString(ONE_WEB_PAGE_AUTHOR_CLASS_NAME) );
+                            mOneWebPageUrlClassName.setText(jsonOptions.getString(ONE_WEB_PAGE_URL_CLASS_NAME) );
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -512,24 +552,28 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private void ShowControls() {
         int i = mLoadTypeRG.getCheckedRadioButtonId();
         final boolean isRss = ( i == R.id.rbRss );
+        final boolean isOneWebPage = ( i == R.id.rbOneWebPage );
+        final boolean isWebLinks = ( i == R.id.rbWebLinks);
         final boolean isWebPageSearch = ( i == R.id.rbWebPageSearch );
-        final int visibility = isWebPageSearch ? View.GONE : View.VISIBLE;
-        mRetrieveFulltextCb.setEnabled( isRss && !isWebPageSearch );
+        final int visibilityEditFeed = ( isWebPageSearch ? View.GONE : View.VISIBLE );
+        mRetrieveFulltextCb.setEnabled( ( isRss || isOneWebPage ) && !isWebPageSearch );
 
-        mRetrieveFulltextCb.setVisibility( visibility );
-        mHasGroupCb.setVisibility( visibility );
-        mGroupSpinner.setVisibility( visibility );
-        mIsAutoImageLoadCb.setVisibility( visibility );
-        mIsAutoRefreshCb.setVisibility( visibility );
-        mKeepTimeCB.setVisibility( visibility );
-        mKeepTimeSpinner.setVisibility( visibility );
-        mShowTextInEntryListCb.setVisibility( visibility );
-        mNameEditText.setVisibility( visibility );
-        findViewById( R.id.name_textview ).setVisibility( visibility );
+        mRetrieveFulltextCb.setVisibility( visibilityEditFeed );
+        mHasGroupCb.setVisibility( visibilityEditFeed );
+        mGroupSpinner.setVisibility( visibilityEditFeed );
+        mIsAutoImageLoadCb.setVisibility( visibilityEditFeed );
+        mIsAutoRefreshCb.setVisibility( visibilityEditFeed );
+        mKeepTimeCB.setVisibility( visibilityEditFeed );
+        mKeepTimeSpinner.setVisibility( visibilityEditFeed );
+        mShowTextInEntryListCb.setVisibility( visibilityEditFeed );
+        mNameEditText.setVisibility( visibilityEditFeed );
+        findViewById( R.id.name_textview ).setVisibility( visibilityEditFeed );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         UpdateSpinnerGroup();
         UpdateSpinnerKeepTime();
+        mOneWebPageLayout.setVisibility( isOneWebPage ? View.VISIBLE : View.GONE );
+        findViewById( R.id.layout_next_page ).setVisibility( isWebLinks || isOneWebPage ? View.VISIBLE : View.GONE );
     }
 
     private boolean IsAdd() {
@@ -611,6 +655,17 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         JSONObject jsonOptions = new JSONObject();
         try {
             jsonOptions.put( "isRss", mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbRss );
+            jsonOptions.put( IS_ONE_WEB_PAGE, mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage );
+            jsonOptions.put( URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
+
+            if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage ) {
+                jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.getText().toString() );
+                jsonOptions.put(ONE_WEB_PAGE_URL_CLASS_NAME, mOneWebPageUrlClassName.getText().toString() );
+                jsonOptions.put(ONE_WEB_PAGE_AUTHOR_CLASS_NAME, mOneWebPageAuthorClassName.getText().toString() );
+                jsonOptions.put(ONE_WEB_PAGE_DATE_CLASS_NAME, mOneWebPageDateClassName.getText().toString() );
+                jsonOptions.put(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME, mOneWebPageImageUrlClassName.getText().toString() );
+                jsonOptions.put(ONE_WEB_PAGE_TEXT_CLASS_NAME, mOneWebPageTextClassName.getText().toString() );
+            }
             if ( mKeepTimeCB.isChecked()  )
                 jsonOptions.put( FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.getSelectedItemPosition()] );
             else
@@ -843,8 +898,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
                     FetcherService.StartService(new Intent(EditFeedActivity.this, FetcherService.class)
                             .setAction(FetcherService.ACTION_REFRESH_FEEDS)
-                            .putExtra(Constants.FEED_ID, result.first.getLastPathSegment())
-                            .putExtra(Constants.EXTRA_DELETE_OLD, false));
+                            .putExtra(Constants.FEED_ID, result.first.getLastPathSegment()));
                     HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(result.first.getLastPathSegment());
                     setResult(RESULT_OK);
                     startActivity( new Intent( EditFeedActivity.this, HomeActivity.class )

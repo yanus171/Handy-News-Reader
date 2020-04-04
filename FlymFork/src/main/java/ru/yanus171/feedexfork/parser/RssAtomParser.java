@@ -82,6 +82,7 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 
 public class RssAtomParser extends DefaultHandler {
     private static final String AND_SHARP = "&#";
@@ -127,7 +128,7 @@ public class RssAtomParser extends DefaultHandler {
             {"PST", "-0800"},
             {"ICT", "+0700"}};
 
-    private final DateFormat[] DATE_FORMATS = {
+    private static final DateFormat[] DATE_FORMATS = {
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
             new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
@@ -137,7 +138,9 @@ public class RssAtomParser extends DefaultHandler {
             new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            new SimpleDateFormat("yyyy-MM-dd", Locale.US),
+            new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US)
+
     };
 
 
@@ -350,19 +353,19 @@ public class RssAtomParser extends DefaultHandler {
                     mFeedLink = mEntryLink.toString();
                 }
             } else if (TAG_UPDATED.equals(localName)) {
-                mEntryUpdateDate = parseDate(mDateStringBuilder.toString());
+                mEntryUpdateDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mUpdatedTagEntered = false;
             } else if (TAG_PUBDATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mPubDateTagEntered = false;
             } else if (TAG_PUBLISHED.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mPublishedTagEntered = false;
             } else if (TAG_LAST_BUILD_DATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mLastBuildDateTagEntered = false;
             } else if (TAG_DATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mDateTagEntered = false;
             } else if (TAG_ENTRY.equals(localName) || TAG_ITEM.equals(localName)) {
                 mEntryTagEntered = false;
@@ -401,7 +404,7 @@ public class RssAtomParser extends DefaultHandler {
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
                             imagesUrls = new ArrayList<>();
-                            HtmlUtils.replaceImageURLs( improvedContent, -1, mEntryLink.toString(), true, imagesUrls );
+                            HtmlUtils.replaceImageURLs( improvedContent, "", -1, mEntryLink.toString(), true, imagesUrls, null, mMaxImageDownloadCount );
                             if (!imagesUrls.isEmpty()) {
                                 mainImageUrl = HtmlUtils.getMainImageURL(imagesUrls);
                             }
@@ -498,7 +501,7 @@ public class RssAtomParser extends DefaultHandler {
                         }
                     }
 
-                } else {
+                //} else {
                     //cancel();
                 }
                 mDescription = null;
@@ -565,14 +568,17 @@ public class RssAtomParser extends DefaultHandler {
         this.mFetchImages = fetchImages;
     }
 
-    private Date parseDate(String dateStr) {
+    static Date parseDate(String dateStr, long now) {
+        Dog.d( "parseDate " + dateStr );
         long dateBorder = 5 * 365 * 24 * 60 * 60 * 1000L; // five years ago
         dateStr = improveDateString(dateStr);
         for (DateFormat format : DATE_FORMATS ) {
             try {
                 Date result = format.parse(dateStr);
-                if ( Math.abs( result.getTime() -  mNow ) < dateBorder )
-                    return (result.getTime() > mNow ? new Date(mNow) : result);
+                if ( now == 0 )
+                    return result;
+                if ( Math.abs( result.getTime() -  now ) < dateBorder )
+                    return (result.getTime() > now ? new Date(now) : result);
             } catch (ParseException ignored) {
 
             } // just do nothing
@@ -581,7 +587,7 @@ public class RssAtomParser extends DefaultHandler {
         return null;
     }
 
-    private String improveDateString(String dateStr) {
+    static String improveDateString(String dateStr) {
         // We remove the first part if necessary (the day display)
         int coma = dateStr.indexOf(", ");
         if (coma != -1) {
