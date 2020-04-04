@@ -488,7 +488,7 @@
     <string name="articleCountLoaded">articles loaded</string>
     <string name="next_page_max_count_classname">Max page count to process</string>
     <string name="menu_copy_feed">Duplicate current feed</string>
-    <string name="feed_copied">Feed is dublicated</string>
+    <string name="feed_copied">Feed is duplicated</string>
     <string name="menu_show_entry_text">Article text</string>
     <string name="read_more">Read more …</string>
     <string name="cant_open_image">Can\'t open image</string>
