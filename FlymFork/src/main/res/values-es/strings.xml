@@ -251,6 +251,9 @@
     <string name="settings_notifications_light_description">Activar luz de notificación en nuevas entradas</string>
     <string name="page_up_down_90_pct">Desplazar la página 90%</string>
     <string name="page_up_down_90_pct_descr">Para preservar varias líneas de la página anterior - si no está marca, toda la página se desplazará</string>
+    <string name="settings_remember_last_entry">Recordar último artículo</string>
+    <string name="settings_remeber_last_entry_description">Abrir el último artículo visto al inicio, de lo contrario ver la lista de entradas no leídas</string>
+    <string name="auto_unstart_at_bottom">Desmarcar automáticamente al terminar de leer</string>
     <string name="settings_category_content_presentation">Modo de presentación</string>
     <string name="settings_visible_feeds">Visibilidad de las fuentes</string>
     <string name="settings_widget_background">Fondo</string>
@@ -270,6 +273,9 @@
     <string name="group">Grupo</string>
     <string name="auto_image_load">Carga de imágenes automática</string>
     <string name="show_progress_info">Información detallada del progreso</string>
+    <string name="loadTypeOneWebPage"><b>Una página</b><font color="gray"> (dividir contenido de una página web en muchos artículos usando etiquetas de nombre de clase html)</font></string>
+    <string name="loadType">Tipo de carga:</string>
+    <string name="global_filter">Filtro global&#8230;</string>
     <string name="settings_current_setting">Configuración actual</string>
     <string name="menu_show_entry_text">Texto del artículo</string>
     <string name="read_more">Leer más…</string>
