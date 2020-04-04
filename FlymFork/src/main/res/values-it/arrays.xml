@@ -11,6 +11,8 @@
         <item>6 ore</item>
         <item>12 ore</item>
         <item>1 giorno</item>
+        <item>2 giorni</item>
+        <item>3 giorni</item>
     </string-array>
     <string-array name="settings_keep_times">
         <item>1 ora</item>
