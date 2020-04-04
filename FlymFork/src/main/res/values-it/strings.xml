@@ -474,6 +474,10 @@
     <string name="next_page_max_count_classname">Numero massimo di pagine da elaborare</string>
     <string name="menu_copy_feed">Duplica feed corrente</string>
     <string name="feed_copied">Feed duplicato</string>
+    <string name="menu_show_entry_text">Testo dell\'articolo</string>
+    <string name="read_more">Per saperne di più …</string>
+    <string name="cant_open_image">Impossibile aprire l\'immagine</string>
+    <string name="end_editing">Fine modifica</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
