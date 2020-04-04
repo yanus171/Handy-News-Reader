@@ -82,6 +82,7 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 
 public class RssAtomParser extends DefaultHandler {
     private static final String AND_SHARP = "&#";
@@ -403,7 +404,7 @@ public class RssAtomParser extends DefaultHandler {
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
                             imagesUrls = new ArrayList<>();
-                            HtmlUtils.replaceImageURLs( improvedContent, -1, mEntryLink.toString(), true, imagesUrls, null, 0 );
+                            HtmlUtils.replaceImageURLs( improvedContent, "", -1, mEntryLink.toString(), true, imagesUrls, null, mMaxImageDownloadCount );
                             if (!imagesUrls.isEmpty()) {
                                 mainImageUrl = HtmlUtils.getMainImageURL(imagesUrls);
                             }

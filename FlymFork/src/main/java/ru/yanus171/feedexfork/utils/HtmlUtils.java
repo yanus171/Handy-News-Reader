@@ -39,6 +39,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.isEntryIDActive;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
 
 public class HtmlUtils {
@@ -153,16 +155,17 @@ public class HtmlUtils {
     }
     public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
         final ArrayList<String> imagesToDl = new ArrayList<>();
-        return replaceImageURLs(content, entryId, entryLink, isDownLoadImages, imagesToDl, null, 0 );
+        return replaceImageURLs(content, "", entryId, entryLink, isDownLoadImages, imagesToDl, null, mMaxImageDownloadCount );
 
     }
     public static String replaceImageURLs(String content,
+                                          final String feedId,
                                           final long entryId,
                                           final String entryLink,
                                           boolean isDownLoadImages,
                                           final ArrayList<String> imagesToDl,
                                           final ArrayList<Uri> externalImageList,
-                                          final int maxImageUrlListCount) {
+                                          final int maxImageDownloadCount) {
         final int status = Status().Start("Reading images", true); try {
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
             Timer timer = new Timer( "replaceImageURLs" );
@@ -170,37 +173,38 @@ public class HtmlUtils {
                 content = ReplaceImagesWithALink(content);
                 Matcher matcher;
 
-                boolean needDownloadPictures = PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
+                boolean needDownloadPictures = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 //final ArrayList<String> imagesToDl = new ArrayList<>();
 
                 matcher = IMG_PATTERN.matcher(content);
                 int index = 0;
-                while (matcher.find()) {
+                while ( matcher.find() ) {
                     index++;
                     String srcUrl = matcher.group(1);
                     srcUrl = srcUrl.replace(" ", URL_SPACE);
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
                     final File file = new File( imgFilePath );
-                    final boolean isImageToLoad = (index <= FetcherService.mMaxImageDownloadCount) || (FetcherService.mMaxImageDownloadCount == 0);
+                    final boolean isImageToLoad = isDownLoadImages && ( index <= maxImageDownloadCount || maxImageDownloadCount == 0);
                     final String imgFileTag =
-                            GetLinkStartTag(imgFilePath) +
-                                    imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
-                                    LINK_TAG_END;
-                    final boolean isFileExists = new File(imgFilePath).exists();
+                        GetLinkStartTag(imgFilePath) +
+                        imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
+                        LINK_TAG_END;
                     if ( needDownloadPictures ) {
-                        if ( isDownLoadImages && !isFileExists && isImageToLoad )
+                        final boolean isFileExists = new File(imgFilePath).exists();
+                        if ( !isFileExists && isImageToLoad )
                             imagesToDl.add(srcUrl);
                         String btnLoadNext = "";
-                        if ( index == FetcherService.mMaxImageDownloadCount + 1 ) {
+                        if ( index == maxImageDownloadCount + 1 ) {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
                             btnLoadNext += getButtonHtml("downloadAllImages()", getString(R.string.downloadAll), "download_all");
                         }
-                        final boolean isSmall = file.length() < 1024 * 7;
-                        if ( externalImageList != null && externalImageList.size() <= maxImageUrlListCount && !isSmall ) {
+                        final boolean isSmallForExternalList = file.length() < 1024 * 7;
+                        if ( externalImageList != null && externalImageList.size() <= maxImageDownloadCount &&
+                            ( !isSmallForExternalList || !isFileExists ) ) {
                             externalImageList.add(Uri.fromFile(file));
                             content = content.replace(imgWebTag, "");
-                        } else if ( externalImageList != null && isSmall )
+                        } else if ( externalImageList != null && isSmallForExternalList )
                             content = content.replace(imgWebTag, "");
                         else if ( isImageToLoad || isFileExists )
                             content = content.replace(imgWebTag, imgFileTag + btnLoadNext);
@@ -215,11 +219,11 @@ public class HtmlUtils {
                 content = content.replaceAll("height=\"\\d+\"", "");
 
                 // Download the images if needed
-                if (!imagesToDl.isEmpty() && entryId != -1 &&  externalImageList == null ) {
+                if (!imagesToDl.isEmpty() && entryId != -1 ) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            FetcherService.downloadEntryImages(entryId, entryLink, imagesToDl);
+                            FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl);
                         }
                     }).start();
                 }

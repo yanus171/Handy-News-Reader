@@ -12,6 +12,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.URL_NEXT_PAGE_CLASS_NAME
+import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHiddenElements
@@ -128,7 +129,7 @@ object OneWebPageParser {
                         val imagesToDl = ArrayList<String>()
                         if ( mainImageUrl.isNotEmpty() )
                             imagesToDl.add( mainImageUrl )
-                        HtmlUtils.replaceImageURLs(improvedContent, -1, entryUrl, true, imagesToDl, null, 0)
+                        HtmlUtils.replaceImageURLs(improvedContent, "", -1, entryUrl, true, imagesToDl, null, mMaxImageDownloadCount)
                         FetcherService.addImagesToDownload(entryID.toString(), imagesToDl)
                     }
                 }

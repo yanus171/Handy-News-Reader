@@ -83,18 +83,14 @@
                                         android:inputType="textUri"
                                         android:singleLine="true" />
 
-                                    <LinearLayout
+                                    <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
+                                        android:text="@string/loadType"
+                                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@string/loadType"
-                                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                                        <RadioGroup
+                                    <RadioGroup
                                             android:id="@+id/rgLoadType"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
@@ -126,7 +122,6 @@
                                                 android:layout_height="wrap_content"
                                                 android:text="@string/loadTypeWebPageSearch" />*h\
                                         </RadioGroup>
-                                    </LinearLayout>
 
                                     <TextView
                                         android:id="@+id/name_textview"

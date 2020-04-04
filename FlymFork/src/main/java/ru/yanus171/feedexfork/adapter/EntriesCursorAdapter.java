@@ -58,7 +58,6 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.Html;
 import android.text.Layout;
-import android.text.Spannable;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -69,7 +68,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -78,10 +76,10 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -99,14 +97,15 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.isEntryIDActive;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
@@ -114,11 +113,14 @@ import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
+
+    private HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
     private final boolean mShowEntryText, mShowUnread;
     private boolean mBackgroundColorLight = false;
+    final int MAX_TEXT_LEN = 2500;
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
@@ -467,38 +469,38 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView3.setVisibility( View.GONE );
         holder.readMore.setVisibility( View.GONE );
         if ( mShowEntryText ) {
+
             holder.textTextView.setVisibility(View.VISIBLE);
-            final String html1 = cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos);
+            final String html = cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 holder.textTextView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD );
             holder.textTextView.setEnabled(!holder.isRead);
             holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
-            SetupEntryText(holder, html1);
+            SetupEntryText(holder, Html.fromHtml( html ), true );
             final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
-            if ( html1.contains( "<img" ) || isMobilized )
-                new Thread() {
-                    @Override
-                    public void run() {
-                        final ArrayList<String> imagesToDl = new ArrayList<>();
-                        final ArrayList<Uri> allImages = new ArrayList<>();
-                        String temp = html1;
-                        if ( isMobilized )
-                            temp = FileUtils.INSTANCE.loadMobilizedHTML( holder.entryLink, null );
-                        temp = RemoveTables( temp );
-                        temp = RemoveHeaders( temp );
-                        temp = HtmlUtils.replaceImageURLs( temp, holder.entryID, holder.entryLink, true, imagesToDl, allImages, 3 );
-                        final String html2 = temp;
-                        UiUtils.RunOnGuiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                            SetContentImage(context, holder.contentImgView1, 0, allImages);
-                            SetContentImage(context, holder.contentImgView2, 1, allImages);
-                            SetContentImage(context, holder.contentImgView3, 2, allImages);
-                            SetupEntryText(holder, html2);
-                            }
-                        });
-                    }
-                }.start();
+            if ( html.contains( "<img" ) || isMobilized ) {
+                EntryContent content = mContentVoc.get(holder.entryID);
+                if (content != null && content.GetIsLoaded() ) {
+                    SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList);
+                    SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList);
+                    SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList);
+                    SetupEntryText(holder, content.mText, content.mIsReadMore);
+                } else if ( content == null ) {
+                    content = new EntryContent();
+                    content.mID = holder.entryID;
+                    content.mHTML = html;
+                    content.mIsMobilized = isMobilized;
+                    content.mLink = holder.entryLink;
+                    mContentVoc.put( holder.entryID, content );
+                    final EntryContent contentFinal = content;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            contentFinal.Load();
+                        }
+                    }.start();
+                }
+            }
 
         } else
             holder.textTextView.setVisibility(View.GONE);
@@ -524,15 +526,54 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    public void OpenArticle(Context context, long entryID) {
+    class EntryContent {
+        long mID = 0L;
+        String mLink;
+        ArrayList<Uri> mImageUrlList = new ArrayList<>();
+        Spanned mText;
+        String mHTML;
+        boolean mIsLoaded = false;
+        boolean mIsMobilized = false;
+        boolean mIsReadMore = false;
+        boolean GetIsLoaded() {
+            synchronized ( this ) {
+                return mIsLoaded;
+            }
+        }
+        void Load() {
+            //if ( !isEntryIDActive( holder.entryID ) )
+            //    return;
+            final ArrayList<String> imagesToDl = new ArrayList<>();
+            final ArrayList<Uri> allImages = new ArrayList<>();
+            String temp = mHTML;
+            if ( mIsMobilized )
+                temp = FileUtils.INSTANCE.loadMobilizedHTML( mLink, null );
+            temp = RemoveTables( temp );
+            temp = RemoveHeaders( temp );
+            temp = HtmlUtils.replaceImageURLs( temp,
+                                               "",
+                                               mID,
+                                               mLink,
+                                               true,
+                                               imagesToDl,
+                                               mImageUrlList,
+                                               3 );
+            mText = Html.fromHtml( temp );
+            mIsReadMore = temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
+            synchronized ( this ) {
+                mIsLoaded = true;
+            }
+            EntryView.NotifyToUpdate( mID, mLink );
+        }
+    }
+
+    private void OpenArticle(Context context, long entryID) {
         context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
     }
 
-    public void SetupEntryText(ViewHolder holder, String htmlFinal) {
-        final int  MAX_TEXT_LEN = 2500;
-        final Spanned text = Html.fromHtml(htmlFinal );
-        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN) : text );
-        if ( text.length() > MAX_TEXT_LEN )
+    private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
+        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) : text );
+        if ( isReadMore )
             holder.readMore.setVisibility(View.VISIBLE );
     }
 
@@ -680,7 +721,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     @Override
     public Cursor swapCursor(Cursor newCursor) {
-        //SetIsReadMakredList();
+        mContentVoc.clear();
         reinit(newCursor);
         return super.swapCursor(newCursor);
     }

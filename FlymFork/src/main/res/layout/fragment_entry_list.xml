@@ -101,16 +101,35 @@
 
         </LinearLayout>
 
-        <include layout="@layout/status_view" />
-        <TextView
-            android:id="@+id/pageDownBtn"
-            style="@style/TapZone"
-            android:layout_width="match_parent"
-            android:layout_height="10mm"
-            android:layout_gravity="bottom"
+        <LinearLayout
             android:layout_alignParentBottom="true"
-            android:text="@string/pageDown" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/pageDownBtn"
+                style="@style/TapZone"
+                android:layout_width="match_parent"
+                android:layout_height="10mm"
+                android:layout_gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:text="@string/pageDown" />
+            <include layout="@layout/status_view" />
 
+        </LinearLayout>
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progressBarLoader"
+            android:layout_gravity="top|end"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/progressbar_background"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/spinner_ring"
+            android:layout_alignParentEnd="true" />
         <TextView
             android:id="@+id/progressText"
             android:layout_width="wrap_content"
@@ -125,20 +144,6 @@
             android:background="@drawable/progresstext_background"
             android:text="info"
             tools:ignore="RtlHardcoded" />
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/progressBarLoader"
-            android:layout_gravity="top|end"
-            android:layout_below="@id/errorText"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/progressbar_background"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/spinner_ring"
-            android:layout_alignParentEnd="true" />
         <TextView
             android:id="@+id/toggleFullScreenStatusBarBtn"
             style="@style/TapZoneBtn"

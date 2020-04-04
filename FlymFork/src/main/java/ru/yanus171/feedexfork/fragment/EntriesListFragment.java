@@ -62,13 +62,17 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
-public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
+public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
     private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
@@ -130,12 +134,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                 mNeedSetSelection = false;
                 mListView.setSelection(mEntriesCursorAdapter.GetFirstUnReadPos());
             }
-            if ( mLastVisibleTopEntryID != -1 ) {
-                int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
-                if ( pos != -1 &&
-                        ( pos > mListView.getLastVisiblePosition() || pos < mListView.getFirstVisiblePosition() )  )
-                    mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
-            }
+            RestoreListScrollPosition();
             getActivity().setProgressBarIndeterminateVisibility( false );
             Status().End( mStatus );
             timer.End();
@@ -149,6 +148,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
     };
+
+    public void RestoreListScrollPosition() {
+        if ( mLastVisibleTopEntryID != -1 ) {
+            int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
+            if ( pos != -1 )
+                mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
+        }
+    }
 
     private final OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
         @Override
@@ -276,10 +283,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mImageDownloadObservable.addObserver(this);
     }
 
     @Override
     public void onPause() {
+        mImageDownloadObservable.deleteObserver( this);
         super.onPause();
     }
 
@@ -338,7 +347,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
                     View v = mListView.getChildAt(0);
                     mLastListViewTopOffset = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
                 }
+                if ( mShowTextInEntryList ) {
+                    ArrayList<Long> list = new ArrayList<>();
+                    for ( int pos = firstVisibleItem; pos < firstVisibleItem + visibleItemCount; pos++ )
+                        list.add( mEntriesCursorAdapter.getItemId( pos ) );
+                    FetcherService.setEntryIDActiveList( list );
+                }
                 UpdateFooter();
+                Status().HideByScroll();
+                Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
             }
         });
 
@@ -901,5 +918,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment {
         }
 
     }
-
+    @Override
+    public void update(Observable observable, Object o) {
+        if ( !mShowTextInEntryList )
+            return;
+        final Entry entry = (Entry)o;
+        final int pos = mEntriesCursorAdapter.GetPosByID( entry.mID );
+        if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition() ) {
+            mEntriesCursorAdapter.notifyDataSetChanged();
+            RestoreListScrollPosition();
+        }
+    }
 }

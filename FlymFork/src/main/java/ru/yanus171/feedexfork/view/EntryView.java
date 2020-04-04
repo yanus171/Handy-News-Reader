@@ -869,13 +869,14 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
 
     public static void NotifyToUpdate(final long entryId, final String entryLink) {
+
         UiUtils.RunOnGuiThread(new Runnable() {
             @Override
             public void run() {
-                ScheduledNotifyObservers(entryId, entryLink);
-
+                Dog.d( String.format( "NotifyToUpdate( %d )", entryId ) );
+                EntryView.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink) );//ScheduledNotifyObservers(entryId, entryLink);
             }
-        }, NOTIFY_OBSERVERS_DELAY_MS);
+        }, 0 );//NOTIFY_OBSERVERS_DELAY_MS);
     }
 
     static HashMap<Long, Long> mLastNotifyObserversTime = new HashMap<>();

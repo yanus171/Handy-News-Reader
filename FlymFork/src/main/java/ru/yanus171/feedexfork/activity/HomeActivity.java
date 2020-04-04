@@ -54,6 +54,8 @@ import android.widget.TextView;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -83,6 +85,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRI
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
@@ -286,7 +289,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public void onResume() {
         super.onResume();
-
         Timer timer = new Timer("HomeActivity.onResume");
         final Intent intent = getIntent();
         setIntent( new Intent() );

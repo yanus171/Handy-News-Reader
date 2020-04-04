@@ -118,6 +118,7 @@ import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
@@ -566,9 +567,15 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private static boolean isEntryIDActive(long id) {
+    public static boolean isEntryIDActive(long id) {
         synchronized (mActiveEntryIDList) {
             return mActiveEntryIDList.contains( id );
+        }
+    }
+    public static void setEntryIDActiveList(ArrayList<Long> list) {
+        synchronized (mActiveEntryIDList) {
+            mActiveEntryIDList.clear();
+            mActiveEntryIDList.addAll( list );
         }
     }
     public static void addActiveEntryID( long value ) {
@@ -743,7 +750,7 @@ public class FetcherService extends IntentService {
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
                             //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
-                            HtmlUtils.replaceImageURLs( mobilizedHtml, -1, link, true, imgUrlsToDownload, null, 0 );
+                            HtmlUtils.replaceImageURLs( mobilizedHtml, "", -1, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
                         }
 
                         String mainImgUrl;
@@ -990,18 +997,17 @@ public class FetcherService extends IntentService {
         for ( Future<DownloadResult> item: futures ) {
             try {
                 final DownloadResult result = item.get();
-                if ( operations != null ) {
-                    if (result.mOK) {
-                        countOK++;// If we are here, everything WAS OK
+                if (result.mOK) {
+                    countOK++;// If we are here, everything WAS OK
+                    if ( operations != null )
+                        operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
+                } else if ( operations != null ) {
+                    if (result.mAttemptNumber + 1 > MAX_TASK_ATTEMPT) {
                         operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
                     } else {
-                        if (result.mAttemptNumber + 1 > MAX_TASK_ATTEMPT) {
-                            operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
-                        } else {
-                            ContentValues values = new ContentValues();
-                            values.put(TaskColumns.NUMBER_ATTEMPT, result.mAttemptNumber + 1);
-                            operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(result.mTaskID)).withValues(values).build());
-                        }
+                        ContentValues values = new ContentValues();
+                        values.put(TaskColumns.NUMBER_ATTEMPT, result.mAttemptNumber + 1);
+                        operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(result.mTaskID)).withValues(values).build());
                     }
                 }
                 Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
@@ -1011,15 +1017,13 @@ public class FetcherService extends IntentService {
         }
         return countOK;
     }
-    public static void downloadEntryImages(final long entryId, final String entryLink, final ArrayList<String> imageList ) {
+    public static void downloadEntryImages(final String feedId, final long entryId, final String entryLink, final ArrayList<String> imageList ) {
         final StatusText.FetcherObservable obs = Status();
         final String statusText = MainApplication.getContext().getString(R.string.article_images_downloading);
         int status = obs.Start( statusText, true); try {
-
+            int downloadedCount = 0;
             ExecutorService executor = CreateExecutorService(); try {
-
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
-
                 for( final String imgPath: imageList ) {
                     futures.add( executor.submit( new Callable<DownloadResult>() {
                         @Override
@@ -1031,35 +1035,29 @@ public class FetcherService extends IntentService {
                                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
                                     result.mOK = true;
                                 } catch (Exception e) {
-                                    obs.SetError(entryLink, "", String.valueOf(entryId), e);
+                                    obs.SetError(entryLink, feedId, String.valueOf(entryId), e);
                                 }
                             }
                             return result;
                         } } ) );
                 }
-                FinishExecutionService(statusText, status, null, futures );
+                downloadedCount = FinishExecutionService(statusText, status, null, futures );
+                //Dog.v( "downloadedCount = " + downloadedCount );
             } finally {
                 executor.shutdown();
             }
-            EntryView.NotifyToUpdate( entryId, entryLink );
+            if ( downloadedCount > 0 )
+                EntryView.NotifyToUpdate( entryId, entryLink );
         } catch ( Exception e ) {
             obs.SetError(null, "", String.valueOf(entryId), e);
         } finally {
+            obs.ResetBytes();
             obs.End(status);
         }
     }
 
     private static ExecutorService CreateExecutorService() {
         return Executors.newFixedThreadPool(THREAD_NUMBER);
-        //return Executors.newCachedThreadPool();
-//        return Executors.newFixedThreadPool(THREAD_NUMBER, new ThreadFactory() {
-//            @Override
-//            public Thread newThread(Runnable r) {
-//                Thread t = new Thread(r);
-//                t.setPriority(Thread.MIN_PRIORITY);
-//                return t;
-//            }
-//        });
     }
 
 

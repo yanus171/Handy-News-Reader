@@ -380,10 +380,10 @@
     <string name="reload_full_text_with_tags">Reload with tags</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
-    <string name="loadTypeWeb">Web links (load all links from page as different articles)</string>
-    <string name="loadTypeRSS">RSS (feed or site link or keywords)</string>
-    <string name="loadTypeWebPageSearch">Web page search DuckDuckGo (find and load one article)</string>
-    <string name="loadTypeOneWebPage">One page( devide one webpage content into many articles using html class name tags</string>
+    <string name="loadTypeWeb"><b>Web links</b> <font color="gray">(load all links from page as different articles)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed or site link or keywords)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Web page search DuckDuckGo</b> <font color="gray">(find and load one article)</font></string>
+    <string name="loadTypeOneWebPage"><b>One page</b><font color="gray"> (divide one web page content into many articles using html class name tags)</font></string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
@@ -474,7 +474,7 @@
     <string name="settings_category_delete_old">Delete old</string>
     <string name="tool_bar_color">Tool bar color</string>
     <string name="tool_bar_color_desc">also this color is used for the article text buttons and for status bar</string>
-    <string name="one_webpage_hint">the url content is devided into articles by root class name, also there should set classname for article title, date and image</string>
+    <string name="one_webpage_hint">Hint: in this load type the web page content is divided into articles by html elements class name. You should also set the class names for articles title, date and image url. To find the required class names you should load that page (Read now) and switch to the Edit mode where you can find and copy class names for required elements.</string>
     <string name="one_webpage_article_classname_label">Article</string>
     <string name="one_webpage_edittext_classname_hint">Class name</string>
     <string name="one_webpage_url_classname_label">Url</string>
@@ -487,11 +487,11 @@
     <string name="next_page_classname">Next page class name \n(for recursive load)</string>
     <string name="articleCountLoaded">articles loaded</string>
     <string name="next_page_max_count_classname">Max page count to process</string>
-    <string name="menu_copy_feed">Dublicate current feed</string>
+    <string name="menu_copy_feed">Duplicate current feed</string>
     <string name="feed_copied">Feed is dublicated</string>
     <string name="menu_show_entry_text">Article text</string>
-    <string name="read_more">Read more ...</string>
-    <string name="cant_open_image">Cant open image</string>
+    <string name="read_more">Read more …</string>
+    <string name="cant_open_image">Can\'t open image</string>
     <string name="parsing_one_web_page">Parsing one web page</string>
 
 
