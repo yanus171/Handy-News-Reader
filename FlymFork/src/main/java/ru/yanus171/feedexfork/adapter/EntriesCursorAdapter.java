@@ -108,6 +108,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isEntryIDActive;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
@@ -429,7 +430,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.authorTextView.setEnabled(isUnread);
         holder.urlTextView.setEnabled(isUnread);
 
-        final boolean showUrl = PrefUtils.getBoolean( "settings_show_article_url", false ) || feedId.equals( FetcherService.GetExtrenalLinkFeedID() );
+        final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) || feedId.equals( FetcherService.GetExtrenalLinkFeedID() );
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
         holder.isRead = !isUnread;

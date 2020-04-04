@@ -70,6 +70,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
@@ -578,6 +580,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
     @Override
+    public void onPrepareOptionsMenu (Menu menu) {
+        menu.findItem(R.id.menu_show_article_url_toggle).setChecked(PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ));
+        menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
@@ -647,6 +654,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ) );
                 return true;
 
+            }
+            case R.id.menu_show_article_url_toggle: {
+                PrefUtils.toggleBoolean( SHOW_ARTICLE_URL );
+                item.setChecked( PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) );
+                mEntriesCursorAdapter.notifyDataSetChanged();
+                return true;
+            }
+            case R.id.menu_show_progress_info: {
+                PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO ) ;
+                item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
+                break;
             }
             case R.id.menu_show_entry_text: {
                 if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
