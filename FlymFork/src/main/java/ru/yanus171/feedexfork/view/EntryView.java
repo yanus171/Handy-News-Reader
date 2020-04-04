@@ -151,7 +151,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     private double mLastContentHeight = 0;
     private long mLastTimeScrolled = 0;
     private String mDataWithWebLinks = "";
-
+    public boolean mIsEditingMode = false;
     private static String GetCSS(String text) {
         return "<head><style type='text/css'> "
                 + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()

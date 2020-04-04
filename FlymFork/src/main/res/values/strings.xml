@@ -377,7 +377,7 @@
     <string name="markedAsStarred">The article was marked as starred: </string>
     <string name="deleteAllEntries">Delete all non starred showing articles?</string>
     <string name="question">Question</string>
-    <string name="reload_full_text_with_tags">Reload with tags</string>
+    <string name="reload_full_text_with_tags">Edit content view</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb"><b>Web links</b> <font color="gray">(load all links from page as different articles)</font></string>
@@ -493,6 +493,7 @@
     <string name="read_more">Read more …</string>
     <string name="cant_open_image">Can\'t open image</string>
     <string name="parsing_one_web_page">Parsing one web page</string>
+    <string name="end_editing">End editing</string>
 
 
     <plurals name="number_of_new_entries">

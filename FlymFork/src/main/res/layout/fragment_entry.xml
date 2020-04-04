@@ -122,6 +122,20 @@
                         android:layout_marginEnd="10dp" />
 
                     <TextView
+                        android:id="@+id/btnEndEditing"
+                        style="@style/TapZone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/progressBarLoader"
+                        android:layout_margin="10dp"
+                        android:padding="10dp"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/end_editing"
+                        android:visibility="visible"
+                        android:background="@drawable/btn_background"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
                         android:id="@+id/progressText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

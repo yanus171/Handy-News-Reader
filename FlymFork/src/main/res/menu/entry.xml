@@ -105,6 +105,10 @@
         </menu>
     </item>
     <item
+        android:id="@+id/menu_reload_full_text_with_tags"
+        android:icon="@drawable/content_edit"
+        android:title="@string/reload_full_text_with_tags" />
+    <item
         android:id="@+id/menu_reload"
         android:icon="@drawable/refresh"
         android:title="@string/menu_reload"
@@ -113,9 +117,6 @@
             <item
                 android:id="@+id/menu_reload_full_text_without_mobilizer"
                 android:title="@string/menu_reload_full_text_without_mobilizer" />
-            <item
-                android:id="@+id/menu_reload_full_text_with_tags"
-                android:title="@string/reload_full_text_with_tags" />
             <item
                 android:id="@+id/menu_reload_with_tables_toggle"
                 android:checkable="true"

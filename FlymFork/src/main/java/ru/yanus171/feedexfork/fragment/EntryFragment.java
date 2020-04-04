@@ -99,6 +99,7 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
@@ -157,6 +158,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean mRetrieveFullText = false;
     private View mRootView;
     public boolean mIsFinishing = false;
+    private View mBtnEndEditing = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -218,6 +220,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mLabelClock = mRootView.findViewById(R.id.textClock);
         mLabelClock.setText("");
 
+        mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
+        mBtnEndEditing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReloadFullText();
+                Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
+            }
+        });
+
         mEntryPager = mRootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
         mEntryPager.setAdapter(mEntryPagerAdapter);
@@ -259,6 +270,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             getLoaderManager().restartLoader(i, null, EntryFragment.this);
                         view.mLoadTitleOnly = false;
                     }
+
                 }
 
                 @Override
@@ -440,8 +452,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             GeneralPrefsFragment.mSetupChanged = false;
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
-
         HideTapZonesText(getView().getRootView());
+        refreshUI( null );
     }
 
 
@@ -502,20 +514,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         inflater.inflate(R.menu.entry, menu);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             menu.setGroupDividerEnabled( true );
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_full_screen));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
-        updateMenuWithIcon(menu.findItem(R.id.menu_share_group));
-        updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
-        updateMenuWithIcon(menu.findItem(R.id.menu_setting));
-        updateMenuWithIcon(menu.findItem(R.id.menu_add_feed));
-        updateMenuWithIcon(menu.findItem(R.id.menu_close));
-        updateMenuWithIcon(menu.findItem(R.id.menu_reload));
-        updateMenuWithIcon(menu.findItem(R.id.menu_display_options));
+        for ( int i = 0; i < menu.size(); i++ )
+            updateMenuWithIcon( menu.getItem( i ) );
 
-        //EntryActivity activity = (EntryActivity) getActivity();
         menu.findItem(R.id.menu_star).setShowAsAction( GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
 
         {
@@ -687,6 +688,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_reload_full_text_with_tags: {
 
                     int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                        GetSelectedEntryView().mIsEditingMode = true;
                         LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true );
 
                     } finally { FetcherService.Status().End( status ); }
@@ -794,6 +796,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private void ReloadFullText() {
         int status = FetcherService.Status().Start("Reload fulltext", true);
+        GetSelectedEntryView().mIsEditingMode = false;
         try {
             LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true );
         } finally { FetcherService.Status().End( status ); }
@@ -926,7 +929,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     private void refreshUI(Cursor entryCursor) {
-		try {
+        EntryView view = GetSelectedEntryView();
+        if ( view != null )
+            mBtnEndEditing.setVisibility( view.mIsEditingMode ? View.VISIBLE : View.GONE );
+        mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
+        try {
 			if (entryCursor != null ) {
 				//String feedTitle = entryCursor.isNull(mFeedNamePos) ? entryCursor.getString(mFeedUrlPos) : entryCursor.getString(mFeedNamePos);
 				EntryActivity activity = (EntryActivity) getActivity();
@@ -936,8 +943,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
                 //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
 
-
-				activity.invalidateOptionsMenu();
+                activity.invalidateOptionsMenu();
 
 				final long currentEntryID = getCurrentEntryID();
 				mStatusText.SetEntryID( String.valueOf( currentEntryID ) );
@@ -1183,16 +1189,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     private void ActionAfterRulesEditing() {
-        if (PrefUtils.getBoolean("settings_reload_fulltext_after_tag_editing", true) ) {
-            LoadFullText(ArticleTextExtractor.MobilizeType.Yes, true);
-            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
-        } else
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    GetSelectedEntryView().UpdateTags();
-                }
-            });
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                GetSelectedEntryView().UpdateTags();
+            }
+        });
     }
 
     public void returnClass(String classNameList) {
