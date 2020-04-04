@@ -462,7 +462,7 @@
     <string name="settings_category_delete_old">Altes löschen</string>
     <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
     <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
-    <string name="one_webpage_hint">der URL-Inhalt wird nach dem Namen der Wurzelklasse in Artikel unterteilt, dort sollte auch der Klassenname für Artikelüberschrift, Datum und Bild festgelegt werden</string>
+    <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach dem Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten auch die Klassennamen der URLs für Artikelüberschrift, Datum und Bild festlegen. Um die benötigten Klassennamen zu finden, sollten Sie in den Bearbeitungsmodus umschalten und diese Seite (Weiterlesen) laden, wo Sie die Klassennamen für HTML-Elemente finden und kopieren können.</string>
     <string name="one_webpage_article_classname_label">Artikel</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
     <string name="one_webpage_url_classname_label">URL</string>
