@@ -465,6 +465,7 @@ GENERAL]]></string>
     <string name="settings_category_delete_old">Usuń starsze</string>
     <string name="tool_bar_color">Kolor paska narzędzi</string>
     <string name="tool_bar_color_desc">ten kolor jest również używany dla przycisków w tekście artykułu oraz dla paska statusu</string>
+    <string name="one_webpage_hint">Podpowiedź: w tym trybie wczytywania treść strony internetowej jest dzielona na artykuły na bazie nazwy klas elementów html. Ustaw nazwy klas dla tytułu artykułu, daty oraz obrazka. Aby odnaleźć wymagane nazwy, wczytaj stronę (Czytaj teraz) i przełącz się do widoku edycji treści, gdzie możesz odnaleźć i skopiować nazwy klas wymaganych elementów.</string>
     <string name="one_webpage_article_classname_label">Artykuł</string>
     <string name="one_webpage_edittext_classname_hint">Nazwa klasy</string>
     <string name="one_webpage_url_classname_label">Url</string>
