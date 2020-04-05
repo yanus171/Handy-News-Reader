@@ -374,7 +374,7 @@ GENERAL]]></string>
     <string name="loadTypeWeb"><b>Linki</b> <font color="gray">(załaduj wszystkie linki ze strony jako osobne artykuły)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(kanał lub link do strony lub słowa kluczowe)</font></string>
     <string name="loadTypeWebPageSearch"><b>Wyszukiwarka DuckDuckGo</b> <font color="gray">(znajdź i wczytaj pojedynczy artykuł)</font></string>
-    <string name="loadTypeOneWebPage"><b>Jedna strona</b><font color="gray"> (podziel treść jednej strony na wiele artykułów na bazie nazwy klasy html)</font></string>
+    <string name="loadTypeOneWebPage"><b>Jedna strona</b><font color="gray"> (podziel treść jednej strony na wiele artykułów na bazie nazw klas tagów HTML)</font></string>
     <string name="loadType">Wczytuj:</string>
     <string name="global_filter">Filtr globalny&#8230;</string>
     <string name="global_filter_descr">Filtr stosowany do wszystkich kanałów - nie wypełniaj pól, jeśli ma być nieaktywny</string>
