@@ -258,11 +258,38 @@
     <string name="settings_category_advanced">Avanzado</string>
     <string name="settings_category_advanced_summary">Características adicionales (como copia de seguridad, filtros y más)</string>
     <string name="settings_autobackup_enabled">Activar copia de seguridad automática</string>
+    <string name="settings_autobackup_enabled_descr">Para guardar periódicamente su feed y la lista de artículos favoritos en un archivo .opml</string>
     <string name="settings_category_content_presentation">Modo de presentación</string>
+    <string name="settings_display_text_color">Brillo del texto</string>
     <string name="settings_visible_feeds">Visibilidad de las fuentes</string>
     <string name="settings_widget_background">Fondo</string>
     <string name="settings_widget_background_description">Color i transparencia del fondo del widget</string>
     <string name="all_feeds">Todas las fuentes (incl. futuras)</string>
+    <string name="downloadImage">Descargando imágenes</string>
+    <string name="loadFullText">Cargando texto completo</string>
+    <string name="deleteOldEntries">Eliminando artículos antiguos</string>
+    <string name="deleting_ghost_entries">Eliminando archivos antiguos</string>
+    <string name="AllImages">Todas las imágenes</string>
+    <string name="article_images_downloading">Descargar imágenes de artículos</string>
+    <string name="mobilizeAll">Movilizando</string>
+    <string name="RefreshFeeds">Actualizando feeds</string>
+    <string name="deleteImages">Eliminando imágenes:</string>
+    <string name="deleteFullTexts">Borrado de textos completos:</string>
+    <string name="applyOperations">Aplicar operaciones</string>
+    <string name="extractContent">Extrayendo contenido</string>
+    <string name="improveHtmlContent">Mejorando el contenido HTML</string>
+    <string name="parseXml">Analizando XML</string>
+    <string name="setupConnection">Configurar conexión</string>
+    <string name="settings_content_extract_rules">Reglas de extracción de contenido</string>
+    <string name="settings_content_extract_rules_description">Conjunto para cada sitio (se necesita conocimiento básico de HTML)</string>
+    <string name="settings_tap_zones_dialogtitle">sólo para información, cambios no disponibles</string>
+    <string name="downloadNext">", Siguiente "</string>
+    <string name="downloadAll">", Todo"</string>
+    <string name="loadingLink">Cargando enlace</string>
+    <string name="loadLink">Leer ahora</string>
+    <string name="loadLinkLater">Leer más tarde</string>
+    <string name="loadLinkLaterStarred">Leer más tarde en favoritos</string>
+    <string name="addFeed">Añadir un feed</string>
     <string name="externalLinks">Enlaces externos</string>
     <string name="markAllAsRead">Marcar todo como leído</string>
     <string name="pageUp">página arriba / deslizar hacia abajo (un)estrella</string>
@@ -277,6 +304,24 @@
     <string name="group">Grupo</string>
     <string name="auto_image_load">Carga de imágenes automática</string>
     <string name="show_progress_info">Información detallada del progreso</string>
+    <string name="show_progress_info_descr">Mostrar información detallada sobre la operación actual</string>
+    <string name="vibrate_on_article_list_entry_swype">Vibrar al deslizar</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">En la lista de artículos y en la ventana de texto del artículo mientras se destaca</string>
+    <string name="entry_marked_unfavourite">El artículo fue eliminado de Favoritos</string>
+    <string name="entry_marked_favourite">El artículo fue añadido a Favoritos</string>
+    <string name="new_feed_was_added">Nuevo feed añadido</string>
+    <string name="entry_marked_unread">El artículo fue marcado como no leído</string>
+    <string name="lock_orientation">Orientación horizontal</string>
+    <string name="markAsStarred">Marcar como destacado</string>
+    <string name="markedAsStarred">El artículo fue marcado como destacado: </string>
+    <string name="deleteAllEntries">¿Borrar todos los artículos no destacados que se muestran?</string>
+    <string name="question">Pregunta</string>
+    <string name="reload_full_text_with_tags">Editar Vista de Contenido</string>
+    <string name="filter_hint">La acción de un filtro se iniciará si se cumple al menos una condición (regla). \'Aceptar\' anula \'Rechazar\'</string>
+    <string name="keyword">Palabra(s) clave</string>
+    <string name="loadTypeWeb"><b>Enlaces web</b> <font color="gray">(cargar todos los enlaces de la página como artículos diferentes)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(enlace al feed o sitio web o palabras clave)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Buscar página web en DuckDuckGo</b> <font color="gray">(encontrar y cargar un artículo)</font></string>
     <string name="loadTypeOneWebPage"><b>Una página</b><font color="gray"> (dividir contenido de una página web en muchos artículos usando etiquetas de nombre de clase html)</font></string>
     <string name="loadType">Tipo de carga:</string>
     <string name="global_filter">Filtro global&#8230;</string>
