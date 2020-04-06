@@ -474,6 +474,11 @@
     <string name="next_page_max_count_classname">Макс. кількість сторінок до обробки</string>
     <string name="menu_copy_feed">Дублювати поточну стрічку</string>
     <string name="feed_copied">Стрічка продубльована</string>
+    <string name="menu_show_entry_text">Текст статті</string>
+    <string name="read_more">Ще…</string>
+    <string name="cant_open_image">Не вдалося відкрити зображення</string>
+    <string name="parsing_one_web_page">Розбір однієї веб-сторінки</string>
+    <string name="end_editing">Завершити редагування</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
