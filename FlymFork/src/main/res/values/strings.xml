@@ -260,7 +260,7 @@
     <string name="settings_category_article_text">Article\'s text</string>
     <string name="settings_category_article_text_summary">Appearance of article\'s text</string>
     <string name="settings_display_text_color_description">(0..255)</string>
-    <string name="settings_display_images">Display images</string>
+    <string name="settings_display_images">Load images</string>
     <string name="settings_display_images_description">Display images in entries</string>
     <string name="settings_display_entries_fullscreen">Auto-fullscreen entries</string>
     <string name="settings_entry_margins">Margins</string>
