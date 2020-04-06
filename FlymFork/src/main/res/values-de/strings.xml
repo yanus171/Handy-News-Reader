@@ -252,7 +252,7 @@
     <string name="settings_category_article_text">Artikelinhalt</string>
     <string name="settings_category_article_text_summary">Aussehen des Artikelinhaltes</string>
     <string name="settings_display_text_color_description">(0..255)</string>
-    <string name="settings_display_images">Bilder anzeigen</string>
+    <string name="settings_display_images">Bilder laden</string>
     <string name="settings_display_images_description">Bilder in den Artikeln anzeigen</string>
     <string name="settings_display_entries_fullscreen">Artikel im Vollbild anzeigen</string>
     <string name="settings_entry_margins">Ränder hinzufügen</string>
