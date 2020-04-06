@@ -250,7 +250,7 @@
     <string name="settings_color_text_read_sample_long">Прочитанные статьи</string>
     <string name="settings_category_article_text">Текст статьи</string>
     <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>
-    <string name="settings_display_images">Отображать кратинки</string>
+    <string name="settings_display_images">Отображать картинки</string>
     <string name="settings_display_images_description">в тексте статей</string>
     <string name="settings_display_entries_fullscreen">Статьи на полный экран</string>
     <string name="settings_entry_margins">Отступы</string>
