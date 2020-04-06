@@ -254,6 +254,10 @@
     <string name="settings_remember_last_entry">Recordar último artículo</string>
     <string name="settings_remeber_last_entry_description">Abrir el último artículo visto al inicio, de lo contrario ver la lista de entradas no leídas</string>
     <string name="auto_unstart_at_bottom">Desmarcar automáticamente al terminar de leer</string>
+    <string name="auto_unstart_at_bottom_descr">Eliminar automáticamente el artículo de Favoritos cuando se llega a la parte inferior del artículo</string>
+    <string name="settings_category_advanced">Avanzado</string>
+    <string name="settings_category_advanced_summary">Características adicionales (como copia de seguridad, filtros y más)</string>
+    <string name="settings_autobackup_enabled">Activar copia de seguridad automática</string>
     <string name="settings_category_content_presentation">Modo de presentación</string>
     <string name="settings_visible_feeds">Visibilidad de las fuentes</string>
     <string name="settings_widget_background">Fondo</string>
