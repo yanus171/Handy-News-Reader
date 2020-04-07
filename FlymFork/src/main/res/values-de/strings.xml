@@ -361,7 +361,7 @@
     <string name="new_feed_was_added">Neuer Feed wurde hinzugefügt</string>
     <string name="entry_marked_unread">Artikel wurde als ungelesen markiert</string>
     <string name="lock_orientation">Querformat</string>
-    <string name="markAsStarred">Automatische Favoriten</string>
+    <string name="markAsStarred">Automatisch als Favorit markieren</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
     <string name="deleteAllEntries">Alle nicht als Favorit markierten Artikel löschen?</string>
     <string name="question">Frage</string>
@@ -462,7 +462,7 @@
     <string name="settings_category_delete_old">Alte löschen</string>
     <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
     <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Tasten und für die Statusleiste verwendet</string>
-    <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Mit Tags erneut laden\". Hiermit werde die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
+    <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Artikelansicht bearbeiten\". Hiermit werden die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
     <string name="one_webpage_article_classname_label">Artikel</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
     <string name="one_webpage_url_classname_label">URL</string>
