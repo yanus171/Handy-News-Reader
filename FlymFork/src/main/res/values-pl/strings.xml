@@ -255,7 +255,7 @@ GENERAL]]></string>
     <string name="settings_category_article_text">Tekst artykułu</string>
     <string name="settings_category_article_text_summary">Wygląd tekstu artykułu</string>
     <string name="settings_display_text_color_description">(0..255)</string>
-    <string name="settings_display_images">Wyświetlaj obrazki</string>
+    <string name="settings_display_images">Wczytuj obrazki</string>
     <string name="settings_display_images_description">Wyświetlaj obrazki w artykułach</string>
     <string name="settings_display_entries_fullscreen">Wyświetlaj automatycznie w trybie pełnoekranowym</string>
     <string name="settings_entry_margins">Marginesy</string>
