@@ -143,8 +143,8 @@ public class ArticleTextExtractor {
             ret = RemoveTables(ret);
         }
 
-
-        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), mobilize);
+        final boolean isAutoFullTextRoot = getBestElementFromFile(doc, url) == null;
+        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), mobilize, isAutoFullTextRoot );
 
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret;
@@ -263,7 +263,7 @@ public class ArticleTextExtractor {
     }
 
 
-    private static Element getBestElementFromFile(Element doc, final String url) {
+    public static Element getBestElementFromFile(Element doc, final String url) {
         Element result = null;
         for( String line: PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ).split( "\\n|\\s" ) ) {   //while ( result == null ) {
             if ( ( line == null ) || line.isEmpty() )

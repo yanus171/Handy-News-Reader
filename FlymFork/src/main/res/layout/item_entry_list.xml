@@ -1,234 +1,238 @@
-<FrameLayout
-    android:id="@+id/layout_root"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/entry_list_layout_root_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/swype_btn_toggle_read"
-        android:layout_width="@dimen/entry_img_width"
-        android:layout_height="@dimen/entry_img_height"
-        android:layout_gravity="start|center_vertical"
-        android:layout_alignParentLeft="true"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:src="@drawable/rounded_checbox_gray"
-        android:visibility="visible"
-        android:scaleType="centerCrop"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp"
-        android:layout_alignParentStart="true" />
-    <ImageView
-        android:id="@+id/swype_btn_toggle_star"
-        android:layout_width="@dimen/entry_img_width"
-        android:layout_height="@dimen/entry_img_height"
-        android:layout_gravity="center_vertical|end"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:src="@drawable/star_empty_gray"
-        android:visibility="visible"
-        android:scaleType="centerCrop"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <FrameLayout
-        android:id="@+id/layout_ontouch"
+        android:id="@+id/entry_list_layout_root"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/layout_vertval"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/swype_btn_toggle_read"
+            android:layout_width="@dimen/entry_img_width"
+            android:layout_height="@dimen/entry_img_height"
+            android:layout_gravity="start|center_vertical"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/rounded_checbox_gray"
+            android:visibility="visible"
+            android:scaleType="centerCrop"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/swype_btn_toggle_star"
+            android:layout_width="@dimen/entry_img_width"
+            android:layout_height="@dimen/entry_img_height"
+            android:layout_gravity="center_vertical|end"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/star_empty_gray"
+            android:visibility="visible"
+            android:scaleType="centerCrop"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp" />
+        <FrameLayout
+            android:id="@+id/layout_ontouch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/dark_background"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/layout_with_background"
+                android:id="@+id/layout_vertval"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:background="@color/dark_background"
+                android:orientation="vertical">
 
-                <FrameLayout
-                    android:id="@+id/main_icon_layout"
-                    android:layout_width="@dimen/entry_img_width"
-                    android:layout_height="@dimen/entry_img_height"
+                <LinearLayout
+                    android:id="@+id/layout_with_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/main_icon_layout"
+                        android:layout_width="@dimen/entry_img_width"
+                        android:layout_height="@dimen/entry_img_height"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <ImageView
+                            android:id="@+id/main_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="#00000000" />
+
+                        <ImageView
+                            android:id="@+id/new_icon"
+                            android:layout_width="@dimen/entry_new_icon_size"
+                            android:layout_height="@dimen/entry_new_icon_size"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/new_entry_icon" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/textLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:id="@android:id/text1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="3dp"
+                                android:ellipsize="end"
+                                android:gravity="start"
+                                android:maxLines="5"
+                                android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
+                                android:textColor="?attr/colorReadState"
+                                android:textIsSelectable="false" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.7"
+                            android:drawablePadding="3dp"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:singleLine="true"
+                            android:text="date"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="?attr/colorReadState"
+                            android:textIsSelectable="false" />
+
+                        <LinearLayout
+                            android:id="@+id/text2Layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@android:id/text2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:drawablePadding="3dp"
+                                android:singleLine="true"
+                                android:text="info"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorReadState"
+                                android:textIsSelectable="false" />
+
+                            <TextView
+                                android:id="@+id/imageSize"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:drawablePadding="3dp"
+                                android:paddingStart="10dp"
+                                android:paddingLeft="10dp"
+                                android:singleLine="true"
+                                android:text="image_size"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorReadState"
+                                android:textIsSelectable="false" />
+
+                            <TextView
+                                android:id="@+id/textAuthor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:drawablePadding="3dp"
+                                android:paddingStart="10dp"
+                                android:paddingLeft="10dp"
+                                android:singleLine="true"
+                                android:text="author"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorReadState"
+                                android:textIsSelectable="false" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp">
+                    android:alpha="0.7"
+                    android:drawablePadding="3dp"
+                    android:singleLine="false"
+                    android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
+                    android:textColor="?attr/colorReadState"
+                    android:textIsSelectable="false" />
 
-                    <ImageView
-                        android:id="@+id/main_icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="#00000000" />
-
-                    <ImageView
-                        android:id="@+id/new_icon"
-                        android:layout_width="@dimen/entry_new_icon_size"
-                        android:layout_height="@dimen/entry_new_icon_size"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/new_entry_icon" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/textLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="5dp">
-
-                        <TextView
-                            android:id="@android:id/text1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="3dp"
-                            android:ellipsize="end"
-                            android:gravity="start"
-                            android:maxLines="5"
-                            android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
-                            android:textColor="?attr/colorReadState"
-                            android:textIsSelectable="false" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/textDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:drawablePadding="3dp"
-                        android:paddingStart="10dp"
-                        android:paddingLeft="10dp"
-                        android:singleLine="true"
-                        android:text="date"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="?attr/colorReadState"
-                        android:textIsSelectable="false" />
-
-                    <LinearLayout
-                        android:id="@+id/text2Layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@android:id/text2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:drawablePadding="3dp"
-                            android:singleLine="true"
-                            android:text="info"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="?attr/colorReadState"
-                            android:textIsSelectable="false" />
-
-                        <TextView
-                            android:id="@+id/imageSize"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:drawablePadding="3dp"
-                            android:paddingStart="10dp"
-                            android:paddingLeft="10dp"
-                            android:singleLine="true"
-                            android:text="image_size"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="?attr/colorReadState"
-                            android:textIsSelectable="false" />
-
-                        <TextView
-                            android:id="@+id/textAuthor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:drawablePadding="3dp"
-                            android:paddingStart="10dp"
-                            android:paddingLeft="10dp"
-                            android:singleLine="true"
-                            android:text="author"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="?attr/colorReadState"
-                            android:textIsSelectable="false" />
-                    </LinearLayout>
-                </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:alpha="0.7"
-                android:drawablePadding="3dp"
-                android:singleLine="false"
-                android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
-                android:textColor="?attr/colorReadState"
-                android:textIsSelectable="false" />
+            <include layout="@layout/item_entry_list_btn"/>
 
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/earth_gray" />
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/earth_gray" />
-            <ImageView
-                android:id="@+id/image3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/earth_gray" />
-            <TextView
-                android:id="@+id/textSource"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:alpha="0.7"
-                android:drawablePadding="3dp"
-                android:singleLine="false"
-                android:ellipsize="end"
-                android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?attr/colorReadState"
-                android:textIsSelectable="false" />
-            <TextView
-                android:id="@+id/textSourceReadMore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/read_more"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?attr/colorReadState"
-                android:textIsSelectable="false" />
-
-        </LinearLayout>
-
-        <include layout="@layout/item_entry_list_btn"/>
-
+        </FrameLayout>
     </FrameLayout>
+    <ImageView
+        android:id="@+id/image1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/earth_gray" />
+    <ImageView
+        android:id="@+id/image2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/earth_gray" />
+    <ImageView
+        android:id="@+id/image3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/earth_gray" />
+    <TextView
+        android:id="@+id/textSource"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:drawablePadding="3dp"
+        android:focusable="true"
+        android:justificationMode="inter_word"
+        android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?attr/colorReadState" />
+    <TextView
+        android:id="@+id/textSourceReadMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/read_more"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?attr/colorReadState"
+        android:textIsSelectable="false" />
 
-</FrameLayout>
+</LinearLayout>

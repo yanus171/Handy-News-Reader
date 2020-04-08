@@ -331,6 +331,12 @@
                 android:title="@string/page_up_down_90_pct"/>
 
             <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="vibrate_on_article_list_entry_swype"
+                android:summary="@string/vibrate_on_article_list_entry_swype_summary"
+                android:title="@string/vibrate_on_article_list_entry_swype"/>
+
+            <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="brightness_gesture_enabled"
                 android:summary="@string/brightness_gesture_descr"
@@ -539,12 +545,6 @@
                 android:defaultValue="false"
                 android:title="@string/setting_calculate_image_sizes"
                 android:summary="@string/setting_calculate_image_sizes_descr"/>
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="vibrate_on_article_list_entry_swype"
-                android:summary="@string/vibrate_on_article_list_entry_swype_summary"
-                android:title="@string/vibrate_on_article_list_entry_swype"/>
 
             <CheckBoxPreference
                 android:defaultValue="true"

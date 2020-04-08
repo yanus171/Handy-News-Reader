@@ -221,6 +221,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mLabelClock.setText("");
 
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
+        mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1221,7 +1222,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 0)
                         setFullTextRoot(baseUrl, className);
-                    if (which == 2)
+                    else if (which == 2)
                         copyToClipboard(className);
                     else if ( paramValue.equals( "hide" ) )
                         removeClass( className );

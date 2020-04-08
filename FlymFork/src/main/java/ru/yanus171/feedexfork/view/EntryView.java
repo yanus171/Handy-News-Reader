@@ -200,7 +200,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             return "0.1cm";
     }
 
-    private static String getAlign(String text) {
+    public static String getAlign(String text) {
         if (isTextRTL(text))
             return "right";
         else if (PrefUtils.getBoolean(PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false))

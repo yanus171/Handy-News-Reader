@@ -52,14 +52,22 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.Html;
 import android.text.Layout;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ImageSpan;
+import android.text.util.Linkify;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -76,10 +84,13 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -110,7 +121,9 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
+import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -218,7 +231,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     final int minX = 40;
                     final int minY = 20;
                     final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel( 10 );
-                    final ViewHolder holder = (ViewHolder) ( (ViewGroup)v.getParent() ).getTag(R.id.holder);
+                    final ViewHolder holder = (ViewHolder) ( (ViewGroup)v.getParent().getParent() ).getTag(R.id.holder);
                     if ( event.getAction() == MotionEvent.ACTION_DOWN) {
                         Dog.v( "onTouch ACTION_DOWN" );
                         paddingX = 0;
@@ -342,7 +355,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     } else
                         wasVibrateStar = false;
 
-                    v.setPadding(paddingX > 0 ? paddingX : 0, 0, paddingX < 0 ? -paddingX : 0, 0);
+                    v.setPadding(Math.max(paddingX, 0), 0, paddingX < 0 ? -paddingX : 0, 0);
 
                     Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold );
                     return true;
@@ -360,7 +373,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final int backgroundColor;
         backgroundColor = Color.parseColor( isUnread ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
         view.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
-        view.findViewById( R.id.layout_root ).setBackgroundColor( backgroundColor );
+        view.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
 
         holder.readToggleSwypeBtnView.setVisibility( View.GONE );
         holder.starToggleSwypeBtnView.setVisibility( View.GONE );
@@ -470,14 +483,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView3.setVisibility( View.GONE );
         holder.readMore.setVisibility( View.GONE );
         if ( mShowEntryText ) {
-
             holder.textTextView.setVisibility(View.VISIBLE);
-            final String html = cursor.getString(mAbstractPos) == null ? "" : cursor.getString(mAbstractPos);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                holder.textTextView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD );
+            final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setEnabled(!holder.isRead);
+            holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
+            //holder.textTextView.setTextIsSelectable( true );
             holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
             SetupEntryText(holder, Html.fromHtml( html ), true );
+            //holder.textTextView.setMovementMethod(LinkMovementMethod.getInstance());
             final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
             if ( html.contains( "<img" ) || isMobilized ) {
                 EntryContent content = mContentVoc.get(holder.entryID);
@@ -527,6 +540,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
+    @NotNull
+    private String GetHtmlAligned(String html) {
+        return "<p align='" + getAlign(html) + "'>" +  html + "</p>";
+    }
+
     class EntryContent {
         long mID = 0L;
         String mLink;
@@ -559,7 +577,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                imagesToDl,
                                                mImageUrlList,
                                                3 );
-            mText = Html.fromHtml( temp );
+            mText = Html.fromHtml( GetHtmlAligned( temp ));
             mIsReadMore = temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
             synchronized ( this ) {
                 mIsLoaded = true;
@@ -573,9 +591,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
-        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) : text );
-        if ( isReadMore )
-            holder.readMore.setVisibility(View.VISIBLE );
+        //final String s = text.toString();
+        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
+        //holder.textTextView.setText( s.length() > MAX_TEXT_LEN ? s.substring( 0, MAX_TEXT_LEN ) + " ..." : s );
+        //Linkify.addLinks(holder.textTextView, Linkify.ALL);
+        holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
     }
 
     private static void SetContentImage(Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
