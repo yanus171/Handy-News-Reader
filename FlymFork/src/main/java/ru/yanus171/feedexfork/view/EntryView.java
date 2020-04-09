@@ -82,6 +82,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -117,6 +119,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
@@ -305,7 +308,13 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
                 newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
-
+        boolean hasOriginal = !feedID.equals(GetExtrenalLinkFeedID());
+        try {
+            JSONObject options = new JSONObject( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.OPTIONS)) );
+            hasOriginal = hasOriginal && options.has( IS_RSS ) && options.getBoolean( IS_RSS );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String contentText;
         if (mLoadTitleOnly)
             contentText = getContext().getString(R.string.loading);
@@ -360,11 +369,12 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
+        final boolean finalHasOriginal = hasOriginal;
         new Thread() {
             @Override
             public void run() {
                 synchronized (EntryView.this) {
-                    mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown);
+                    mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
                     mData = mDataWithWebLinks;
                     if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
                         mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
@@ -385,7 +395,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         mLastContentLength = 0;
     }
 
-    private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean preferFullText) {
+    private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
         StringBuilder content = new StringBuilder(GetCSS(title)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
@@ -416,15 +426,15 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         if (!feedID.equals(FetcherService.GetExtrenalLinkFeedID())) {
             content.append(BUTTON_START);
 
-            if (!preferFullText) {
+            if (!canSwitchToFullText) {
                 content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
-            } else {
+            } else if ( hasOriginalText ) {
                 content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
             }
             content.append(BUTTON_END);
         }
 
-        if (preferFullText)
+        if (canSwitchToFullText)
             content.append(BUTTON_START).append(context.getString(R.string.menu_reload_full_text)).append(BUTTON_MIDDLE)
                     .append("injectedJSObject.onReloadFullText();").append(BUTTON_END);
         if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
@@ -828,7 +838,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         Element root = FindBestElement(doc, mEntryLink, "", true);
         AddTagButtons(doc, mEntryLink, root);
         synchronized (EntryView.this) {
-            mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", 0, true);
+            mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", 0, true, false);
         }
         mScrollY = getScrollY();
         LoadData();

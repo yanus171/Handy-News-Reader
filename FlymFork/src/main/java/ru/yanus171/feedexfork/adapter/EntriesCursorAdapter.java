@@ -134,7 +134,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowFeedInfo;
     private final boolean mShowEntryText, mShowUnread;
     private boolean mBackgroundColorLight = false;
-    final int MAX_TEXT_LEN = 2500;
+    final static int MAX_TEXT_LEN = 2500;
 
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
@@ -489,7 +489,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
             holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
-            SetupEntryText(holder, Html.fromHtml( html ), true );
+            SetupEntryText(holder, Html.fromHtml( html ), IsReadMore(html ) );
             //holder.textTextView.setMovementMethod(LinkMovementMethod.getInstance());
             final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
             if ( html.contains( "<img" ) || isMobilized ) {
@@ -578,12 +578,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                mImageUrlList,
                                                3 );
             mText = Html.fromHtml( GetHtmlAligned( temp ));
-            mIsReadMore = temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
+            mIsReadMore = IsReadMore(temp);
             synchronized ( this ) {
                 mIsLoaded = true;
             }
             EntryView.NotifyToUpdate( mID, mLink );
         }
+    }
+
+    private static boolean IsReadMore(String temp) {
+        return temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
     }
 
     private void OpenArticle(Context context, long entryID) {
@@ -595,7 +599,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
         //holder.textTextView.setText( s.length() > MAX_TEXT_LEN ? s.substring( 0, MAX_TEXT_LEN ) + " ..." : s );
         //Linkify.addLinks(holder.textTextView, Linkify.ALL);
-        holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
+        //holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
+        holder.readMore.setText( isReadMore ? R.string.read_more : R.string.open_article );
+        holder.readMore.setVisibility( View.VISIBLE );
     }
 
     private static void SetContentImage(Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {

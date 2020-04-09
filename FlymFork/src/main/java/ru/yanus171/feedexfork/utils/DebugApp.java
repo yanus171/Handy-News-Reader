@@ -189,6 +189,8 @@ public class DebugApp {
 
 		Log.e("HandyNewsLog", st.toString());
 
+		throwable.printStackTrace();
+
 		try {
 			CreateFileUri("", "crash.txt", st.toString());
 		} catch ( Exception e ) {

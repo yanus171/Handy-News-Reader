@@ -166,6 +166,7 @@ public class FetcherService extends IntentService {
     private static final String ENCODING = "encoding=\"";
     public static final String CUSTOM_KEEP_TIME = "customKeepTime";
     public static final String IS_ONE_WEB_PAGE = "isOneWebPage";
+    public static final String IS_RSS = "isRss";
     public static final String URL_NEXT_PAGE_CLASS_NAME = "UrlNextPageClassName";
     public static final String NEXT_PAGE_MAX_COUNT = "NextPageMaxCount";
 
@@ -1161,7 +1162,7 @@ public class FetcherService extends IntentService {
             boolean isOneWebPage = false;
             try {
                 JSONObject jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
-                isRss = jsonOptions.getBoolean( "isRss" );
+                isRss = jsonOptions.getBoolean(IS_RSS);
                 isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
 
                 final String feedID = cursor.getString(idPosition);
