@@ -325,6 +325,9 @@
     <string name="loadTypeOneWebPage"><b>Una página</b><font color="gray"> (dividir contenido de una página web en muchos artículos usando etiquetas de nombre de clase html)</font></string>
     <string name="loadType">Tipo de carga:</string>
     <string name="global_filter">Filtro global&#8230;</string>
+    <string name="global_filter_descr">Un filtro que se aplica a cada feed - dejar el texto del filtro (y el texto regex) vacío para desactivar</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">de otro modo se aplica al contenido</string>
+    <string name="rule_text">Texto de la regla</string>
     <string name="settings_current_setting">Configuración actual</string>
     <string name="settings_delete_old_interval">Eliminar intervalo anterior</string>
     <string name="settings_delete_old_interval_descr">Cuándo borrar los artículos antiguos y calcular el tamaño del artículo, el feed y las imágenes de grupo en la tarjeta Sd</string>
@@ -352,6 +355,14 @@
     <string name="cant_open_image">No se puede abrir la imagen</string>
     <string name="parsing_one_web_page">Analizando una página web</string>
     <string name="end_editing">Terminar edición</string>
+    <string name="open_article">Abrir artículo</string>
+    <string name="search_in_browser">Buscar en el navegador</string>
+    <string name="search_in_yandex">Buscar vía Yandex</string>
+    <string name="search_in_google">Buscar a través de Google</string>
+    <string name="long_operation">Operación larga</string>
+    <string name="reading_article">Leyendo un artículo</string>
+    <string name="reading_notification">Notificación de lectura de artículo</string>
+    <string name="reading_notification_descr">Notificación de barra de estado persistente para evitar que el sistema cierre la aplicación - para acelerar el inicio de la aplicación después de un largo retraso</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">One new entry</item>
         <item quantity="other">%d new entries</item>
