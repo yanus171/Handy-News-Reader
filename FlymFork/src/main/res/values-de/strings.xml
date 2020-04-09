@@ -486,6 +486,7 @@
     <string name="search_in_browser">Im Browser suchen</string>
     <string name="search_in_yandex">Über Yandex suchen</string>
     <string name="search_in_google">Über Google suchen</string>
+    <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
