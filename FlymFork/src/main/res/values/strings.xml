@@ -495,7 +495,9 @@
     <string name="parsing_one_web_page">Parsing one web page</string>
     <string name="end_editing">End editing</string>
     <string name="open_article">Open article</string>
-
+    <string name="search_in_browser">Search in browser</string>
+    <string name="search_in_yandex">Search via Yandex</string>
+    <string name="search_in_google">Search via Google</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

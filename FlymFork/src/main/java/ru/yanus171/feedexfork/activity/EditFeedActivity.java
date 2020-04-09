@@ -47,6 +47,7 @@ package ru.yanus171.feedexfork.activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -123,7 +124,9 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.IS_READ_STUMB;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_ACTION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_DESC;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_ICON;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_TITLE;
@@ -144,6 +147,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     static final String ITEM_DESC = "description";
     static final String ITEM_ISREAD = "read";
     static final String ITEM_ICON = "icon";
+    static final String ITEM_ACTION = "action";
     private static final String STATE_CURRENT_TAB = "STATE_CURRENT_TAB";
     private static final String STATE_FEED_EDIT_LOAD_TYPE_ID = "STATE_FEED_EDIT_LOAD_TYPE_ID";
     public static final String DUCKDUCKGO_SEARCH_URL = "https://duckduckgo.com/html/?q=";
@@ -880,8 +884,21 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
             private void AddFeed(HashMap<String, String> dataItem) {
                 if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
-                    Intent intent = new Intent(EditFeedActivity.this, EntryActivity.class );
-                    EditFeedActivity.this.startActivity(intent.setData( Uri.parse(dataItem.get(ITEM_URL).replace( IS_READ_STUMB, "" )) ));
+                    final String url = dataItem.get(ITEM_URL).replace( IS_READ_STUMB, "" );
+                    final Intent intent;
+                    if ( Intent.ACTION_WEB_SEARCH.equals( dataItem.get(ITEM_URL) ) ) {
+                        intent = new Intent();
+                        intent.setAction(Intent.ACTION_WEB_SEARCH);
+                        intent.putExtra(SearchManager.QUERY, mUrlEditText.getText());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    } else if ( Intent.ACTION_VIEW.equals( dataItem.get(ITEM_ACTION) ) ) {
+                        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    } else {
+                        intent = new Intent(EditFeedActivity.this, EntryActivity.class);
+                        intent.setData( Uri.parse(url) );
+                    }
+                    EditFeedActivity.this.startActivity(intent );
                     return;
                 }
                 Pair<Uri, Boolean> result =
@@ -1067,10 +1084,15 @@ class GetSiteAlternateListLoader extends BaseLoader<ArrayList<HashMap<String, St
  */
 class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<String, String>>> {
     private static final String CLASS_ATTRIBUTE = "result__snippet";
+    private static final String YANDEX_SEARCH_TEXT_URL = "https://yandex.com/search/?text=";
+    public static final String YANDEX_FAVICON_URL = "https://yandex.com/favicon.ico";
+    private static final String GOOGLE_SEARCH_TEXT_URL = "https://google.com/search?ie=UTF-8&q=";
+    public static final String GOOGLE_FAVICON_URL = "https://www.google.com/favicon.ico";
+
     final String mUrl;
     private String mSearchText;
 
-    public GetWebSearchDuckDuckGoResultsLoader(Context context, String searchText) {
+    GetWebSearchDuckDuckGoResultsLoader(Context context, String searchText) {
         super(context);
         mSearchText = searchText;
         try {
@@ -1080,12 +1102,13 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
         mUrl = EditFeedActivity.DUCKDUCKGO_SEARCH_URL + mSearchText + "&kl=" + Locale.getDefault().getLanguage();
     }
 
+    private final String ITEM_FIELD_SEP = "__#__";
+
     @Override
     public ArrayList<HashMap<String, String>> loadInBackground() {
         final String LAST_URL = "DuckDuckGoSearchLastUrl";
         final String LAST_RESULTS = "DuckDuckGoSearchLastResults";
         final String LAST_DATE = "DuckDuckGoSearchLastUrlDate";
-        final String ITEM_FIELD_SEP = "__#__";
         final String ITEM_SEP = "__####__";
 
         final ArrayList<HashMap<String, String>> results = new ArrayList<>();
@@ -1100,13 +1123,16 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                     final String url = fieldList[1];
                     final String descr = fieldList[2];
                     final String icon = fieldList[3];
+                    final String action = fieldList.length > 4 ? fieldList[4] : "";
                     String read = "";
                     if ( !url.startsWith( IS_READ_STUMB ) && FetcherService.GetEnryUri(url ) != null )
                         read = IS_READ_STUMB;
                     map.put(ITEM_TITLE, read + title);
                     map.put(ITEM_URL, read + url);
                     map.put(ITEM_DESC, read + descr);
-                    map.put(ITEM_ICON , icon);
+                    map.put(ITEM_ICON, icon);
+                    map.put(ITEM_ACTION, action);
+
                     results.add(map);
                 }
             }
@@ -1127,26 +1153,15 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                         String icon = el.getElementsByClass( "result__icon__img" ).first().attr( "src" );
                         if ( !icon.startsWith( "https:" ) )
                             icon = "https:" + icon;
-                        HashMap<String, String> map = new HashMap<>();
-                        final String read = ( FetcherService.GetEnryUri(url ) != null ? IS_READ_STUMB : "" );
-                        map.put(ITEM_TITLE, read + title );
-                        map.put(ITEM_URL, read + url);
-                        map.put(ITEM_DESC, read + descr);
-                        map.put(ITEM_ICON, icon);
-                        results.add(map);
-                        {
-                            ArrayList<String> list = new ArrayList<>();
-                            list.add( map.get( ITEM_TITLE ) );
-                            list.add( map.get( ITEM_URL) );
-                            list.add( map.get( ITEM_DESC ) );
-                            list.add( map.get( ITEM_ICON ) );
-                            data.add( TextUtils.join(ITEM_FIELD_SEP, list ) );
-                        }
-
+                        AddItem( results, data, "", title, url, descr, icon );
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+                AddItem( results, data, Intent.ACTION_WEB_SEARCH, getContext().getString( R.string.search_in_browser ),  "", "", "" );
+                AddItem(results, data, Intent.ACTION_VIEW, getContext().getString( R.string.search_in_yandex ), YANDEX_SEARCH_TEXT_URL + TextUtils.htmlEncode(mSearchText ), "", YANDEX_FAVICON_URL);
+                AddItem(results, data, Intent.ACTION_VIEW, getContext().getString( R.string.search_in_google ), GOOGLE_SEARCH_TEXT_URL + TextUtils.htmlEncode(mSearchText ), "", GOOGLE_FAVICON_URL);
+
                 PrefUtils.putString( LAST_URL, mUrl );
                 PrefUtils.putString( LAST_RESULTS, TextUtils.join( ITEM_SEP, data ) );
                 PrefUtils.putLong( LAST_DATE, System.currentTimeMillis() );
@@ -1159,6 +1174,30 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
             return null;
         }
 
+    }
+
+    private void AddItem(ArrayList<HashMap<String, String>> results, ArrayList<String> data,
+                         String action,
+                         String title,
+                         String url,
+                         String descr,
+                         String iconUrl) {
+        HashMap<String, String> map = new HashMap<>();
+        final String read = ( FetcherService.GetEnryUri(url ) != null ? IS_READ_STUMB : "" );
+        map.put(ITEM_TITLE, read + title );
+        map.put(ITEM_URL, read + url);
+        map.put(ITEM_DESC, read + descr);
+        map.put(ITEM_ICON, iconUrl);
+        map.put(ITEM_ACTION, action);
+        results.add(map);
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add( map.get( ITEM_TITLE ) );
+        list.add( map.get( ITEM_URL ) );
+        list.add( map.get( ITEM_DESC ) );
+        list.add( map.get( ITEM_ICON ) );
+        list.add( map.get( ITEM_ACTION ) );
+        data.add(TextUtils.join(ITEM_FIELD_SEP, list ) );
     }
 
 
