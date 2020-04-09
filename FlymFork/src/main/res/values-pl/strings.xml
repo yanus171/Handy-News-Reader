@@ -485,6 +485,10 @@ GENERAL]]></string>
     <string name="cant_open_image">Nie można otworzyć obrazka</string>
     <string name="parsing_one_web_page">Przetwarzanie jednej strony</string>
     <string name="end_editing">Koniec edycji</string>
+    <string name="open_article">Otwórz artykuł</string>
+    <string name="search_in_browser">Szukaj w przeglądarce</string>
+    <string name="search_in_yandex">Szukaj w Yandex</string>
+    <string name="search_in_google">Szukaj w Google</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
