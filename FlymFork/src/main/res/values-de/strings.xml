@@ -482,6 +482,10 @@
     <string name="cant_open_image">Bild kann nicht geöffnet werden</string>
     <string name="parsing_one_web_page">Eine Webseite analysieren</string>
     <string name="end_editing">Bearbeiten beenden</string>
+    <string name="open_article">Artikel öffnen</string>
+    <string name="search_in_browser">Im Browser suchen</string>
+    <string name="search_in_yandex">Über Yandex suchen</string>
+    <string name="search_in_google">Über Google suchen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
