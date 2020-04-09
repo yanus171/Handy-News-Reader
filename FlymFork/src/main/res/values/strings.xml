@@ -498,6 +498,10 @@
     <string name="search_in_browser">Search in browser</string>
     <string name="search_in_yandex">Search via Yandex</string>
     <string name="search_in_google">Search via Google</string>
+    <string name="long_operation">Long operation</string>
+    <string name="reading_article">Reading an article</string>
+    <string name="reading_notification">Article reading notification</string>
+    <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

@@ -144,7 +144,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean mFavorite, mIsWithTables, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
-    public BaseEntryPagerAdapter mEntryPagerAdapter;
+    private BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame = null;
     private ProgressBar mProgressBar = null;
@@ -174,6 +174,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             //outState.putLongArray(STATE_ENTRIES_IDS, mEntriesIds);
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID, -1);
         }
+
         super.onCreate(savedInstanceState);
     }
 

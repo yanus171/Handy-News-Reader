@@ -33,6 +33,8 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+
 /**
  * Created by Admin on 03.06.2016.
  */
@@ -185,7 +187,7 @@ public class StatusText implements Observer {
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle));
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
                     if ( !mNotificationTitle.isEmpty() )
@@ -341,7 +343,7 @@ public class StatusText implements Observer {
 
 
 
-    static public Notification GetNotification(final String text, final String title ) {
+    static public Notification GetNotification(final String text, final String title, int iconResID, String channelID  ) {
         final Context context = MainApplication.getContext();
         final PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), 0 );
 
@@ -351,9 +353,9 @@ public class StatusText implements Observer {
                     new Notification.BigTextStyle();
             bigTextStyle.bigText(text);
             bigTextStyle.setBigContentTitle(title);
-            builder = new Notification.Builder(MainApplication.getContext(), MainApplication.NOTIFICATION_CHANNEL_ID) //
-                    .setSmallIcon(R.drawable.refresh) //
-                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
+            builder = new Notification.Builder(MainApplication.getContext(), channelID )
+                    .setSmallIcon( iconResID )
+                    .setLargeIcon( BitmapFactory.decodeResource(context.getResources(), iconResID))
                     .setStyle( bigTextStyle )
                     .setContentIntent( pIntent );
             return builder.build();
@@ -363,9 +365,9 @@ public class StatusText implements Observer {
             bigTextStyle.bigText(text);
             bigTextStyle.setBigContentTitle(title);
             androidx.core.app.NotificationCompat.Builder builder =
-                    new androidx.core.app.NotificationCompat.Builder(MainApplication.getContext()) //
-                            .setSmallIcon(R.drawable.refresh) //
-                            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher)) //
+                    new androidx.core.app.NotificationCompat.Builder(MainApplication.getContext())
+                            .setSmallIcon( iconResID )
+                            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), iconResID))
                             .setStyle(bigTextStyle)
                             .setContentIntent( pIntent );
             return builder.build();

@@ -118,7 +118,6 @@ import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
-import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
@@ -135,7 +134,7 @@ import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
-import static ru.yanus171.feedexfork.MainApplication.NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
@@ -310,12 +309,12 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", ""));
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", ""));
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
             long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
             long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
@@ -522,7 +521,7 @@ public class FetcherService extends IntentService {
     }
 
     private void LongOper( String title, Runnable oper ) {
-        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title));
+        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
         Status().SetNotificationTitle( title );
         PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
         synchronized (mCancelRefresh) {
@@ -1202,7 +1201,7 @@ public class FetcherService extends IntentService {
                 .setContentTitle(getString(captionID)) //
                 .setLights(0xffffffff, 0, 0);
         if (Build.VERSION.SDK_INT >= 26 )
-            notifBuilder.setChannelId( NOTIFICATION_CHANNEL_ID );
+            notifBuilder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
 
         if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false)) {
             notifBuilder.setVibrate(new long[]{0, 1000});

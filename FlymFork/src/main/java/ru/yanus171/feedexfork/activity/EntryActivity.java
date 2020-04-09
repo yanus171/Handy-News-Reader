@@ -19,26 +19,31 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.ReadingService;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -57,6 +62,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
+import static ru.yanus171.feedexfork.utils.PrefUtils.READING_NOTIFICATION;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
@@ -67,6 +73,7 @@ public class EntryActivity extends BaseActivity {
     public boolean mHasSelection = false;
     private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
+    private static int mActivityCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +132,25 @@ public class EntryActivity extends BaseActivity {
 
         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
             setFullScreen( true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN );
+
+        if ( mActivityCount == 0 && PrefUtils.getBoolean( READING_NOTIFICATION, false ) ){
+            Intent serviceIntent = new Intent(this, ReadingService.class);
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+                startForegroundService( serviceIntent );
+            else
+                startService( serviceIntent );
+        }
+        mActivityCount++;
     }
+
+    @Override
+    public void onDestroy() {
+        mActivityCount--;
+        if ( mActivityCount == 0 )
+            stopService( new Intent(this, ReadingService.class) );
+        super.onDestroy();
+    }
+
     private void LoadAndOpenLink(final String url, final String title, final String text) {
         new Thread(new Runnable() {
             @Override
