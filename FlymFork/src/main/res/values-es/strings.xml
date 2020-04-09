@@ -362,6 +362,12 @@
     <string name="setFullTextRoot">Seleccionar como raíz de texto completo</string>
     <string name="fullTextRoot">Raíz de texto completo</string>
     <string name="fullTextReloadStarted">La recarga de texto completo ha comenzado</string>
+    <string name="brightness_update_from_system_period_min">Tiempo de actualización del brillo</string>
+    <string name="brightness_update_from_system_period_min_descr">(en minutos) Después de ese período de tiempo el brillo (por deslizamiento) será restaurado desde el nivel actual del sistema (0 - apagado)</string>
+    <string name="menu_add_feed_shortcut">Crear un acceso directo en la pantalla de inicio</string>
+    <string name="new_feed_shortcut_added">Se ha creado un nuevo acceso directo en la pantalla de inicio</string>
+    <string name="new_feed_shortcut_add_failed">Su lanzador no puede crear un acceso directo</string>
+    <string name="custom_data_folder">Ruta personalizada de archivos externos</string>
     <string name="settings_current_setting">Configuración actual</string>
     <string name="settings_delete_old_interval">Eliminar intervalo anterior</string>
     <string name="settings_delete_old_interval_descr">Cuándo borrar los artículos antiguos y calcular el tamaño del artículo, el feed y las imágenes de grupo en la tarjeta Sd</string>
