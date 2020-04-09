@@ -489,6 +489,10 @@ GENERAL]]></string>
     <string name="search_in_browser">Szukaj w przeglądarce</string>
     <string name="search_in_yandex">Szukaj w Yandex</string>
     <string name="search_in_google">Szukaj w Google</string>
+    <string name="long_operation">Długa operacja</string>
+    <string name="reading_article">Lektura artykułu</string>
+    <string name="reading_notification">Powiadomienie o lekturze artykułu</string>
+    <string name="reading_notification_descr">Trwałe powiadomienie na belce statusu, chroniące aplikację przed zamknięciem przez system - by przyspieszyć uruchomienie po dłuższym nieużywaniu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
