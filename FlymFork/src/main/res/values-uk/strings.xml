@@ -486,6 +486,7 @@
     <string name="long_operation">Довга операція</string>
     <string name="reading_notification">Сповіщення про читання статті</string>
     <string name="reading_notification_descr">Постійний сповіщення в рядку стану для запобігання закриття програми системою - для прискорення запуску після довгої затримки</string>
+    <string name="feed_list_loading">Завантаження списку стрічок</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
