@@ -25,6 +25,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +33,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -45,8 +47,8 @@ import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getInt;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 
 public class DrawerAdapter extends BaseAdapter {
 
@@ -54,7 +56,7 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_URL = 1;
     private static final int POS_NAME = 2;
     private static final int POS_IS_GROUP = 3;
-    private static final int POS_ICON = 4;
+    private static final int POS_ICON_URL = 4;
     private static final int POS_LAST_UPDATE = 5;
     private static final int POS_ERROR = 6;
     private static final int POS_UNREAD = 7;
@@ -69,7 +71,7 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int NORMAL_TEXT_COLOR = Color.parseColor("#EEEEEE");
     private static final int GROUP_TEXT_COLOR = Color.parseColor("#BBBBBB");
 
-    private static final String COLON = MainApplication.getContext().getString(R.string.colon);
+    private static final String COLON = getContext().getString(R.string.colon);
 
     private static final int CACHE_MAX_ENTRIES = 100;
     private final Map<Long, String> mFormattedDateCache = new LinkedHashMap<Long, String>(CACHE_MAX_ENTRIES + 1, .75F, true) {
@@ -160,7 +162,7 @@ public class DrawerAdapter extends BaseAdapter {
                         taskInfo += String.format( " I:%d", mImageTaskCount );
                     if ( !taskInfo.isEmpty() ) {
                         holder.tasksTxt.setVisibility( View.VISIBLE );
-                        holder.tasksTxt.setText( MainApplication.getContext().getString( R.string.tasks_to_download ) + ": " + taskInfo);
+                        holder.tasksTxt.setText( getContext().getString( R.string.tasks_to_download ) + ": " + taskInfo);
                     }
                     break;
                 case 2:
@@ -191,7 +193,7 @@ public class DrawerAdapter extends BaseAdapter {
                 holder.iconView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        ContentResolver cr = getContext().getContentResolver();
                         ContentValues values = new ContentValues();
                         values.put(FeedData.FeedColumns.IS_GROUP_EXPANDED, isGroupExpanded(position) ? null : 1 );
                         cr.update(FeedData.FeedColumns.CONTENT_URI(getItemId(position)), values, null, null);
@@ -226,16 +228,11 @@ public class DrawerAdapter extends BaseAdapter {
                     holder.stateTxt.setText(new StringBuilder(mContext.getString(R.string.error)).append(COLON).append(mFeedsCursor.getString(POS_ERROR)));
                 }
 
-                final long feedId = mFeedsCursor.getLong(POS_ID);
-                Bitmap bitmap = UiUtils.getFaviconBitmap(feedId, mFeedsCursor, POS_ICON);
-
-                if (bitmap != null) {
-                    holder.iconView.setImageBitmap(bitmap);
-                } else {
-                    holder.iconView.setImageResource(R.mipmap.ic_launcher);
-                }
-
-
+                Uri iconUri = mFeedsCursor.isNull(POS_ICON_URL) ? Uri.EMPTY : GetImageFileUri(mFeedsCursor.getString(POS_ICON_URL), mFeedsCursor.getString(POS_ICON_URL) );
+                Glide.with(parent.getContext())
+                    .load(iconUri)
+                    .placeholder( R.mipmap.ic_launcher )
+                    .into(holder.iconView);
 
                 holder.autoRefreshIcon.setVisibility( isAutoRefresh( position )  ? View.VISIBLE : View.GONE );
             }
@@ -296,11 +293,9 @@ public class DrawerAdapter extends BaseAdapter {
         return -1;
     }
 
-    public byte[] getItemIcon(int position) {
-        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS)) {
-            return mFeedsCursor.getBlob(POS_ICON);
-        }
-
+    public Bitmap getItemIcon(int position) {
+        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS))
+            return UiUtils.getFaviconBitmap( mFeedsCursor.getString( POS_ICON_URL ) );
         return null;
     }
 
@@ -340,11 +335,11 @@ public class DrawerAdapter extends BaseAdapter {
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
         Cursor numbers = cr.query(EntryColumns.CONTENT_URI,
                                   new String[]{FeedData.ALL_UNREAD_NUMBER,
-                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_READ_NUMBER : "0",
-                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
+                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_READ_NUMBER : "0",
+                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
                                       FeedData.ALL_NUMBER,
-                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
-                                      PrefUtils.getBoolean(SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_READ_NUMBER : "0",
+                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
+                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_READ_NUMBER : "0",
                                       FeedData.ALL_IMAGESSIZE_NUMBER(),
                                       FeedData.ALL_UNREAD_IMAGESSIZE_NUMBER(),
                                       FeedData.FAVORITES_IMAGESSIZE_NUMBER(),

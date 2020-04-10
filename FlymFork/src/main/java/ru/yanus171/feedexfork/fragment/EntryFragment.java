@@ -133,7 +133,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -1338,7 +1338,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mScrollPosPos = cursor.getColumnIndex(EntryColumns.SCROLL_POS);
                         mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
                         mFeedUrlPos = cursor.getColumnIndex(FeedColumns.URL);
-                        mFeedIconPos = cursor.getColumnIndex(FeedColumns.ICON);
+                        mFeedIconUrlPos = cursor.getColumnIndex(FeedColumns.ICON_URL);
                         mRetrieveFullTextPos = cursor.getColumnIndex(FeedColumns.RETRIEVE_FULLTEXT);
                     }
 

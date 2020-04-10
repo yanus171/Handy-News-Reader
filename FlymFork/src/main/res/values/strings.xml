@@ -502,6 +502,7 @@
     <string name="reading_article">Reading an article</string>
     <string name="reading_notification">Article reading notification</string>
     <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
+    <string name="feed_list_loading">Feed list loading</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

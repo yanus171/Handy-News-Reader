@@ -59,17 +59,20 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
@@ -703,13 +706,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else {
                         long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
                         Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),
-                                new String[]{FeedData.FeedColumns.NAME, FeedData.FeedColumns.ICON},
+                                new String[]{FeedData.FeedColumns.NAME, FeedColumns.ICON_URL},
                                 null, null, null);
                         if (cursor.moveToFirst()) {
                             name = cursor.getString(0);
-                            if (!cursor.isNull(1))
-                                image = IconCompat.createWithBitmap(new BitmapDrawable(getContext().getResources(),
-                                        UiUtils.getScaledBitmap(cursor.getBlob(1), 32)).getBitmap());
+                            if (!cursor.isNull(1) && !cursor.isNull(2))
+                                image = IconCompat.createWithBitmap(UiUtils.getFaviconBitmap( cursor.getString( 1 ) ));
                         }
                         cursor.close();
                     }
@@ -752,7 +754,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         if ( cursor.moveToFirst() ) {
                             ContentValues values = new ContentValues();
                             values.put(FeedColumns.GROUP_ID, cursor.getLong( cursor.getColumnIndex( FeedColumns.GROUP_ID )) );
-                            values.put(FeedColumns.ICON, cursor.getBlob( cursor.getColumnIndex( FeedColumns.ICON )) );
+                            values.put(FeedColumns.ICON_URL, cursor.getBlob( cursor.getColumnIndex( FeedColumns.ICON_URL )) );
                             values.put(FeedColumns.IS_AUTO_REFRESH, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_AUTO_REFRESH )) );
                             values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_IMAGE_AUTO_LOAD )) );
                             values.put(FeedColumns.NAME, cursor.getString( cursor.getColumnIndex( FeedColumns.NAME )) );

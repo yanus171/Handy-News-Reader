@@ -79,7 +79,7 @@ public class FeedData {
             "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.PRIORITY + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
             "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
     public static final String ENTRIES_TABLE_WITH_FEED_INFO = EntryColumns.TABLE_NAME + " JOIN (SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.RETRIEVE_FULLTEXT + ", " + FeedColumns.NAME + ", " + FeedColumns.URL + ", " +
-            FeedColumns.ICON + ", " + FeedColumns.OPTIONS + ", " + FeedColumns.GROUP_ID + " FROM " + FeedColumns.TABLE_NAME + ") AS f ON (" + EntryColumns.TABLE_NAME + '.' + FEED_ID + " = f.joined_feed_id)";
+            FeedColumns.ICON_URL + ", " + FeedColumns.OPTIONS + ", " + FeedColumns.GROUP_ID + " FROM " + FeedColumns.TABLE_NAME + ") AS f ON (" + EntryColumns.TABLE_NAME + '.' + FEED_ID + " = f.joined_feed_id)";
     public static final String TASKS_WITH_FEED_INFO = TaskColumns.TABLE_NAME  + " LEFT JOIN (SELECT " + EntryColumns._ID + " AS entry_id, " + EntryColumns.LINK + " FROM " + EntryColumns.TABLE_NAME + ") AS f " +
             "ON (" + TaskColumns.TABLE_NAME + '.' + TaskColumns.ENTRY_ID + " = f.entry_id )";
     public static final String ALL_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + ")";
@@ -147,7 +147,7 @@ public class FeedData {
         public static final String LAST_UPDATE = "lastupdate";
         public static final String REAL_LAST_UPDATE = "reallastupdate";
         public static final String RETRIEVE_FULLTEXT = "retrievefulltext";
-        public static final String ICON = "icon";
+        public static final String ICON_URL = "icon_url";
         public static final String ERROR = "error";
         public static final String PRIORITY = "priority";
         public static final String FETCH_MODE = "fetchmode";
@@ -173,7 +173,7 @@ public class FeedData {
 
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {URL, TYPE_TEXT_UNIQUE}, {NAME, TYPE_TEXT}, {IS_GROUP, TYPE_BOOLEAN},
                 {GROUP_ID, TYPE_EXTERNAL_ID}, {LAST_UPDATE, TYPE_DATE_TIME}, {REAL_LAST_UPDATE, TYPE_DATE_TIME}, {RETRIEVE_FULLTEXT, TYPE_BOOLEAN},
-                {ICON, "BLOB"}, {ERROR, TYPE_TEXT}, {PRIORITY, TYPE_INT}, {FETCH_MODE, TYPE_INT}, {SHOW_TEXT_IN_ENTRY_LIST, TYPE_BOOLEAN},
+                {ICON_URL, "BLOB"}, {ERROR, TYPE_TEXT}, {PRIORITY, TYPE_INT}, {FETCH_MODE, TYPE_INT}, {SHOW_TEXT_IN_ENTRY_LIST, TYPE_BOOLEAN},
                 {IS_GROUP_EXPANDED, TYPE_BOOLEAN}, {IS_AUTO_REFRESH, TYPE_BOOLEAN}, {IS_IMAGE_AUTO_LOAD, TYPE_BOOLEAN}, {IMAGES_SIZE, TYPE_INT},
                 {OPTIONS, TYPE_TEXT}};
 

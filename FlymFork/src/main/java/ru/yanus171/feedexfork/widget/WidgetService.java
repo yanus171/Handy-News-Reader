@@ -58,7 +58,7 @@ class WidgetFeedsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        computeCursor();
+        //computeCursor();
 
         mContentObserver = new ThrottledContentObserver(new Handler(), 3000) {
             @Override
@@ -136,23 +136,23 @@ class WidgetFeedsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onDataSetChanged() {
         mCursor.close();
-        computeCursor();
+        //computeCursor();
     }
 
-    private void computeCursor() {
-        StringBuilder selection = new StringBuilder();
-        // selection.append(EntryColumns.WHERE_UNREAD);
-
-        String feedIds = PrefUtils.getString(mAppWidgetId + ".feeds", "");
-        if (feedIds.length() > 0) {
-            if (selection.length() > 0) {
-                selection.append(Constants.DB_AND);
-            }
-            selection.append(EntryColumns.FEED_ID).append(" IN (").append(feedIds).append(')');
-        }
-
-        ContentResolver cr = mContext.getContentResolver();
-        mCursor = cr.query(EntryColumns.CONTENT_URI, new String[]{EntryColumns.TITLE, EntryColumns._ID, FeedData.FeedColumns.ICON}, selection.toString(), null,
-                EntryColumns.DATE + Constants.DB_DESC);
-    }
+//    private void computeCursor() {
+//        StringBuilder selection = new StringBuilder();
+//        // selection.append(EntryColumns.WHERE_UNREAD);
+//
+//        String feedIds = PrefUtils.getString(mAppWidgetId + ".feeds", "");
+//        if (feedIds.length() > 0) {
+//            if (selection.length() > 0) {
+//                selection.append(Constants.DB_AND);
+//            }
+//            selection.append(EntryColumns.FEED_ID).append(" IN (").append(feedIds).append(')');
+//        }
+//
+//        ContentResolver cr = mContext.getContentResolver();
+//        mCursor = cr.query(EntryColumns.CONTENT_URI, new String[]{EntryColumns.TITLE, EntryColumns._ID, FeedData.FeedColumns.ICON}, selection.toString(), null,
+//                EntryColumns.DATE + Constants.DB_DESC);
+//    }
 }

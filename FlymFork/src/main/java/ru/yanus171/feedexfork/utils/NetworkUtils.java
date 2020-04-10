@@ -269,43 +269,21 @@ public class NetworkUtils {
     public static void retrieveFavicon(Context context, URL url, String id) {
         boolean success = false;
 
+        final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
-        Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON}, null, null, null  ); try {
-            if (!cursor.moveToFirst() || cursor.getBlob(cursor.getColumnIndex( FeedData.FeedColumns.ICON )) != null )
+        Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {
+            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && GetImageFile( imageUrl, imageUrl ).exists() ) )
                 return;
         } finally {
             cursor.close();
         }
-        Connection iconURLConnection = null;
-
         try {
-            iconURLConnection = new Connection( url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON);
-
-            byte[] iconBytes = getBytes(iconURLConnection.getInputStream());
-            if (iconBytes != null && iconBytes.length > 0) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
-                if (bitmap != null) {
-                    if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
-                        ContentValues values = new ContentValues();
-                        values.put(FeedData.FeedColumns.ICON, iconBytes);
-                        context.getContentResolver().update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
-                        success = true;
-                    }
-                    bitmap.recycle();
-                }
-            }
-        } catch (Throwable ignored) {
-        } finally {
-            if (iconURLConnection != null) {
-                iconURLConnection.disconnect();
-            }
-        }
-
-        if (!success) {
-            // no icon found or error
+            downloadImage( -1, imageUrl, imageUrl, true, false );
             ContentValues values = new ContentValues();
-            values.putNull(FeedData.FeedColumns.ICON);
-            context.getContentResolver().update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
+            values.put(FeedData.FeedColumns.ICON_URL, imageUrl);
+            cr.update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -448,8 +426,14 @@ public class NetworkUtils {
         //System.out.println(newString.toString());
     }
 
+    public static Uri GetImageFileUri( String entryUrl, String imageUrl ) {
+        return Uri.fromFile( GetImageFile( entryUrl, imageUrl ) );
+    }
 
-
+    public static File GetImageFile( String entryUrl, String imageUrl ) {
+        final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryUrl, imageUrl);
+        return new File(imgFilePath );
+    }
 }
 
 ;

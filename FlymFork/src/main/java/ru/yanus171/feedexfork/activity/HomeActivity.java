@@ -36,26 +36,23 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -84,8 +81,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CO
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
-import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
@@ -95,6 +91,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
     public View mPageUpBtn = null;
+    private int mStatus = 0;
 
     private static String FEED_NUMBER(final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
@@ -417,12 +414,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Timer.Start( LOADER_ID, "HomeActivity.onCreateLoader" );
-        final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER( "1=1" ) : "0";
+        final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
         CursorLoader cursorLoader =
                 new CursorLoader(this,
                         FeedColumns.GROUPED_FEEDS_CONTENT_URI,
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
-                                FeedColumns.IS_GROUP, FeedColumns.ICON, FeedColumns.LAST_UPDATE,
+                                FeedColumns.IS_GROUP, FeedColumns.ICON_URL, FeedColumns.LAST_UPDATE,
                                 FeedColumns.ERROR, EXPR_NUMBER( EntryColumns.WHERE_UNREAD ), EXPR_FEED_ALL_NUMBER, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
                                 FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL + Constants.DB_OR +
@@ -432,6 +429,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                         null,
                         null);
         cursorLoader.setUpdateThrottle(Constants.UPDATE_THROTTLE_DELAY);
+        mStatus = Status().Start( R.string.feed_list_loading, true );
         return cursorLoader;
     }
 
@@ -472,6 +470,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             });
 
         timer.End();
+        Status().End( mStatus );
     }
 
     private String GetSecondLastSegment( final Uri uri) {

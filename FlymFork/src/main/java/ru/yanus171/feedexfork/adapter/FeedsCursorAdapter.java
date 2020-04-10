@@ -39,7 +39,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
     private int mNamePos = -1;
     private int mIdPos = -1;
     private int mLinkPos = -1;
-    private int mIconPos = -1;
+    private int mIconUrlPos = -1;
 
     public FeedsCursorAdapter(Activity activity, Uri groupUri) {
         super(activity, groupUri, R.layout.item_feed_list, R.layout.item_feed_list);
@@ -57,7 +57,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
         TextView textView = view.findViewById(android.R.id.text1);
 
         final long feedId = cursor.getLong(mIdPos);
-        Bitmap bitmap = UiUtils.getFaviconBitmap(feedId, cursor, mIconPos);
+        Bitmap bitmap = UiUtils.getFaviconBitmap(cursor.getString( mIconUrlPos ) );
 
         if (bitmap != null) {
             textView.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(context.getResources(), bitmap), null, null, null);
@@ -119,7 +119,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
             mNamePos = cursor.getColumnIndex(FeedColumns.NAME);
             mIdPos = cursor.getColumnIndex(FeedColumns._ID);
             mLinkPos = cursor.getColumnIndex(FeedColumns.URL);
-            mIconPos = cursor.getColumnIndex(FeedColumns.ICON);
+            mIconUrlPos = cursor.getColumnIndex(FeedColumns.ICON_URL);
         }
     }
 }

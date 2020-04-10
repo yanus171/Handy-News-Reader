@@ -42,24 +42,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.HashMap;
+
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 
 public class UiUtils {
 
-    static private final LongSparseArray<Bitmap> FAVICON_CACHE = new LongSparseArray<>();
+    static private final HashMap<String, Bitmap> FAVICON_CACHE = new HashMap<>();
 
     static public void setPreferenceTheme(Activity a) {
         a.setTheme( Theme.GetResID( Theme.STYLE_THEME ) );
     }
 
     static public int dpToPixel(int dp) {
-        return (int) TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, MainApplication.getContext().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
     static public int mmToPixel(int mm) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, mm, MainApplication.getContext().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, mm, getContext().getResources().getDisplayMetrics());
     }
     static public void addEmptyFooterView(ListView listView, int dp) {
         View view = new View(listView.getContext());
@@ -95,22 +101,24 @@ public class UiUtils {
         snackbar.show();
     }
 
-    static public Bitmap getFaviconBitmap(long feedId, Cursor cursor, int iconCursorPos) {
-        Bitmap bitmap = UiUtils.FAVICON_CACHE.get(feedId);
-        if (bitmap == null) {
-            byte[] iconBytes = cursor.getBlob(iconCursorPos);
-            if (iconBytes != null && iconBytes.length > 0) {
-                bitmap = UiUtils.getScaledBitmap(iconBytes, 18);
-                UiUtils.FAVICON_CACHE.put(feedId, bitmap);
+    static public Bitmap getFaviconBitmap( String iconUrl ) {
+        Bitmap bitmap = UiUtils.FAVICON_CACHE.get(iconUrl);
+        if (bitmap == null && iconUrl != null ) {
+            try {
+                InputStream imageStream = getContext().getContentResolver().openInputStream( GetImageFileUri( iconUrl, iconUrl ));
+                bitmap = BitmapFactory.decodeStream(imageStream);
+                UiUtils.FAVICON_CACHE.put(iconUrl, bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
         return bitmap;
     }
 
-    static public Bitmap getScaledBitmap(byte[] iconBytes, int sizeInDp) {
-        if (iconBytes != null && iconBytes.length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
-            if (bitmap != null && bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
+    static public Bitmap getScaledBitmap(Bitmap sourceBitmap, int sizeInDp) {
+        if (sourceBitmap != null ) {
+            Bitmap bitmap = Bitmap.createBitmap( sourceBitmap );
+            if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
                 int bitmapSizeInDip = UiUtils.dpToPixel(sizeInDp);
                 if (bitmap.getHeight() != bitmapSizeInDip) {
                     Bitmap tmp = bitmap;
@@ -166,7 +174,7 @@ public class UiUtils {
 
     // -------------------------------------------------------------------
     static TextView AddSmallText(LinearLayout layout, int textID) {
-        return AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(textID));
+        return AddSmallText(layout, null, Gravity.LEFT, null, getContext().getString(textID));
     }
     public static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
         TextView result = CreateSmallText( layout.getContext(), gravity, color, text );

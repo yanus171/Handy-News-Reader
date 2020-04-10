@@ -68,6 +68,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -1160,8 +1161,14 @@ public class FetcherService extends IntentService {
             boolean isRss = true;
             boolean isOneWebPage = false;
             try {
-                JSONObject jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
-                isRss = jsonOptions.getBoolean(IS_RSS);
+
+                JSONObject jsonOptions = new JSONObject();
+                try {
+                    jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
+                } catch ( JSONException e) {
+                    e.printStackTrace();
+                }
+                isRss = jsonOptions.has(IS_RSS) && jsonOptions.getBoolean(IS_RSS);
                 isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
 
                 final String feedID = cursor.getString(idPosition);
@@ -1273,7 +1280,7 @@ public class FetcherService extends IntentService {
         int autoImageDownloadPosition = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
         int titlePosition = cursor.getColumnIndex(FeedColumns.NAME);
         int urlPosition = cursor.getColumnIndex(FeedColumns.URL);
-        int iconPosition = cursor.getColumnIndex(FeedColumns.ICON);
+        int iconUrlPosition = cursor.getColumnIndex(FeedColumns.ICON_URL);
 
         Connection connection = null;
         ContentResolver cr = MainApplication.getContext().getContentResolver();
@@ -1439,7 +1446,7 @@ public class FetcherService extends IntentService {
         } finally{
             /* check and optionally find favicon */
             try {
-                if (handler != null && cursor.getBlob(iconPosition) == null) {
+                if (handler != null ) {
                     if (handler.getFeedLink() != null)
                         NetworkUtils.retrieveFavicon(this, new URL(handler.getFeedLink()), feedId);
                     else
