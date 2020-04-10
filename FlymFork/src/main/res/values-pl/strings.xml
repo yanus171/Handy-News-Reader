@@ -493,6 +493,7 @@ GENERAL]]></string>
     <string name="reading_article">Lektura artykułu</string>
     <string name="reading_notification">Powiadomienie o lekturze artykułu</string>
     <string name="reading_notification_descr">Trwałe powiadomienie na belce statusu, chroniące aplikację przed zamknięciem przez system - by przyspieszyć uruchomienie po dłuższym nieużywaniu</string>
+    <string name="feed_list_loading">Wczytywanie listy kanałów</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
