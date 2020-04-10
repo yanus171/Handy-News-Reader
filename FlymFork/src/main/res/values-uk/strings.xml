@@ -479,6 +479,13 @@
     <string name="cant_open_image">Не вдалося відкрити зображення</string>
     <string name="parsing_one_web_page">Розбір однієї веб-сторінки</string>
     <string name="end_editing">Завершити редагування</string>
+    <string name="open_article">Відкрити статтю</string>
+    <string name="search_in_browser">Пошук у браузері</string>
+    <string name="search_in_yandex">Пошук через Яндекс</string>
+    <string name="search_in_google">Пошук через Гугл</string>
+    <string name="long_operation">Довга операція</string>
+    <string name="reading_notification">Сповіщення про читання статті</string>
+    <string name="reading_notification_descr">Постійний сповіщення в рядку стану для запобігання закриття програми системою - для прискорення запуску після довгої затримки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
