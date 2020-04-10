@@ -489,6 +489,7 @@
     <string name="reading_article">Ein Artikel lesen</string>
     <string name="reading_notification">Artikel-Lese-Benachrichtigung</string>
     <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
+    <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
