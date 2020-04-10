@@ -166,7 +166,7 @@
     <string name="menu_cancel_refresh">Скасувати оновлення</string>
     <string name="menu_delete_non_starred">Вилучити не обране</string>
     <string name="menu_toogle_unread_all">Прочитані|Всі</string>
-    <string name="menu_load_all_images">Завантажити всі зображення</string>
+    <string name="menu_load_all_images">Всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
     <string name="menu_mark_as_unfavorite">Вилучити з обраного</string>
     <string name="menu_mark_as_unread">Позначити непрочитаним</string>
@@ -442,7 +442,7 @@
     <string name="new_entry_shortcut_added">Новий ярлик статті був створений на домашньому екрані</string>
     <string name="menu_reload_with_tables_toggle">З таблицями</string>
     <string name="menu_display_options">Параметри відображення</string>
-    <string name="menu_reload">Оновлення...</string>
+    <string name="menu_reload">Завантажити</string>
     <string name="article_tap_enabled">Дії дотиком увімкнено</string>
     <string name="article_tap_enabled_summary">для зон натискань та інших, крім посилань (для показу меню)</string>
     <string name="menu_calculate_image_sizes">Розрахунок розмірів зображень</string>
