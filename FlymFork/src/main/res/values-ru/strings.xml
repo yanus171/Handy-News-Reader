@@ -366,9 +366,9 @@
     <string name="reload_full_text_with_tags">Перезагрузить с разметкой</string>
     <string name="filter_hint">Все фильтры объединяются по ИЛИ. Загружать перевешивает Не загружать</string>
     <string name="keyword">Ключевое слово</string>
-    <string name="loadTypeWeb">Web (загружать все ссылки со страницы)</string>
-    <string name="loadTypeRSS">RSS (адрес ленты или сайта или ключевое слово)</string>
-    <string name="loadTypeWebPageSearch">Веб поиск DuckDuckGo (найти и загрузить одну статью)</string>
+    <string name="loadTypeWeb"><b>Web</b><font color="gray"> (загружать все ссылки со страницы)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b><font color="gray"> (адрес ленты или сайта или ключевое слово)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Веб поиск DuckDuckGo</b><font color="gray">  (найти и загрузить одну статью)</font></string>
     <string name="loadTypeOneWebPage"><b>Одна страница</b><font color="gray"> (разделить содержимое одной страницы на множество статей, используя теги имен html класса)</font></string>
     <string name="loadType">Тип загрузки:</string>
     <string name="global_filter">Глобальный фильтр &#8230;</string>
@@ -440,12 +440,12 @@
     <string name="menu_close">Закрыть</string>
     <string name="reading_file_list">Чтение списка файлов</string>
     <string name="add_entry_shortcut">Добавить ярлык на статью</string>
-    <string name="new_entry_shortcut_added">На главном экране создан ярлык на новую статью</string>
+    <string name="new_entry_shortcut_added">Ярлык добавлен на домашний экран</string>
     <string name="menu_reload_with_tables_toggle">Таблицы</string>
     <string name="menu_display_options">Отображение</string>
     <string name="menu_reload">Загрузка</string>
     <string name="article_tap_enabled">Действия по нажатию</string>
-    <string name="article_tap_enabled_summary">на тап зоны и на обычный текст (для показа меню)</string>
+    <string name="article_tap_enabled_summary">На тап зоны и на обычный текст (для показа меню)</string>
     <string name="menu_calculate_image_sizes">Расчет размера картниок</string>
     <string name="setting_calculate_image_sizes">Размер хранящихся картинок</string>
     <string name="setting_calculate_image_sizes_descr">Расчитывать и показывать суммарный размер на карте памяти загруженных картинок для статей, лент, групп и т.д. (данные обновляются во время обновления)</string>
@@ -454,32 +454,32 @@
     <string name="tasks_to_download">К загрузке</string>
     <string name="settings_current_setting">Текущие настройки</string>
     <string name="unable_to_load_article_icon">Не удается загрузить значок статьи</string>
-    <string name="settings_delete_old_interval">Удалить старый интервал</string>
-    <string name="settings_delete_old_interval_descr">Когда удалять старые статьи и вычислять размер статьи, ленты и группы изображений на SD-карте</string>
+    <string name="settings_delete_old_interval">Интервал удаления старых статей</string>
+    <string name="settings_delete_old_interval_descr">Как часто удалять старые статьи, а также вычислять размеры статей, лент и групп изображений на SD-карте</string>
     <string name="menu_delete_old">Удалить старые статьи</string>
-    <string name="settings_category_delete_old">Удалить старые</string>
+    <string name="settings_category_delete_old">Удаление старых статей</string>
     <string name="tool_bar_color">Цвет панели инструментов</string>
-    <string name="tool_bar_color_desc">также этот цвет используется для кнопок текста статьи и для строки состояния</string>
-    <string name="one_webpage_hint">Подсказка: в этом случае содержание веб-страницы разделено на статьи по имени класса html элементов. Вы также должны задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Прочитать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов.</string>
-    <string name="one_webpage_article_classname_label">Статья</string>
+    <string name="tool_bar_color_desc">Также этот цвет используется для кнопок текста статьи и для строки состояния</string>
+    <string name="one_webpage_hint">Подсказка: в этом типе загрузки содержание веб-страницы делится на статьи в соответствиии с классом HTML элемента, заданным в настройках ленты. Также нужно задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Читать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов … короче, если Вы совсем не разбираетесь в HTML то это не для Вас</string>
+    <string name="one_webpage_article_classname_label">Корневой элемент статьи</string>
     <string name="one_webpage_edittext_classname_hint">Имя класса</string>
-    <string name="one_webpage_url_classname_label">URL-адрес</string>
+    <string name="one_webpage_url_classname_label">Уникальный URL-адрес статьи</string>
     <string name="one_webpage_text_classname_label">Текст</string>
     <string name="one_webpage_author_classname_label">Автор</string>
     <string name="one_webpage_image_url_classname_label">URL-адрес изображения</string>
-    <string name="one_webpage_date_classname_label">Дата</string>
-    <string name="copyClassNameToClipboard">Скопировать имя класса в буфер обмена</string>
+    <string name="one_webpage_date_classname_label">Дата (можно несколько через пробел)</string>
+    <string name="copyClassNameToClipboard">Скопировать имя класса</string>
     <string name="text_was_copied_to_clipboard">Текст был скопирован в буфер обмена</string>
-    <string name="next_page_classname">Имя класса следующей страницы \n(для рекурсивной загрузки)</string>
-    <string name="articleCountLoaded">статьи загружены</string>
+    <string name="next_page_classname">Элемент перехода на следующую страницу (для рекурсивной загрузки)</string>
+    <string name="articleCountLoaded">статей загружено</string>
     <string name="next_page_max_count_classname">Максимальное количество страниц для обработки</string>
     <string name="menu_copy_feed">Дублировать текущую ленту</string>
     <string name="feed_copied">Лента дублирована</string>
     <string name="menu_show_entry_text">Текст статьи</string>
     <string name="read_more">Подробнее …</string>
     <string name="cant_open_image">Не удается открыть изображение</string>
-    <string name="parsing_one_web_page">Разбор одной веб-страницы</string>
-    <string name="end_editing">Закончить редактирование</string>
+    <string name="parsing_one_web_page">Разбор страницы</string>
+    <string name="end_editing">Завершить редактирование</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
