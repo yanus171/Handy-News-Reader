@@ -33,6 +33,9 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.utils.UiUtils.getFaviconBitmap;
+import static ru.yanus171.feedexfork.utils.UiUtils.getScaledBitmap;
+
 public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
 
     private int mIsGroupPos = -1;
@@ -57,12 +60,12 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
         TextView textView = view.findViewById(android.R.id.text1);
 
         final long feedId = cursor.getLong(mIdPos);
-        Bitmap bitmap = UiUtils.getFaviconBitmap(cursor.getString( mIconUrlPos ) );
+        Bitmap bitmap = getScaledBitmap( getFaviconBitmap( cursor.getString( mIconUrlPos ) ), 32 );
 
         if (bitmap != null) {
             textView.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(context.getResources(), bitmap), null, null, null);
         } else {
-            textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            textView.setCompoundDrawablesWithIntrinsicBounds( R.mipmap.ic_launcher, 0, 0, 0);
         }
 
         textView.setText((cursor.isNull(mNamePos) ? cursor.getString(mLinkPos) : cursor.getString(mNamePos)));

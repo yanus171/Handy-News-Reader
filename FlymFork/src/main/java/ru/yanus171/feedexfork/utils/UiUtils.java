@@ -55,7 +55,7 @@ import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 
 public class UiUtils {
 
-    static private final HashMap<String, Bitmap> FAVICON_CACHE = new HashMap<>();
+    //static private final HashMap<String, Bitmap> FAVICON_CACHE = new HashMap<>();
 
     static public void setPreferenceTheme(Activity a) {
         a.setTheme( Theme.GetResID( Theme.STYLE_THEME ) );
@@ -67,6 +67,9 @@ public class UiUtils {
     static public int mmToPixel(int mm) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, mm, getContext().getResources().getDisplayMetrics());
     }
+//    static public void clearFaviconCache() {
+//        FAVICON_CACHE.clear();
+//    }
     static public void addEmptyFooterView(ListView listView, int dp) {
         View view = new View(listView.getContext());
         view.setMinimumHeight(dpToPixel(dp));
@@ -101,23 +104,25 @@ public class UiUtils {
         snackbar.show();
     }
 
-    static public Bitmap getFaviconBitmap( String iconUrl ) {
-        Bitmap bitmap = UiUtils.FAVICON_CACHE.get(iconUrl);
-        if (bitmap == null && iconUrl != null ) {
+    static public Bitmap getFaviconBitmap( /*Long feedID,*/ String iconUrl ) {
+        //Bitmap bitmap = UiUtils.FAVICON_CACHE.get(iconUrl);
+        //if (bitmap == null && iconUrl != null ) {
+        Bitmap bitmap = null;
+        if ( iconUrl != null )
             try {
                 InputStream imageStream = getContext().getContentResolver().openInputStream( GetImageFileUri( iconUrl, iconUrl ));
                 bitmap = BitmapFactory.decodeStream(imageStream);
-                UiUtils.FAVICON_CACHE.put(iconUrl, bitmap);
+                //UiUtils.FAVICON_CACHE.put(iconUrl, bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }
+        //}
         return bitmap;
     }
 
-    static public Bitmap getScaledBitmap(Bitmap sourceBitmap, int sizeInDp) {
-        if (sourceBitmap != null ) {
-            Bitmap bitmap = Bitmap.createBitmap( sourceBitmap );
+    static public Bitmap getScaledBitmap(Bitmap bitmap, int sizeInDp) {
+        if (bitmap != null ) {
+            //Bitmap bitmap = Bitmap.createBitmap( sourceBitmap );
             if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
                 int bitmapSizeInDip = UiUtils.dpToPixel(sizeInDp);
                 if (bitmap.getHeight() != bitmapSizeInDip) {

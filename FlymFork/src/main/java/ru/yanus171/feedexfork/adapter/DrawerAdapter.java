@@ -38,7 +38,6 @@ import com.bumptech.glide.Glide;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -90,7 +89,7 @@ public class DrawerAdapter extends BaseAdapter {
     public DrawerAdapter(Context context, Cursor feedCursor) {
         mContext = context;
         mFeedsCursor = feedCursor;
-
+        //clearFaviconCache();
         updateNumbers();
     }
 
