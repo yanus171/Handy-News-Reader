@@ -229,15 +229,22 @@
             android:key="remember_last_entry"
             android:summary="@string/settings_remeber_last_entry_description"
             android:title="@string/settings_remember_last_entry"/>
+    </PreferenceScreen>
 
-        <PreferenceCategory
-            android:layout="@layout/preference_category"
-            android:title="@string/settings_category_header"/>
+    <PreferenceScreen
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:summary="@string/settings_category_header_descr"
+        android:title="@string/settings_category_header">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="article_text_footer_show_clock"
             android:summary="@string/article_text_show_clock_description"
             android:title="@string/article_text_show_clock" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="article_text_footer_show_battery"
+            android:title="@string/article_text_show_battery" />
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
             android:defaultValue="0"
             android:dependency="article_text_footer_show_clock"

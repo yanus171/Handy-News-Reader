@@ -481,7 +481,7 @@
     <string name="one_webpage_text_classname_label">Text</string>
     <string name="one_webpage_author_classname_label">Author</string>
     <string name="one_webpage_image_url_classname_label">Image URL</string>
-    <string name="one_webpage_date_classname_label">Date</string>
+    <string name="one_webpage_date_classname_label">Date (may be several, sep. by space)</string>
     <string name="copyClassNameToClipboard">Copy class name</string>
     <string name="text_was_copied_to_clipboard">Text was copied to clipboard</string>
     <string name="next_page_classname">Next page class name (for recursive load)</string>
@@ -503,6 +503,8 @@
     <string name="reading_notification">Article reading notification</string>
     <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
     <string name="feed_list_loading">Feed list loading</string>
+    <string name="article_text_show_battery">Show battery</string>
+    <string name="settings_category_header_descr">For the article text and the article list screens</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

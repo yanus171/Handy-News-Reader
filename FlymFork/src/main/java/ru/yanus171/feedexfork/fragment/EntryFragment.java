@@ -149,6 +149,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private View mStarFrame = null;
     private ProgressBar mProgressBar = null;
     private TextView mLabelClock = null;
+    private TextView mLabelBattery = null;
 
     private StatusText mStatusText = null;
 
@@ -220,6 +221,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mLabelClock = mRootView.findViewById(R.id.textClock);
         mLabelClock.setText("");
+
+        mLabelBattery = mRootView.findViewById(R.id.textBattery);
+        mLabelBattery.setText("");
 
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
@@ -1031,6 +1035,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       contentHeight - webViewHeight,
                                       entryView.getScrollY(),
                                       mLabelClock,
+                                      mLabelBattery,
                                       GetIsStatusBarHidden());
         }
     }
