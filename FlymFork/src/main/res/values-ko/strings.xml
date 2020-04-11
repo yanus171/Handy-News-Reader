@@ -107,7 +107,6 @@
     <string name="menu_copy_clipboard">링크 복사</string>
     <string name="menu_mark_as_unread">읽은 것으로 표시</string>
     <string name="share_favorites_title">플라임: 별표 항목</string>
-    <string name="link_was_copied_to_clipboard">링크 복사함</string>
     <string name="get_full_text">전체 텍스트 가져오기</string>
     <string name="original_text">원래 텍스트 가져오기</string>
     <string name="see_enclosure">내장 미디어 보기</string>
