@@ -196,10 +196,10 @@
     <string name="transparency">Gardentasuna</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">Ezarpen komunak</string>
-    <string name="settings_category_common_summary">Gaia</string>
-    <string name="theme">Gaia</string>
+    <string name="settings_category_common_summary">Azala</string>
+    <string name="theme">Azala</string>
     <string name="customColors">Letren kolore pertsonalizatuak</string>
-    <string name="fontColorsNotFromThemeSummary">bestela erabili gaiaren koloreak</string>
+    <string name="fontColorsNotFromThemeSummary">bestela erabili azalaren koloreak</string>
     <string name="textColor">Testuaren kolorea</string>
     <string name="settings_color_text_sample_short">Testua</string>
     <string name="settings_color_text_sample_long">\u201cNeska lirain batekin solasean zaudenean ordu batek segundo bat ematen du. Gori gori dagoen txingar batean esertzen bazara segundo batek ordu bat ematen du, Hori da erlatibitatea.\u201d\n(Albert Einstein)</string>
@@ -376,7 +376,7 @@
     <string name="rule_text">Arauaren testua</string>
     <string name="global_marks_as_star_filter_rule_descr">arau bat lerroko</string>
     <string name="customKeepTime">Artikuluak gordetzeko denbora pertsonalizatua</string>
-    <string name="menu_toggle_theme">Aldatu gaia</string>
+    <string name="menu_toggle_theme">Aldatu azala</string>
     <string name="turnOn">Piztu</string>
     <string name="brightness">Distira</string>
     <string name="brightness_change">Distira aldaketa</string>
@@ -448,7 +448,7 @@
     <string name="menu_calculate_image_sizes">Kalkulatu irudien tamainak</string>
     <string name="setting_calculate_image_sizes">Irudien tamainak biltegian</string>
     <string name="setting_calculate_image_sizes_descr">Kalkulatu eta erakutsi kargatutako irudien tamainen batura biltegian artikulu, jario talde eta abarreko (zenbakiak freskatzean eguneratzen dira)</string>
-    <string name="settings_category_theme">Gaia</string>
+    <string name="settings_category_theme">Azala</string>
     <string name="settings_category_header">Orrialdearen goiburukoa</string>
     <string name="tasks_to_download">Kargatzeko</string>
     <string name="settings_current_setting">Uneko ezarpena</string>
