@@ -337,7 +337,7 @@
     <string name="loadLinkLater">Читать позже</string>
     <string name="loadLinkLaterStarred">Читать позже в избранном</string>
     <string name="addFeed">Добавить канал</string>
-    <string name="externalLinks">Внешние ссылки</string>
+    <string name="externalLinks">Без ленты</string>
     <string name="markAllAsRead">Отметить все как прочитанные</string>
     <string name="pageUp">Страница вверх / Свайп для отметки избранной</string>
     <string name="pageDown">Страница вниз</string>
