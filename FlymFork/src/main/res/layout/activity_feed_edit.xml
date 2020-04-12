@@ -237,6 +237,7 @@
                                             android:orientation="horizontal">
                                             <TextView
                                                 android:text="@string/next_page_classname"
+                                                android:layout_weight="1"
                                                 style="@style/FeedAttrLabel"/>
                                             <EditText
                                                 android:id="@+id/next_page_classname"
@@ -252,6 +253,7 @@
                                                 style="@style/FeedAttrLabel"/>
                                             <EditText
                                                 android:id="@+id/next_page_max_count_classname"
+                                                android:layout_weight="4"
                                                 android:inputType="numberDecimal"
                                                 android:text="10"
                                                 style="@style/FeedAttrEdit" />
@@ -261,7 +263,7 @@
                                         android:id="@+id/one_webpage_layout"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginLeft="0dp"
                                         android:orientation="vertical">
 
                                         <TextView
@@ -269,6 +271,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="20dp"
+                                            android:justificationMode="inter_word"
                                             android:text="@string/one_webpage_hint"
                                             android:textAppearance="?android:attr/textAppearanceSmall"
                                             android:textStyle="normal" />

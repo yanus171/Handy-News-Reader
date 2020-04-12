@@ -19,11 +19,14 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -46,6 +49,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
@@ -159,8 +163,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    public static void UpdateFooter( ProgressBar progressBar, int max, int progress, TextView labelClock, boolean isStatusBarHiddent) {
-        if ( progressBar == null || labelClock == null )
+    public static void UpdateFooter( ProgressBar progressBar, int max, int progress,
+                                     TextView labelClock, TextView labelBattery, boolean isStatusBarHiddent) {
+        if ( progressBar == null || labelClock == null || labelBattery == null )
             return;
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
             progressBar.setVisibility( View.VISIBLE );
@@ -171,17 +176,34 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= 21 )
                 progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(color )));
             progressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
-        } else {
+        } else
             progressBar.setVisibility( View.GONE );
-        }
 
         if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && isStatusBarHiddent ) {
             labelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             labelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
             labelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
             labelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
+        } else
             labelClock.setText( "" );
-        }
+
+        if ( PrefUtils.getBoolean( "article_text_footer_show_battery", true ) && isStatusBarHiddent ) {
+            labelBattery.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
+            labelBattery.setText( GetBatteryText() );
+            labelBattery.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
+            labelBattery.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
+        } else
+            labelBattery.setText( "" );
+    }
+    private static String GetBatteryText() {
+        Intent intent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        double level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        double scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
+        int percent = (int) (level / scale * 100);
+        int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
+        String statusStr = "";
+        if (plugged != 0)
+            statusStr = "~";
+        return String.format("%s%d %%", statusStr, percent);
     }
 }

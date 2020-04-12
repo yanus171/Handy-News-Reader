@@ -171,7 +171,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
                 + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
                 + "pre {white-space: pre-wrap;} "
                 + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
-                + "td {font-weight: " + getFontBold() + "} "
+                + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
                 + "hr {width: 100%; color: #777777; align: center; size: 1} "
                 + "p {margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
                 + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
@@ -348,18 +348,8 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         getSettings().setUseWideViewPort(true);
         getSettings().setSupportZoom(false);
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true)) {
-            if (getSettings().getBlockNetworkImage()) {
-                // setBlockNetworkImage(false) calls postSync, which takes time, so we clean up the html first and change the value afterwards
-                loadData("", TEXT_HTML, Constants.UTF8);
-                getSettings().setBlockNetworkImage(false);
-            }
-        } else {
-            contentText = contentText.replaceAll(HTML_IMG_REGEX, "");
-            getSettings().setBlockNetworkImage(true);
-        }
-
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
+
         // Text zoom level from preferences
         int fontSize = PrefUtils.getFontSize();
         if (fontSize != 0) {
@@ -375,9 +365,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
             public void run() {
                 synchronized (EntryView.this) {
                     mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
-                    mData = mDataWithWebLinks;
-                    if (PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true))
-                        mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
+                    mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
