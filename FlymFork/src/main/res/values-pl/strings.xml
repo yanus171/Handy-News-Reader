@@ -342,7 +342,7 @@ GENERAL]]></string>
     <string name="loadLinkLater">Przeczytaj później</string>
     <string name="loadLinkLaterStarred">Przeczytaj później w Ulubionych</string>
     <string name="addFeed">Dodaj kanał</string>
-    <string name="externalLinks">Przeczytaj Później</string>
+    <string name="externalLinks">Bez kanału</string>
     <string name="markAllAsRead">Oznacz wszystko jako przeczytane</string>
     <string name="pageUp">strona w górę / przesuń w dół by o(d)znaczyć gwiazdką</string>
     <string name="pageDown">strona w dół</string>
@@ -459,7 +459,7 @@ GENERAL]]></string>
     <string name="tasks_to_download">Do załadowania</string>
     <string name="settings_current_setting">Aktualne ustawienia</string>
     <string name="unable_to_load_article_icon">Nie można załadować ikonki artykułu</string>
-    <string name="settings_delete_old_interval">Interwał usuwania starszych</string>
+    <string name="settings_delete_old_interval">Interwał usuwania starszych artykułów</string>
     <string name="settings_delete_old_interval_descr">Kiedy usuwać starsze artykuły oraz obliczać rozmiar obrazków artykułów, kanałów i grup na karcie sd</string>
     <string name="menu_delete_old">Usuń starsze artykuły</string>
     <string name="settings_category_delete_old">Usuń starsze</string>
