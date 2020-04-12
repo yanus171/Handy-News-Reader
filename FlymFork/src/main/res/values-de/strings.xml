@@ -339,7 +339,7 @@
     <string name="loadLinkLater">Später lesen</string>
     <string name="loadLinkLaterStarred">Später in den Favoriten lesen</string>
     <string name="addFeed">Feed hinzufügen</string>
-    <string name="externalLinks">Zurückstellen</string>
+    <string name="externalLinks">Ohne News-Feed</string>
     <string name="markAllAsRead">Alle als gelesen markieren</string>
     <string name="pageUp">Seite zurück, Wischen für Fav.</string>
     <string name="pageDown">Seite vor</string>
@@ -456,7 +456,7 @@
     <string name="tasks_to_download">Zu laden</string>
     <string name="settings_current_setting">Aktuelle Einstellung</string>
     <string name="unable_to_load_article_icon">Artikel-Symbol konnte nicht geladen werden</string>
-    <string name="settings_delete_old_interval">Altes Intervall löschen</string>
+    <string name="settings_delete_old_interval">Intervall zum Löschen alter Artikel</string>
     <string name="settings_delete_old_interval_descr">Wann werden alte Artikel gelöscht und die Größe von Artikeln, Feeds und Gruppenbildern auf der SD-Karte berechnet?</string>
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
@@ -470,7 +470,7 @@
     <string name="one_webpage_author_classname_label">Autor</string>
     <string name="one_webpage_image_url_classname_label">Bild-URL</string>
     <string name="one_webpage_date_classname_label">Datum (mehrere möglich, mit Leerzeichen getrennt)</string>
-    <string name="copyClassNameToClipboard">Klassennamen in die Zwischenablage kopieren</string>
+    <string name="copyClassNameToClipboard">Klassenname in die Zwischenablage kopieren</string>
     <string name="text_was_copied_to_clipboard">Text wurde in die Zwischenablage kopiert</string>
     <string name="next_page_classname">Klassenname für „Nächste Seite”\n(für rekursives Laden)</string>
     <string name="articleCountLoaded">geladene Artikel</string>
