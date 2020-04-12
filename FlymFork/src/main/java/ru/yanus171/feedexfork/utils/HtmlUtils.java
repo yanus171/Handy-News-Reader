@@ -176,7 +176,7 @@ public class HtmlUtils {
                 content = ReplaceImagesWithALink(content);
                 Matcher matcher;
 
-                boolean needDownloadPictures = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
+                final boolean isShowImages = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 //final ArrayList<String> imagesToDl = new ArrayList<>();
 
                 matcher = IMG_PATTERN.matcher(content);
@@ -188,12 +188,12 @@ public class HtmlUtils {
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
                     final File file = new File( imgFilePath );
-                    final boolean isImageToLoad = isDownLoadImages && ( index <= maxImageDownloadCount || maxImageDownloadCount == 0);
+                    final boolean isImageToLoad = maxImageDownloadCount == 0 || isDownLoadImages && ( index <= maxImageDownloadCount );
                     final String imgFileTag =
                         GetLinkStartTag(imgFilePath) +
                         imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
                         LINK_TAG_END;
-                    if ( needDownloadPictures ) {
+                    if ( isShowImages ) {
                         final boolean isFileExists = new File(imgFilePath).exists();
                         if ( !isFileExists && isImageToLoad )
                             imagesToDl.add(srcUrl);

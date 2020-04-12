@@ -351,7 +351,7 @@
     <string name="loadLinkLater">Read later</string>
     <string name="loadLinkLaterStarred">Read later in favorites</string>
     <string name="addFeed">Add a feed</string>
-    <string name="externalLinks">Without news feed</string>
+    <string name="externalLinks">Without a feed</string>
     <string name="markAllAsRead">Mark all as read</string>
     <string name="pageUp">page up / swipe down to (un)star</string>
     <string name="pageDown">page down</string>

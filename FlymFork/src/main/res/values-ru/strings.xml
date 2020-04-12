@@ -363,7 +363,7 @@
     <string name="markedAsStarred">Статья помечена избранной</string>
     <string name="deleteAllEntries">Удалить все неотмеченные статьи?</string>
     <string name="question">Вопрос</string>
-    <string name="reload_full_text_with_tags">Перезагрузить с разметкой</string>
+    <string name="reload_full_text_with_tags">Редактировать содержимое</string>
     <string name="filter_hint">Все фильтры объединяются по ИЛИ. Загружать перевешивает Не загружать</string>
     <string name="keyword">Ключевое слово</string>
     <string name="loadTypeWeb"><b>Web</b><font color="gray"> (загружать все ссылки со страницы)</font></string>
