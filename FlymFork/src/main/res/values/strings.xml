@@ -503,7 +503,7 @@
     <string name="reading_notification">Article reading notification</string>
     <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
     <string name="feed_list_loading">Feed list loading</string>
-    <string name="article_text_show_battery">Show battery</string>
+    <string name="article_text_show_battery">Show battery level</string>
     <string name="settings_category_header_descr">For the article text and the article list screens</string>
 
     <plurals name="number_of_new_entries">
