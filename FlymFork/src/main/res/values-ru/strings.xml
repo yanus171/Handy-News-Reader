@@ -363,7 +363,7 @@
     <string name="markedAsStarred">Статья помечена избранной</string>
     <string name="deleteAllEntries">Удалить все неотмеченные статьи?</string>
     <string name="question">Вопрос</string>
-    <string name="reload_full_text_with_tags">Редактировать содержимое</string>
+    <string name="reload_full_text_with_tags">Перезагрузить с разметкой</string>
     <string name="filter_hint">Все фильтры объединяются по ИЛИ. Загружать перевешивает Не загружать</string>
     <string name="keyword">Ключевое слово</string>
     <string name="loadTypeWeb"><b>Web</b><font color="gray"> (загружать все ссылки со страницы)</font></string>
@@ -461,8 +461,8 @@
     <string name="tool_bar_color">Цвет панели инструментов</string>
     <string name="tool_bar_color_desc">Также этот цвет используется для кнопок текста статьи и для строки состояния</string>
     <string name="one_webpage_hint">Подсказка: в этом типе загрузки содержание веб-страницы делится на статьи в соответствиии с классом HTML элемента, заданным в настройках ленты. Также нужно задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Читать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов … короче, если Вы совсем не разбираетесь в HTML то это не для Вас</string>
-    <string name="one_webpage_edittext_classname_hint">Имя класса</string>
     <string name="one_webpage_article_classname_label">Корневой элемент статьи</string>
+    <string name="one_webpage_edittext_classname_hint">Имя класса</string>
     <string name="one_webpage_url_classname_label">Уникальный URL-адрес статьи</string>
     <string name="one_webpage_text_classname_label">Текст</string>
     <string name="one_webpage_author_classname_label">Автор</string>
