@@ -488,6 +488,17 @@
     <string name="cant_open_image">يَتَعَذَّرُ فَتْحُ الصّورَةِ</string>
     <string name="parsing_one_web_page">يَتِمُّ تَحْليلُ الصَّفْحَةِ</string>
     <string name="end_editing">إِنْهاءُ الوَضْعِ</string>
+    <string name="open_article">فَتْحُ المَقالِ</string>
+    <string name="search_in_browser">البَحْثُ بِمُتَصَفِّحٍ آخَرَ</string>
+    <string name="search_in_yandex">البَحْثُ عَنْ طَريقِ Yandex</string>
+    <string name="search_in_google">البَحْثُ عَنْ طَريقِ Google</string>
+    <string name="long_operation">عَمَليَّةٌ طَويلَةٌ</string>
+    <string name="reading_article">قِراءَةُ مَقالٍ</string>
+    <string name="reading_notification">إِشْعارُ قِراءَةِ المَقالِ</string>
+    <string name="reading_notification_descr">إِشْعارٌ مُسْتَمِرٌّ بِشَريطِ الحالَةِ، لِمَنْعِ النِّظامِ مِنْ قَتْلِ التَّطْبيقِ - لِتَسْرِيعِ تَشْغيلِ التَّطْبيقِ بَعْدَ فَتْرَةِ تَأْخيرٍ طَويلَةٍ</string>
+    <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
+    <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
+    <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
