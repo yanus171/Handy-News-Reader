@@ -21,7 +21,7 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 	<li><b><i>"Hapus Kalau Selesai"</i></b> - setelah Anda selesai dengan artikel seperti itu - bisa secara otomatis dihapus dari kumpulan <i>'Favorit'</i> (=<i>'Baca Nanti'</i>),</li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. swipe top down to add/remove an article from <i>Favorites</i>, swipe along the left edge of the screen to adjust text brightness,</li>
+	<li><b>gesture-friendly</b>: e.g. usap atas bawah untuk menambah/menghapus sebuah artikel dari <i>Favorit</i>, usap sepanjang tepi kiri layar untuk mengatur kecerahan teks,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>highly customizable</b>: from <i>Tap Zones'</i> size to hyperlinks' color and underlining - there are a bunch of details which You can tailor exactly to Your Own taste and needs,</li>
