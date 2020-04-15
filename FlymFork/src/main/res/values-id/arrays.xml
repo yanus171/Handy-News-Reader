@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="settings_intervals">
-        <item>1 minute</item>
-        <item>5 minutes</item>
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
+        <item>1 menit</item>
+        <item>5 menit</item>
+        <item>15 menit</item>
+        <item>30 menit</item>
+        <item>1 jam</item>
+        <item>2 jam</item>
         <item>3 jam</item>
-        <item>6 hours</item>
-        <item>12 hours</item>
-        <item>1 day</item>
-        <item>2 day</item>
-        <item>3 day</item>
+        <item>6 jam</item>
+        <item>12 jam</item>
+        <item>1 hari</item>
+        <item>2 hari</item>
+        <item>3 hari</item>
+    </string-array>
+    <string-array name="settings_keep_times">
+        <item>1 jam</item>
+        <item>12 jam</item>
+        <item>1 hari</item>
+        <item>2 hari</item>
+        <item>4 hari</item>
+        <item>1 minggu</item>
+        <item>2 minggu</item>
+        <item>1 bulan</item>
+        <item>2 bulan</item>
+        <item>3 bulan</item>
+        <item>Selamanya</item>
+    </string-array>
+    <string-array name="settings_volume_buttons_action">
+        <item>Bawaan</item>
+        <item>Switch to next | previous article</item>
+        <item>Page up | down</item>
     </string-array>
 </resources>
