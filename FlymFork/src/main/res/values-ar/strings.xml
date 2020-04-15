@@ -258,7 +258,7 @@
     <string name="settings_color_text_read_sample_long">نص وخلفية لمعاينة التغييرات</string>
     <string name="settings_category_article_text">نص المقال</string>
     <string name="settings_category_article_text_summary">ظهور نص المقال</string>
-    <string name="settings_display_images">عرض الصور</string>
+    <string name="settings_display_images">تَحْميلُ الصّوَرِ</string>
     <string name="settings_display_images_description">عرض الصور في المقالات</string>
     <string name="settings_display_entries_fullscreen">عرض المقالات بملء الشاشة تلقائياً</string>
     <string name="settings_entry_margins">الهوامش</string>
@@ -340,7 +340,7 @@
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
     <string name="downloadNext">"، التَّالِي "</string>
     <string name="downloadAll">"، الكُلُّ"</string>
-    <string name="loadingLink">جارِ تحميل الروابط</string>
+    <string name="loadingLink">يَتِمُّ تَحْميلُ الرّابِطِ</string>
     <string name="loadLink">القِراءَةُ الآنَ</string>
     <string name="loadLinkLater">لِـ مَقالاتُ الوِيبْ</string>
     <string name="loadLinkLaterStarred">لَاحِقًا وَمُمَيَّزٌ</string>
@@ -369,13 +369,13 @@
     <string name="lock_orientation">الوضعُ الأُفُقي</string>
     <string name="markAsStarred">تحديد كمُميّزة</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
-    <string name="deleteAllEntries">حذف كل المقالات عدا المُميّزة بنجمة</string>
+    <string name="deleteAllEntries">حَذْفُ كُلِّ المَقَالَاتِ عَدَا المُمَيَّزَةَ بِنَجْمَةٍ؟</string>
     <string name="question">سؤال</string>
-    <string name="reload_full_text_with_tags">إعادة تحميل مع العلامات</string>
+    <string name="reload_full_text_with_tags">تَحْريرُ طَريقَةِ عَرْضِ المُحْتَوَى</string>
     <string name="filter_hint">ستبدأ عملية الفلتَرَه في حال إستيفاء شرط واحد على الأقل (قاعدة). \'قبول\' تتجاوز \'رفض\'</string>
     <string name="keyword">الكلمات الدلالية</string>
-    <string name="loadTypeWeb">الويب (تحميل جميع الروابط من الصفحة)</string>
-    <string name="loadTypeRSS">آر إس إس (رابط الخلاصة أو الموقع، أو الإسم)</string>
+    <string name="loadTypeWeb"><b>رَوابِطُ الوِيبْ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
+    <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
     <string name="loadTypeWebPageSearch">البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo (بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</string>
     <string name="loadTypeOneWebPage"><b>صَفْحَةٌ واحِدَةٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
