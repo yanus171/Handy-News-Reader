@@ -26,7 +26,7 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>sangat mudah disesuaikan</b>: dari <i>Zona Sentuh'</i> mulai dari ukuran hingga warna pranala dan garis bawah - ada seabrek detil yang dapat Anda sesuaikan hingga pas dengan selera dan kebutuhan Anda Pribadi,</li>
 	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
-	<li><b>more interesting features</b> "in store" - visit our website to find out more :) !,</li>
+	<li><b>fitur menarik lain</b> "ada di toko" - kunjungi situs web kami untuk cari tahu lagi :) !,</li>
 	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
 	<li><b>feedback and suggestions are welcome;</b></li>
 </ul>
