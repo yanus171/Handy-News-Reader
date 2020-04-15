@@ -39,8 +39,24 @@
     <string name="error_external_storage_not_available">Penyimpanan eksternal (mis. SD-card) tidak tersedia.</string>
     <string name="website_or_feed">(URL umpan atau cari kata kunci)</string>
     <string name="tab_filters_title">Saring</string>
+    <string name="feed_filters">ATURAN SARING</string>
+    <string name="filter_edit_title">Edit aturan</string>
     <string name="filter_apply_to_content">Terapkan pada konten</string>
+    <string name="accept">TERIMA</string>
+    <string name="reject">TOLAK</string>
+    <string name="feed_search">Cari umpan</string>
+    <string name="web_page_search_duckduckgo">Cari halaman web (Duck Duck Go)</string>
+    <string name="select_file">Pilih berkas (pangkal SD)</string>
+    <string name="question_delete_feed">Apa betul Anda mau hapus umpan ini?</string>
+    <string name="question_delete_group">Apa betul Anda mau hapus grup ini dan semua umpannya?</string>
+    <string name="question_delete_filter">Apa betul Anda mau hapus saringan ini?</string>
+    <string name="add_group_title">Pilih nama grup</string>
+    <string name="edit_group_title">Edit nama grup</string>
+    <string name="google_news_health">Kesehatan</string>
+    <string name="google_news_custom_topic">Masukkan topik pesanan</string>
     <!-- ENTRIES -->
+    <string name="unread_entries">Belum dibaca</string>
+    <string name="all_entries">Semua artikel</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
