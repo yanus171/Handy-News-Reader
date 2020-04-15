@@ -73,6 +73,28 @@
     <string name="menu_mark_as_favorite">Tandai sebagai favorit</string>
     <string name="menu_mark_as_unfavorite">Lepas dari Favorit</string>
     <string name="menu_mark_as_unread">Tandai belum dibaca</string>
+    <string name="menu_reload_full_text">Muat ulang teks lengkap</string>
+    <string name="menu_reload_full_text_without_mobilizer">Muat ulang tanpa Mobilizer</string>
+    <string name="share_favorites_title">Handy News Reader: entri dibintangi</string>
+    <string name="link_was_copied_to_clipboard">Tautan disalin</string>
+    <string name="get_full_text">Muat artikel lengkap</string>
+    <string name="show_text_in_entry_list">Tampilkan teks orisinal pada senarai artikel</string>
+    <string name="original_text">Tampilkan teks orisinal</string>
+    <string name="see_enclosure">Muat lampiran</string>
+    <string name="see_link">Lihat di peramban</string>
+    <string name="cant_open_link">Tak ada aplikasi untuk tautan ini</string>
+    <string name="open_enclosure">Buka lampiran</string>
+    <string name="file">Berkas</string>
+    <string name="download_and_save">Unduh dan simpan</string>
+    <string name="open_link">Buka tautan</string>
+    <string name="tip_sentence">Tip: usap kanan tanda sudah dibaca, usap kiri tambah ke Favorit</string>
+    <string name="undo">Batal</string>
+    <string name="marked_as_read">Tandai sudah dibaca</string>
+    <string name="image_count">Jumlah gambar</string>
     <!-- WIDGET -->
+    <string name="red">Merah</string>
+    <string name="green">Hijau</string>
+    <string name="blue">Biru</string>
     <!-- SETTINGS -->
+    <string name="settings_category_common">Setelan umum</string>
 </resources>
