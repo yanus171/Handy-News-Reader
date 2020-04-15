@@ -98,4 +98,14 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">Setelan umum</string>
     <string name="customColors">Warna pesanan</string>
+    <string name="fontColorsNotFromThemeSummary">atau pakai warna tema lain</string>
+    <string name="textColor">Teks dan warna latar</string>
+    <string name="settings_color_text_read_sample_long">Baca artikel</string>
+    <string name="settings_category_article_text">Teks artikel</string>
+    <string name="settings_category_article_text_summary">Penampakan teks artikel</string>
+    <string name="settings_display_images">Muat gambar</string>
+    <string name="settings_display_images_description">Tampilkan gambar pada entri</string>
+    <string name="settings_display_entries_fullscreen">Entri layar penuh otomatis</string>
+    <string name="settings_entry_margins">Margin</string>
+    <string name="settings_entry_margins_description">Kiri | kanan</string>
 </resources>
