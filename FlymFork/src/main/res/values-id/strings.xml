@@ -57,6 +57,22 @@
     <!-- ENTRIES -->
     <string name="unread_entries">Belum dibaca</string>
     <string name="all_entries">Semua artikel</string>
+    <string name="no_entries">Nihil artikel</string>
+    <string name="downloadOneImage">Mengunduh gambar</string>
+    <string name="favorites">Dibintangi</string>
+    <string name="context_menu_share_starred">Bagikan entri dibintangi</string>
+    <string name="menu_star">Bintang</string>
+    <string name="menu_unstar">Copot bintang</string>
+    <string name="menu_share">Bagikan</string>
+    <string name="menu_full_screen">Layar penuh</string>
+    <string name="menu_actionbar_visible">Bilah Aksi</string>
+    <string name="menu_font_bold">Huruf tebal</string>
+    <string name="menu_cancel_refresh">Batalkan pembaruan</string>
+    <string name="menu_toogle_unread_all">Belum baca|Semua</string>
+    <string name="menu_load_all_images">Muat semua gambar</string>
+    <string name="menu_mark_as_favorite">Tandai sebagai favorit</string>
+    <string name="menu_mark_as_unfavorite">Lepas dari Favorit</string>
+    <string name="menu_mark_as_unread">Tandai belum dibaca</string>
     <!-- WIDGET -->
     <!-- SETTINGS -->
 </resources>
