@@ -130,4 +130,7 @@
     <string name="settings_category_operation">Operasi</string>
     <string name="settings_category_operation_summary">Setelan operasional</string>
     <string name="tap_zone_size">Ukuran Zona Sentuh</string>
+    <string name="tap_zone_size_descr">Tinggi atau lebar semua Zona Sentuh dalam milimeter (tampilan entri)</string>
+    <string name="settings_show_tap_zones">Zona Sentuh terlihat</string>
+    <string name="settings_show_tap_zone_description">Sebagai kotak transparan di tampilan entri</string>
 </resources>
