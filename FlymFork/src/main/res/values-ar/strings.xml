@@ -160,8 +160,8 @@
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
     <string name="menu_full_screen">وضع مِلء الشاشة</string>
-    <string name="menu_actionbar_visible">شَريطُ العَمَل</string>
-    <string name="menu_font_bold">خط عريض</string>
+    <string name="menu_actionbar_visible">شَريطُ الأَدَواتِ</string>
+    <string name="menu_font_bold">خَطٌّ سَميكٌ</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
     <string name="menu_delete_non_starred">حَذْفُ غَيْرُ المُمَيَّزَةِ</string>
@@ -334,7 +334,7 @@
     <string name="downloadAll">"، الكُلُّ"</string>
     <string name="loadingLink">يَتِمُّ تَحْميلُ الرّابِطِ</string>
     <string name="loadLink">القِراءَةُ الآنَ</string>
-    <string name="loadLinkLater">لِـ مَقالاتُ الوِيبْ</string>
+    <string name="loadLinkLater">لَاحِقًا بِمَقالاتِ الوِيبْ</string>
     <string name="loadLinkLaterStarred">لَاحِقًا وَمُمَيَّزٌ</string>
     <string name="addFeed">إضافة خلاصة</string>
     <string name="externalLinks">مَقالاتُ الوِيبْ</string>
