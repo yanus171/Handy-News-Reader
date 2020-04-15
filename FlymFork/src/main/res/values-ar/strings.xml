@@ -257,8 +257,8 @@
     <string name="settings_entry_margins_description">يسار | يمين</string>
     <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
     <string name="entry_text_align_justify_description">بخلاف ذلك، فالمحاذاة تكون حسب اللغة</string>
-    <string name="linkColor">لون الرابط والخلفية</string>
-    <string name="linkColor_descr">لونُ الروابط التشعبيه والخلفية</string>
+    <string name="linkColor">لَوْنُ الرّابِطِ وَخَلْفيَّتُهُ</string>
+    <string name="linkColor_descr">لَوْنُ الرَّوابِطِ التُّشعِبيَّةِ وَخَلْفيَّتُها</string>
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
@@ -276,11 +276,11 @@
     <string name="article_text_progress_color_descr">لَوْنُ نِسْبَةِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
     <string name="settings_category_operation">العمليّات</string>
     <string name="settings_category_operation_summary">الإعدادات التشغيلية</string>
-    <string name="tap_zone_size">حجم مناطق النقر النَشِطة</string>
-    <string name="tap_zone_size_descr">الإرتفاع والعرض لكل مناطق النقر بالملليمتر</string>
-    <string name="settings_show_tap_zones">المناطق النشطة مرئية</string>
-    <string name="settings_show_tap_zone_description">كأنها مربعات شفافة في مستعرِض المقال</string>
-    <string name="settings_tapZones">معاينة المناطق</string>
+    <string name="tap_zone_size">حَجْمُ مَناطِقِ النَّقْرِ</string>
+    <string name="tap_zone_size_descr">الْإِرْتِفَاعُ والْعَرْضُ لِكُلِّ مَناطِقِ النَّقْرِ بِاَلْمِلّيمِتْر</string>
+    <string name="settings_show_tap_zones">إِظْهارُ مَناطِقِ النَّقْرِ</string>
+    <string name="settings_show_tap_zone_description">كَأَنَّهَا مُرَبَّعاتٌ شَفّافَةٌ فِي مُسْتَعْرَضِ المَقالِ. سَتَكُونُ مَرْئيَّةً، فَقَطْ عِنْدَ تَمْكينِ إِجْراءاتِ النَّقْرِ</string>
+    <string name="settings_tapZones">مُعايَنَةُ مَناطِقِ النَّقْرِ</string>
     <string name="settings_volume_buttons_action">إجراءات إزرار الصوت</string>
     <string name="brightness_gesture">إيماءة تغيير السطوع</string>
     <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى/لأسفل على طول الحافة اليمنى من الشاشة</string>
@@ -301,7 +301,7 @@
     <string name="settings_remember_last_entry">تذَكُر المقال الأخير</string>
     <string name="settings_remeber_last_entry_description">إفتح آخر مقال تم عرضه في الجلسة السابقة، وبخلاف ذلك أظهر قائمة الغير مقروءة</string>
     <string name="auto_unstart_at_bottom">إلغاء علامة النجمة تلقائياً</string>
-    <string name="auto_unstart_at_bottom_descr">إزالة المقال تلقائيًا من المقالات المميزة عند الوصول إلى أسفل المقال</string>
+    <string name="auto_unstart_at_bottom_descr">إِزالَةُ المَقالِ تِلْقَائِيًّا مِنْ المُمَيَّزَةِ عِنْدَ الوُصولِ لِأَسْفَلِهِ</string>
     <string name="settings_category_advanced">الإعدادات المُتقدمة</string>
     <string name="settings_category_advanced_summary">ميزات إضافية (مثل النسخ الاحتياطي، الفلاتر والمزيد)</string>
     <string name="settings_autobackup_enabled">تمكين النسخ الإحتياطي التلقائي</string>
@@ -377,7 +377,7 @@
     <string name="rule_text">نصُ القاعدة</string>
     <string name="global_marks_as_star_filter_rule_descr">قاعده لكل سطر</string>
     <string name="customKeepTime">فترة الإحتفاظ بالمقالات</string>
-    <string name="menu_toggle_theme">تغيير السمة</string>
+    <string name="menu_toggle_theme">تَغْييرُ المَظْهَرِ</string>
     <string name="turnOn">تشغيل</string>
     <string name="brightness">السطوع</string>
     <string name="brightness_change">تغيير السطوع</string>
