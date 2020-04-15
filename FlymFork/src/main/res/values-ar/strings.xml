@@ -237,12 +237,12 @@
     <string name="show_read_checkbox">مربع التحديد كمقروء</string>
     <string name="show_read_checkbox_descr">إظْهارُ (مُرَبَّعِ إِخْتِيَارٍ) صَغيرٌ، لِلْإِشَارَةِ إِلَى قِراءَةِ المَقالِ</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
-    <string name="show_full_text_indicator_descr">إظهار رمز قرص صغير للإشارة إلى أنه تم تحميل النص الكامل للمقال</string>
+    <string name="show_full_text_indicator_descr">إِظْهارُ رَمْزٍ لِـ (قُرْصٍ مَرِنٍ) صَغيرٍ، لِلْإِشَارَةِ إِلَى أَنَّهُ تَمَّ تَحْميلُ النَّصِّ الكامِلِ لِلْمَقَالِ</string>
     <string name="show_new_icon">رمز المقال الجديد</string>
-    <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها بعد)</string>
+    <string name="show_new_icon_descr">إِظْهارُ رَمْزٍ لِـ (+) صَغيرٍ عَلَى المَقَالَاتِ الجَديدَةِ، اَلَّتِي لَمْ يَسْبِقْ رُؤْيَتُها بَعْدُ</string>
     <string name="show_read_article_count">إظهار عدد المقالات المقروءة</string>
     <string name="show_read_article_count_descr">في قائمة الخلاصة</string>
-    <string name="show_group_entrries_count">عدد مقالات المجموعة</string>
+    <string name="show_group_entrries_count">إِظْهارُ عَدَدِ مَقالاتِ المَجْموعَةِ</string>
     <string name="show_group_entries_count_descr">قد يُقلل من الأداء</string>
     <string name="textColorRead">مقالات لم تتم قراءتها</string>
     <string name="textColorRead_descr">لون النص والخلفية لتمييزها عن باقي المقالات</string>
