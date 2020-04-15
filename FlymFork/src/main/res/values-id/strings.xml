@@ -123,4 +123,11 @@
     <string name="article_text_clock_color_descr">Warna dan latar jam pada tajuk halaman</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="article_text_show_progress">Indikator kemajuan membaca</string>
+    <string name="article_text_show_progress_descr">Tampilkan kemajuan membaca artikel di bagian atas</string>
+    <string name="article_text_progress_height">Tinggi indikator kemajuan</string>
+    <string name="article_text_progress_color">Warna kemajuan</string>
+    <string name="article_text_progress_color_descr">Warna indikator kemajuan membaca</string>
+    <string name="settings_category_operation">Operasi</string>
+    <string name="settings_category_operation_summary">Setelan operasional</string>
+    <string name="tap_zone_size">Ukuran Zona Sentuh</string>
 </resources>
