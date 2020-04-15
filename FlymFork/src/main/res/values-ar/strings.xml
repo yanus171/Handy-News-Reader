@@ -196,7 +196,7 @@
     <!-- SETTINGS -->
     <string name="settings_category_common">الإعدادات المشتركة</string>
     <string name="settings_category_common_summary">السمة ولونها</string>
-    <string name="theme">السمة</string>
+    <string name="theme">المَظْهَرُ</string>
     <string name="customColors">تخصيص الألوان</string>
     <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، فسَيُستَخدم لون السمة الإفتراضي</string>
     <string name="textColor">لون النص والخلفية</string>
@@ -244,8 +244,8 @@
     <string name="show_read_article_count_descr">في قائمة الخلاصة</string>
     <string name="show_group_entrries_count">إِظْهارُ عَدَدِ مَقالاتِ المَجْموعَةِ</string>
     <string name="show_group_entries_count_descr">قد يُقلل من الأداء</string>
-    <string name="textColorRead">مقالات لم تتم قراءتها</string>
-    <string name="textColorRead_descr">لون النص والخلفية لتمييزها عن باقي المقالات</string>
+    <string name="textColorRead">لَوْنُ المَقَالَاتِ المَقْروءَةِ</string>
+    <string name="textColorRead_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ فِي قائِمَةِ المَقَالَاتِ</string>
     <string name="settings_color_text_read_sample_short">القراءة</string>
     <string name="settings_color_text_read_sample_long">نص وخلفية لمعاينة التغييرات</string>
     <string name="settings_category_article_text">نص المقال</string>
