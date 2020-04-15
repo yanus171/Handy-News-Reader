@@ -101,7 +101,14 @@
     <string name="fontColorsNotFromThemeSummary">atau pakai warna tema lain</string>
     <string name="textColor">Teks dan warna latar</string>
     <string name="show_new_icon">Ikon artikel baru</string>
+    <string name="show_new_icon_descr">Ikon kecil tanda tambah pada artikel baru (belum pernah dilihat)</string>
+    <string name="show_read_article_count">Tampilkan jumlah artikel dibaca</string>
+    <string name="show_read_article_count_descr">Di senarai umpan</string>
+    <string name="show_group_entrries_count">Jumlah grup artikel</string>
+    <string name="show_group_entries_count_descr">bisa mengurangi performa</string>
+    <string name="textColorRead">Baca artikel</string>
     <string name="textColorRead_descr">Warna teks artikel sudah dibaca dan latar</string>
+    <string name="settings_color_text_read_sample_short">Baca</string>
     <string name="settings_color_text_read_sample_long">Baca artikel</string>
     <string name="settings_category_article_text">Teks artikel</string>
     <string name="settings_category_article_text_summary">Penampakan teks artikel</string>
@@ -110,4 +117,10 @@
     <string name="settings_display_entries_fullscreen">Entri layar penuh otomatis</string>
     <string name="settings_entry_margins">Margin</string>
     <string name="settings_entry_margins_description">Kiri | kanan</string>
+    <string name="article_text_show_clock_description">Tampilkan waktu saat ini pada sudut kanan atas saat mode layar penuh</string>
+    <string name="settings_clock_size">Ukuran teks jam</string>
+    <string name="article_text_clock_color">Warna jam dan latar</string>
+    <string name="article_text_clock_color_descr">Warna dan latar jam pada tajuk halaman</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="article_text_show_progress">Indikator kemajuan membaca</string>
 </resources>
