@@ -235,7 +235,7 @@
     <string name="show_mark_all_as_read_button">زر تحديد الكل كمقروء</string>
     <string name="show_mark_all_as_read_button_summary">إظهار زر على كل المقالات لتحديدها كمقروءة، وإلا فستجد هذا الخيار في القائمة</string>
     <string name="show_read_checkbox">مربع التحديد كمقروء</string>
-    <string name="show_read_checkbox_descr">إظهار مربع فارغ صغير للإشارة إلى قراءة المقال</string>
+    <string name="show_read_checkbox_descr">إظْهارُ (مُرَبَّعِ إِخْتِيَارٍ) صَغيرٌ، لِلْإِشَارَةِ إِلَى قِراءَةِ المَقالِ</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
     <string name="show_full_text_indicator_descr">إظهار رمز قرص صغير للإشارة إلى أنه تم تحميل النص الكامل للمقال</string>
     <string name="show_new_icon">رمز المقال الجديد</string>
