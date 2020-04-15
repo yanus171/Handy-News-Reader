@@ -29,7 +29,11 @@
  THE SOFTWARE.
 -->
 <resources>
+    <string name="app_name">Handy News Reader</string>
+    <string name="menu_refresh">Segarkan</string>
     <!-- FEEDS -->
+    <string name="edit_feed_title">Sunting Umpan</string>
+    <string name="error_feed_error">Umpan situs web ini tidak terjangkau.</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
     <!-- SETTINGS -->
