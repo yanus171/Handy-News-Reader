@@ -32,7 +32,7 @@ Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which
 </ul>
 
 <ul>
-<b>Where you can find us:</b>
+<b>Temukan kami di tempat ini:</b>
 	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
