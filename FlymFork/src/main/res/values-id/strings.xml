@@ -30,12 +30,15 @@
 -->
 <resources>
     <string name="app_name">Handy News Reader</string>
+    <string name="never">jangan pernah</string>
     <string name="menu_refresh">Segarkan</string>
     <!-- FEEDS -->
     <string name="edit_feed_title">Sunting Umpan</string>
+    <string name="menu_add_group">Tambah grup</string>
     <string name="error_feed_error">Umpan situs web ini tidak terjangkau.</string>
     <string name="error_external_storage_not_available">Penyimpanan eksternal (mis. SD-card) tidak tersedia.</string>
     <string name="website_or_feed">(URL umpan atau cari kata kunci)</string>
+    <string name="tab_filters_title">Saring</string>
     <string name="filter_apply_to_content">Terapkan pada konten</string>
     <!-- ENTRIES -->
     <!-- WIDGET -->
