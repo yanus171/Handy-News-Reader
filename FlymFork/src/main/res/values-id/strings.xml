@@ -270,4 +270,23 @@ maksimum per umpan<br/>
     <string name="deleteOldEntries">Menghapus artikel lama</string>
     <string name="deleting_ghost_entries">Menghapus berkas lama</string>
     <string name="AllImages">Semua gambar</string>
+    <string name="article_images_downloading">Mengunduh gambar artikel</string>
+    <string name="mobilizeAll">Di-Mobilize</string>
+    <string name="RefreshFeeds">Memperbarui umpan</string>
+    <string name="deleteImages">Hapus gambar:</string>
+    <string name="deleteFullTexts">Hapus teks lengkap:</string>
+    <string name="applyOperations">Laksanakan operasi</string>
+    <string name="extractContent">Mengekstraksi konten</string>
+    <string name="improveHtmlContent">Menyempurnakan konten HTML</string>
+    <string name="parseXml">Mengurai XML</string>
+    <string name="setupConnection">Pasang koneksi</string>
+    <string name="settings_content_extract_rules">Aturan ekstraksi konten</string>
+    <string name="settings_content_extract_rules_description">Pasang untuk setiap situs (perlu pengetahuan dasar HTML)</string>
+    <string name="settings_tap_zones_dialogtitle">sekadar info, tidak dapat diubah</string>
+    <string name="downloadNext">", Berikut "</string>
+    <string name="downloadAll">", Semua"</string>
+    <string name="loadingLink">Memuat tautan</string>
+    <string name="loadLink">Baca sekarang</string>
+    <string name="loadLinkLater">Baca nanti</string>
+    <string name="loadLinkLaterStarred">Baca nanti di favorit</string>
 </resources>
