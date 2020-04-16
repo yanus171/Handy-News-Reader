@@ -302,4 +302,12 @@ maksimum per umpan<br/>
     <string name="entry_go_prev">Artikel sebelumnya</string>
     <string name="entry_go_next">Artikel berikutnya</string>
     <string name="colorSlotSaveLongTapHint">Tip: simpan warna sekarang dengan satu sentuhan panjang pada salah satu sel</string>
+    <string name="colorSlotSaved">Warna disimpan pada sel</string>
+    <string name="text">Teks</string>
+    <string name="background1">Latar</string>
+    <string name="auto_refresh_requires_charging">Hanya ketika pengisian daya</string>
+    <string name="global_class_list_to_remove_from_article_text">Hapus aturan teks</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">nama kelas per baris</string>
+    <string name="hide">Sembunyikan</string>
+    <string name="show">Tampilkan</string>
 </resources>
