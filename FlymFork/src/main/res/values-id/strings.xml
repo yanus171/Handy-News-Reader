@@ -297,4 +297,9 @@ maksimum per umpan<br/>
     <string name="create_auto_backup">Buat cadangan otomatis</string>
     <string name="auto_backup_opml_file_created">Berkas cadangan .opml otomatis dibuat:</string>
     <string name="use_standard_file_manager">Pakai manager berkas standar</string>
+    <string name="use_standard_file_manager_descr">kalau tidak pilih berkas .opml untuk diimpor  -  hanya yang di luar folder feedex (lewat dialog internal)</string>
+    <string name="settings">Setelan</string>
+    <string name="entry_go_prev">Artikel sebelumnya</string>
+    <string name="entry_go_next">Artikel berikutnya</string>
+    <string name="colorSlotSaveLongTapHint">Tip: simpan warna sekarang dengan satu sentuhan panjang pada salah satu sel</string>
 </resources>
