@@ -261,4 +261,13 @@ maksimum per umpan<br/>
     <string name="settings_autobackup_enabled_descr">Simpan berkala umpan Anda dan senarai artikel favorit ke dalam file .opml</string>
     <string name="settings_category_content_presentation">Presentasi konten</string>
     <string name="settings_display_text_color">Kecerahan teks</string>
+    <string name="settings_visible_feeds">Umpan nyata</string>
+    <string name="settings_widget_background">Latar</string>
+    <string name="settings_widget_background_description">Warna dan transparansi pada latar widget</string>
+    <string name="all_feeds">Semua umpan (termasuk masa depan)</string>
+    <string name="downloadImage">Mengunduh gambar</string>
+    <string name="loadFullText">Memuat teks lengkap</string>
+    <string name="deleteOldEntries">Menghapus artikel lama</string>
+    <string name="deleting_ghost_entries">Menghapus berkas lama</string>
+    <string name="AllImages">Semua gambar</string>
 </resources>
