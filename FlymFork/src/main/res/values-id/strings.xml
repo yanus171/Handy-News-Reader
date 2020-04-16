@@ -289,4 +289,11 @@ maksimum per umpan<br/>
     <string name="loadLink">Baca sekarang</string>
     <string name="loadLinkLater">Baca nanti</string>
     <string name="loadLinkLaterStarred">Baca nanti di favorit</string>
+    <string name="addFeed">Tambah umpan</string>
+    <string name="exportingToFile">Ekspor ke berkas</string>
+    <string name="importingFromFile">Impor dari berkas</string>
+    <string name="autobackup_interval">Interval pencadangan otomatis</string>
+    <string name="autobackup_interval_descr">Frekuensi pembuatan berkas cadangan umpan dan artikel</string>
+    <string name="create_auto_backup">Buat cadangan otomatis</string>
+    <string name="auto_backup_opml_file_created">Berkas cadangan .opml otomatis dibuat:</string>
 </resources>
