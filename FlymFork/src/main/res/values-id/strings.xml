@@ -334,4 +334,10 @@ maksimum per umpan<br/>
     <string name="settings_add_google_news_dialog_descr">Lepas centang untuk melewati dialog pilihan tipe umpan saat menambah umpan</string>
     <string name="reload_fulltext_after_tag_editing">Muat ulang teks setelah mengedit tagar</string>
     <string name="reload_fulltext_after_tag_editing_descr">bila tidak dicentang, text lengkap tidak akan dimuat ulang setelah mengedit setiap tagar full teks (tampil|sembunyi|akar), sehingga Anda dapat lebih mudah mengajukan perubahan ganda easier (dalam hal ini Anda perlu memuat ulang teks lengkap setelah editan Anda selesai)</string>
+    <string name="article_menu_show_by_tap">Tampilkan menu artikel dengan sentuh</string>
+    <string name="article_list_loading">Memuat senarai artikel</string>
+    <string name="article_opening">Membuka artikel</string>
+    <string name="web_page_loading">Memuat halaman</string>
+    <string name="article_menu_show_by_tap_descr">Saat Bilah Aksi tersembunyi - kalau tidak Anda akan menemukan menu itu hanya pada Bilah Aksi</string>
+    <string name="menu_go_back">Kembali</string>
 </resources>
