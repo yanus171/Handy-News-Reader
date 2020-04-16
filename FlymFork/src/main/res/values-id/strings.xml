@@ -254,4 +254,11 @@ maksimum per umpan<br/>
     <string name="settings_remember_last_entry">Ingat artikel terakhir</string>
     <string name="settings_remeber_last_entry_description">Saat nyala buka artikel terakhir dilihat, kalau tidak senarai entri belum dibaca</string>
     <string name="auto_unstart_at_bottom">Beri bintang otomatis saat selesai membaca</string>
+    <string name="auto_unstart_at_bottom_descr">Hapus otomatis artikel dari Favorit kalau sampai di artikel paling bawah</string>
+    <string name="settings_category_advanced">Tingkat lanjut</string>
+    <string name="settings_category_advanced_summary">Fitur tambahan (seperti cadangan, saringan dan lain-lain)</string>
+    <string name="settings_autobackup_enabled">Aktifkan pencadangan otomatis</string>
+    <string name="settings_autobackup_enabled_descr">Simpan berkala umpan Anda dan senarai artikel favorit ke dalam file .opml</string>
+    <string name="settings_category_content_presentation">Presentasi konten</string>
+    <string name="settings_display_text_color">Kecerahan teks</string>
 </resources>
