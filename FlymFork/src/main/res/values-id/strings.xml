@@ -106,7 +106,7 @@ maksimum per umpan<br/>
     <string name="menu_add_group">Tambah grup</string>
     <string name="menu_import">Impor dari file .opml</string>
     <string name="menu_export">Ekspor ke file .opml</string>
-    <string name="storage_request_explanation">Agar dapat impor atau ekspor umpan dari atau ke file, Anda harus kasih izin aplikasi ini mengakses memori penyimpanan.</string>
+    <string name="storage_request_explanation">Agar dapat impor atau ekspor umpan dari atau ke file, Anda harus mengizinkan aplikasi ini mengakses memori penyimpanan.</string>
     <string name="error_feed_error">Umpan situs web ini tidak terjangkau.</string>
     <string name="error_feed_process">Umpan tidak dapat diproses.</string>
     <string name="error_feed_url_exists">Alamat ini sudah ada.</string>
@@ -141,7 +141,7 @@ maksimum per umpan<br/>
     <string name="to_group_message">Apa umpan ini mau Anda taruh di dalam atau di luar grup ini?</string>
     <string name="to_group_above">Di luar grup</string>
     <string name="to_group_into">Di dalam grup</string>
-    <string name="add_custom_feed">Tambah umpan pesanan atau cari satu</string>
+    <string name="add_custom_feed">Tambah umpan kustom atau cari satu</string>
     <string name="google_news_title">Topik Google Berita</string>
     <string name="google_news_indicator">Pilih untuk tambah satu atau beberapa topik. Di antaranya mungkin tidak tersedia di Google bahasa Anda.</string>
     <string name="google_news_top_stories">Berita Utama</string>
