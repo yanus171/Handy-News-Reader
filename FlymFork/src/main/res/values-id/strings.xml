@@ -130,7 +130,7 @@ maksimum per umpan<br/>
     <string name="reject">TOLAK</string>
     <string name="feed_search">Cari umpan</string>
     <string name="web_page_search_duckduckgo">Cari halaman web (Duck Duck Go)</string>
-    <string name="select_file">Pilih berkas (pangkal SD)</string>
+    <string name="select_file">Pilih berkas (akar SD)</string>
     <string name="question_delete_feed">Apa betul Anda mau hapus umpan ini?</string>
     <string name="question_delete_group">Apa betul Anda mau hapus grup ini dan semua umpannya?</string>
     <string name="question_delete_filter">Apa betul Anda mau hapus saringan ini?</string>
@@ -143,7 +143,7 @@ maksimum per umpan<br/>
     <string name="to_group_into">Di dalam grup</string>
     <string name="add_custom_feed">Tambah umpan kustom atau cari satu</string>
     <string name="google_news_title">Topik Google Berita</string>
-    <string name="google_news_indicator">Pilih untuk tambah satu atau beberapa topik. Di antaranya mungkin tidak tersedia di Google bahasa Anda.</string>
+    <string name="google_news_indicator">Pilih satu atau beberapa topik untuk ditambah. Di antaranya mungkin tidak tersedia di Google bahasa Anda.</string>
     <string name="google_news_top_stories">Berita Utama</string>
     <string name="google_news_world">Dunia</string>
     <string name="google_news_business">Bisnis</string>
@@ -217,7 +217,7 @@ maksimum per umpan<br/>
     <string name="settings_entry_margins">Margin</string>
     <string name="settings_entry_margins_description">Kiri | kanan</string>
     <string name="article_text_show_clock">Tampilkan jam</string>
-    <string name="article_text_show_clock_description">Tampilkan waktu saat ini pada sudut kanan atas saat mode layar penuh</string>
+    <string name="article_text_show_clock_description">Tampilkan waktu sekarang pada sudut kanan atas pada mode layar penuh</string>
     <string name="settings_clock_size">Ukuran teks jam</string>
     <string name="article_text_clock_color">Warna jam dan latar</string>
     <string name="article_text_clock_color_descr">Warna dan latar jam pada tajuk halaman</string>
