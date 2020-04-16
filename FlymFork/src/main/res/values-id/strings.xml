@@ -221,6 +221,10 @@ maksimum per umpan<br/>
     <string name="settings_max_image_download_size_kb">Ukuran maks gambar</string>
     <string name="settings_max_image_download_size_kb_summary">(dalam kb). Jangan muat otomatis gambar lebih dari</string>
     <string name="max_single_refresh_traffic_mb">Maks besar data sekali penyegaran</string>
+    <string name="max_single_refresh_traffic_mb_descr">Penyegaran akan berhenti ketika besar data mencapai nilai maks (dalam MB) dan tidak pakai WiFi</string>
+    <string name="settings_load_comments">Muat komentar</string>
+    <string name="settings_load_comments_description">Di artikel teks lengkap</string>
+    <string name="settings_category_article_list">Senarai artikel</string>
     <string name="show_new_icon">Ikon artikel baru</string>
     <string name="show_new_icon_descr">Ikon kecil tanda tambah pada artikel baru (belum pernah dilihat)</string>
     <string name="show_read_article_count">Tampilkan jumlah artikel dibaca</string>
