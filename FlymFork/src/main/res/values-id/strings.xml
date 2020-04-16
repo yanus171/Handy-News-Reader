@@ -314,4 +314,8 @@ maksimum per umpan<br/>
     <string name="fullTextRoot">Pangkal teks lengkap</string>
     <string name="fullTextReloadStarted">Pemuatan teks lengkap dimulai</string>
     <string name="brightness_update_from_system_period_min">Waktu pembaruan kecerahan</string>
+    <string name="brightness_update_from_system_period_min_descr">(dalam menit) Setelah periode waktu tersebut kecerahan (dengan usapan) akan dikembalikan dari level sistem sekarang (0 - mati)</string>
+    <string name="menu_add_feed_shortcut">Buat pintasan pada Layar Awal</string>
+    <string name="new_feed_shortcut_added">Pintasan baru telah dibuat pada Layar Awal</string>
+    <string name="new_feed_shortcut_add_failed">Peluncur Anda tidak dapat membuat pintasan</string>
 </resources>
