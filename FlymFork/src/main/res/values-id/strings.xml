@@ -246,4 +246,12 @@ maksimum per umpan<br/>
     <string name="settings_notifications_ringtone">Nada dering</string>
     <string name="settings_notifications_ringtone_none">Nol</string>
     <string name="settings_notifications_vibrate">Getar</string>
+    <string name="settings_notifications_vibrate_description">Nyalakan getaran pada entri baru</string>
+    <string name="settings_notifications_light">Terang</string>
+    <string name="settings_notifications_light_description">Aktifkan lampu notifikasi saat ada entri baru</string>
+    <string name="page_up_down_90_pct">Gulung halaman 90%</string>
+    <string name="page_up_down_90_pct_descr">Pertahankan beberapa baris dari halaman sebelumnya - kalau tidak dicentang, seluruh halaman akan digulung</string>
+    <string name="settings_remember_last_entry">Ingat artikel terakhir</string>
+    <string name="settings_remeber_last_entry_description">Saat nyala buka artikel terakhir dilihat, kalau tidak senarai entri belum dibaca</string>
+    <string name="auto_unstart_at_bottom">Beri bintang otomatis saat selesai membaca</string>
 </resources>
