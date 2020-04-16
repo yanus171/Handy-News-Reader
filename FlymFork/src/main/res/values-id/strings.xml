@@ -152,7 +152,7 @@ maksimum per umpan<br/>
     <string name="google_news_sports">Olahraga</string>
     <string name="google_news_science">Sains</string>
     <string name="google_news_health">Kesehatan</string>
-    <string name="google_news_custom_topic">Masukkan topik pesanan</string>
+    <string name="google_news_custom_topic">Masukkan topik kustom</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Belum dibaca</string>
     <string name="all_entries">Semua artikel</string>
@@ -196,7 +196,7 @@ maksimum per umpan<br/>
     <string name="blue">Biru</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">Setelan umum</string>
-    <string name="customColors">Warna pesanan</string>
+    <string name="customColors">Warna kustom</string>
     <string name="fontColorsNotFromThemeSummary">atau pakai warna tema lain</string>
     <string name="textColor">Teks dan warna latar</string>
     <string name="show_new_icon">Ikon artikel baru</string>
@@ -321,4 +321,6 @@ maksimum per umpan<br/>
     <string name="custom_data_folder">Alur berkas eksternal kustom</string>
     <string name="custom_data_folder_descr">(kosong - pakai bawaan) alur untuk folder feedex penyimpan gambar dan cadangan hasil unduhan</string>
     <string name="entry_text_title_link">Tautan judul</string>
+    <string name="entry_text_title_link_description">izinkan membuka halaman web di peramban dengan menyentuh judul</string>
+    <string name="delete_read_articles">Hapus artikel selesai dibaca</string>
 </resources>
