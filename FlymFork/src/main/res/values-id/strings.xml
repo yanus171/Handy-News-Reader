@@ -296,4 +296,5 @@ maksimum per umpan<br/>
     <string name="autobackup_interval_descr">Frekuensi pembuatan berkas cadangan umpan dan artikel</string>
     <string name="create_auto_backup">Buat cadangan otomatis</string>
     <string name="auto_backup_opml_file_created">Berkas cadangan .opml otomatis dibuat:</string>
+    <string name="use_standard_file_manager">Pakai manager berkas standar</string>
 </resources>
