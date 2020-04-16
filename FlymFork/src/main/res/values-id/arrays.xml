@@ -29,7 +29,16 @@
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>Bawaan</item>
-        <item>Switch to next | previous article</item>
+        <item>Beralih ke artikel berikut | sebelum</item>
         <item>Page up | down</item>
+    </string-array>
+    <string-array name="settings_preload_image_modes">
+        <item>Jangan pernah</item>
+        <item>Hanya melalui Wi-Fi</item>
+        <item>Selalu</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Terang</item>
+        <item>Gelap</item>
     </string-array>
 </resources>
