@@ -133,4 +133,8 @@
     <string name="tap_zone_size_descr">Tinggi atau lebar semua Zona Sentuh dalam milimeter (tampilan entri)</string>
     <string name="settings_show_tap_zones">Zona Sentuh terlihat</string>
     <string name="settings_show_tap_zone_description">Sebagai kotak transparan di tampilan entri</string>
+    <string name="settings_tapZones">Pratayang Zona Sentuh</string>
+    <string name="settings_volume_buttons_action">Aksi pakai tombol volume</string>
+    <string name="brightness_gesture">Gestur ganti kecerahan</string>
+    <string name="brightness_gesture_descr">Centang ini untuk atur kecerahan dengan usap ke atas/bawah di sepanjang tepi kiri layar</string>
 </resources>
