@@ -336,7 +336,9 @@ maksimum per umpan<br/>
     <string name="loadLinkLater">Baca nanti</string>
     <string name="loadLinkLaterStarred">Baca nanti di favorit</string>
     <string name="addFeed">Tambah umpan</string>
+    <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
+    <string name="sendEmail">Kirim surel</string>
     <string name="exportingToFile">Ekspor ke berkas</string>
     <string name="importingFromFile">Impor dari berkas</string>
     <string name="autobackup_interval">Interval pencadangan otomatis</string>
