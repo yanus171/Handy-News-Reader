@@ -340,4 +340,12 @@ maksimum per umpan<br/>
     <string name="web_page_loading">Memuat halaman</string>
     <string name="article_menu_show_by_tap_descr">Saat Bilah Aksi tersembunyi - kalau tidak Anda akan menemukan menu itu hanya pada Bilah Aksi</string>
     <string name="menu_go_back">Kembali</string>
+    <string name="reading_notification">Notifikasi membaca artikel</string>
+    <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
+    <string name="feed_list_loading">Memuat senarai umpan</string>
+    <string name="article_text_show_battery">Tampilkan level baterai</string>
+    <string name="settings_category_header_descr">Untuk layar senarai artikel dan teks artikel</string>
+    <plurals name="number_of_new_entries">
+        <item quantity="other">%d artikel baru.</item>
+    </plurals>
 </resources>
