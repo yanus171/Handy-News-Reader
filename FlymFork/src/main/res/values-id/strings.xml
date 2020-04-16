@@ -333,4 +333,5 @@ maksimum per umpan<br/>
     <string name="settings_add_google_news_dialog">Tambah dialog Google Berita</string>
     <string name="settings_add_google_news_dialog_descr">Lepas centang untuk melewati dialog pilihan tipe umpan saat menambah umpan</string>
     <string name="reload_fulltext_after_tag_editing">Muat ulang teks setelah mengedit tagar</string>
+    <string name="reload_fulltext_after_tag_editing_descr">bila tidak dicentang, text lengkap tidak akan dimuat ulang setelah mengedit setiap tagar full teks (tampil|sembunyi|akar), sehingga Anda dapat lebih mudah mengajukan perubahan ganda easier (dalam hal ini Anda perlu memuat ulang teks lengkap setelah editan Anda selesai)</string>
 </resources>
