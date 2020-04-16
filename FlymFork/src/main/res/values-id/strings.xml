@@ -137,6 +137,20 @@ maksimum per umpan<br/>
     <string name="add_group_title">Pilih nama grup</string>
     <string name="edit_group_title">Edit nama grup</string>
     <string name="message_exported_to">Diekspor ke %s.</string>
+    <string name="to_group_title">Aksi pindah umpan</string>
+    <string name="to_group_message">Apa umpan ini mau Anda taruh di dalam atau di luar grup ini?</string>
+    <string name="to_group_above">Di luar grup</string>
+    <string name="to_group_into">Di dalam grup</string>
+    <string name="add_custom_feed">Tambah umpan pesanan atau cari satu</string>
+    <string name="google_news_title">Topik Google Berita</string>
+    <string name="google_news_indicator">Pilih untuk tambah satu atau beberapa topik. Di antaranya mungkin tidak tersedia di Google bahasa Anda.</string>
+    <string name="google_news_top_stories">Berita Utama</string>
+    <string name="google_news_world">Dunia</string>
+    <string name="google_news_business">Bisnis</string>
+    <string name="google_news_technology">Teknologi</string>
+    <string name="google_news_entertainment">Hiburan</string>
+    <string name="google_news_sports">Olahraga</string>
+    <string name="google_news_science">Sains</string>
     <string name="google_news_health">Kesehatan</string>
     <string name="google_news_custom_topic">Masukkan topik pesanan</string>
     <!-- ENTRIES -->
@@ -202,6 +216,7 @@ maksimum per umpan<br/>
     <string name="settings_display_entries_fullscreen">Entri layar penuh otomatis</string>
     <string name="settings_entry_margins">Margin</string>
     <string name="settings_entry_margins_description">Kiri | kanan</string>
+    <string name="article_text_show_clock">Tampilkan jam</string>
     <string name="article_text_show_clock_description">Tampilkan waktu saat ini pada sudut kanan atas saat mode layar penuh</string>
     <string name="settings_clock_size">Ukuran teks jam</string>
     <string name="article_text_clock_color">Warna jam dan latar</string>
@@ -227,4 +242,8 @@ maksimum per umpan<br/>
     <string name="settings_category_behavior">Notifikasi \u0026 perilaku</string>
     <string name="settings_category_behavior_summary">Notifikasi artikel baru dan perilaku aplikasi</string>
     <string name="settings_notifications_enabled">Aktifkan notifikasi</string>
+    <string name="settings_notifications_enabled_description">Aktifkan notifikasi saat ada entri baru</string>
+    <string name="settings_notifications_ringtone">Nada dering</string>
+    <string name="settings_notifications_ringtone_none">Nol</string>
+    <string name="settings_notifications_vibrate">Getar</string>
 </resources>
