@@ -480,6 +480,7 @@
     <string name="cant_open_image">Не удается открыть изображение</string>
     <string name="parsing_one_web_page">Разбор страницы</string>
     <string name="end_editing">Завершить редактирование</string>
+    <string name="open_article">Открыть статью</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
