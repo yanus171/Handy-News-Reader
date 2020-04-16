@@ -138,4 +138,8 @@
     <string name="brightness_gesture">Gestur ganti kecerahan</string>
     <string name="brightness_gesture_descr">Centang ini untuk atur kecerahan dengan usap ke atas/bawah di sepanjang tepi kiri layar</string>
     <string name="brightness_with_dim_activity">Tumpuk perangkat lunak</string>
+    <string name="brightness_with_dim_activity_descr">Redupkan kecerahan dengan mengurangi transparansi warna latar jendela (centang bila ubah kecerahan tidak berhasil)</string>
+    <string name="settings_category_behavior">Notifikasi \u0026 perilaku</string>
+    <string name="settings_category_behavior_summary">Notifikasi artikel baru dan perilaku aplikasi</string>
+    <string name="settings_notifications_enabled">Aktifkan notifikasi</string>
 </resources>
