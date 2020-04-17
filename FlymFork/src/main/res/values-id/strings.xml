@@ -339,6 +339,7 @@ maksimum per umpan<br/>
     <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
     <string name="sendEmail">Kirim surel</string>
+    <string name="toastAppCrashed">Aplikasi ini gagal tak terduga: (Silakan surel pengembang)</string>
     <string name="exportingToFile">Ekspor ke berkas</string>
     <string name="importingFromFile">Impor dari berkas</string>
     <string name="autobackup_interval">Interval pencadangan otomatis</string>
@@ -389,6 +390,15 @@ maksimum per umpan<br/>
     <string name="web_page_loading">Memuat halaman</string>
     <string name="article_menu_show_by_tap_descr">Saat Bilah Aksi tersembunyi - kalau tidak Anda akan menemukan menu itu hanya pada Bilah Aksi</string>
     <string name="menu_go_back">Kembali</string>
+    <string name="menu_go_top">Gulir ke atas</string>
+    <string name="menu_close">Tutup</string>
+    <string name="reading_file_list">Senarai berkas Bacaan</string>
+    <string name="add_entry_shortcut">Tambah pintasan artikel</string>
+    <string name="new_entry_shortcut_added">Pintasan artikel baru sudah dibuat pada Layar Depan</string>
+    <string name="menu_reload_with_tables_toggle">Berikut tabel</string>
+    <string name="menu_display_options">Opsi tampilan</string>
+    <string name="menu_reload">Muat ulang</string>
+    <string name="article_tap_enabled">Aksi sentuh diaktifkan</string>
     <string name="reading_notification">Notifikasi membaca artikel</string>
     <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
     <string name="feed_list_loading">Memuat senarai umpan</string>
