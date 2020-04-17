@@ -349,7 +349,9 @@ maksimum per umpan<br/>
     <string name="share_all_text">Bagikan seluruh teks</string>
     <string name="group">Grup</string>
     <string name="auto_image_load">Otomatis muat gambar</string>
-    <string name="show_progress_info">Info teknis detil kemajuan</string>
+    <string name="show_progress_info">Info teknis detail kemajuan</string>
+    <string name="show_progress_info_descr">Tampilkan info detail tentang operasi mutakhir</string>
+    <string name="vibrate_on_article_list_entry_swype">Getar ketika diusap</string>
     <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
     <string name="sendEmail">Kirim surel</string>
