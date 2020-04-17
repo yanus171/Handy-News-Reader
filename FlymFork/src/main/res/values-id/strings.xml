@@ -356,6 +356,16 @@ maksimum per umpan<br/>
     <string name="entry_marked_unfavourite">Artikel dihapus dari Favorit</string>
     <string name="entry_marked_favourite">Artikel ditambahkan ke Favorit</string>
     <string name="new_feed_was_added">Umpan baru ditambah</string>
+    <string name="entry_marked_unread">Artikel diberi tanda belum dibaca</string>
+    <string name="lock_orientation">Orientasi lansekap</string>
+    <string name="markAsStarred">Tandai dengan bintang</string>
+    <string name="markedAsStarred">Artikel diberi tanda bintang: </string>
+    <string name="deleteAllEntries">Hapus semua artikel terlihat nonbintang?</string>
+    <string name="question">Pertanyaan</string>
+    <string name="reload_full_text_with_tags">Edit Tampilan Konten</string>
+    <string name="filter_hint">Aksi saring akan dimulai bila sedikitnya satu syarat (aturan) terpenuhi. \'Terima\' mengalahkan \'Tolak\'</string>
+    <string name="keyword">kata(kata) kunci</string>
+    <string name="loadTypeWeb"><b>Tautan web</b> <font color="gray">(muat semua tautan dari halaman sebagai artikel berbeda)</font></string>
     <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
     <string name="sendEmail">Kirim surel</string>
