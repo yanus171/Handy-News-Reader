@@ -373,8 +373,15 @@ maksimum per umpan<br/>
     <string name="global_filter_descr">Filter diterapkan untuk setiap umpan - kosongkan teks filter (dan teks regex) agar nonaktif</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">kalau tidak terapkan pada konten</string>
     <string name="rule_text">Teks aturan</string>
+    <string name="global_marks_as_star_filter_rule_descr">satu aturan per baris</string>
+    <string name="customKeepTime">Kustom waktu simpan artikel</string>
+    <string name="menu_toggle_theme">Ganti tema</string>
+    <string name="turnOn">Hidupkan</string>
+    <string name="brightness">Kecerahan</string>
+    <string name="brightness_change">Ubah kecerahan</string>
     <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
+    <string name="copyToClipboard">Ke papan klip</string>
     <string name="sendEmail">Kirim surel</string>
     <string name="toastAppCrashed">Aplikasi ini gagal tak terduga: (Silakan surel pengembang)</string>
     <string name="exportingToFile">Ekspor ke berkas</string>
