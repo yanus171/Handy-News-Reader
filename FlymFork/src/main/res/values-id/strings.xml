@@ -367,6 +367,12 @@ maksimum per umpan<br/>
     <string name="keyword">kata(kata) kunci</string>
     <string name="loadTypeWeb"><b>Tautan web</b> <font color="gray">(muat semua tautan dari halaman sebagai artikel berbeda)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(umpan atau tautan situs atau kata kunci)</font></string>
+    <string name="loadTypeOneWebPage"><b>Satu halaman</b><font color="gray"> (bagi konten satu halaman web jadi banyak artikel pakai nama kelas tagar HTML)</font></string>
+    <string name="loadType">Tipe muatan:</string>
+    <string name="global_filter">Saringan global&#8230;</string>
+    <string name="global_filter_descr">Filter diterapkan untuk setiap umpan - kosongkan teks filter (dan teks regex) agar nonaktif</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">kalau tidak terapkan pada konten</string>
+    <string name="rule_text">Teks aturan</string>
     <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
     <string name="sendEmail">Kirim surel</string>
