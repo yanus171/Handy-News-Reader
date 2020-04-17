@@ -82,7 +82,7 @@ maksimum per umpan<br/>
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versi</string>
-    <string name="welcome_title">Selamat datang di Handy News Reader. Apa Anda ingin tambah sebuah umpan?</string>
+    <string name="welcome_title">Selamat datang di Handy News Reader. Anda mau menambah sebuah umpan?</string>
     <string name="never">jangan pernah</string>
     <string name="last_update">Pembaruan</string>
     <string name="menu_settings">Setelan</string>
@@ -98,28 +98,28 @@ maksimum per umpan<br/>
     <string name="feeds">Umpan</string>
     <string name="menu_add_feed">Cari Artikel Web</string>
     <string name="no_feeds">Tak ada umpan</string>
-    <string name="no_filters">Tanpa aturan</string>
+    <string name="no_filters">Tidak ada aturan</string>
     <string name="context_menu_delete">Hapus</string>
-    <string name="edit_feed_title">Sunting Umpan</string>
+    <string name="edit_feed_title">Sunting umpan</string>
     <string name="new_feed_title">Umpan baru atau artikel</string>
     <string name="context_menu_edit">Edit</string>
     <string name="menu_add_group">Tambah grup</string>
-    <string name="menu_import">Impor dari file .opml</string>
-    <string name="menu_export">Ekspor ke file .opml</string>
-    <string name="storage_request_explanation">Agar dapat impor atau ekspor umpan dari atau ke file, Anda harus mengizinkan aplikasi ini mengakses memori penyimpanan.</string>
+    <string name="menu_import">Impor dari berkas .opml</string>
+    <string name="menu_export">Ekspor ke berkas .opml</string>
+    <string name="storage_request_explanation">Agar bisa impor atau ekspor umpan dari atau ke file, Anda harus mengizinkan aplikasi ini mengakses memori penyimpanan.</string>
     <string name="error_feed_error">Umpan situs web ini tidak terjangkau.</string>
     <string name="error_feed_process">Umpan tidak dapat diproses.</string>
     <string name="error_feed_url_exists">Alamat ini sudah ada.</string>
-    <string name="error_feed_import">File terpilih tidak dapat diimpor.</string>
+    <string name="error_feed_import">Berkas terpilih tidak dapat diimpor.</string>
     <string name="error_feed_export">Ekspor gagal. Pastikan Anda telah memasang kartu SD yang bisa ditulisi.</string>
     <string name="error_external_storage_not_available">Penyimpanan eksternal (mis. SD-card) tidak tersedia.</string>
     <string name="feed_url">Alamat URL</string>
     <string name="optional">(opsional)</string>
-    <string name="website_or_feed">(URL umpan atau cari kata kunci)</string>
+    <string name="website_or_feed">(URL umpan atau kata kunci pencarian)</string>
     <string name="tab_feed_title">Umpan</string>
-    <string name="tab_filters_title">Saring</string>
+    <string name="tab_filters_title">Filter</string>
     <string name="feed_title">JUDUL</string>
-    <string name="feed_filters">ATURAN SARING</string>
+    <string name="feed_filters">ATURAN FILTER</string>
     <string name="filter_add_title">Tambahkan aturan</string>
     <string name="filter_delete_title">Hapus aturan</string>
     <string name="filter_edit_title">Edit aturan</string>
@@ -133,7 +133,7 @@ maksimum per umpan<br/>
     <string name="select_file">Pilih berkas (akar SD)</string>
     <string name="question_delete_feed">Apa betul Anda mau hapus umpan ini?</string>
     <string name="question_delete_group">Apa betul Anda mau hapus grup ini dan semua umpannya?</string>
-    <string name="question_delete_filter">Apa betul Anda mau hapus saringan ini?</string>
+    <string name="question_delete_filter">Apa betul Anda mau hapus filter ini?</string>
     <string name="add_group_title">Pilih nama grup</string>
     <string name="edit_group_title">Edit nama grup</string>
     <string name="message_exported_to">Diekspor ke %s.</string>
@@ -156,7 +156,7 @@ maksimum per umpan<br/>
     <!-- ENTRIES -->
     <string name="unread_entries">Belum dibaca</string>
     <string name="all_entries">Semua artikel</string>
-    <string name="no_entries">Nihil artikel</string>
+    <string name="no_entries">Kosong artikel</string>
     <string name="downloadOneImage">Mengunduh gambar</string>
     <string name="favorites">Dibintangi</string>
     <string name="context_menu_share_starred">Bagikan entri dibintangi</string>
@@ -172,7 +172,7 @@ maksimum per umpan<br/>
     <string name="menu_toogle_unread_all">Belum baca|Semua</string>
     <string name="menu_load_all_images">Muat semua gambar</string>
     <string name="menu_mark_as_favorite">Tandai sebagai favorit</string>
-    <string name="menu_mark_as_unfavorite">Lepas dari Favorit</string>
+    <string name="menu_mark_as_unfavorite">Buang dari Favorit</string>
     <string name="menu_mark_as_unread">Tandai belum dibaca</string>
     <string name="menu_reload_full_text">Muat ulang teks lengkap</string>
     <string name="menu_reload_full_text_without_mobilizer">Muat ulang tanpa Mobilizer</string>
@@ -443,6 +443,9 @@ maksimum per umpan<br/>
     <string name="menu_display_options">Opsi tampilan</string>
     <string name="menu_reload">Muat ulang</string>
     <string name="article_tap_enabled">Aksi sentuh diaktifkan</string>
+    <string name="article_tap_enabled_summary">di Zona Sentuh dan di area nontautan (untuk tampilan menu)</string>
+    <string name="menu_calculate_image_sizes">Kalkulasi ukuran gambar</string>
+    <string name="setting_calculate_image_sizes">Ukuran gambar di penyimpanan</string>
     <string name="reading_notification">Notifikasi membaca artikel</string>
     <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
     <string name="feed_list_loading">Memuat senarai umpan</string>
