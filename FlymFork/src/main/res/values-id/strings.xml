@@ -366,6 +366,7 @@ maksimum per umpan<br/>
     <string name="filter_hint">Aksi saring akan dimulai bila sedikitnya satu syarat (aturan) terpenuhi. \'Terima\' mengalahkan \'Tolak\'</string>
     <string name="keyword">kata(kata) kunci</string>
     <string name="loadTypeWeb"><b>Tautan web</b> <font color="gray">(muat semua tautan dari halaman sebagai artikel berbeda)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(umpan atau tautan situs atau kata kunci)</font></string>
     <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
     <string name="criticalErrorSending">Mengirim galat kritis…</string>
     <string name="sendEmail">Kirim surel</string>
