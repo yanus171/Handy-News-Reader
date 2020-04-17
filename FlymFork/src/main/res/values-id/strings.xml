@@ -446,6 +446,16 @@ maksimum per umpan<br/>
     <string name="article_tap_enabled_summary">di Zona Sentuh dan di area nontautan (untuk tampilan menu)</string>
     <string name="menu_calculate_image_sizes">Kalkulasi ukuran gambar</string>
     <string name="setting_calculate_image_sizes">Ukuran gambar di penyimpanan</string>
+    <string name="setting_calculate_image_sizes_descr">Kalkulasi dan tampilkan besar jumlah gambar pada penyimpanan menurut artikel, umpan, grup, dll.
+(angka diperbarui sewaktu penyegaran)</string>
+    <string name="settings_category_theme">Tema</string>
+    <string name="settings_category_header">Tajuk halaman</string>
+    <string name="tasks_to_download">Memuat</string>
+    <string name="settings_current_setting">Pengaturan saat ini</string>
+    <string name="unable_to_load_article_icon">Tak dapat memuat ikon artikel</string>
+    <string name="settings_delete_old_interval">Interval hapus artikel lama</string>
+    <string name="settings_delete_old_interval_descr">Kapan menghapus artikel lama dan kalkulasi besar gambar milik grup dan umpan pada sdcard</string>
+    <string name="menu_delete_old">Hapus artikel lama</string>
     <string name="reading_notification">Notifikasi membaca artikel</string>
     <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
     <string name="feed_list_loading">Memuat senarai umpan</string>
