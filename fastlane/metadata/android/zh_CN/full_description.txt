@@ -1,14 +1,14 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"与我所有的兴趣保持联系从未如此简单".</i>
 
 <b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>组成您的梦想杂志！</b></li>
+	<li><b>有趣的文章直接掌握在您的手中</b></li>
+	<li><b>最终享受阅读</b></li>
 </ul>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
+...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. 聚焦于集合...
 
 Meet <i>Handy NR</i> - a feature-rich, off-line oriented <i>RSS</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
