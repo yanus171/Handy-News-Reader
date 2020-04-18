@@ -264,7 +264,7 @@
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_show_clock">إِظْهارُ السّاعَةِ</string>
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
-    <string name="settings_clock_size">حجم نص ساعة التذييل</string>
+    <string name="settings_clock_size">حَجْمُ السّاعَةِ</string>
     <string name="article_text_clock_color">لَوْنُ السّاعَةِ</string>
     <string name="article_text_clock_color_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_clock_sample_short">08:15</string>
@@ -343,7 +343,7 @@
     <string name="pageDown">أسفل الصفحة</string>
     <string name="fullScreenToggle">تبديل ملء الشاشة</string>
     <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
-    <string name="actionBarToggle">تَبْديلَ شَريطِ العَمَلِ</string>
+    <string name="actionBarToggle">تَبْديلُ شَريطِ الأَدَواتِ</string>
     <string name="standard">قياسي</string>
     <string name="fontsize_entrylist">حجم الخط في قائمة المقال</string>
     <string name="question_delete_entry">حذف هذا المقال؟</string>
@@ -368,7 +368,7 @@
     <string name="keyword">الكلمات الدلالية</string>
     <string name="loadTypeWeb"><b>رَوابِطُ الوِيبْ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
     <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
-    <string name="loadTypeWebPageSearch">البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo (بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</string>
+    <string name="loadTypeWebPageSearch"><b>البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo</b><font color="gray">(بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
     <string name="loadTypeOneWebPage"><b>صَفْحَةٌ واحِدَةٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
