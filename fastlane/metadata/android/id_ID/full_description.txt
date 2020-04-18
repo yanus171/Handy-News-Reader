@@ -10,11 +10,11 @@
 
 ...nikmati Hidup Anda <b>yang bebas gangguan - dan terkini sesuai minat Anda</b> secara bersamaan. Fokus pada Esensi...
 
-Perkenalkan <i>Handy NR</i> - si kaya fitur, berorientasi offline sekaligus pembaca <i>RSS</i> yang <b>menghargai Waktu Anda dan Kedamaian Batin Anda</b>: pemakainya terhindar dari pengalih perhatian dan gangguan yang begitu lazim saat ini ketika Anda memakai perangkat seluler.
+Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi offline yang <b>menghargai Waktu Anda dan Kedamaian Batin Anda</b>: pemakainya terhindar dari pengalih perhatian dan gangguan yang begitu lazim saat ini ketika Anda memakai perangkat seluler.
 
 <ul>
 <b><u>Fitur</u>:</b>
-	<li><b><u>article lengkap</u> di tangan</b>: tidak perlu memakai peramban web eksternal untuk mendapatkan teks lengkap,</li>
+	<li><b><u>artikel lengkap</u> di tangan</b>: tidak perlu memakai peramban web eksternal untuk mendapatkan teks lengkap,</li>
 	<li><b><u>convenient</u> reading</b>: switching articles by volume buttons or swipe, <i>Tap Zones</i>, remembering the position of reading <u>per article</u>,</li>
 	<li><b>important articles' notification</b>: You will no longer miss anything You find especially important,</li>
 	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
