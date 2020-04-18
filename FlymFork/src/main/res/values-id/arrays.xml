@@ -30,7 +30,7 @@
     <string-array name="settings_volume_buttons_action">
         <item>Bawaan</item>
         <item>Beralih ke artikel berikut | sebelum</item>
-        <item>Page up | down</item>
+        <item>Halaman naik | turun</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
         <item>Jangan pernah</item>
