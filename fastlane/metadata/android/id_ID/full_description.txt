@@ -28,12 +28,12 @@ Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi off
 	<li><b>fitur tingkat lanjut</b>: cadangan otomatis (ekspor/impor ke/dari format <i>.opml</i>), mengambil konten dari situs web non-<i>RSS</i>. </li>
 	<li><b>untuk fitur menarik lain</b> "tersedia di toko" - kunjungi situs web kami untuk cari tahu lagi :) !,</li>
 	<li><b><u>penting</u>:</b> aplikasi ini TIDAK sinkronisasi dengan pembaca umpan berita online (mis. <i>Feedly</i>),</li>
-	<li><b>feedback and suggestions are welcome;</b></li>
+	<li><b>masukan dan saran diterima dengan senang hati;</b></li>
 </ul>
 
 <ul>
 <b>Temukan kami di tempat ini:</b>
-	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>	
-	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
-	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">kode sumber di <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">beranda</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">terjemahan</a>;</li>
 </ul>
