@@ -29,117 +29,235 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>许可证和信息</big></b><br/>
-    该程序是免费软件：您可以根据自由软件基金会发布的GNU通用公共许可证的条款（许可证的版本3）或（根据您的选择）任何更高版本来重新分发和/或修改它。见http://www.gnu.org/licenses<br/>
-    <br/>
-    这个程序是基于 \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian.在此fork中添加的功能包括:<br/>
-    <br/>
-    • feed组扩大<br/>
-    • 全屏不可见的向上/向下按钮<br/>
-    • 每个Feed下载最大图片数<br/>
-    •取消刷新过程的能力<br/>
-    • 以及更多<br/>
-    <br/>
-    <b><big>在哪里可以找到我们</big></b>
-    <br/>
-    • 请浏览 <b><a href="https://handynewsreader.blogspot.com">website</a></b>获取新闻和信息<br/>
-    • 您可以在此下载应用程序 <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
-    • 您可以在此下载应用程序<b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
-    • 也可以参见<b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
-    • 代码在 <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
-    <br/>
-    <b><big>我们的支持</big></b>
-    <br/>
-    如果您偶然发现了该应用程序的问题，则最好<br/>
-    • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
-    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">e-mail to the developer</a></b><br/>
-    <br/>
-    <b><big>Your support</big></b>
-    <br/>
-    如果您有新功能的想法，可以:<br/>
-    • open an issue on <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> or<br/>
-    • send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">e-mail to the developer</a></b><br/>
-    <br/>
-    <b>如果您觉得这个应用程序有用，请给它评分 <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
-    <br/>
-    <b><big>Translations</big></b>
-    <br/>
-    您可以在以下位置帮助翻译成您自己的语言 <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
-    如果您的语言不可用，请发送 <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail to the developer</a></b>.<br/>
-    <br/>
-    <b><big>Acknowledgments</big></b>
-    <br/>
-    <b>Developers:</b><br/>
-    ***developerList***
-    <br/>
-    <b>Translators:</b><br/>
-    ***translatorList***
-    <br/>
-    ]]></string>
-    <string name="app_name">Handy News Reader</string>
-    <string name="about_title_version">版本</string>
-    <string name="about_flym">关于App / 帮助 / 联系开发者 </string>
     <string name="welcome_title">欢迎来到 Handy News Reader. 您想要添加一个Feed吗?</string>
     <string name="never">从不</string>
-    <string name="last_update">更新</string>
     <string name="menu_settings">设置</string>
     <string name="menu_refresh">刷新</string>
-    <string name="flym_feeds">Handy News Reader Feeds</string>
     <string name="error">错误</string>
-    <string name="network_error">您处于离线状态。</string>
-    <string name="loading">正在载入…</string>
-    <string name="no_result">无结果</string>
-    <string name="drawer_open">打开导航栏</string>
-    <string name="drawer_close">关闭导航栏</string>
+    <string name="network_error">未设置网络</string>
+    <string name="loading">载入中&#8230;</string>
+    <string name="drawer_open">打开导航抽屉</string>
+    <string name="drawer_close">关闭导航抽屉</string>
     <!-- FEEDS -->
-    <string name="feeds">订阅源</string>
-    <string name="menu_add_feed">文章网页搜索</string>
+    <string name="menu_add_feed">添加一个feed</string>
     <string name="no_feeds">没有找到feeds</string>
     <string name="no_filters">没有规则</string>
     <string name="context_menu_delete">删除</string>
-    <string name="edit_feed_title">编辑订阅源</string>
-    <string name="new_feed_title">新订阅源或文章</string>
+    <string name="edit_feed_title">编辑一个feed</string>
+    <string name="new_feed_title">新feed</string>
     <string name="context_menu_edit">编辑</string>
-    <string name="menu_add_group">添加组</string>
-    <string name="menu_import">从OPML文件中导入</string>
-    <string name="menu_export">从OPML文件中导入</string>
-    <string name="storage_request_explanation">可将feeds导出至OPML文件，或从OPML导入feeds, 但您必须允许本应用访问存储</string>
-    <string name="error_feed_error">订阅源网站不可用。</string>
+    <string name="menu_add_group">添加一个组</string>
+    <string name="storage_request_explanation">可将feeds导出至OPML文件，或从OPML导入feeds,但您必须允许本应用访问存储</string>
+    <string name="error_feed_error">feed 站点不可达</string>
     <string name="error_feed_process">无法处理该feed</string>
-    <string name="error_feed_url_exists">该地址已存在</string>
-    <string name="error_feed_import">无法导入选中的文件</string>
-    <string name="error_feed_export">导出失败。请确保您已挂载可写的 SD 卡。</string>
-    <string name="error_external_storage_not_available">外部存储设备 (例如SD卡) 不可用。</string>
+    <string name="error_feed_url_exists">该地址已经存在</string>
+    <string name="error_feed_import">无法导入所选文件</string>
+    <string name="error_feed_export">导出失败。请确保您的手机加载了可写的SD卡。</string>
+    <string name="error_external_storage_not_available">没有外部存储设备（如SD卡）</string>
     <string name="feed_url">URL 地址</string>
-    <string name="optional">(可选)</string>
+    <string name="optional">（可选）</string>
     <string name="website_or_feed">（feed URL 或搜索关键词）</string>
-    <string name="tab_feed_title">订阅源</string>
-    <string name="tab_filters_title">过滤</string>
+    <string name="tab_filters_title">过滤器</string>
     <string name="feed_title">标题</string>
-    <string name="feed_filters">过滤规则</string>
-    <string name="filter_add_title">添加规则</string>
-    <string name="filter_delete_title">删除规则</string>
-    <string name="filter_edit_title">编辑规则</string>
+    <string name="feed_filters">过滤器规则</string>
+    <string name="filter_add_title">添加一条规则</string>
+    <string name="filter_delete_title">删除一条规则</string>
+    <string name="filter_edit_title">编辑一条规则</string>
     <string name="filter_is_regex">&#8230;是一条正则表达式</string>
-    <string name="filter_apply_to_title">应用到标题或链接地址</string>
+    <string name="filter_apply_to_title">应用至标题或链接地址</string>
     <string name="filter_apply_to_content">应用至内容</string>
-    <string name="accept">获取</string>
+    <string name="accept">接收</string>
     <string name="reject">拒绝</string>
     <string name="feed_search">Feed搜索</string>
+    <string name="select_file">选择一个文件（SD卡根目录）</string>
+    <string name="question_delete_feed">您真的想要删除该Feed吗？</string>
+    <string name="question_delete_group">您真的想要删除该组及其所有Feeds吗？</string>
+    <string name="question_delete_filter">您真的想要删除该过滤器吗？</string>
+    <string name="add_group_title">选择组名</string>
+    <string name="edit_group_title">编辑组名</string>
+    <string name="message_exported_to">导出至 %s.</string>
+    <string name="to_group_title">Feed移动操作</string>
+    <string name="to_group_message">您想把该Feed放在组内还是组外?</string>
+    <string name="to_group_above">组外</string>
+    <string name="to_group_into">组内</string>
+    <string name="add_custom_feed">添加一个自定义Feed或搜索一个</string>
+    <string name="google_news_title">Google新闻话题</string>
+    <string name="google_news_indicator">选择添加一个或多个话题，其中一些可能不会以您所用的语言显示，因谷歌未提供。</string>
+    <string name="google_news_top_stories">头条新闻</string>
+    <string name="google_news_world">天下</string>
+    <string name="google_news_business">商业</string>
+    <string name="google_news_technology">技术</string>
+    <string name="google_news_entertainment">娱乐</string>
+    <string name="google_news_sports">体育</string>
+    <string name="google_news_science">科学</string>
+    <string name="google_news_health">健康</string>
+    <string name="google_news_custom_topic">输入自定义话题</string>
     <!-- ENTRIES -->
+    <string name="unread_entries">未读</string>
+    <string name="all_entries">所有文章</string>
+    <string name="no_entries">没有文章</string>
+    <string name="downloadOneImage">下载图片</string>
+    <string name="favorites">已标星</string>
+    <string name="context_menu_share_starred">分享已标星条目</string>
+    <string name="menu_star">标星</string>
+    <string name="menu_unstar">取消标星</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_full_screen">全屏</string>
+    <string name="menu_font_bold">粗体</string>
+    <string name="menu_copy_clipboard">复制链接</string>
+    <string name="menu_cancel_refresh">取消更新</string>
+    <string name="menu_toogle_unread_all">未读|全部</string>
+    <string name="menu_load_all_images">加载所有图片</string>
+    <string name="menu_mark_as_unread">标为未读</string>
+    <string name="menu_reload_full_text">重新加载全文</string>
+    <string name="menu_reload_full_text_without_mobilizer">不以移动版视图重新加载</string>
+    <string name="share_favorites_title">Handy News Reader: 已标星条目</string>
+    <string name="get_full_text">加载整篇文章</string>
+    <string name="show_text_in_entry_list">在文章列表中显示原文</string>
     <string name="original_text">显示原文</string>
     <string name="see_enclosure">载入附件</string>
     <string name="see_link">在浏览器中查看</string>
-    <string name="cant_open_link">找不到打开链接的应用程序</string>
+    <string name="cant_open_link">未找到此链接的应用程序</string>
     <string name="open_enclosure">打开附件</string>
     <string name="file">文件</string>
     <string name="download_and_save">下载并保存</string>
     <string name="open_link">打开链接</string>
-    <string name="tip_sentence">提示：右滑以标记为已读，左滑以添加到收藏夹</string>
     <string name="undo">撤销</string>
-    <string name="marked_as_read">标记为已读</string>
-    <string name="image_count">图像数</string>
+    <string name="marked_as_read">标为已读</string>
     <!-- WIDGET -->
-    <string name="red">红色</string>
+    <string name="red">红</string>
+    <string name="green">绿</string>
+    <string name="blue">蓝</string>
+    <string name="transparency">透明</string>
     <!-- SETTINGS -->
+    <string name="settings_category_refresh">自动刷新</string>
+    <string name="settings_refresh_enabled">开启自动刷新</string>
+    <string name="settings_refresh_interval">刷新间隔</string>
+    <string name="settings_min_update_battery_level">最低电量</string>
+    <string name="settings_refresh_only_selected">仅选中</string>
+    <string name="settings_refresh_only_selected_summary">仅自动刷新选中的feed</string>
+    <string name="settings_refresh_on_open">打开应用后刷新Feeds</string>
+    <string name="settings_refresh_on_open_description">打开应用后刷新所有Feeds</string>
+    <string name="settings_refresh_wifi_only">只在WIFI连接下刷新</string>
+    <string name="settings_refresh_wifi_only_description">只在WIFI连接可用时刷新</string>
+    <string name="settings_keep_time">条目保留时间</string>
+    <string name="settings_preload_image_mode">预加载图片</string>
+    <string name="settings_max_image_download_count">最大图片下载数量</string>
+    <string name="settings_max_image_download_count_description">每篇文章</string>
+    <string name="settings_max_image_download_size_kb">最大图片尺寸</string>
+    <string name="settings_max_image_download_size_kb_summary">不自动载入大于多少KB的图片</string>
+    <string name="settings_load_comments">载入评论</string>
+    <string name="settings_load_comments_description">在文章全文中</string>
+    <string name="settings_category_article_list">文章列表</string>
+    <string name="settings_font_size">文本尺寸</string>
+    <string name="show_article_icon">显示文章图标</string>
+    <string name="show_article_icon_descr">关闭以获得更多屏幕空间</string>
+    <string name="show_article_url">显示文章URL</string>
+    <string name="settings_display_oldest_first">文章顺序</string>
+    <string name="settings_display_oldest_first_description">首先显示最老条目</string>
+    <string name="show_mark_all_as_read_button">标记所有为已读按钮</string>
+    <string name="show_mark_all_as_read_button_summary">显示标记所有文章为已读按钮，否则你会在菜单中找到这个选项</string>
+    <string name="show_read_checkbox">阅读复选框</string>
+    <string name="show_read_checkbox_descr">显示小复选框表明已读过该文章</string>
+    <string name="show_full_text_indicator">全文指示器</string>
+    <string name="show_full_text_indicator_descr">显示小的软盘图标，表明已加载文章全文</string>
+    <string name="show_new_icon">新文章图标</string>
+    <string name="show_read_article_count">显示阅读文章记数</string>
+    <string name="show_read_article_count_descr">在feed列表中</string>
+    <string name="settings_category_article_text">文章文本</string>
+    <string name="settings_display_images">显示图片</string>
+    <string name="settings_display_images_description">在条目中显示图片</string>
+    <string name="settings_display_entries_fullscreen">自动全屏显示条目</string>
+    <string name="settings_entry_margins">页边</string>
+    <string name="settings_entry_margins_description">左 | 右</string>
+    <string name="entry_text_align_justify">文本调整</string>
+    <string name="entry_text_align_justify_description">否则向左对齐</string>
+    <string name="tap_zone_size">点击区域尺寸</string>
+    <string name="tap_zone_size_descr"> 所有点击区域的高度或宽度（单位：毫米）</string>
+    <string name="settings_show_tap_zones">点击区域可见</string>
+    <string name="settings_tapZones">点击区域预览</string>
+    <string name="settings_volume_buttons_action">音量按钮操作</string>
+    <string name="settings_notifications_enabled">启用通知</string>
+    <string name="settings_notifications_enabled_description">启用新条目通知</string>
+    <string name="settings_notifications_ringtone">响铃</string>
+    <string name="settings_notifications_ringtone_none">不响铃</string>
+    <string name="settings_notifications_vibrate">震动</string>
+    <string name="settings_notifications_vibrate_description">对新条目响铃</string>
+    <string name="settings_notifications_light">灯</string>
+    <string name="settings_notifications_light_description">对新条目启用通知灯</string>
+    <string name="settings_remember_last_entry">记忆最近文章</string>
+    <string name="settings_remeber_last_entry_description">启动时打开上次查看的文章，否则打开未读条目列表</string>
+    <string name="auto_unstart_at_bottom">完成阅读后自动取消文章加星</string>
+    <string name="auto_unstart_at_bottom_descr">当文章到达底部时，自动从收藏夹中删除文章</string>
+    <string name="settings_category_content_presentation">内容呈现</string>
+    <string name="settings_display_text_color">文本亮度</string>
+    <string name="settings_visible_feeds">可见feeds</string>
+    <string name="settings_widget_background">后台</string>
+    <string name="settings_widget_background_description">小部件背景的颜色和透明度</string>
+    <string name="all_feeds">所有feeds (包括未来的)</string>
+    <string name="downloadImage">正下载图片</string>
+    <string name="loadFullText">正载入全文</string>
+    <string name="deleteOldEntries">删除旧文章</string>
+    <string name="AllImages">所有图片</string>
+    <string name="mobilizeAll">正尝试以移动试图显示</string>
+    <string name="RefreshFeeds">正在更新feeds</string>
+    <string name="deleteImages">删除图片</string>
+    <string name="applyOperations">应用操作</string>
+    <string name="extractContent">提取内容</string>
+    <string name="improveHtmlContent">改善HTML内容</string>
+    <string name="parseXml">正解析XML</string>
+    <string name="setupConnection">建立连接</string>
+    <string name="settings_content_extract_rules">内容提取规则</string>
+    <string name="settings_content_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
+    <string name="settings_tap_zones_dialogtitle">仅提供信息，更改不可用</string>
+    <string name="downloadNext">"Download Next"</string>
+    <string name="loadingLink">正加载链接</string>
+    <string name="loadLink">现在读</string>
+    <string name="loadLinkLater">稍后读</string>
+    <string name="addFeed">添加一个feed</string>
+    <string name="externalLinks">外部链接</string>
+    <string name="markAllAsRead">标记所有文章为已读</string>
+    <string name="pageUp">上/下滑动来标星或取消标星</string>
+    <string name="pageDown">移至下一页</string>
+    <string name="fullScreenToggle">全屏切换</string>
+    <string name="auto_refresh_feed">自动刷新feed</string>
+    <string name="actionBarToggle">切换操作栏</string>
+    <string name="standard">标准</string>
+    <string name="fontsize_entrylist">文章列表的字体大小</string>
+    <string name="question_delete_entry">删除这篇文章？</string>
+    <string name="share_all_text">分享全文</string>
+    <string name="group">组</string>
+    <string name="auto_image_load">自动图片载入</string>
+    <string name="show_progress_info">详细进度技术信息</string>
+    <string name="show_progress_info_descr">显示关于当前操作的详细信息</string>
+    <string name="vibrate_on_article_list_entry_swype">滑动时震动</string>
+    <string name="entry_marked_unfavourite">文章从收藏夹中被删除</string>
+    <string name="entry_marked_favourite">文章被添加到收藏夹</string>
+    <string name="new_feed_was_added">添加了新Feed</string>
+    <string name="entry_marked_unread">文章被标记为未读</string>
+    <string name="lock_orientation">横向</string>
+    <string name="markAsStarred">标记为加星</string>
+    <string name="markedAsStarred">文章被标为加星: </string>
+    <string name="question">问题</string>
+    <string name="reload_full_text_with_tags">带标签重载</string>
+    <string name="filter_hint">如果满足至少一个条件(规则)，筛选器的操作将被启动. \'接受\' 绕过 \'拒绝\'</string>
+    <string name="keyword">一个（或多个）关键词</string>
+    <string name="loadTypeWeb">Web （加载来自页面所有链接）</string>
+    <string name="loadTypeRSS">RSS （feed或站点链接或关键词）</string>
+    <string name="loadType">加载类型:</string>
+    <string name="global_filter">全局过滤器&#8230;</string>
+    <string name="global_filter_descr">应用于每个Feed的过滤器, 留空筛选文本(和regex文本)以禁用</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">否则应用到内容</string>
+    <string name="rule_text">规则文本</string>
+    <string name="global_marks_as_star_filter_rule_descr">每行一条规则</string>
+    <string name="customKeepTime">自定义文章保留时间</string>
+    <string name="menu_toggle_theme">更改主题</string>
+    <string name="turnOn">打开</string>
+    <string name="brightness_change">亮度更改</string>
+    <string name="criticalErrorOccured">应用程序中发生严重错误。请将此文本发送给开发者</string>
+    <string name="criticalErrorSending">正发送严重错误…</string>
+    <string name="copyToClipboard">复制到剪切板</string>
+    <plurals name="number_of_new_entries">
+        <item quantity="other">%d篇新文章.</item>
+    </plurals>
 </resources>
