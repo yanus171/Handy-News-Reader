@@ -19,9 +19,9 @@ Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi off
 	<li><b>notifikasi artikel penting</b>: Anda tidak akan ketinggalan lagi sesuatu yang Anda anggap sangat penting,</li>
 	<li><b><i>"Baca Nanti"</i></b>: Anda bisa dengan cepat membolak-balik artikel - <b>menandai (beri bintang) artikel pilihan untuk dibaca nanti</b> pada waktu luang Anda - atau sekadar menyimpannya,</li>
 	<li><b><i>"Hapus Kalau Selesai"</i></b> - setelah Anda selesai dengan artikel yang diberi bintang - bisa secara otomatis dihapus dari kumpulan <i>'Favorit'</i> (=<i>'Baca Nanti'</i>),</li>
-	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
-	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
-	<li><b>gesture-friendly</b>: e.g. usap atas bawah untuk menambah/menghapus sebuah artikel dari <i>Favorit</i>, usap sepanjang tepi kiri layar untuk mengatur kecerahan teks,</li>
+	<li><b>siap tak ada sinyal</b> - jelajahi bacaan menarik tanpa gangguan: sekali diperbarui, tidak perlu memuat apa-apa lagi - aplikasi ini bisa jalan tanpa Internet :),</li>
+	<li><b>hemat data</b>: harus online hanya saat ambil artikel baru - tidak perlu setiap kali ambil versi lengkapnya; kontrol apa yang harus diunduh - dan sampai tingkatan mana,</li>
+	<li><b>ramah gestur</b>: e.g. usap atas bawah untuk tambah/hapus artikel dari <i>Favorit</i>, usap sepanjang tepi kiri layar untuk atur kecerahan teks,</li>
 	<li><b>user-friendly</b>: care about Your eyes with a dark theme, adjust text size, color and brightness to meet Your individual needs,</li>
 	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
 	<li><b>sangat mudah diatur</b>: dari <i>Zona Sentuh'</i> mulai dari ukuran hingga warna pranala dan garis bawah - ada segudang detil yang dapat Anda sesuaikan hingga pas dengan selera dan kebutuhan Anda Pribadi,</li>
