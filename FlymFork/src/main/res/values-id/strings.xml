@@ -132,7 +132,7 @@ maksimum per umpan<br/>
     <string name="web_page_search_duckduckgo">Cari halaman web (Duck Duck Go)</string>
     <string name="select_file">Pilih berkas (akar SD)</string>
     <string name="question_delete_feed">Apa betul Anda mau hapus umpan ini?</string>
-    <string name="question_delete_group">Apa betul Anda mau hapus grup ini dan semua umpannya?</string>
+    <string name="question_delete_group">Apa betul Anda mau hapus grup ini dan semua isi umpannya?</string>
     <string name="question_delete_filter">Apa betul Anda mau hapus filter ini?</string>
     <string name="add_group_title">Pilih nama grup</string>
     <string name="edit_group_title">Edit nama grup</string>
@@ -161,7 +161,7 @@ maksimum per umpan<br/>
     <string name="favorites">Dibintangi</string>
     <string name="context_menu_share_starred">Bagikan entri dibintangi</string>
     <string name="menu_star">Bintang</string>
-    <string name="menu_unstar">Copot bintang</string>
+    <string name="menu_unstar">Batal bintangi</string>
     <string name="menu_share">Bagikan</string>
     <string name="menu_full_screen">Layar penuh</string>
     <string name="menu_actionbar_visible">Bilah Aksi</string>
@@ -204,17 +204,17 @@ maksimum per umpan<br/>
     <string name="settings_color_text_sample_short">Teks</string>
     <string name="settings_color_text_sample_long">\u201cKalau pacaran sama gadis cantik satu jam serasa satu detik. Kalau duduk satu detik di atas abu bara merah yang panas serasa satu jam. Itulah relativitas.\u201d\n(Albert Einstein)</string>
     <string name="settings_category_refresh">Penyegaran artikel</string>
-    <string name="settings_category_refresh_summary">Penyegaran otomatis dan waktu penahanan artikel</string>
+    <string name="settings_category_refresh_summary">Penyegaran otomatis dan waktu menyimpan artikel</string>
     <string name="settings_refresh_enabled">Aktifkan penyegaran otomatis</string>
     <string name="settings_refresh_interval">Interval penyegaran</string>
     <string name="settings_min_update_battery_level">Min. level baterai</string>
-    <string name="settings_refresh_only_selected">Hanya dipilih</string>
-    <string name="settings_refresh_only_selected_summary">Penyegaran otomatis hanya umpan dicentang</string>
+    <string name="settings_refresh_only_selected">Hanya yang dipilih</string>
+    <string name="settings_refresh_only_selected_summary">Penyegaran otomatis hanya untuk umpan dicentang</string>
     <string name="settings_refresh_on_open">Segarkan umpan ketika dibuka</string>
     <string name="settings_refresh_on_open_description">Segarkan semua umpan setelah aplikasi dibuka</string>
     <string name="settings_refresh_wifi_only">Segarkan hanya lewat Wi-Fi</string>
     <string name="settings_refresh_wifi_only_description">Penyegaran otomatis hanya dilakukan kalau tersedia koneksi Wi-Fi</string>
-    <string name="settings_keep_time">Lamanya waktu entri akan disimpan</string>
+    <string name="settings_keep_time">Lama waktu entri akan disimpan</string>
     <string name="settings_preload_image_mode">Pramuat gambar</string>
     <string name="settings_max_image_download_count">Jumlah maks unduhan gambar</string>
     <string name="settings_max_image_download_count_description">Per satu artikel</string>
@@ -228,13 +228,13 @@ maksimum per umpan<br/>
     <string name="settings_category_article_list_summary">Penampakan senarai artikel</string>
     <string name="settings_font_size">Ukuran teks</string>
     <string name="show_article_icon">Tampilkan ikon artikel</string>
-    <string name="show_article_icon_descr">Matikan untuk lebih banyak ruang pada layar</string>
+    <string name="show_article_icon_descr">Matikan untuk peroleh lebih banyak ruang pada layar</string>
     <string name="show_article_url">Tampilkan URL artikel</string>
     <string name="settings_display_oldest_first">Susunan artikel</string>
     <string name="settings_display_oldest_first_description">Tampilkan lebih dulu entri tertua</string>
     <string name="show_mark_all_as_read_button">Tombol tandai sudah semua dibaca</string>
     <string name="show_mark_all_as_read_button_summary">Tampilkan tombol Tandai semua artikel sudah dibaca - kalau tidak Anda bisa temukan opsi ini di menu</string>
-    <string name="show_read_checkbox">Kotak centang Dibaca</string>
+    <string name="show_read_checkbox">Kotak centang dibaca</string>
     <string name="show_read_checkbox_descr">Tampilkan kotak centang kecil tanda artikel sudah dibaca</string>
     <string name="show_full_text_indicator">Indikator teks lengkap</string>
     <string name="show_full_text_indicator_descr">Tampilkan ikon disket kecil tanda artikel teks lengkap sudah dimuat</string>
@@ -258,7 +258,7 @@ maksimum per umpan<br/>
     <string name="entry_text_align_justify">Teks diratakan</string>
     <string name="entry_text_align_justify_description">Kalau tidak ratakan ke kiri</string>
     <string name="linkColor">Warna tautan dan latar</string>
-    <string name="linkColor_descr">Warna tautan dan latar</string>
+    <string name="linkColor_descr">Warna pranala dan latar</string>
     <string name="settings_color_link_sample_short">Tautan</string>
     <string name="settings_color_link_sample_long">Warna tautan</string>
     <string name="underline_links">Garis bawah tautan</string>
@@ -266,7 +266,7 @@ maksimum per umpan<br/>
     <string name="article_text_show_clock_description">Tampilkan waktu sekarang pada sudut kanan atas pada mode layar penuh</string>
     <string name="settings_clock_size">Ukuran teks jam</string>
     <string name="article_text_clock_color">Warna jam dan latar</string>
-    <string name="article_text_clock_color_descr">Warna dan latar jam pada tajuk halaman</string>
+    <string name="article_text_clock_color_descr">Warna dan latar jam pada kepala halaman</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="article_text_show_progress">Indikator kemajuan membaca</string>
     <string name="article_text_show_progress_descr">Tampilkan kemajuan membaca artikel di bagian atas</string>
@@ -299,7 +299,7 @@ maksimum per umpan<br/>
     <string name="page_up_down_90_pct_descr">Pertahankan beberapa baris dari halaman sebelumnya - kalau tidak dicentang, seluruh halaman akan digulung</string>
     <string name="settings_remember_last_entry">Ingat artikel terakhir</string>
     <string name="settings_remeber_last_entry_description">Saat nyala buka artikel terakhir dilihat, kalau tidak senarai entri belum dibaca</string>
-    <string name="auto_unstart_at_bottom">Beri bintang otomatis saat selesai membaca</string>
+    <string name="auto_unstart_at_bottom">Hapus bintang otomatis saat selesai membaca</string>
     <string name="auto_unstart_at_bottom_descr">Hapus otomatis artikel dari Favorit kalau sampai di artikel paling bawah</string>
     <string name="settings_category_advanced">Tingkat lanjut</string>
     <string name="settings_category_advanced_summary">Fitur tambahan (seperti cadangan, saringan dan lain-lain)</string>
@@ -338,7 +338,7 @@ maksimum per umpan<br/>
     <string name="addFeed">Tambah umpan</string>
     <string name="externalLinks">Tanpa umpan</string>
     <string name="markAllAsRead">Tandai semua sudah dibaca</string>
-    <string name="pageUp">halaman naik / usap ke bawah untuk (copot)bintang</string>
+    <string name="pageUp">halaman naik / usap ke bawah untuk (hapus)bintang</string>
     <string name="pageDown">halaman turun</string>
     <string name="fullScreenToggle">Dwiarah layar penuh</string>
     <string name="auto_refresh_feed">Otomatis segarkan umpan</string>
@@ -483,7 +483,7 @@ maksimum per umpan<br/>
     <string name="search_in_browser">Cari di peramban</string>
     <string name="search_in_yandex">Cari via Yandex</string>
     <string name="search_in_google">Cari via Google</string>
-    <string name="long_operation">Operasi makan waktu</string>
+    <string name="long_operation">Operasi panjang</string>
     <string name="reading_article">Membaca sebuah artikel</string>
     <string name="reading_notification">Notifikasi membaca artikel</string>
     <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
@@ -491,6 +491,6 @@ maksimum per umpan<br/>
     <string name="article_text_show_battery">Tampilkan level baterai</string>
     <string name="settings_category_header_descr">Untuk layar senarai artikel dan teks artikel</string>
     <plurals name="number_of_new_entries">
-        <item quantity="other">%d artikel baru.</item>
+        <item quantity="other">%d artikel-artikel baru.</item>
     </plurals>
 </resources>
