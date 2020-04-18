@@ -456,6 +456,9 @@ maksimum per umpan<br/>
     <string name="settings_delete_old_interval">Interval hapus artikel lama</string>
     <string name="settings_delete_old_interval_descr">Kapan menghapus artikel lama dan kalkulasi besar gambar milik grup dan umpan pada sdcard</string>
     <string name="menu_delete_old">Hapus artikel lama</string>
+    <string name="settings_category_delete_old">Hapus yang lama-lama</string>
+    <string name="tool_bar_color">Warna bilah alat</string>
+    <string name="tool_bar_color_desc">Warna ini juga dipakai untuk tombol teks artikel dan untuk bilah status</string>
     <string name="reading_notification">Notifikasi membaca artikel</string>
     <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
     <string name="feed_list_loading">Memuat senarai umpan</string>
