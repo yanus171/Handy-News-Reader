@@ -17,7 +17,7 @@ Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi off
 	<li><b><u>artikel lengkap</u> di tangan</b>: tidak perlu memakai peramban web eksternal untuk mendapatkan teks lengkap,</li>
 	<li><b><u>nyaman</u> membaca</b>: berganti artikel dengan tombol volume atau usapan, <i>Zona Usap</i>, mengingat posisi bacaan <u>per artikel</u>,</li>
 	<li><b>notifikasi artikel penting</b>: Anda tidak akan ketinggalan lagi sesuatu yang Anda anggap sangat penting,</li>
-	<li><b><i>"Read It Later"</i></b>: You can quickly flick through articles - <b>marking (starring) chosen ones to read later</b> in Your spare time - or just to preserve,</li>
+	<li><b><i>"Baca Nanti"</i></b>: Anda bisa dengan cepat membolak-balik artikel - <b>menandai (beri bintang) artikel pilihan untuk dibaca nanti</b> pada waktu luang Anda - atau sekadar menyimpannya,</li>
 	<li><b><i>"Hapus Kalau Selesai"</i></b> - setelah Anda selesai dengan artikel seperti itu - bisa secara otomatis dihapus dari kumpulan <i>'Favorit'</i> (=<i>'Baca Nanti'</i>),</li>
 	<li><b>ready to go off-line</b> - dive into interesting reading without distractions: once updated, there is no need of additional loading anything - it really will do without Internet :),</li>
 	<li><b>save the bandwidth</b>: go on-line only for new articles - not for loading their full-version every single time; control what should be downloaded - and to what degree,</li>
