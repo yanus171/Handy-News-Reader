@@ -20,7 +20,7 @@ Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi off
 	<li><b><i>"Baca Nanti"</i></b>: Anda bisa dengan cepat membolak-balik artikel - <b>menandai (beri bintang) artikel pilihan untuk dibaca nanti</b> pada waktu luang Anda - atau sekadar menyimpannya,</li>
 	<li><b><i>"Hapus Kalau Selesai"</i></b> - setelah Anda selesai dengan artikel yang diberi bintang - bisa secara otomatis dihapus dari kumpulan <i>'Favorit'</i> (=<i>'Baca Nanti'</i>),</li>
 	<li><b>siap tak ada sinyal</b> - jelajahi bacaan menarik tanpa gangguan: sekali diperbarui, tidak perlu memuat apa-apa lagi - aplikasi ini bisa jalan tanpa Internet :),</li>
-	<li><b>hemat data</b>: harus online hanya saat ambil artikel baru - tidak perlu setiap kali ambil versi lengkapnya; kontrol apa yang harus diunduh - dan sampai tingkatan mana,</li>
+	<li><b>hemat paket data</b>: perlu online hanya saat ambil artikel baru - tidak perlu setiap kali ambil versi lengkapnya; kontrol apa yang harus diunduh - dan sampai tingkatan mana,</li>
 	<li><b>ramah gestur</b>: e.g. usap atas bawah untuk tambah/hapus artikel dari <i>Favorit</i>, usap sepanjang tepi kiri layar untuk atur kecerahan teks,</li>
 	<li><b>ramah pemakai</b>: peduli mata Anda dengan tema gelap, sesuaikan ukuran teks, warna dan kecerahan sesuai kebutuhan Anda,</li>
 	<li><b>ide hebat</b>: kepala artikel nonpranala tidak lagi akan menyusahkan jari-jari Anda ;) ; menggulung halaman artikel 90% dari tingginya bisa mengurangi sedikit kebingungan dalam membaca = lebih nyaman,</li>
