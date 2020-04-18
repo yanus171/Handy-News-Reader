@@ -26,7 +26,7 @@ Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi off
 	<li><b>ide hebat</b>: kepala artikel nonpranala tidak lagi akan menyusahkan jari-jari Anda ;) ; menggulung halaman artikel 90% dari tingginya bisa mengurangi sedikit kebingungan dalam membaca = lebih nyaman,</li>
 	<li><b>sangat mudah diatur</b>: dari <i>Zona Sentuh'</i> mulai dari ukuran hingga warna pranala dan garis bawah - ada segudang detil yang dapat Anda sesuaikan hingga pas dengan selera dan kebutuhan Anda Pribadi,</li>
 	<li><b>fitur tingkat lanjut</b>: cadangan otomatis (ekspor/impor ke/dari format <i>.opml</i>), mengambil konten dari situs web non-<i>RSS</i>. </li>
-	<li><b>fitur menarik lain</b> "ada di toko" - kunjungi situs web kami untuk cari tahu lagi :) !,</li>
+	<li><b>untuk fitur menarik lain</b> "tersedia di toko" - kunjungi situs web kami untuk cari tahu lagi :) !,</li>
 	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
 	<li><b>feedback and suggestions are welcome;</b></li>
 </ul>
