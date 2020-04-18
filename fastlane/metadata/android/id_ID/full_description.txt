@@ -23,9 +23,9 @@ Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi off
 	<li><b>hemat data</b>: harus online hanya saat ambil artikel baru - tidak perlu setiap kali ambil versi lengkapnya; kontrol apa yang harus diunduh - dan sampai tingkatan mana,</li>
 	<li><b>ramah gestur</b>: e.g. usap atas bawah untuk tambah/hapus artikel dari <i>Favorit</i>, usap sepanjang tepi kiri layar untuk atur kecerahan teks,</li>
 	<li><b>ramah pemakai</b>: peduli mata Anda dengan tema gelap, sesuaikan ukuran teks, warna dan kecerahan sesuai kebutuhan Anda,</li>
-	<li><b>neat ideas</b>: non-hyperlinked article headers won't interfere with Your fingers any more ;) ; scrolling article pages by 90% of their height can make reading less confusing = more comfortable,</li>
+	<li><b>ide hebat</b>: kepala artikel nonpranala tidak lagi akan menyusahkan jari-jari Anda ;) ; menggulung halaman artikel 90% dari tingginya bisa mengurangi sedikit kebingungan dalam membaca = lebih nyaman,</li>
 	<li><b>sangat mudah diatur</b>: dari <i>Zona Sentuh'</i> mulai dari ukuran hingga warna pranala dan garis bawah - ada segudang detil yang dapat Anda sesuaikan hingga pas dengan selera dan kebutuhan Anda Pribadi,</li>
-	<li><b>advanced features</b>: auto-backup (export/import to/from an <i>.opml</i> format), providing content out of non-<i>RSS</i> websites, </li>
+	<li><b>fitur tingkat lanjut</b>: cadangan otomatis (ekspor/impor ke/dari format <i>.opml</i>), mengambil konten dari situs web non-<i>RSS</i>. </li>
 	<li><b>fitur menarik lain</b> "ada di toko" - kunjungi situs web kami untuk cari tahu lagi :) !,</li>
 	<li><b><u>important</u>:</b> this app does NOT synchronize with online news feed readers (i.e. <i>Feedly</i>),</li>
 	<li><b>feedback and suggestions are welcome;</b></li>
