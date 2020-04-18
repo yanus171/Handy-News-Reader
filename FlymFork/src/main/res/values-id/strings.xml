@@ -82,6 +82,7 @@ maksimum per umpan<br/>
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versi</string>
+    <string name="about_flym">Tentang aplikasi ini / Bantuan / Hubungi pengembang </string>
     <string name="welcome_title">Selamat datang di Handy News Reader. Anda mau menambah sebuah umpan?</string>
     <string name="never">jangan pernah</string>
     <string name="last_update">Pembaruan</string>
@@ -196,8 +197,11 @@ maksimum per umpan<br/>
     <string name="red">Merah</string>
     <string name="green">Hijau</string>
     <string name="blue">Biru</string>
+    <string name="transparency">Transparansi</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">Setelan umum</string>
+    <string name="settings_category_common_summary">Tema</string>
+    <string name="theme">Tema</string>
     <string name="customColors">Warna kustom</string>
     <string name="fontColorsNotFromThemeSummary">atau pakai warna tema lain</string>
     <string name="textColor">Teks dan warna latar</string>
@@ -268,6 +272,7 @@ maksimum per umpan<br/>
     <string name="article_text_clock_color">Warna jam dan latar</string>
     <string name="article_text_clock_color_descr">Warna dan latar jam pada kepala halaman</string>
     <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Indikator kemajuan membaca</string>
     <string name="article_text_show_progress_descr">Tampilkan kemajuan membaca artikel di bagian atas</string>
     <string name="article_text_progress_height">Tinggi indikator kemajuan</string>
@@ -367,6 +372,7 @@ maksimum per umpan<br/>
     <string name="keyword">kata(kata) kunci</string>
     <string name="loadTypeWeb"><b>Tautan web</b> <font color="gray">(muat semua tautan dari halaman sebagai artikel berbeda)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(umpan atau tautan situs atau kata kunci)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Pencarian halaman web DuckDuckGo</b> <font color="gray">(temukan dan muat satu artikel)</font></string>
     <string name="loadTypeOneWebPage"><b>Satu halaman</b><font color="gray"> (bagi konten satu halaman web jadi banyak artikel pakai nama kelas tagar HTML)</font></string>
     <string name="loadType">Tipe muatan:</string>
     <string name="global_filter">Saringan global&#8230;</string>
