@@ -217,7 +217,7 @@ maksimum per umpan<br/>
     <string name="settings_refresh_on_open">Segarkan umpan ketika dibuka</string>
     <string name="settings_refresh_on_open_description">Segarkan semua umpan setelah aplikasi dibuka</string>
     <string name="settings_refresh_wifi_only">Segarkan hanya lewat Wi-Fi</string>
-    <string name="settings_refresh_wifi_only_description">Penyegaran otomatis hanya dilakukan kalau tersedia koneksi Wi-Fi</string>
+    <string name="settings_refresh_wifi_only_description">Penyegaran otomatis hanya dilakukan kalau tersambung ke Wi-Fi</string>
     <string name="settings_keep_time">Lama waktu entri akan disimpan</string>
     <string name="settings_preload_image_mode">Pramuat gambar</string>
     <string name="settings_max_image_download_count">Jumlah maks unduhan gambar</string>
@@ -225,7 +225,7 @@ maksimum per umpan<br/>
     <string name="settings_max_image_download_size_kb">Ukuran maks gambar</string>
     <string name="settings_max_image_download_size_kb_summary">(dalam kb). Jangan muat otomatis gambar lebih dari</string>
     <string name="max_single_refresh_traffic_mb">Maks besar data sekali penyegaran</string>
-    <string name="max_single_refresh_traffic_mb_descr">Penyegaran akan berhenti ketika besar data mencapai nilai maks (dalam MB) dan tidak pakai WiFi</string>
+    <string name="max_single_refresh_traffic_mb_descr">Penyegaran akan berhenti ketika pemakaian data mencapai batas maks (dalam MB) dan tidak sedang tersambung ke WiFi</string>
     <string name="settings_load_comments">Muat komentar</string>
     <string name="settings_load_comments_description">Di artikel teks lengkap</string>
     <string name="settings_category_article_list">Senarai artikel</string>
