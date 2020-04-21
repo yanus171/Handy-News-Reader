@@ -189,6 +189,7 @@
             android:key="display_entries_fullscreen"
             android:title="@string/settings_display_entries_fullscreen"/>
 
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="entry_margins"
@@ -214,6 +215,14 @@
             android:defaultValue="true"
             android:key="underline_links"
             android:title="@string/underline_links" />
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:key="setting_article_text_buttons_layout"
+            android:defaultValue="Horizontal"
+            android:entries="@array/buttons_layout_captions"
+            android:entryValues="@array/buttons_layout_values"
+            android:title="@string/article_text_buttons_layout"
+            android:summary="@string/article_text_buttons_layout_descr"/>
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="entry_text_title_link"

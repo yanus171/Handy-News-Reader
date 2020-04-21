@@ -122,6 +122,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
+import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
@@ -173,12 +174,13 @@ public class EntryView extends WebView implements Handler.Callback {
                 + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
                 + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
                 + "hr {width: 100%; color: #777777; align: center; size: 1} "
+                + "p.button {text-align: center} "
                 + "p {margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
                 + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
                 + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
                 + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
-                + "div {text-align:" + getAlign(text) + "} "
                 + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
+                + "div {text-align:" + getAlign(text) + "} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
                 + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
@@ -245,9 +247,13 @@ public class EntryView extends WebView implements Handler.Callback {
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
     private static final String BUTTON_SECTION_END = "</div>";
-    private static final String BUTTON_START = "<input type='button' value='";
+    private static String BUTTON_START( String layout ) {
+        return ( layout.equals( ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL ) ? "" : "<p class='button'>" ) + "<input type='button' value='";
+    }
     private static final String BUTTON_MIDDLE = "' onclick='";
-    private static final String BUTTON_END = "'/>";
+    private static String BUTTON_END( String layout ) {
+        return "'/>" + (layout.equals(ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL) ? "" : "</p>");
+    }
     // the separate 'marginfix' selector in the following is only needed because the CSS box model treats <input> and <a> elements differently
     private static final String LINK_BUTTON_START = "<p class='marginfix'><a href='";
     private static final String LINK_BUTTON_MIDDLE = "'>";
@@ -410,32 +416,35 @@ public class EntryView extends WebView implements Handler.Callback {
 
         content.append(dateStringBuilder).append(SUBTITLE_END).append(contentText);
 
-        content.append(BUTTON_SECTION_START);
-        if (!feedID.equals(FetcherService.GetExtrenalLinkFeedID())) {
-            content.append(BUTTON_START);
+        final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
+        if ( !layout.equals( "Hidden" ) ) {
+            content.append(BUTTON_SECTION_START);
+            if (!feedID.equals(FetcherService.GetExtrenalLinkFeedID())) {
+                content.append(BUTTON_START(layout));
 
-            if (!canSwitchToFullText) {
-                content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
-            } else if ( hasOriginalText ) {
-                content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
+                if (!canSwitchToFullText) {
+                    content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
+                } else if (hasOriginalText) {
+                    content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
+                }
+                content.append(BUTTON_END(layout));
             }
-            content.append(BUTTON_END);
-        }
 
-        if (canSwitchToFullText)
-            content.append(BUTTON_START).append(context.getString(R.string.menu_reload_full_text)).append(BUTTON_MIDDLE)
-                    .append("injectedJSObject.onReloadFullText();").append(BUTTON_END);
-        if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
-            content.append(BUTTON_START).append(context.getString(R.string.see_enclosure)).append(BUTTON_MIDDLE)
-                    .append("injectedJSObject.onClickEnclosure();").append(BUTTON_END);
-        }
-        content.append(BUTTON_START).append(context.getString(R.string.menu_go_back)).append(BUTTON_MIDDLE)
-                .append("injectedJSObject.onClose();").append(BUTTON_END);
-        /*if (link.length() > 0) {
-            content.append(LINK_BUTTON_START).append(link).append(LINK_BUTTON_MIDDLE).append(context.getString(R.string.see_link)).append(LINK_BUTTON_END);
-        }*/
+            if (canSwitchToFullText)
+                content.append(BUTTON_START(layout)).append(context.getString(R.string.menu_reload_full_text)).append(BUTTON_MIDDLE)
+                    .append("injectedJSObject.onReloadFullText();").append(BUTTON_END(layout));
+            if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
+                content.append(BUTTON_START(layout)).append(context.getString(R.string.see_enclosure)).append(BUTTON_MIDDLE)
+                    .append("injectedJSObject.onClickEnclosure();").append(BUTTON_END(layout));
+            }
+            content.append(BUTTON_START(layout)).append(context.getString(R.string.menu_go_back)).append(BUTTON_MIDDLE)
+                .append("injectedJSObject.onClose();").append(BUTTON_END(layout));
+            /*if (link.length() > 0) {
+                content.append(LINK_BUTTON_START).append(link).append(LINK_BUTTON_MIDDLE).append(context.getString(R.string.see_link)).append(LINK_BUTTON_END);
+            }*/
 
-        content.append(BUTTON_SECTION_END).append(BODY_END);
+            content.append(BUTTON_SECTION_END).append(BODY_END);
+        }
 
         timer.End();
         return content.toString();

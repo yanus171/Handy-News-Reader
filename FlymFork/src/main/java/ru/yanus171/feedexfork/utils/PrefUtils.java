@@ -101,6 +101,7 @@ public class PrefUtils {
     public static final String VOLUME_BUTTONS_ACTION_SWITCH_ENTRY = "SwithEntry";
     public static final String VOLUME_BUTTONS_ACTION_PAGE_UP_DOWN = "PageUpDown";
 
+    public static final String ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL = "Horizontal";
 
     public static final String KEEP_TIME = "keeptime";
 

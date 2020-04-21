@@ -505,6 +505,8 @@
     <string name="feed_list_loading">Feed list loading</string>
     <string name="article_text_show_battery">Show battery level</string>
     <string name="settings_category_header_descr">For the article text and the article list screens</string>
+    <string name="article_text_buttons_layout">Button layout</string>
+    <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of the article</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
