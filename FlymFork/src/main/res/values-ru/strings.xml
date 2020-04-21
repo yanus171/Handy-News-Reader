@@ -481,6 +481,11 @@
     <string name="parsing_one_web_page">Разбор страницы</string>
     <string name="end_editing">Завершить редактирование</string>
     <string name="open_article">Открыть статью</string>
+    <string name="search_in_browser">Поиск в браузере</string>
+    <string name="search_in_yandex">Поиск через Яндекс</string>
+    <string name="search_in_google">Поиск через Google</string>
+    <string name="long_operation">Длительная операция</string>
+    <string name="reading_notification">Уведомление о прочтении статьи</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
