@@ -129,7 +129,7 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 
-public class EntryView extends WebView implements Observer, Handler.Callback {
+public class EntryView extends WebView implements Handler.Callback {
 
     private static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
@@ -141,7 +141,7 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
     public static final int TOUCH_PRESS_POS_DELTA = 5;
     public boolean mWasAutoUnStar = false;
 
-    private long mEntryId = -1;
+    public long mEntryId = -1;
     private String mEntryLink = "";
     public Runnable mScrollChangeListener = null;
     private int mLastContentLength = 0;
@@ -448,8 +448,6 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
 
         Timer timer = new Timer("EntryView.init");
-
-        mImageDownloadObservable.addObserver(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             setTextDirection(TEXT_DIRECTION_LOCALE);
@@ -788,16 +786,6 @@ public class EntryView extends WebView implements Observer, Handler.Callback {
 
     public boolean IsScrollAtBottom() {
         return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight()) - getMeasuredHeight() * 0.4;
-    }
-
-    @Override
-    public void update(Observable observable, Object data) {
-        if (data != null &&
-                ((Entry) data).mID == mEntryId &&
-                ((Entry) data).mLink.equals(mEntryLink)) {
-            Dog.v("EntryView", "EntryView.update() " + mEntryId);
-            UpdateImages( false );
-        }
     }
 
     public void UpdateImages( final boolean downloadImages ) {

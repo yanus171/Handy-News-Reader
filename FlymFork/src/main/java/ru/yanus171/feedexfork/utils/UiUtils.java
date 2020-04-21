@@ -195,8 +195,7 @@ public class UiUtils {
         result.setAutoLinkMask(Linkify.ALL);
         result.setLinkTextColor(Color.LTGRAY);
         result.setText(text);
-        if (Build.VERSION.SDK_INT >= 11)
-            result.setTextIsSelectable(true);
+        result.setTextIsSelectable(true);
         result.setFocusable(false);
         result.setFocusableInTouchMode(true);
 
@@ -218,8 +217,7 @@ public class UiUtils {
             layout.addView(result);
         }
         result.setText(text);
-        if (Build.VERSION.SDK_INT >= 11)
-            result.setTextIsSelectable(true);
+        result.setTextIsSelectable(true);
         result.setFocusable(false);
         result.setFocusableInTouchMode(false);
 

@@ -233,9 +233,6 @@ public class Theme {
 	}
 
 	public static AlertDialog.Builder CreateDialog(Context context) {
-		if ( Build.VERSION.SDK_INT >= 11 )
-			return new AlertDialog.Builder(context, GetThemeDialog());
-		else
-			return new AlertDialog.Builder(context);
+		return new AlertDialog.Builder(context, GetThemeDialog());
 	}
 }

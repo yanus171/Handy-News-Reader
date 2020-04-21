@@ -81,7 +81,8 @@
                                         android:hint="@string/website_or_feed"
                                         android:selectAllOnFocus="true"
                                         android:inputType="textUri"
-                                        android:singleLine="true" />
+                                        android:singleLine="true"
+                                        android:importantForAutofill="no" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -140,7 +141,8 @@
                                         android:layout_below="@id/name_textview"
                                         android:layout_marginTop="5dp"
                                         android:hint="@string/optional"
-                                        android:singleLine="true" />
+                                        android:singleLine="true"
+                                        android:importantForAutofill="no" />
 
                                     <LinearLayout
                                         android:id="@+id/layout_group"
@@ -238,10 +240,12 @@
                                             <TextView
                                                 android:text="@string/next_page_classname"
                                                 android:layout_weight="1"
-                                                style="@style/FeedAttrLabel"/>
+                                                style="@style/FeedAttrLabel"
+                                                android:layout_width="0dp" />
                                             <EditText
                                                 android:id="@+id/next_page_classname"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -256,7 +260,9 @@
                                                 android:layout_weight="4"
                                                 android:inputType="numberDecimal"
                                                 android:text="10"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:layout_width="0dp"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                     </LinearLayout>
                                     <LinearLayout
@@ -286,7 +292,8 @@
                                             <EditText
                                                 android:id="@+id/one_webpage_article_classname"
                                                 style="@style/FeedAttrEdit"
-                                                android:singleLine="true" />
+                                                android:singleLine="true"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -298,7 +305,8 @@
                                                 style="@style/FeedAttrLabel"/>
                                             <EditText
                                                 android:id="@+id/one_webpage_url_classname"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -310,7 +318,8 @@
                                                 style="@style/FeedAttrLabel" />
                                             <EditText
                                                 android:id="@+id/one_webpage_text_classname"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -322,7 +331,8 @@
                                                 style="@style/FeedAttrLabel" />
                                             <EditText
                                                 android:id="@+id/one_webpage_date_classname"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -334,7 +344,8 @@
                                                 style="@style/FeedAttrLabel" />
                                             <EditText
                                                 android:id="@+id/one_webpage_author_classname"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -346,7 +357,8 @@
                                                 style="@style/FeedAttrLabel" />
                                             <EditText
                                                 android:id="@+id/one_webpage_image_url_classname"
-                                                style="@style/FeedAttrEdit" />
+                                                style="@style/FeedAttrEdit"
+                                                android:importantForAutofill="no" />
                                         </LinearLayout>
                                     </LinearLayout>
                                 </LinearLayout>
