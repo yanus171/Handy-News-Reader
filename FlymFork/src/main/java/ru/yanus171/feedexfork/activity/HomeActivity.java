@@ -320,7 +320,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         //    selectDrawerItem( mCurrentDrawerPos );
         setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
         HideTapZonesText(findViewById(R.id.layout_root));
-        mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
+        if ( mDrawerLayout != null )
+            mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
         timer.End();
     }
 
