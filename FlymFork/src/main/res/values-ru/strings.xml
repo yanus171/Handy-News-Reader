@@ -485,7 +485,12 @@
     <string name="search_in_yandex">Поиск через Яндекс</string>
     <string name="search_in_google">Поиск через Google</string>
     <string name="long_operation">Длительная операция</string>
+    <string name="reading_article">Чтение статьи</string>
     <string name="reading_notification">Уведомление о прочтении статьи</string>
+    <string name="reading_notification_descr">Постоянное уведомление в строке состояния для предотвращения закрытия приложения системой - для ускорения запуска после долгой задержки</string>
+    <string name="feed_list_loading">Загрузка списка каналов</string>
+    <string name="article_text_show_battery">Показать заряд батареи</string>
+    <string name="settings_category_header_descr">Для статей, а также на экранах списка статей</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
