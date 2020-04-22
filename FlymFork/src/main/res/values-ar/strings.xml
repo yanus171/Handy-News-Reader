@@ -29,59 +29,51 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[ <b><big>الترخيص والمعلومات</big></b><br/>
- هذا البرنامج هو برمجيه حرة: يمكنك إعادة توزيعه و / أو تعديله وفقًا لشروط رخصة جنو العمومية على النحو المنشور من قبل مؤسسة البرمجيات الحرة ، إما الإصدار 3 من الترخيص ، أو (حسب اختيارك) أي إصدار لاحق. إطَّلع على http://www.gnu.org/licenses<br/>
- <br/>
- يستند هذا التطبيق على  \'Flym RSS Reader\', حقوق النشر 2013-2016 Frédéric Julian. من بين المزايا المضافه لهذا التفرع:<br/>
- <br/>
- • زيادة مجموعة الخلاصات<br/>
- • صفحه بملء الشاشه, حتى الأزرار السفلية غير مرئية<br/> 
- • أقصى عدد للصور لكل خلاصة<br/>
- • القدرة على إلغاء عملية التحيين<br/>
- • وأكثر من ذلك بكثير<br/>
- <br/>
- <b><big>أين بإمكانك إيجادنا</big></b>
- <br/>
- • يُرجى زيارة <b><a href="https://handynewsreader.blogspot.com">الموقع الإلكتروني</a></b> للحصول على الأخبار والمعلومات<br/>
- • يمكنك تحميل هذا التطبيق من <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
- • ويمكنك تحميله كذلك من <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
- • أيضاً هنالكَ موضوع في  <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
- • بإمكانك إيجاد الأكواد المصدرية على <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
- <br/>
- <b><big>الدعم الذي نقدمة</big></b>
- <br/>
- • إذا وجدت مشكلة في التطبيق، فأنت الأفضل<br/>
- • إفتح مشكله في <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> <br/>
- • أو أرسل رسالة الى <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">البريد الإلكتروني للمطور</a></b><br/>
- •<br/>
- <b>إذا وجدت هذا التطبيق مفيدًا ، فيرجى تقييمه على <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
- <br/>
- <b><big>الترجمات</big></b>
- <br/>
- يمكنك المساعدة في ترجمة التطبيق إلى لغتك على <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
- إذا كانت لغتك غير متوفرة ، فيرجى إرسال رساله الى <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">البريد الإلكتروني للمطور</a></b>.<br/>
- <br/>
- <b><big>شكر وتقدير</big></b>
- <br/>
- <b>المطورون:</b><br/>
- ***قائمة المطورين***
- <br/>
- <b>المترجمون:</b><br/>
- ***قائمة المترجمين***
- <br/>
- 
- 
- 
- 
- 
-
-
- 
- 
-
-
-
-
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>التَّرْخيصُ وَالمَعْلومَاتِ</big></b><br/>
+    هٰذَا التَّطْبيقُ مَجّانيٌّ وَمَفْتوحُ المَصْدَرِ، بِإِمْكانِكَ إِعادَةُ تَوْزيعِهِ وَ/أَوْ تَعْديلِهِ، وَفْقًا لِشُروطِ رُخْصَةِ جِنُو العُموميَّةِ، عَلَى النَّحْوِ المَنْشورِ مِنْ قِبَلِ مُؤَسَّسَةِ البَرْمَجِيَّاتِ الحُرَّةِ، بِدْءًا مِنْ الإِصْدارِ الثّالِثِ مِنْ التَّرْخيصِ أَوْ الإِصْدَارَاتِ اللّاحِقَةِ (حَسَبَ اخْتيارِكَ). إِطَّلِعْ عَلَى http://www.gnu.org/licenses<br/>
+    <br/>
+    يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى \'Flym RSS Reader\'، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:<br/>
+    <br/>
+    • إمْكانيَةُ تَوْسيعِ المَجْموعاتِ<br/>
+    • عَرْضُ المَقَالَاتِ بِمِلْءِ الشّاشَةِ تَمَامًا<br/>
+    • حَدٌّ أَقْصَى لِحَجْمِ الصّورَةِ لِحَدِّ أَقْصَى لِعَدَدِ الصّوَرِ فِي تَحْمِيلَاتِ التَّغْذِيَةِ<br/>
+    • القُدْرَةُ عَلَى الْغَاءِ عَمَليَّةِ التَحيَّينِ<br/>
+    • وَأَكْثَرُ مِنْ ذَلِكَ بِكَثِيرٍ<br/>
+    <br/>
+    <b><big>تَفاصيلُ الوُصولِ</big></b>
+    <br/>
+    • قُمْ بِزيارَةِ <a href="https://handynewsreader.blogspot.com">المَوْقِعِ الإِلِكْتِرونيِّ</a></b> لِلْحُصُولِ عَلَى الأَخْبارِ وَالمَعْلُوماتِ<br/>
+    • يُمْكِنُكَ تَنْزيلُ هٰذَا التَّطْبيقِ مِنْ <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • وَكَذَلِكَ، بِإِمْكانِكَ تَنْزيلُ التَّطْبيقِ مِنْ <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • أَيْضًا، هُنَالِكَ مَوْضوعٌ لِلتَّطْبِيقِ فِي <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
+    • يُمْكِنُكَ العُثورُ عَلَى شَفْرَةِ المَصْدَرِ فِي <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+    <br/>
+    <b><big>دَعْمُنا</big></b>
+    <br/>
+    إِذَا واجِهَتْكَ مُشْكِلَةٌ فِي التَّطْبيقِ، فَمِن الأَفْضَلِ:<br/>
+    • فَتْحُ قَضيَّةٌ فِي <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
+    • مُراسَلَةُ <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">المُطَوّر</a></b><br/>
+    <br/>
+    <b><big>دَعْمُكُمْ</big></b>
+    <br/>
+    إِذَا كَانَ لَدَيْكَ فِكْرَةٌ عَنْ ميزَةٍ جَديدَةٍ، يُمْكِنُكَ:<br/>
+    • مُشارَكَتُها مَعَنَا فِي <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
+    • مُراسَلَةُ<a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">المُطَوّر</a></b><br/>
+    <br/>
+    <b>اذَا وَجَدَتَ هٰذَا التَّطْبيقُ مُفِيدًا ، فَيُرْجَى تَقْييمُهُ عَلَى <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <br/>
+    <b><big>التَّرْجَمَاتُ</big></b>
+    <br/>
+    يُمْكِنُكَ المُساعَدَةُ فِي تَحْسينِ تَرْجَمَةِ التَّطْبيقِ عَلَى <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    <br/>
+    <b><big>الشُّكْرُ والتَّقْديرِ لـِ</big></b>
+    <br/>
+    <b>المُطَوِّرُونَ:</b><br/>
+    ***developerList***
+    <br/>
+    <b>المُتَرْجِمُونَ:</b><br/>
+    ***translatorList***
+    <br/>
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
@@ -168,10 +160,11 @@
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
     <string name="menu_full_screen">وضع مِلء الشاشة</string>
-    <string name="menu_actionbar_visible">شَريطُ العَمَل</string>
-    <string name="menu_font_bold">خط عريض</string>
+    <string name="menu_actionbar_visible">شَريطُ الأَدَواتِ</string>
+    <string name="menu_font_bold">خَطٌّ سَميكٌ</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
+    <string name="menu_delete_non_starred">حَذْفُ غَيْرُ المُمَيَّزَةِ</string>
     <string name="menu_toogle_unread_all">غير المقروءة|الكل</string>
     <string name="menu_load_all_images">تحميل كل الصور</string>
     <string name="menu_mark_as_favorite">تحديده كمُميّز</string>
@@ -180,6 +173,7 @@
     <string name="menu_reload_full_text">إعادة تحميل النص الكامل</string>
     <string name="menu_reload_full_text_without_mobilizer">إعادة التحميل بدون تعبئة</string>
     <string name="share_favorites_title">Handy News Reader: المقالات المُميّزة</string>
+    <string name="link_was_copied_to_clipboard">تَمَّ نُسَخُ الرّابِطِ</string>
     <string name="get_full_text">تحميل النص الكامل</string>
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
     <string name="original_text">إظهار النص الأصلي</string>
@@ -201,16 +195,16 @@
     <string name="transparency">الشفافية</string>
     <!-- SETTINGS -->
     <string name="settings_category_common">الإعدادات المشتركة</string>
-    <string name="settings_category_common_summary">السمة ولونها</string>
-    <string name="theme">السمة</string>
-    <string name="customColors">تخصيص الألوان</string>
-    <string name="fontColorsNotFromThemeSummary">وبخلاف ذلك، فسَيُستَخدم لون السمة الإفتراضي</string>
-    <string name="textColor">لون النص والخلفية</string>
+    <string name="settings_category_common_summary">المَظاهِرُ</string>
+    <string name="theme">المَظْهَرُ</string>
+    <string name="customColors">مَظْهَرٌ مُخَصَّصٌ</string>
+    <string name="fontColorsNotFromThemeSummary">بِخِلَافِ ذَلِكَ، سَيَتِمُّ إِسْتِخْدَامُ المَظْهَرِ الْإِفْتِرَاضِيِّ المُخْتارِ</string>
+    <string name="textColor">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_text_sample_short">النص</string>
     <string name="settings_color_text_sample_long">\u201cعندما تغازل فتاة جميلة ستشعر بمرور الساعة وكأنها ثانية، ولكن إذا جلست على جمرٍ فستشعر بالثانية الواحدة كأنّها ساعة. تلك هي
 النسبيّة.\u201d\n(ألبرت إينشتاين)</string>
-    <string name="settings_category_refresh">التحيين التلقائي</string>
-    <string name="settings_category_refresh_summary">التحيين التلقائي للمقالات ووقت تخزينها</string>
+    <string name="settings_category_refresh">(التَحيينُ ، الحَذْفُ) التِّلْقائيِّ</string>
+    <string name="settings_category_refresh_summary">التَحيينُ وَالْحَذْفِ التِّلْقائيِّ لِلْمَقَالَاتِ</string>
     <string name="settings_refresh_enabled">تمكين التحيين التلقائي</string>
     <string name="settings_refresh_interval">الفاصل الزمني للتحيين</string>
     <string name="settings_min_update_battery_level">الحد الإدنى لمستوى البطارية</string>
@@ -241,43 +235,52 @@
     <string name="show_mark_all_as_read_button">زر تحديد الكل كمقروء</string>
     <string name="show_mark_all_as_read_button_summary">إظهار زر على كل المقالات لتحديدها كمقروءة، وإلا فستجد هذا الخيار في القائمة</string>
     <string name="show_read_checkbox">مربع التحديد كمقروء</string>
-    <string name="show_read_checkbox_descr">إظهار مربع فارغ صغير للإشارة إلى قراءة المقال</string>
+    <string name="show_read_checkbox_descr">إظْهارُ (مُرَبَّعِ إِخْتِيَارٍ) صَغيرٌ، لِلْإِشَارَةِ إِلَى قِراءَةِ المَقالِ</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
-    <string name="show_full_text_indicator_descr">إظهار رمز قرص صغير للإشارة إلى أنه تم تحميل النص الكامل للمقال</string>
+    <string name="show_full_text_indicator_descr">إِظْهارُ رَمْزٍ لِـ (قُرْصٍ مَرِنٍ) صَغيرٍ، لِلْإِشَارَةِ إِلَى أَنَّهُ تَمَّ تَحْميلُ النَّصِّ الكامِلِ لِلْمَقَالِ</string>
     <string name="show_new_icon">رمز المقال الجديد</string>
-    <string name="show_new_icon_descr">أيقونة زائد صغيرة على مقالات جديدة (لم يسبق رؤيتها بعد)</string>
+    <string name="show_new_icon_descr">إِظْهارُ رَمْزٍ لِـ (+) صَغيرٍ عَلَى المَقَالَاتِ الجَديدَةِ، اَلَّتِي لَمْ يَسْبِقْ رُؤْيَتُها بَعْدُ</string>
     <string name="show_read_article_count">إظهار عدد المقالات المقروءة</string>
     <string name="show_read_article_count_descr">في قائمة الخلاصة</string>
-    <string name="show_group_entrries_count">عدد مقالات المجموعة</string>
+    <string name="show_group_entrries_count">إِظْهارُ عَدَدِ مَقالاتِ المَجْموعَةِ</string>
     <string name="show_group_entries_count_descr">قد يُقلل من الأداء</string>
-    <string name="textColorRead">مقالات لم تتم قراءتها</string>
-    <string name="textColorRead_descr">لون النص والخلفية لتمييزها عن باقي المقالات</string>
+    <string name="textColorRead">لَوْنُ المَقَالَاتِ المَقْروءَةِ</string>
+    <string name="textColorRead_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ فِي قائِمَةِ المَقَالَاتِ</string>
     <string name="settings_color_text_read_sample_short">القراءة</string>
     <string name="settings_color_text_read_sample_long">نص وخلفية لمعاينة التغييرات</string>
     <string name="settings_category_article_text">نص المقال</string>
     <string name="settings_category_article_text_summary">ظهور نص المقال</string>
-    <string name="settings_display_images">عرض الصور</string>
+    <string name="settings_display_images">تَحْميلُ الصّوَرِ</string>
     <string name="settings_display_images_description">عرض الصور في المقالات</string>
     <string name="settings_display_entries_fullscreen">عرض المقالات بملء الشاشة تلقائياً</string>
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
     <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
     <string name="entry_text_align_justify_description">بخلاف ذلك، فالمحاذاة تكون حسب اللغة</string>
-    <string name="linkColor">لون الرابط والخلفية</string>
-    <string name="linkColor_descr">لونُ الروابط التشعبيه والخلفية</string>
+    <string name="linkColor">لَوْنُ الرّابِطِ وَخَلْفيَّتُهُ</string>
+    <string name="linkColor_descr">لَوْنُ الرَّوابِطِ التُّشعِبيَّةِ وَخَلْفيَّتُها</string>
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
-    <string name="settings_clock_size">حجم نص ساعة التذييل</string>
+    <string name="article_text_show_clock">إِظْهارُ السّاعَةِ</string>
+    <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
+    <string name="settings_clock_size">حَجْمُ السّاعَةِ</string>
+    <string name="article_text_clock_color">لَوْنُ السّاعَةِ</string>
+    <string name="article_text_clock_color_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_show_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
+    <string name="article_text_show_progress_descr">يَعْرِضُ نِسْبَةَ التَّقَدُّمِ اَلْمُحْرَزِ بِقِراءَةِ المَقالِ فِي الأَعْلَى</string>
+    <string name="article_text_progress_height">سُمْكُ الشَّريطِ</string>
+    <string name="article_text_progress_color">لَوْنُ الشَّريطِ</string>
+    <string name="article_text_progress_color_descr">لَوْنُ نِسْبَةِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
     <string name="settings_category_operation">العمليّات</string>
     <string name="settings_category_operation_summary">الإعدادات التشغيلية</string>
-    <string name="tap_zone_size">حجم مناطق النقر النَشِطة</string>
-    <string name="tap_zone_size_descr">الإرتفاع والعرض لكل مناطق النقر بالملليمتر</string>
-    <string name="settings_show_tap_zones">المناطق النشطة مرئية</string>
-    <string name="settings_show_tap_zone_description">كأنها مربعات شفافة في مستعرِض المقال</string>
-    <string name="settings_tapZones">معاينة المناطق</string>
+    <string name="tap_zone_size">حَجْمُ مَناطِقِ النَّقْرِ</string>
+    <string name="tap_zone_size_descr">الْإِرْتِفَاعُ والْعَرْضُ لِكُلِّ مَناطِقِ النَّقْرِ بِاَلْمِلّيمِتْر</string>
+    <string name="settings_show_tap_zones">إِظْهارُ مَناطِقِ النَّقْرِ</string>
+    <string name="settings_show_tap_zone_description">كَأَنَّهَا مُرَبَّعاتٌ شَفّافَةٌ فِي مُسْتَعْرَضِ المَقالِ. سَتَكُونُ مَرْئيَّةً، فَقَطْ عِنْدَ تَمْكينِ إِجْراءاتِ النَّقْرِ</string>
+    <string name="settings_tapZones">مُعايَنَةُ مَناطِقِ النَّقْرِ</string>
     <string name="settings_volume_buttons_action">إجراءات إزرار الصوت</string>
     <string name="brightness_gesture">إيماءة تغيير السطوع</string>
     <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى/لأسفل على طول الحافة اليمنى من الشاشة</string>
@@ -298,7 +301,7 @@
     <string name="settings_remember_last_entry">تذَكُر المقال الأخير</string>
     <string name="settings_remeber_last_entry_description">إفتح آخر مقال تم عرضه في الجلسة السابقة، وبخلاف ذلك أظهر قائمة الغير مقروءة</string>
     <string name="auto_unstart_at_bottom">إلغاء علامة النجمة تلقائياً</string>
-    <string name="auto_unstart_at_bottom_descr">إزالة المقال تلقائيًا من المقالات المميزة عند الوصول إلى أسفل المقال</string>
+    <string name="auto_unstart_at_bottom_descr">إِزالَةُ المَقالِ تِلْقَائِيًّا مِنْ المُمَيَّزَةِ عِنْدَ الوُصولِ لِأَسْفَلِهِ</string>
     <string name="settings_category_advanced">الإعدادات المُتقدمة</string>
     <string name="settings_category_advanced_summary">ميزات إضافية (مثل النسخ الاحتياطي، الفلاتر والمزيد)</string>
     <string name="settings_autobackup_enabled">تمكين النسخ الإحتياطي التلقائي</string>
@@ -327,10 +330,12 @@
     <string name="settings_content_extract_rules">قواعد إستخراج المحتوى</string>
     <string name="settings_content_extract_rules_description">تعيين لكل موقع (يلزم معرفة HTML الأساسية)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
-    <string name="downloadNext">"تحميل التالي "</string>
-    <string name="loadingLink">جارِ تحميل الروابط</string>
+    <string name="downloadNext">"، التَّالِي "</string>
+    <string name="downloadAll">"، الكُلُّ"</string>
+    <string name="loadingLink">يَتِمُّ تَحْميلُ الرّابِطِ</string>
     <string name="loadLink">القِراءَةُ الآنَ</string>
-    <string name="loadLinkLater">لِـ مَقالاتُ الوِيبْ</string>
+    <string name="loadLinkLater">لَاحِقًا بِمَقالاتِ الوِيبْ</string>
+    <string name="loadLinkLaterStarred">لَاحِقًا وَمُمَيَّزٌ</string>
     <string name="addFeed">إضافة خلاصة</string>
     <string name="externalLinks">مَقالاتُ الوِيبْ</string>
     <string name="markAllAsRead">تحديد الكُل كمقروء</string>
@@ -338,7 +343,7 @@
     <string name="pageDown">أسفل الصفحة</string>
     <string name="fullScreenToggle">تبديل ملء الشاشة</string>
     <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
-    <string name="actionBarToggle">تَبْديلَ شَريطِ العَمَلِ</string>
+    <string name="actionBarToggle">تَبْديلُ شَريطِ الأَدَواتِ</string>
     <string name="standard">قياسي</string>
     <string name="fontsize_entrylist">حجم الخط في قائمة المقال</string>
     <string name="question_delete_entry">حذف هذا المقال؟</string>
@@ -348,7 +353,7 @@
     <string name="show_progress_info">المعلومات الفنية المفصلة</string>
     <string name="show_progress_info_descr">عرض معلومات آنيه ومفصلة حالَ حدوث أي عمليات داخل الخلاصات</string>
     <string name="vibrate_on_article_list_entry_swype">الإهتزاز عند السحب</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">عند السحب نحو اليمين أو اليسار في القوائم الرئيسية للمقالات لتحديد المقال كمقروء أو كمُميّز</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">عِنْدَ السَّحْبِ نَحْوَ اليَمينِ أَوْ اليَسارِ فِي قَوائِمِ المَقَالَاتِ، لِغَرَضِ تَحْديدِ المَقالِ كَمَقْروءٍ أَوْ كَمُمَيَّزٍ</string>
     <string name="entry_marked_unfavourite">تمَّ إزالة المقال من المُميّزة</string>
     <string name="entry_marked_favourite">تمَّ إضافة المقال إلى المميّزة</string>
     <string name="new_feed_was_added">تمَّ إضافة خلاصه جديدة</string>
@@ -356,14 +361,15 @@
     <string name="lock_orientation">الوضعُ الأُفُقي</string>
     <string name="markAsStarred">تحديد كمُميّزة</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
-    <string name="deleteAllEntries">حذف كل المقالات عدا المُميّزة بنجمة</string>
+    <string name="deleteAllEntries">حَذْفُ كُلِّ المَقَالَاتِ عَدَا المُمَيَّزَةَ بِنَجْمَةٍ؟</string>
     <string name="question">سؤال</string>
-    <string name="reload_full_text_with_tags">إعادة تحميل مع العلامات</string>
+    <string name="reload_full_text_with_tags">تَحْريرُ طَريقَةِ عَرْضِ المُحْتَوَى</string>
     <string name="filter_hint">ستبدأ عملية الفلتَرَه في حال إستيفاء شرط واحد على الأقل (قاعدة). \'قبول\' تتجاوز \'رفض\'</string>
     <string name="keyword">الكلمات الدلالية</string>
-    <string name="loadTypeWeb">الويب (تحميل جميع الروابط من الصفحة)</string>
-    <string name="loadTypeRSS">آر إس إس (رابط الخلاصة أو الموقع، أو الإسم)</string>
-    <string name="loadTypeWebPageSearch">البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo (بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</string>
+    <string name="loadTypeWeb"><b>رَوابِطُ الوِيبْ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
+    <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
+    <string name="loadTypeWebPageSearch"><b>البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo</b><font color="gray">(بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
+    <string name="loadTypeOneWebPage"><b>صَفْحَةٌ واحِدَةٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
     <string name="global_filter_descr">فلتر يُطَبَق على كل خلاصة - إترك نص الفلتر (ونص regex) فارغًا لتعطيل الوظيفة</string>
@@ -371,7 +377,7 @@
     <string name="rule_text">نصُ القاعدة</string>
     <string name="global_marks_as_star_filter_rule_descr">قاعده لكل سطر</string>
     <string name="customKeepTime">فترة الإحتفاظ بالمقالات</string>
-    <string name="menu_toggle_theme">تغيير السمة</string>
+    <string name="menu_toggle_theme">تَغْييرُ المَظْهَرِ</string>
     <string name="turnOn">تشغيل</string>
     <string name="brightness">السطوع</string>
     <string name="brightness_change">تغيير السطوع</string>
@@ -435,6 +441,56 @@
     <string name="reading_file_list">جَارٍ قِرَاءةِ قَائِمَةِ الْمَلَفَّاتِ</string>
     <string name="add_entry_shortcut">إِنْشاءُ إِخْتِصَارٍ لِلْمَقَالِ</string>
     <string name="new_entry_shortcut_added">تَمَّ انْشَاءُ إخْتِصارٍ جَديدٍ لِمَقالٍ عَلَى الشّاشَةِ الرَّئيسيَّةِ</string>
+    <string name="menu_reload_with_tables_toggle">مَعَ التَّخْطِيطَاتِ</string>
+    <string name="menu_display_options">خِيَارَاتُ العَرْضِ</string>
+    <string name="menu_reload">إِعادَةُ التَّحْميلِ</string>
+    <string name="article_tap_enabled">تَمْكينُ إِجْراءاتِ النَّقْرِ</string>
+    <string name="article_tap_enabled_summary">لِمَناطِقِ النَّقْرِ. والنَّصُّ العاديُّ لِإِظْهَارِ القائِمَةِ، عِنْدَمَا يَكونُ شَريطُ الأَدَواتِ مَخْفيًّا</string>
+    <string name="menu_calculate_image_sizes">حِسابُ حَجْمِ الصّوَرِ</string>
+    <string name="setting_calculate_image_sizes">حَجْمُ الصّوَرِ المُخَزَّنَةِ</string>
+    <string name="setting_calculate_image_sizes_descr">عَرْضَ اَلْحَجْمِ اَلْإِجْماليُّ المَحْسوبِ لِلصُّوَرِ المُحَمَّلَةِ فِي الذّاكِرَةِ، لِكُلِّ مَقالَةٍ وَتَغْذيَةٍ وَمَجْموعَةٍ، وَمَا إِلَى ذَلِكَ. (يَتِمُّ تَعْديلُ القيَمِ أَثْناءَ التَحيينِ)</string>
+    <string name="settings_category_theme">المَظاهِرُ</string>
+    <string name="settings_category_header">رَأْسُ الصَّفْحَةِ</string>
+    <string name="tasks_to_download">لِلتَّحْمِيلِ</string>
+    <string name="settings_current_setting">الإِعْدادُ الحاليُّ</string>
+    <string name="unable_to_load_article_icon">يَتَعَذَّرُ تَحْميلُ رَمْزِ المَقالِ</string>
+    <string name="settings_delete_old_interval">حَذْفُ الفاصِلِ الزَّمَنيِّ لِلْمَقَالَاتِ القَديمَةِ</string>
+    <string name="settings_delete_old_interval_descr">مَتَى يَتِمُّ حَذْفُ المَقَالَاتِ القَديمَةِ وَحِسابُ حَجْمِ الصّوَرِ وَالتَغذْيَّةِ والْمَجْموعَةِ عَلَى بِطاقَةِ الـ sdcard</string>
+    <string name="menu_delete_old">حَذْفُ المَقَالَاتِ القَديمَةِ</string>
+    <string name="settings_category_delete_old">حَذْفُ القَديمِ</string>
+    <string name="tool_bar_color">لَوْنُ شَريطِ الأَدَواتِ</string>
+    <string name="tool_bar_color_desc">كَمَا يُسْتَخْدَمُ هَذَا اللَّوْنُ لِأَزْرارِ النَّصِّ أَسْفَلَ المَقالِ، وَشَريطِ الحالَةِ</string>
+    <string name="one_webpage_hint">تَلْميحٌ: فِي هٰذَا النَّوْعِ مِنْ التَّحْميلِ، يَتِمُّ تَقْسيمُ مُحْتَوَى صَفْحَةِ الوِيبْ إلى مَقالاتٍ، وَفْقًا لِأَسْماءِ الفِئَاتِ لِعَناصِرِ الـ HTML، والْمَوْجودَةِ فِي إِعْداداتِ التَّغْذِيَةِ، يَجِبُ عَلَيْكَ تَعْيينُ أَسْماءِ الفِئَاتِ لِكُلٍّ مِنْ عُنْوانِ المَقالِ وَتاريخِهِ وَرابِطِ الصّورَةِ، وَلِإيجادِ أَسْماءِ الفِئَاتِ المَطْلوبَةِ، يَسْتَوْجِبُ عَلَيْكَ تَحْميلُ صَفْحَةِ الوِيبْ عَنْ طَريقِ (القِراءَةِ الآنَ)، والتَّبْديلُ إلى خِيَارِ (تَحْريرُ طَريقَةِ عَرْضِ المُحْتَوَى)، حَيْثُ يُمْكِنُكَ العُثورُ عَلَى أَسْماءِ الفِئَاتِ لِلْعَنَاصِرِ المَطْلوبَةِ وَنَسخُها.</string>
+    <string name="one_webpage_article_classname_label">العُنْصُرُ الجِذْريُّ لِلْمَقَالِ</string>
+    <string name="one_webpage_edittext_classname_hint">إِسْمُ الفِئَةِ</string>
+    <string name="one_webpage_url_classname_label">رابِطُ المَقالِ الفَريدِ</string>
+    <string name="one_webpage_text_classname_label">النَّصُّ</string>
+    <string name="one_webpage_author_classname_label">المُؤَلِّفُ</string>
+    <string name="one_webpage_image_url_classname_label">رابِطُ الصّورَةِ</string>
+    <string name="one_webpage_date_classname_label">التّاريخُ (قَدْ يَكونُ عِدَّةً، مَفْصولَةً بِمَسافَةٍ)</string>
+    <string name="copyClassNameToClipboard">نَسْخُ إِسْمِ الفِئَةِ</string>
+    <string name="text_was_copied_to_clipboard">تَمَّ نَسْخُ النَّصِّ</string>
+    <string name="next_page_classname">إِسْمُ فِئَةِ الصَّفْحَةِ التّاليَةِ (لِلتَّحْمِيلِ المُتَكَرِّرِ)</string>
+    <string name="articleCountLoaded">تَمَّ تَحْميلُ المَقَالَاتِ</string>
+    <string name="next_page_max_count_classname">الحَدُّ الأَقْصَى لِعَدَدِ الصَّفَحاتِ المَطْلوبِ مُعالَجَتُها</string>
+    <string name="menu_copy_feed">تَكْرارُ التَّغْذِيَةِ الحاليَّةِ</string>
+    <string name="feed_copied">تَمَّ تَكْرارُ التَّغْذِيَةِ</string>
+    <string name="menu_show_entry_text">نَصُّ المَقالِ</string>
+    <string name="read_more">قِراءَةُ المَزيدِ …</string>
+    <string name="cant_open_image">يَتَعَذَّرُ فَتْحُ الصّورَةِ</string>
+    <string name="parsing_one_web_page">يَتِمُّ تَحْليلُ الصَّفْحَةِ</string>
+    <string name="end_editing">إِنْهاءُ الوَضْعِ</string>
+    <string name="open_article">فَتْحُ المَقالِ</string>
+    <string name="search_in_browser">البَحْثُ بِمُتَصَفِّحٍ آخَرَ</string>
+    <string name="search_in_yandex">البَحْثُ عَنْ طَريقِ Yandex</string>
+    <string name="search_in_google">البَحْثُ عَنْ طَريقِ Google</string>
+    <string name="long_operation">عَمَليَّةٌ طَويلَةٌ</string>
+    <string name="reading_article">قِراءَةُ مَقالٍ</string>
+    <string name="reading_notification">إِشْعارُ قِراءَةِ المَقالِ</string>
+    <string name="reading_notification_descr">إِشْعارٌ مُسْتَمِرٌّ بِشَريطِ الحالَةِ، لِمَنْعِ النِّظامِ مِنْ قَتْلِ التَّطْبيقِ - لِتَسْرِيعِ تَشْغيلِ التَّطْبيقِ بَعْدَ فَتْرَةِ تَأْخيرٍ طَويلَةٍ</string>
+    <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
+    <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
+    <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
