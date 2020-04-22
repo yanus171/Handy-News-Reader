@@ -144,6 +144,13 @@
             android:title="@string/show_group_entrries_count"
             android:summary="@string/show_group_entries_count_descr" />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="vibrate_on_article_list_entry_swype"
+            android:summary="@string/vibrate_on_article_list_entry_swype_summary"
+            android:title="@string/vibrate_on_article_list_entry_swype"/>
+
+
         <ru.yanus171.feedexfork.view.ColorPreference
             android:defaultValue="@string/default_read_color"
             android:dependency="customColors"
@@ -345,12 +352,6 @@
                 android:key="page_up_down_90_pct"
                 android:summary="@string/page_up_down_90_pct_descr"
                 android:title="@string/page_up_down_90_pct"/>
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="vibrate_on_article_list_entry_swype"
-                android:summary="@string/vibrate_on_article_list_entry_swype_summary"
-                android:title="@string/vibrate_on_article_list_entry_swype"/>
 
             <CheckBoxPreference
                 android:defaultValue="false"
