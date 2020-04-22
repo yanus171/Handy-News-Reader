@@ -342,7 +342,7 @@ GENERAL]]></string>
     <string name="loadLinkLater">Przeczytaj później</string>
     <string name="loadLinkLaterStarred">Przeczytaj później w Ulubionych</string>
     <string name="addFeed">Dodaj kanał</string>
-    <string name="externalLinks">Bez kanału</string>
+    <string name="externalLinks">Poza kanałami</string>
     <string name="markAllAsRead">Oznacz wszystko jako przeczytane</string>
     <string name="pageUp">strona w górę / przesuń w dół by o(d)znaczyć gwiazdką</string>
     <string name="pageDown">strona w dół</string>
@@ -468,7 +468,7 @@ GENERAL]]></string>
     <string name="one_webpage_hint">Podpowiedź: w tym trybie wczytywania treść strony internetowej jest dzielona na artykuły na bazie nazwy klas elementów HTML. Ustaw nazwy klas dla tytułu artykułu, daty oraz obrazka. Aby odnaleźć wymagane nazwy, wczytaj stronę (Czytaj teraz) i przełącz się do Trybu Edycji Treści, gdzie możesz odnaleźć i skopiować nazwy klas wymaganych elementów.</string>
     <string name="one_webpage_article_classname_label">Element treści artykułu</string>
     <string name="one_webpage_edittext_classname_hint">Nazwa klasy</string>
-    <string name="one_webpage_url_classname_label">Url</string>
+    <string name="one_webpage_url_classname_label">Unikatowy URL artykułu</string>
     <string name="one_webpage_text_classname_label">Tekst</string>
     <string name="one_webpage_author_classname_label">Autor</string>
     <string name="one_webpage_image_url_classname_label">URL obrazka</string>
