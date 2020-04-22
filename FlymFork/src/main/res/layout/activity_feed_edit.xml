@@ -240,8 +240,7 @@
                                             <TextView
                                                 android:text="@string/next_page_classname"
                                                 android:layout_weight="1"
-                                                style="@style/FeedAttrLabel"
-                                                android:layout_width="0dp" />
+                                                style="@style/FeedAttrLabel" />
                                             <EditText
                                                 android:id="@+id/next_page_classname"
                                                 style="@style/FeedAttrEdit"
@@ -261,7 +260,6 @@
                                                 android:inputType="numberDecimal"
                                                 android:text="10"
                                                 style="@style/FeedAttrEdit"
-                                                android:layout_width="0dp"
                                                 android:importantForAutofill="no" />
                                         </LinearLayout>
                                     </LinearLayout>
