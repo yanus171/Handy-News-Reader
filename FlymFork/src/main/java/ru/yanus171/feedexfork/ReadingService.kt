@@ -16,7 +16,7 @@ class ReadingService : Service() {
     override fun onStart(intent: Intent?, startId: Int) {
         super.onStart( intent, startId )
         startForeground( NOTIFICATION_ID_READING_SERVICE,
-                StatusText.GetNotification( "", "", R.drawable.transparent, READING_NOTIFICATION_CHANNEL_ID ) )
+                StatusText.GetNotification( getString(R.string.article_reading_notification_hint), "", R.drawable.transparent, READING_NOTIFICATION_CHANNEL_ID ) )
     }
 
     override fun onDestroy() {
