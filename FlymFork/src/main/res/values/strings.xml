@@ -472,8 +472,8 @@
     <string name="settings_delete_old_interval_descr">When to delete old articles and calculate article, feed and group images size on sdcard</string>
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>
-    <string name="tool_bar_color">Tool bar color</string>
-    <string name="tool_bar_color_desc">Also this color is used for the article text buttons and for status bar</string>
+    <string name="tool_bar_color">Toolbar & buttons color</string>
+    <string name="tool_bar_color_desc">This color is used for the in-article buttons and for the toolbar</string>
     <string name="one_webpage_hint">Hint: in this load type the web page content is divided into articles by HTML elements class name from feed settings. You should also set the class names for article title, date and image URL. To find the required class names you should load that page (Read now) and switch to the Edit Content View where you can find and copy class names for required elements.</string>
     <string name="one_webpage_article_classname_label">Root article element</string>
     <string name="one_webpage_edittext_classname_hint">Class name</string>
