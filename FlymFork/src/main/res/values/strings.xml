@@ -299,7 +299,7 @@
     <string name="brightness_with_dim_activity_descr">Dim brightness by reducing transparency of the window background color (check it if the brightness change doesn\'t work)</string>
 
     <string name="settings_category_notification">Notifications</string>
-    <string name="settings_category_notification_summary">Notifications on new articles and the app\'s behavior</string>
+    <string name="settings_category_notification_summary">Notifications on new articles</string>
     <string name="settings_notifications_enabled">Enable notifications</string>
     <string name="settings_notifications_enabled_description">Enable notifications in case of new entries</string>
     <string name="settings_notifications_ringtone">Ringtone</string>
@@ -506,7 +506,7 @@
     <string name="article_text_show_battery">Show battery level</string>
     <string name="settings_category_header_descr">For the article text and the article list screens</string>
     <string name="article_text_buttons_layout">Button layout</string>
-    <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of the article</string>
+    <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
     <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
 
     <plurals name="number_of_new_entries">
