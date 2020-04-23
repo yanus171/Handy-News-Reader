@@ -287,6 +287,7 @@
     <string name="brightness_with_dim_activity">软件叠加</string>
     <string name="brightness_with_dim_activity_descr">通过降低窗口背景颜色的透明度来降低亮度(请检查是否亮度变化不起作用)</string>
     <string name="settings_category_notification">通知事项</string>
+    <string name="settings_category_notification_summary">关于新文章和应用程序行为的通知</string>
     <string name="settings_notifications_enabled">开启推送</string>
     <string name="settings_notifications_enabled_description">启用新条目通知</string>
     <string name="settings_notifications_ringtone">铃声</string>
@@ -490,6 +491,9 @@
     <string name="feed_list_loading">Feed列表加载</string>
     <string name="article_text_show_battery">显示电池电量</string>
     <string name="settings_category_header_descr">文章文本和文章列表屏幕</string>
+    <string name="article_text_buttons_layout">按钮布局</string>
+    <string name="article_text_buttons_layout_descr">本文结尾处的按钮的方向和可见性</string>
+    <string name="article_reading_notification_hint">在阅读文章时将应用程序保留在内存中</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
