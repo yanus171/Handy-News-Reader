@@ -380,11 +380,11 @@
     <PreferenceScreen
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:summary="@string/settings_category_behavior_summary"
-        android:title="@string/settings_category_behavior">
+        android:summary="@string/settings_category_notification_summary"
+        android:title="@string/settings_category_notification">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_behavior">
+            android:title="@string/settings_category_notification">
 
             <CheckBoxPreference
                 android:defaultValue="true"

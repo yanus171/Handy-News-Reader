@@ -46,7 +46,7 @@ public class AutoSummaryEditPreference extends android.preference.EditTextPrefer
         if ( mSummary != null  )
             list.add( mSummary );
         if ( getText() != null  )
-            list.add( getText().replace( "%", "%%" ) );
+            list.add( getText() );
         return TextUtils.join( "\n", list );
     }
 

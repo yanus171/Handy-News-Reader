@@ -288,8 +288,8 @@
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
     <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
-    <string name="settings_category_behavior">Benachrichtigungen \u0026 Verhalten</string>
-    <string name="settings_category_behavior_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
+    <string name="settings_category_notification">Benachrichtigungen \u0026 Verhalten</string>
+    <string name="settings_category_notification_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>

@@ -189,7 +189,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView2 = view.findViewById(R.id.image2);
             holder.contentImgView3 = view.findViewById(R.id.image3);
             holder.readMore = view.findViewById(R.id.textSourceReadMore);
-            UiUtils.SetFontSize(holder.titleTextView);
+            UiUtils.SetFontSize(holder.titleTextView, mShowEntryText ? 1.4F : 1 );
+            UiUtils.SetFontSize(holder.textTextView, 1 );
 
             view.setTag(R.id.holder, holder);
 
@@ -434,26 +435,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isRead = !isUnread;
 
-        /*View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (feedId >= 0) { // should not happen, but I had a crash with this on PlayStore...
-                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
-                }
-            }
-        };
-
-        holder.textLayout.setOnClickListener( listener );
-        holder.textTextView.setOnClickListener( listener );*/
-
         UpdateStarImgView(holder);
-        /*holder.starImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFavoriteState(holder.entryID, view);
-            }
-        });*/
-
         holder.mobilizedImgView.setVisibility(holder.isMobilized && PrefUtils.getBoolean( "show_full_text_indicator", false ) ? View.VISIBLE : View.GONE);
 
         UpdateReadImgView(holder);

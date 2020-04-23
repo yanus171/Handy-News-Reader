@@ -312,7 +312,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         };
 
         mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        //mRootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+        mRootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
 
         mRootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
             @Override

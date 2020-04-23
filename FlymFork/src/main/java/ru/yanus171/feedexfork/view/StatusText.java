@@ -73,7 +73,7 @@ public class StatusText implements Observer {
 
             }
         });
-        mView.setLines( 2 );
+        mView.setMaxLines( 2 );
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);

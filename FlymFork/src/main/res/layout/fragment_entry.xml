@@ -49,6 +49,15 @@
 
                     <include layout="@layout/brightness_slider_layout" />
                     <TextView
+                        android:id="@+id/pageDownBtnVert"
+                        style="@style/TapZone"
+                        android:layout_width="10mm"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/pageDown"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
                         android:id="@+id/pageUpBtn"
                         style="@style/TapZone"
                         android:layout_width="match_parent"
@@ -63,16 +72,6 @@
                         android:layout_height="10mm"
                         android:layout_alignParentBottom="true"
                         android:text="@string/pageDown" />
-
-                    <TextView
-                        android:id="@+id/pageDownBtnVert"
-                        style="@style/TapZone"
-                        android:layout_width="10mm"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/pageDown"
-                        android:visibility="gone"
-                        android:layout_alignParentEnd="true" />
 
                     <TextView
                         android:id="@+id/entryPrevBtn"

@@ -43,11 +43,10 @@ open class AutoSummaryListPreference(context: Context, attrs: AttributeSet) : an
 
     override fun getSummary(): CharSequence {
         val list = ArrayList<CharSequence>()
-        if ( mSummary != null  )
-            list.add(mSummary)
+        list.add(mSummary)
         try {
             if (entry != null)
-                list.add(entry.toString().replace("%", "%%"))
+                list.add(entry.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

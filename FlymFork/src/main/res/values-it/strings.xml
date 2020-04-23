@@ -285,8 +285,8 @@
     <string name="brightness_gesture_descr">Seleziona qua per regolare la luminosità scorrendo verso l\'alto/basso lungo il bordo sinistro dello schermo</string>
     <string name="brightness_with_dim_activity">Overlay software</string>
     <string name="brightness_with_dim_activity_descr">Diminuisci la luminosità riducendo la trasparenza del colore dello sfondo della finestra (controlla se il cambiamento di luminosità non funziona)</string>
-    <string name="settings_category_behavior">Funzionamento \u0026 notifiche</string>
-    <string name="settings_category_behavior_summary">Notifiche sui nuovi articoli e il funzionamento dell\'app</string>
+    <string name="settings_category_notification">Funzionamento \u0026 notifiche</string>
+    <string name="settings_category_notification_summary">Notifiche sui nuovi articoli e il funzionamento dell\'app</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_ringtone">Suoneria</string>
