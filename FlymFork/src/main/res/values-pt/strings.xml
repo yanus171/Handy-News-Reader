@@ -286,8 +286,6 @@
     <string name="brightness_gesture_descr">Marque esta opção para ajustar o brilho deslizando para cima/para baixo ao longo da borda esquerda da tela</string>
     <string name="brightness_with_dim_activity">Sobreposição de software</string>
     <string name="brightness_with_dim_activity_descr">Escurecer o brilho reduzindo a transparência da cor de fundo da janela (verifique se a mudança de brilho não funciona)</string>
-    <string name="settings_category_behavior">Notificações do comportamento de \u0026</string>
-    <string name="settings_category_behavior_summary">Notificações sobre novos artigos e comportamento do aplicativo</string>
     <string name="settings_notifications_enabled">Ativar notificações</string>
     <string name="settings_notifications_enabled_description">Habilitar notificações em caso de novas postagens</string>
     <string name="settings_notifications_ringtone">Toque</string>
