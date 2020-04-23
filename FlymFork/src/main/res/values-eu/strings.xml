@@ -286,8 +286,6 @@
     <string name="brightness_gesture_descr">Markatu hau pantailaren ezkerreko ertzean hatza gora edo behera pasatuz distira aldatzeko</string>
     <string name="brightness_with_dim_activity">Software gainazala</string>
     <string name="brightness_with_dim_activity_descr">Ilundu distira leihoaren atzealde kolorearen gardentasuna gutxiagotuz (markatu distira aldaketa arrunta ez badabil)</string>
-    <string name="settings_category_behavior">Jakinarazpenak eta portaera</string>
-    <string name="settings_category_behavior_summary">Artikulu berrien jakinarazpenak eta aplikazioaren portaera</string>
     <string name="settings_notifications_enabled">Gaitu jakinarazpenak</string>
     <string name="settings_notifications_enabled_description">Gaitu jakinarazpenak sarrera berrietarako</string>
     <string name="settings_notifications_ringtone">Dei soinua</string>
