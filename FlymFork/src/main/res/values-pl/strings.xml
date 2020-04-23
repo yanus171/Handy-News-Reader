@@ -291,6 +291,8 @@ GENERAL]]></string>
     <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
     <string name="brightness_with_dim_activity">Nakładka programowa</string>
     <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
+    <string name="settings_category_notification">Powiadomienia</string>
+    <string name="settings_category_notification_summary">Powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_enabled">Włącz powiadomienia</string>
     <string name="settings_notifications_enabled_description">Włącz powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_ringtone">Dzwonek</string>
@@ -494,6 +496,9 @@ GENERAL]]></string>
     <string name="feed_list_loading">Wczytywanie listy kanałów</string>
     <string name="article_text_show_battery">Pokaż stan baterii</string>
     <string name="settings_category_header_descr">Dla ekranów tekstu artykułu oraz listy artykułów</string>
+    <string name="article_text_buttons_layout">Układ przycisków</string>
+    <string name="article_text_buttons_layout_descr">Układ oraz widoczność przycisków na końcu artykułu</string>
+    <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
