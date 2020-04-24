@@ -371,7 +371,7 @@ GENERAL]]></string>
     <string name="reload_full_text_with_tags">Tryb Edycji Treści</string>
     <string name="filter_hint">Akcja przypisana filtrom zostanie wykonana przy spełnieniu co najmniej jednego z warunków (reguł). \'Akceptuj\' nadpisuje \'Odrzuć\'</string>
     <string name="keyword">słowo/a kluczowe</string>
-    <string name="loadTypeWeb"><b>Linki</b> <font color="gray">(załaduj wszystkie linki ze strony jako osobne artykuły)</font></string>
+    <string name="loadTypeWeb"><b>Strona internetowa - Linki</b> <font color="gray">(załaduj wszystkie linki ze strony jako osobne artykuły)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(kanał lub link do strony lub słowa kluczowe)</font></string>
     <string name="loadTypeWebPageSearch"><b>Wyszukiwarka DuckDuckGo</b> <font color="gray">(znajdź i wczytaj pojedynczy artykuł)</font></string>
     <string name="loadTypeOneWebPage"><b>Jedna strona</b><font color="gray"> (podziel treść jednej strony na wiele artykułów na bazie nazw klas tagów HTML)</font></string>
@@ -463,8 +463,8 @@ GENERAL]]></string>
     <string name="settings_delete_old_interval_descr">Kiedy usuwać starsze artykuły oraz obliczać rozmiar obrazków artykułów, kanałów i grup na karcie sd</string>
     <string name="menu_delete_old">Usuń starsze artykuły</string>
     <string name="settings_category_delete_old">Usuń starsze</string>
-    <string name="tool_bar_color">Kolor paska narzędzi</string>
-    <string name="tool_bar_color_desc">Ten kolor jest również używany dla przycisków w tekście artykułu oraz dla paska statusu</string>
+    <string name="tool_bar_color">Kolor przycisków i paska narzędzi</string>
+    <string name="tool_bar_color_desc">Ten kolor jest używany dla przycisków w tekście artykułu oraz dla paska statusu</string>
     <string name="one_webpage_hint">Podpowiedź: w tym trybie wczytywania treść strony internetowej jest dzielona na artykuły na bazie nazwy klas elementów HTML. Ustaw nazwy klas dla tytułu artykułu, daty oraz obrazka. Aby odnaleźć wymagane nazwy, wczytaj stronę (Czytaj teraz) i przełącz się do Trybu Edycji Treści, gdzie możesz odnaleźć i skopiować nazwy klas wymaganych elementów.</string>
     <string name="one_webpage_article_classname_label">Element treści artykułu</string>
     <string name="one_webpage_edittext_classname_hint">Nazwa klasy</string>
