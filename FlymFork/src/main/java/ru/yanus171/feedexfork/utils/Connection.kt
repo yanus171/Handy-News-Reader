@@ -44,12 +44,24 @@ class Connection(url: String) {
 
     init {
         if (IsOkHttp()) {
-            val request = Request.Builder()
+            var request = Request.Builder()
                     .url(url)
                     .build()
+            var call = OkHttpClient().newCall(request)
+            try {
+                mResponse = call.execute()
+            } catch ( e: IOException ) {
+                if ( url.startsWith( "https" ) ) {
+                    mResponse?.close()
+                    request = Request.Builder()
+                            .url(url.replace("https", "http"))
+                            .build()
+                    call = OkHttpClient().newCall(request)
+                    mResponse = call.execute()
+                } else
+                    throw e
+            }
 
-            val call = OkHttpClient().newCall(request)
-            mResponse = call.execute()
         } else
             mConnection = NetworkUtils.setupConnection1(url)
 

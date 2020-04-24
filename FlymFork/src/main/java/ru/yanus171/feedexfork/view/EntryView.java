@@ -222,7 +222,7 @@ public class EntryView extends WebView implements Handler.Callback {
         return c >= 0x590 && c <= 0x6ff;
     }
 
-    private static boolean isTextRTL(String text) {
+    public static boolean isTextRTL(String text) {
         String[] list = TextUtils.split(text, " ");
         for (String item : list)
             if (isWordRTL(item))

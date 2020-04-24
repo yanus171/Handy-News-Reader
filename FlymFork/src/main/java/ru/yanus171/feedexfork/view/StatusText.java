@@ -34,6 +34,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
 /**
  * Created by Admin on 03.06.2016.
@@ -62,7 +63,8 @@ public class StatusText implements Observer {
         mView = view;
         mErrorView = errorView;
         mView.setVisibility(View.GONE);
-        mView.setGravity(Gravity.LEFT | Gravity.TOP);
+        mView.setGravity(Gravity.START | Gravity.TOP);
+        mView.setTextColor( Theme.GetColorInt( TEXT_COLOR_READ, R.string.default_read_color ) );
         mView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +78,7 @@ public class StatusText implements Observer {
         mView.setMaxLines( 2 );
 
         mErrorView.setVisibility(View.GONE);
-        mErrorView.setGravity(Gravity.LEFT | Gravity.TOP);
+        mErrorView.setGravity(Gravity.START | Gravity.TOP);
         mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override

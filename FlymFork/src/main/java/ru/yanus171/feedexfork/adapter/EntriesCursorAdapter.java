@@ -51,8 +51,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.Html;
@@ -99,6 +101,8 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 
+import static android.view.View.TEXT_DIRECTION_ANY_RTL;
+import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
@@ -110,6 +114,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENT
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
+import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -371,6 +376,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         String titleText = cursor.isNull( mTitlePos ) ? "" : cursor.getString(mTitlePos).replace( feedTitle == null ? "" : feedTitle, "" );
         holder.titleTextView.setVisibility( titleText.isEmpty() ? View.GONE : View.VISIBLE );
         holder.titleTextView.setText(titleText);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            holder.titleTextView.setTextDirection( isTextRTL( titleText ) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_ANY_RTL );
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();

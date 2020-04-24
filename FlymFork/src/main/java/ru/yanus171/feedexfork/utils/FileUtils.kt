@@ -187,8 +187,8 @@ object FileUtils {
         }
     }
 
-    fun isMobilized (link: String, cursor: Cursor?, colMob: Int, colID: Int ): Boolean {
-        if ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) {
+    fun isMobilized (link: String?, cursor: Cursor?, colMob: Int, colID: Int ): Boolean {
+        if ( link != null && ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) ) {
             val file = LinkToFile( link )
             val mobValue = if ( file.exists() ) {
                 "${file.length()}"
@@ -206,13 +206,13 @@ object FileUtils {
 
 
             return mobValue != EMPTY_MOBILIZED_VALUE
-        }
-
-
-        return !cursor.isNull( colMob ) && cursor.getString( colMob ) != EMPTY_MOBILIZED_VALUE
+        } else if ( cursor != null )
+            return !cursor.isNull( colMob ) && cursor.getString( colMob ) != EMPTY_MOBILIZED_VALUE
+        else
+            return false
     }
 
-    fun isMobilized (link: String, cursor: Cursor ): Boolean {
+    fun isMobilized (link: String?, cursor: Cursor ): Boolean {
         return isMobilized( link, cursor, cursor.getColumnIndex( MOBILIZED_HTML ), cursor.getColumnIndex( FeedData.EntryColumns._ID ) )
     }
 
