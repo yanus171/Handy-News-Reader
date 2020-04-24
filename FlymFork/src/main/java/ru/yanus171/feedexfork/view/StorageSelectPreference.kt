@@ -84,7 +84,6 @@ class StorageSelectPreference(context: Context?, attrs: AttributeSet?) : AutoSum
                     break
                 }
             dialog.dismiss()
-            summary = GetSummary()
         }.setNegativeButton(android.R.string.cancel, null).create().show()
     }
 }

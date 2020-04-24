@@ -25,34 +25,20 @@ import android.util.AttributeSet;
 
 import java.util.ArrayList;
 
-public class AutoSummaryEditPreference extends android.preference.EditTextPreference {
+import ru.yanus171.feedexfork.R;
 
-    private CharSequence mSummary;
+public class AutoSummaryEditPreference extends android.preference.EditTextPreference {
     public AutoSummaryEditPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mSummary = getSummary();
     }
 
     @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
-        if (positiveResult) {
-            setSummary(GetSummary());
-        }
-    }
-
-    protected CharSequence GetSummary() {
+    public CharSequence getSummary() {
         ArrayList<CharSequence> list = new ArrayList<>();
-        if ( mSummary != null  )
-            list.add( mSummary );
+        if ( super.getSummary() != null  )
+            list.add( super.getSummary() );
         if ( getText() != null  )
-            list.add( getText() );
+            list.add( getContext().getString(R.string.settings_current_setting) +": " + getText() );
         return TextUtils.join( "\n", list );
-    }
-
-    @Override
-    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        super.onSetInitialValue(restoreValue, defaultValue);
-        setSummary(GetSummary());
     }
 }
