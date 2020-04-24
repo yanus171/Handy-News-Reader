@@ -291,8 +291,8 @@ GENERAL]]></string>
     <string name="brightness_gesture_descr">Zaznacz, by dopasowywać poziom jasności przesuwając palcem wzdłuż lewej krawędzi ekranu</string>
     <string name="brightness_with_dim_activity">Nakładka programowa</string>
     <string name="brightness_with_dim_activity_descr">Przygaś jasność redukując widoczność koloru tła okna (zaznacz, jeśli powyższe dopasowanie jasności nie działa)</string>
-    <string name="settings_category_notification">Powiadomienia i zachowanie</string>
-    <string name="settings_category_notification_summary">Powiadomienia o nowych artykułach oraz zachowanie aplikacji</string>
+    <string name="settings_category_notification">Powiadomienia</string>
+    <string name="settings_category_notification_summary">Powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_enabled">Włącz powiadomienia</string>
     <string name="settings_notifications_enabled_description">Włącz powiadomienia o nowych artykułach</string>
     <string name="settings_notifications_ringtone">Dzwonek</string>
@@ -342,7 +342,7 @@ GENERAL]]></string>
     <string name="loadLinkLater">Przeczytaj później</string>
     <string name="loadLinkLaterStarred">Przeczytaj później w Ulubionych</string>
     <string name="addFeed">Dodaj kanał</string>
-    <string name="externalLinks">Bez kanału</string>
+    <string name="externalLinks">Poza kanałami</string>
     <string name="markAllAsRead">Oznacz wszystko jako przeczytane</string>
     <string name="pageUp">strona w górę / przesuń w dół by o(d)znaczyć gwiazdką</string>
     <string name="pageDown">strona w dół</string>
@@ -468,7 +468,7 @@ GENERAL]]></string>
     <string name="one_webpage_hint">Podpowiedź: w tym trybie wczytywania treść strony internetowej jest dzielona na artykuły na bazie nazwy klas elementów HTML. Ustaw nazwy klas dla tytułu artykułu, daty oraz obrazka. Aby odnaleźć wymagane nazwy, wczytaj stronę (Czytaj teraz) i przełącz się do Trybu Edycji Treści, gdzie możesz odnaleźć i skopiować nazwy klas wymaganych elementów.</string>
     <string name="one_webpage_article_classname_label">Element treści artykułu</string>
     <string name="one_webpage_edittext_classname_hint">Nazwa klasy</string>
-    <string name="one_webpage_url_classname_label">Url</string>
+    <string name="one_webpage_url_classname_label">Unikatowy URL artykułu</string>
     <string name="one_webpage_text_classname_label">Tekst</string>
     <string name="one_webpage_author_classname_label">Autor</string>
     <string name="one_webpage_image_url_classname_label">URL obrazka</string>
@@ -496,6 +496,9 @@ GENERAL]]></string>
     <string name="feed_list_loading">Wczytywanie listy kanałów</string>
     <string name="article_text_show_battery">Pokaż stan baterii</string>
     <string name="settings_category_header_descr">Dla ekranów tekstu artykułu oraz listy artykułów</string>
+    <string name="article_text_buttons_layout">Układ przycisków</string>
+    <string name="article_text_buttons_layout_descr">Układ oraz widoczność przycisków na końcu artykułu</string>
+    <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
