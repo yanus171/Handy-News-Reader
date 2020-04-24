@@ -286,8 +286,6 @@
     <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى/لأسفل على طول الحافة اليمنى من الشاشة</string>
     <string name="brightness_with_dim_activity">تراكُب البرمجيات</string>
     <string name="brightness_with_dim_activity_descr">تعتيم الإضاءة عن طريق تقليل شفافية لون خلفية النافذة (تحقق من ذلك فيما إذا كان تغيير السطوع لا يعمل)</string>
-    <string name="settings_category_notification">الإشعارات والسلوك</string>
-    <string name="settings_category_notification_summary">إشعارات حول المقالات الجديدة وسلوك التطبيق</string>
     <string name="settings_notifications_enabled">تمكين الإشعارات</string>
     <string name="settings_notifications_enabled_description">تمكين الإشعارات في حالة وجود مقالات جديدة</string>
     <string name="settings_notifications_ringtone">النغمة</string>
