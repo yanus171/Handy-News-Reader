@@ -129,7 +129,7 @@
     <string name="accept">ACCEPT</string>
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
-    <string name="web_page_search_duckduckgo">Web page search (Duck Duck Go)</string>
+    <string name="web_page_search_duckduckgo">Search the Web (DuckDuckGo)</string>
     <string name="select_file">Select a file (SD-root)</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
@@ -382,7 +382,7 @@
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb"><b>Web Page - Links</b> <font color="gray">(load all links from page as different articles)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed or site link or keywords)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Web page search DuckDuckGo</b> <font color="gray">(find and load one article)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Search the Web (DuckDuckGo)</b> <font color="gray">(find and load one article)</font></string>
     <string name="loadTypeOneWebPage"><b>Web Page - Divide</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
