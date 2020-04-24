@@ -288,8 +288,8 @@
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
     <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
-    <string name="settings_category_notification">Benachrichtigungen \u0026 Verhalten</string>
-    <string name="settings_category_notification_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
+    <string name="settings_category_notification">Benachrichtigungen</string>
+    <string name="settings_category_notification_summary">Benachrichtigung bei neuen Artikeln</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
@@ -492,6 +492,9 @@
     <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <string name="article_text_show_battery">Akkustand anzeigen</string>
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
+    <string name="article_text_buttons_layout">Aussehen der Schaltflächen</string>
+    <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Schaltflächen am Ende eines Artikels</string>
+    <string name="article_reading_notification_hint">So behalten Sie die App beim Lesen eines Artikels im Speicher</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
