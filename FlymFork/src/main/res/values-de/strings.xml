@@ -461,7 +461,7 @@
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
     <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
-    <string name="tool_bar_color_desc">Diese Farbe wird auch für die Artikeltext-Tasten und für die Statusleiste verwendet</string>
+    <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
     <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Artikelansicht bearbeiten\". Hiermit werden die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
     <string name="one_webpage_article_classname_label">Root-Artikel-Element</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
