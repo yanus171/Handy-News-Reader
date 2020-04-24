@@ -120,11 +120,13 @@ public class HtmlUtils {
                     //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
                 }
 
-                // xml
-                //            content = content.replace( "&lt;", "<" );
-                //            content = content.replace( "&gt;", ">" );
-                //            content = content.replace( "&amp;", "&" );
-                //            content = content.replace( "&quot;", "\"" );
+                if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
+                    // xml
+                    content = content.replace("&lt;", "<");
+                    content = content.replace("&gt;", ">");
+                    content = content.replace("&amp;", "&");
+                    content = content.replace("&quot;", "\"");
+                }
 
             }
             content = content.replace( "&#39;", "'" );

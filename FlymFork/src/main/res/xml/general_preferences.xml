@@ -648,5 +648,10 @@
                 android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
 
         </PreferenceCategory>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting_convert_xml_symbols_before_parsing"
+            android:title="Convert xml symbols before parsing"/>
+
     </PreferenceScreen>
 </PreferenceScreen>
