@@ -38,6 +38,8 @@ import android.view.View;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Matcher;
 
 import ru.yanus171.feedexfork.Constants;
@@ -56,6 +58,8 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
+import ru.yanus171.feedexfork.view.EntryView;
 
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
@@ -65,8 +69,9 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.PrefUtils.READING_NOTIFICATION;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
-public class EntryActivity extends BaseActivity {
+public class EntryActivity extends BaseActivity implements Observer {
 
     public EntryFragment mEntryFragment = null;
 
@@ -267,6 +272,12 @@ public class EntryActivity extends BaseActivity {
     }
 
     @Override
+    public void onPause() {
+        mImageDownloadObservable.deleteObserver( this );
+        super.onPause();
+    }
+
+    @Override
     //protected void onRestoreInstanceState(Bundle savedInstanceState) {
     protected void onResume() {
 //        setFullScreen(savedInstanceState.getBoolean(STATE_IS_STATUSBAR_HIDDEN),
@@ -277,6 +288,8 @@ public class EntryActivity extends BaseActivity {
 
         setFullScreen();
         getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
+        mImageDownloadObservable.addObserver( this );
+
         Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
         EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
     }
@@ -374,6 +387,16 @@ public class EntryActivity extends BaseActivity {
     }
     static public boolean GetIsActionBarHidden() {
         return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_HIDDEN, false);
+    }
+    @Override
+    public void update(Observable observable, Object data) {
+        if ( data == null || mEntryFragment == null )
+            return;
+        EntryView view = mEntryFragment.mEntryPagerAdapter.GetEntryView( (Entry) data );
+        if ( view == null )
+            return;
+        view.UpdateImages( false );
+        Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
     }
 
 }

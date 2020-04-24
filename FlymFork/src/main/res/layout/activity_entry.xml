@@ -7,15 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <FrameLayout
+        <fragment
+            android:id="@+id/entry_fragment"
+            class="ru.yanus171.feedexfork.fragment.EntryFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <fragment
-                android:id="@+id/entry_fragment"
-                class="ru.yanus171.feedexfork.fragment.EntryFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <include layout="@layout/dim_frame" />

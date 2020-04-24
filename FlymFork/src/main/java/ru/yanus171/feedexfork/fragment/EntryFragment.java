@@ -78,6 +78,8 @@ import androidx.viewpager.widget.ViewPager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -119,10 +121,12 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
-public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>, EntryView.EntryViewManager {
+public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+    EntryView.EntryViewManager {
 
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
@@ -144,7 +148,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean mFavorite, mIsWithTables, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
-    private BaseEntryPagerAdapter mEntryPagerAdapter;
+    public BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame = null;
     private ProgressBar mProgressBar = null;
@@ -308,7 +312,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         };
 
         mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        //mRootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+        mRootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
 
         mRootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -1457,6 +1461,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         public EntryView GetEntryView( int pagerPos ) {
             return mEntryViews.get(pagerPos);
         }
+        public EntryView GetEntryView( Entry entry ) {
+            for(int i = 0; i < mEntryViews.size(); i++) {
+                EntryView view = mEntryViews.get(mEntryViews.keyAt(i));
+                if ( view.mEntryId == entry.mID )
+                    return view;
+            }
+            return null;
+        }
 
 
         @Override
@@ -1464,7 +1476,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
             FetcherService.removeActiveEntryID( GetEntry( position ).mID );
             getLoaderManager().destroyLoader(position);
-            EntryView.mImageDownloadObservable.deleteObserver( GetEntryView( position ) );
             container.removeView((View) object);
             mEntryViews.delete(position);
         }
@@ -1588,7 +1599,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
     }
-
 
 }
 

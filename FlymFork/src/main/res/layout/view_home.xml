@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,22 +13,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:showIn="@layout/activity_home">
-
-
-
-
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <fragment
+                android:id="@+id/entries_list_fragment"
+                android:name="ru.yanus171.feedexfork.fragment.EntriesListFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <fragment
-                    android:id="@+id/entries_list_fragment"
-                    android:name="ru.yanus171.feedexfork.fragment.EntriesListFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/dark_background" />
-
-            </FrameLayout>
+                android:layout_height="match_parent"
+                android:background="@color/dark_background" />
         </LinearLayout>
 
 

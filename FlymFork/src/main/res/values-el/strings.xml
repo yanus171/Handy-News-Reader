@@ -285,6 +285,8 @@
     <string name="brightness_gesture_descr">Επιλέξτε για να ρυθμίζετε την φωτεινότητα σέρνοντας το δάχτυλο πάνω/κάτω στην αριστερή άκρη της οθόνης</string>
     <string name="brightness_with_dim_activity">Επιτάχυνση λογισμικού</string>
     <string name="brightness_with_dim_activity_descr">Ρύθμιση φωτεινότητας μειώνοντας τη διαφάνεια του παραθύρου στο φόντο (επιλέξτε αν η αλλαγή φωτεινότητας δεν λειτουργεί)</string>
+    <string name="settings_category_notification">Ρυθμίσεις ειδοποιήσεων</string>
+    <string name="settings_category_notification_summary">Χρήση ειδοποιήσεων όταν χρησιμοποιείται η εφαρμογή</string>
     <string name="settings_notifications_enabled">Ενεργοποίηση ειδοποιήσεων</string>
     <string name="settings_notifications_enabled_description">Ενεργοποιεί τις ειδοποιήσεις όταν υπάρχουν νέα άρθρα</string>
     <string name="settings_notifications_ringtone">Ήχος</string>

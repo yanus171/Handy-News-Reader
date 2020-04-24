@@ -239,6 +239,8 @@
     <string name="brightness_gesture_descr">Comprobar para ajustar el brillo deslizándose hacia arriba/abajo a lo largo del borde izquierdo de la pantalla</string>
     <string name="brightness_with_dim_activity">Capa de software</string>
     <string name="brightness_with_dim_activity_descr">Disminuir el brillo reduciendo la transparencia del color de fondo de la ventana (comprobar esto si el cambio de brillo no funciona)</string>
+    <string name="settings_category_notification">Notificaciones \u0026 comportamiento</string>
+    <string name="settings_category_notification_summary">Notificaciones sobre nuevos artículos y el comportamiento de la aplicación</string>
     <string name="settings_notifications_enabled">Habilitar notificaciones</string>
     <string name="settings_notifications_enabled_description">Habilita las notificaciones de nuevas entradas</string>
     <string name="settings_notifications_ringtone">Tono</string>

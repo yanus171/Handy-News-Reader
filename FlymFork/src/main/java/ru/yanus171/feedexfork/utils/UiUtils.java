@@ -89,11 +89,11 @@ public class UiUtils {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    static public void SetFontSize(TextView textView) {
-        textView.setTextSize(COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
+    static public void SetFontSize(TextView textView, float coeff) {
+        textView.setTextSize(COMPLEX_UNIT_DIP, ( 18 + PrefUtils.getFontSizeEntryList() ) * coeff );
     }
 
-    static public void SetSmallFontSize(TextView textView) {
+    private static void SetSmallFontSize(TextView textView) {
         textView.setTextSize(COMPLEX_UNIT_DIP, 14 + PrefUtils.getFontSizeEntryList() );
     }
 
@@ -195,8 +195,7 @@ public class UiUtils {
         result.setAutoLinkMask(Linkify.ALL);
         result.setLinkTextColor(Color.LTGRAY);
         result.setText(text);
-        if (Build.VERSION.SDK_INT >= 11)
-            result.setTextIsSelectable(true);
+        result.setTextIsSelectable(true);
         result.setFocusable(false);
         result.setFocusableInTouchMode(true);
 
@@ -218,8 +217,7 @@ public class UiUtils {
             layout.addView(result);
         }
         result.setText(text);
-        if (Build.VERSION.SDK_INT >= 11)
-            result.setTextIsSelectable(true);
+        result.setTextIsSelectable(true);
         result.setFocusable(false);
         result.setFocusableInTouchMode(false);
 

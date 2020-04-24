@@ -46,7 +46,7 @@ open class AutoSummaryListPreference(context: Context, attrs: AttributeSet) : an
         list.add(mSummary)
         try {
             if (entry != null)
-                list.add(entry.toString().replace("%", "%%"))
+                list.add(entry.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

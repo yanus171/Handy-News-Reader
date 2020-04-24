@@ -285,6 +285,8 @@
     <string name="brightness_gesture_descr">Якщо галочка є, то рух пальцем догори/додолу по лівому краю екрану статті змінює яскравість</string>
     <string name="brightness_with_dim_activity">Програмне зменшення яскравості</string>
     <string name="brightness_with_dim_activity_descr">Увімкніть, якщо зміна яскравості не працює</string>
+    <string name="settings_category_notification">Сповіщення</string>
+    <string name="settings_category_notification_summary">Сповіщення про нові статті</string>
     <string name="settings_notifications_enabled">Увімкнути сповіщення</string>
     <string name="settings_notifications_enabled_description">Увімкнути сповіщення про нові статті</string>
     <string name="settings_notifications_ringtone">Звук</string>

@@ -95,11 +95,13 @@
         <item>Català</item>
         <item>Český</item>
         <item>Deutsch</item>
+        <item>Ελληνικός</item>
         <item>Español</item>
         <item>English</item>
         <item>Basque</item>
         <item>Finnish</item>
         <item>Français</item>
+        <item>Indonesia</item>
         <item>Italiano</item>
         <item>한국어</item>
         <item>العَرَبِيَّة‎‎</item>
@@ -109,8 +111,8 @@
         <item>Slovenskej</item>
         <item>Српски</item>
         <item>Svenska</item>
-        <item>中国</item>
-        <item>Ελληνικός</item>
+        <item>简体中文</item>
+        <item>中国传统</item>
         <item>Український</item>
     </string-array>
     <string-array name="languageValueList" translatable="false">
@@ -119,11 +121,13 @@
         <item>ca</item>
         <item>cs</item>
         <item>de</item>
+        <item>el</item>
         <item>es</item>
         <item>en</item>
         <item>eu</item>
         <item>fi</item>
         <item>fr</item>
+        <item>id</item>
         <item>it</item>
         <item>ko</item>
         <item>ar</item>
@@ -134,7 +138,7 @@
         <item>sr</item>
         <item>sv</item>
         <item>zh</item>
-        <item>el</item>
+        <item>zhtw</item>
         <item>uk</item>
     </string-array>
 

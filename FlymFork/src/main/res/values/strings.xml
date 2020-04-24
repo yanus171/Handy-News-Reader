@@ -298,8 +298,8 @@
     <string name="brightness_with_dim_activity">Software overlay</string>
     <string name="brightness_with_dim_activity_descr">Dim brightness by reducing transparency of the window background color (check it if the brightness change doesn\'t work)</string>
 
-    <string name="settings_category_behavior">Notifications \u0026 behavior</string>
-    <string name="settings_category_behavior_summary">Notifications on new articles and the app\'s behavior</string>
+    <string name="settings_category_notification">Notifications</string>
+    <string name="settings_category_notification_summary">Notifications on new articles</string>
     <string name="settings_notifications_enabled">Enable notifications</string>
     <string name="settings_notifications_enabled_description">Enable notifications in case of new entries</string>
     <string name="settings_notifications_ringtone">Ringtone</string>
@@ -380,10 +380,10 @@
     <string name="reload_full_text_with_tags">Edit Content View</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
-    <string name="loadTypeWeb"><b>Web links</b> <font color="gray">(load all links from page as different articles)</font></string>
+    <string name="loadTypeWeb"><b>Web Page - Links</b> <font color="gray">(load all links from page as different articles)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed or site link or keywords)</font></string>
     <string name="loadTypeWebPageSearch"><b>Web page search DuckDuckGo</b> <font color="gray">(find and load one article)</font></string>
-    <string name="loadTypeOneWebPage"><b>One page</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
+    <string name="loadTypeOneWebPage"><b>Web Page - Divide</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
@@ -472,8 +472,8 @@
     <string name="settings_delete_old_interval_descr">When to delete old articles and calculate article, feed and group images size on sdcard</string>
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>
-    <string name="tool_bar_color">Tool bar color</string>
-    <string name="tool_bar_color_desc">Also this color is used for the article text buttons and for status bar</string>
+    <string name="tool_bar_color">Toolbar &amp; buttons color</string>
+    <string name="tool_bar_color_desc">This color is used for the in-article buttons and for the toolbar</string>
     <string name="one_webpage_hint">Hint: in this load type the web page content is divided into articles by HTML elements class name from feed settings. You should also set the class names for article title, date and image URL. To find the required class names you should load that page (Read now) and switch to the Edit Content View where you can find and copy class names for required elements.</string>
     <string name="one_webpage_article_classname_label">Root article element</string>
     <string name="one_webpage_edittext_classname_hint">Class name</string>
@@ -505,6 +505,9 @@
     <string name="feed_list_loading">Feed list loading</string>
     <string name="article_text_show_battery">Show battery level</string>
     <string name="settings_category_header_descr">For the article text and the article list screens</string>
+    <string name="article_text_buttons_layout">Button layout</string>
+    <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
+    <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
