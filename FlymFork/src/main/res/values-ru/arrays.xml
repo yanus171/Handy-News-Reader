@@ -44,6 +44,6 @@
     <string-array name="buttons_layout_captions">
         <item>Горизонтально</item>
         <item>Вертикально</item>
-        <item>Не показывать кнопки вообще</item>
+        <item>Не показывать кнопки</item>
     </string-array>
 </resources>
