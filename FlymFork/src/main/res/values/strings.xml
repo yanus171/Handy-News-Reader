@@ -353,11 +353,11 @@
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Without a feed</string>
     <string name="markAllAsRead">Mark all as read</string>
-    <string name="pageUp">page up / swipe down to (un)star</string>
+    <string name="pageUp">page up or\nswipe down to (un)star</string>
     <string name="pageDown">page down</string>
-    <string name="fullScreenToggle">Full screen toggle</string>
+    <string name="fullScreenToggle">toggle full screen</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">Toggle Action Bar</string>
+    <string name="actionBarToggle">toggle Action Bar</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article\'s list</string>
     <string name="question_delete_entry">Delete this article?</string>
@@ -394,7 +394,7 @@
     <string name="menu_toggle_theme">Change theme</string>
     <string name="turnOn">Turn on</string>
     <string name="brightness">Brightness</string>
-    <string name="brightness_change">Brightness change</string>
+    <string name="brightness_change">brightness change</string>
     <string name="criticalErrorOccured">A critical error occurred in thу application. Please send this text to developer</string>
     <string name="criticalErrorSending">Sending critical error…</string>
     <string name="copyToClipboard">To clipboard</string>
