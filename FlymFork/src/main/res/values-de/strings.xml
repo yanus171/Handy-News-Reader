@@ -494,7 +494,7 @@
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
     <string name="article_text_buttons_layout">Aussehen der Tasten</string>
     <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
-    <string name="article_reading_notification_hint">So behalten Sie die App beim Lesen eines Artikels im Speicher</string>
+    <string name="article_reading_notification_hint">Damit die App beim Lesen eines Artikels im Speicher bleibt</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
