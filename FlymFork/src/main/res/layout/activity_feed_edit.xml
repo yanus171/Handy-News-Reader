@@ -184,7 +184,7 @@
                                         android:id="@+id/auto_set_as_read"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/auto_image_load" />
+                                        android:text="@string/auto_set_as_read" />
 
                                     <LinearLayout
                                         android:id="@+id/layout_keeptime"

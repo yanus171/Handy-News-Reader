@@ -158,6 +158,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
     public static final String DIALOG_IS_SHOWN = "EDIT_FEED_USER_SELECTION_DIALOG_IS_SHOWN";
     static final String IS_READ_STUMB = "[IS_READ]";
+    public static final String AUTO_SET_AS_READ = "AUTO_SET_AS_READ";
     private String[] mKeepTimeValues;
 
 
@@ -236,6 +237,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private EditText mOneWebPageImageUrlClassName;
     private EditText mNextPageClassName;
     private LinearLayout mOneWebPageLayout;
+    private CheckBox mIsAutoSetAsRead;
 
     private void EditFilter() {
         Cursor c = mFiltersCursorAdapter.getCursor();
@@ -328,6 +330,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mShowTextInEntryListCb = findViewById(R.id.show_text_in_entry_list);
         mIsAutoRefreshCb = findViewById(R.id.auto_refresh);
         mIsAutoImageLoadCb = findViewById(R.id.auto_image_load);
+        mIsAutoSetAsRead = findViewById(R.id.auto_set_as_read);
+        mIsAutoSetAsRead.setChecked( false );
         mFiltersListView = findViewById(android.R.id.list);
         mGroupSpinner = findViewById(R.id.spin_group);
 
@@ -493,6 +497,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     break;
                                 }
                         }
+                        if ( jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean( AUTO_SET_AS_READ ) )
+                            mIsAutoSetAsRead.setChecked( true );
                         mNextPageClassName.setText( jsonOptions.getString( URL_NEXT_PAGE_CLASS_NAME ) );
                         if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
                             mOneWebPageArticleClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_ARTICLE_CLASS_NAME ) );
@@ -661,6 +667,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             jsonOptions.put( "isRss", mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbRss );
             jsonOptions.put( IS_ONE_WEB_PAGE, mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage );
             jsonOptions.put( URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
+            jsonOptions.put( AUTO_SET_AS_READ, mIsAutoSetAsRead.isChecked() );
 
             if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage ) {
                 jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.getText().toString() );

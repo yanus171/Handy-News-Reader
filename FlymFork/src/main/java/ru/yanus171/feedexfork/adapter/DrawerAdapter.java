@@ -35,6 +35,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -63,6 +66,7 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_IS_SHOW_TEXT_IN_ENTRY_LIST = 9;
     private static final int POS_IS_GROUP_EXPANDED = 10;
     private static final int POS_IS_AUTO_RESRESH = 11;
+    private static final int POS_OPTIONS = 12;
     private static final int POS_IMAGESIZE = 13;
 
     public static final int FIRST_ENTRY_POS = 4;
@@ -313,7 +317,15 @@ public class DrawerAdapter extends BaseAdapter {
 
     public boolean isShowTextInEntryList(int position) {
         return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) && mFeedsCursor.getInt(POS_IS_SHOW_TEXT_IN_ENTRY_LIST) == 1;
+    }
 
+    public JSONObject getOptions(int position) {
+        try {
+            return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) ? new JSONObject( mFeedsCursor.getString(POS_OPTIONS) ) : new JSONObject();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new JSONObject();
+        }
     }
 
     private boolean isGroupExpanded(int position) {
