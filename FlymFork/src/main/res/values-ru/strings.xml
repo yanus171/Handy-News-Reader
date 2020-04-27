@@ -240,7 +240,7 @@
     <string name="show_full_text_indicator_descr">Показывать иконку маленькой дискеты, если для статьи загружен полный текст</string>
     <string name="show_new_icon">Подкрашивать новые</string>
     <string name="show_new_icon_descr">Маленькая иконка с полюсом на новых статьях (названия которых еще никогда не были видимы)</string>
-    <string name="show_read_article_count">Число прочитанных статей лент</string>
+    <string name="show_read_article_count">Число прочитанных статей</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
