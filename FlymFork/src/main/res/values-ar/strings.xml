@@ -125,7 +125,7 @@
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
     <string name="feed_search">نتائج البحث</string>
-    <string name="web_page_search_duckduckgo">بَحْثُ صَفْحَةِ الوِيبْ (DuckDuckGo)</string>
+    <string name="web_page_search_duckduckgo">نَتائِجُ البَحْثِ</string>
     <string name="select_file">حدّد ملفاً (من بطاقة SD)</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
@@ -197,8 +197,8 @@
     <string name="settings_category_common">الإعدادات المشتركة</string>
     <string name="settings_category_common_summary">المَظاهِرُ</string>
     <string name="theme">المَظْهَرُ</string>
-    <string name="customColors">مَظْهَرٌ مُخَصَّصٌ</string>
-    <string name="fontColorsNotFromThemeSummary">بِخِلَافِ ذَلِكَ، سَيَتِمُّ إِسْتِخْدَامُ المَظْهَرِ الْإِفْتِرَاضِيِّ المُخْتارِ</string>
+    <string name="customColors">أَلْوانٌ مُخَصَّصَةٌ</string>
+    <string name="fontColorsNotFromThemeSummary">بِخِلَافِ ذَلِكَ، سَيَتِمُّ إِسْتِخْدَامُ أَلْوانِ المَظْهَرِ الْإِفْتِرَاضِيَّةِ</string>
     <string name="textColor">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_text_sample_short">النص</string>
     <string name="settings_color_text_sample_long">\u201cعندما تغازل فتاة جميلة ستشعر بمرور الساعة وكأنها ثانية، ولكن إذا جلست على جمرٍ فستشعر بالثانية الواحدة كأنّها ساعة. تلك هي
@@ -286,6 +286,8 @@
     <string name="brightness_gesture_descr">حدّد هذا الخيار لضبط السطوع عن طريق التمرير لأعلى/لأسفل على طول الحافة اليمنى من الشاشة</string>
     <string name="brightness_with_dim_activity">تراكُب البرمجيات</string>
     <string name="brightness_with_dim_activity_descr">تعتيم الإضاءة عن طريق تقليل شفافية لون خلفية النافذة (تحقق من ذلك فيما إذا كان تغيير السطوع لا يعمل)</string>
+    <string name="settings_category_notification">الإِشْعاراتُ</string>
+    <string name="settings_category_notification_summary">إِشْعاراتُ المَقَالَاتِ الجَديدَةِ</string>
     <string name="settings_notifications_enabled">تمكين الإشعارات</string>
     <string name="settings_notifications_enabled_description">تمكين الإشعارات في حالة وجود مقالات جديدة</string>
     <string name="settings_notifications_ringtone">النغمة</string>
@@ -364,10 +366,10 @@
     <string name="reload_full_text_with_tags">تَحْريرُ طَريقَةِ عَرْضِ المُحْتَوَى</string>
     <string name="filter_hint">ستبدأ عملية الفلتَرَه في حال إستيفاء شرط واحد على الأقل (قاعدة). \'قبول\' تتجاوز \'رفض\'</string>
     <string name="keyword">الكلمات الدلالية</string>
-    <string name="loadTypeWeb"><b>رَوابِطُ الوِيبْ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
+    <string name="loadTypeWeb"><b>صَفْحَةُ وِيبْ - رَوابِطُ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
     <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
-    <string name="loadTypeWebPageSearch"><b>البَحْثُ فْي صَفَحْاتِ الوِيبْ بِـ DuckDuckGo</b><font color="gray">(بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
-    <string name="loadTypeOneWebPage"><b>صَفْحَةٌ واحِدَةٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
+    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ (DuckDuckGo)</b> <font color="gray">(بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
+    <string name="loadTypeOneWebPage"><b>صَفْحَةُ وِيبْ - تَقْسيمٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
     <string name="global_filter_descr">فلتر يُطَبَق على كل خلاصة - إترك نص الفلتر (ونص regex) فارغًا لتعطيل الوظيفة</string>
@@ -456,8 +458,8 @@
     <string name="settings_delete_old_interval_descr">مَتَى يَتِمُّ حَذْفُ المَقَالَاتِ القَديمَةِ وَحِسابُ حَجْمِ الصّوَرِ وَالتَغذْيَّةِ والْمَجْموعَةِ عَلَى بِطاقَةِ الـ sdcard</string>
     <string name="menu_delete_old">حَذْفُ المَقَالَاتِ القَديمَةِ</string>
     <string name="settings_category_delete_old">حَذْفُ القَديمِ</string>
-    <string name="tool_bar_color">لَوْنُ شَريطِ الأَدَواتِ</string>
-    <string name="tool_bar_color_desc">كَمَا يُسْتَخْدَمُ هَذَا اللَّوْنُ لِأَزْرارِ النَّصِّ أَسْفَلَ المَقالِ، وَشَريطِ الحالَةِ</string>
+    <string name="tool_bar_color">لَوْنُ شَريطِ الأَدَواتِ وَاَلْأَزْرارِ</string>
+    <string name="tool_bar_color_desc">يَتِمُّ إسْتِخْدامُ هذَا اللَّوْنِ لِلْأَزْرَارِ أَسْفَلَ المَقالِ وَلِشَريطِ الأَدَواتِ</string>
     <string name="one_webpage_hint">تَلْميحٌ: فِي هٰذَا النَّوْعِ مِنْ التَّحْميلِ، يَتِمُّ تَقْسيمُ مُحْتَوَى صَفْحَةِ الوِيبْ إلى مَقالاتٍ، وَفْقًا لِأَسْماءِ الفِئَاتِ لِعَناصِرِ الـ HTML، والْمَوْجودَةِ فِي إِعْداداتِ التَّغْذِيَةِ، يَجِبُ عَلَيْكَ تَعْيينُ أَسْماءِ الفِئَاتِ لِكُلٍّ مِنْ عُنْوانِ المَقالِ وَتاريخِهِ وَرابِطِ الصّورَةِ، وَلِإيجادِ أَسْماءِ الفِئَاتِ المَطْلوبَةِ، يَسْتَوْجِبُ عَلَيْكَ تَحْميلُ صَفْحَةِ الوِيبْ عَنْ طَريقِ (القِراءَةِ الآنَ)، والتَّبْديلُ إلى خِيَارِ (تَحْريرُ طَريقَةِ عَرْضِ المُحْتَوَى)، حَيْثُ يُمْكِنُكَ العُثورُ عَلَى أَسْماءِ الفِئَاتِ لِلْعَنَاصِرِ المَطْلوبَةِ وَنَسخُها.</string>
     <string name="one_webpage_article_classname_label">العُنْصُرُ الجِذْريُّ لِلْمَقَالِ</string>
     <string name="one_webpage_edittext_classname_hint">إِسْمُ الفِئَةِ</string>
@@ -489,6 +491,9 @@
     <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
     <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
     <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
+    <string name="article_text_buttons_layout">تَخْطيطُ الزِرْ</string>
+    <string name="article_text_buttons_layout_descr">النَّسَقُ والرُّؤْيَةُ لِلْأَزْرَارِ فِي نِهايَةِ المَقالِ</string>
+    <string name="article_reading_notification_hint">لِلْحِفَاظِ عَلَى التَّطْبيقِ فِي الذّاكِرَةِ أَثْناءَ قِراءَةِ مَقالٍ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
