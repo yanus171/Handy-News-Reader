@@ -382,7 +382,7 @@
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb"><b>Web Page - Links</b> <font color="gray">(load all links from page as different articles)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed or site link or keywords)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Web page search DuckDuckGo</b> <font color="gray">(find and load one article)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Web page search</b> <font color="gray"> (DuckDuckGo - find and load one article)</font></string>
     <string name="loadTypeOneWebPage"><b>Web Page - Divide</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
