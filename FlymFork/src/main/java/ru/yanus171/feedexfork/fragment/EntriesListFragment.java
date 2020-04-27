@@ -25,7 +25,6 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,20 +58,17 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
@@ -113,6 +109,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     //boolean mBottomIsReached = false;
     private final ArrayList<String> mWasVisibleList = new ArrayList<>();
 
+    public boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
 
     private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
         @NonNull
@@ -120,9 +117,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader" );
 
-            String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) || mShowTextInEntryList ? Constants.DB_ASC : Constants.DB_DESC;
+            String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
             //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
-            String[] projection = mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
+            String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
             CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
             cursorLoader.setUpdateThrottle(150);
             Status().End( mStatus );
@@ -136,9 +133,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             Timer timer = new Timer( "EntriesListFragment.onCreateLoader" );
 
             mEntriesCursorAdapter.swapCursor(data);
-            if ( mShowTextInEntryList && mNeedSetSelection ) {
+            if ( mNeedSetSelection ) {
                 mNeedSetSelection = false;
-                mListView.setSelection(mEntriesCursorAdapter.GetFirstUnReadPos());
+                mListView.setSelection( IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos() );
             }
             RestoreListScrollPosition();
             getActivity().setProgressBarIndeterminateVisibility( false );
@@ -155,7 +152,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     };
 
-    public void RestoreListScrollPosition() {
+    private void RestoreListScrollPosition() {
         if ( mLastVisibleTopEntryID != -1 ) {
             int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
             if ( pos != -1 )
@@ -944,13 +941,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
     @Override
     public void update(Observable observable, Object o) {
-        if ( !mShowTextInEntryList )
-            return;
-        final Entry entry = (Entry)o;
-        final int pos = mEntriesCursorAdapter.GetPosByID( entry.mID );
-        if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition() ) {
-            mEntriesCursorAdapter.notifyDataSetChanged();
-            RestoreListScrollPosition();
+        //if ( !mShowTextInEntryList )
+        //    return;
+        if ( o instanceof Entry ) {
+            final Entry entry = (Entry) o;
+            final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
+            if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
+                mEntriesCursorAdapter.notifyDataSetChanged();
+                RestoreListScrollPosition();
+            }
+        } else if ( o instanceof EntriesCursorAdapter.ListViewTopPos) {
+            mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
         }
     }
 }

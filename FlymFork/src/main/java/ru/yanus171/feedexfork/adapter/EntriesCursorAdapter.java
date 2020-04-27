@@ -99,6 +99,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
@@ -119,6 +120,7 @@ import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
 
+    public static final String STATE_TEXTSHOWN_ENTRY_ID = "STATE_TEXTSHOWN_ENTRY_ID";
     private HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
     private final Context mContext;
@@ -194,7 +196,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView2 = view.findViewById(R.id.image2);
             holder.contentImgView3 = view.findViewById(R.id.image3);
             holder.readMore = view.findViewById(R.id.textSourceReadMore);
-            UiUtils.SetFontSize(holder.titleTextView, mShowEntryText ? 1.4F : 1 );
+            holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
             UiUtils.SetFontSize(holder.textTextView, 1 );
 
             view.setTag(R.id.holder, holder);
@@ -206,6 +208,21 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 }
             });
 
+            holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                    if (shownId == holder.entryID) {
+                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                    } else {
+                        SetIsRead( EntryUri(shownId), true, 0);
+                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
+
+                    }
+                    notifyDataSetChanged();
+                    EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( holder.entryID ) ) );
+                }
+            });
             view.findViewById( R.id.layout_ontouch ).setOnTouchListener( new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
@@ -277,7 +294,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if ( event.getAction() == MotionEvent.ACTION_UP ) {
                             Dog.v("onTouch ACTION_UP" );
-                            if ( !mShowEntryText &&
+                            if ( !mShowEntryText && !holder.isTextShown() &&
                                  mEntryActivityStartingStatus == 0 &&
                                  currentx > MIN_X_TO_VIEW_ARTICLE &&
                                  Math.abs( paddingX ) < minX &&
@@ -388,7 +405,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         String feedName = cursor.getString(mFeedNamePos);
 
-        if ( !mShowEntryText && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
+        final boolean isTextShown = mShowEntryText || holder.isTextShown();
+        holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
+        holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.arrow_down : R.drawable.arrow_right );
+        UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
+        if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
@@ -457,7 +478,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView2.setVisibility( View.GONE );
         holder.contentImgView3.setVisibility( View.GONE );
         holder.readMore.setVisibility( View.GONE );
-        if ( mShowEntryText ) {
+        if ( isTextShown ) {
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setEnabled(!holder.isRead);
@@ -619,7 +640,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadImgView(ViewHolder holder) {
-        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText ? View.VISIBLE : View.GONE );
+        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         holder.readImgView.setImageResource(holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
     }
 
@@ -762,7 +783,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     }
 
+    public class ListViewTopPos {
+        public int mPos = 0;
+
+        ListViewTopPos(int pos) {
+            mPos = pos;
+        }
+    }
     private static class ViewHolder {
+        ImageView collapsedBtn;
         TextView titleTextView;
         TextView urlTextView;
         TextView textTextView;
@@ -787,6 +816,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView contentImgView2;
         ImageView contentImgView3;
         TextView readMore;
+
+        boolean isTextShown() {
+            return entryID == PrefUtils.getLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
+        }
     }
 
     public int GetFirstUnReadPos() {
@@ -796,6 +829,22 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 return i;
         }
         return getCount();
+    }
+    public int GetTopNewPos() {
+        for (int i = 0; i < getCount(); i++) {
+            Cursor cursor = (Cursor) getItem(i);
+            if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
+                return i;
+        }
+        return getCount();
+    }
+    public int GetBottomNewPos() {
+        for (int i = getCount() - 1; i >= 0; i--) {
+            Cursor cursor = (Cursor) getItem(i);
+            if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
+                return i;
+        }
+        return 0;
     }
     public int GetPosByID( long id ) {
         if ( !isEmpty() ) {
