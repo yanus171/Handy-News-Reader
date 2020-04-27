@@ -129,7 +129,7 @@
     <string name="accept">ACCEPT</string>
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
-    <string name="web_page_search_duckduckgo">Web page search (Duck Duck Go)</string>
+    <string name="web_page_search_duckduckgo">Search the Web (DuckDuckGo)</string>
     <string name="select_file">Select a file (SD-root)</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
@@ -353,11 +353,11 @@
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Without a feed</string>
     <string name="markAllAsRead">Mark all as read</string>
-    <string name="pageUp">page up / swipe down to (un)star</string>
+    <string name="pageUp">page up or\nswipe down to (un)star</string>
     <string name="pageDown">page down</string>
-    <string name="fullScreenToggle">Full screen toggle</string>
+    <string name="fullScreenToggle">toggle full screen</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">Toggle Action Bar</string>
+    <string name="actionBarToggle">toggle Action Bar</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article\'s list</string>
     <string name="question_delete_entry">Delete this article?</string>
@@ -382,7 +382,7 @@
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb"><b>Web Page - Links</b> <font color="gray">(load all links from page as different articles)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed or site link or keywords)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Web page search</b> <font color="gray"> (DuckDuckGo - find and load one article)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Search the Web </b> <font color="gray"> (DuckDuckGo - find and load one article)</font></string>
     <string name="loadTypeOneWebPage"><b>Web Page - Divide</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
@@ -394,7 +394,7 @@
     <string name="menu_toggle_theme">Change theme</string>
     <string name="turnOn">Turn on</string>
     <string name="brightness">Brightness</string>
-    <string name="brightness_change">Brightness change</string>
+    <string name="brightness_change">brightness change</string>
     <string name="criticalErrorOccured">A critical error occurred in thу application. Please send this text to developer</string>
     <string name="criticalErrorSending">Sending critical error…</string>
     <string name="copyToClipboard">To clipboard</string>
