@@ -262,7 +262,7 @@
     <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">Load images</string>
     <string name="settings_display_images_description">Display images in entries</string>
-    <string name="settings_display_entries_fullscreen">Auto-fullscreen entries</string>
+    <string name="settings_display_entries_fullscreen">Fullscreen reading mode</string>
     <string name="settings_entry_margins">Margins</string>
     <string name="settings_entry_margins_description">Left | right</string>
     <string name="entry_text_align_justify">Justified text</string>
