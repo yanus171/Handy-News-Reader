@@ -221,7 +221,7 @@
     <string name="settings_refresh_on_open_description">Refreshes all feeds after opening the application</string>
     <string name="settings_refresh_wifi_only">Refresh only over Wi-Fi</string>
     <string name="settings_refresh_wifi_only_description">Automatic refresh will only be done if Wi-Fi connection is available</string>
-    <string name="settings_keep_time">Time that the entries will be kept</string>
+    <string name="settings_keep_time">Articles preservation time</string>
     <string name="settings_preload_image_mode">Preload images</string>
     <string name="settings_max_image_download_count">Max image download count</string>
     <string name="settings_max_image_download_count_description">Per one article</string>
