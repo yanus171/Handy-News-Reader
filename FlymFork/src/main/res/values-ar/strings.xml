@@ -299,7 +299,7 @@
     <string name="page_up_down_90_pct">تمرير الصفحة 90٪</string>
     <string name="page_up_down_90_pct_descr">للحفاظ على عدة أسطر من الصفحة السابقة</string>
     <string name="settings_remember_last_entry">تذَكُر المقال الأخير</string>
-    <string name="settings_remeber_last_entry_description">إفتح آخر مقال تم عرضه في الجلسة السابقة، وبخلاف ذلك أظهر قائمة الغير مقروءة</string>
+    <string name="settings_remeber_last_entry_description">فَتْحُ آخَرُ مَقالٍ تَمَّ عَرْضُهُ فِي الجَلْسَةِ السّابِقَةِ، وَبِخِلَافِ ذَلِكَ سَيَتِمُّ إِظْهارُ قائِمَةِ \"غَيْرُ مَقْرُوءَة\"</string>
     <string name="auto_unstart_at_bottom">إلغاء علامة النجمة تلقائياً</string>
     <string name="auto_unstart_at_bottom_descr">إِزالَةُ المَقالِ تِلْقَائِيًّا مِنْ المُمَيَّزَةِ عِنْدَ الوُصولِ لِأَسْفَلِهِ</string>
     <string name="settings_category_advanced">الإعدادات المُتقدمة</string>
@@ -368,7 +368,7 @@
     <string name="keyword">الكلمات الدلالية</string>
     <string name="loadTypeWeb"><b>صَفْحَةُ وِيبْ - رَوابِطُ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
     <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
-    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ (DuckDuckGo)</b> <font color="gray">(بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
+    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ </b> <font color="gray"> (DuckDuckGo - بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
     <string name="loadTypeOneWebPage"><b>صَفْحَةُ وِيبْ - تَقْسيمٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
@@ -421,7 +421,7 @@
     <string name="delete_read_articles">حَذف المَقالات المَقروءة</string>
     <string name="delete_read_articles_descr">بِغَض النَظَر عَن فَترَة الإحتِفاظ بالمَقال</string>
     <string name="data_folder">مُجَلّد البَيانات</string>
-    <string name="data_folder_descr">ذاكِرَة تَخزين نصوص وصوَر المَقالات المُحَمَّلَة</string>
+    <string name="data_folder_descr">مَكانُ تَخْزينِ المَقَالَاتِ اَلَّتِي تَمَّ تَحْميلُها، نَصًّا وَصُوَرًا</string>
     <string name="internalMemory">الذاكِرَةُ الداخليّة(Cache)</string>
     <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
     <string name="show_html">عَرْضُ الـ HTML</string>
