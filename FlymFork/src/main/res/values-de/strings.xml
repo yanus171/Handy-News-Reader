@@ -215,7 +215,7 @@
     <string name="settings_refresh_on_open_description">Aktualisiert alle Feeds beim Öffnen der App</string>
     <string name="settings_refresh_wifi_only">Nur über WLAN aktualisieren</string>
     <string name="settings_refresh_wifi_only_description">Die automatische Aktualisierung wird nur bei aktiver WLAN-Verbindung durchgeführt</string>
-    <string name="settings_keep_time">Zeit wie lange Artikel aufgehoben werden</string>
+    <string name="settings_keep_time">Aufbewahrungszeit für Artikel</string>
     <string name="settings_preload_image_mode">Bilder vorab laden</string>
     <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
     <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
