@@ -468,7 +468,7 @@
     <string name="tasks_to_download">To load</string>
     <string name="settings_current_setting">Current setting</string>
     <string name="unable_to_load_article_icon">Unable to load article icon</string>
-    <string name="settings_delete_old_interval">Delete old articles interval</string>
+    <string name="settings_delete_old_interval">Articles age check interval</string>
     <string name="settings_delete_old_interval_descr">When to delete old articles and calculate article, feed and group images size on sdcard</string>
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>
