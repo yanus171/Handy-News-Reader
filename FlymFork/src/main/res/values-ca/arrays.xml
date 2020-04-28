@@ -1,49 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="settings_intervals">
-        <item>دقيقة</item>
-        <item>5 دقائق</item>
-        <item>15 دقيقةً</item>
-        <item>30 دقيقةً</item>
-        <item>ساعة</item>
-        <item>ساعتان</item>
-        <item>3 ساعات</item>
-        <item>6 ساعات</item>
-        <item>12 ساعةً</item>
-        <item>يوم</item>
-        <item>يَوْمَانِ</item>
-        <item>3 أَيّامٍ</item>
+        <item>1 minut</item>
+        <item>5 minuts</item>
+        <item>15 minuts</item>
+        <item>30 minuts</item>
+        <item>1 hora</item>
+        <item>2 hores</item>
+        <item>3 hores</item>
+        <item>6 hores</item>
+        <item>12 hores</item>
+        <item>1 dia</item>
+        <item>2 day</item>
+        <item>3 day</item>
     </string-array>
     <string-array name="settings_keep_times">
-        <item>ساعة</item>
-        <item>12 ساعةً</item>
-        <item>يوم</item>
-        <item>يومان</item>
-        <item>4 أيام</item>
-        <item>إسبوع</item>
-        <item>إسبوعان</item>
-        <item>شهر</item>
-        <item>شهران</item>
-        <item>3 أشهر</item>
-        <item>دائماً</item>
-    </string-array>
-    <string-array name="settings_volume_buttons_action">
-        <item>إفتراضي</item>
-        <item>إنتقال للمقال التالي | السابق</item>
-        <item>الصفحة لأعلى | لِأسفل</item>
-    </string-array>
-    <string-array name="settings_preload_image_modes">
-        <item>مُطْلَقًا</item>
-        <item>عبر الواي فاي فقط</item>
-        <item>دائماً</item>
-    </string-array>
-    <string-array name="themeList">
-        <item>مضيء</item>
-        <item>داكن</item>
-    </string-array>
-    <string-array name="buttons_layout_captions">
-        <item>اُفُقِيٌّ</item>
-        <item>عَمودِيٌّ</item>
-        <item>عَدَمُ إِظْهارِ الأَزْرارِ</item>
+        <item>1 hour</item>
+        <item>12 hours</item>
+        <item>1 dia</item>
+        <item>2 dies</item>
+        <item>4 dies</item>
+        <item>1 setmana</item>
+        <item>2 setmanes</item>
+        <item>1 mes</item>
+        <item>2 mesos</item>
+        <item>3 mesos</item>
+        <item>Infinit</item>
     </string-array>
 </resources>
