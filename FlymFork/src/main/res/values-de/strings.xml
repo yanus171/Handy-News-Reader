@@ -370,7 +370,7 @@
     <string name="keyword">Schlüsselwort(e)</string>
     <string name="loadTypeWeb"><b>Web-Links</b> <font color="gray">(alle Links auf der Seite als unterschiedliche Artikel laden)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(Feed, Link oder Schlüsselworte)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Webseitensuche DuckDuckGo</b> <font color="gray">(einen Artikel finden und laden)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Webseitensuche</b> <font color="gray">(DuckDuckGo - einen Artikel finden und laden)</font></string>
     <string name="loadTypeOneWebPage"><b>Webseite auftrennen</b> <font color="gray">(Inhalt der Webseite mithilfe von Klassennamen der HTML-Tags in mehrere Artikel aufteilen)</font></string>
     <string name="loadType">Art des Ladens:</string>
     <string name="global_filter">Automatisch als Favorit markieren&#8230;</string>
@@ -423,7 +423,7 @@
     <string name="delete_read_articles">Gelesene Artikel löschen</string>
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
-    <string name="data_folder_descr">Speicher, wohin Artikel, Texte und Grafiken heruntergeladen werden sollen</string>
+    <string name="data_folder_descr">Speicher, wohin Artikeltexte und Grafiken heruntergeladen werden sollen</string>
     <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
@@ -446,7 +446,7 @@
     <string name="menu_reload_with_tables_toggle">Mit Tabellen</string>
     <string name="menu_display_options">Anzeigeoptionen</string>
     <string name="menu_reload">Neu laden&#8230;</string>
-    <string name="article_tap_enabled">Aktionen für Antippen aktiviert</string>
+    <string name="article_tap_enabled">Tipp-Zonen aktivieren</string>
     <string name="article_tap_enabled_summary">in Tipp-Zonen und Bereichen ohne Links (zur Menüanzeige)</string>
     <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
     <string name="setting_calculate_image_sizes">Größe der Bilder im Speicher</string>
