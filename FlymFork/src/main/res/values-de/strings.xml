@@ -215,7 +215,7 @@
     <string name="settings_refresh_on_open_description">Aktualisiert alle Feeds beim Öffnen der App</string>
     <string name="settings_refresh_wifi_only">Nur über WLAN aktualisieren</string>
     <string name="settings_refresh_wifi_only_description">Die automatische Aktualisierung wird nur bei aktiver WLAN-Verbindung durchgeführt</string>
-    <string name="settings_keep_time">Zeit wie lange Artikel aufgehoben werden</string>
+    <string name="settings_keep_time">Aufbewahrungszeit für Artikel</string>
     <string name="settings_preload_image_mode">Bilder vorab laden</string>
     <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
     <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
@@ -224,7 +224,7 @@
     <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
     <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
     <string name="settings_load_comments">Kommentare laden</string>
-    <string name="settings_load_comments_description">im gesamten Artikeltext</string>
+    <string name="settings_load_comments_description">Auch Kommentare im gesamten Artikeltext laden</string>
     <string name="settings_category_article_list">Artikelliste</string>
     <string name="settings_category_article_list_summary">Aussehen der Artikelliste</string>
     <string name="settings_font_size">Schriftgröße</string>
@@ -242,7 +242,7 @@
     <string name="show_new_icon">Symbol für neue Artikel</string>
     <string name="show_new_icon_descr">Nie gesehene Artikel durch ein kleines Plus-Symbol markieren</string>
     <string name="show_read_article_count">Anzahl der gelesenen Artikel zeigen</string>
-    <string name="show_read_article_count_descr">in der Feedliste</string>
+    <string name="show_read_article_count_descr">In der Feed-Liste die Anzahl der gelesenen Artikel anzeigen</string>
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
     <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
     <string name="textColorRead">Textfarbe (gelesen)</string>
@@ -288,8 +288,8 @@
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
     <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
-    <string name="settings_category_notification">Benachrichtigungen \u0026 Verhalten</string>
-    <string name="settings_category_notification_summary">Benachrichtigungen bei neuen Artikeln und das Verhalten beim Benutzen dieser App</string>
+    <string name="settings_category_notification">Benachrichtigungen</string>
+    <string name="settings_category_notification_summary">Benachrichtigung bei neuen Artikeln</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
@@ -370,8 +370,8 @@
     <string name="keyword">Schlüsselwort(e)</string>
     <string name="loadTypeWeb"><b>Web-Links</b> <font color="gray">(alle Links auf der Seite als unterschiedliche Artikel laden)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(Feed, Link oder Schlüsselworte)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Webseitensuche DuckDuckGo</b> <font color="gray">(einen Artikel finden und laden)</font></string>
-    <string name="loadTypeOneWebPage"><b>Eine Seite</b> <font color="gray">(Inhalt der Webseite mithilfe von Klassennamen der HTML-Tags in mehrere Artikel unterteilen)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Webseitensuche</b> <font color="gray">(DuckDuckGo - einen Artikel finden und laden)</font></string>
+    <string name="loadTypeOneWebPage"><b>Webseite auftrennen</b> <font color="gray">(Inhalt der Webseite mithilfe von Klassennamen der HTML-Tags in mehrere Artikel aufteilen)</font></string>
     <string name="loadType">Art des Ladens:</string>
     <string name="global_filter">Automatisch als Favorit markieren&#8230;</string>
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
@@ -423,7 +423,7 @@
     <string name="delete_read_articles">Gelesene Artikel löschen</string>
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
-    <string name="data_folder_descr">Speicher, wohin Artikel, Texte und Grafiken heruntergeladen werden sollen</string>
+    <string name="data_folder_descr">Speicher, wohin Artikeltexte und Grafiken heruntergeladen werden sollen</string>
     <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
@@ -446,7 +446,7 @@
     <string name="menu_reload_with_tables_toggle">Mit Tabellen</string>
     <string name="menu_display_options">Anzeigeoptionen</string>
     <string name="menu_reload">Neu laden&#8230;</string>
-    <string name="article_tap_enabled">Aktionen für Antippen aktiviert</string>
+    <string name="article_tap_enabled">Tipp-Zonen aktivieren</string>
     <string name="article_tap_enabled_summary">in Tipp-Zonen und Bereichen ohne Links (zur Menüanzeige)</string>
     <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
     <string name="setting_calculate_image_sizes">Größe der Bilder im Speicher</string>
@@ -460,8 +460,8 @@
     <string name="settings_delete_old_interval_descr">Wann werden alte Artikel gelöscht und die Größe von Artikeln, Feeds und Gruppenbildern auf der SD-Karte berechnet?</string>
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
-    <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
-    <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
+    <string name="tool_bar_color">Farbe der Werkzeugleiste &amp; Tasten</string>
+    <string name="tool_bar_color_desc">Diese Farbeinstellung wird für die Tasten innerhalb der Artikel und für die Statusleiste verwendet</string>
     <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Artikelansicht bearbeiten\". Hiermit werden die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
     <string name="one_webpage_article_classname_label">Root-Artikel-Element</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
@@ -492,6 +492,9 @@
     <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <string name="article_text_show_battery">Akkustand anzeigen</string>
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
+    <string name="article_text_buttons_layout">Aussehen der Tasten</string>
+    <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
+    <string name="article_reading_notification_hint">Damit die App beim Lesen eines Artikels im Speicher bleibt</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

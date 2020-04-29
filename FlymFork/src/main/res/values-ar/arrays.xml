@@ -41,4 +41,9 @@
         <item>مضيء</item>
         <item>داكن</item>
     </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>اُفُقِيٌّ</item>
+        <item>عَمودِيٌّ</item>
+        <item>عَدَمُ إِظْهارِ الأَزْرارِ</item>
+    </string-array>
 </resources>

@@ -240,7 +240,7 @@
     <string name="show_full_text_indicator_descr">Показывать иконку маленькой дискеты, если для статьи загружен полный текст</string>
     <string name="show_new_icon">Подкрашивать новые</string>
     <string name="show_new_icon_descr">Маленькая иконка с полюсом на новых статьях (названия которых еще никогда не были видимы)</string>
-    <string name="show_read_article_count">Число прочитанных статей лент</string>
+    <string name="show_read_article_count">Число прочитанных статей</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
@@ -366,10 +366,10 @@
     <string name="reload_full_text_with_tags">Редактировать содержимое</string>
     <string name="filter_hint">Все фильтры объединяются по ИЛИ. Загружать перевешивает Не загружать</string>
     <string name="keyword">Ключевое слово</string>
-    <string name="loadTypeWeb"><b>Web</b><font color="gray"> (загружать все ссылки со страницы)</font></string>
+    <string name="loadTypeWeb"><b>Web страница - ссылки</b><font color="gray"> (загружать все ссылки со страницы)</font></string>
     <string name="loadTypeRSS"><b>RSS</b><font color="gray"> (адрес ленты или сайта или ключевое слово)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Веб поиск DuckDuckGo</b><font color="gray">  (найти и загрузить одну статью)</font></string>
-    <string name="loadTypeOneWebPage"><b>Одна страница</b><font color="gray"> (разделить содержимое одной страницы на множество статей, используя теги имен html класса)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Веб поиск </b><font color="gray"> (DuckDuckGo - найти и загрузить одну статью)</font></string>
+    <string name="loadTypeOneWebPage"><b>Web страница - разделить</b><font color="gray"> (разделить содержимое одной страницы на множество статей, используя теги имен html класса)</font></string>
     <string name="loadType">Тип загрузки:</string>
     <string name="global_filter">Глобальный фильтр &#8230;</string>
     <string name="global_filter_descr">Фильтр, применяемый к каждой ленте. Для отключения оставьте текст фильтра (и регулярного выражения) пустым</string>
@@ -493,7 +493,7 @@
     <string name="settings_category_header_descr">Для экранов чтения статьи, а также на списка статей</string>
     <string name="article_text_buttons_layout">Расположение кнопок</string>
     <string name="article_text_buttons_layout_descr">Ориентация и видимость кнопок в конце статьи</string>
-    <string name="article_reading_notification_hint">Для сохранения приложения в памяти при чтении статьи</string>
+    <string name="article_reading_notification_hint">Чтобы оставлять приложение в памяти во время чтения статьи</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>

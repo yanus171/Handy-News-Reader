@@ -143,7 +143,6 @@ public class OPML {
     void importFromFile(String filename) throws IOException, SAXException {
         importFromFile(new FileInputStream(filename));
     }
-
     public static
     void importFromFile(Uri fileUri) throws IOException, SAXException {
         importFromFile( MainApplication.getContext().getContentResolver().openInputStream(fileUri));

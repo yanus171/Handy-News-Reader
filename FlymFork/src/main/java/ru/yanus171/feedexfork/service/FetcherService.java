@@ -134,6 +134,8 @@ import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
+import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
@@ -300,10 +302,10 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     try {
-                        if ( intent.hasExtra( Constants.EXTRA_FILENAME ) )
-                            OPML.importFromFile( intent.getStringExtra( Constants.EXTRA_FILENAME ) );
-                        else if ( intent.hasExtra( Constants.EXTRA_URI ) )
-                            OPML.importFromFile( Uri.parse( intent.getStringExtra( Constants.EXTRA_URI ) ) );
+                        if ( intent.hasExtra( EXTRA_FILENAME ) )
+                            OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ) );
+                        else if ( intent.hasExtra( EXTRA_URI ) )
+                            OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ) );
                     } catch (Exception e) {
                         DebugApp.SendException(e, FetcherService.this);
                     }
@@ -317,6 +319,9 @@ public class FetcherService extends IntentService {
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
             startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+            synchronized (mCancelRefresh) {
+                mCancelRefresh = false;
+            }
             long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
             long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);

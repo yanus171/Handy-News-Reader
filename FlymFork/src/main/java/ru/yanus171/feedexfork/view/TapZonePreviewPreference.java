@@ -1,11 +1,15 @@
 package ru.yanus171.feedexfork.view;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import ru.yanus171.feedexfork.R;
@@ -27,7 +31,19 @@ public final class TapZonePreviewPreference extends DialogPreference {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_entry, null, false);
         SetupZoneSizes(view);
+        view.findViewById( R.id.btnEndEditing ).setVisibility( View.GONE );
+        view.findViewById( R.id.progressText ).setVisibility( View.GONE );
+        view.findViewById( R.id.progressBarLoader ).setVisibility( View.GONE );
+        view.findViewById( R.id.statusText ).setVisibility( View.GONE );
+        view.findViewById( R.id.errorText ).setVisibility( View.GONE );
         return view;
+    }
+    @Override
+    protected void showDialog(Bundle state) {
+        super.showDialog(state);
+        AlertDialog d = (AlertDialog) getDialog();
+        Button b = d.getButton(AlertDialog.BUTTON_NEGATIVE);
+        b.setVisibility(View.GONE);
     }
 
     public static void SetupZoneSizes(View parentView) {

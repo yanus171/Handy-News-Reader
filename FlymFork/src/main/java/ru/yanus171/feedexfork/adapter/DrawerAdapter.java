@@ -322,7 +322,7 @@ public class DrawerAdapter extends BaseAdapter {
     public JSONObject getOptions(int position) {
         try {
             return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) ? new JSONObject( mFeedsCursor.getString(POS_OPTIONS) ) : new JSONObject();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new JSONObject();
         }

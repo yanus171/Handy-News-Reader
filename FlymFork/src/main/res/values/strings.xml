@@ -129,7 +129,7 @@
     <string name="accept">ACCEPT</string>
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
-    <string name="web_page_search_duckduckgo">Web page search (Duck Duck Go)</string>
+    <string name="web_page_search_duckduckgo">Search the Web (DuckDuckGo)</string>
     <string name="select_file">Select a file (SD-root)</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
@@ -211,7 +211,7 @@
     <string name="settings_color_text_sample_long">\u201cWhen you are courting a nice girl an hour seems like a second. When you sit on a red-hot cinder a second seems like an hour. That\'s relativity.\u201d\n(Albert Einstein)</string>
 
     <string name="settings_category_refresh">Article refresh</string>
-    <string name="settings_category_refresh_summary">Automatic refresh and time to keep the articles</string>
+    <string name="settings_category_refresh_summary">Automatic refresh and time to keep articles</string>
     <string name="settings_refresh_enabled">Enable automatic refresh</string>
     <string name="settings_refresh_interval">Refresh interval</string>
     <string name="settings_min_update_battery_level">Min. battery level</string>
@@ -221,7 +221,7 @@
     <string name="settings_refresh_on_open_description">Refreshes all feeds after opening the application</string>
     <string name="settings_refresh_wifi_only">Refresh only over Wi-Fi</string>
     <string name="settings_refresh_wifi_only_description">Automatic refresh will only be done if Wi-Fi connection is available</string>
-    <string name="settings_keep_time">Time that the entries will be kept</string>
+    <string name="settings_keep_time">Articles preservation time</string>
     <string name="settings_preload_image_mode">Preload images</string>
     <string name="settings_max_image_download_count">Max image download count</string>
     <string name="settings_max_image_download_count_description">Per one article</string>
@@ -230,10 +230,10 @@
     <string name="max_single_refresh_traffic_mb">Max single refresh traffic</string>
     <string name="max_single_refresh_traffic_mb_descr">The refresh will stop when traffic reaches max value (in MB) and is not over WiFi</string>
     <string name="settings_load_comments">Load comments</string>
-    <string name="settings_load_comments_description">In articles\' full text</string>
+    <string name="settings_load_comments_description">In article full text</string>
 
-    <string name="settings_category_article_list">Articles\' list</string>
-    <string name="settings_category_article_list_summary">Appearance of articles\' list</string>
+    <string name="settings_category_article_list">Article list</string>
+    <string name="settings_category_article_list_summary">Appearance of article list</string>
     <string name="settings_font_size">Text size</string>
     <string name="show_article_icon">Show article icon</string>
     <string name="show_article_icon_descr">Turn off to gain more space of the screen</string>
@@ -243,26 +243,26 @@
     <string name="show_mark_all_as_read_button">Mark all as read button</string>
     <string name="show_mark_all_as_read_button_summary">Show Mark all articles as read button - otherwise You will find this option in menu</string>
     <string name="show_read_checkbox">Read checkbox</string>
-    <string name="show_read_checkbox_descr">Show small checkbox to indicate that article is read</string>
+    <string name="show_read_checkbox_descr">Show small checkbox to indicate that article has been read</string>
     <string name="show_full_text_indicator">Full text indicator</string>
-    <string name="show_full_text_indicator_descr">Show small diskette icon to indicate that article full text was loaded</string>
+    <string name="show_full_text_indicator_descr">Show small diskette icon to indicate that article full text has been loaded</string>
     <string name="show_new_icon">New article icon</string>
     <string name="show_new_icon_descr">Little plus icon on new articles (which had never be seen)</string>
-    <string name="show_read_article_count">Show read article count</string>
+    <string name="show_read_article_count">Show read articles count</string>
     <string name="show_read_article_count_descr">In feed list</string>
-    <string name="show_group_entrries_count">Group article count</string>
+    <string name="show_group_entrries_count">Group articles count</string>
     <string name="show_group_entries_count_descr">may reduce performance</string>
     <string name="textColorRead">Read articles</string>
     <string name="textColorRead_descr">Read articles text and background color</string>
     <string name="settings_color_text_read_sample_short">Read</string>
     <string name="settings_color_text_read_sample_long">Read articles</string>
 
-    <string name="settings_category_article_text">Article\'s text</string>
-    <string name="settings_category_article_text_summary">Appearance of article\'s text</string>
+    <string name="settings_category_article_text">Article text</string>
+    <string name="settings_category_article_text_summary">Appearance of article text</string>
     <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">Load images</string>
     <string name="settings_display_images_description">Display images in entries</string>
-    <string name="settings_display_entries_fullscreen">Auto-fullscreen entries</string>
+    <string name="settings_display_entries_fullscreen">Fullscreen reading mode</string>
     <string name="settings_entry_margins">Margins</string>
     <string name="settings_entry_margins_description">Left | right</string>
     <string name="entry_text_align_justify">Justified text</string>
@@ -310,10 +310,10 @@
     <string name="settings_notifications_light_description">Enable notification light on new entries</string>
     <string name="page_up_down_90_pct">Page scroll 90%</string>
     <string name="page_up_down_90_pct_descr">To preserve several lines from the previous page - if unchecked, the whole page will be scrolled</string>
-    <string name="settings_remember_last_entry">Remember last article</string>
-    <string name="settings_remeber_last_entry_description">Open last viewed article on startup, otherwise unread entries list</string>
+    <string name="settings_remember_last_entry">Remember the last article</string>
+    <string name="settings_remeber_last_entry_description">Open the last viewed article on startup, otherwise unread entries list</string>
     <string name="auto_unstart_at_bottom">Auto unstar when finish reading</string>
-    <string name="auto_unstart_at_bottom_descr">Auto remove the article from Favorites when the article bottom was reached</string>
+    <string name="auto_unstart_at_bottom_descr">Auto remove the article from Favorites when the article bottom has been reached</string>
 
     <string name="settings_category_advanced">Advanced</string>
     <string name="settings_category_advanced_summary">Additional features (such as backup, filters and more)</string>
@@ -353,13 +353,13 @@
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Without a feed</string>
     <string name="markAllAsRead">Mark all as read</string>
-    <string name="pageUp">page up / swipe down to (un)star</string>
+    <string name="pageUp">page up or\nswipe down to (un)star</string>
     <string name="pageDown">page down</string>
-    <string name="fullScreenToggle">Full screen toggle</string>
+    <string name="fullScreenToggle">toggle full screen</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">Toggle Action Bar</string>
+    <string name="actionBarToggle">toggle Action Bar</string>
     <string name="standard">Standard</string>
-    <string name="fontsize_entrylist">Font size in article\'s list</string>
+    <string name="fontsize_entrylist">Font size in article list</string>
     <string name="question_delete_entry">Delete this article?</string>
     <string name="share_all_text">Share whole text</string>
     <string name="group">Group</string>
@@ -368,21 +368,21 @@
     <string name="show_progress_info_descr">Show detailed info about current operation</string>
     <string name="vibrate_on_article_list_entry_swype">Vibrate on swipe</string>
     <string name="vibrate_on_article_list_entry_swype_summary">On article list entry and in article text window while starring</string>
-    <string name="entry_marked_unfavourite">The article was removed from Favorites</string>
-    <string name="entry_marked_favourite">The article was added to Favorites</string>
+    <string name="entry_marked_unfavourite">The article has been removed from Favorites</string>
+    <string name="entry_marked_favourite">The article has been added to Favorites</string>
     <string name="new_feed_was_added">New feed was added</string>
-    <string name="entry_marked_unread">The article was marked as unread</string>
+    <string name="entry_marked_unread">The article has been marked as unread</string>
     <string name="lock_orientation">Landscape orientation</string>
     <string name="markAsStarred">Mark as starred</string>
-    <string name="markedAsStarred">The article was marked as starred: </string>
-    <string name="deleteAllEntries">Delete all non starred showing articles?</string>
+    <string name="markedAsStarred">The article has been marked as starred: </string>
+    <string name="deleteAllEntries">Delete all non-starred displayed articles?</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Edit Content View</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb"><b>Web Page - Links</b> <font color="gray">(load all links from page as different articles)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed or site link or keywords)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Web page search DuckDuckGo</b> <font color="gray">(find and load one article)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Search the Web </b> <font color="gray"> (DuckDuckGo - find and load one article)</font></string>
     <string name="loadTypeOneWebPage"><b>Web Page - Divide</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
     <string name="loadType">Load type:</string>
     <string name="global_filter">Global filter&#8230;</string>
@@ -394,7 +394,7 @@
     <string name="menu_toggle_theme">Change theme</string>
     <string name="turnOn">Turn on</string>
     <string name="brightness">Brightness</string>
-    <string name="brightness_change">Brightness change</string>
+    <string name="brightness_change">brightness change</string>
     <string name="criticalErrorOccured">A critical error occurred in thу application. Please send this text to developer</string>
     <string name="criticalErrorSending">Sending critical error…</string>
     <string name="copyToClipboard">To clipboard</string>
@@ -435,7 +435,7 @@
     <string name="delete_read_articles">Delete read articles</string>
     <string name="delete_read_articles_descr">regardless of the articles keep time</string>
     <string name="data_folder">Data folder</string>
-    <string name="data_folder_descr">Where to store downloaded articles texts and images</string>
+    <string name="data_folder_descr">Where to store downloaded articles text and images</string>
     <string name="internalMemory">Internal memory (Cache)</string>
     <string name="externalMemory">External memory</string>
     <string name="show_html">Show HTML</string>
@@ -468,7 +468,7 @@
     <string name="tasks_to_download">To load</string>
     <string name="settings_current_setting">Current setting</string>
     <string name="unable_to_load_article_icon">Unable to load article icon</string>
-    <string name="settings_delete_old_interval">Delete old articles interval</string>
+    <string name="settings_delete_old_interval">Articles age check interval</string>
     <string name="settings_delete_old_interval_descr">When to delete old articles and calculate article, feed and group images size on sdcard</string>
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>

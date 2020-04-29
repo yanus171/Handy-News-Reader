@@ -287,8 +287,6 @@
     <string name="brightness_gesture_descr">Cochez cette case pour ajuster la luminosité en glissant vers le haut/bas le long du bord gauche de l\'écran</string>
     <string name="brightness_with_dim_activity">Superposition du logiciel</string>
     <string name="brightness_with_dim_activity_descr">Baisser la luminosité en réduisant la transparence de la couleur d\'arrière-plan de la fenêtre (à cocher si le changement de luminosité ne fonctionne pas)</string>
-    <string name="settings_category_notification">Comportement des notifications \u0026</string>
-    <string name="settings_category_notification_summary">Notifications sur les nouveaux articles et le comportement de l\'application</string>
     <string name="settings_notifications_enabled">Activer les notifications</string>
     <string name="settings_notifications_enabled_description">Active les notifications en cas de nouveaux articles</string>
     <string name="settings_notifications_ringtone">Sonnerie</string>
