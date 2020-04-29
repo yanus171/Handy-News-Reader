@@ -593,7 +593,7 @@ public class EditFeedsListFragment extends ListFragment {
         if (requestCode == REQUEST_PICK_OPML_FILE) {
             if (resultCode == Activity.RESULT_OK) {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
-                        .putExtra( Constants.EXTRA_FILENAME, data.getData().getPath() ) );
+                        .putExtra( Constants.EXTRA_URI, data.getData().toString() ) );
             } else {
                 displayCustomFilePicker();
             }

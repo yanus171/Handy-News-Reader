@@ -133,6 +133,8 @@ import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
+import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
@@ -299,7 +301,10 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     try {
-                        OPML.importFromFile( intent.getStringExtra( Constants.EXTRA_FILENAME ) );
+                        if ( intent.hasExtra( EXTRA_FILENAME ) )
+                            OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ) );
+                        else if ( intent.hasExtra( EXTRA_URI ) )
+                            OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ) );
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (Exception e) {

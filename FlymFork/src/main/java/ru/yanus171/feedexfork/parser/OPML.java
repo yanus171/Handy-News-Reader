@@ -50,6 +50,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Xml;
@@ -140,6 +141,10 @@ public class OPML {
     public static
     void importFromFile(String filename) throws IOException, SAXException {
         importFromFile(new FileInputStream(filename));
+    }
+    public static
+    void importFromFile(Uri fileUri) throws IOException, SAXException {
+        importFromFile( MainApplication.getContext().getContentResolver().openInputStream(fileUri));
     }
 
     private static void importFromFile(InputStream input) throws IOException, SAXException {
