@@ -50,6 +50,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Xml;
@@ -59,6 +60,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -140,6 +142,11 @@ public class OPML {
     public static
     void importFromFile(String filename) throws IOException, SAXException {
         importFromFile(new FileInputStream(filename));
+    }
+
+    public static
+    void importFromFile(Uri fileUri) throws IOException, SAXException {
+        importFromFile( MainApplication.getContext().getContentResolver().openInputStream(fileUri));
     }
 
     private static void importFromFile(InputStream input) throws IOException, SAXException {
@@ -340,7 +347,7 @@ public class OPML {
     }
 
     private static final String[] FILTERS_PROJECTION = new String[]{FilterColumns.FILTER_TEXT, FilterColumns.IS_REGEX,
-            FilterColumns.IS_APPLIED_TO_TITLE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED};
+            FilterColumns.IS_APPLIED_TO_TITLE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED, FilterColumns.IS_REMOVE_TEXT,};
 
     private static void ExportFilters(Writer writer, String feedID) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
@@ -413,6 +420,7 @@ public class OPML {
         private static final String ATTRIBUTE_IS_APPLIED_TO_TITLE = "isAppliedToTitle";
         private static final String ATTRIBUTE_IS_ACCEPT_RULE = "isAcceptRule";
         private static final String ATTRIBUTE_IS_MARK_AS_STARRED = "isMarkAsStarred";
+        private static final String ATTRIBUTE_IS_REMOVE_TEXT = "isRemoveText";
         private final SharedPreferences.Editor mEditor;
 
         private boolean mBodyTagEntered = false;
@@ -497,6 +505,7 @@ public class OPML {
                     values.put(FilterColumns.IS_APPLIED_TO_TITLE, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_APPLIED_TO_TITLE)));
                     values.put(FilterColumns.IS_ACCEPT_RULE, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_ACCEPT_RULE)));
                     values.put(FilterColumns.IS_MARK_STARRED, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_MARK_AS_STARRED)));
+                    values.put(FilterColumns.IS_REMOVE_TEXT, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REMOVE_TEXT)));
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(mFeedId), values);

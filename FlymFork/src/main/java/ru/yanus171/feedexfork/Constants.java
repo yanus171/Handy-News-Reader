@@ -101,5 +101,6 @@ public final class Constants {
     public static final int VIBRATE_DURATION = 25;
 
     public static final String EXTRA_FILENAME = "FileName";
+    public static final String EXTRA_URI = "URI";
     public static final String CALCULATE_IMAGE_SIZES = "CalculateImageSizes";
 }

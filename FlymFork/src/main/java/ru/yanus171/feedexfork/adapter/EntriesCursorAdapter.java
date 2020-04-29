@@ -87,6 +87,7 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -128,7 +129,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowEntryText, mShowUnread;
     private boolean mBackgroundColorLight = false;
     private final static int MAX_TEXT_LEN = 2500;
-
+    FeedFilters mFilters = null;
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
     private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
@@ -390,7 +391,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.dateTextView.setVisibility(View.VISIBLE);
 
         final String feedTitle = cursor.getString(mFeedTitlePos);
-        String titleText = cursor.isNull( mTitlePos ) ? "" : cursor.getString(mTitlePos).replace( feedTitle == null ? "" : feedTitle, "" );
+        String titleText = GetTitle(cursor);
         holder.titleTextView.setVisibility( titleText.isEmpty() ? View.GONE : View.VISIBLE );
         holder.titleTextView.setText(titleText);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -537,8 +538,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     @NotNull
+    private String GetTitle(Cursor cursor) {
+        String text = cursor.isNull( mTitlePos ) ? "" : cursor.getString(mTitlePos);
+        if ( mFilters != null )
+            text = mFilters.removeText( text, true );
+        return text;
+    }
+
+    @NotNull
     private String GetHtmlAligned(String html) {
         return "<p align='" + getAlign(html) + "'>" +  html + "</p>";
+    }
+
+    public void setFilter( FeedFilters filters ) {
+        mFilters = filters;
     }
 
     class EntryContent {

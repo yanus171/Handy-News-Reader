@@ -90,6 +90,7 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -164,6 +165,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private View mRootView;
     public boolean mIsFinishing = false;
     private View mBtnEndEditing = null;
+    private FeedFilters mFilters = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -911,7 +913,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
             if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
                 Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
-                if ( mBaseUri.getPathSegments().get(1).equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
+                final String feedId = mBaseUri.getPathSegments().get(1);
+                if ( feedId.equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -923,6 +926,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         }
                     }).start();
                 }
+                mFilters = new FeedFilters(feedId);
             }
         } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
             mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
@@ -934,6 +938,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if (mCurrentPagerPos != -1) {
             mEntryPager.setCurrentItem(mCurrentPagerPos);
         }
+
 
         timer.End();
     }
@@ -1091,6 +1096,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 public void run() {
                     int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText), true); try {
                         FetcherService.mobilizeEntry( getCurrentEntryID(),
+                                                      mFilters,
                                                       mobilize,
                                                       FetcherService.AutoDownloadEntryImages.Yes,
                                                       true,
@@ -1431,6 +1437,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
                     mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
                                                       newCursor,
+                                                      mFilters,
                                                       mIsFullTextShown,
                                                       forceUpdate,
                                                       (EntryActivity) getActivity() );

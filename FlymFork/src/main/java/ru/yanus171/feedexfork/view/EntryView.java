@@ -103,6 +103,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -296,6 +297,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     public boolean setHtml(final long entryId,
                            Cursor newCursor,
+                           FeedFilters filters,
                            boolean isFullTextShown,
                            boolean forceUpdate,
                            EntryActivity activity) {
@@ -307,9 +309,11 @@ public class EntryView extends WebView implements Handler.Callback {
         final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
-        final String feedTitle = newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME));
-        final String title =
-            newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE)).replace( feedTitle, "" );
+        //final String feedTitle = filters.removeTextFromTitle( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
+        String title =
+            newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+        if ( filters != null )
+            title = filters.removeText( title, true );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -366,11 +370,12 @@ public class EntryView extends WebView implements Handler.Callback {
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
+        final String finalTitle = title;
         new Thread() {
             @Override
             public void run() {
                 synchronized (EntryView.this) {
-                    mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
+                    mDataWithWebLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
                     mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
@@ -389,7 +394,9 @@ public class EntryView extends WebView implements Handler.Callback {
         mLastContentLength = 0;
     }
 
-    private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
+    private String generateHtmlContent(String feedID, String title, String link, String contentText,
+                                       String enclosure, String author,
+                                       long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
         StringBuilder content = new StringBuilder(GetCSS(title)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));

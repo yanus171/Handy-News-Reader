@@ -249,6 +249,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             final RadioButton applyContentRadio = dialogView.findViewById(R.id.applyContentRadio);
             final RadioButton acceptRadio = dialogView.findViewById(R.id.acceptRadio);
             final RadioButton markAsStarredRadio = dialogView.findViewById(R.id.markAsStarredRadio);
+            final RadioButton removeTextRadio = dialogView.findViewById(R.id.removeText);
             final RadioButton rejectRadio = dialogView.findViewById(R.id.rejectRadio);
 
             filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)));
@@ -260,6 +261,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
             if (c.getInt(c.getColumnIndex(FilterColumns.IS_MARK_STARRED)) == 1) {
                 markAsStarredRadio.setChecked(true);
+            } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_REMOVE_TEXT)) == 1) {
+                removeTextRadio.setChecked(true);
             } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_ACCEPT_RULE)) == 1) {
                 acceptRadio.setChecked(true);
             } else {
@@ -285,6 +288,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                         values.put(FilterColumns.IS_APPLIED_TO_TITLE, applyTitleRadio.isChecked());
                                         values.put(FilterColumns.IS_ACCEPT_RULE, acceptRadio.isChecked());
                                         values.put(FilterColumns.IS_MARK_STARRED, markAsStarredRadio.isChecked());
+                                        values.put(FilterColumns.IS_REMOVE_TEXT, removeTextRadio.isChecked());
                                         if (cr.update(FilterColumns.CONTENT_URI, values, FilterColumns._ID + '=' + filterId, null) > 0) {
                                             cr.notifyChange(
                                                     FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(getIntent().getData().getLastPathSegment()),
@@ -742,6 +746,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     values.put(FilterColumns.IS_APPLIED_TO_TITLE, ((RadioButton) dialogView.findViewById(R.id.applyTitleRadio)).isChecked());
                                     values.put(FilterColumns.IS_ACCEPT_RULE, ((RadioButton) dialogView.findViewById(R.id.acceptRadio)).isChecked());
                                     values.put(FilterColumns.IS_MARK_STARRED, ((RadioButton) dialogView.findViewById(R.id.markAsStarredRadio)).isChecked());
+                                    values.put(FilterColumns.IS_REMOVE_TEXT, ((RadioButton) dialogView.findViewById(R.id.removeText)).isChecked());
 
                                     ContentResolver cr = getContentResolver();
                                     cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedId), values);

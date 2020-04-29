@@ -49,7 +49,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -57,6 +56,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -73,7 +73,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import static android.icu.lang.UCharacter.SentenceBreak.SEP;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
@@ -93,7 +92,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     private static final int ENTRIES_LOADER_ID = 1;
-    private static final int NEW_ENTRIES_NUMBER_LOADER_ID = 2;
+    //private static final int NEW_ENTRIES_NUMBER_LOADER_ID = 2;
+    private static final int FILTERS_LOADER_ID = 3;
     public static final String STATE_OPTIONS = "STATE_OPTIONS";
 
     private Uri mCurrentUri, mOriginalUri;
@@ -113,6 +113,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
+    private FeedFilters mFilters = null;
+
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     static class VisibleReadItem {
@@ -138,43 +140,61 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
 
-    private final LoaderManager.LoaderCallbacks<Cursor> mEntriesLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
+    private final LoaderManager.LoaderCallbacks<Cursor> mLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
         @NonNull
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader" );
+            if ( id == ENTRIES_LOADER_ID ) {
+                Timer.Start(ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader");
 
-            String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
-            //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
-            String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
-            CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
-            cursorLoader.setUpdateThrottle(150);
-            Status().End( mStatus );
-            mStatus = Status().Start( R.string.article_list_loading, true );
-            return cursorLoader;
+                String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
+                //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
+                String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
+                cursorLoader.setUpdateThrottle(150);
+                Status().End(mStatus);
+                mStatus = Status().Start(R.string.article_list_loading, true);
+                return cursorLoader;
+            } else if ( id == FILTERS_LOADER_ID) {
+                Timer.Start(FILTERS_LOADER_ID, "EntriesListFr.Filters.onCreateLoader");
+                final String feedID = mCurrentUri.getPathSegments().get(1);
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), FeedFilters.getCursorUri(feedID), FeedFilters.getCursorProjection(), null, null, null);
+                cursorLoader.setUpdateThrottle(150);
+                //Status().End(mStatus);
+                //mStatus = Status().Start(R.string.article_list_loading, true);
+                return cursorLoader;
+            }
+            return null;
         }
 
         @Override
         public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-            Timer.End(ENTRIES_LOADER_ID);
-            Timer timer = new Timer( "EntriesListFragment.onCreateLoader" );
+            if (loader.getId() == ENTRIES_LOADER_ID) {
+                Timer.End(ENTRIES_LOADER_ID);
+                Timer timer = new Timer("EntriesListFragment.onCreateLoader");
 
-            mEntriesCursorAdapter.swapCursor(data);
-            if ( mNeedSetSelection ) {
-                mNeedSetSelection = false;
-                mListView.setSelection( IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos() );
+                mEntriesCursorAdapter.swapCursor(data);
+                if (mNeedSetSelection) {
+                    mNeedSetSelection = false;
+                    mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
+                }
+                RestoreListScrollPosition();
+                getActivity().setProgressBarIndeterminateVisibility(false);
+                Status().End(mStatus);
+                timer.End();
+            } else if (loader.getId() == FILTERS_LOADER_ID) {
+                mFilters = new FeedFilters(data);
+                mEntriesCursorAdapter.setFilter(mFilters);
             }
-            RestoreListScrollPosition();
-            getActivity().setProgressBarIndeterminateVisibility( false );
-            Status().End( mStatus );
-            timer.End();
         }
 
         @Override
         public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-            Status().End( mStatus );
-            //getActivity().setProgressBarIndeterminateVisibility( true );
-            mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
+            if ( loader.getId() == ENTRIES_LOADER_ID ) {
+                Status().End( mStatus );
+                //getActivity().setProgressBarIndeterminateVisibility( true );
+                mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
+            }
         }
 
     };
@@ -947,11 +967,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         //HACK: 2 times to workaround a hard-to-reproduce bug with non-refreshing loaders...
         Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesLoader" );
-        loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mEntriesLoader);
-        Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesNumberLoader" );
+        loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mLoader);
+        if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 )
+            loaderManager.restartLoader(FILTERS_LOADER_ID, null, mLoader);
+        //Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesNumberLoader" );
         //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
 
-        loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mEntriesLoader);
+        //loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mEntriesLoader);
         //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
     }
 

@@ -400,7 +400,7 @@ public class RssAtomParser extends DefaultHandler {
                     ArrayList<String> imagesUrls = null;
                     if (mDescription != null) {
                         // Improve the description
-                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl, ArticleTextExtractor.MobilizeType.No, true);
+                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl, mFilters, ArticleTextExtractor.MobilizeType.No, true);
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
                             imagesUrls = new ArrayList<>();

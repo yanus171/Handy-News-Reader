@@ -113,7 +113,8 @@ object HTMLParser {
         } finally {
             connection?.disconnect()
         }
-        val uriMainEntry = LoadLink(feedID, feedUrl, "", ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID)).first
+        val filters = FeedFilters(feedID)
+        val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID)).first
         val cr = MainApplication.getContext().contentResolver
         run {
             val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
@@ -124,13 +125,12 @@ object HTMLParser {
             }
             cursor.close()
         }
-        val filters = FeedFilters(feedID)
 
         class Item(var mUrl: String, var mCaption: String)
 
         val urlNextPage: String
         val listItem = ArrayList<Item>()
-        val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, ArticleTextExtractor.MobilizeType.Yes, false, false)
+        val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, filters, ArticleTextExtractor.MobilizeType.Yes, false, false)
         doc = Jsoup.parse(content)
         run {
             val list: Elements = doc.select("a")
@@ -166,7 +166,7 @@ object HTMLParser {
                     result.mAttemptNumber = 0
                     result.mTaskID = 0L
                     result.mOK = false
-                    val load = LoadLink(feedID, item.mUrl, item.mCaption, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID))
+                    val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID))
                     val uri = load.first
                     if (load.second) {
                         result.mOK = true
