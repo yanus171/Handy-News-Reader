@@ -41,4 +41,9 @@
         <item>Світла</item>
         <item>Темна</item>
     </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Горизонтально</item>
+        <item>Вертикально</item>
+        <item>Не показувати кнопки</item>
+    </string-array>
 </resources>

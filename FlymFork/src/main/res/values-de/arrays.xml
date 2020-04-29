@@ -44,6 +44,6 @@
     <string-array name="buttons_layout_captions">
         <item>Horizontal</item>
         <item>Vertikal</item>
-        <item>Schaltflächen nicht anzeigen</item>
+        <item>Tasten nicht anzeigen</item>
     </string-array>
 </resources>
