@@ -447,7 +447,6 @@
     <string name="menu_display_options">Anzeigeoptionen</string>
     <string name="menu_reload">Neu laden&#8230;</string>
     <string name="article_tap_enabled">Tipp-Zonen aktivieren</string>
-    <string name="article_tap_enabled_summary">in Tipp-Zonen und Bereichen ohne Links (zur Menüanzeige)</string>
     <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
     <string name="setting_calculate_image_sizes">Größe der Bilder im Speicher</string>
     <string name="setting_calculate_image_sizes_descr">Speicherbedarf geladener Bilder pro Artikel, Feed, Gruppe usw. berechnen und anzeigen (die Werte werden während der Aktualisierung neu berechnet)</string>
