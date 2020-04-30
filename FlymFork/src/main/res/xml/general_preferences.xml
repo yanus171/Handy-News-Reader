@@ -514,7 +514,6 @@
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:key="delete_old_interval"
                 android:defaultValue="86400000"
-                android:dependency="refresh.enabled"
                 android:entries="@array/settings_intervals"
                 android:entryValues="@array/settings_interval_values"
                 android:inputType="number"
@@ -523,7 +522,6 @@
             <CheckBoxPreference
                 android:key="delete_old_requires_charging"
                 android:defaultValue="false"
-                android:dependency="refresh.enabled"
                 android:title="@string/auto_refresh_requires_charging"/>
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:layout_width="wrap_content"

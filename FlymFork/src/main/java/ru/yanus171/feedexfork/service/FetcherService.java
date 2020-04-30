@@ -1066,18 +1066,20 @@ public class FetcherService extends IntentService {
         return Executors.newFixedThreadPool(THREAD_NUMBER);
     }
 
-
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
         if ( isCancelRefresh() )
             return;
         int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries), false);
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
-                new String[]{_ID, FeedColumns.OPTIONS},
-                FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
+                                       new String[]{_ID, FeedColumns.OPTIONS},
+                                       FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
         try {
             //mIsDeletingOld = true;
-            while (cursor.moveToNext()) {
+            int index = 1;
+            while (cursor.moveToNext() && !isCancelRefresh()) {
+                index++;
+                Status().ChangeProgress( String.format( "%d / %d", index, cursor.getCount() ) );
                 long keepDateBorderTime = defaultKeepDateBorderTime;
                 final String jsonText = cursor.isNull( 1 ) ? "" : cursor.getString(1);
                 if ( !jsonText.isEmpty() )
@@ -1089,21 +1091,18 @@ public class FetcherService extends IntentService {
                         e.printStackTrace();
                     }
                 final long feedID = cursor.getLong(0);
-                DeleteOldEntries(feedID, keepDateBorderTime);
+                final boolean isDeleteRead = PrefUtils.getBoolean( "delete_read_articles", false );
+                if ( keepDateBorderTime > 0 || isDeleteRead ) {
+                    final String deleteRead = isDeleteRead ? DB_OR + WHERE_READ : "";
+                    String where = "(" + EntryColumns.DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
+                    // Delete the entries, the cache files will be deleted by the content provider
+                    cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
+                }
             }
         } finally {
+            Status().ChangeProgress( "" );
             Status().End(status);
             cursor.close();
-        }
-    }
-
-    private void DeleteOldEntries(final long feedID, final long keepDateBorderTime) {
-        if (keepDateBorderTime > 0 && !isCancelRefresh() ) {
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
-            final String deleteRead = PrefUtils.getBoolean( "delete_read_articles", false ) ? DB_OR + WHERE_READ : "";
-            String where = "(" + EntryColumns.DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
-            // Delete the entries, the cache files will be deleted by the content provider
-            cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
         }
     }
 
