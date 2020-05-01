@@ -78,6 +78,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -465,7 +466,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.isRead = !isUnread;
 
         UpdateStarImgView(holder);
-        holder.mobilizedImgView.setVisibility(holder.isMobilized && PrefUtils.getBoolean( "show_full_text_indicator", false ) ? View.VISIBLE : View.GONE);
+        holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
 
         UpdateReadImgView(holder);
         holder.readImgView.setOnClickListener(new View.OnClickListener() {
@@ -488,8 +489,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
             SetupEntryText(holder, Html.fromHtml( html ), IsReadMore(html ) );
             //holder.textTextView.setMovementMethod(LinkMovementMethod.getInstance());
-            final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
-            if ( html.contains( "<img" ) || isMobilized ) {
+            //final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
+            //if ( html.contains( "<img" ) /*|| isMobilized*/ ) {
                 EntryContent content = mContentVoc.get(holder.entryID);
                 if (content != null && content.GetIsLoaded() ) {
                     SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList);
@@ -500,7 +501,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     content = new EntryContent();
                     content.mID = holder.entryID;
                     content.mHTML = html;
-                    content.mIsMobilized = isMobilized;
+                    content.mIsMobilized = false;//isMobilized;
                     content.mLink = holder.entryLink;
                     mContentVoc.put( holder.entryID, content );
                     final EntryContent contentFinal = content;
@@ -511,7 +512,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         }
                     }.start();
                 }
-            }
+            //}
 
         } else
             holder.textTextView.setVisibility(View.GONE);
@@ -574,6 +575,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final ArrayList<String> imagesToDl = new ArrayList<>();
             final ArrayList<Uri> allImages = new ArrayList<>();
             String temp = mHTML;
+            mIsMobilized = FileUtils.INSTANCE.isMobilized( mLink, null, 0, 0 );
             if ( mIsMobilized )
                 temp = FileUtils.INSTANCE.loadMobilizedHTML( mLink, null );
             temp = RemoveTables( temp );

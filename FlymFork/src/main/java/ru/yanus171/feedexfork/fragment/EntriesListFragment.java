@@ -402,7 +402,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     View v = mListView.getChildAt(0);
                     mLastListViewTopOffset = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
                 }
-                if ( mShowTextInEntryList ) {
+                {
                     ArrayList<Long> list = new ArrayList<>();
                     for ( int pos = firstVisibleItem; pos < firstVisibleItem + visibleItemCount; pos++ )
                         list.add( mEntriesCursorAdapter.getItemId( pos ) );
@@ -571,7 +571,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         outState.putBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
         //outState.putLong(STATE_LIST_DISPLAY_DATE, mListDisplayDate);
         outState.putBoolean( STATE_SHOW_UNREAD, mShowUnRead);
-        outState.putString( STATE_OPTIONS, mOptions.toString() );
+        if ( mOptions != null )
+            outState.putString( STATE_OPTIONS, mOptions.toString() );
         super.onSaveInstanceState(outState);
     }
 
