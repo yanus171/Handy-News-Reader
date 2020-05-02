@@ -94,7 +94,7 @@
     <string name="drawer_close">Navigationsleiste schließen</string>
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
-    <string name="menu_add_feed">Feed/Artikel hinzufügen</string>
+    <string name="menu_add_feed">Feed-/Artikelsuche</string>
     <string name="no_feeds">Keine Feeds</string>
     <string name="no_filters">Keine Filter</string>
     <string name="context_menu_delete">Löschen</string>
@@ -139,7 +139,7 @@
     <string name="to_group_message">Möchten Sie den Feed in die Gruppe verschieben oder außerhalb der Gruppe positionieren?</string>
     <string name="to_group_above">Außerhalb der Gruppe</string>
     <string name="to_group_into">In die Gruppe</string>
-    <string name="add_custom_feed">Feed hinzufügen oder suchen</string>
+    <string name="add_custom_feed">Feed oder Artikel suchen und hinzufügen</string>
     <string name="google_news_title">Google News Themen</string>
     <string name="google_news_indicator">Ein oder mehrere Themen auswählen. Möglicherweise bietet Google einige davon nicht in Ihrer Sprache an.</string>
     <string name="google_news_top_stories">Top-Meldungen</string>
@@ -341,7 +341,7 @@
     <string name="addFeed">Feed hinzufügen</string>
     <string name="externalLinks">Ohne News-Feed</string>
     <string name="markAllAsRead">Alle als gelesen markieren</string>
-    <string name="pageUp">Seite zurück, Wischen für Fav.</string>
+    <string name="pageUp">Seite zurück oder Herunter-\nwischen = Favorit ein/aus</string>
     <string name="pageDown">Seite vor</string>
     <string name="fullScreenToggle">Vollbild umschalten</string>
     <string name="auto_refresh_feed">Feed automatisch aktualisieren</string>
@@ -446,7 +446,8 @@
     <string name="menu_reload_with_tables_toggle">Mit Tabellen</string>
     <string name="menu_display_options">Anzeigeoptionen</string>
     <string name="menu_reload">Neu laden&#8230;</string>
-    <string name="article_tap_enabled">Tipp-Zonen aktivieren</string>
+    <string name="article_tap_enabled">Tipp-Aktionen aktivieren</string>
+    <string name="article_tap_enabled_summary">in Tipp-Zonen und Textstellen ohne Links (zum Öffnen des Menüs bei ausgeblendeter Aktionsleiste)</string>
     <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
     <string name="setting_calculate_image_sizes">Größe der Bilder im Speicher</string>
     <string name="setting_calculate_image_sizes_descr">Speicherbedarf geladener Bilder pro Artikel, Feed, Gruppe usw. berechnen und anzeigen (die Werte werden während der Aktualisierung neu berechnet)</string>
@@ -485,6 +486,7 @@
     <string name="search_in_browser">Im Browser suchen</string>
     <string name="search_in_yandex">Über Yandex suchen</string>
     <string name="search_in_google">Über Google suchen</string>
+    <string name="long_operation">Aktualisierung</string>
     <string name="reading_article">Ein Artikel lesen</string>
     <string name="reading_notification">Artikel-Lese-Benachrichtigung</string>
     <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
