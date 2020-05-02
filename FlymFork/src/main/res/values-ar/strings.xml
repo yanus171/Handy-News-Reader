@@ -252,7 +252,7 @@
     <string name="settings_category_article_text_summary">ظهور نص المقال</string>
     <string name="settings_display_images">تَحْميلُ الصّوَرِ</string>
     <string name="settings_display_images_description">عرض الصور في المقالات</string>
-    <string name="settings_display_entries_fullscreen">عرض المقالات بملء الشاشة تلقائياً</string>
+    <string name="settings_display_entries_fullscreen">وَضْعُ القِراءَةِ بِمِلْءِ الشّاشَةِ</string>
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
     <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
@@ -345,7 +345,7 @@
     <string name="auto_refresh_feed">تحيين الخلاصة تلقائياً</string>
     <string name="actionBarToggle">تَبْديلُ شَريطِ الأَدَواتِ</string>
     <string name="standard">قياسي</string>
-    <string name="fontsize_entrylist">حجم الخط في قائمة المقال</string>
+    <string name="fontsize_entrylist">حَجْمُ الخَطِّ فِي قائِمَةِ المَقَالَاتِ</string>
     <string name="question_delete_entry">حذف هذا المقال؟</string>
     <string name="share_all_text">مشاركة النص بأكمله</string>
     <string name="group">المجموعة</string>
@@ -454,7 +454,7 @@
     <string name="tasks_to_download">لِلتَّحْمِيلِ</string>
     <string name="settings_current_setting">الإِعْدادُ الحاليُّ</string>
     <string name="unable_to_load_article_icon">يَتَعَذَّرُ تَحْميلُ رَمْزِ المَقالِ</string>
-    <string name="settings_delete_old_interval">حَذْفُ الفاصِلِ الزَّمَنيِّ لِلْمَقَالَاتِ القَديمَةِ</string>
+    <string name="settings_delete_old_interval">فاصِلُ التَّحَقُّقِ مِنْ عُمْرِ المَقَالَاتِ</string>
     <string name="settings_delete_old_interval_descr">مَتَى يَتِمُّ حَذْفُ المَقَالَاتِ القَديمَةِ وَحِسابُ حَجْمِ الصّوَرِ وَالتَغذْيَّةِ والْمَجْموعَةِ عَلَى بِطاقَةِ الـ sdcard</string>
     <string name="menu_delete_old">حَذْفُ المَقَالَاتِ القَديمَةِ</string>
     <string name="settings_category_delete_old">حَذْفُ القَديمِ</string>
