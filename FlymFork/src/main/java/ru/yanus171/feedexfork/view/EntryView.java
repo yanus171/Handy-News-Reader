@@ -103,6 +103,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -179,6 +180,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
                 + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
                 + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
+                + "div.bottom-page {display: block; min-height: 90vh} "
                 + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
                 + "div {text-align:" + getAlign(text) + "} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
@@ -246,6 +248,7 @@ public class EntryView extends WebView implements Handler.Callback {
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
+    private static final String BOTTOM_PAGE = "<div class='bottom-page'/>";
     private static final String BUTTON_SECTION_END = "</div>";
     private static String BUTTON_START( String layout ) {
         return ( layout.equals( ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL ) ? "" : "<p class='button'>" ) + "<input type='button' value='";
@@ -296,6 +299,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     public boolean setHtml(final long entryId,
                            Cursor newCursor,
+                           FeedFilters filters,
                            boolean isFullTextShown,
                            boolean forceUpdate,
                            EntryActivity activity) {
@@ -307,9 +311,11 @@ public class EntryView extends WebView implements Handler.Callback {
         final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
-        final String feedTitle = newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME));
-        final String title =
-            newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE)).replace( feedTitle, "" );
+        //final String feedTitle = filters.removeTextFromTitle( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
+        String title =
+            newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+        if ( filters != null )
+            title = filters.removeText( title, true );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -366,11 +372,12 @@ public class EntryView extends WebView implements Handler.Callback {
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
+        final String finalTitle = title;
         new Thread() {
             @Override
             public void run() {
                 synchronized (EntryView.this) {
-                    mDataWithWebLinks = generateHtmlContent(feedID, title, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
+                    mDataWithWebLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
                     mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
@@ -389,7 +396,9 @@ public class EntryView extends WebView implements Handler.Callback {
         mLastContentLength = 0;
     }
 
-    private String generateHtmlContent(String feedID, String title, String link, String contentText, String enclosure, String author, long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
+    private String generateHtmlContent(String feedID, String title, String link, String contentText,
+                                       String enclosure, String author,
+                                       long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
         StringBuilder content = new StringBuilder(GetCSS(title)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
@@ -443,7 +452,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 content.append(LINK_BUTTON_START).append(link).append(LINK_BUTTON_MIDDLE).append(context.getString(R.string.see_link)).append(LINK_BUTTON_END);
             }*/
 
-            content.append(BUTTON_SECTION_END).append(BODY_END);
+            content.append(BUTTON_SECTION_END).append(BOTTOM_PAGE).append(BODY_END);
         }
 
         timer.End();

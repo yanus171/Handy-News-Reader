@@ -508,6 +508,8 @@
     <string name="article_text_buttons_layout">Button layout</string>
     <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
     <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
+    <string name="auto_set_as_read">Auto set the article as read when its title was visible in list</string>
+    <string name="removeText">Remove text</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

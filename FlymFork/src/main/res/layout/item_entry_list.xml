@@ -221,6 +221,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:drawablePadding="3dp"
+        android:letterSpacing="0.03"
         android:focusable="true"
         android:justificationMode="inter_word"
         android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "

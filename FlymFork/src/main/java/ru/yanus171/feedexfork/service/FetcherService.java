@@ -107,6 +107,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.parser.HTMLParser;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.parser.OneWebPageParser;
@@ -305,10 +306,7 @@ public class FetcherService extends IntentService {
                             OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ) );
                         else if ( intent.hasExtra( EXTRA_URI ) )
                             OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ) );
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
                     } catch (Exception e) {
-                        e.printStackTrace();
                         DebugApp.SendException(e, FetcherService.this);
                     }
                 }
@@ -321,6 +319,9 @@ public class FetcherService extends IntentService {
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
             startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+            synchronized (mCancelRefresh) {
+                mCancelRefresh = false;
+            }
             long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
             long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
@@ -354,6 +355,7 @@ public class FetcherService extends IntentService {
                         LoadLink(GetExtrenalLinkFeedID(),
                                  intent.getStringExtra(Constants.URL_TO_LOAD),
                                  intent.getStringExtra(Constants.TITLE_TO_LOAD),
+                                 null,
                                  FetcherService.ForceReload.No,
                                  true,
                                  true,
@@ -652,7 +654,8 @@ public class FetcherService extends IntentService {
                         curEntry.moveToFirst();
                         final String feedID = curEntry.getString( 0 );
                         curEntry.close();
-                        if ( mobilizeEntry( entryId, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false)) {
+                        FeedFilters filters = new FeedFilters( feedID );
+                        if ( mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false)) {
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                             result.mOK = true;
@@ -691,6 +694,7 @@ public class FetcherService extends IntentService {
     public enum AutoDownloadEntryImages {Yes, No}
 
     public static boolean mobilizeEntry(final long entryId,
+                                        FeedFilters filters,
                                         final ArticleTextExtractor.MobilizeType mobilize,
                                         final AutoDownloadEntryImages autoDownloadEntryImages,
                                         final boolean isCorrectTitle,
@@ -741,6 +745,7 @@ public class FetcherService extends IntentService {
                     mobilizedHtml = ArticleTextExtractor.extractContent(doc,
                                                                         link,
                                                                         contentIndicator,
+                                                                        filters,
                                                                         mobilize,
                                                                         !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ),
                                                                         entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES) ) == 1);
@@ -854,6 +859,7 @@ public class FetcherService extends IntentService {
     public static Pair<Uri,Boolean> LoadLink(final String feedID,
                                              final String url,
                                              final String title,
+                                             FeedFilters filters,
                                              final ForceReload forceReload,
                                              final boolean isCorrectTitle,
                                              final boolean isShowError,
@@ -896,7 +902,7 @@ public class FetcherService extends IntentService {
                 FileUtils.INSTANCE.deleteMobilized( entryUri );
 
             if ( load && !FetcherService.isCancelRefresh() )
-                mobilizeEntry(Long.parseLong(entryUri.getLastPathSegment()),
+                mobilizeEntry(Long.parseLong(entryUri.getLastPathSegment()), filters,
                               ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages,  isCorrectTitle, isShowError, false);
             return new Pair<>(entryUri, load);
         } finally {

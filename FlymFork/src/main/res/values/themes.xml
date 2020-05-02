@@ -48,6 +48,7 @@
         <item name="singleLine">true</item>
         <item name="android:layout_weight">1</item>
         <item name="android:visibility">visible</item>
+        <item name="android:inputType">text</item>
     </style>
     <style name="FeedAttrLabel" >
         <item name="android:layout_width">match_parent</item>

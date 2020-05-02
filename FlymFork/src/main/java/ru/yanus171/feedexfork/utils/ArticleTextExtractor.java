@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 /**
@@ -67,12 +68,14 @@ public class ArticleTextExtractor {
     public static String extractContent(InputStream input,
                                         final String url,
                                         String contentIndicator,
+                                        FeedFilters filters,
                                         MobilizeType mobilize,
                                         boolean isFindBEstElement,
                                         boolean isWithTables ) throws Exception {
         return extractContent(Jsoup.parse(input, null, ""),
                               url,
                               contentIndicator,
+                              filters,
                               mobilize,
                               isFindBEstElement,
                               isWithTables);
@@ -81,6 +84,7 @@ public class ArticleTextExtractor {
     public static String extractContent(Document doc,
                                         final String url,
                                         String contentIndicator,
+                                        FeedFilters filters,
                                         MobilizeType mobilize,
                                         boolean isFindBestElement,
                                         boolean isWithTables) {
@@ -144,7 +148,7 @@ public class ArticleTextExtractor {
         }
 
         final boolean isAutoFullTextRoot = getBestElementFromFile(doc, url) == null;
-        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), mobilize, isAutoFullTextRoot );
+        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), filters, mobilize, isAutoFullTextRoot );
 
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret;

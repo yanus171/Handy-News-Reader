@@ -23,6 +23,13 @@
             android:checked="true"
             android:text="@string/reject"
             android:textColor="#CC0000"/>
+        <RadioButton
+            android:id="@+id/removeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/removeText"
+            android:textColor="@android:color/holo_red_dark"/>
 
         <RadioButton
             android:id="@+id/markAsStarredRadio"
@@ -31,6 +38,7 @@
             android:checked="true"
             android:text="@string/markAsStarred"
             android:textColor="@android:color/holo_blue_dark"/>
+
     </RadioGroup>
 
     <EditText

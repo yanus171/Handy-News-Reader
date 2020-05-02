@@ -158,6 +158,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
     public static final String DIALOG_IS_SHOWN = "EDIT_FEED_USER_SELECTION_DIALOG_IS_SHOWN";
     static final String IS_READ_STUMB = "[IS_READ]";
+    public static final String AUTO_SET_AS_READ = "AUTO_SET_AS_READ";
     private String[] mKeepTimeValues;
 
 
@@ -236,6 +237,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private EditText mOneWebPageImageUrlClassName;
     private EditText mNextPageClassName;
     private LinearLayout mOneWebPageLayout;
+    private CheckBox mIsAutoSetAsRead;
 
     private void EditFilter() {
         Cursor c = mFiltersCursorAdapter.getCursor();
@@ -247,6 +249,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             final RadioButton applyContentRadio = dialogView.findViewById(R.id.applyContentRadio);
             final RadioButton acceptRadio = dialogView.findViewById(R.id.acceptRadio);
             final RadioButton markAsStarredRadio = dialogView.findViewById(R.id.markAsStarredRadio);
+            final RadioButton removeTextRadio = dialogView.findViewById(R.id.removeText);
             final RadioButton rejectRadio = dialogView.findViewById(R.id.rejectRadio);
 
             filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)));
@@ -258,6 +261,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
             if (c.getInt(c.getColumnIndex(FilterColumns.IS_MARK_STARRED)) == 1) {
                 markAsStarredRadio.setChecked(true);
+            } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_REMOVE_TEXT)) == 1) {
+                removeTextRadio.setChecked(true);
             } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_ACCEPT_RULE)) == 1) {
                 acceptRadio.setChecked(true);
             } else {
@@ -283,6 +288,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                         values.put(FilterColumns.IS_APPLIED_TO_TITLE, applyTitleRadio.isChecked());
                                         values.put(FilterColumns.IS_ACCEPT_RULE, acceptRadio.isChecked());
                                         values.put(FilterColumns.IS_MARK_STARRED, markAsStarredRadio.isChecked());
+                                        values.put(FilterColumns.IS_REMOVE_TEXT, removeTextRadio.isChecked());
                                         if (cr.update(FilterColumns.CONTENT_URI, values, FilterColumns._ID + '=' + filterId, null) > 0) {
                                             cr.notifyChange(
                                                     FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(getIntent().getData().getLastPathSegment()),
@@ -328,6 +334,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mShowTextInEntryListCb = findViewById(R.id.show_text_in_entry_list);
         mIsAutoRefreshCb = findViewById(R.id.auto_refresh);
         mIsAutoImageLoadCb = findViewById(R.id.auto_image_load);
+        mIsAutoSetAsRead = findViewById(R.id.auto_set_as_read);
+        mIsAutoSetAsRead.setChecked( false );
         mFiltersListView = findViewById(android.R.id.list);
         mGroupSpinner = findViewById(R.id.spin_group);
 
@@ -493,6 +501,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     break;
                                 }
                         }
+                        if ( jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean( AUTO_SET_AS_READ ) )
+                            mIsAutoSetAsRead.setChecked( true );
                         mNextPageClassName.setText( jsonOptions.getString( URL_NEXT_PAGE_CLASS_NAME ) );
                         if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
                             mOneWebPageArticleClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_ARTICLE_CLASS_NAME ) );
@@ -661,6 +671,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             jsonOptions.put( "isRss", mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbRss );
             jsonOptions.put( IS_ONE_WEB_PAGE, mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage );
             jsonOptions.put( URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
+            jsonOptions.put( AUTO_SET_AS_READ, mIsAutoSetAsRead.isChecked() );
 
             if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage ) {
                 jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.getText().toString() );
@@ -735,6 +746,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     values.put(FilterColumns.IS_APPLIED_TO_TITLE, ((RadioButton) dialogView.findViewById(R.id.applyTitleRadio)).isChecked());
                                     values.put(FilterColumns.IS_ACCEPT_RULE, ((RadioButton) dialogView.findViewById(R.id.acceptRadio)).isChecked());
                                     values.put(FilterColumns.IS_MARK_STARRED, ((RadioButton) dialogView.findViewById(R.id.markAsStarredRadio)).isChecked());
+                                    values.put(FilterColumns.IS_REMOVE_TEXT, ((RadioButton) dialogView.findViewById(R.id.removeText)).isChecked());
 
                                     ContentResolver cr = getContentResolver();
                                     cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedId), values);

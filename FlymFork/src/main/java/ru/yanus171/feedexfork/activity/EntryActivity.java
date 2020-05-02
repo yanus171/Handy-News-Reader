@@ -179,7 +179,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
-                    FetcherService.LoadLink(feedID, url, title, FetcherService.ForceReload.Yes, true, true, false, FetcherService.AutoDownloadEntryImages.Yes);
+                    FetcherService.LoadLink(feedID, url, title, null, FetcherService.ForceReload.Yes, true, true, false, FetcherService.AutoDownloadEntryImages.Yes);
                 } else
                     SetEntryID( entryUri, url );
             }

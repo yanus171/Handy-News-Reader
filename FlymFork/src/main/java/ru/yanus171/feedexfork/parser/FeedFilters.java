@@ -2,7 +2,10 @@ package ru.yanus171.feedexfork.parser;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -15,14 +18,17 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
-class FeedFilters {
+public class FeedFilters {
 
     private final ArrayList<Rule> mFilters = new ArrayList<>();
 
     public FeedFilters(String feedId) {
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
-        Cursor c = cr.query(FeedData.FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedId), new String[]{FeedData.FilterColumns.FILTER_TEXT, FeedData.FilterColumns.IS_REGEX,
-                FeedData.FilterColumns.IS_APPLIED_TO_TITLE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED}, null, null, null);
+        init( GetCursor(feedId) );
+    }
+    public FeedFilters(Cursor c) {
+        init( c );
+    }
+    public void init(Cursor c) {
         while (c.moveToNext()) {
             Rule r = new Rule();
             r.filterText = c.getString(0);
@@ -30,6 +36,7 @@ class FeedFilters {
             r.isAppliedToTitle = c.getInt(2) == 1;
             r.isAcceptRule = c.getInt(3) == 1;
             r.isMarkAsStarred = c.getInt(4) == 1;
+            r.isRemoveText = c.getInt(5) == 1;
             mFilters.add(r);
         }
         c.close();
@@ -53,12 +60,27 @@ class FeedFilters {
 
     }
 
+    public static Cursor GetCursor(String feedId) {
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        return cr.query(getCursorUri(feedId), getCursorProjection(), null, null, null);
+    }
+
+    @NotNull
+    public static String[] getCursorProjection() {
+        return new String[]{FeedData.FilterColumns.FILTER_TEXT, FeedData.FilterColumns.IS_REGEX,
+                FeedData.FilterColumns.IS_APPLIED_TO_TITLE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED, FeedData.FilterColumns.IS_REMOVE_TEXT};
+    }
+
+    public static Uri getCursorUri(String feedId) {
+        return FeedData.FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedId);
+    }
+
     public boolean isEntryFiltered(String title, String author, String url, String content) {
 
         boolean isFiltered = false;
 
         for (Rule r : mFilters) {
-            if ( r.isMarkAsStarred)
+            if ( r.isMarkAsStarred || r.isRemoveText )
                 continue;
 
             boolean isMatch = r.isMatch( title, author, url, content );
@@ -87,6 +109,17 @@ class FeedFilters {
                 return true;
         return false;
     }
+    public String removeText( String text, boolean isApplyToTitle ) {
+        String result = text;
+        for (Rule r : mFilters)
+            if ( r.isRemoveText && isApplyToTitle == r.isAppliedToTitle ) {
+                if (r.isRegex)
+                    result = result.replaceAll( r.filterText, "" );
+                else
+                    result = result.replace( r.filterText, "" );
+            }
+        return result;
+    }
 
     private class Rule {
         String filterText;
@@ -94,6 +127,7 @@ class FeedFilters {
         boolean isAppliedToTitle;
         boolean isAcceptRule;
         boolean isMarkAsStarred = false;
+        boolean isRemoveText = false;
 
         boolean isMatch(String title, String author, String url, String content) {
             boolean result = false;

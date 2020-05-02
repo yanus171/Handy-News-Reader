@@ -532,7 +532,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mEntriesFragment.setData(newUri,
                 showFeedInfo,
                 false,
-                mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position));
+                mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position),
+                                 mDrawerAdapter.getOptions(position) );
 
         //mDrawerList.setSelection( position );
         mDrawerList.setItemChecked(position, true);

@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -82,7 +83,7 @@ public class HtmlUtils {
     //public static boolean mIsDownloadingImagesForEntryView = false;
 
 
-    public static String improveHtmlContent(String content, String baseUri, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
+    public static String improveHtmlContent(String content, String baseUri, FeedFilters filters, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
 
         if (content != null ) {
             content = ADS_PATTERN.matcher(content).replaceAll("");
@@ -102,6 +103,7 @@ public class HtmlUtils {
                     :
                     JSOUP_WHITELIST;
             content = Jsoup.clean(content, baseUri, whiteList  );
+
 
             if ( isAutoFullTextRoot ) {
                 // remove empty or bad images
@@ -130,6 +132,9 @@ public class HtmlUtils {
 
             }
             content = content.replace( "&#39;", "'" );
+
+            if ( filters != null && mobType == ArticleTextExtractor.MobilizeType.Yes )
+                content = filters.removeText( content, false );
 
         }
 

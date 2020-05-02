@@ -63,7 +63,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -183,6 +183,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 24)
             executeCatchedSQL(database, ALTER_TABLE + FeedColumns.TABLE_NAME + ADD + FeedColumns.ICON_URL + ' ' + FeedData.TYPE_TEXT);
 
+        if (oldVersion < 25)
+            executeCatchedSQL(database, ALTER_TABLE + FilterColumns.TABLE_NAME + ADD + FilterColumns.IS_REMOVE_TEXT + ' ' + FeedData.TYPE_BOOLEAN);
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
         try {
