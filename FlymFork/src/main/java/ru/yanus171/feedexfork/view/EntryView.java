@@ -180,6 +180,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
                 + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
                 + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
+                + "div.bottom-page {display: block; min-height: 90vh} "
                 + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
                 + "div {text-align:" + getAlign(text) + "} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
@@ -247,6 +248,7 @@ public class EntryView extends WebView implements Handler.Callback {
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
+    private static final String BOTTOM_PAGE = "<div class='bottom-page'/>";
     private static final String BUTTON_SECTION_END = "</div>";
     private static String BUTTON_START( String layout ) {
         return ( layout.equals( ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL ) ? "" : "<p class='button'>" ) + "<input type='button' value='";
@@ -450,7 +452,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 content.append(LINK_BUTTON_START).append(link).append(LINK_BUTTON_MIDDLE).append(context.getString(R.string.see_link)).append(LINK_BUTTON_END);
             }*/
 
-            content.append(BUTTON_SECTION_END).append(BODY_END);
+            content.append(BUTTON_SECTION_END).append(BOTTOM_PAGE).append(BODY_END);
         }
 
         timer.End();
