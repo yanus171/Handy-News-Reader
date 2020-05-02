@@ -130,7 +130,7 @@ GENERAL]]></string>
     <string name="accept">AKCEPTUJ</string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
-    <string name="web_page_search_duckduckgo">Wyszukiwarka (Duck Duck Go)</string>
+    <string name="web_page_search_duckduckgo">Szukaj w Sieci (Duck Duck Go)</string>
     <string name="select_file">Wybierz plik z karty SD</string>
     <string name="question_delete_feed">Czy na pewno chcesz usunąć ten kanał?</string>
     <string name="question_delete_group">Czy na pewno chcesz usunąć tą grupę wraz z jej kanałami?</string>
@@ -218,7 +218,7 @@ GENERAL]]></string>
     <string name="settings_refresh_on_open_description">Odświeża wszystkie kanały po uruchomieniu programu</string>
     <string name="settings_refresh_wifi_only">Odświeżaj tylko przez Wi-Fi</string>
     <string name="settings_refresh_wifi_only_description">Automatyczne odświeżanie będzie miało miejsce tylko przy dostępnym połączeniu Wi-Fi</string>
-    <string name="settings_keep_time">Czas przez jaki artykuły będą zachowane</string>
+    <string name="settings_keep_time">Czas przechowywania artykułów</string>
     <string name="settings_preload_image_mode">Wczytuj obrazki \'na zapas\'</string>
     <string name="settings_max_image_download_count">Maksymalna ilość pobranych obrazków</string>
     <string name="settings_max_image_download_count_description">Na jeden artykuł</string>
@@ -257,7 +257,7 @@ GENERAL]]></string>
     <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">Wczytuj obrazki</string>
     <string name="settings_display_images_description">Wyświetlaj obrazki w artykułach</string>
-    <string name="settings_display_entries_fullscreen">Wyświetlaj automatycznie w trybie pełnoekranowym</string>
+    <string name="settings_display_entries_fullscreen">Pełnoekranowy tryb czytania</string>
     <string name="settings_entry_margins">Marginesy</string>
     <string name="settings_entry_margins_description">Lewy | prawy</string>
     <string name="entry_text_align_justify">Tekst justowany</string>
@@ -348,7 +348,7 @@ GENERAL]]></string>
     <string name="pageDown">strona w dół</string>
     <string name="fullScreenToggle">przełącznik pełnego ekranu</string>
     <string name="auto_refresh_feed">Automatycznie odświeżaj kanał</string>
-    <string name="actionBarToggle">Przełącz Pasek Akcji</string>
+    <string name="actionBarToggle">przełącznik Paska Akcji</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Rozmiar tekstu na liście artykułów</string>
     <string name="question_delete_entry">Usunąć artykuł?</string>
@@ -373,9 +373,9 @@ GENERAL]]></string>
     <string name="keyword">słowo/a kluczowe</string>
     <string name="loadTypeWeb"><b>Strona internetowa - Linki</b> <font color="gray">(załaduj wszystkie linki ze strony jako osobne artykuły)</font></string>
     <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(kanał lub link do strony lub słowa kluczowe)</font></string>
-    <string name="loadTypeWebPageSearch"><b>Wyszukiwarka DuckDuckGo</b> <font color="gray">(znajdź i wczytaj pojedynczy artykuł)</font></string>
-    <string name="loadTypeOneWebPage"><b>Jedna strona</b><font color="gray"> (podziel treść jednej strony na wiele artykułów na bazie nazw klas tagów HTML)</font></string>
-    <string name="loadType">Wczytuj:</string>
+    <string name="loadTypeWebPageSearch"><b>Szukaj w Sieci</b> <font color="gray">(DuckDuckGo - znajdź i wczytaj pojedynczy artykuł)</font></string>
+    <string name="loadTypeOneWebPage"><b>Strona internetowa - Podziel</b><font color="gray"> (podziel treść jednej strony na wiele artykułów na bazie nazw klas tagów HTML)</font></string>
+    <string name="loadType">Tryb wczytywania:</string>
     <string name="global_filter">Filtr globalny&#8230;</string>
     <string name="global_filter_descr">Filtr stosowany do wszystkich kanałów - nie wypełniaj pól, jeśli ma być nieaktywny</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">w przeciwnym razie stosuj do treści</string>
@@ -385,7 +385,7 @@ GENERAL]]></string>
     <string name="menu_toggle_theme">Zmień motyw</string>
     <string name="turnOn">Włącz</string>
     <string name="brightness">Jasność</string>
-    <string name="brightness_change">Regulacja jasności</string>
+    <string name="brightness_change">regulacja jasności</string>
     <string name="criticalErrorOccured">Wystąpił błąd krytyczny - pomóż nam go naprawić przesyłając ten tekst deweloperowi</string>
     <string name="criticalErrorSending">Przesyłanie informacji o błędzie…</string>
     <string name="copyToClipboard">Do schowka</string>
@@ -499,6 +499,8 @@ GENERAL]]></string>
     <string name="article_text_buttons_layout">Układ przycisków</string>
     <string name="article_text_buttons_layout_descr">Układ oraz widoczność przycisków na końcu artykułu</string>
     <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
+    <string name="auto_set_as_read">Oznacz artykuł jako przeczytany gdy jego tytuł jest widoczny na liście</string>
+    <string name="removeText">Usuń tekst</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
