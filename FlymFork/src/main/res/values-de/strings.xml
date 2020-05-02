@@ -496,7 +496,7 @@
     <string name="article_text_buttons_layout">Aussehen der Tasten</string>
     <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
     <string name="article_reading_notification_hint">Damit die App beim Lesen eines Artikels im Speicher bleibt</string>
-    <string name="auto_set_as_read">Artikel automatisch als gelesen kennzeichnen, sobald dessen Titel in der Liste angezeigt wird</string>
+    <string name="auto_set_as_read">Artikel automatisch als gelesen kennzeichnen, sobald dessen Titel in der Liste angezeigt wurde</string>
     <string name="removeText">Text entfernen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
