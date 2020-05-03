@@ -492,6 +492,8 @@
     <string name="article_text_buttons_layout">Розташування кнопок</string>
     <string name="article_text_buttons_layout_descr">Орієнтація і видимість кнопок в кінці статті</string>
     <string name="article_reading_notification_hint">Щоб тримати програму в пам\'яті під час читання статті</string>
+    <string name="auto_set_as_read">Позначати статтю як прочитану, якщо ії назва була в списку</string>
+    <string name="removeText">Вилучити текст</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
