@@ -548,6 +548,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         final MenuItem searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // Use a custom search icon for the SearchView in AppBar
+        int searchImgId = androidx.appcompat.R.id.search_button;
+        ImageView v = (ImageView) searchView.findViewById(searchImgId);
+        v.setImageResource(R.drawable.action_search);
+
         if (EntryColumns.isSearchUri(mCurrentUri)) {
             searchItem.expandActionView();
             searchView.post(new Runnable() { // Without that, it just does not work
