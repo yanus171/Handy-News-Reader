@@ -31,7 +31,7 @@
         android:scaleType="fitCenter"
         android:paddingRight="5dp"
         android:alpha="0.5"
-        android:src="@drawable/rounded_checbox_white"
+        android:src="@drawable/ic_check_box"
         android:paddingEnd="5dp" />
 
     <ImageView

@@ -4,17 +4,17 @@
 
     <item
         android:id="@+id/menu_refresh"
-        android:icon="@drawable/refresh"
+        android:icon="@drawable/ic_sync"
         android:title="@string/menu_refresh"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_show_entry_text"
-        android:icon="@drawable/text_white"
+        android:icon="@drawable/ic_receipt"
         android:title="@string/menu_show_entry_text"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_cancel_refresh"
-        android:icon="@drawable/ic_action_cancel_gray"
+        android:icon="@drawable/ic_sync_disabled"
         app:showAsAction="always"
         android:visible="false"
         android:title="@string/menu_cancel_refresh"/>
@@ -32,7 +32,7 @@
         android:title="@string/menu_delete_non_starred"/>
     <item
         android:id="@+id/menu_toogle_toogle_unread_all"
-        android:icon="@drawable/rounded_checbox_white"
+        android:icon="@drawable/ic_check_box"
         android:title="@string/menu_toogle_unread_all"
         app:showAsAction="always"/>
     <item
@@ -40,13 +40,13 @@
         android:title="@string/create_auto_backup"/>
     <item
         android:id="@+id/menu_search"
-        android:icon="@drawable/action_search"
+        android:icon="@drawable/ic_search"
         android:title="@android:string/search_go"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
         android:id="@+id/menu_share_starred"
-        android:icon="@drawable/social_share"
+        android:icon="@drawable/ic_share"
         android:title="@string/context_menu_share_starred"
         app:showAsAction="ifRoom" />
     <item

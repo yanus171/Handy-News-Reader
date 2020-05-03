@@ -188,10 +188,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
         if (mShowUnRead) {
             item.setTitle(R.string.all_entries);
-            item.setIcon(R.drawable.rounded_empty_white);
+            item.setIcon(R.drawable.ic_check_box_outline_blank);
         } else {
             item.setTitle(R.string.unread_entries);
-            item.setIcon(R.drawable.rounded_checbox_white);
+            item.setIcon(R.drawable.ic_check_box);
         }
 
         if ( mCurrentUri != null ) {
@@ -552,7 +552,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         // Use a custom search icon for the SearchView in AppBar
         int searchImgId = androidx.appcompat.R.id.search_button;
         ImageView v = (ImageView) searchView.findViewById(searchImgId);
-        v.setImageResource(R.drawable.action_search);
+        v.setImageResource(R.drawable.ic_search);
 
         if (EntryColumns.isSearchUri(mCurrentUri)) {
             searchItem.expandActionView();

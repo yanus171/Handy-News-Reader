@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/menu_add_feed"
-        android:icon="@drawable/content_new"
+        android:icon="@drawable/ic_add_circle_outline"
         android:title="@string/menu_add_feed"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
