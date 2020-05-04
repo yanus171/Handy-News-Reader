@@ -411,6 +411,12 @@
                 android:summary="@string/settings_notifications_light_description"
                 android:title="@string/settings_notifications_light"/>
 
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="reading_notification"
+                android:summary="@string/reading_notification_descr"
+                android:title="@string/reading_notification" />
+
         </PreferenceCategory>
     </PreferenceScreen>
 
@@ -581,12 +587,6 @@
                 android:key="settings_add_google_news_dialog"
                 android:summary="@string/settings_add_google_news_dialog_descr"
                 android:title="@string/settings_add_google_news_dialog" />
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="reading_notification"
-                android:summary="@string/reading_notification_descr"
-                android:title="@string/reading_notification" />
 
             <CheckBoxPreference
                 android:defaultValue="false"

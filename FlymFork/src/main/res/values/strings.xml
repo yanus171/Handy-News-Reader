@@ -388,7 +388,7 @@
     <string name="global_filter">Global filter&#8230;</string>
     <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">otherwise apply to content</string>
-    <string name="rule_text">Rule\'s text</string>
+    <string name="rule_text">Rule text</string>
     <string name="global_marks_as_star_filter_rule_descr">a rule per line</string>
     <string name="customKeepTime">Custom articles keep time</string>
     <string name="menu_toggle_theme">Change theme</string>
@@ -431,7 +431,7 @@
     <string name="custom_data_folder">Custom external files path</string>
     <string name="custom_data_folder_descr">(empty - use default) path for feedex folder to store downloaded images and backup</string>
     <string name="entry_text_title_link">Title link</string>
-    <string name="entry_text_title_link_description">allows to open web page in browser by tap on the title</string>
+    <string name="entry_text_title_link_description">allows to tap on article title to open it in a web-browser - or read later within Handy</string>
     <string name="delete_read_articles">Delete read articles</string>
     <string name="delete_read_articles_descr">regardless of the articles keep time</string>
     <string name="data_folder">Data folder</string>
