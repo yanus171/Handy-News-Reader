@@ -10,6 +10,7 @@
     <item
         android:id="@+id/menu_show_entry_text"
         android:icon="@drawable/ic_receipt"
+        android:visible="false"
         android:title="@string/menu_show_entry_text"
         app:showAsAction="always" />
     <item
@@ -39,6 +40,7 @@
             <item
                 android:id="@+id/menu_share_starred"
                 android:icon="@drawable/ic_share"
+                android:visible="false"
                 android:title="@string/context_menu_share_starred"/>
             <item
                 android:id="@+id/menu_toggle_theme"
