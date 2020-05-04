@@ -104,6 +104,7 @@
     <string name="new_feed_title">New feed or article</string>
     <string name="context_menu_edit">Edit</string>
     <string name="menu_add_group">Add a group</string>
+    <string name="menu_import_export">Export and import</string>
     <string name="menu_import">Import from an .opml file</string>
     <string name="menu_export">Export to an .opml file</string>
     <string name="storage_request_explanation">To be able to import or export the feeds from or to a file, you must allow the application to access to the storage memory.</string>
@@ -510,6 +511,7 @@
     <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
     <string name="auto_set_as_read">Auto set the article as read when its title was visible in list</string>
     <string name="removeText">Remove text</string>
+    <string name="menu_more_options">More options</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

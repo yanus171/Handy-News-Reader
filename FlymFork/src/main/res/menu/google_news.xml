@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/menu_validate"
-        android:icon="@drawable/read_all"
+        android:icon="@drawable/ic_check"
         android:title="@android:string/ok"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
