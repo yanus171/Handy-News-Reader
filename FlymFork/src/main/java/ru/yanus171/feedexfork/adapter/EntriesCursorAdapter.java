@@ -51,7 +51,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -78,7 +77,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -92,6 +90,7 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -101,7 +100,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
@@ -217,9 +215,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     if (shownId == holder.entryID) {
                         PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     } else {
-                        SetIsRead( EntryUri(shownId), true, 0);
+                        SetIsRead( EntryUri(shownId), true, true);
                         PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
-
                     }
                     notifyDataSetChanged();
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( holder.entryID ) ) );
@@ -305,7 +302,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 OpenArticle(v.getContext(), holder.entryID);
                             } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
-                                toggleReadState(holder.entryID, view);
+                                toggleReadState(holder, view);
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
                                 toggleFavoriteState( holder.entryID, view );
                         } else {
@@ -378,13 +375,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        final boolean isUnread = !EntryColumns.IsRead( cursor, mIsReadPos ) && !mMarkAsReadList.contains( EntryUri( holder.entryID ) );
+        holder.isRead = EntryColumns.IsRead( cursor, mIsReadPos ) || mMarkAsReadList.contains( EntryUri( holder.entryID ) );
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
-        final int backgroundColor;
-        backgroundColor = Color.parseColor( isUnread ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
-        view.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
-        view.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
 
         holder.readToggleSwypeBtnView.setVisibility( View.GONE );
         holder.starToggleSwypeBtnView.setVisibility( View.GONE );
@@ -455,24 +448,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.imageSizeTextView.setVisibility( View.GONE );
 
         holder.authorTextView.setText( cursor.getString( mAuthorPos ) );
-        holder.titleTextView.setEnabled(isUnread);
-        holder.dateTextView.setEnabled(isUnread);
-        holder.authorTextView.setEnabled(isUnread);
-        holder.urlTextView.setEnabled(isUnread);
+        UpdateReadView( holder, view );
 
         final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) || feedId.equals( FetcherService.GetExtrenalLinkFeedID() );
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
-        holder.isRead = !isUnread;
 
-        UpdateStarImgView(holder);
+        UpdateStarView(holder);
         holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
 
-        UpdateReadImgView(holder);
+        UpdateReadView(holder, view);
         holder.readImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleReadState(holder.entryID, view);
+                toggleReadState(holder, view);
             }
         });
 
@@ -483,7 +472,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( isTextShown ) {
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
-            holder.textTextView.setEnabled(!holder.isRead);
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
             holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
@@ -525,17 +513,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }*/
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
 
-        {
-            final int color = Color.parseColor( isUnread ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
-            holder.imageSizeTextView.setTextColor( color );
-            holder.authorTextView.setTextColor( color );
-            holder.dateTextView.setTextColor( color );
-            holder.textTextView.setTextColor( color );
-            holder.readMore.setTextColor( color );
-            holder.titleTextView.setTextColor( color );
-            holder.urlTextView.setTextColor( color );
-            holder.authorTextView.setTextColor( color );
-        }
+
     }
 
     @NotNull
@@ -648,41 +626,50 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return imageSize > KBYTE ? String.format( "%d K", imageSize / KBYTE ) : "";
     }
 
-    private void UpdateStarImgView(ViewHolder holder) {
+    private void UpdateStarView(ViewHolder holder) {
         int startID = Theme.IsLight() ? R.drawable.star_gray_solid : R.drawable.star_yellow;
         if ( holder.isFavorite )
             holder.starImgView.setImageResource(startID );
         holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
-    private void UpdateReadImgView(ViewHolder holder) {
+    private void UpdateReadView(ViewHolder holder, View parentView) {
+        holder.titleTextView.setEnabled(!holder.isRead);
+        holder.dateTextView.setEnabled(!holder.isRead);
+        holder.textTextView.setEnabled(!holder.isRead);
+        holder.authorTextView.setEnabled(!holder.isRead);
+        holder.urlTextView.setEnabled(!holder.isRead);
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setImageResource(holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
+        holder.readImgView.setImageResource( holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
+        final int backgroundColor;
+        backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
+        parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
+        parentView.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
+        {
+            final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
+            holder.imageSizeTextView.setTextColor( color );
+            holder.authorTextView.setTextColor( color );
+            holder.dateTextView.setTextColor( color );
+            holder.textTextView.setTextColor( color );
+            holder.readMore.setTextColor( color );
+            holder.titleTextView.setTextColor( color );
+            holder.urlTextView.setTextColor( color );
+            holder.authorTextView.setTextColor( color );
+        }
     }
 
-    private void toggleReadState(final long id, View view) {
-        final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
-
+    private void toggleReadState(final ViewHolder holder, View parentView) {
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isRead = !holder.isRead;
 
-            if (holder.isRead) {
-                holder.titleTextView.setEnabled(false);
-                holder.dateTextView.setEnabled(false);
-            } else {
-                holder.titleTextView.setEnabled(true);
-                holder.dateTextView.setEnabled(true);
-            }
-            UpdateReadImgView( holder );
-            UpdateStarImgView( holder );
-
-            SetIsRead(EntryUri(id), holder.isRead, 0);
+            UpdateReadView(holder, parentView);
+            SetIsRead(EntryUri(holder.entryID), holder.isRead, true);
             if ( holder.isRead && mShowUnread ) {
-                Snackbar snackbar = Snackbar.make(view.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
-                        .setActionTextColor(ContextCompat.getColor(view.getContext(), R.color.light_theme_color_primary))
+                Snackbar snackbar = Snackbar.make(parentView.findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
+                        .setActionTextColor(ContextCompat.getColor(holder.textLayout.getContext(), R.color.light_theme_color_primary))
                         .setAction(R.string.undo, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                SetIsRead(EntryUri(id), false, 0);
+                                SetIsRead(EntryUri(holder.entryID), false, false);
                             }
                         });
                 snackbar.getView().setBackgroundResource(R.color.material_grey_900);
@@ -691,58 +678,49 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-//    public String GetTitle( AbsListView lv, int position ) {
-//        return ( ( Cursor )lv.getItemAtPosition( position ) ).getString( mTitlePos );
-//    }
-
-    private static void SetIsRead(final Uri entryUri, final boolean isRead, final int sleepMsec) {
+    private static void SetIsRead(final Uri entryUri, final boolean isRead, final boolean isSilent ) {
         new Thread() {
             @Override
             public void run() {
-
-                try {
-                    if (sleepMsec > 0)
-                        sleep(sleepMsec);
-                } catch( InterruptedException e ) {
-
-                }
+                if ( isSilent )
+                    FeedDataContentProvider.mNotifyEnabled = false;
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(entryUri, isRead ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), null, null);
                 CancelStarNotification( Long.parseLong(entryUri.getLastPathSegment()) );
+                if ( isSilent )
+                    FeedDataContentProvider.mNotifyEnabled = true;
+
             }
         }.start();
     }
 
-    /*public static void SetIsReadMakredList() {
-        if ( !mMarkAsReadList.isEmpty() ) {
-            Dog.d("SetIsReadMakredList()");
-            new MarkAsRadThread().start();
-        }
-    }*/
-
 
     private void toggleFavoriteState(final long id, View view) {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
-
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
-
-            UpdateStarImgView(holder);
-
-            new Thread() {
-                @Override
-                public void run() {
-                    ContentValues values = new ContentValues();
-                    values.put(EntryColumns.IS_FAVORITE, holder.isFavorite ? 1 : 0);
-
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    Uri entryUri = ContentUris.withAppendedId(mUri, id);
-                    cr.update(entryUri, values, null, null);
-                    if ( !holder.isFavorite )
-                        CancelStarNotification( id );
-                }
-            }.start();
+            UpdateStarView(holder);
+            SetIsFavorite(EntryUri(holder.entryID), holder.isFavorite, true);
         }
+    }
+    private static void SetIsFavorite(final Uri entryUri, final boolean isFavorite, final boolean isSilent ) {
+        new Thread() {
+            @Override
+            public void run() {
+                if ( isSilent )
+                    FeedDataContentProvider.mNotifyEnabled = false;
+                ContentValues values = new ContentValues();
+                values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
+
+                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                cr.update(entryUri, values, null, null);
+                if ( !isFavorite )
+                    CancelStarNotification( Long.parseLong(entryUri.getLastPathSegment()) );
+                if ( isSilent )
+                    FeedDataContentProvider.mNotifyEnabled = true;
+
+            }
+        }.start();
     }
 
     @Override
