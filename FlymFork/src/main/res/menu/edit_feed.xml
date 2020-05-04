@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/menu_add_filter"
-        android:icon="@drawable/content_new"
+        android:icon="@drawable/ic_add_circle_outline"
         android:title="@string/filter_add_title"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>

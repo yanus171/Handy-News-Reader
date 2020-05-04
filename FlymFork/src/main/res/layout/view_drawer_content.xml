@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickAdd"
-            android:src="@drawable/content_new" />
+            android:src="@drawable/ic_add_circle_outline" />
 
         <ImageButton
             style="?android:attr/buttonBarButtonStyle"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickEditFeeds"
-            android:src="@drawable/content_edit" />
+            android:src="@drawable/ic_edit" />
 
         <ImageButton
             style="?android:attr/buttonBarButtonStyle"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickSettings"
-            android:src="@drawable/action_settings"/>
+            android:src="@drawable/ic_settings"/>
     </LinearLayout>
 
     <ListView
