@@ -482,6 +482,8 @@
     <string name="search_in_browser">Pesquisar no navegador</string>
     <string name="search_in_yandex">Pesquisar via Yandex</string>
     <string name="search_in_google">Pesquisar via Google</string>
+    <string name="auto_set_as_read">Definir automaticamente o artigo como lido quando seu título era visível na lista</string>
+    <string name="removeText">Remover texto</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
