@@ -225,7 +225,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         if (EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri)) {
             mMenu.findItem(R.id.menu_refresh).setVisible(false);
-        } else {
             mMenu.findItem(R.id.menu_share_starred).setVisible(true);
         }
 
@@ -241,6 +240,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null ) {
             int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             item.setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
+                    uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
+                    uriMatch != FeedDataContentProvider.URI_FAVORITES);
+            mMenu.findItem(R.id.menu_show_entry_text).setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_FAVORITES);
         }
