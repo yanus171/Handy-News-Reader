@@ -234,7 +234,7 @@ public class DrawerAdapter extends BaseAdapter {
                 Uri iconUri = mFeedsCursor.isNull(POS_ICON_URL) ? Uri.EMPTY : GetImageFileUri(mFeedsCursor.getString(POS_ICON_URL), mFeedsCursor.getString(POS_ICON_URL) );
                 Glide.with(parent.getContext())
                     .load(iconUri)
-                    .placeholder( R.mipmap.ic_launcher )
+                    .placeholder( R.drawable.cup_new_empty )
                     .into(holder.iconView);
 
                 holder.autoRefreshIcon.setVisibility( isAutoRefresh( position )  ? View.VISIBLE : View.GONE );
