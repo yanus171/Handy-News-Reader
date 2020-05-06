@@ -487,13 +487,13 @@
     <string name="long_operation">Довга операція</string>
     <string name="reading_article">Читання статті</string>
     <string name="reading_notification">Сповіщення про читання статті</string>
-    <string name="reading_notification_descr">Постійне сповіщення в рядку стану для запобігання закриття програми системою - для прискорення запуску після довгої затримки</string>
+    <string name="reading_notification_descr">Постійне сповіщення в рядку стану для запобігання закриття програми системою - для прискорення запуску після довгого невикористання</string>
     <string name="feed_list_loading">Завантаження списку стрічок</string>
     <string name="article_text_show_battery">Показати рівень заряду</string>
     <string name="settings_category_header_descr">Для екранів тексту статті та списку статей</string>
     <string name="article_text_buttons_layout">Розташування кнопок</string>
     <string name="article_text_buttons_layout_descr">Орієнтація і видимість кнопок в кінці статті</string>
-    <string name="article_reading_notification_hint">Щоб тримати програму в пам\'яті під час читання статті</string>
+    <string name="article_reading_notification_hint">Аби залишати програму в пам\'яті під час читання статті</string>
     <string name="auto_set_as_read">Позначати статтю як прочитану, якщо ії назва була в списку</string>
     <string name="removeText">Вилучити текст</string>
     <string name="menu_more_options">Більше опцій</string>
