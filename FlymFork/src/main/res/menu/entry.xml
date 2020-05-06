@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/menu_star"
-        android:icon="@drawable/rating_not_important"
+        android:icon="@drawable/ic_star_border"
         android:title="@string/menu_star"
         app:showAsAction="always" />
     <item
@@ -12,6 +12,7 @@
         android:icon="@drawable/ic_sync"
         android:title="@string/menu_reload_full_text"
         app:showAsAction="always"/>
+
     <item
         android:id="@+id/menu_mark_as_unread"
         android:icon="@drawable/ic_check_box"
@@ -41,8 +42,7 @@
             <item
                 android:id="@+id/menu_share"
                 android:icon="@drawable/ic_share"
-                android:title="@string/menu_share"
-                app:showAsAction="ifRoom" />
+                android:title="@string/menu_share"/>
             <item
                 android:id="@+id/menu_open_link"
                 android:icon="@drawable/ic_open_in_browser"
@@ -125,15 +125,16 @@
         <menu>
             <item
                 android:id="@+id/menu_reload_full_text_without_mobilizer"
+                android:icon="@drawable/ic_sync_problem"
                 android:title="@string/menu_reload_full_text_without_mobilizer" />
             <item
                 android:id="@+id/menu_reload_with_tables_toggle"
                 android:checkable="true"
-                android:icon="@android:drawable/ic_menu_today"
+                android:icon="@drawable/ic_view_module"
                 android:title="@string/menu_reload_with_tables_toggle" />
             <item
                 android:id="@+id/menu_load_all_images"
-                android:icon="@android:drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_photo_size_select_actual"
                 android:title="@string/menu_load_all_images" />
             <item
                 android:id="@+id/menu_reload_full_text"
@@ -155,6 +156,5 @@
         android:id="@+id/menu_close"
         android:icon="@drawable/ic_close"
         android:title="@string/menu_close" />
-
 </menu>
 

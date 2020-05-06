@@ -10,6 +10,7 @@
     <item
         android:id="@+id/menu_show_entry_text"
         android:icon="@drawable/ic_receipt"
+        android:visible="false"
         android:title="@string/menu_show_entry_text"
         app:showAsAction="always" />
     <item
@@ -19,52 +20,67 @@
         android:visible="false"
         android:title="@string/menu_cancel_refresh"/>
     <item
-        android:id="@+id/menu_toggle_theme"
-        app:showAsAction="collapseActionView"
-        android:visible="true"
-        android:title="@string/menu_toggle_theme"/>
-    <item
-        android:id="@+id/menu_mark_all_as_read"
-        android:title="@string/markAllAsRead"/>
-    <item
-        android:id="@+id/menu_reset_feed_and_delete_all_articles"
-        android:icon="@drawable/content_discard"
-        android:title="@string/menu_delete_non_starred"/>
-    <item
         android:id="@+id/menu_toogle_toogle_unread_all"
         android:icon="@drawable/ic_check_box"
         android:title="@string/menu_toogle_unread_all"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/menu_create_auto_backup"
-        android:title="@string/create_auto_backup"/>
     <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search"
         android:title="@android:string/search_go"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
-    <item
-        android:id="@+id/menu_share_starred"
-        android:icon="@drawable/ic_share"
-        android:title="@string/context_menu_share_starred"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_add_feed_shortcut"
-        android:title="@string/menu_add_feed_shortcut"/>
-    <item
-        android:id="@+id/menu_show_article_url_toggle"
-        android:checkable="true"
-        android:title="@string/show_article_url"/>
-    <item
-        android:id="@+id/menu_show_progress_info"
-        android:checkable="true"
-        android:title="@string/show_progress_info" />
-    <item
-        android:id="@+id/menu_copy_feed"
-        android:title="@string/menu_copy_feed"/>
-    <item
-        android:id="@+id/menu_delete_old"
-        android:title="@string/menu_delete_old"/>
 
+    <item
+        android:id="@+id/menu_more_options"
+        android:icon="@drawable/ic_more_vert"
+        android:title="@string/menu_more_options"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_share_starred"
+                android:icon="@drawable/ic_share"
+                android:visible="false"
+                android:title="@string/context_menu_share_starred"/>
+            <item
+                android:id="@+id/menu_toggle_theme"
+                android:icon="@drawable/ic_style"
+                android:visible="true"
+                android:title="@string/menu_toggle_theme"/>
+            <item
+                android:id="@+id/menu_mark_all_as_read"
+                android:icon="@drawable/ic_done_all"
+                android:title="@string/markAllAsRead"/>
+            <item
+                android:id="@+id/menu_reset_feed_and_delete_all_articles"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/reset_feed_and_delete_all_articles"/>
+            <item
+                android:id="@+id/menu_delete_old"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/menu_delete_old"/>
+            <item
+                android:id="@+id/menu_create_auto_backup"
+                android:icon="@drawable/ic_file_download"
+                android:title="@string/create_auto_backup"/>
+            <item
+                android:id="@+id/menu_add_feed_shortcut"
+                android:icon="@drawable/ic_home"
+                android:title="@string/menu_add_feed_shortcut"/>
+            <item
+                android:id="@+id/menu_show_article_url_toggle"
+                android:icon="@drawable/ic_http"
+                android:checkable="true"
+                android:title="@string/show_article_url"/>
+            <item
+                android:id="@+id/menu_show_progress_info"
+                android:icon="@drawable/ic_info_outline"
+                android:checkable="true"
+                android:title="@string/show_progress_info" />
+            <item
+                android:id="@+id/menu_copy_feed"
+                android:icon="@drawable/ic_content_copy"
+                android:title="@string/menu_copy_feed"/>
+        </menu>
+    </item>
 </menu>

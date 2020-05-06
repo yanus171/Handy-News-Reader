@@ -225,7 +225,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         if (EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri)) {
             mMenu.findItem(R.id.menu_refresh).setVisible(false);
-        } else {
             mMenu.findItem(R.id.menu_share_starred).setVisible(true);
         }
 
@@ -241,6 +240,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null ) {
             int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             item.setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
+                    uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
+                    uriMatch != FeedDataContentProvider.URI_FAVORITES);
+            mMenu.findItem(R.id.menu_show_entry_text).setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_FAVORITES);
         }
@@ -753,16 +755,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     IconCompat image = null;
                     if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.all_entries);
-                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_empty);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_empty);
                     } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.favorites);
-                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_with_star );
+                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
                     } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.unread_entries );
                         image = IconCompat.createWithResource(getContext(), R.mipmap.ic_launcher);
                     } else if ( FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.externalLinks );
-                        image = IconCompat.createWithResource(getContext(), R.drawable.load_later);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_load_later);
                     } else {
                         long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
                         Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),

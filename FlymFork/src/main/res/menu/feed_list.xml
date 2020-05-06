@@ -11,18 +11,26 @@
         tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/menu_add_group"
-        android:icon="@drawable/add_group"
+        android:icon="@drawable/ic_create_new_folder"
         android:title="@string/menu_add_group"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
     <item
-        android:id="@+id/menu_import"
-        android:icon="@drawable/action_import"
-        android:title="@string/menu_import"/>
-    <item
-        android:id="@+id/menu_export"
-        android:icon="@drawable/action_export"
-        android:title="@string/menu_export"/>
+        android:id="@+id/menu_import_export"
+        android:icon="@drawable/ic_import_export"
+        android:title="@string/menu_import_export"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_import"
+                android:icon="@drawable/ic_file_download"
+                android:title="@string/menu_import"/>
+            <item
+                android:id="@+id/menu_export"
+                android:icon="@drawable/ic_file_upload"
+                android:title="@string/menu_export"/>
+        </menu>
+    </item>
     <!--<item
         android:id="@+id/menu_fix_order"
         android:title="@string/menu_fix_order"/>-->

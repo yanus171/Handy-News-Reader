@@ -145,14 +145,14 @@ public class DrawerAdapter extends BaseAdapter {
             switch (position) {
                 case 0:
                     holder.titleTxt.setText(R.string.unread_entries);
-                    holder.iconView.setImageResource(R.mipmap.ic_launcher);
+                    holder.iconView.setImageResource(R.drawable.cup_new_smoke);
                     if (mAllUnreadNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllUnreadNumber));
                     SetImageSizeText(holder, mAllUnreadImagesSize);
                     break;
                 case 1:
                     holder.titleTxt.setText(R.string.all_entries);
-                    holder.iconView.setImageResource(R.drawable.cup_empty);
+                    holder.iconView.setImageResource(R.drawable.cup_new_empty);
                     if (mAllNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllNumber));
                     holder.unreadTxt.setText(String.valueOf(mAllNumber));
@@ -170,7 +170,7 @@ public class DrawerAdapter extends BaseAdapter {
                     break;
                 case 2:
                     holder.titleTxt.setText(R.string.favorites);
-                    holder.iconView.setImageResource(R.drawable.cup_with_star);
+                    holder.iconView.setImageResource(R.drawable.cup_new_star);
                     if (mFavoritesUnreadNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mFavoritesUnreadNumber));
                     if (mFavoritesReadNumber != 0)
@@ -179,7 +179,7 @@ public class DrawerAdapter extends BaseAdapter {
                     break;
                 case 3:
                     holder.titleTxt.setText(R.string.externalLinks);
-                    holder.iconView.setImageResource(R.drawable.load_later);
+                    holder.iconView.setImageResource(R.drawable.cup_new_load_later);
                     if (mExternalUnreadNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mExternalUnreadNumber));
                     if (mExternalReadNumber != 0)
@@ -192,7 +192,7 @@ public class DrawerAdapter extends BaseAdapter {
             holder.titleTxt.setText((mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME)));
 
             if (mFeedsCursor.getInt(POS_IS_GROUP) == 1) {
-                holder.iconView.setImageResource(isGroupExpanded(position) ? R.drawable.group_expanded : R.drawable.group_collapsed);
+                holder.iconView.setImageResource(isGroupExpanded(position) ? R.drawable.ic_group_expanded_gray : R.drawable.ic_group_collapsed_gray);
                 holder.iconView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -234,7 +234,7 @@ public class DrawerAdapter extends BaseAdapter {
                 Uri iconUri = mFeedsCursor.isNull(POS_ICON_URL) ? Uri.EMPTY : GetImageFileUri(mFeedsCursor.getString(POS_ICON_URL), mFeedsCursor.getString(POS_ICON_URL) );
                 Glide.with(parent.getContext())
                     .load(iconUri)
-                    .placeholder( R.mipmap.ic_launcher )
+                    .placeholder( R.drawable.cup_new_empty )
                     .into(holder.iconView);
 
                 holder.autoRefreshIcon.setVisibility( isAutoRefresh( position )  ? View.VISIBLE : View.GONE );

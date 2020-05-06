@@ -189,7 +189,7 @@ public class StatusText implements Observer {
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle, R.drawable.ic_sync, OPERATION_NOTIFICATION_CHANNEL_ID));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
                     if ( !mNotificationTitle.isEmpty() )

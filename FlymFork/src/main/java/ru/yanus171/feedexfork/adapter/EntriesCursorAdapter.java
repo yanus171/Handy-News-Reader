@@ -406,7 +406,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final boolean isTextShown = mShowEntryText || holder.isTextShown();
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
-        holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.arrow_down : R.drawable.arrow_right );
+        holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
@@ -458,7 +458,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
 
-        UpdateStarView(holder);
+        UpdateStarImgView(holder);
         holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
 
         UpdateReadView(holder, view);
@@ -637,8 +637,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return imageSize > KBYTE ? String.format( "%d K", imageSize / KBYTE ) : "";
     }
 
-    private void UpdateStarView(ViewHolder holder) {
-        int startID = Theme.IsLight() ? R.drawable.star_gray_solid : R.drawable.star_yellow;
+    private void UpdateStarImgView(ViewHolder holder) {
+        int startID = Theme.IsLight() ? R.drawable.ic_star_grey : R.drawable.ic_star_yellow;
         if ( holder.isFavorite )
             holder.starImgView.setImageResource(startID );
         holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
@@ -651,7 +651,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.categoriesTextView.setEnabled(!holder.isRead);
         holder.urlTextView.setEnabled(!holder.isRead);
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setImageResource( holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
+        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_check_box_gray : R.drawable.ic_check_box_outline_blank_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
         parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
@@ -712,7 +712,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
-            UpdateStarView(holder);
+            UpdateStarImgView(holder);
             SetIsFavorite(EntryUri(holder.entryID), holder.isFavorite, true);
         }
     }

@@ -70,7 +70,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:id="@+id/auto_refresh_icon"
-                android:background="@drawable/clock_gray" />
+                android:background="@drawable/ic_clock_gray" />
         </LinearLayout>
         <TextView
             android:id="@+id/tasks"

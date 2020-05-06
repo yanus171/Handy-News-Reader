@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
-        android:src="@drawable/sort"
+        android:src="@drawable/ic_sort"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="5dp" />
 

@@ -855,7 +855,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     Glide.with(EditFeedActivity.this ).load(value).centerCrop().into((ImageView) view);
                                 } else {
                                     Glide.with(EditFeedActivity.this ).clear(view);
-                                    (( ImageView)view ).setImageResource( R.drawable.cup_empty );
+                                    (( ImageView)view ).setImageResource( R.drawable.cup_new_empty );
                                 }
                                 return true;
                             } else

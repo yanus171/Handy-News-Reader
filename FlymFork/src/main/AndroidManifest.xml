@@ -93,7 +93,7 @@
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter
-                android:icon="@drawable/load_later"
+                android:icon="@drawable/cup_new_load_later"
                 android:label="@string/loadLinkLater">
                 <action android:name="android.intent.action.SEND" />
 
@@ -102,7 +102,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter
-                android:icon="@drawable/load_later"
+                android:icon="@drawable/cup_new_load_later"
                 android:label="@string/loadLinkLater">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -139,7 +139,7 @@
                 android:value=".activity.HomeActivity" />
 
             <intent-filter
-                android:icon="@drawable/load_now"
+                android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">
                 <action android:name="android.intent.action.SEND" />
 
@@ -148,7 +148,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter
-                android:icon="@drawable/load_now"
+                android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">
                 <action android:name="android.intent.action.VIEW" />
 

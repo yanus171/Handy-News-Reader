@@ -178,7 +178,7 @@
             android:layout_gravity="top"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/star_empty_gray"
+            android:src="@drawable/ic_star_border_grey"
             android:visibility="visible" />
     </LinearLayout>
 
