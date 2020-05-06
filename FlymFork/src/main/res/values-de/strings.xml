@@ -102,6 +102,7 @@
     <string name="new_feed_title">Neuer Feed oder Artikel</string>
     <string name="context_menu_edit">Bearbeiten</string>
     <string name="menu_add_group">Gruppe erstellen</string>
+    <string name="menu_import_export">Ex- und Importieren</string>
     <string name="menu_import">OPML-Datei importieren</string>
     <string name="menu_export">OPML-Datei exportieren</string>
     <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
@@ -498,6 +499,7 @@
     <string name="article_reading_notification_hint">Damit die App beim Lesen eines Artikels im Speicher bleibt</string>
     <string name="auto_set_as_read">Artikel automatisch als gelesen kennzeichnen, sobald dessen Titel in der Liste angezeigt wurde</string>
     <string name="removeText">Text entfernen</string>
+    <string name="menu_more_options">Weitere Optionen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
