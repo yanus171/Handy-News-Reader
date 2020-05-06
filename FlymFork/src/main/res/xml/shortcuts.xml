@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut android:shortcutId="articleWebSearch"
         android:shortcutShortLabel="@string/menu_add_feed"
-        android:icon="@drawable/add_feed"
+        android:icon="@drawable/cup_new_add"
         tools:targetApi="n_mr1">
         <intent android:action="android.intent.action.WEB_SEARCH"
             android:targetPackage="ru.yanus171.feedexfork"

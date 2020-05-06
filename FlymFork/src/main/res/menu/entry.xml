@@ -151,7 +151,7 @@
             </item>
             <item
                 android:id="@+id/menu_cancel_refresh"
-                android:icon="@drawable/ic_sync_disabled"
+                android:icon="@drawable/ic_action_cancel"
                 android:orderInCategory="0"
                 android:title="@string/menu_cancel_refresh"
                 android:visible="true" />

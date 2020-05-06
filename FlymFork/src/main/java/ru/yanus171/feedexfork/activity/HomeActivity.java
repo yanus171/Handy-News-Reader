@@ -572,11 +572,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             switch (mCurrentDrawerPos) {
                 case 0:
                     getSupportActionBar().setTitle(R.string.unread_entries);
-                    SetActionbarIndicator( R.drawable.cup_new_smoke);
+                    SetActionbarIndicator( R.drawable.cup_new_unread);
                     break;
                 case 1:
                     getSupportActionBar().setTitle(R.string.all_entries);
-                    SetActionbarIndicator( R.drawable.cup_new_empty );
+                    SetActionbarIndicator( R.drawable.cup_new_pot );
                     break;
                 case 2:
                     getSupportActionBar().setTitle(R.string.favorites);
