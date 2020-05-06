@@ -169,7 +169,7 @@
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
-    <string name="menu_delete_non_starred">Delete non starred</string>
+    <string name="menu_delete_non_starred">Reset feed and delete non starred articles</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
     <string name="menu_load_all_images">Load all images</string>
     <string name="menu_mark_as_favorite">Mark as Favorite</string>
@@ -343,6 +343,8 @@
     <string name="setupConnection">Setup connection</string>
     <string name="settings_content_extract_rules">Content extract rules</string>
     <string name="settings_content_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
+    <string name="settings_category_extract_rules">Category extract rules</string>
+    <string name="settings_category_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_tap_zones_dialogtitle">only for info, changes unavailable</string>
     <string name="downloadNext">", Next "</string>
     <string name="downloadAll">", All"</string>
@@ -510,6 +512,7 @@
     <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
     <string name="auto_set_as_read">Auto set the article as read when its title was visible in list</string>
     <string name="removeText">Remove text</string>
+    <string name="set_category">Set as category</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

@@ -105,6 +105,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -131,7 +132,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     FeedFilters mFilters = null;
     public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
 
-    private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos, mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos, mAbstractPos, mIsNewPos, mTextLenPos;
+    private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos,
+        mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos,
+        mAbstractPos, mIsNewPos, mTextLenPos, mCategoriesPos;
     public static int mEntryActivityStartingStatus = 0;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
@@ -197,6 +200,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView3 = view.findViewById(R.id.image3);
             holder.readMore = view.findViewById(R.id.textSourceReadMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
+            holder.categoriesTextView = view.findViewById(R.id.textCategories);
             UiUtils.SetFontSize(holder.textTextView, 1 );
 
             view.setTag(R.id.holder, holder);
@@ -465,6 +469,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             }
         });
 
+        holder.categoriesTextView.setVisibility(View.GONE);
+        final String categories = cursor.isNull(mCategoriesPos) ? "" : cursor.getString(mCategoriesPos);
+        if ( !categories.isEmpty() ){
+            holder.categoriesTextView.setVisibility(View.VISIBLE);
+            holder.categoriesTextView.setText(TextUtils.join(", ", TextUtils.split(categories, CATEGORY_LIST_SEP) ) );
+        }
+
         holder.contentImgView1.setVisibility( View.GONE );
         holder.contentImgView2.setVisibility( View.GONE );
         holder.contentImgView3.setVisibility( View.GONE );
@@ -637,6 +648,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.dateTextView.setEnabled(!holder.isRead);
         holder.textTextView.setEnabled(!holder.isRead);
         holder.authorTextView.setEnabled(!holder.isRead);
+        holder.categoriesTextView.setEnabled(!holder.isRead);
         holder.urlTextView.setEnabled(!holder.isRead);
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         holder.readImgView.setImageResource( holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
@@ -648,6 +660,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
             holder.imageSizeTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
+            holder.categoriesTextView.setTextColor(color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
             holder.readMore.setTextColor( color );
@@ -771,6 +784,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mAbstractPos = cursor.getColumnIndex(EntryColumns.ABSTRACT);
             mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
             mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
+            mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
             mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
         }
 
@@ -788,6 +802,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView titleTextView;
         TextView urlTextView;
         TextView textTextView;
+        TextView categoriesTextView;
         TextView dateTextView;
         TextView authorTextView;
         TextView imageSizeTextView;

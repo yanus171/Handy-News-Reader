@@ -240,7 +240,8 @@ public class NetworkUtils {
         result = result.replaceAll( "http.+?//", "" );
         result = result.replaceAll( "http.+?/", "" );
         if ( result.endsWith( "/" ) )
-            result = result.substring(0, result.length() );
+            result = result.substring(0, result.length() - 1 );
+
         int index = result.lastIndexOf('/'); // this also covers https://
         if (index > -1) {
             result = result.substring(0, index + 1);

@@ -1,5 +1,7 @@
 package ru.yanus171.feedexfork.utils;
 
+import android.text.TextUtils;
+
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -47,15 +49,17 @@ public class ArticleTextExtractor {
 
     private static final Pattern NEGATIVE_STYLE =
             Pattern.compile("hidden|display: ?none|font-size: ?small");
-    static final String TAG_BUTTON_CLASS = "tag_button";
-    static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
-    static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
+    public static final String TAG_BUTTON_CLASS = "tag_button";
+    public static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
+    public static final String TAG_BUTTON_CLASS_CATEGORY = "tag_button_category";
+    public static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
     static final String CLASS_ATTRIBUTE = "class";
     public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
+    public static final String HANDY_NEWS_READER_CATEGORY_CLASS = "Handy_News_Reader_tag";
     public static final String P_HR = "</p><hr>";
 
     public enum MobilizeType {Yes, No, Tags}
-    public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
+    //public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
 
     public static String mLastLoadedAllDoc = "";
 
@@ -70,14 +74,16 @@ public class ArticleTextExtractor {
                                         String contentIndicator,
                                         FeedFilters filters,
                                         MobilizeType mobilize,
-                                        boolean isFindBEstElement,
+                                        ArrayList<String> tagList,
+                                        boolean isFindBestElement,
                                         boolean isWithTables ) throws Exception {
         return extractContent(Jsoup.parse(input, null, ""),
                               url,
                               contentIndicator,
                               filters,
                               mobilize,
-                              isFindBEstElement,
+                              tagList,
+                              isFindBestElement,
                               isWithTables);
     }
 
@@ -86,6 +92,7 @@ public class ArticleTextExtractor {
                                         String contentIndicator,
                                         FeedFilters filters,
                                         MobilizeType mobilize,
+                                        ArrayList<String> tagList,
                                         boolean isFindBestElement,
                                         boolean isWithTables) {
         if (doc == null)
@@ -95,6 +102,16 @@ public class ArticleTextExtractor {
 
         // now remove the clutter
         prepareDocument(doc, mobilize);
+
+        {
+            tagList.clear();
+            Element tagsElements = getCategoriesElementFromPref(doc, url);
+            if (tagsElements != null)
+                for (Element item : tagsElements.getAllElements())
+                    if ( !item.ownText().isEmpty() )
+                        tagList.add(item.ownText());
+        }
+        Dog.v( "tagList = " + TextUtils.join( " ", tagList ));
 
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
@@ -147,7 +164,7 @@ public class ArticleTextExtractor {
             ret = RemoveTables(ret);
         }
 
-        final boolean isAutoFullTextRoot = getBestElementFromFile(doc, url) == null;
+        final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
         ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), filters, mobilize, isAutoFullTextRoot );
 
         if ( mobilize == MobilizeType.Tags ) {
@@ -208,7 +225,7 @@ public class ArticleTextExtractor {
         Collection<Element> nodes = getNodes(doc);
         int maxWeight = 0;
 
-        Element bestMatchElement = getBestElementFromFile(doc, url);
+        Element bestMatchElement = getFullTextRootElementFromPref(doc, url);
         if (bestMatchElement == null && isFindBestElement) {
             for (Element entry : nodes) {
                 int currentWeight = getWeight(entry, contentIndicator);
@@ -234,6 +251,9 @@ public class ArticleTextExtractor {
 
         final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
 
+        final Element categoriesElement = getCategoriesElementFromPref(doc, url);
+        final Elements categoriesAllElements = categoriesElement != null ? categoriesElement.getAllElements() : null;
+
         final String baseUrl = NetworkUtils.getUrlDomain(url);
         for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
             if (el.hasText()) {
@@ -245,8 +265,10 @@ public class ArticleTextExtractor {
                 for ( String className: classNameList ) {
                     if ( className.trim().isEmpty() )
                         continue;
-                    boolean isHidden = removeClassList.contains(className);
-                    AddTagButton(el, className, baseUrl, isHidden, el == bestMatchElement || el.hasAttr( BEST_ELEMENT_ATTR ) );
+                    final boolean isHidden = removeClassList.contains(className);
+                    final boolean isCategory = categoriesAllElements != null && categoriesAllElements.contains( el );
+                    final boolean isTextRoot = el == bestMatchElement || el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS );
+                    AddTagButton(el, className, baseUrl, isHidden, isTextRoot, isCategory );
                     if ( isHidden && el.parent() != null ) {
                         Element elementS = doc.createElement("s");
                         elementS.addClass( TAG_BUTTON_CLASS_HIDDEN );
@@ -257,19 +279,35 @@ public class ArticleTextExtractor {
             }
     }
 
-    private static void AddTagButton(Element el, String className, String baseUrl, boolean isHidden, boolean isFullTextRoot) {
+    private static void AddTagButton(Element el, String className, String baseUrl,
+                                     boolean isHidden, boolean isFullTextRoot, boolean isCategory) {
         final String paramValue = isHidden ? "show" : "hide";
         final String methodText = "openTagMenu('" + className + "', '" + baseUrl + "', '" + paramValue + "')";
         //final String fullTextRoot = isFullTextRoot ? " !!! " + MainApplication.getContext().getString( R.string.fullTextRoot ).toUpperCase() + " !!! " : "";
-        final String tagClass = isFullTextRoot ? TAG_BUTTON_FULL_TEXT_ROOT_CLASS : ( isHidden ? TAG_BUTTON_CLASS_HIDDEN : TAG_BUTTON_CLASS );
+        final String tagClass;
+        if ( isFullTextRoot )
+            tagClass = TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
+        else if ( isCategory )
+            tagClass = TAG_BUTTON_CLASS_CATEGORY;
+        else if ( isHidden )
+            tagClass = TAG_BUTTON_CLASS_HIDDEN;
+        else
+            tagClass = TAG_BUTTON_CLASS;
         el.append(HtmlUtils.getButtonHtml(methodText,  " " + className + " ]", tagClass));
         el.prepend(HtmlUtils.getButtonHtml(methodText,  "[ " + className + " ", tagClass));
     }
 
 
-    public static Element getBestElementFromFile(Element doc, final String url) {
+    public static Element getFullTextRootElementFromPref(Element doc, final String url ) {
+        return getElementWithClassNameFromPref( doc, url, PrefUtils.getString(PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES, R.string.full_text_root_default),
+                                                HANDY_NEWS_READER_CATEGORY_CLASS);
+    }
+    private static Element getCategoriesElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.CATEGORY_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS);
+    }
+    private static Element getElementWithClassNameFromPref(Element doc, final String url, final String pref, final String className ) {
         Element result = null;
-        for( String line: PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ).split( "\\n|\\s" ) ) {   //while ( result == null ) {
+        for( String line: pref.split( "\\n|\\s" ) ) {   //while ( result == null ) {
             if ( ( line == null ) || line.isEmpty() )
                 continue;
             try {
@@ -291,11 +329,11 @@ public class ArticleTextExtractor {
                                 result = elements.first();
                             else {
                                 for ( Element el: elements )
-                                    el.attr(BEST_ELEMENT_ATTR, "1");
+                                    el.attr(className, "1");
                                 result = new Element("p");
                                 result.insertChildren(0, elements.clone());
                             }
-                        } else
+                        } else if ( HANDY_NEWS_READER_ROOT_CLASS.equals( className ) )
                             result = doc;
                     }
                     break;

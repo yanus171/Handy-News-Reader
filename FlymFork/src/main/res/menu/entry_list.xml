@@ -27,7 +27,7 @@
         android:id="@+id/menu_mark_all_as_read"
         android:title="@string/markAllAsRead"/>
     <item
-        android:id="@+id/menu_delete_all"
+        android:id="@+id/menu_reset_feed_and_delete_all_articles"
         android:icon="@drawable/content_discard"
         android:title="@string/menu_delete_non_starred"/>
     <item

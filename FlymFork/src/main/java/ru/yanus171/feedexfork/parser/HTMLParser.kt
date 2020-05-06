@@ -130,7 +130,9 @@ object HTMLParser {
 
         val urlNextPage: String
         val listItem = ArrayList<Item>()
-        val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, filters, ArticleTextExtractor.MobilizeType.Yes, false, false)
+        val categoryList = ArrayList<String>()
+        val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, filters,
+                ArticleTextExtractor.MobilizeType.Yes, categoryList ,false, false)
         doc = Jsoup.parse(content)
         run {
             val list: Elements = doc.select("a")

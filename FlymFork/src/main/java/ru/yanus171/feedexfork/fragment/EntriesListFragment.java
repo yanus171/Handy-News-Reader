@@ -688,7 +688,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
 
-            case R.id.menu_delete_all: {
+            case R.id.menu_reset_feed_and_delete_all_articles: {
                 //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
                     new AlertDialog.Builder(getContext()) //
                             .setIcon(android.R.drawable.ic_dialog_alert) //

@@ -120,6 +120,7 @@ import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
@@ -140,9 +141,11 @@ import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
@@ -708,6 +711,7 @@ public class FetcherService extends IntentService {
         if (entryCursor.moveToFirst()) {
             int linkPos = entryCursor.getColumnIndex(LINK);
             final String link = entryCursor.getString(linkPos);
+
             if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
                 final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
@@ -742,11 +746,13 @@ public class FetcherService extends IntentService {
                             title = titleEls.first().text();
                     }
 
+                    ArrayList<String> categoryList = new ArrayList<>();
                     mobilizedHtml = ArticleTextExtractor.extractContent(doc,
                                                                         link,
                                                                         contentIndicator,
                                                                         filters,
                                                                         mobilize,
+                                                                        categoryList,
                                                                         !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ),
                                                                         entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES) ) == 1);
 
@@ -754,6 +760,9 @@ public class FetcherService extends IntentService {
 
                     if (mobilizedHtml != null) {
                         ContentValues values = new ContentValues();
+                        if ( !categoryList.isEmpty() )
+                            values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList ) );
+
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
                         if ( title != null )
                             values.put(EntryColumns.TITLE, title);
@@ -866,6 +875,8 @@ public class FetcherService extends IntentService {
                                              final boolean isStarred,
                                              AutoDownloadEntryImages autoDownloadEntryImages) {
         boolean load;
+        Dog.v( "LoadLink " + url );
+
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
         final int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
             Uri entryUri = GetEnryUri( url );
@@ -1496,13 +1507,26 @@ public class FetcherService extends IntentService {
             }
         }
 
-        public static void deleteAllFeedEntries ( Uri uri ){
+        public static void deleteAllFeedEntries ( Uri entriesUri ){
             int status = Status().Start("deleteAllFeedEntries", true);
             try {
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.delete(uri, WHERE_NOT_FAVORITE, null);
-                if ( FeedDataContentProvider.URI_MATCHER.match(uri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
-                    String feedID = uri.getPathSegments().get( 1 );
+
+                final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                final String feedID = entriesUri.getPathSegments().get( 1 );
+                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns.LINK}, WHERE_NOT_FAVORITE, null, null );
+                if ( cursor != null  ){
+                    while ( cursor.moveToNext() ) {
+                        Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
+                        final String link = cursor.getString(0);
+                        final File file = FileUtils.INSTANCE.LinkToFile(link);
+                        if (file.exists())
+                            file.delete();
+                    }
+                    cursor.close();
+                }
+                Status().ChangeProgress( "" );
+                cr.delete(entriesUri, WHERE_NOT_FAVORITE, null);
+                if ( FeedDataContentProvider.URI_MATCHER.match(entriesUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
                     ContentValues values = new ContentValues();
                     values.putNull(FeedColumns.LAST_UPDATE);
                     values.putNull(FeedColumns.REAL_LAST_UPDATE);
