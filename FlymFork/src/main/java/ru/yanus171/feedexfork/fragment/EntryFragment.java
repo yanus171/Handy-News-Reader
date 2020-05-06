@@ -363,7 +363,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     if ( w >= MIN_HEIGHT )
                         mWasSwipe = true;
 
-                    frameStarImage.setImageResource( ( w >= MAX_HEIGHT ) == mFavorite ? R.drawable.star_empty_gray : R.drawable.star_yellow );
+                    frameStarImage.setImageResource( ( w >= MAX_HEIGHT ) == mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow );
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_UP) {
                     Dog.v( "onTouch ACTION_UP " );
@@ -534,9 +534,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         {
             MenuItem item = menu.findItem(R.id.menu_star);
             if (mFavorite)
-                item.setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
+                item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
             else
-                item.setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
+                item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
             updateMenuWithIcon(item);
         }
         super.onCreateOptionsMenu(menu, inflater);

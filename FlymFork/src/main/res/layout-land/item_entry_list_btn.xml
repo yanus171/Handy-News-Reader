@@ -20,7 +20,7 @@
         android:alpha="0.5"
         android:paddingRight="5dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/arrow_right"
+        android:src="@drawable/ic_keyboard_arrow_right_gray"
         android:paddingEnd="5dp" />
 
     <ImageView
@@ -30,7 +30,7 @@
         android:layout_height="30dp"
         android:scaleType="fitCenter"
         android:alpha="0.5"
-        android:src="@drawable/disket_gray"/>
+        android:src="@drawable/ic_save_gray"/>
 
 
 
@@ -51,7 +51,7 @@
         android:scaleType="fitCenter"
         android:paddingRight="5dp"
         android:alpha="0.5"
-        android:src="@drawable/star_yellow"
+        android:src="@drawable/ic_star_yellow"
         android:paddingEnd="5dp" />
 
 </LinearLayout>

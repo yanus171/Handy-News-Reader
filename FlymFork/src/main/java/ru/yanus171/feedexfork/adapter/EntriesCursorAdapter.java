@@ -409,7 +409,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final boolean isTextShown = mShowEntryText || holder.isTextShown();
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
-        holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.arrow_down : R.drawable.arrow_right );
+        holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             holder.mainImgLayout.setVisibility( View.VISIBLE );
@@ -649,14 +649,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
-        int startID = Theme.IsLight() ? R.drawable.star_gray_solid : R.drawable.star_yellow;
+        int startID = Theme.IsLight() ? R.drawable.ic_star_grey : R.drawable.ic_star_yellow;
         if ( holder.isFavorite )
             holder.starImgView.setImageResource(startID );
         holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadImgView(ViewHolder holder) {
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setImageResource(holder.isRead ? R.drawable.rounded_checbox_gray : R.drawable.rounded_empty_gray);
+        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_check_box_gray : R.drawable.ic_check_box_outline_blank_gray);
     }
 
     private void toggleReadState(final long id, View view) {
