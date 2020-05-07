@@ -250,7 +250,9 @@ public class FeedData {
         public static final String IS_WAS_AUTO_UNSTAR = "was_auto_unstar";
         public static final String IS_WITH_TABLES = "with_tables";
         public static final String IMAGES_SIZE = "images_size";
+        public static final String CATEGORIES = "categories";
 
+        public static final String CATEGORY_LIST_SEP = ";";
 
         private static final String MOB_LENGTH_EXPR( String fieldName ) {
             return String.format( "CASE WHEN length(%s) > 10 THEN length(%s) ELSE %s END", fieldName, fieldName, fieldName );
@@ -302,7 +304,8 @@ public class FeedData {
                         String.format( "substr( %s, 1, 10 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                         FeedColumns.NAME,
                         FeedColumns.OPTIONS,
-                        TEXT_LEN_EXPR };
+                        TEXT_LEN_EXPR,
+                        EntryColumns.CATEGORIES};
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
         public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
@@ -322,7 +325,8 @@ public class FeedData {
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {FEED_ID, TYPE_EXTERNAL_ID}, {TITLE, TYPE_TEXT},
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
-                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN}, {IMAGES_SIZE, TYPE_INT} };
+                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN},
+                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT} };
 
         public static Uri UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/unread_entries");

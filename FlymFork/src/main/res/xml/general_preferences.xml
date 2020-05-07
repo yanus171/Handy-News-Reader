@@ -644,6 +644,13 @@
                 android:title="@string/global_class_list_to_remove_from_article_text"
                 android:inputType="text|textMultiLine"
                 android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:key="category_extract_rules"
+                android:inputType="text|textMultiLine"
+                android:defaultValue=""
+                android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
+                android:title="@string/settings_category_extract_rules"
+                android:summary="@string/settings_category_extract_rules_description"/>
 
         </PreferenceCategory>
         <CheckBoxPreference

@@ -78,8 +78,6 @@ import androidx.viewpager.widget.ViewPager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -117,12 +115,13 @@ import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
+import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
@@ -1233,12 +1232,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         builder.setTitle(baseUrl + ":class=" + className)
             .setItems(new CharSequence[]{getString(R.string.setFullTextRoot),
                                          getString(paramValue.equals( "hide" ) ? R.string.hide : R.string.show ),
+                                         getString(R.string.set_category),
                                          getString( R.string.copyClassNameToClipboard )   },
                     new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 0)
                         setFullTextRoot(baseUrl, className);
                     else if (which == 2)
+                        setCategory(baseUrl, className);
+                    else if (which == 3)
                         copyToClipboard(className);
                     else if ( paramValue.equals( "hide" ) )
                         removeClass( className );
@@ -1257,7 +1259,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         Toast.makeText(getActivity(), getActivity().getString( R.string.text_was_copied_to_clipboard ) + ": " + text, Toast.LENGTH_LONG).show();
     }
     private void setFullTextRoot(String baseUrl, String className) {
-        ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ),
+        setClassObject(baseUrl, className, CONTENT_TEXT_ROOT_EXTRACT_RULES, getString(R.string.full_text_root_default ) );
+    }
+    private void setCategory(String baseUrl, String className) {
+        setClassObject(baseUrl, className, CATEGORY_EXTRACT_RULES, "" );
+    }
+    private void setClassObject(String baseUrl, String className, String prefKey, String defaultPrefValue) {
+        ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString(prefKey, defaultPrefValue ),
                 Pattern.compile( "\\n|\\s" ) );
         int index = -1;
         for( int i = 0; i < ruleList.size(); i++ ) {
@@ -1273,9 +1281,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( index != -1 )
             ruleList.remove(index );
         ruleList.add( 0, newRule );
-        PrefUtils.putStringCommit(PrefUtils.CONTENT_EXTRACT_RULES, TextUtils.join( "\n", ruleList ) );
+        PrefUtils.putStringCommit(prefKey, TextUtils.join("\n", ruleList ) );
         ActionAfterRulesEditing();
     }
+
 
     @Override
     public void downloadImage(final String url) {

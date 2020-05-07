@@ -185,6 +185,19 @@
                     android:textColor="?attr/colorReadState"
                     android:textIsSelectable="false" />
 
+                <TextView
+                    android:id="@+id/textCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.7"
+                    android:drawablePadding="3dp"
+                    android:singleLine="false"
+                    android:text="#tag1, #tag2, #tag3"
+                    android:textColor="?attr/colorReadState"
+                    android:textIsSelectable="false" />
 
             </LinearLayout>
 

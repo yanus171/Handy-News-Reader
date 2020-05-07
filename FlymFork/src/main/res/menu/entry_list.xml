@@ -52,9 +52,9 @@
                 android:icon="@drawable/ic_done_all"
                 android:title="@string/markAllAsRead"/>
             <item
-                android:id="@+id/menu_delete_all"
+                android:id="@+id/menu_reset_feed_and_delete_all_articles"
                 android:icon="@drawable/ic_delete"
-                android:title="@string/menu_delete_non_starred"/>
+                android:title="@string/reset_feed_and_delete_all_articles"/>
             <item
                 android:id="@+id/menu_delete_old"
                 android:icon="@drawable/ic_delete"

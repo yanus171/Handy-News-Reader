@@ -87,7 +87,7 @@ object OneWebPageParser {
                     val textHTML = getValueHTML(textClassName, elArticle)
                     //if ( mainImageUrl.isNotEmpty() )
                     //    textHTML = "<img src='$mainImageUrl'/><p>$textHTML"
-                    val isAutoFullTextRoot = ArticleTextExtractor.getBestElementFromFile(doc, entryUrl) == null
+                    val isAutoFullTextRoot = ArticleTextExtractor.getFullTextRootElementFromPref(doc, entryUrl) == null
                     val improvedContent = HtmlUtils.improveHtmlContent(textHTML, feedBaseUrl, filters, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
 
                     // Try to find if the entry is not filtered and need to be processed
