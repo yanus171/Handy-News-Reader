@@ -334,6 +334,7 @@ GENERAL]]></string>
     <string name="setupConnection">Ustaw połączenie</string>
     <string name="settings_content_extract_rules">Reguły pozyskiwania treści</string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
+    <string name="settings_category_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
     <string name="downloadNext">", Następny "</string>
     <string name="downloadAll">", Wszystko"</string>
@@ -501,6 +502,8 @@ GENERAL]]></string>
     <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
     <string name="auto_set_as_read">Oznacz artykuł jako przeczytany gdy jego tytuł jest widoczny na liście</string>
     <string name="removeText">Usuń tekst</string>
+    <string name="set_category">Ustaw jako kategorię</string>
+    <string name="reset_feed_and_delete_all_articles">Resetuj źródło i usuń wszystkie niezagwiazdkowane artykuły</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
