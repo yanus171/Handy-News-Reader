@@ -755,13 +755,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     IconCompat image = null;
                     if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.all_entries);
-                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_empty);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_pot);
                     } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.favorites);
                         image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
                     } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.unread_entries );
-                        image = IconCompat.createWithResource(getContext(), R.mipmap.ic_launcher);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_unread);
                     } else if ( FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.externalLinks );
                         image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_load_later);

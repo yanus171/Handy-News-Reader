@@ -145,14 +145,14 @@ public class DrawerAdapter extends BaseAdapter {
             switch (position) {
                 case 0:
                     holder.titleTxt.setText(R.string.unread_entries);
-                    holder.iconView.setImageResource(R.drawable.cup_new_smoke);
+                    holder.iconView.setImageResource(R.drawable.cup_new_unread);
                     if (mAllUnreadNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllUnreadNumber));
                     SetImageSizeText(holder, mAllUnreadImagesSize);
                     break;
                 case 1:
                     holder.titleTxt.setText(R.string.all_entries);
-                    holder.iconView.setImageResource(R.drawable.cup_new_empty);
+                    holder.iconView.setImageResource(R.drawable.cup_new_pot);
                     if (mAllNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllNumber));
                     holder.unreadTxt.setText(String.valueOf(mAllNumber));
