@@ -249,11 +249,13 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             final View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_edit, null);
             final EditText filterText = dialogView.findViewById(R.id.filterText);
             final CheckBox regexCheckBox = dialogView.findViewById(R.id.regexCheckBox);
-            final RadioGroup applyType = dialogView.findViewById(R.id.applyType);
             final RadioButton acceptRadio = dialogView.findViewById(R.id.acceptRadio);
             final RadioButton markAsStarredRadio = dialogView.findViewById(R.id.markAsStarredRadio);
             final RadioButton removeTextRadio = dialogView.findViewById(R.id.removeText);
             final RadioButton rejectRadio = dialogView.findViewById(R.id.rejectRadio);
+
+            final RadioGroup applyType = dialogView.findViewById(R.id.applyTypeRadioGroup);
+            SetupFilterDialog(dialogView, applyType, removeTextRadio);
 
             filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)));
             regexCheckBox.setChecked(c.getInt(c.getColumnIndex(FilterColumns.IS_REGEX)) == 1);
@@ -267,6 +269,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             } else {
                 rejectRadio.setChecked(true);
             }
+
 
             final long filterId = mFiltersCursorAdapter.getItemId(mFiltersCursorAdapter.getSelectedFilter());
             new AlertDialog.Builder(EditFeedActivity.this) //
@@ -299,6 +302,29 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         }
                     }).setNegativeButton(android.R.string.cancel, null).show();
         }
+    }
+
+    private RadioGroup SetupFilterDialog(View dialogView, final RadioGroup applyType, final RadioButton removeTextRadio) {
+        final RadioGroup actionType = dialogView.findViewById(R.id.actionTypeRadioGroup);
+        final RadioButton applyTitleButton = dialogView.findViewById(R.id.applyTitleRadio);
+        final RadioButton applyAuthorButton = dialogView.findViewById(R.id.applyAuthorRadio);
+        final RadioButton applyCategoryButton = dialogView.findViewById(R.id.applyCategoryRadio);
+        final RadioButton applyUrlButton = dialogView.findViewById(R.id.applyUrlRadio);
+        final RadioButton applyContentButton = dialogView.findViewById(R.id.applyContentRadio);
+
+        actionType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int selectedID) {
+                for ( int i = 0; i < applyType.getChildCount(); i++ )
+                    applyType.getChildAt( i ).setEnabled(true);
+                if ( selectedID == removeTextRadio.getId() ) {
+                    applyAuthorButton.setEnabled( false );
+                    applyCategoryButton.setEnabled( false );
+                    applyUrlButton.setEnabled( false );
+                }
+            }
+        });
+        return applyType;
     }
 
     private int getAppliedTypeBtnId(int DBId) {
@@ -774,6 +800,11 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             case R.id.menu_add_filter: {
                 final View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_edit, null);
 
+                final RadioGroup applyType = dialogView.findViewById(R.id.applyTypeRadioGroup);
+                final RadioButton removeTextRadio = dialogView.findViewById(R.id.removeText);
+                SetupFilterDialog(dialogView, applyType, removeTextRadio);
+
+
                 new AlertDialog.Builder(this) //
                         .setTitle(R.string.filter_add_title) //
                         .setView(dialogView) //
@@ -787,7 +818,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     ContentValues values = new ContentValues();
                                     values.put(FilterColumns.FILTER_TEXT, filterText);
                                     values.put(FilterColumns.IS_REGEX, ((CheckBox) dialogView.findViewById(R.id.regexCheckBox)).isChecked());
-                                    values.put(FilterColumns.APPLY_TYPE, ((RadioGroup) dialogView.findViewById(R.id.applyType)).getCheckedRadioButtonId());
+                                    values.put(FilterColumns.APPLY_TYPE, ((RadioGroup) dialogView.findViewById(R.id.applyTypeRadioGroup)).getCheckedRadioButtonId());
                                     values.put(FilterColumns.IS_ACCEPT_RULE, ((RadioButton) dialogView.findViewById(R.id.acceptRadio)).isChecked());
                                     values.put(FilterColumns.IS_MARK_STARRED, ((RadioButton) dialogView.findViewById(R.id.markAsStarredRadio)).isChecked());
                                     values.put(FilterColumns.IS_REMOVE_TEXT, ((RadioButton) dialogView.findViewById(R.id.removeText)).isChecked());
