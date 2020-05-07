@@ -332,6 +332,8 @@
     <string name="setupConnection">Verbindung einstellen</string>
     <string name="settings_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
+    <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
+    <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
     <string name="downloadNext">", Nächste "</string>
     <string name="downloadAll">", Alle"</string>
@@ -499,7 +501,9 @@
     <string name="article_reading_notification_hint">Damit die App beim Lesen eines Artikels im Speicher bleibt</string>
     <string name="auto_set_as_read">Artikel automatisch als gelesen kennzeichnen, sobald dessen Titel in der Liste angezeigt wurde</string>
     <string name="removeText">Text entfernen</string>
+    <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
+    <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen und alle nicht gekennzeichneten Artikel löschen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
