@@ -504,6 +504,9 @@
     <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
     <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen und alle nicht gekennzeichneten Artikel löschen</string>
+    <string name="filter_apply_to_author">Auf Autor angewendet</string>
+    <string name="filter_apply_to_category">Auf Kategorie angewendet</string>
+    <string name="filter_apply_to_url">Auf URL anwenden</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
