@@ -518,7 +518,7 @@
     <string name="reset_feed_and_delete_all_articles">Reset feed and delete all unstarred articles</string>
     <string name="filter_apply_to_author">Applied to author</string>
     <string name="filter_apply_to_category">Applied to category</string>
-    <string name="filter_apply_to_url">Apply to url</string>
+    <string name="filter_apply_to_url">Apply to URL</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
