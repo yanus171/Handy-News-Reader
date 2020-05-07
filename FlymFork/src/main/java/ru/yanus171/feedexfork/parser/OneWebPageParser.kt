@@ -91,7 +91,7 @@ object OneWebPageParser {
                     val improvedContent = HtmlUtils.improveHtmlContent(textHTML, feedBaseUrl, filters, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
 
                     // Try to find if the entry is not filtered and need to be processed
-                    if (!filters.isEntryFiltered(author, author, entryUrl, improvedContent)) {
+                    if (!filters.isEntryFiltered(author, author, entryUrl, improvedContent, null)) {
                         var isUpdated = false
                         var entryID = 0L
                         val cursor = cr.query(feedEntriesUri, arrayOf(EntryColumns.DATE, EntryColumns._ID), EntryColumns.LINK + Constants.DB_ARG, arrayOf(entryUrl), null)
@@ -120,7 +120,7 @@ object OneWebPageParser {
                             values.put(EntryColumns.IS_NEW, 1)
                             cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null)
                         } else if ( entryID == 0L ) {
-                            if (filters.isMarkAsStarred(author, author, entryUrl, improvedContent)) {
+                            if (filters.isMarkAsStarred(author, author, entryUrl, improvedContent, null)) {
                                 synchronized(FetcherService.mMarkAsStarredFoundList) { FetcherService.mMarkAsStarredFoundList.add(MarkItem(feedID, author, entryUrl)) }
                                 values.put(EntryColumns.IS_FAVORITE, 1)
                             }

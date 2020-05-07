@@ -28,10 +28,12 @@ import android.widget.TextView;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.getApplyTypeCaption;
+
 public class FiltersCursorAdapter extends ResourceCursorAdapter {
 
     private int mFilterTextColumnPosition;
-    private int mIsAppliedToTitleColumnPosition;
+    private int mApplyTypeColumnPosition;
     private int mIsAcceptRulePosition;
 
     private int mSelectedFilter = -1;
@@ -73,7 +75,7 @@ public class FiltersCursorAdapter extends ResourceCursorAdapter {
             isAcceptRuleTextView.setTextColor( context.getResources().getColor(android.R.color.holo_red_dark) );
         }
         filterTextTextView.setText(cursor.getString(mFilterTextColumnPosition));
-        isAppliedToTitleTextView.setText(cursor.getInt(mIsAppliedToTitleColumnPosition) == 1 ? R.string.filter_apply_to_title : R.string.filter_apply_to_content);
+        isAppliedToTitleTextView.setText( getApplyTypeCaption( cursor.getInt(mApplyTypeColumnPosition)  ) );
     }
 
     @Override
@@ -103,7 +105,7 @@ public class FiltersCursorAdapter extends ResourceCursorAdapter {
     private void reinit(Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             mFilterTextColumnPosition = cursor.getColumnIndex(FilterColumns.FILTER_TEXT);
-            mIsAppliedToTitleColumnPosition = cursor.getColumnIndex(FilterColumns.IS_APPLIED_TO_TITLE);
+            mApplyTypeColumnPosition = cursor.getColumnIndex(FilterColumns.APPLIED_TYPE);
             mIsAcceptRulePosition = cursor.getColumnIndex(FilterColumns.IS_ACCEPT_RULE);
             mIsMarkAsStarredPosition = cursor.getColumnIndex(FilterColumns.IS_MARK_STARRED);
             mIsRemoveTextPosition = cursor.getColumnIndex(FilterColumns.IS_REMOVE_TEXT);

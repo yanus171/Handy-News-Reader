@@ -226,8 +226,11 @@ object FileUtils {
 
     }
 
-    public fun deleteMobilized(link: String, entryUri: Uri) {
+    public fun deleteMobilizedFile(link: String) {
         with(LinkToFile(link)) { if (exists()) delete() }
+    }
+    public fun deleteMobilized(link: String, entryUri: Uri) {
+        deleteMobilizedFile( link )
         val values = ContentValues()
         values.put(MOBILIZED_HTML, EMPTY_MOBILIZED_VALUE)
         MainApplication.getContext().contentResolver.update(entryUri, values, null, null)

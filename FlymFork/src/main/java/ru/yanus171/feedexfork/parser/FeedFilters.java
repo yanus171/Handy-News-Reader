@@ -8,15 +8,19 @@ import android.text.TextUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_AUTHOR;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CATEGORY;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
 
 public class FeedFilters {
 
@@ -33,7 +37,7 @@ public class FeedFilters {
             Rule r = new Rule();
             r.filterText = c.getString(0);
             r.isRegex = c.getInt(1) == 1;
-            r.isAppliedToTitle = c.getInt(2) == 1;
+            r.mApplyType = c.getInt(2);
             r.isAcceptRule = c.getInt(3) == 1;
             r.isMarkAsStarred = c.getInt(4) == 1;
             r.isRemoveText = c.getInt(5) == 1;
@@ -51,7 +55,7 @@ public class FeedFilters {
                 Rule r = new Rule();
                 r.filterText = rule;
                 r.isRegex = PrefUtils.getBoolean("global_marks_as_star_filter_rule_is_regex", false);
-                r.isAppliedToTitle = PrefUtils.getBoolean("global_marks_as_star_filter_apply_to_title", true);
+                r.mApplyType = PrefUtils.getBoolean("global_marks_as_star_filter_apply_to_title", true) ? DB_APPLIED_TO_TITLE : DB_APPLIED_TO_CONTENT;
                 r.isAcceptRule = false;
                 r.isMarkAsStarred = true;
                 mFilters.add(r);
@@ -68,22 +72,25 @@ public class FeedFilters {
     @NotNull
     public static String[] getCursorProjection() {
         return new String[]{FeedData.FilterColumns.FILTER_TEXT, FeedData.FilterColumns.IS_REGEX,
-                FeedData.FilterColumns.IS_APPLIED_TO_TITLE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED, FeedData.FilterColumns.IS_REMOVE_TEXT};
+                FeedData.FilterColumns.APPLIED_TYPE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED, FeedData.FilterColumns.IS_REMOVE_TEXT};
     }
 
     public static Uri getCursorUri(String feedId) {
         return FeedData.FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedId);
     }
 
-    public boolean isEntryFiltered(String title, String author, String url, String content) {
-
+    public boolean isEntryFiltered(String title, String author, String url, String content, String[] categoryList) {
+        final String categories = categoryList == null ? "" : TextUtils.join( ", ", categoryList );
         boolean isFiltered = false;
 
         for (Rule r : mFilters) {
             if ( r.isMarkAsStarred || r.isRemoveText )
                 continue;
 
-            boolean isMatch = r.isMatch( title, author, url, content );
+            if ( r.isAcceptRule && r.mApplyType == DB_APPLIED_TO_CATEGORY && categories.isEmpty() )
+                continue;
+
+            boolean isMatch = r.isMatch( title, author, url, content, categories );
 
             if (r.isAcceptRule) {
                 if (isMatch) {
@@ -103,16 +110,18 @@ public class FeedFilters {
         return isFiltered;
     }
 
-    public boolean isMarkAsStarred(String title, String author, String url, String content) {
+    public boolean isMarkAsStarred(String title, String author, String url, String content, String[] categoryList) {
+        final String categories = categoryList == null ? "" : TextUtils.join( ", ", categoryList );
+
         for (Rule r : mFilters)
-            if ( r.isMarkAsStarred && r.isMatch( title, author, url, content ) )
+            if ( r.isMarkAsStarred && r.isMatch( title, author, url, content, categories ) )
                 return true;
         return false;
     }
-    public String removeText( String text, boolean isApplyToTitle ) {
+    public String removeText( String text, int applyType ) {
         String result = text;
         for (Rule r : mFilters)
-            if ( r.isRemoveText && isApplyToTitle == r.isAppliedToTitle ) {
+            if ( r.isRemoveText && applyType == r.mApplyType) {
                 if (r.isRegex)
                     result = result.replaceAll( r.filterText, "" );
                 else
@@ -124,34 +133,42 @@ public class FeedFilters {
     private class Rule {
         String filterText;
         boolean isRegex;
-        boolean isAppliedToTitle;
+        int mApplyType;
         boolean isAcceptRule;
         boolean isMarkAsStarred = false;
         boolean isRemoveText = false;
 
-        boolean isMatch(String title, String author, String url, String content) {
+        boolean isMatch(String title, String author, String url, String content, String categories) {
             boolean result = false;
             author = author == null ? "" : author;
+            title = title == null ? "" : title;
+            url = url == null ? "" : url;
+            categories = categories == null ? "" : categories;
+
             if (isRegex) {
                 try {
                     Pattern p = Pattern.compile(filterText);
-                    if (isAppliedToTitle) {
-                        Matcher mT = p.matcher(title);
-                        Matcher mA = p.matcher(author);
-                        Matcher mU = p.matcher(url);
-                        result = mT.find() || mA.find() || mU.find();
-                    } else if (content != null) {
-                        Matcher m = p.matcher(content);
-                        result = m.find();
-                    }
+                    if ( mApplyType == DB_APPLIED_TO_TITLE)
+                        result = p.matcher(title).find();
+                    else if ( mApplyType == DB_APPLIED_TO_AUTHOR)
+                        result = p.matcher(author).find();
+                    else if ( mApplyType == DB_APPLIED_TO_URL)
+                        result = p.matcher(url).find();
+                    else if ( mApplyType == DB_APPLIED_TO_CATEGORY)
+                        result = p.matcher(categories).find();
+                    else if ( mApplyType == DB_APPLIED_TO_CONTENT)
+                        result = p.matcher(content).find();
                 } catch ( PatternSyntaxException e ) {
                     DebugApp.AddErrorToLog( null, e  );
                 }
-            } else if ((isAppliedToTitle && (title != null && title.toLowerCase().contains(filterText.toLowerCase()) ||
-                                             author.toLowerCase().contains(filterText.toLowerCase()) ||
-                                             url.contains(filterText))) ||
-                    (!isAppliedToTitle && content != null && content.toLowerCase().contains(filterText.toLowerCase()))) {
-                result = true;
+            } else {
+                final String filterTextLow = filterText.toLowerCase();
+                result =
+                    ( mApplyType == DB_APPLIED_TO_TITLE && title.toLowerCase().contains(filterTextLow ) ) ||
+                    ( mApplyType == DB_APPLIED_TO_CATEGORY && categories.toLowerCase().contains(filterTextLow ) ) ||
+                    ( mApplyType == DB_APPLIED_TO_CONTENT && content.toLowerCase().contains(filterTextLow ) ) ||
+                    ( mApplyType == DB_APPLIED_TO_URL && url.toLowerCase().contains(filterTextLow ) ) ||
+                    ( mApplyType == DB_APPLIED_TO_AUTHOR && author.toLowerCase().contains(filterTextLow ) );
             }
             return result;
         }

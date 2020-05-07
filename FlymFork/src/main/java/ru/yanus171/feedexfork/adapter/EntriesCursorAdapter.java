@@ -106,6 +106,7 @@ import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -473,7 +474,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final String categories = cursor.isNull(mCategoriesPos) ? "" : cursor.getString(mCategoriesPos);
         if ( !categories.isEmpty() ){
             holder.categoriesTextView.setVisibility(View.VISIBLE);
-            holder.categoriesTextView.setText(TextUtils.join(", ", TextUtils.split(categories, CATEGORY_LIST_SEP) ) );
+            holder.categoriesTextView.setText(CategoriesToOutput(categories));
         }
 
         holder.contentImgView1.setVisibility( View.GONE );
@@ -527,11 +528,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     }
 
+    public static String CategoriesToOutput(String categories) {
+        return TextUtils.join(", ", TextUtils.split(categories, CATEGORY_LIST_SEP) );
+    }
+
     @NotNull
     private String GetTitle(Cursor cursor) {
         String text = cursor.isNull( mTitlePos ) ? "" : cursor.getString(mTitlePos);
         if ( mFilters != null )
-            text = mFilters.removeText( text, true );
+            text = mFilters.removeText(text, DB_APPLIED_TO_TITLE );
         return text;
     }
 

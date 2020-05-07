@@ -455,7 +455,7 @@ public class RssAtomParser extends DefaultHandler {
                     }
 
                     // Try to find if the entry is not filtered and need to be processed
-                    if (!mFilters.isEntryFiltered(improvedTitle, improvedAuthor, entryLinkString, improvedContent)) {
+                    if (!mFilters.isEntryFiltered(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]))) {
 
                         if (mAuthor != null) {
                             values.put(EntryColumns.AUTHOR, mAuthor.toString());
@@ -500,7 +500,7 @@ public class RssAtomParser extends DefaultHandler {
 
                             values.put(EntryColumns.LINK, entryLinkString);
 
-                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent) ) {
+                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) ) {
                                 synchronized ( FetcherService.mMarkAsStarredFoundList ) {
                                     FetcherService.mMarkAsStarredFoundList.add(new MarkItem(mId, improvedTitle, entryLinkString));
                                 }

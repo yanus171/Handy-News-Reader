@@ -117,6 +117,8 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
@@ -185,6 +187,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 + "div.bottom-page {display: block; min-height: 90vh} "
                 + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
                 + "div {text-align:" + getAlign(text) + "} "
+                + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "
                 + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
                 + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
@@ -250,6 +253,8 @@ public class EntryView extends WebView implements Handler.Callback {
     private static final String TITLE_END_WITH_LINK = "</a></h1>";
     private static final String SUBTITLE_START = "<p class='subtitle'>";
     private static final String SUBTITLE_END = "</p>";
+    private static final String CATEGORIES_START = "<p class='categories'>";
+    private static final String CATEGORIES_END = "</p>";
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
     private static final String BOTTOM_PAGE = "<div class='bottom-page'/>";
     private static final String BUTTON_SECTION_END = "</div>";
@@ -313,12 +318,13 @@ public class EntryView extends WebView implements Handler.Callback {
 
         final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
+        final String categories = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
         //final String feedTitle = filters.removeTextFromTitle( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
         String title =
             newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
         if ( filters != null )
-            title = filters.removeText( title, true );
+            title = filters.removeText(title, DB_APPLIED_TO_TITLE );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -380,7 +386,7 @@ public class EntryView extends WebView implements Handler.Callback {
             @Override
             public void run() {
                 synchronized (EntryView.this) {
-                    mDataWithWebLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
+                    mDataWithWebLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
                     mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
@@ -399,7 +405,7 @@ public class EntryView extends WebView implements Handler.Callback {
         mLastContentLength = 0;
     }
 
-    private String generateHtmlContent(String feedID, String title, String link, String contentText,
+    private String generateHtmlContent(String feedID, String title, String link, String contentText, String categories,
                                        String enclosure, String author,
                                        long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
@@ -426,7 +432,12 @@ public class EntryView extends WebView implements Handler.Callback {
             dateStringBuilder.append(" &mdash; ").append(author);
         }
 
-        content.append(dateStringBuilder).append(SUBTITLE_END).append(contentText);
+        content.append(dateStringBuilder).append(SUBTITLE_END);
+        if (categories != null && !categories.isEmpty())
+            content.append( CATEGORIES_START ).append( CategoriesToOutput( categories ) ).append( CATEGORIES_END );
+
+        content.append(contentText);
+
 
         final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
         if ( !layout.equals( "Hidden" ) ) {
@@ -835,7 +846,7 @@ public class EntryView extends WebView implements Handler.Callback {
         Element root = FindBestElement(doc, mEntryLink, "", true);
         AddTagButtons(doc, mEntryLink, root);
         synchronized (EntryView.this) {
-            mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", 0, true, false);
+            mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
         }
         mScrollY = getScrollY();
         LoadData();

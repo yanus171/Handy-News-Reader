@@ -37,8 +37,10 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isEntryIDActive;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
@@ -134,7 +136,7 @@ public class HtmlUtils {
             content = content.replace( "&#39;", "'" );
 
             if ( filters != null && mobType == ArticleTextExtractor.MobilizeType.Yes )
-                content = filters.removeText( content, false );
+                content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
 
         }
 

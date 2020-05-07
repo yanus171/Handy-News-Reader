@@ -124,7 +124,6 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.IS_READ_STUMB;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_ACTION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_DESC;
@@ -137,6 +136,11 @@ import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_DATE
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_TEXT_CLASS_NAME;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_URL_CLASS_NAME;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_AUTHOR;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CATEGORY;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
 import static ru.yanus171.feedexfork.service.FetcherService.URL_NEXT_PAGE_CLASS_NAME;
 
@@ -245,8 +249,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             final View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_edit, null);
             final EditText filterText = dialogView.findViewById(R.id.filterText);
             final CheckBox regexCheckBox = dialogView.findViewById(R.id.regexCheckBox);
-            final RadioButton applyTitleRadio = dialogView.findViewById(R.id.applyTitleRadio);
-            final RadioButton applyContentRadio = dialogView.findViewById(R.id.applyContentRadio);
+            final RadioGroup applyType = dialogView.findViewById(R.id.applyType);
             final RadioButton acceptRadio = dialogView.findViewById(R.id.acceptRadio);
             final RadioButton markAsStarredRadio = dialogView.findViewById(R.id.markAsStarredRadio);
             final RadioButton removeTextRadio = dialogView.findViewById(R.id.removeText);
@@ -254,11 +257,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
             filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)));
             regexCheckBox.setChecked(c.getInt(c.getColumnIndex(FilterColumns.IS_REGEX)) == 1);
-            if (c.getInt(c.getColumnIndex(FilterColumns.IS_APPLIED_TO_TITLE)) == 1) {
-                applyTitleRadio.setChecked(true);
-            } else {
-                applyContentRadio.setChecked(true);
-            }
+            applyType.check( getAppliedTypeBtnId( c.getInt(c.getColumnIndex(FilterColumns.APPLIED_TYPE)) ));
             if (c.getInt(c.getColumnIndex(FilterColumns.IS_MARK_STARRED)) == 1) {
                 markAsStarredRadio.setChecked(true);
             } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_REMOVE_TEXT)) == 1) {
@@ -285,7 +284,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                         ContentValues values = new ContentValues();
                                         values.put(FilterColumns.FILTER_TEXT, filter);
                                         values.put(FilterColumns.IS_REGEX, regexCheckBox.isChecked());
-                                        values.put(FilterColumns.IS_APPLIED_TO_TITLE, applyTitleRadio.isChecked());
+                                        values.put(FilterColumns.APPLIED_TYPE, getDBAppliedType(applyType.getCheckedRadioButtonId()));
                                         values.put(FilterColumns.IS_ACCEPT_RULE, acceptRadio.isChecked());
                                         values.put(FilterColumns.IS_MARK_STARRED, markAsStarredRadio.isChecked());
                                         values.put(FilterColumns.IS_REMOVE_TEXT, removeTextRadio.isChecked());
@@ -300,6 +299,51 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         }
                     }).setNegativeButton(android.R.string.cancel, null).show();
         }
+    }
+
+    private int getAppliedTypeBtnId(int DBId) {
+        if ( DBId == DB_APPLIED_TO_CONTENT)
+            return R.id.applyContentRadio;
+        else if ( DBId == DB_APPLIED_TO_TITLE)
+            return R.id.applyTitleRadio;
+        else if ( DBId == DB_APPLIED_TO_AUTHOR)
+            return R.id.applyAuthorRadio;
+        else if ( DBId == DB_APPLIED_TO_CATEGORY)
+            return R.id.applyCategoryRadio;
+        else if ( DBId == DB_APPLIED_TO_URL)
+            return R.id.applyUrlRadio;
+        else
+            return R.id.applyTitleRadio;
+    }
+
+    public static int getApplyTypeCaption(int DBId) {
+        if ( DBId == DB_APPLIED_TO_CONTENT)
+            return R.string.filter_apply_to_content;
+        else if ( DBId == DB_APPLIED_TO_TITLE)
+            return R.string.filter_apply_to_title;
+        else if ( DBId == DB_APPLIED_TO_AUTHOR)
+            return R.string.filter_apply_to_author;
+        else if ( DBId == DB_APPLIED_TO_CATEGORY)
+            return R.string.filter_apply_to_category;
+        else if ( DBId == DB_APPLIED_TO_URL)
+            return R.string.filter_apply_to_url;
+        else
+            return R.string.filter_apply_to_title;
+    }
+
+    public int getDBAppliedType(int btnID) {
+        if ( btnID == R.id.applyContentRadio )
+            return DB_APPLIED_TO_CONTENT;
+        else if ( btnID == R.id.applyTitleRadio )
+            return DB_APPLIED_TO_TITLE;
+        else if ( btnID == R.id.applyAuthorRadio )
+            return DB_APPLIED_TO_AUTHOR;
+        else if ( btnID == R.id.applyCategoryRadio )
+            return DB_APPLIED_TO_CATEGORY;
+        else if ( btnID == R.id.applyUrlRadio )
+            return DB_APPLIED_TO_URL;
+        else
+            return DB_APPLIED_TO_TITLE;
     }
 
     private TabHost mTabHost;
@@ -743,7 +787,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     ContentValues values = new ContentValues();
                                     values.put(FilterColumns.FILTER_TEXT, filterText);
                                     values.put(FilterColumns.IS_REGEX, ((CheckBox) dialogView.findViewById(R.id.regexCheckBox)).isChecked());
-                                    values.put(FilterColumns.IS_APPLIED_TO_TITLE, ((RadioButton) dialogView.findViewById(R.id.applyTitleRadio)).isChecked());
+                                    values.put(FilterColumns.APPLIED_TYPE, ((RadioGroup) dialogView.findViewById(R.id.applyType)).getCheckedRadioButtonId());
                                     values.put(FilterColumns.IS_ACCEPT_RULE, ((RadioButton) dialogView.findViewById(R.id.acceptRadio)).isChecked());
                                     values.put(FilterColumns.IS_MARK_STARRED, ((RadioButton) dialogView.findViewById(R.id.markAsStarredRadio)).isChecked());
                                     values.put(FilterColumns.IS_REMOVE_TEXT, ((RadioButton) dialogView.findViewById(R.id.removeText)).isChecked());

@@ -55,6 +55,7 @@ package ru.yanus171.feedexfork.parser
 
 import android.content.ContentValues
 import android.database.Cursor
+import android.text.TextUtils
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -63,13 +64,11 @@ import org.jsoup.select.Elements
 import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
 import ru.yanus171.feedexfork.service.FetcherService.*
 import ru.yanus171.feedexfork.service.MarkItem
-import ru.yanus171.feedexfork.utils.ArticleTextExtractor
-import ru.yanus171.feedexfork.utils.Connection
-import ru.yanus171.feedexfork.utils.Dog
-import ru.yanus171.feedexfork.utils.NetworkUtils
+import ru.yanus171.feedexfork.utils.*
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -151,7 +150,7 @@ object HTMLParser {
                 }
                 Dog.v("link after = " + link)
                 if (link.endsWith(".pdf") || link.endsWith(".epub") || link.endsWith(".doc") || link.endsWith(".docx")) continue
-                if (filters.isEntryFiltered(el.text(), "", link, "")) continue
+                if (filters.isEntryFiltered(el.text(), "", link, "", null) ) continue
                 listItem.add(Item(link, el.text()))
             }
             urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl))
@@ -172,11 +171,16 @@ object HTMLParser {
                     val uri = load.first
                     if (load.second) {
                         result.mOK = true
-                        val cursor = cr.query(uri, arrayOf(EntryColumns.TITLE, EntryColumns.AUTHOR), null, null, null)
+                        val cursor = cr.query(uri, arrayOf(EntryColumns.TITLE, EntryColumns.AUTHOR, EntryColumns.CATEGORIES), null, null, null)
                         if ( cursor != null ) {
-                            cursor.moveToFirst()
-                            if (filters.isMarkAsStarred(cursor.getString(0), cursor.getString(1), item.mUrl, "")) {
-                                synchronized(mMarkAsStarredFoundList) { mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl)) }
+                            cursor.moveToFirst();
+                            val title = cursor.getString(0)
+                            val author = cursor.getString(1)
+                            val categoryList = TextUtils.split( cursor.getString(2), CATEGORY_LIST_SEP);
+                            if ( filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList ) ) {
+                                synchronized(mMarkAsStarredFoundList) {
+                                    mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl))
+                                }
                                 val values = ContentValues()
                                 values.put(EntryColumns.IS_FAVORITE, 1)
                                 cr.update(uri, values, null, null)
@@ -185,6 +189,10 @@ object HTMLParser {
                                 val values = ContentValues()
                                 values.put(EntryColumns.DATE, System.currentTimeMillis() + Constants.MILLS_IN_DAY)
                                 cr.update(uri, values, null, null)
+                            }
+                            if ( filters.isEntryFiltered(title, author, item.mUrl, "", categoryList ) ) {
+                                FileUtils.deleteMobilizedFile( item.mUrl );
+                                cr.delete( uri, null, null );
                             }
                             cursor.close()
                         }
