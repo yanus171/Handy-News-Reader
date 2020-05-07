@@ -72,7 +72,7 @@ public class FeedFilters {
     @NotNull
     public static String[] getCursorProjection() {
         return new String[]{FeedData.FilterColumns.FILTER_TEXT, FeedData.FilterColumns.IS_REGEX,
-                FeedData.FilterColumns.APPLIED_TYPE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED, FeedData.FilterColumns.IS_REMOVE_TEXT};
+                FeedData.FilterColumns.APPLY_TYPE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED, FeedData.FilterColumns.IS_REMOVE_TEXT};
     }
 
     public static Uri getCursorUri(String feedId) {

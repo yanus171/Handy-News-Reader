@@ -105,7 +105,7 @@ public class FiltersCursorAdapter extends ResourceCursorAdapter {
     private void reinit(Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             mFilterTextColumnPosition = cursor.getColumnIndex(FilterColumns.FILTER_TEXT);
-            mApplyTypeColumnPosition = cursor.getColumnIndex(FilterColumns.APPLIED_TYPE);
+            mApplyTypeColumnPosition = cursor.getColumnIndex(FilterColumns.APPLY_TYPE);
             mIsAcceptRulePosition = cursor.getColumnIndex(FilterColumns.IS_ACCEPT_RULE);
             mIsMarkAsStarredPosition = cursor.getColumnIndex(FilterColumns.IS_MARK_STARRED);
             mIsRemoveTextPosition = cursor.getColumnIndex(FilterColumns.IS_REMOVE_TEXT);

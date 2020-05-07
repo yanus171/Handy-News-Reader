@@ -204,12 +204,12 @@ public class FeedData {
     }
 
     public static class FilterColumns implements BaseColumns {
-        public static final String TABLE_NAME = "filters";
+        static final String TABLE_NAME = "filters";
 
         public static final String FEED_ID = "feedid";
         public static final String FILTER_TEXT = "filtertext";
         public static final String IS_REGEX = "isregex";
-        public static final String APPLIED_TYPE = "isappliedtotitle";
+        public static final String APPLY_TYPE = "isappliedtotitle";
         public static final String IS_ACCEPT_RULE = "isacceptrule";
         public static final String IS_MARK_STARRED = "ismarkstarred";
         public static final String IS_REMOVE_TEXT = "isremovetext";
@@ -229,7 +229,7 @@ public class FeedData {
         }
 
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {FEED_ID, TYPE_EXTERNAL_ID}, {FILTER_TEXT, TYPE_TEXT},
-                {IS_REGEX, TYPE_BOOLEAN}, {APPLIED_TYPE, TYPE_BOOLEAN}, {IS_ACCEPT_RULE, TYPE_BOOLEAN}, {IS_MARK_STARRED, TYPE_BOOLEAN},
+                {IS_REGEX, TYPE_BOOLEAN}, {APPLY_TYPE, TYPE_BOOLEAN}, {IS_ACCEPT_RULE, TYPE_BOOLEAN}, {IS_MARK_STARRED, TYPE_BOOLEAN},
             {IS_REMOVE_TEXT, TYPE_BOOLEAN}};
 
         public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/filters");

@@ -257,7 +257,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
             filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)));
             regexCheckBox.setChecked(c.getInt(c.getColumnIndex(FilterColumns.IS_REGEX)) == 1);
-            applyType.check( getAppliedTypeBtnId( c.getInt(c.getColumnIndex(FilterColumns.APPLIED_TYPE)) ));
+            applyType.check( getAppliedTypeBtnId( c.getInt(c.getColumnIndex(FilterColumns.APPLY_TYPE)) ));
             if (c.getInt(c.getColumnIndex(FilterColumns.IS_MARK_STARRED)) == 1) {
                 markAsStarredRadio.setChecked(true);
             } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_REMOVE_TEXT)) == 1) {
@@ -284,7 +284,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                         ContentValues values = new ContentValues();
                                         values.put(FilterColumns.FILTER_TEXT, filter);
                                         values.put(FilterColumns.IS_REGEX, regexCheckBox.isChecked());
-                                        values.put(FilterColumns.APPLIED_TYPE, getDBAppliedType(applyType.getCheckedRadioButtonId()));
+                                        values.put(FilterColumns.APPLY_TYPE, getDBAppliedType(applyType.getCheckedRadioButtonId()));
                                         values.put(FilterColumns.IS_ACCEPT_RULE, acceptRadio.isChecked());
                                         values.put(FilterColumns.IS_MARK_STARRED, markAsStarredRadio.isChecked());
                                         values.put(FilterColumns.IS_REMOVE_TEXT, removeTextRadio.isChecked());
@@ -787,7 +787,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     ContentValues values = new ContentValues();
                                     values.put(FilterColumns.FILTER_TEXT, filterText);
                                     values.put(FilterColumns.IS_REGEX, ((CheckBox) dialogView.findViewById(R.id.regexCheckBox)).isChecked());
-                                    values.put(FilterColumns.APPLIED_TYPE, ((RadioGroup) dialogView.findViewById(R.id.applyType)).getCheckedRadioButtonId());
+                                    values.put(FilterColumns.APPLY_TYPE, ((RadioGroup) dialogView.findViewById(R.id.applyType)).getCheckedRadioButtonId());
                                     values.put(FilterColumns.IS_ACCEPT_RULE, ((RadioButton) dialogView.findViewById(R.id.acceptRadio)).isChecked());
                                     values.put(FilterColumns.IS_MARK_STARRED, ((RadioButton) dialogView.findViewById(R.id.markAsStarredRadio)).isChecked());
                                     values.put(FilterColumns.IS_REMOVE_TEXT, ((RadioButton) dialogView.findViewById(R.id.removeText)).isChecked());
