@@ -105,6 +105,7 @@ GENERAL]]></string>
     <string name="new_feed_title">Nowy kanał lub artykuł</string>
     <string name="context_menu_edit">Edytuj</string>
     <string name="menu_add_group">Dodaj grupę</string>
+    <string name="menu_import_export">Eksport i import</string>
     <string name="menu_import">Importuj z pliku .opml</string>
     <string name="menu_export">Eksportuj do pliku .opml</string>
     <string name="storage_request_explanation">Aby importować lub eksportować kanały z/do pliku, potrzebujesz zezwolić Handy News Reader na dostęp do pamięci.</string>
@@ -125,7 +126,7 @@ GENERAL]]></string>
     <string name="filter_delete_title">Usuń regułę</string>
     <string name="filter_edit_title">Edytuj regułę</string>
     <string name="filter_is_regex">&#8230;jest wyrażeniem regularnym</string>
-    <string name="filter_apply_to_title">Stosuj do tytułu lub linku artykułu</string>
+    <string name="filter_apply_to_title">Stosuj do tytułu</string>
     <string name="filter_apply_to_content">Stosuj do treści artykułu</string>
     <string name="accept">AKCEPTUJ</string>
     <string name="reject">ODRZUĆ</string>
@@ -334,6 +335,7 @@ GENERAL]]></string>
     <string name="setupConnection">Ustaw połączenie</string>
     <string name="settings_content_extract_rules">Reguły pozyskiwania treści</string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
+    <string name="settings_category_extract_rules">Reguły pozyskiwania kategorii</string>
     <string name="settings_category_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
     <string name="downloadNext">", Następny "</string>
@@ -380,7 +382,7 @@ GENERAL]]></string>
     <string name="global_filter">Filtr globalny&#8230;</string>
     <string name="global_filter_descr">Filtr stosowany do wszystkich kanałów - nie wypełniaj pól, jeśli ma być nieaktywny</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">w przeciwnym razie stosuj do treści</string>
-    <string name="rule_text">Słowo lub fraza</string>
+    <string name="rule_text">Tekst reguły</string>
     <string name="global_marks_as_star_filter_rule_descr">każde kolejne umieść w nowej linii</string>
     <string name="customKeepTime">Własny czas przechowywania artykułów</string>
     <string name="menu_toggle_theme">Zmień motyw</string>
@@ -423,7 +425,7 @@ GENERAL]]></string>
     <string name="custom_data_folder">Własna lokalizacja plików</string>
     <string name="custom_data_folder_descr">(puste - użyj domyślnej) ścieżka do folderu feedex, przechowującego kopię zapasową oraz pobrane obrazki</string>
     <string name="entry_text_title_link">Link w tytule</string>
-    <string name="entry_text_title_link_description">zezwala na otwarcie strony w przeglądarce po tapnięciu na tytuł</string>
+    <string name="entry_text_title_link_description">zezwala na tapnięcie na tytuł artykułu by otworzyć go w przeglądarce - lub przeczytać później w Handy’m</string>
     <string name="delete_read_articles">Usuwaj przeczytane artykuły</string>
     <string name="delete_read_articles_descr">niezależnie od czasu przechowywania artykułów</string>
     <string name="data_folder">Folder danych</string>
@@ -503,6 +505,7 @@ GENERAL]]></string>
     <string name="auto_set_as_read">Oznacz artykuł jako przeczytany gdy jego tytuł jest widoczny na liście</string>
     <string name="removeText">Usuń tekst</string>
     <string name="set_category">Ustaw jako kategorię</string>
+    <string name="menu_more_options">Więcej opcji</string>
     <string name="reset_feed_and_delete_all_articles">Resetuj źródło i usuń wszystkie niezagwiazdkowane artykuły</string>
     <string name="filter_apply_to_author">Zastosowane do autora</string>
     <string name="filter_apply_to_category">Zastosowane do kategorii</string>
