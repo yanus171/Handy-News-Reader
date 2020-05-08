@@ -510,6 +510,8 @@ GENERAL]]></string>
     <string name="filter_apply_to_author">Zastosowane do autora</string>
     <string name="filter_apply_to_category">Zastosowane do kategorii</string>
     <string name="filter_apply_to_url">Zastosuj dla URL</string>
+    <string name="open_tag_menu_hint">Użyj części URL jako klucza reguły</string>
+    <string name="open_tag_menu_dialog_title">"Ustawianie reguły dla klasy "</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
