@@ -509,7 +509,7 @@
     <string name="filter_apply_to_url">Auf URL anwenden</string>
     <string name="open_tag_menu_hint">Wählen Sie einen Teil der URL, um ihn als Schlüsselbegriff für die Regel zu verwenden</string>
     <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
-    <string name="show_article_category">"Kategorie der Artikel anzeigen "</string>
+    <string name="show_article_category">"Artikelkategorie anzeigen"</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
