@@ -20,6 +20,7 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -51,6 +52,7 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.SparseArray;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,7 +62,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +81,11 @@ import androidx.loader.content.Loader;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -109,6 +119,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
@@ -122,6 +133,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUN
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
@@ -1228,30 +1240,89 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void openTagMenu(final String className, final String baseUrl, final String paramValue ) {
+        ScrollView scroll = new ScrollView(getContext() );
+        final LinearLayout parent = new LinearLayout(getContext() );
+        parent.setOrientation(LinearLayout.VERTICAL);
+        parent.setGravity(Gravity.CENTER);
+        UiUtils.AddText( parent, null, getString( R.string.open_tag_menu_hint ) ).setTextColor( Theme.GetColorInt( TEXT_COLOR_READ, R.string.default_read_color ));
+        final RadioGroup groupUrl = new RadioGroup(getContext() );
+        //groupUrl.setGravity( Gravity.CENTER );
+        parent.addView(groupUrl);
+        int id = 0;
+        String keyUrl = baseUrl;
+        if ( !keyUrl.endsWith( "/" ) )
+            keyUrl = keyUrl + "/";//.substring( 0, keyUrl.length() - 1 );
+        while( keyUrl.contains( "/" ) ) {
+            keyUrl = keyUrl.substring( 0, keyUrl.lastIndexOf( "/" ) );
+            id++;
+            RadioButton btn = new RadioButton(getContext());
+            btn.setText( keyUrl );
+            btn.setTag( keyUrl );
+            btn.setId( id );
+            groupUrl.addView( btn );
+            btn.setChecked( true );
+        }
+
+        scroll.addView(parent);
+        scroll.setPadding( 0, 0, 0, 20 );
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext() );
-        builder.setTitle(baseUrl + ":class=" + className)
-            .setItems(new CharSequence[]{getString(R.string.setFullTextRoot),
-                                         getString(paramValue.equals( "hide" ) ? R.string.hide : R.string.show ),
-                                         getString(R.string.set_category),
-                                         getString( R.string.copyClassNameToClipboard )   },
-                    new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    if (which == 0)
-                        setFullTextRoot(baseUrl, className);
-                    else if (which == 2)
-                        setCategory(baseUrl, className);
-                    else if (which == 3)
-                        copyToClipboard(className);
-                    else if ( paramValue.equals( "hide" ) )
-                        removeClass( className );
-                    else if ( paramValue.equals( "show" ) )
-                        returnClass( className );
-                }
-            });
-        builder.show();
+        builder.setView( scroll );
+        builder.setTitle( getString( R.string.open_tag_menu_dialog_title ) + className );
 
+        final AlertDialog dialog = builder.show();
+        AddActionButton(parent, R.string.setFullTextRoot, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFullTextRoot(GetSelectedUrlPart(groupUrl), className);
+                dialog.dismiss();
+            }
+        });
+        AddActionButton(parent, paramValue.equals("hide") ? R.string.hide : R.string.show, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ( paramValue.equals( "hide" ) )
+                    removeClass( className );
+                else if ( paramValue.equals( "show" ) )
+                    returnClass( className );
+                dialog.dismiss();
+            }
+        });
+        AddActionButton(parent, R.string.set_category, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setCategory(GetSelectedUrlPart(groupUrl), className);
+                dialog.dismiss();
+            }
+        });
+        AddActionButton(parent, R.string.copyClassNameToClipboard, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyToClipboard(className);
+                dialog.dismiss();
+            }
+        });
 
+        AddActionButton(parent, android.R.string.cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
 
+    private String GetSelectedUrlPart(RadioGroup groupUrl) {
+        return (String) groupUrl.findViewById(groupUrl.getCheckedRadioButtonId() ).getTag();
+    }
+
+    private void AddActionButton(LinearLayout parent, int captionID, View.OnClickListener listener) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                               LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(20, 20, 20, 20);
+        lp.gravity = Gravity.CENTER;
+        TextView view = UiUtils.AddText(parent, lp, getString(captionID));
+        view.setBackgroundResource( R.drawable.btn_background );
+        view.setOnClickListener( listener );
     }
 
     private void copyToClipboard(String text) {
@@ -1371,7 +1442,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
                         mEntryPagerAdapter.displayEntry(position, cursor, false, false);
                         mRetrieveFullText = cursor.getInt(mRetrieveFullTextPos) == 1;
-                        EntryActivity activity = (EntryActivity) getActivity();
                         //if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
                         //    activity.setFullScreen(true, true);
                         if ( position == mCurrentPagerPos ) {
@@ -1403,7 +1473,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }*/
 
     public abstract class BaseEntryPagerAdapter extends PagerAdapter {
-        protected final SparseArray<EntryView> mEntryViews = new SparseArray<>();
+        final SparseArray<EntryView> mEntryViews = new SparseArray<>();
 
         Cursor getCursor(int pagerPos) {
             EntryView view = GetEntryView( pagerPos );
@@ -1423,7 +1493,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NotNull View view, Object object) {
             return view == object;
         }
 
@@ -1474,7 +1544,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        public EntryView GetEntryView( int pagerPos ) {
+        EntryView GetEntryView(int pagerPos) {
             return mEntryViews.get(pagerPos);
         }
         public EntryView GetEntryView( Entry entry ) {
@@ -1488,7 +1558,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
         @Override
-        public void destroyItem(ViewGroup container, final int position, Object object) {
+        public void destroyItem(ViewGroup container, final int position, @NotNull Object object) {
             Dog.d( "EntryPagerAdapter.destroyItem " + position );
             FetcherService.removeActiveEntryID( GetEntry( position ).mID );
             getLoaderManager().destroyLoader(position);
@@ -1498,6 +1568,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
 
+        @NotNull
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
@@ -1551,6 +1622,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
 
+        @NotNull
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final EntryView view = (EntryView) super.instantiateItem(container, position);
@@ -1612,7 +1684,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
     }
 
-    public EntryView GetSelectedEntryView()  {
+    private EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
     }
 

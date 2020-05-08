@@ -209,7 +209,7 @@ public class UiUtils {
     }
 
     // -------------------------------------------------------------------
-    static TextView AddText(LinearLayout layout, LinearLayout.LayoutParams lp, String text) {
+    public static TextView AddText(LinearLayout layout, LinearLayout.LayoutParams lp, String text) {
         TextView result = new TextView(layout.getContext());
         if (lp != null) {
             layout.addView(result, lp);
@@ -221,7 +221,7 @@ public class UiUtils {
         result.setFocusable(false);
         result.setFocusableInTouchMode(false);
 
-        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList());
         result.setTextColor(Theme.GetMenuFontColor());
         result.setGravity(Gravity.CENTER);
         result.setPadding(10, 10, 10, 0);
