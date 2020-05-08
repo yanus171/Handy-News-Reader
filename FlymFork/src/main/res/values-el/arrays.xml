@@ -11,8 +11,8 @@
         <item>6 ώρες</item>
         <item>12 ώρες</item>
         <item>1 μέρα</item>
-        <item>2 day</item>
-        <item>3 day</item>
+        <item>2 μέρες</item>
+        <item>3 μέρες</item>
     </string-array>
     <string-array name="settings_keep_times">
         <item>1 ώρα</item>
@@ -40,5 +40,10 @@
     <string-array name="themeList">
         <item>Ανοιχτόχρωμο</item>
         <item>Σκούρο</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Οριζόντια</item>
+        <item>Κατακόρυφα</item>
+        <item>Να μην είναι ορατά τα κουμπιά</item>
     </string-array>
 </resources>
