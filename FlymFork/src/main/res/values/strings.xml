@@ -516,8 +516,8 @@
     <string name="set_category">Set as category</string>
     <string name="menu_more_options">More options</string>
     <string name="reset_feed_and_delete_all_articles">Reset feed and delete all unstarred articles</string>
-    <string name="filter_apply_to_author">Applied to author</string>
-    <string name="filter_apply_to_category">Applied to category</string>
+    <string name="filter_apply_to_author">Apply to author</string>
+    <string name="filter_apply_to_category">Apply to category</string>
     <string name="filter_apply_to_url">Apply to URL</string>
     <string name="open_tag_menu_hint">Choose a part of the url to use as a key for the rule</string>
     <string name="open_tag_menu_dialog_title">"Setting a rule for the class "</string>
