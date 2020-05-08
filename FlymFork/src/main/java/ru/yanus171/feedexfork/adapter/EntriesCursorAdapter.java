@@ -684,7 +684,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             UpdateReadView(holder, parentView);
             SetIsRead(EntryUri(holder.entryID), holder.isRead, true);
-            if ( holder.isRead && !mShowUnread ) {
+            if ( holder.isRead && mShowUnread ) {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(holder.textLayout.getContext(), R.color.light_theme_color_primary))
                         .setAction(R.string.undo, new View.OnClickListener() {
