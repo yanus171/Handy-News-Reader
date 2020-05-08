@@ -123,7 +123,7 @@
     <string name="filter_delete_title">Filter entfernen</string>
     <string name="filter_edit_title">Filter bearbeiten</string>
     <string name="filter_is_regex">&#8230;ist ein regulärer Ausdruck</string>
-    <string name="filter_apply_to_title">Auf Titel oder URL anwenden</string>
+    <string name="filter_apply_to_title">Auf Titel anwenden</string>
     <string name="filter_apply_to_content">Auf den Inhalt anwenden</string>
     <string name="accept">ZULASSEN</string>
     <string name="reject">ABLEHNEN</string>
@@ -504,9 +504,11 @@
     <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
     <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen und alle nicht gekennzeichneten Artikel löschen</string>
-    <string name="filter_apply_to_author">Auf Autor angewendet</string>
-    <string name="filter_apply_to_category">Auf Kategorie angewendet</string>
+    <string name="filter_apply_to_author">Auf Autor anwenden</string>
+    <string name="filter_apply_to_category">Auf Kategorie anwenden</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
+    <string name="open_tag_menu_hint">Wählen Sie einen Teil der URL, um ihn als Schlüsselbegriff für die Regel zu verwenden</string>
+    <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
