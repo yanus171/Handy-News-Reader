@@ -68,6 +68,7 @@ public class PrefUtils {
     public static final String DISPLAY_ENTRIES_FULLSCREEN = "display_entries_fullscreen";
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
     public static final String SHOW_ARTICLE_URL = "settings_show_article_url";
+    public static final String SHOW_ARTICLE_CATEGORY = "settings_show_article_category";
     //public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
     private static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
     private static final String MAX_IMAGE_DOWNLOAD_SIZE = "settings_max_image_download_size_kb";
@@ -171,10 +172,10 @@ public class PrefUtils {
         editor.apply();
     }
 
-    public static void toggleBoolean(String key) {
+    public static void toggleBoolean(String key, boolean defaultValue) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(key, !pref.getBoolean(key, false ));
+        editor.putBoolean(key, !pref.getBoolean(key, defaultValue ));
         editor.apply();
     }
     public static int getInt(String key, int defValue) {

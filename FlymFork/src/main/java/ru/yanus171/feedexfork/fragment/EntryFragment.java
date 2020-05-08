@@ -725,24 +725,24 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_image_white_background: {
-                    PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND) ;
+                    PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
                     item.setChecked( PrefUtils.isImageWhiteBackground() );
                     mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                     break;
                 }
                 case R.id.menu_font_bold: {
-                    PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD);
+                    PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
                     item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
                     mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                     break;
                 }
                 case R.id.menu_show_progress_info: {
-                    PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO ) ;
+                    PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
                     item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
                     break;
                 }
                 case R.id.menu_menu_by_tap_enabled: {
-                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED) ;
+                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false) ;
                     item.setChecked( PrefUtils.isArticleTapEnabled() );
                     TapZonePreviewPreference.SetupZoneSizes( mRootView );
                     break;
@@ -750,9 +750,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_show_html: {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        String input = NetworkUtils.formatXML("<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData() + "</root>" );
-                        DebugApp.CreateFileUri("", "html.html", input);
-                        MessageBox.Show(input);
+                        final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData() + "</root>";
+                        String htmlFormatted = NetworkUtils.formatXML( html );
+                        DebugApp.CreateFileUri("", "html.html", html);
+                        MessageBox.Show(htmlFormatted);
                     }
                     break;
                 }

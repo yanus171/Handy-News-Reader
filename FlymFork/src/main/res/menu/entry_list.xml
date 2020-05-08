@@ -73,6 +73,10 @@
                 android:checkable="true"
                 android:title="@string/show_article_url"/>
             <item
+                android:id="@+id/menu_show_article_category_toggle"
+                android:checkable="true"
+                android:title="@string/show_article_category"/>
+            <item
                 android:id="@+id/menu_show_progress_info"
                 android:icon="@drawable/ic_info_outline"
                 android:checkable="true"

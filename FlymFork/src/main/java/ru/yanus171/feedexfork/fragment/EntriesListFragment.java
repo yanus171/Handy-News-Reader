@@ -75,6 +75,7 @@ import java.util.Observer;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
@@ -647,6 +648,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
         menu.findItem(R.id.menu_show_article_url_toggle).setChecked(PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ));
+        menu.findItem(R.id.menu_show_article_category_toggle).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_CATEGORY, true ));
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
     }
     @Override
@@ -721,13 +723,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             }
             case R.id.menu_show_article_url_toggle: {
-                PrefUtils.toggleBoolean( SHOW_ARTICLE_URL );
+                PrefUtils.toggleBoolean( SHOW_ARTICLE_URL, false );
                 item.setChecked( PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) );
                 mEntriesCursorAdapter.notifyDataSetChanged();
                 return true;
             }
+            case R.id.menu_show_article_category_toggle: {
+                PrefUtils.toggleBoolean( SHOW_ARTICLE_CATEGORY, true );
+                item.setChecked( PrefUtils.getBoolean( SHOW_ARTICLE_CATEGORY, true ) );
+                mEntriesCursorAdapter.notifyDataSetChanged();
+                return true;
+            }
             case R.id.menu_show_progress_info: {
-                PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO ) ;
+                PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
                 item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
                 break;
             }

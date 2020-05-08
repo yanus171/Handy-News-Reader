@@ -112,6 +112,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
@@ -471,10 +472,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         });
 
         holder.categoriesTextView.setVisibility(View.GONE);
-        final String categories = cursor.isNull(mCategoriesPos) ? "" : cursor.getString(mCategoriesPos);
-        if ( !categories.isEmpty() ){
-            holder.categoriesTextView.setVisibility(View.VISIBLE);
-            holder.categoriesTextView.setText(CategoriesToOutput(categories));
+        if ( PrefUtils.getBoolean( SHOW_ARTICLE_CATEGORY, true ) ) {
+            final String categories = cursor.isNull(mCategoriesPos) ? "" : cursor.getString(mCategoriesPos);
+            if (!categories.isEmpty()) {
+                holder.categoriesTextView.setVisibility(View.VISIBLE);
+                holder.categoriesTextView.setText(CategoriesToOutput(categories));
+            }
         }
 
         holder.contentImgView1.setVisibility( View.GONE );
