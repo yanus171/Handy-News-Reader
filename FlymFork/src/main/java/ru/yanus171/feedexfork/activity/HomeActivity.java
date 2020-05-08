@@ -52,6 +52,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import java.io.File;
 import java.util.List;
 
 import ru.yanus171.feedexfork.Constants;
@@ -617,8 +618,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
             // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
+            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                 new File(OPML.GetAutoBackupOPMLFileName()).exists() )
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
+                                                 .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
         }
     }
 

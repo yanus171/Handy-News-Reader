@@ -81,12 +81,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(createTable(FilterColumns.TABLE_NAME, FilterColumns.COLUMNS));
         database.execSQL(createTable(EntryColumns.TABLE_NAME, EntryColumns.COLUMNS));
         database.execSQL(createTable(TaskColumns.TABLE_NAME, TaskColumns.COLUMNS));
-
-        // Check if we need to import the backup
-        if (new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
-            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
-                    .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
-        }
     }
 
     private String createTable(String tableName, String[][] columns) {
