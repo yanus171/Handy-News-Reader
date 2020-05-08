@@ -521,10 +521,10 @@
     <string name="open_tag_menu_hint">Choose a part of the URL to use as a key for the rule</string>
     <string name="open_tag_menu_dialog_title">"Setting a rule for the class "</string>
     <string name="show_article_category">"Show article category"</string>
-    <string name="article_text_information">Additional information</string>
+    <string name="article_text_information">Additional information in header</string>
     <string name="article_text_show_information">Show additional information</string>
     <string name="article_text_show_information_description">… only in fullscreen mode at the top right corner</string>
-    <string name="article_text_progress">Reading progress bar</string>
+    <string name="article_text_progress">Reading progress bar in header</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
