@@ -259,9 +259,6 @@
         android:title="@string/settings_category_header">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_header">
-        </PreferenceCategory>
-        <PreferenceCategory
             android:title="@string/article_text_information">
             <CheckBoxPreference
                 android:defaultValue="true"
@@ -299,6 +296,7 @@
         </PreferenceCategory>
 
         <PreferenceCategory
+            android:layout="@layout/preference_category"
             android:title="@string/article_text_progress">
         <CheckBoxPreference
             android:defaultValue="true"
