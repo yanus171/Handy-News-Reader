@@ -101,6 +101,7 @@
     <string name="new_feed_title">Novo feed ou artigo</string>
     <string name="context_menu_edit">Editar</string>
     <string name="menu_add_group">Adicionar um grupo</string>
+    <string name="menu_import_export">Exportar e importar</string>
     <string name="menu_import">Importar de arquivo .opml</string>
     <string name="menu_export">Exportar para arquivo .opml</string>
     <string name="storage_request_explanation">Para poder importar ou exportar os feeds de ou para um arquivo, você deve permitir que o aplicativo acesse a memória de armazenamento.</string>
@@ -482,6 +483,9 @@
     <string name="search_in_browser">Pesquisar no navegador</string>
     <string name="search_in_yandex">Pesquisar via Yandex</string>
     <string name="search_in_google">Pesquisar via Google</string>
+    <string name="auto_set_as_read">Definir automaticamente o artigo como lido quando seu título era visível na lista</string>
+    <string name="removeText">Remover texto</string>
+    <string name="menu_more_options">Mais opções</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>

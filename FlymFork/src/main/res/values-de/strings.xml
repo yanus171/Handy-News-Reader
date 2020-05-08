@@ -102,6 +102,7 @@
     <string name="new_feed_title">Neuer Feed oder Artikel</string>
     <string name="context_menu_edit">Bearbeiten</string>
     <string name="menu_add_group">Gruppe erstellen</string>
+    <string name="menu_import_export">Ex- und Importieren</string>
     <string name="menu_import">OPML-Datei importieren</string>
     <string name="menu_export">OPML-Datei exportieren</string>
     <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
@@ -122,7 +123,7 @@
     <string name="filter_delete_title">Filter entfernen</string>
     <string name="filter_edit_title">Filter bearbeiten</string>
     <string name="filter_is_regex">&#8230;ist ein regulärer Ausdruck</string>
-    <string name="filter_apply_to_title">Auf Titel oder URL anwenden</string>
+    <string name="filter_apply_to_title">Auf Titel anwenden</string>
     <string name="filter_apply_to_content">Auf den Inhalt anwenden</string>
     <string name="accept">ZULASSEN</string>
     <string name="reject">ABLEHNEN</string>
@@ -166,7 +167,7 @@
     <string name="menu_font_bold">Fettschrift</string>
     <string name="menu_copy_clipboard">Link kopieren</string>
     <string name="menu_cancel_refresh">Aktualisierung abbrechen</string>
-    <string name="menu_delete_non_starred">Nicht markierte löschen</string>
+    <string name="menu_delete_non_starred">Nicht gekennzeichnete löschen</string>
     <string name="menu_toogle_unread_all">Ungelesen|Alle</string>
     <string name="menu_load_all_images">Alle Bilder laden</string>
     <string name="menu_mark_as_favorite">Als Favorit markieren</string>
@@ -331,6 +332,8 @@
     <string name="setupConnection">Verbindung einstellen</string>
     <string name="settings_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
+    <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
+    <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
     <string name="downloadNext">", Nächste "</string>
     <string name="downloadAll">", Alle"</string>
@@ -493,9 +496,19 @@
     <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <string name="article_text_show_battery">Akkustand anzeigen</string>
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
-    <string name="article_text_buttons_layout">Aussehen der Tasten</string>
+    <string name="article_text_buttons_layout">Tastenanordnung</string>
     <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
     <string name="article_reading_notification_hint">Damit die App beim Lesen eines Artikels im Speicher bleibt</string>
+    <string name="auto_set_as_read">Artikel automatisch als gelesen kennzeichnen, sobald dessen Titel in der Liste angezeigt wurde</string>
+    <string name="removeText">Text entfernen</string>
+    <string name="set_category">Als Kategorie festlegen</string>
+    <string name="menu_more_options">Weitere Optionen</string>
+    <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen und alle nicht gekennzeichneten Artikel löschen</string>
+    <string name="filter_apply_to_author">Auf Autor anwenden</string>
+    <string name="filter_apply_to_category">Auf Kategorie anwenden</string>
+    <string name="filter_apply_to_url">Auf URL anwenden</string>
+    <string name="open_tag_menu_hint">Wählen Sie einen Teil der URL, um ihn als Schlüsselbegriff für die Regel zu verwenden</string>
+    <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
