@@ -503,7 +503,7 @@
     <string name="removeText">Text entfernen</string>
     <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
-    <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen und alle nicht gekennzeichneten Artikel löschen</string>
+    <string name="reset_feed_and_delete_all_articles">Nicht markierte Artikel löschen</string>
     <string name="filter_apply_to_author">Auf Autor anwenden</string>
     <string name="filter_apply_to_category">Auf Kategorie anwenden</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
