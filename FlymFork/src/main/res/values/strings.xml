@@ -521,7 +521,7 @@
     <string name="filter_apply_to_url">Apply to URL</string>
     <string name="open_tag_menu_hint">Choose a part of the URL to use as a key for the rule</string>
     <string name="open_tag_menu_dialog_title">"Setting a rule for the class "</string>
-    <string name="show_article_category">"Show article category "</string>
+    <string name="show_article_category">"Show article category"</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
