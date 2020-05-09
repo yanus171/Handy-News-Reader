@@ -406,7 +406,7 @@
     <string name="importingFromFile">Importing from file</string>
     <string name="autobackup_interval">Auto backup interval</string>
     <string name="autobackup_interval_descr">How often a backup file of the feeds and articles will be created</string>
-    <string name="create_auto_backup">Create auto backup</string>
+    <string name="create_auto_backup">Backup now</string>
     <string name="auto_backup_opml_file_created">Auto backup .opml file created:</string>
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
