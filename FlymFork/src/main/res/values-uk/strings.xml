@@ -504,6 +504,9 @@
     <string name="filter_apply_to_author">Застосовано до автора</string>
     <string name="filter_apply_to_category">Застосовано до категорії</string>
     <string name="filter_apply_to_url">Застосувати до URL</string>
+    <string name="open_tag_menu_hint">Виберіть частину URL щоб використовувати як ключ для правила</string>
+    <string name="open_tag_menu_dialog_title">"Налаштування правила для класу "</string>
+    <string name="show_article_category">"Показувати категорію статті"</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
