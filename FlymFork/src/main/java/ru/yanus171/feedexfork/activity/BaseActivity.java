@@ -179,7 +179,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else
             progressBar.setVisibility( View.GONE );
 
-        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && PrefUtils.getBoolean("article_text_show_informations", true) && isStatusBarHiddent ) {
+        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && isStatusBarHiddent ) {
             labelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             labelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
             labelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
@@ -189,7 +189,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             labelClock.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
         }
 
-        if ( PrefUtils.getBoolean( "article_text_footer_show_battery", true ) && PrefUtils.getBoolean("article_text_show_informations", true) && isStatusBarHiddent ) {
+        if ( PrefUtils.getBoolean( "article_text_footer_show_battery", true ) && isStatusBarHiddent ) {
             labelBattery.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             labelBattery.setText( GetBatteryText() );
             labelBattery.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
