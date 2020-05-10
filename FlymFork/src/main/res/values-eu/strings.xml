@@ -264,9 +264,6 @@
     <string name="underline_links">Azpimarratu estekak</string>
     <string name="article_text_show_clock">Erakutsi erlojua</string>
     <string name="article_text_show_clock_description">Uneko ordua bistaratzen du goi eskuin erpinean pantaila osoan</string>
-    <string name="settings_clock_size">Oineko erlojuaren letra-tamaina</string>
-    <string name="article_text_clock_color">Erlojuaren kolorea eta atzealdea</string>
-    <string name="article_text_clock_color_descr">Orriaren goiburuko erlojuaren kolorea eta atzealdea</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Irakurtze progresio-barra</string>
