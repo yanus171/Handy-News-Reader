@@ -268,9 +268,6 @@ maksimum per umpan<br/>
     <string name="underline_links">Garis bawah tautan</string>
     <string name="article_text_show_clock">Tampilkan jam</string>
     <string name="article_text_show_clock_description">Tampilkan waktu sekarang pada sudut kanan atas pada mode layar penuh</string>
-    <string name="settings_clock_size">Ukuran teks jam</string>
-    <string name="article_text_clock_color">Warna jam dan latar</string>
-    <string name="article_text_clock_color_descr">Warna dan latar jam pada kepala halaman</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Indikator kemajuan membaca</string>
