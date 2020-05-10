@@ -264,9 +264,6 @@
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_show_clock">إِظْهارُ السّاعَةِ</string>
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
-    <string name="settings_clock_size">حَجْمُ السّاعَةِ</string>
-    <string name="article_text_clock_color">لَوْنُ السّاعَةِ</string>
-    <string name="article_text_clock_color_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
