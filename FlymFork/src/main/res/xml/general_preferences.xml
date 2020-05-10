@@ -257,33 +257,40 @@
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_header_descr"
         android:title="@string/settings_category_header">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="article_text_footer_show_clock"
-            android:summary="@string/article_text_show_clock_description"
-            android:title="@string/article_text_show_clock" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="article_text_footer_show_battery"
-            android:title="@string/article_text_show_battery" />
-        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-            android:defaultValue="0"
-            android:dependency="article_text_footer_show_clock"
-            android:entries="@array/settings_font_sizes"
-            android:entryValues="@array/settings_font_size_values"
-            android:inputType="number"
-            android:key="article_text_footer_show_clock_fontsize"
-            android:title="@string/settings_clock_size" />
-        <ru.yanus171.feedexfork.view.ColorPreference
-            android:defaultValue="@string/default_article_text_footer_color"
-            android:dependency="article_text_footer_show_clock"
-            android:key="article_text_footer_clock_color"
-            android:title="@string/article_text_clock_color"
-            android:summary="@string/article_text_clock_color_descr"
-            colorPreference:backgroundColor1="@string/transparent_color"
-            colorPreference:istransparency="true"
-            colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
-            colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/article_text_information">
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_text_footer_show_clock"
+                android:title="@string/article_text_show_clock"
+                android:summary="@string/article_text_show_clock_description" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_text_footer_show_battery"
+                android:title="@string/article_text_show_battery"
+                android:summary="@string/article_text_show_battery_description" />
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:defaultValue="0"
+                android:entries="@array/settings_font_sizes"
+                android:entryValues="@array/settings_font_size_values"
+                android:inputType="number"
+                android:key="article_text_footer_show_clock_fontsize"
+                android:title="@string/settings_informations_size" />
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_article_text_footer_color"
+                android:key="article_text_footer_clock_color"
+                android:title="@string/article_text_information_color"
+                android:summary="@string/article_text_information_color_descr"
+                colorPreference:backgroundColor1="@string/transparent_color"
+                colorPreference:istransparency="true"
+                colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/article_text_progress">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="article_text_footer_show_progress"
@@ -305,6 +312,7 @@
             colorPreference:istransparency="true"
             colorPreference:sampletextShort=" "
             colorPreference:sampletextLong=" " />
+        </PreferenceCategory>
 
     </PreferenceScreen>
 

@@ -184,16 +184,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             labelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
             labelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
             labelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else
-            labelClock.setText( "" );
+        } else {
+            labelClock.setText("");
+            labelClock.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
+        }
 
         if ( PrefUtils.getBoolean( "article_text_footer_show_battery", true ) && isStatusBarHiddent ) {
             labelBattery.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             labelBattery.setText( GetBatteryText() );
             labelBattery.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
             labelBattery.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else
-            labelBattery.setText( "" );
+        } else {
+            labelBattery.setText("");
+            labelBattery.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
+        }
     }
     private static String GetBatteryText() {
         Intent intent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
