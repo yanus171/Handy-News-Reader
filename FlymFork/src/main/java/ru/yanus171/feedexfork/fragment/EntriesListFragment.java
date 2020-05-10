@@ -22,7 +22,13 @@ package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
@@ -30,8 +36,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
-import android.view.*;
-import android.widget.*;
+import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -44,11 +64,16 @@ import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -68,10 +93,6 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
-
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -95,7 +116,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final int ENTRIES_LOADER_ID = 1;
     //private static final int NEW_ENTRIES_NUMBER_LOADER_ID = 2;
     private static final int FILTERS_LOADER_ID = 3;
-    public static final String STATE_OPTIONS = "STATE_OPTIONS";
+    private static final String STATE_OPTIONS = "STATE_OPTIONS";
 
     private Uri mCurrentUri, mOriginalUri;
     private boolean mOriginalUriShownEntryText = false;
@@ -635,6 +656,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             @Override
             public boolean onClose() {
                 setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
+                getActivity().invalidateOptionsMenu();
                 return false;
             }
         });
@@ -647,9 +669,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        menu.findItem(R.id.menu_show_article_url_toggle).setChecked(PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ));
-        menu.findItem(R.id.menu_show_article_category_toggle).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_CATEGORY, true ));
-        menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+        menu.findItem( R.id.menu_show_article_url_toggle).setChecked(PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ));
+        menu.findItem( R.id.menu_show_article_category_toggle).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_CATEGORY, true ));
+        menu.findItem( R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+        menu.findItem( R.id.menu_show_entry_text ).setVisible( IsFeedUri( mCurrentUri ) );
+        menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -740,7 +764,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 break;
             }
             case R.id.menu_show_entry_text: {
-                if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+                if ( IsFeedUri( mCurrentUri) ) {
                     final String feedID = mCurrentUri.getPathSegments().get(1);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     ContentValues values = new ContentValues();
@@ -816,7 +840,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_copy_feed: {
-                if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+                if ( IsFeedUri( mCurrentUri) ) {
                     final String feedID = mCurrentUri.getPathSegments().get(1);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedID ), null, null, null, null );
@@ -978,6 +1002,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }
 
+    private boolean IsFeedUri( Uri uri ) {
+        boolean result = false;
+        if ( uri != null && uri.getPathSegments().size() > 1 )
+            try {
+                Long.parseLong(uri.getPathSegments().get(1));
+                result = true;
+            } catch ( NumberFormatException ignored ) { }
+        return result;
+    }
+
     private void restartLoaders() {
 
         LoaderManager loaderManager = LoaderManager.getInstance( this );
@@ -985,7 +1019,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         //HACK: 2 times to workaround a hard-to-reproduce bug with non-refreshing loaders...
         Timer.Start( ENTRIES_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesLoader" );
         loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mLoader);
-        if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 )
+        if ( IsFeedUri( mCurrentUri ) )
             loaderManager.restartLoader(FILTERS_LOADER_ID, null, mLoader);
         //Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesNumberLoader" );
         //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);

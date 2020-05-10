@@ -923,14 +923,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 entriesCursor.close();
             }
-            if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
+            if ( IsFeedUri( mBaseUri ) ) {
                 Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
                 final String feedId = mBaseUri.getPathSegments().get(1);
-                if ( feedId.equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
+                if (feedId.equals(FetcherService.GetExtrenalLinkFeedID())) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Dog.v( "EntryFragment.setData() update time to current" );
+                            Dog.v("EntryFragment.setData() update time to current");
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             ContentValues values = new ContentValues();
                             values.put(EntryColumns.DATE, (new Date()).getTime());
@@ -955,6 +955,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         timer.End();
     }
 
+    private boolean IsFeedUri( Uri uri ) {
+        boolean result = false;
+        if ( uri != null && uri.getPathSegments().size() > 1 )
+            try {
+                Long.parseLong(uri.getPathSegments().get(1));
+                result = true;
+            } catch ( NumberFormatException ignored ) { }
+        return result;
+    }
     private void refreshUI(Cursor entryCursor) {
         EntryView view = GetSelectedEntryView();
         if ( view != null )
