@@ -79,7 +79,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/about_flym"
+            android:label="@string/about_handy_news_reader"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.EditFeedsListActivity"

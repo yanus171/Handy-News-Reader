@@ -79,7 +79,8 @@
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">version</string>
-    <string name="about_flym">About the app / Help / Contact the developer </string>
+    <string name="about_handy_news_reader">About Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">License, help and how to contact the developer </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="last_update">Update</string>

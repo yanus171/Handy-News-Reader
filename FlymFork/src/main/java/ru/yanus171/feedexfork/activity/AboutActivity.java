@@ -39,7 +39,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.about_flym);
+        toolbar.setTitle(R.string.about_handy_news_reader);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
