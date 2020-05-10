@@ -270,6 +270,8 @@ GENERAL]]></string>
     <string name="underline_links">Podkreślaj linki</string>
     <string name="article_text_show_clock">Pokaż zegar</string>
     <string name="article_text_show_clock_description">Wyświetla aktualny czas w prawym górnym rogu trybu pełnoekranowego</string>
+    <string name="settings_informations_size">Rozmiar tekstu dodatkowych informacji</string>
+    <string name="article_text_information_color">Kolor i tło informacji</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Pasek postępu lektury</string>
