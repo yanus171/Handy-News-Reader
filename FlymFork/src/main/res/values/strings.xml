@@ -275,12 +275,12 @@
     <string name="underline_links">Underline links</string>
     <string name="article_text_show_clock">Show Clock</string>
     <string name="article_text_show_clock_description">Displays the current time at the top right corner in fullscreen mode</string>
-    <string name="settings_clock_size">Text size of the clock</string>
-    <string name="article_text_clock_color">Clock color and background</string>
-    <string name="article_text_clock_color_descr">Color and background of the clock in page header</string>
+    <string name="settings_informations_size">Text size of the additional information</string>
+    <string name="article_text_information_color">Information\'s color and background</string>
+    <string name="article_text_information_color_descr">Color and background of the additional information in page header</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">Reading progress bar</string>
+    <string name="article_text_show_progress">Show reading progress bar</string>
     <string name="article_text_show_progress_descr">Displays the progress of reading an article at the top</string>
     <string name="article_text_progress_height">Progress bar height</string>
     <string name="article_text_progress_color">Progress color</string>
@@ -507,6 +507,7 @@
     <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
     <string name="feed_list_loading">Feed list loading</string>
     <string name="article_text_show_battery">Show battery level</string>
+    <string name="article_text_show_battery_description">Displays the current battery level at the top right corner in fullscreen mode</string>
     <string name="settings_category_header_descr">For the article text and the article list screens</string>
     <string name="article_text_buttons_layout">Button layout</string>
     <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
@@ -522,6 +523,8 @@
     <string name="open_tag_menu_hint">Choose a part of the URL to use as a key for the rule</string>
     <string name="open_tag_menu_dialog_title">"Setting a rule for the class "</string>
     <string name="show_article_category">"Show article category"</string>
+    <string name="article_text_information">Additional information in header</string>
+    <string name="article_text_progress">Reading progress bar in header</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

@@ -35,6 +35,7 @@ import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
@@ -136,8 +137,10 @@ public class EntryActivity extends BaseActivity implements Observer {
                 });
 
         if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
-            setFullScreen( true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN );
-
+            setFullScreen(true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
+         else
+            setFullScreen(false, false, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
+        
         if ( mActivityCount == 0 && PrefUtils.getBoolean( READING_NOTIFICATION, false ) ){
             Intent serviceIntent = new Intent(this, ReadingService.class);
             if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
