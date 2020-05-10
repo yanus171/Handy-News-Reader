@@ -264,6 +264,9 @@
     <string name="underline_links">Підкреслювати посилання</string>
     <string name="article_text_show_clock">Показувати годинник</string>
     <string name="article_text_show_clock_description">Показувати годинник в правому верхньому куті в повноекранному режимі</string>
+    <string name="settings_informations_size">Розмір тексту додаткової інформації</string>
+    <string name="article_text_information_color">Колір і фон інформації</string>
+    <string name="article_text_information_color_descr">Колір і фон додаткової інформації у заголовку сторінки</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Смуга прочитаного</string>
@@ -489,6 +492,7 @@
     <string name="reading_notification_descr">Постійне сповіщення в рядку стану для запобігання закриття програми системою - для прискорення запуску після довгого невикористання</string>
     <string name="feed_list_loading">Завантаження списку стрічок</string>
     <string name="article_text_show_battery">Показати рівень заряду</string>
+    <string name="article_text_show_battery_description">Показувати рівень заряду батареї в правому верхньому куті в повноекранному режимі</string>
     <string name="settings_category_header_descr">Для екранів тексту статті та списку статей</string>
     <string name="article_text_buttons_layout">Розташування кнопок</string>
     <string name="article_text_buttons_layout_descr">Орієнтація і видимість кнопок в кінці статті</string>
@@ -504,6 +508,8 @@
     <string name="open_tag_menu_hint">Виберіть частину URL щоб використовувати як ключ для правила</string>
     <string name="open_tag_menu_dialog_title">"Налаштування правила для класу "</string>
     <string name="show_article_category">"Показувати категорію статті"</string>
+    <string name="article_text_information">Додаткова інформація в заголовку</string>
+    <string name="article_text_progress">Прогрес читання в заголовку</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
