@@ -493,6 +493,7 @@
     <string name="reading_notification_descr">持续状态栏通知以防止应用被系统杀死-在长时间延迟后加速启动应用</string>
     <string name="feed_list_loading">Feed列表加载</string>
     <string name="article_text_show_battery">显示电池电量</string>
+    <string name="article_text_show_battery_description">在全屏模式下在右上角显示当前电量水平</string>
     <string name="settings_category_header_descr">文章文本和文章列表屏幕</string>
     <string name="article_text_buttons_layout">按钮布局</string>
     <string name="article_text_buttons_layout_descr">本文结尾处的按钮的方向和可见性</string>
@@ -508,6 +509,8 @@
     <string name="open_tag_menu_hint">选择url的一部分作为规则的密钥</string>
     <string name="open_tag_menu_dialog_title">"为类设置一条规则 "</string>
     <string name="show_article_category">"显示文章分类"</string>
+    <string name="article_text_information">页眉中的额外信息</string>
+    <string name="article_text_progress">正在读取标题进度条</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
