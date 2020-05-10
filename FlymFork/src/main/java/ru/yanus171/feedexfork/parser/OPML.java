@@ -97,6 +97,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.RETRIEVE_FULL
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.SHOW_TEXT_IN_ENTRY_LIST;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
 import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
 
@@ -500,7 +502,17 @@ public class OPML {
                     ContentValues values = new ContentValues();
                     values.put(FilterColumns.FILTER_TEXT, attributes.getValue("", ATTRIBUTE_TEXT));
                     values.put(FilterColumns.IS_REGEX, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REGEX)));
-                    values.put(FilterColumns.APPLY_TYPE, Integer.parseInt(attributes.getValue("", ATTRIBUTE_IS_APPLIED_TO_TITLE)) );
+                    {
+                        final String text = attributes.getValue("", ATTRIBUTE_IS_APPLIED_TO_TITLE);
+                        final int value;
+                        if ( text.equals( "true" ) )
+                            value = DB_APPLIED_TO_TITLE;
+                        else if ( text.equals( "false" ) )
+                            value = DB_APPLIED_TO_CONTENT;
+                        else
+                            value = Integer.parseInt( text );
+                        values.put(FilterColumns.APPLY_TYPE, value );
+                    }
                     values.put(FilterColumns.IS_ACCEPT_RULE, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_ACCEPT_RULE)));
                     values.put(FilterColumns.IS_MARK_STARRED, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_MARK_AS_STARRED)));
                     values.put(FilterColumns.IS_REMOVE_TEXT, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REMOVE_TEXT)));
