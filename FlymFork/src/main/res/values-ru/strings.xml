@@ -264,9 +264,6 @@
     <string name="underline_links">Подчеркивать ссылки</string>
     <string name="article_text_show_clock">Показать часы</string>
     <string name="article_text_show_clock_description">Отображать текущее время в верхнем правом углу в полноэкранном режиме</string>
-    <string name="settings_clock_size">Размер шрифта часов вверху текста статьи</string>
-    <string name="article_text_clock_color">Цвет и фон часов</string>
-    <string name="article_text_clock_color_descr">Цвет и фон часов в заголовке страницы</string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_show_progress">Полоса прочитанного</string>
