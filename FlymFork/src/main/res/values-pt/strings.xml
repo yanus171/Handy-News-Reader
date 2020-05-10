@@ -265,9 +265,6 @@
     <string name="underline_links">Sublinhar links</string>
     <string name="article_text_show_clock">Mostrar relógio</string>
     <string name="article_text_show_clock_description">Exibe a hora atual no canto superior direito em modo de tela cheia</string>
-    <string name="settings_clock_size">Tamanho do texto do relógio de rodapé</string>
-    <string name="article_text_clock_color">Cor do relógio e fundo</string>
-    <string name="article_text_clock_color_descr">Cor do relógio</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Lendo barra de progresso</string>
