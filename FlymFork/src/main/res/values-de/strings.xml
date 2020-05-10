@@ -495,7 +495,7 @@
     <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
     <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <string name="article_text_show_battery">Akkustand anzeigen</string>
-    <string name="article_text_show_battery_description">Zeigt im Vollbildmodus, den aktuellen Akkustand in der rechten oberen Ecke an</string>
+    <string name="article_text_show_battery_description">Wenn aktiviert, wird im Vollbildmodus der aktuelle Akkustand in der oberen rechten Ecke angezeigt</string>
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
     <string name="article_text_buttons_layout">Tastenanordnung</string>
     <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
@@ -512,7 +512,7 @@
     <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
     <string name="show_article_category">"Artikelkategorie anzeigen"</string>
     <string name="article_text_information">Zusätzliche Informationen in der Kopfzeile</string>
-    <string name="article_text_progress">Fortschrittsleiste in der Kopfzeile lesen</string>
+    <string name="article_text_progress">Lese-Fortschrittsbalken in der Kopfzeile</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
