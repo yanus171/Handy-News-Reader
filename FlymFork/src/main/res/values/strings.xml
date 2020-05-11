@@ -276,8 +276,8 @@
     <string name="article_text_show_clock">Show Clock</string>
     <string name="article_text_show_clock_description">Displays the current time at the top right corner in fullscreen mode</string>
     <string name="settings_informations_size">Text size of the additional information</string>
-    <string name="article_text_information_color">Information\'s color and background</string>
-    <string name="article_text_information_color_descr">Color and background of the additional information in page header</string>
+    <string name="article_text_information_color">Information text color and background</string>
+    <string name="article_text_information_color_descr">Color and background of the additional information of page header</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Show reading progress bar</string>
@@ -523,7 +523,7 @@
     <string name="open_tag_menu_hint">Choose a part of the URL to use as a key for the rule</string>
     <string name="open_tag_menu_dialog_title">"Setting a rule for the class "</string>
     <string name="show_article_category">"Show article category"</string>
-    <string name="article_text_information">Additional information in header</string>
+    <string name="article_text_information">Header additional information</string>
     <string name="article_text_progress">Reading progress bar in header</string>
 
     <plurals name="number_of_new_entries">
