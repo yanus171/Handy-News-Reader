@@ -417,24 +417,13 @@ public class FetcherService extends IntentService {
                                 }
                         }
 
-                        if (newCount > 0) {
-                            if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true)) {
-                                Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{Constants.DB_COUNT}, EntryColumns.WHERE_UNREAD, null, null);
-
-                                cursor.moveToFirst();
-                                newCount = cursor.getInt(0); // The number has possibly changed
-                                cursor.close();
-
-                                if (newCount > 0) {
-                                    ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
-                                            R.string.flym_feeds,
-                                            new Intent(FetcherService.this, HomeActivity.class),
-                                            Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
-                                }
-                            } else if (Constants.NOTIF_MGR != null) {
-                                Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
-                            }
-                        }
+                        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true) && newCount > 0)
+                            ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
+                                    R.string.flym_feeds,
+                                    new Intent(FetcherService.this, HomeActivity.class),
+                                    Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                        else if (Constants.NOTIF_MGR != null)
+                            Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
                         mobilizeAllEntries( executor );
                         downloadAllImages( executor );
