@@ -5,7 +5,10 @@
     xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference" >
 
     <PreferenceScreen
-        android:title="@string/about_flym">
+        android:icon="@drawable/prefs_info"
+        android:layout="@layout/preference_items"
+        android:summary="@string/about_handy_news_reader_descr"
+        android:title="@string/about_handy_news_reader" >
 
         <intent
             android:action="android.intent.action.VIEW"
@@ -14,17 +17,17 @@
     </PreferenceScreen>
 
     <ListPreference
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout="@layout/preference_items"
         android:defaultValue="System"
         android:entries="@array/languageList"
         android:entryValues="@array/languageValueList"
         android:key="language"
+        android:icon="@drawable/prefs_language"
         android:title="Language" />
 
     <PreferenceScreen
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout="@layout/preference_items"
+        android:icon="@drawable/prefs_theme"
         android:title="@string/settings_category_theme">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -74,9 +77,9 @@
 
 
     <PreferenceScreen
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout="@layout/preference_items"
         android:summary="@string/settings_category_article_list_summary"
+        android:icon="@drawable/prefs_article_list"
         android:title="@string/settings_category_article_list">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -170,9 +173,9 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout="@layout/preference_items"
         android:summary="@string/settings_category_article_text_summary"
+        android:icon="@drawable/prefs_article_text"
         android:title="@string/settings_category_article_text">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -253,9 +256,9 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout="@layout/preference_items"
         android:summary="@string/settings_category_header_descr"
+        android:icon="@drawable/prefs_header"
         android:title="@string/settings_category_header">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -317,9 +320,9 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout="@layout/preference_items"
         android:summary="@string/settings_category_operation_summary"
+        android:icon="@drawable/prefs_operation"
         android:title="@string/settings_category_operation">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -391,9 +394,11 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:layout="@layout/preference_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_notification_summary"
+        android:icon="@drawable/prefs_notifications"
         android:title="@string/settings_category_notification">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -434,9 +439,11 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:layout="@layout/preference_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_refresh_summary"
+        android:icon="@drawable/prefs_article_refresh"
         android:title="@string/settings_category_refresh">
         <PreferenceCategory
             android:layout="@layout/preference_category"
@@ -560,9 +567,11 @@
 
 
     <PreferenceScreen
+        android:layout="@layout/preference_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_advanced_summary"
+        android:icon="@drawable/prefs_advanced"
         android:title="@string/settings_category_advanced">
         <PreferenceCategory
             android:layout="@layout/preference_category"
