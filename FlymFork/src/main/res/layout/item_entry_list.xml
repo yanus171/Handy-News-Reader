@@ -57,6 +57,7 @@
                         android:id="@+id/main_icon_layout"
                         android:layout_width="@dimen/entry_img_width"
                         android:layout_height="@dimen/entry_img_height"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
@@ -92,7 +93,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="5dp">
+                            android:paddingBottom="2dp">
 
                             <TextView
                                 android:id="@android:id/text1"
@@ -100,12 +101,47 @@
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="3dp"
                                 android:ellipsize="end"
+                                android:layout_weight="1"
                                 android:gravity="start"
                                 android:maxLines="5"
                                 android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
                                 android:textColor="?attr/colorReadState"
                                 android:textIsSelectable="false" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="2dp"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:id="@+id/mobilized_icon"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:alpha="0.5"
+                                    android:src="@drawable/ic_save_gray" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="2dp"
+                                android:paddingRight="5dp"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:id="@+id/read_icon"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:alpha="0.5"
+                                    android:src="@drawable/ic_check_box" />
 
+                                <ImageView
+                                    android:id="@+id/favorite_icon"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:alpha="0.5"
+                                    android:src="@drawable/ic_star_yellow" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <TextView
@@ -171,35 +207,51 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textUrl"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:alpha="0.7"
-                    android:drawablePadding="3dp"
-                    android:singleLine="false"
-                    android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
-                    android:textColor="?attr/colorReadState"
-                    android:textIsSelectable="false" />
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/textUrl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="0dp"
+                            android:alpha="0.7"
+                            android:drawablePadding="3dp"
+                            android:singleLine="false"
+                            android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
+                            android:textColor="?attr/colorReadState"
+                            android:textIsSelectable="false" />
 
-                <TextView
-                    android:id="@+id/textCategories"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:alpha="0.7"
-                    android:drawablePadding="3dp"
-                    android:singleLine="false"
-                    android:text="#tag1, #tag2, #tag3"
-                    android:textColor="?attr/colorReadState"
-                    android:textIsSelectable="false" />
-
+                        <TextView
+                            android:id="@+id/textCategories"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:alpha="0.7"
+                            android:drawablePadding="3dp"
+                            android:singleLine="false"
+                            android:text="#tag1, #tag2, #tag3"
+                            android:textColor="?attr/colorReadState"
+                            android:textIsSelectable="false" />
+                    </LinearLayout>
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:alpha="0"
+                        android:scaleType="center"
+                        android:src="#ffffff" />
+                </LinearLayout>
             </LinearLayout>
 
             <include layout="@layout/item_entry_list_btn"/>
@@ -251,5 +303,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?attr/colorReadState"
         android:textIsSelectable="false" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:alpha="0.4"
+        android:src="@color/dark_theme_color_primary" />
 
 </LinearLayout>

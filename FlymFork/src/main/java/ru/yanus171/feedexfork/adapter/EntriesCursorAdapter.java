@@ -664,7 +664,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         int startID = Theme.IsLight() ? R.drawable.ic_star_grey : R.drawable.ic_star_yellow;
         if ( holder.isFavorite )
             holder.starImgView.setImageResource(startID );
-        holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
+        else
+            holder.starImgView.setImageResource(R.drawable.ic_star_border_grey);
+//        holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadView(ViewHolder holder, View parentView) {
         if ( holder.isTextShown() )
