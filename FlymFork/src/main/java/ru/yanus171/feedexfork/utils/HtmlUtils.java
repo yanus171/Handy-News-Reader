@@ -87,59 +87,59 @@ public class HtmlUtils {
 
     public static String improveHtmlContent(String content, String baseUri, FeedFilters filters, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
 
-        if (content != null ) {
-            content = ADS_PATTERN.matcher(content).replaceAll("");
-            // remove some ads
-            content = ADS_PATTERN.matcher(content).replaceAll("");
-            // remove lazy loading images stuff
-            content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$1");
-            content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
-            content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
+        if (content == null )
+            return content;
+        content = ADS_PATTERN.matcher(content).replaceAll("");
+        // remove some ads
+        content = ADS_PATTERN.matcher(content).replaceAll("");
+        // remove lazy loading images stuff
+        content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$1");
+        content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
+        content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
 
-            // clean by JSoup
-            final Whitelist whiteList =
-                    ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
-                    JSOUP_WHITELIST.addAttributes( "i", "onclick" )
-                                   .addAttributes( "span", "class" )
-                                   .addTags( "s" )
-                    :
-                    JSOUP_WHITELIST;
-            content = Jsoup.clean(content, baseUri, whiteList  );
+        // clean by JSoup
+        final Whitelist whiteList =
+                ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
+                JSOUP_WHITELIST.addAttributes( "i", "onclick" )
+                               .addAttributes( "span", "class" )
+                               .addTags( "s" )
+                :
+                JSOUP_WHITELIST;
+        content = Jsoup.clean(content, baseUri, whiteList  );
 
 
-            if ( isAutoFullTextRoot ) {
-                // remove empty or bad images
-                content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
-                content = BAD_IMAGE_PATTERN.matcher(content).replaceAll("");
-                //// remove empty links
-                //content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
-                // fix non http image paths
-                content = NON_HTTP_IMAGE_PATTERN.matcher(content).replaceAll(" $1=$2http://");
-                // remove trailing BR & too much BR
-                //content = START_BR_PATTERN.matcher(content).replaceAll("");
-                //content = END_BR_PATTERN.matcher(content).replaceAll("");
-                content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
-                if (!baseUri.contains("user") && mobType != ArticleTextExtractor.MobilizeType.Tags) {
-                    content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
-                    //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
-                }
-
-                if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
-                    // xml
-                    content = content.replace("&lt;", "<");
-                    content = content.replace("&gt;", ">");
-                    content = content.replace("&amp;", "&");
-                    content = content.replace("&quot;", "\"");
-                }
-
+        if ( isAutoFullTextRoot ) {
+            // remove empty or bad images
+            content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
+            content = BAD_IMAGE_PATTERN.matcher(content).replaceAll("");
+            //// remove empty links
+            //content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
+            // fix non http image paths
+            content = NON_HTTP_IMAGE_PATTERN.matcher(content).replaceAll(" $1=$2http://");
+            // remove trailing BR & too much BR
+            //content = START_BR_PATTERN.matcher(content).replaceAll("");
+            //content = END_BR_PATTERN.matcher(content).replaceAll("");
+            content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
+            if (!baseUri.contains("user") && mobType != ArticleTextExtractor.MobilizeType.Tags) {
+                content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
+                //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
             }
-            content = content.replace( "&#39;", "'" );
 
-            if ( filters != null && mobType == ArticleTextExtractor.MobilizeType.Yes )
-                content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
+            if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
+                // xml
+                content = content.replace("&lt;", "<");
+                content = content.replace("&gt;", ">");
+                content = content.replace("&amp;", "&");
+                content = content.replace("&quot;", "\"");
+            }
 
         }
+        content = content.replace( "&#39;", "'" );
 
+        if ( filters != null && mobType == ArticleTextExtractor.MobilizeType.Yes )
+            content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
+
+        content = content.replaceAll( "<p>([\\n\\s\\t]*?)</p>", "" );
         return content;
     }
 

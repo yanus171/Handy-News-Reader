@@ -142,7 +142,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
-import static ru.yanus171.feedexfork.service.FetcherService.URL_NEXT_PAGE_CLASS_NAME;
+import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_MAX_COUNT;
+import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME;
 
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_WEB_SEARCH = "EXTRA_WEB_SEARCH";
@@ -240,6 +241,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private EditText mOneWebPageDateClassName;
     private EditText mOneWebPageImageUrlClassName;
     private EditText mNextPageClassName;
+    private EditText mNextPageMaxCount;
     private LinearLayout mOneWebPageLayout;
     private CheckBox mIsAutoSetAsRead;
 
@@ -485,6 +487,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
 
         mNextPageClassName = findViewById(R.id.next_page_classname);
+        mNextPageMaxCount = findViewById(R.id.next_page_max_count);
         mOneWebPageLayout = findViewById(R.id.one_webpage_layout);
         mOneWebPageArticleClassName = findViewById(R.id.one_webpage_article_classname);
         mOneWebPageAuthorClassName = findViewById(R.id.one_webpage_author_classname );
@@ -573,7 +576,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                         }
                         if ( jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean( AUTO_SET_AS_READ ) )
                             mIsAutoSetAsRead.setChecked( true );
-                        mNextPageClassName.setText( jsonOptions.getString( URL_NEXT_PAGE_CLASS_NAME ) );
+                        mNextPageClassName.setText( jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) );
+                        mNextPageMaxCount.setText( jsonOptions.getString( NEXT_PAGE_MAX_COUNT ) );
                         if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) ) {
                             mOneWebPageArticleClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_ARTICLE_CLASS_NAME ) );
                             mOneWebPageTextClassName.setText( jsonOptions.getString( ONE_WEB_PAGE_TEXT_CLASS_NAME ) );
@@ -651,6 +655,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mKeepTimeSpinner.setVisibility( visibilityEditFeed );
         mShowTextInEntryListCb.setVisibility( visibilityEditFeed );
         mNameEditText.setVisibility( visibilityEditFeed );
+        findViewById( R.id.layout_next_page ).setVisibility( isRss ? View.GONE : View.VISIBLE );
         findViewById( R.id.name_textview ).setVisibility( visibilityEditFeed );
         findViewById( R.id.rbWebPageSearch ).setVisibility( IsAdd() ? View.VISIBLE : View.GONE );
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -740,7 +745,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         try {
             jsonOptions.put( "isRss", mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbRss );
             jsonOptions.put( IS_ONE_WEB_PAGE, mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage );
-            jsonOptions.put( URL_NEXT_PAGE_CLASS_NAME, mNextPageClassName.getText().toString() );
+            jsonOptions.put(NEXT_PAGE_URL_CLASS_NAME, mNextPageClassName.getText().toString() );
+            jsonOptions.put( NEXT_PAGE_MAX_COUNT, mNextPageMaxCount.getText().toString() );
             jsonOptions.put( AUTO_SET_AS_READ, mIsAutoSetAsRead.isChecked() );
 
             if ( mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbOneWebPage ) {
@@ -818,7 +824,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                     ContentValues values = new ContentValues();
                                     values.put(FilterColumns.FILTER_TEXT, filterText);
                                     values.put(FilterColumns.IS_REGEX, ((CheckBox) dialogView.findViewById(R.id.regexCheckBox)).isChecked());
-                                    values.put(FilterColumns.APPLY_TYPE, ((RadioGroup) dialogView.findViewById(R.id.applyTypeRadioGroup)).getCheckedRadioButtonId());
+                                    values.put(FilterColumns.APPLY_TYPE, getDBAppliedType( applyType.getCheckedRadioButtonId() ));
                                     values.put(FilterColumns.IS_ACCEPT_RULE, ((RadioButton) dialogView.findViewById(R.id.acceptRadio)).isChecked());
                                     values.put(FilterColumns.IS_MARK_STARRED, ((RadioButton) dialogView.findViewById(R.id.markAsStarredRadio)).isChecked());
                                     values.put(FilterColumns.IS_REMOVE_TEXT, ((RadioButton) dialogView.findViewById(R.id.removeText)).isChecked());
