@@ -81,6 +81,8 @@ about_us_content
 GENERAL]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
+    <string name="about_handy_news_reader">O Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">Licencja, pomoc oraz jak skontaktować się z deweloperem </string>
     <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
     <string name="last_update">Aktualizacja</string>
@@ -274,7 +276,7 @@ GENERAL]]></string>
     <string name="article_text_information_color_descr">Kolor i tło dodatkowych informacji nagłówka strony</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">Pasek postępu lektury</string>
+    <string name="article_text_show_progress">Pokaż pasek postępu lektury</string>
     <string name="article_text_show_progress_descr">Wyświetla pasek postępu lektury u góry ekranu</string>
     <string name="article_text_progress_height">Grubość paska postępu</string>
     <string name="article_text_progress_color">Kolor paska postępu</string>
@@ -507,8 +509,8 @@ GENERAL]]></string>
     <string name="set_category">Ustaw jako kategorię</string>
     <string name="menu_more_options">Więcej opcji</string>
     <string name="reset_feed_and_delete_all_articles">Resetuj źródło i usuń wszystkie niezagwiazdkowane artykuły</string>
-    <string name="filter_apply_to_author">Zastosowane do autora</string>
-    <string name="filter_apply_to_category">Zastosowane do kategorii</string>
+    <string name="filter_apply_to_author">Zastosuj do autora</string>
+    <string name="filter_apply_to_category">Zastosuj do kategorii</string>
     <string name="filter_apply_to_url">Zastosuj dla URL</string>
     <string name="open_tag_menu_hint">Użyj części URL jako klucza reguły</string>
     <string name="open_tag_menu_dialog_title">"Ustawianie reguły dla klasy "</string>
