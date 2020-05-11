@@ -31,7 +31,6 @@
 <resources>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Versión</string>
-    <string name="about_flym">Acerca / Ayuda / Contacta con el desarrollador</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
     <string name="never">nunca</string>
     <string name="last_update">Actualizar</string>
