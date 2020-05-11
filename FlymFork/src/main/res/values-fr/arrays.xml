@@ -11,8 +11,8 @@
         <item>6 heures</item>
         <item>12 heures</item>
         <item>1 jour</item>
-        <item>2 day</item>
-        <item>3 day</item>
+        <item>2 jours</item>
+        <item>3 jours</item>
     </string-array>
     <string-array name="settings_keep_times">
         <item>1 heure</item>
@@ -40,5 +40,10 @@
     <string-array name="themeList">
         <item>Clair</item>
         <item>Sombre</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Horizontal</item>
+        <item>Vertical</item>
+        <item>Ne pas afficher les boutons</item>
     </string-array>
 </resources>
