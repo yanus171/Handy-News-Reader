@@ -299,12 +299,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if ( event.getAction() == MotionEvent.ACTION_UP ) {
                             Dog.v("onTouch ACTION_UP" );
-                            if ( !mShowEntryText && !holder.isTextShown() &&
-                                 mEntryActivityStartingStatus == 0 &&
-                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
-                                 Math.abs( paddingX ) < minX &&
-                                 Math.abs( paddingY ) < minY &&
-                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
+                            if (!mShowEntryText && !holder.isTextShown() &&
+                                mEntryActivityStartingStatus == 0 &&
+                                currentx > MIN_X_TO_VIEW_ARTICLE &&
+                                Math.abs(paddingX) < minX &&
+                                Math.abs(paddingY) < minY &&
+                                ( IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v) ) &&
+                                SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 OpenArticle(v.getContext(), holder.entryID);
                             } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
@@ -373,6 +374,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold );
                     return true;
+                }
+
+                private boolean IsUnderView(MotionEvent event, View view, View rootView) {
+                    final int x = (int) event.getX();
+                    final int y = (int) event.getY();
+                    int[] location = new int[2];
+                    view.getLocationInWindow(location);
+                    int[] locationRoot = new int[2];
+                    rootView.getLocationInWindow(locationRoot);
+                    final int left = location[0] - locationRoot[0];//view.getLeft();
+                    final int top = location[1] - locationRoot[1];//view.getTop();
+                    final int right = left + view.getWidth();
+                    final int bottom = top + view.getHeight();
+                    return x > left && x < right && y > top && y < bottom;
                 }
             } );
         }

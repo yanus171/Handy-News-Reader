@@ -234,7 +234,7 @@
                                                 android:text="@string/next_page_max_count_classname"
                                                 style="@style/FeedAttrLabel"/>
                                             <EditText
-                                                android:id="@+id/next_page_max_count_classname"
+                                                android:id="@+id/next_page_max_count"
                                                 android:layout_weight="4"
                                                 android:inputType="numberDecimal"
                                                 android:text="10"

@@ -79,6 +79,7 @@
                     </FrameLayout>
 
                     <LinearLayout
+                        android:id="@+id/new_icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -244,6 +245,8 @@
         android:id="@+id/textSourceReadMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/read_more"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?attr/colorReadState"

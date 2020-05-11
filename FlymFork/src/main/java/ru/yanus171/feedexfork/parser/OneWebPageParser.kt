@@ -11,7 +11,7 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
 import ru.yanus171.feedexfork.service.FetcherService
-import ru.yanus171.feedexfork.service.FetcherService.URL_NEXT_PAGE_CLASS_NAME
+import ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME
 import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor
@@ -60,7 +60,7 @@ object OneWebPageParser {
                 val dateClassName = jsonOptions.getString(ONE_WEB_PAGE_DATE_CLASS_NAME)
                 val imageUrlClassName = jsonOptions.getString(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME)
                 val urlClassName = jsonOptions.getString(ONE_WEB_PAGE_URL_CLASS_NAME)
-                val urlNextPageClassName = jsonOptions.getString(URL_NEXT_PAGE_CLASS_NAME)
+                val urlNextPageClassName = jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME)
 
                 val articleList = doc.getElementsByClass(articleClassName)
                 val feedEntriesUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID)
