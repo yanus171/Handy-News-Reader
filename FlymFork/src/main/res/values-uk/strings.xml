@@ -77,6 +77,8 @@
  <br/>    ]]></string>
     <string name="app_name">Зручне читання новин</string>
     <string name="about_title_version">версія</string>
+    <string name="about_handy_news_reader">Про Зручне читання новин</string>
+    <string name="about_handy_news_reader_descr">Ліцензія, допомога та зв\'язок з розробником </string>
     <string name="welcome_title">Додати стрічку?</string>
     <string name="never">ніколи</string>
     <string name="last_update">Оновлення</string>
