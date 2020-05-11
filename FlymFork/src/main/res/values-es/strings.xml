@@ -31,7 +31,6 @@
 <resources>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Versión</string>
-    <string name="about_flym">Acerca / Ayuda / Contacta con el desarrollador</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
     <string name="never">nunca</string>
     <string name="last_update">Actualizar</string>
@@ -217,9 +216,6 @@
     <string name="underline_links">Subrayar enlaces</string>
     <string name="article_text_show_clock">Mostrar reloj</string>
     <string name="article_text_show_clock_description">Mostrar la hora actual en la esquina superior derecha en modo de pantalla completa</string>
-    <string name="settings_clock_size">Tamaño del texto del reloj de pie de página</string>
-    <string name="article_text_clock_color">Color y fondo del reloj</string>
-    <string name="article_text_clock_color_descr">Color y fondo del reloj en el encabezado de la página</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Barra de progreso de lectura</string>

@@ -78,7 +78,6 @@
    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">έκδοση</string>
-    <string name="about_flym">Σχετικά με την εφαρμογή / Βοήθεια / Επικοινωνία με τον προγραμματιστή </string>
     <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μια Ροή;</string>
     <string name="never">ποτέ</string>
     <string name="last_update">Ενημέρωση</string>
@@ -264,9 +263,6 @@
     <string name="underline_links">Υπογράμμιση συνδέσμων</string>
     <string name="article_text_show_clock">Εμφάνιση ρολογιού</string>
     <string name="article_text_show_clock_description">Εμφανίζει την ώρα πάνω δεξιά στην λειτουργία πλήρους οθόνης</string>
-    <string name="settings_clock_size">Μέγεθος Υποσέλιδου - Ρολογιού</string>
-    <string name="article_text_clock_color">Χρώμα και φόντο ρολογιού</string>
-    <string name="article_text_clock_color_descr">Χρώμα και φόντο στο εικονίδιο του ρολογιού</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Μπάρα προόδου διαβάσματος</string>

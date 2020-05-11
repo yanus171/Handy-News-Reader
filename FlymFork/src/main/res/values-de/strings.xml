@@ -78,7 +78,8 @@
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Version</string>
-    <string name="about_flym">Info - Hilfe - Support</string>
+    <string name="about_handy_news_reader">Über Handy News Reader …</string>
+    <string name="about_handy_news_reader_descr">Lizenz, Hilfe und Kontaktaufnahme mit dem Entwickler </string>
     <string name="welcome_title">Willkommen bei Handy News Reader. Möchten Sie einen Feed hinzufügen?</string>
     <string name="never">niemals</string>
     <string name="last_update">Aktualisierung</string>
@@ -267,12 +268,12 @@
     <string name="underline_links">Links unterstreichen</string>
     <string name="article_text_show_clock">Uhrzeit anzeigen</string>
     <string name="article_text_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
-    <string name="settings_clock_size">Schriftgröße der Uhrzeit</string>
-    <string name="article_text_clock_color">Farbe und Hintergrund der Uhrzeit</string>
-    <string name="article_text_clock_color_descr">Farbe und Hintergrund der Uhrzeit am Oberrand</string>
+    <string name="settings_informations_size">Textgröße der zusätzlichen Informationen</string>
+    <string name="article_text_information_color">Farbe und Hintergrund der Informationen</string>
+    <string name="article_text_information_color_descr">Farbe und Hintergrund der zusätzlichen Informationen in der Kopfzeile</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">Lese-Fortschrittsbalken</string>
+    <string name="article_text_show_progress">Lese-Fortschrittsbalken anzeigen</string>
     <string name="article_text_show_progress_descr">Wenn aktiviert, wird am Oberrand der Lesefortschritt des aktuellen Artikels angezeigt</string>
     <string name="article_text_progress_height">Höhe des Fortschrittsbalkens</string>
     <string name="article_text_progress_color">Farbe des Fortschrittsbalkens</string>
@@ -395,7 +396,7 @@
     <string name="importingFromFile">Aus Datei importieren&#8230;</string>
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
     <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird\n</string>
-    <string name="create_auto_backup">Automatisches Backup</string>
+    <string name="create_auto_backup">Backup ausführen</string>
     <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
     <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog)</string>
@@ -495,6 +496,7 @@
     <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
     <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <string name="article_text_show_battery">Akkustand anzeigen</string>
+    <string name="article_text_show_battery_description">Wenn aktiviert, wird im Vollbildmodus der aktuelle Akkustand in der oberen rechten Ecke angezeigt</string>
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
     <string name="article_text_buttons_layout">Tastenanordnung</string>
     <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
@@ -503,12 +505,15 @@
     <string name="removeText">Text entfernen</string>
     <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
-    <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen und alle nicht gekennzeichneten Artikel löschen</string>
+    <string name="reset_feed_and_delete_all_articles">Nicht markierte Artikel löschen</string>
     <string name="filter_apply_to_author">Auf Autor anwenden</string>
     <string name="filter_apply_to_category">Auf Kategorie anwenden</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
     <string name="open_tag_menu_hint">Wählen Sie einen Teil der URL, um ihn als Schlüsselbegriff für die Regel zu verwenden</string>
     <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
+    <string name="show_article_category">"Artikelkategorie anzeigen"</string>
+    <string name="article_text_information">Zusätzliche Informationen in der Kopfzeile</string>
+    <string name="article_text_progress">Lese-Fortschrittsbalken in der Kopfzeile</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
