@@ -265,6 +265,9 @@
     <string name="underline_links">Sublinhar links</string>
     <string name="article_text_show_clock">Mostrar relógio</string>
     <string name="article_text_show_clock_description">Exibe a hora atual no canto superior direito em modo de tela cheia</string>
+    <string name="settings_informations_size">Tamanho do texto da informação adicional</string>
+    <string name="article_text_information_color">Cor e fundo do texto da informação</string>
+    <string name="article_text_information_color_descr">Cor e fundo das informações adicionais do cabeçalho da página</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Lendo barra de progresso</string>
@@ -480,9 +483,12 @@
     <string name="search_in_browser">Pesquisar no navegador</string>
     <string name="search_in_yandex">Pesquisar via Yandex</string>
     <string name="search_in_google">Pesquisar via Google</string>
+    <string name="article_text_show_battery_description">Exibe o nível atual da bateria no canto superior direito no modo de tela cheia</string>
     <string name="auto_set_as_read">Definir automaticamente o artigo como lido quando seu título era visível na lista</string>
     <string name="removeText">Remover texto</string>
     <string name="menu_more_options">Mais opções</string>
+    <string name="article_text_information">Informação adicional do cabeçalho</string>
+    <string name="article_text_progress">Barra de progresso de leitura no cabeçalho</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
