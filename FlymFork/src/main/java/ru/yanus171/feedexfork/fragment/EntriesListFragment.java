@@ -848,7 +848,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         if ( cursor.moveToFirst() ) {
                             ContentValues values = new ContentValues();
                             values.put(FeedColumns.GROUP_ID, cursor.getLong( cursor.getColumnIndex( FeedColumns.GROUP_ID )) );
-                            values.put(FeedColumns.ICON_URL, cursor.getBlob( cursor.getColumnIndex( FeedColumns.ICON_URL )) );
+                            values.put(FeedColumns.ICON_URL, cursor.getString( cursor.getColumnIndex( FeedColumns.ICON_URL )) );
                             values.put(FeedColumns.IS_AUTO_REFRESH, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_AUTO_REFRESH )) );
                             values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_IMAGE_AUTO_LOAD )) );
                             values.put(FeedColumns.NAME, cursor.getString( cursor.getColumnIndex( FeedColumns.NAME )) );

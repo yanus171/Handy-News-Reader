@@ -219,12 +219,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 public void onClick(View view) {
                     final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     if (shownId == holder.entryID) {
-                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                        PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
                     } else {
-                        SetIsRead( EntryUri(shownId), true, true);
-                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
+                        SetIsRead( EntryUri(shownId), true, true );
+                        PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, holder.entryID );
                     }
-                    notifyDataSetChanged();
+                    MainApplication.getContext().getContentResolver().notifyChange( mUri, null );//notifyDataSetChanged();
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( holder.entryID ) ) );
                 }
             });
@@ -667,6 +667,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadView(ViewHolder holder, View parentView) {
+        if ( holder.isTextShown() )
+            holder.isRead = false;
         holder.titleTextView.setEnabled(!holder.isRead);
         holder.dateTextView.setEnabled(!holder.isRead);
         holder.textTextView.setEnabled(!holder.isRead);
