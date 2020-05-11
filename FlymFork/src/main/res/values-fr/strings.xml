@@ -266,6 +266,9 @@
     <string name="underline_links">Souligner les liens</string>
     <string name="article_text_show_clock">Afficher l\'horloge</string>
     <string name="article_text_show_clock_description">Affiche l\'heure actuelle en haut à droite en mode plein écran</string>
+    <string name="settings_informations_size">Taille du texte des informations supplémentaires</string>
+    <string name="article_text_information_color">Couleur et arrière-plan du texte d\'information</string>
+    <string name="article_text_information_color_descr">Couleur et arrière-plan des informations supplémentaires de l\'en-tête de la page</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Barre de progression de lecture</string>
@@ -491,6 +494,7 @@
     <string name="reading_notification_descr">Notification persistante de la barre d\'état pour empêcher l\'application d\'être arrêtée par le système - pour accélérer le démarrage de l\'application après un long délai</string>
     <string name="feed_list_loading">Chargement de la liste des flux</string>
     <string name="article_text_show_battery">Afficher le niveau de la batterie</string>
+    <string name="article_text_show_battery_description">Affiche le niveau de la batterie en haut à droite en mode plein écran</string>
     <string name="settings_category_header_descr">Pour le texte de l\'article et les listes des articles</string>
     <string name="article_text_buttons_layout">Disposition des boutons</string>
     <string name="article_text_buttons_layout_descr">Orientation et visibilité des boutons à la fin d\'un article</string>
@@ -500,6 +504,14 @@
     <string name="set_category">Définir comme catégorie</string>
     <string name="menu_more_options">Plus d\'options</string>
     <string name="reset_feed_and_delete_all_articles">Réinitialiser le flux et supprimer tous les articles non favoris</string>
+    <string name="filter_apply_to_author">Appliquer à l\'auteur</string>
+    <string name="filter_apply_to_category">Appliquer à la catégorie</string>
+    <string name="filter_apply_to_url">Appliquer à l\'URL</string>
+    <string name="open_tag_menu_hint">Choisissez une partie de l\'URL à utiliser comme clé pour la règle</string>
+    <string name="open_tag_menu_dialog_title">"Définir une règle pour la classe "</string>
+    <string name="show_article_category">"Afficher la catégorie de l'article"</string>
+    <string name="article_text_information">Informations supplémentaires sur l\'en-tête</string>
+    <string name="article_text_progress">Lecture de la barre de progression dans l\'en-tête</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
