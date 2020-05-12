@@ -92,6 +92,7 @@
                             android:id="@+id/textLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingEnd="30dp"
                             android:orientation="horizontal"
                             android:paddingBottom="2dp">
 
@@ -100,6 +101,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="3dp"
+                                android:paddingRight="5dp"
                                 android:ellipsize="end"
                                 android:layout_weight="1"
                                 android:gravity="start"
@@ -107,41 +109,6 @@
                                 android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
                                 android:textColor="?attr/colorReadState"
                                 android:textIsSelectable="false" />
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="2dp"
-                                android:orientation="vertical">
-                                <ImageView
-                                    android:id="@+id/mobilized_icon"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center"
-                                    android:alpha="0.5"
-                                    android:src="@drawable/ic_save_gray" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="2dp"
-                                android:paddingRight="5dp"
-                                android:orientation="vertical">
-                                <ImageView
-                                    android:id="@+id/read_icon"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center"
-                                    android:alpha="0.5"
-                                    android:src="@drawable/ic_check_box" />
-
-                                <ImageView
-                                    android:id="@+id/favorite_icon"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center"
-                                    android:alpha="0.5"
-                                    android:src="@drawable/ic_star_yellow" />
-                            </LinearLayout>
                         </LinearLayout>
 
                         <TextView
@@ -162,15 +129,40 @@
                             android:id="@+id/text2Layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingEnd="35dp"
                             android:orientation="horizontal">
-
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingEnd="5dp">
+                            <ImageView
+                                android:id="@+id/favorite_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:alpha="0.7"
+                                android:src="@drawable/ic_star_yellow" />
+                            <ImageView
+                                android:id="@+id/mobilized_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:alpha="0.7"
+                                android:src="@drawable/ic_save_gray" />
+                            <ImageView
+                                android:id="@+id/read_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center_vertical"
+                                android:alpha="0.7"
+                                android:src="@drawable/ic_check_box" />
+                            </LinearLayout>
                             <TextView
                                 android:id="@android:id/text2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.7"
                                 android:drawablePadding="3dp"
-                                android:singleLine="true"
                                 android:text="info"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="?attr/colorReadState"
@@ -239,25 +231,26 @@
                         android:scaleType="center"
                         android:src="#ffffff" />
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/textCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.7"
+                    android:drawablePadding="3dp"
+                    android:singleLine="false"
+                    android:text="#tag1, #tag2, #tag3"
+                    android:textColor="?attr/colorReadState"
+                    android:textIsSelectable="false" />
+
             </LinearLayout>
 
             <include layout="@layout/item_entry_list_btn"/>
 
         </FrameLayout>
     </FrameLayout>
-    <TextView
-        android:id="@+id/textCategories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:alpha="0.7"
-        android:drawablePadding="3dp"
-        android:singleLine="false"
-        android:text="#tag1, #tag2, #tag3"
-        android:textColor="?attr/colorReadState"
-        android:textIsSelectable="false" />
     <ImageView
         android:id="@+id/image1"
         android:layout_width="match_parent"

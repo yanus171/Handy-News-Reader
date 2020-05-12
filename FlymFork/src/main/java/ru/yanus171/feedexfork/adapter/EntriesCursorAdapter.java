@@ -485,6 +485,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 toggleReadState(holder, view);
             }
         });
+        holder.starImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavoriteState(holder.entryID, view);
+            }
+        });
 
         holder.categoriesTextView.setVisibility(View.GONE);
         if ( PrefUtils.getBoolean( SHOW_ARTICLE_CATEGORY, true ) ) {
@@ -657,15 +663,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     static private String GetTextSizeText(int imageSize) {
         final int KBYTE = 1024;
-        return imageSize > KBYTE ? String.format( "%d K", imageSize / KBYTE ) : "";
+        return imageSize > KBYTE ? String.format( "%d\u00A0K", imageSize / KBYTE ) : "";
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
-        int startID = Theme.IsLight() ? R.drawable.ic_star_grey : R.drawable.ic_star_yellow;
-        if ( holder.isFavorite )
-            holder.starImgView.setImageResource(startID );
-        else
-            holder.starImgView.setImageResource(R.drawable.ic_star_border_grey);
+        int startID = Theme.IsLight() ? R.drawable.ic_star_red : R.drawable.ic_star_yellow;
+//        if ( holder.isFavorite )
+            holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_star_border_grey);
+            holder.starToggleSwypeBtnView.setImageResource(holder.isFavorite ? R.drawable.ic_star_border_grey : R.drawable.ic_star_grey);
+//        else
+//            holder.starImgView.setImageResource(R.drawable.ic_star_border_grey);
 //        holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadView(ViewHolder holder, View parentView) {
@@ -677,8 +684,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.authorTextView.setEnabled(!holder.isRead);
         holder.categoriesTextView.setEnabled(!holder.isRead);
         holder.urlTextView.setEnabled(!holder.isRead);
+//        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_check_box_gray : R.drawable.ic_check_box_outline_blank_gray);
+        holder.readToggleSwypeBtnView.setImageResource(holder.isRead ? R.drawable.ic_check_box_outline_blank_gray : R.drawable.ic_check_box_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
         parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
@@ -839,8 +848,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView mobilizedImgView;
         ImageView readImgView;
         View newImgView;
-        View readToggleSwypeBtnView;
-        View starToggleSwypeBtnView;
+        ImageView readToggleSwypeBtnView;
+        ImageView starToggleSwypeBtnView;
         LinearLayout textLayout;
         boolean isRead;
         boolean isFavorite;

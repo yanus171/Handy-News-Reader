@@ -7,7 +7,6 @@
     android:layout_gravity="bottom|end"
     android:paddingBottom="0dp"
     android:paddingLeft="10dp"
-    android:paddingRight="5dp"
     android:paddingTop="0dp"
     android:orientation="horizontal"
     android:paddingStart="10dp"
