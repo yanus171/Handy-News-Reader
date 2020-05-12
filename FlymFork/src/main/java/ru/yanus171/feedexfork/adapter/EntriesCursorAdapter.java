@@ -658,7 +658,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     static private String GetImageSizeText(int imageSize) {
         final double MEGABYTE = 1024.0 * 1024.0;
         return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > 1024 * 100 ?
-            String.format( "%.1f M", imageSize / MEGABYTE ).replace( ",", "." ) : "";
+            String.format( "%.1f\u00A0M", imageSize / MEGABYTE ).replace( ",", "." ) : "";
     }
 
     static private String GetTextSizeText(int imageSize) {
