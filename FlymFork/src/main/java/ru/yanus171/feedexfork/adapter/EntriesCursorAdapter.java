@@ -52,6 +52,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
@@ -68,11 +69,16 @@ import android.widget.LinearLayout;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -188,7 +194,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.authorTextView = view.findViewById(R.id.textAuthor);
             holder.imageSizeTextView = view.findViewById(R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
-            holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
+            //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
@@ -426,7 +432,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
-            holder.mainImgLayout.setVisibility( View.VISIBLE );
+            holder.mainImgView.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
@@ -434,17 +440,32 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
             String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
             TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
-            if (mainImgUrl != null) {
-                final int dim = UiUtils.dpToPixel(50);
+            if (mainImgUrl != null ) {
+                final int dim = UiUtils.dpToPixel(70);
+                holder.mainImgView.setVisibility( View.VISIBLE );
                 Glide.with(context).load(mainImgUrl)
-                    //.override(dim, dim)
-                    .centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
+                    .override(dim, dim)
+                    .centerCrop()
+                    .addListener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            holder.mainImgView.setVisibility( View.GONE );
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    //.placeholder(letterDrawable).error(letterDrawable)
+                    .into(holder.mainImgView);
             } else {
                 Glide.with(context).clear(holder.mainImgView);
                 holder.mainImgView.setImageDrawable(letterDrawable);
             }
         } else
-            holder.mainImgLayout.setVisibility( View.GONE );
+            holder.mainImgView.setVisibility( View.GONE );
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
@@ -843,7 +864,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView authorTextView;
         TextView imageSizeTextView;
         ImageView mainImgView;
-        View mainImgLayout;
+        //View mainImgLayout;
         ImageView starImgView;
         ImageView mobilizedImgView;
         ImageView readImgView;

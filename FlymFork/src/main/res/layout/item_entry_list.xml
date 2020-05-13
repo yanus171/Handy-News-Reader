@@ -3,6 +3,7 @@
     android:id="@+id/entry_list_layout_root_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="5dp"
     android:orientation="vertical">
     <FrameLayout
         android:id="@+id/entry_list_layout_root"
@@ -44,8 +45,10 @@
                 android:id="@+id/layout_vertval"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
                 android:background="@color/dark_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
 
                 <LinearLayout
                     android:id="@+id/layout_with_background"
@@ -53,39 +56,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <FrameLayout
-                        android:id="@+id/main_icon_layout"
-                        android:layout_width="@dimen/entry_img_width"
-                        android:layout_height="@dimen/entry_img_height"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp">
-
-                        <ImageView
-                            android:id="@+id/main_icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"
-                            android:src="#00000000" />
-
-                        <ImageView
-                            android:id="@+id/new_icon"
-                            android:layout_width="@dimen/entry_new_icon_size"
-                            android:layout_height="@dimen/entry_new_icon_size"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/new_entry_icon" />
-                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/main_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ticker_widget_preview" />
 
                     <LinearLayout
-                        android:id="@+id/new_icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -100,7 +82,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="3dp"
-                                android:paddingRight="5dp"
                                 android:ellipsize="end"
                                 android:gravity="start"
                                 android:maxLines="5"
@@ -133,27 +114,34 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingEnd="5dp">
-                            <ImageView
-                                android:id="@+id/favorite_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:alpha="0.7"
-                                android:src="@drawable/ic_star_yellow" />
-                            <ImageView
-                                android:id="@+id/mobilized_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:alpha="0.7"
-                                android:src="@drawable/ic_save_gray" />
-                            <ImageView
-                                android:id="@+id/read_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center_vertical"
-                                android:alpha="0.7"
-                                android:src="@drawable/ic_check_box" />
+                                <ImageView
+                                    android:id="@+id/new_icon"
+                                    android:layout_width="@dimen/entry_new_icon_size"
+                                    android:layout_gravity="center"
+                                    android:layout_height="@dimen/entry_new_icon_size"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/new_entry_icon" />
+                                <ImageView
+                                    android:id="@+id/favorite_icon"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:alpha="0.7"
+                                    android:src="@drawable/ic_star_yellow" />
+                                <ImageView
+                                    android:id="@+id/mobilized_icon"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:alpha="0.7"
+                                    android:src="@drawable/ic_save_gray" />
+                                <ImageView
+                                    android:id="@+id/read_icon"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:alpha="0.7"
+                                    android:src="@drawable/ic_check_box" />
                             </LinearLayout>
                             <TextView
                                 android:id="@android:id/text2"
