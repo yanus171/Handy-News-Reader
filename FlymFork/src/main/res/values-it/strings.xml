@@ -77,6 +77,8 @@
     <br/>    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versione</string>
+    <string name="about_handy_news_reader">Informazioni su Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">Licenza, aiuto e come contattare lo sviluppatore </string>
     <string name="welcome_title">Benvenuto in Handy News Reader. Vorresti aggiungere un feed?</string>
     <string name="never">mai</string>
     <string name="last_update">Aggiornamento</string>
@@ -99,6 +101,7 @@
     <string name="new_feed_title">Nuovo feed</string>
     <string name="context_menu_edit">Modifica</string>
     <string name="menu_add_group">Aggiungi gruppo</string>
+    <string name="menu_import_export">Importa ed esporta</string>
     <string name="menu_import">Importa OPML</string>
     <string name="menu_export">Esporta OPML</string>
     <string name="storage_request_explanation">Per poter importare o esportare i feed da o verso un file, è necessario consentire all\'applicazione di accedere alla memoria di archiviazione.</string>
@@ -262,6 +265,9 @@
     <string name="underline_links">Sottolinea i link</string>
     <string name="article_text_show_clock">Visualizza orologio</string>
     <string name="article_text_show_clock_description">Visualizza l\'ora corrente nell\'angolo in alto a destra in modalità schermo intero</string>
+    <string name="settings_informations_size">Dimensione del testo delle informazioni aggiuntive</string>
+    <string name="article_text_information_color">Informazioni colore e sfondo del testo</string>
+    <string name="article_text_information_color_descr">Colore e sfondo delle informazioni aggiuntive dell\'intestazione della pagina</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Barra di avanzamento della lettura</string>
@@ -281,6 +287,8 @@
     <string name="brightness_gesture_descr">Seleziona qua per regolare la luminosità scorrendo verso l\'alto/basso lungo il bordo sinistro dello schermo</string>
     <string name="brightness_with_dim_activity">Overlay software</string>
     <string name="brightness_with_dim_activity_descr">Diminuisci la luminosità riducendo la trasparenza del colore dello sfondo della finestra (controlla se il cambiamento di luminosità non funziona)</string>
+    <string name="settings_category_notification">Notifiche</string>
+    <string name="settings_category_notification_summary">Notifiche su nuovi articoli</string>
     <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_ringtone">Suoneria</string>
@@ -322,6 +330,8 @@
     <string name="setupConnection">Configurazione connessione</string>
     <string name="settings_content_extract_rules">Regole estrattore contenuto</string>
     <string name="settings_content_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
+    <string name="settings_category_extract_rules">Regole di estrazione categoria</string>
+    <string name="settings_category_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
     <string name="settings_tap_zones_dialogtitle">solo per le informazioni, le modifiche non sono disponibili</string>
     <string name="downloadNext">"Scarica il prossimo "</string>
     <string name="downloadAll">", Tutti"</string>
@@ -481,6 +491,24 @@
     <string name="reading_article">Lettura di un articolo</string>
     <string name="reading_notification">Notifica lettura articoli</string>
     <string name="reading_notification_descr">Notifica permanente della barra di stato per impedire che l\'app venga fermata dal sistema - per accelerare l\'avvio dell\'app dopo un lungo ritardo</string>
+    <string name="feed_list_loading">Caricamento lista feed</string>
+    <string name="article_text_show_battery">Visualizza il livello della batteria</string>
+    <string name="article_text_show_battery_description">Visualizza il livello attuale della batteria in alto a destra in modalità schermo intero</string>
+    <string name="settings_category_header_descr">Per il testo dell\'articolo e la lista degli articoli</string>
+    <string name="article_text_buttons_layout">Disposizione del pulsante</string>
+    <string name="article_text_buttons_layout_descr">Orientamento e visibilità dei pulsanti alla fine di un articolo</string>
+    <string name="article_reading_notification_hint">Per mantenere l\'app in memoria durante la lettura di un articolo</string>
+    <string name="auto_set_as_read">Imposta automaticamente l\'articolo come letto quando il titolo è visibile nella lista</string>
+    <string name="removeText">Rimuovi testo</string>
+    <string name="set_category">Imposta come categoria</string>
+    <string name="menu_more_options">Altre opzioni</string>
+    <string name="reset_feed_and_delete_all_articles">Reimposta il feed ed elimina tutti gli articoli non preferiti</string>
+    <string name="filter_apply_to_author">Applica all\'autore</string>
+    <string name="filter_apply_to_category">Applica alla categoria</string>
+    <string name="filter_apply_to_url">Applica all\'URL</string>
+    <string name="open_tag_menu_hint">Scegli una parte dell\'URL da utilizzare come chiave per la regola</string>
+    <string name="open_tag_menu_dialog_title">"Imposta una regola per la classe "</string>
+    <string name="show_article_category">"Mostra categoria articolo"</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
