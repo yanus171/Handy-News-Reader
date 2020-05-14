@@ -510,6 +510,7 @@
     <string name="open_tag_menu_dialog_title">"Imposta una regola per la classe "</string>
     <string name="show_article_category">"Mostra categoria articolo"</string>
     <string name="article_text_information">Informazioni aggiuntive sull\'intestazione</string>
+    <string name="article_text_progress">Barra di progresso della lettura nell\'intestazione</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
