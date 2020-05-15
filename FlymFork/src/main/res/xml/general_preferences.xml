@@ -58,7 +58,7 @@
                 android:key="textColor"
                 android:title="@string/textColor"
                 colorPreference:backgroundColor1="@string/default_text_color_background"
-                colorPreference:istransparency="false"
+                colorPreference:istransparency=4r5"false"
                 colorPreference:sampletextShort="@string/settings_color_text_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
@@ -166,7 +166,7 @@
             android:title="@string/textColorRead"
             android:summary="@string/textColorRead_descr"
             colorPreference:backgroundColor1="@string/default_text_color_background"
-            colorPreference:istransparency="true"
+            colorPreference:istransparency="false"
             colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
             colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
 

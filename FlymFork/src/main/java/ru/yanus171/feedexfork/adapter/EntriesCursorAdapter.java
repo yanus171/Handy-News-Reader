@@ -438,11 +438,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
-            TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
+            //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
+            //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
             if (mainImgUrl != null ) {
                 final int dim = UiUtils.dpToPixel(70);
-                holder.mainImgView.setVisibility( View.VISIBLE );
                 Glide.with(context).load(mainImgUrl)
                     .override(dim, dim)
                     .centerCrop()
@@ -458,11 +457,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             return false;
                         }
                     })
-                    //.placeholder(letterDrawable).error(letterDrawable)
+                    //.placeholder(R.drawable.cup_new_empty)
+                    //.placeholder(letterDrawable)
+                    //.error(letterDrawable)
                     .into(holder.mainImgView);
             } else {
                 Glide.with(context).clear(holder.mainImgView);
-                holder.mainImgView.setImageDrawable(letterDrawable);
+                //holder.mainImgView.setImageDrawable(letterDrawable);
             }
         } else
             holder.mainImgView.setVisibility( View.GONE );
