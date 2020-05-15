@@ -52,6 +52,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.List;
 
@@ -534,7 +536,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 showFeedInfo,
                 false,
                 mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position),
-                                 mDrawerAdapter.getOptions(position) );
+                                 mDrawerAdapter != null ? mDrawerAdapter.getOptions(position) : new JSONObject() );
 
         //mDrawerList.setSelection( position );
         mDrawerList.setItemChecked(position, true);
