@@ -3,8 +3,12 @@
     android:id="@+id/entry_list_layout_root_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="5dp"
-    android:orientation="vertical">
+    android:paddingBottom="5dp"
+    android:paddingRight="5dp"
+    android:paddingEnd="5dp"
+    android:paddingStart="5dp">
     <FrameLayout
         android:id="@+id/entry_list_layout_root"
         android:layout_width="match_parent"
@@ -59,9 +63,11 @@
                         android:id="@+id/main_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="5dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ticker_widget_preview" />
+                        android:src="@drawable/ticker_widget_preview"
+                        android:paddingTop="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -80,7 +86,6 @@
                                 android:id="@android:id/text1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:drawablePadding="3dp"
                                 android:ellipsize="end"
                                 android:gravity="start"
                                 android:maxLines="5"
@@ -229,7 +234,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
         android:alpha="0.7"
         android:drawablePadding="3dp"
         android:singleLine="false"

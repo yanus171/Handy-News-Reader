@@ -431,8 +431,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
+        holder.mainImgView.setVisibility( View.GONE );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
-            holder.mainImgView.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
@@ -448,12 +448,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            holder.mainImgView.setVisibility( View.GONE );
-                            return true;
+                            return false;
                         }
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.mainImgView.setVisibility( View.VISIBLE );
                             return false;
                         }
                     })
