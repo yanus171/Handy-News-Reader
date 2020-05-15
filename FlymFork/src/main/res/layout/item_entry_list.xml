@@ -120,11 +120,11 @@
                                 android:paddingEnd="5dp">
                                 <ImageView
                                     android:id="@+id/new_icon"
-                                    android:layout_width="@dimen/entry_new_icon_size"
+                                    android:layout_width="20dp"
                                     android:layout_gravity="center"
-                                    android:layout_height="@dimen/entry_new_icon_size"
+                                    android:layout_height="20dp"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/new_entry_icon" />
+                                    android:src="@drawable/ic_new_entry" />
                                 <ImageView
                                     android:id="@+id/favorite_icon"
                                     android:layout_width="20dp"
