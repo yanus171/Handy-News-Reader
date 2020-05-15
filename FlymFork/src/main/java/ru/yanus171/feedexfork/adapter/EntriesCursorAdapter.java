@@ -659,10 +659,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( allImages.size() > index ) {
             final Uri uri = allImages.get( index );
             imageView.setVisibility(View.VISIBLE);
-//                Glide.with(context).load( uri )
-//                    .fitCenter()
-//                    .into(imageView);
-            imageView.setImageURI( uri );
+                Glide.with(context).load( uri )
+                    .fitCenter()
+                    //.override(dim)
+                    .into(imageView);
+            //imageView.setImageURI( uri );
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
