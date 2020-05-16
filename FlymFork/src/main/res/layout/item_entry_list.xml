@@ -121,31 +121,31 @@
                                 <ImageView
                                     android:id="@+id/new_icon"
                                     android:layout_width="20dp"
-                                    android:layout_gravity="center"
                                     android:layout_height="20dp"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/ic_new_entry" />
+                                    android:layout_gravity="center"
+                                    android:alpha="0.7"
+                                    android:src="@drawable/ic_indicator_new_article_dark" />
                                 <ImageView
                                     android:id="@+id/favorite_icon"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
                                     android:layout_gravity="center"
                                     android:alpha="0.7"
-                                    android:src="@drawable/ic_star_yellow" />
+                                    android:src="@drawable/ic_indicator_star_dark" />
                                 <ImageView
                                     android:id="@+id/mobilized_icon"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
                                     android:layout_gravity="center"
                                     android:alpha="0.7"
-                                    android:src="@drawable/ic_save_gray" />
+                                    android:src="@drawable/ic_indicator_full_text" />
                                 <ImageView
                                     android:id="@+id/read_icon"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
                                     android:layout_gravity="center_vertical"
                                     android:alpha="0.7"
-                                    android:src="@drawable/ic_check_box" />
+                                    android:src="@drawable/ic_indicator_unread" />
                             </LinearLayout>
                             <TextView
                                 android:id="@android:id/text2"
