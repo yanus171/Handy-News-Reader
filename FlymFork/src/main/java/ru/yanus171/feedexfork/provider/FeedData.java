@@ -79,7 +79,7 @@ public class FeedData {
             "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.PRIORITY + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
             "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
     public static final String ENTRIES_TABLE_WITH_FEED_INFO = EntryColumns.TABLE_NAME + " JOIN (SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.RETRIEVE_FULLTEXT + ", " + FeedColumns.NAME + ", " + FeedColumns.URL + ", " +
-            FeedColumns.ICON_URL + ", " + FeedColumns.OPTIONS + ", " + FeedColumns.GROUP_ID + " FROM " + FeedColumns.TABLE_NAME + ") AS f ON (" + EntryColumns.TABLE_NAME + '.' + FEED_ID + " = f.joined_feed_id)";
+            FeedColumns.ICON_URL + ", " + FeedColumns.IS_IMAGE_AUTO_LOAD + ", " + FeedColumns.OPTIONS + ", " + FeedColumns.GROUP_ID + " FROM " + FeedColumns.TABLE_NAME + ") AS f ON (" + EntryColumns.TABLE_NAME + '.' + FEED_ID + " = f.joined_feed_id)";
     public static final String TASKS_WITH_FEED_INFO = TaskColumns.TABLE_NAME  + " LEFT JOIN (SELECT " + EntryColumns._ID + " AS entry_id, " + EntryColumns.LINK + " FROM " + EntryColumns.TABLE_NAME + ") AS f " +
             "ON (" + TaskColumns.TABLE_NAME + '.' + TaskColumns.ENTRY_ID + " = f.entry_id )";
     public static final String ALL_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + ")";
@@ -311,7 +311,8 @@ public class FeedData {
                         FeedColumns.NAME,
                         FeedColumns.OPTIONS,
                         TEXT_LEN_EXPR,
-                        EntryColumns.CATEGORIES};
+                        EntryColumns.CATEGORIES,
+                        FeedColumns.IS_IMAGE_AUTO_LOAD};
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
         public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';

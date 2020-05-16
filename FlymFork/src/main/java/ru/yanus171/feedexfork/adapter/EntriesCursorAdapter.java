@@ -134,7 +134,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
-    private final boolean mShowEntryText, mShowUnread;
+    private final boolean mShowEntryText;
+    private final boolean mShowUnread;
+    private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
     private final static int MAX_TEXT_LEN = 2500;
     FeedFilters mFilters = null;
@@ -153,6 +155,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mShowFeedInfo = showFeedInfo;
         mShowEntryText = showEntryText;
         mShowUnread = showUnread;
+        mIsLoadImages = true;
         //SetIsReadMakredList();
 
         mMarkAsReadList.clear();
@@ -431,24 +434,29 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
-        holder.mainImgView.setVisibility( View.GONE );
+        holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
-            //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
             if (mainImgUrl != null ) {
                 final int dim = UiUtils.dpToPixel(70);
+                //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
+                //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
+
                 Glide.with(context).load(mainImgUrl)
                     .override(dim, dim)
                     .centerCrop()
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
+                            if ( mIsLoadImages ) {
+                                holder.mainImgView.setVisibility(View.GONE);
+                                return true;
+                            } else
+                                return false;
                         }
 
                         @Override
@@ -620,6 +628,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 temp = FileUtils.INSTANCE.loadMobilizedHTML( mLink, null );
             temp = RemoveTables( temp );
             temp = RemoveHeaders( temp );
+            temp = temp.replaceAll( "<iframe(.|\\n)*?/iframe>", "" );
+            temp = temp.replaceAll( "<div(.|\\n)*?>", "" );
+            temp = temp.replaceAll( "</div>", "" );
+            temp = temp.replaceAll( "<br>", "" );
+            temp = temp.replaceAll( "\n", " " );
             temp = HtmlUtils.replaceImageURLs( temp,
                                                "",
                                                mID,
@@ -845,8 +858,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
             mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
             mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
+            {
+                int col = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
+                if ( col != -1 && cursor.moveToFirst() )
+                    mIsLoadImages = !cursor.isNull( col ) && cursor.getInt( col ) == 1;
+            }
         }
-
     }
 
     public class ListViewTopPos {

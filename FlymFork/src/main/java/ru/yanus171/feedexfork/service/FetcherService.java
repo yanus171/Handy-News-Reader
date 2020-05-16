@@ -640,7 +640,7 @@ public class FetcherService extends IntentService {
                         DownloadResult result = new DownloadResult();
                         result.mAttemptNumber = finalAttemptCount;
                         result.mTaskID = taskId;
-                        result.mOK = false;
+                        result.mResultCount = 0;
 
                         Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null);
                         curEntry.moveToFirst();
@@ -650,7 +650,7 @@ public class FetcherService extends IntentService {
                         if ( mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false)) {
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                            result.mOK = true;
+                            result.mResultCount = 1;
                         }
                         return result;
                     }
@@ -940,7 +940,7 @@ public class FetcherService extends IntentService {
     public static class DownloadResult{
         public Long mTaskID;
         public Integer mAttemptNumber;
-        public Boolean mOK;
+        public Integer mResultCount;
 
     }
     private static void downloadAllImages( ExecutorService executor ) {
@@ -970,10 +970,10 @@ public class FetcherService extends IntentService {
                         DownloadResult result = new DownloadResult();
                         result.mAttemptNumber = finalNbAttempt;
                         result.mTaskID = taskId;
-                        result.mOK = false;
+                        result.mResultCount = 0;
                         try {
                             NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-                            result.mOK = true;
+                            result.mResultCount = 1;
                         } catch ( Exception e ) {
                             Status().SetError( "", "", "", e );
                         }
@@ -1009,8 +1009,8 @@ public class FetcherService extends IntentService {
         for ( Future<DownloadResult> item: futures ) {
             try {
                 final DownloadResult result = item.get();
-                if (result.mOK) {
-                    countOK++;// If we are here, everything WAS OK
+                if (result.mResultCount > 0 ) {
+                    countOK += result.mResultCount;// If we are here, everything WAS OK
                     if ( operations != null )
                         operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
                 } else if ( operations != null ) {
@@ -1041,11 +1041,11 @@ public class FetcherService extends IntentService {
                         @Override
                         public DownloadResult call() {
                             DownloadResult result = new DownloadResult();
-                            result.mOK = false;
+                            result.mResultCount = 0;
                             if ( !isCancelRefresh() && isEntryIDActive( entryId ) ) {
                                 try {
                                     NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-                                    result.mOK = true;
+                                    result.mResultCount = 1;
                                 } catch (Exception e) {
                                     obs.SetError(entryLink, feedId, String.valueOf(entryId), e);
                                 }
@@ -1131,12 +1131,10 @@ public class FetcherService extends IntentService {
                     @Override
                     public DownloadResult call() {
                         DownloadResult result = new DownloadResult();
-                        result.mOK = false;
+                        result.mResultCount = 0;
                         try {
-                            if (!isCancelRefresh()) {
-                                refreshFeed(executor, feedId, keepDateBorderTime);
-                                result.mOK = true;
-                            }
+                            if (!isCancelRefresh())
+                                result.mResultCount = refreshFeed(executor, feedId, keepDateBorderTime);
                         } catch (Exception ignored) {
 
                         }
