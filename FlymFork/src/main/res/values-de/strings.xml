@@ -514,6 +514,7 @@
     <string name="show_article_category">"Artikelkategorie anzeigen"</string>
     <string name="article_text_information">Zusätzliche Informationen in der Kopfzeile</string>
     <string name="article_text_progress">Lese-Fortschrittsbalken in der Kopfzeile</string>
+    <string name="global_removeText_filter_rule_descr">Regex (eine Eintrag pro Zeile) auf jeden Artikelinhalt angewendet</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
