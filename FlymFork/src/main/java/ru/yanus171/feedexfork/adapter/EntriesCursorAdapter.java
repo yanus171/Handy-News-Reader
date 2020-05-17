@@ -578,6 +578,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.mainImgView.setMaxHeight(  );
         }*/
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
+        holder.newImgView.setImageResource(Theme.IsLight() ? R.drawable.ic_indicator_new_article_light : R.drawable.ic_indicator_new_article_dark);
 
 
     }
@@ -703,9 +704,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
-        int startID = Theme.IsLight() ? R.drawable.ic_star_red : R.drawable.ic_star_yellow;
+        int startID = Theme.IsLight() ? R.drawable.ic_indicator_star_light : R.drawable.ic_indicator_star_dark;
 //        if ( holder.isFavorite )
-            holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_star_border_grey);
+            holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_indicator_nonstar);
             holder.starToggleSwypeBtnView.setImageResource(holder.isFavorite ? R.drawable.ic_star_border_grey : R.drawable.ic_star_grey);
 //        else
 //            holder.starImgView.setImageResource(R.drawable.ic_star_border_grey);
@@ -722,7 +723,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.urlTextView.setEnabled(!holder.isRead);
 //        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_check_box_gray : R.drawable.ic_check_box_outline_blank_gray);
+        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_indicator_read : R.drawable.ic_indicator_unread);
         holder.readToggleSwypeBtnView.setImageResource(holder.isRead ? R.drawable.ic_check_box_outline_blank_gray : R.drawable.ic_check_box_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
@@ -887,7 +888,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView starImgView;
         ImageView mobilizedImgView;
         ImageView readImgView;
-        View newImgView;
+        ImageView newImgView;
         ImageView readToggleSwypeBtnView;
         ImageView starToggleSwypeBtnView;
         LinearLayout textLayout;
