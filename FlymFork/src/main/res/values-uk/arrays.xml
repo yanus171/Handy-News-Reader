@@ -40,7 +40,7 @@
     <string-array name="themeList">
         <item>Світла</item>
         <item>Темна</item>
-        <item>Black</item>
+        <item>Чорна</item>
     </string-array>
     <string-array name="buttons_layout_captions">
         <item>Горизонтально</item>
