@@ -52,6 +52,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
@@ -68,11 +69,16 @@ import android.widget.LinearLayout;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -116,6 +122,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
+import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
@@ -128,7 +136,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
-    private final boolean mShowEntryText, mShowUnread;
+    private final boolean mShowEntryText;
+    private final boolean mShowUnread;
+    private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
     private final static int MAX_TEXT_LEN = 2500;
     FeedFilters mFilters = null;
@@ -147,6 +157,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mShowFeedInfo = showFeedInfo;
         mShowEntryText = showEntryText;
         mShowUnread = showUnread;
+        mIsLoadImages = true;
         //SetIsReadMakredList();
 
         mMarkAsReadList.clear();
@@ -188,7 +199,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.authorTextView = view.findViewById(R.id.textAuthor);
             holder.imageSizeTextView = view.findViewById(R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
-            holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
+            //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
@@ -425,26 +436,47 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
+        holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
-            holder.mainImgLayout.setVisibility( View.VISIBLE );
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
-            TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
-            if (mainImgUrl != null) {
-                final int dim = UiUtils.dpToPixel(50);
+            if (mainImgUrl != null ) {
+                final int dim = UiUtils.dpToPixel(70);
+                //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
+                //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
+
                 Glide.with(context).load(mainImgUrl)
-                    //.override(dim, dim)
-                    .centerCrop().placeholder(letterDrawable).error(letterDrawable).into(holder.mainImgView);
+                    .override(dim, dim)
+                    .centerCrop()
+                    .addListener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            if ( mIsLoadImages ) {
+                                holder.mainImgView.setVisibility(View.GONE);
+                                return true;
+                            } else
+                                return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.mainImgView.setVisibility( View.VISIBLE );
+                            return false;
+                        }
+                    })
+                    //.placeholder(R.drawable.cup_new_empty)
+                    //.placeholder(letterDrawable)
+                    //.error(letterDrawable)
+                    .into(holder.mainImgView);
             } else {
                 Glide.with(context).clear(holder.mainImgView);
-                holder.mainImgView.setImageDrawable(letterDrawable);
+                //holder.mainImgView.setImageDrawable(letterDrawable);
             }
         } else
-            holder.mainImgLayout.setVisibility( View.GONE );
+            holder.mainImgView.setVisibility( View.GONE );
 
         holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
@@ -483,6 +515,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             @Override
             public void onClick(View v) {
                 toggleReadState(holder, view);
+            }
+        });
+        holder.starImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavoriteState(holder.entryID, view);
             }
         });
 
@@ -542,6 +580,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.mainImgView.setMaxHeight(  );
         }*/
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
+        holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
 
     }
@@ -592,6 +631,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 temp = FileUtils.INSTANCE.loadMobilizedHTML( mLink, null );
             temp = RemoveTables( temp );
             temp = RemoveHeaders( temp );
+            temp = temp.replaceAll( "<iframe(.|\\n)*?/iframe>", "" );
+            temp = temp.replaceAll( "<div(.|\\n)*?>", "" );
+            temp = temp.replaceAll( "</div>", "" );
+            temp = temp.replaceAll( "<br>", "" );
+            temp = temp.replaceAll( "\n", " " );
             temp = HtmlUtils.replaceImageURLs( temp,
                                                "",
                                                mID,
@@ -631,10 +675,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if ( allImages.size() > index ) {
             final Uri uri = allImages.get( index );
             imageView.setVisibility(View.VISIBLE);
-//                Glide.with(context).load( uri )
-//                    .fitCenter()
-//                    .into(imageView);
-            imageView.setImageURI( uri );
+                Glide.with(context).load( uri )
+                    .fitCenter()
+                    //.override(dim)
+                    .into(imageView);
+            //imageView.setImageURI( uri );
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -652,19 +697,22 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     static private String GetImageSizeText(int imageSize) {
         final double MEGABYTE = 1024.0 * 1024.0;
         return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > 1024 * 100 ?
-            String.format( "%.1f M", imageSize / MEGABYTE ).replace( ",", "." ) : "";
+            String.format( "%.1f\u00A0M", imageSize / MEGABYTE ).replace( ",", "." ) : "";
     }
 
     static private String GetTextSizeText(int imageSize) {
         final int KBYTE = 1024;
-        return imageSize > KBYTE ? String.format( "%d K", imageSize / KBYTE ) : "";
+        return imageSize > KBYTE ? String.format( "%d\u00A0K", imageSize / KBYTE ) : "";
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
-        int startID = Theme.IsLight() ? R.drawable.ic_star_grey : R.drawable.ic_star_yellow;
-        if ( holder.isFavorite )
-            holder.starImgView.setImageResource(startID );
-        holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
+        int startID = Theme.GetResID( STARRED_ARTICLE_INDICATOR_RES_ID );
+//        if ( holder.isFavorite )
+            holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_indicator_nonstar);
+            holder.starToggleSwypeBtnView.setImageResource(holder.isFavorite ? R.drawable.ic_star_border_grey : R.drawable.ic_star_grey);
+//        else
+//            holder.starImgView.setImageResource(R.drawable.ic_star_border_grey);
+//        holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadView(ViewHolder holder, View parentView) {
         if ( holder.isTextShown() )
@@ -675,8 +723,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.authorTextView.setEnabled(!holder.isRead);
         holder.categoriesTextView.setEnabled(!holder.isRead);
         holder.urlTextView.setEnabled(!holder.isRead);
+//        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_check_box_gray : R.drawable.ic_check_box_outline_blank_gray);
+        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_indicator_read : R.drawable.ic_indicator_unread);
+        holder.readToggleSwypeBtnView.setImageResource(holder.isRead ? R.drawable.ic_check_box_outline_blank_gray : R.drawable.ic_check_box_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
         parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
@@ -811,8 +861,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
             mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
             mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
+            {
+                int col = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
+                if ( col != -1 && cursor.moveToFirst() )
+                    mIsLoadImages = !cursor.isNull( col ) && cursor.getInt( col ) == 1;
+            }
         }
-
     }
 
     public class ListViewTopPos {
@@ -832,13 +886,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView authorTextView;
         TextView imageSizeTextView;
         ImageView mainImgView;
-        View mainImgLayout;
+        //View mainImgLayout;
         ImageView starImgView;
         ImageView mobilizedImgView;
         ImageView readImgView;
-        View newImgView;
-        View readToggleSwypeBtnView;
-        View starToggleSwypeBtnView;
+        ImageView newImgView;
+        ImageView readToggleSwypeBtnView;
+        ImageView starToggleSwypeBtnView;
         LinearLayout textLayout;
         boolean isRead;
         boolean isFavorite;

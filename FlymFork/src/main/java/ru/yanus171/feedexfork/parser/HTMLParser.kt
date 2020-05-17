@@ -166,11 +166,11 @@ object HTMLParser {
                     val result = DownloadResult()
                     result.mAttemptNumber = 0
                     result.mTaskID = 0L
-                    result.mOK = false
+                    result.mResultCount = 0
                     val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID))
                     val uri = load.first
                     if (load.second) {
-                        result.mOK = true
+                        result.mResultCount = 1
                         val cursor = cr.query(uri, arrayOf(EntryColumns.TITLE, EntryColumns.AUTHOR, EntryColumns.CATEGORIES), null, null, null)
                         if ( cursor != null ) {
                             cursor.moveToFirst();

@@ -24,5 +24,5 @@
     android:paddingStart="16dip"
     android:paddingEnd="?android:attr/scrollbarSize"
     android:textAppearance="?android:attr/textAppearanceMedium"
-    android:background="?attr/colorPrefBackground"
+    android:background="?attr/colorPrefCategoryBackground"
     />

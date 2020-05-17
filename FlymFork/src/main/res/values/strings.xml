@@ -80,7 +80,7 @@
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">version</string>
     <string name="about_handy_news_reader">About Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">License, help and how to contact the developer </string>
+    <string name="about_handy_news_reader_descr">License, support, translations etc.</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="last_update">Update</string>
@@ -526,6 +526,7 @@
     <string name="show_article_category">"Show article category"</string>
     <string name="article_text_information">Header additional information</string>
     <string name="article_text_progress">Reading progress bar in header</string>
+    <string name="global_removeText_filter_rule_descr">Regex (one per line) applied to any article content</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
