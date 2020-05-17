@@ -78,6 +78,8 @@
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">version</string>
+    <string name="about_handy_news_reader">À propos de Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">Licence, aide et contacter le développeur </string>
     <string name="welcome_title">Bienvenue sur Handy News Reader. Voulez vous ajouter un flux ?</string>
     <string name="never">jamais</string>
     <string name="last_update">Mise à jour</string>
