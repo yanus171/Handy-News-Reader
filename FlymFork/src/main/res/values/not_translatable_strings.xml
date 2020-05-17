@@ -145,6 +145,7 @@
     <string-array name="themeValueList" translatable="false">
         <item>Light</item>
         <item>Dark</item>
+        <item>Black</item>
     </string-array>
 
     <string name="developerList" translatable="false"><![CDATA[• eighthave<br/>

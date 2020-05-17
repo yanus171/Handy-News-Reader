@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import ru.yanus171.feedexfork.MainApplication;
 
 import static ru.yanus171.feedexfork.utils.Theme.DARK;
+import static ru.yanus171.feedexfork.utils.Theme.LIGHT;
+import static ru.yanus171.feedexfork.utils.Theme.BLACK;
+
 
 public class PrefUtils {
 
@@ -278,7 +281,10 @@ public class PrefUtils {
     @SuppressLint("ApplySharedPref")
     public static void ToogleTheme(Intent intent ) {
         final String theme = PrefUtils.getString( PrefUtils.THEME, DARK );
-        PrefUtils.putString( PrefUtils.THEME, theme.equals(Theme.LIGHT) ? DARK : Theme.LIGHT);
+//        PrefUtils.putString( PrefUtils.THEME, theme.equals(Theme.LIGHT) ? DARK : Theme.LIGHT);
+        if (theme.equals(LIGHT)) PrefUtils.putString( PrefUtils.THEME, DARK);
+        if (theme.equals(DARK)) PrefUtils.putString( PrefUtils.THEME, BLACK);
+        if (theme.equals(BLACK)) PrefUtils.putString( PrefUtils.THEME, LIGHT);
         Context context = MainApplication.getContext();
         PreferenceManager.getDefaultSharedPreferences(context).edit().commit(); // to be sure all prefs are written
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
