@@ -40,7 +40,7 @@
     <string-array name="themeList">
         <item>Jasny</item>
         <item>Ciemny</item>
-        <item>Black</item>
+        <item>Czarny</item>
     </string-array>
     <string-array name="buttons_layout_captions">
         <item>Poziomy</item>
