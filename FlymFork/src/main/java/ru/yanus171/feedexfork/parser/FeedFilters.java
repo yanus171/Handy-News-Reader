@@ -62,6 +62,22 @@ public class FeedFilters {
             }
         }
 
+        {
+            String[] list = TextUtils.split(PrefUtils.getString("global_removeText_filter_rule", "-------||||||-______"), "\n");
+            for (String rule : list) {
+                if (rule.trim().isEmpty())
+                    continue;
+                Rule r = new Rule();
+                r.filterText = rule;
+                r.isRegex = true;
+                r.mApplyType = DB_APPLIED_TO_CONTENT;
+                r.isAcceptRule = false;
+                r.isMarkAsStarred = false;
+                r.isRemoveText = true;
+                mFilters.add(r);
+            }
+        }
+
     }
 
     public static Cursor GetCursor(String feedId) {

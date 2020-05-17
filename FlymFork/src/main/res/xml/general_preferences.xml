@@ -651,6 +651,15 @@
                         android:summary= "@string/global_marks_as_star_filter_apply_to_title_descr"/>
 
                 </PreferenceCategory>
+                <PreferenceCategory
+                    android:layout="@layout/preference_category"
+                    android:title="@string/removeText">
+                    <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                        android:key="global_removeText_filter_rule"
+                        android:title="@string/rule_text"
+                        android:inputType="text|textMultiLine"
+                        android:summary="@string/global_removeText_filter_rule_descr"/>
+                </PreferenceCategory>
             </PreferenceScreen>
 
             <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
