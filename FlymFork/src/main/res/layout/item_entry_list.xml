@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="5dp"
-    android:paddingBottom="5dp"
+    android:paddingBottom="0dp"
     android:paddingRight="5dp"
     android:paddingEnd="5dp"
     android:paddingStart="5dp">
@@ -113,11 +113,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingEnd="35dp"
+                            android:paddingRight="35dp"
                             android:orientation="horizontal">
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingEnd="5dp">
+                                android:paddingEnd="5dp"
+                                android:paddingRight="5dp">
                                 <ImageView
                                     android:id="@+id/new_icon"
                                     android:layout_width="20dp"
@@ -288,6 +290,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:alpha="0.4"
         android:src="@color/dark_theme_color_primary" />
