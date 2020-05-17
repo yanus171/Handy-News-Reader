@@ -122,6 +122,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
+import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
@@ -578,7 +580,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.mainImgView.setMaxHeight(  );
         }*/
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
-        holder.newImgView.setImageResource(Theme.IsLight() ? R.drawable.ic_indicator_new_article_light : R.drawable.ic_indicator_new_article_dark);
+        holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
 
     }
@@ -704,7 +706,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void UpdateStarImgView(ViewHolder holder) {
-        int startID = Theme.IsLight() ? R.drawable.ic_indicator_star_light : R.drawable.ic_indicator_star_dark;
+        int startID = Theme.GetResID( STARRED_ARTICLE_INDICATOR_RES_ID );
 //        if ( holder.isFavorite )
             holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_indicator_nonstar);
             holder.starToggleSwypeBtnView.setImageResource(holder.isFavorite ? R.drawable.ic_star_border_grey : R.drawable.ic_star_grey);

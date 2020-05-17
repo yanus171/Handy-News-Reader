@@ -63,17 +63,6 @@
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
             <ru.yanus171.feedexfork.view.ColorPreference
-                android:defaultValue="@string/default_read_color"
-                android:dependency="customColors"
-                android:key="textColorRead"
-                android:title="@string/textColorRead"
-                android:summary="@string/textColorRead_descr"
-                colorPreference:backgroundColor1="@string/default_text_color_background"
-                colorPreference:istransparency="false"
-                colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
-                colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
-
-            <ru.yanus171.feedexfork.view.ColorPreference
                 android:defaultValue="@color/light_theme_color_primary"
                 android:dependency="customColors"
                 android:key="toolBarColor"
@@ -168,6 +157,18 @@
             android:key="vibrate_on_article_list_entry_swype"
             android:summary="@string/vibrate_on_article_list_entry_swype_summary"
             android:title="@string/vibrate_on_article_list_entry_swype"/>
+
+        <ru.yanus171.feedexfork.view.ColorPreference
+            android:defaultValue="@string/default_read_color"
+            android:dependency="customColors"
+            android:key="textColorRead"
+            android:title="@string/textColorRead"
+            android:summary="@string/textColorRead_descr"
+            colorPreference:backgroundColor1="@string/default_text_color_background"
+            colorPreference:istransparency="false"
+            colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
+            colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
+
 
     </PreferenceScreen>
 
