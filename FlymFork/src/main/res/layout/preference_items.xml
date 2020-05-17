@@ -5,6 +5,7 @@
     android:background="?attr/colorPrefItemBackground">
     <ImageView
         android:id="@android:id/icon"
+        android:tint="?attr/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
