@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
-                android:background="@color/dark_background"
+                android:background="@color/dark_theme_background"
                 android:orientation="vertical"
                 android:layout_marginLeft="5dp">
 
@@ -90,7 +90,7 @@
                                 android:gravity="start"
                                 android:maxLines="5"
                                 android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
-                                android:textColor="?attr/colorReadState"
+                                android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
                         </LinearLayout>
 
@@ -105,7 +105,7 @@
                             android:singleLine="true"
                             android:text="date"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="?attr/colorReadState"
+                            android:textColor="@color/dark_theme_color_unread"
                             android:textIsSelectable="false" />
 
                         <LinearLayout
@@ -155,7 +155,7 @@
                                 android:drawablePadding="3dp"
                                 android:text="info"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="?attr/colorReadState"
+                                android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
 
                             <TextView
@@ -169,7 +169,7 @@
                                 android:singleLine="true"
                                 android:text="image_size"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="?attr/colorReadState"
+                                android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
 
                             <TextView
@@ -183,7 +183,7 @@
                                 android:singleLine="true"
                                 android:text="author"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="?attr/colorReadState"
+                                android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
                         </LinearLayout>
                     </LinearLayout>
@@ -209,7 +209,7 @@
                             android:drawablePadding="3dp"
                             android:singleLine="false"
                             android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
-                            android:textColor="?attr/colorReadState"
+                            android:textColor="@color/dark_theme_color_unread"
                             android:textIsSelectable="false" />
 
                     </LinearLayout>
@@ -238,7 +238,7 @@
         android:drawablePadding="3dp"
         android:singleLine="false"
         android:text="#tag1, #tag2, #tag3"
-        android:textColor="?attr/colorReadState"
+        android:textColor="@color/dark_theme_color_unread"
         android:textIsSelectable="false" />
     <ImageView
         android:id="@+id/image1"
@@ -274,7 +274,7 @@
         android:justificationMode="inter_word"
         android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?attr/colorReadState" />
+        android:textColor="@color/dark_theme_color_unread" />
     <TextView
         android:id="@+id/textSourceReadMore"
         android:layout_width="match_parent"
@@ -283,7 +283,7 @@
         android:layout_marginBottom="15dp"
         android:text="@string/read_more"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?attr/colorReadState"
+        android:textColor="@color/dark_theme_color_unread"
         android:textIsSelectable="false" />
     <ImageView
         android:layout_width="match_parent"
