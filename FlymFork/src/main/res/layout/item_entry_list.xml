@@ -64,7 +64,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ticker_widget_preview"
                         android:paddingTop="5dp"
                         android:paddingRight="5dp"
                         android:paddingEnd="5dp" />

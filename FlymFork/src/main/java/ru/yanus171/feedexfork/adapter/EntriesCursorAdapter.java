@@ -72,7 +72,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -148,6 +147,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos,
         mAbstractPos, mIsNewPos, mTextLenPos, mCategoriesPos;
     public static int mEntryActivityStartingStatus = 0;
+    public boolean mIgnoreClearContentVocOnCursorChange = false;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -443,7 +443,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            if (mainImgUrl != null ) {
+            if ( mainImgUrl != null ) {
                 final int dim = UiUtils.dpToPixel(70);
                 //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
                 //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
@@ -825,7 +825,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     @Override
     public Cursor swapCursor(Cursor newCursor) {
-        mContentVoc.clear();
+        if ( mIgnoreClearContentVocOnCursorChange )
+            mIgnoreClearContentVocOnCursorChange = false;
+        else
+            mContentVoc.clear();
         reinit(newCursor);
         return super.swapCursor(newCursor);
     }

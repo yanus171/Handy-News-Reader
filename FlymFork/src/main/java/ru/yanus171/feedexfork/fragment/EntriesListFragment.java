@@ -1074,6 +1074,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             final Entry entry = (Entry) o;
             final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
             if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
+                mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
                 mEntriesCursorAdapter.notifyDataSetChanged();
                 RestoreListScrollPosition();
             }
