@@ -203,7 +203,7 @@ public class HtmlUtils {
                         imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
                         LINK_TAG_END;
                     if ( isShowImages ) {
-                        final boolean isFileExists = new File(imgFilePath).exists();
+                        final boolean isFileExists = file.exists();
                         if ( !isFileExists && isImageToLoad )
                             imagesToDl.add(srcUrl);
                         String btnLoadNext = "";
