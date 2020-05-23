@@ -254,7 +254,7 @@ public class ArticleTextExtractor {
         final Element categoriesElement = getCategoriesElementFromPref(doc, url);
         final Elements categoriesAllElements = categoriesElement != null ? categoriesElement.getAllElements() : null;
 
-        final String baseUrl = NetworkUtils.getUrlDomain(url);
+        final String baseUrl = url;//NetworkUtils.getUrlDomain(url);
         for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
             if (el.hasText()) {
                 //final String classNameList =
@@ -267,7 +267,7 @@ public class ArticleTextExtractor {
                         continue;
                     final boolean isHidden = removeClassList.contains(className);
                     final boolean isCategory = categoriesAllElements != null && categoriesAllElements.contains( el );
-                    final boolean isTextRoot = el == bestMatchElement || el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS );
+                    final boolean isTextRoot = el.equals( bestMatchElement ) || el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS );
                     AddTagButton(el, className, baseUrl, isHidden, isTextRoot, isCategory );
                     if ( isHidden && el.parent() != null ) {
                         Element elementS = doc.createElement("s");

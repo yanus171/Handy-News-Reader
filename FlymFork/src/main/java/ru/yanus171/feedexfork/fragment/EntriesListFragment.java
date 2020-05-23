@@ -262,11 +262,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null ) {
             int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             item.setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_FAVORITES);
+                    uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
             mMenu.findItem(R.id.menu_show_entry_text).setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_FAVORITES);
+                    uriMatch != FeedDataContentProvider.URI_FAVORITES &&
+                    uriMatch != FeedDataContentProvider.URI_FAVORITES_UNREAD );
         }
 
         boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri );
@@ -834,6 +834,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                             uriMatch == FeedDataContentProvider.URI_UNREAD_ENTRIES_FOR_GROUP ) {
                     long groupID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
                     Uri uri = mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_GROUP_CONTENT_URI(groupID) : EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(groupID);
+                    setData( uri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
+                } else if ( uriMatch == FeedDataContentProvider.URI_FAVORITES ||
+                    uriMatch == FeedDataContentProvider.URI_FAVORITES_UNREAD ) {
+                    Uri uri = mShowUnRead ? EntryColumns.FAVORITES_UNREAD_CONTENT_URI : EntryColumns.FAVORITES_CONTENT_URI;
                     setData( uri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 }
                 UpdateActions();

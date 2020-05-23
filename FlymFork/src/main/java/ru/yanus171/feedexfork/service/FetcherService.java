@@ -1079,7 +1079,7 @@ public class FetcherService extends IntentService {
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                                        new String[]{_ID, FeedColumns.OPTIONS},
-                                       FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL, null, null);
+                                       FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL + DB_OR + FeedColumns._ID + "=" + GetExtrenalLinkFeedID(), null, null);
         try {
             //mIsDeletingOld = true;
             int index = 1;

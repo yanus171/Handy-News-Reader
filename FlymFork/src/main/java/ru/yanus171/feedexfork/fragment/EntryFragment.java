@@ -1259,7 +1259,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //groupUrl.setGravity( Gravity.CENTER );
         parent.addView(groupUrl);
         int id = 0;
-        String keyUrl = baseUrl;
+        String keyUrl = baseUrl.replaceAll( "http.+?//", "" ).replaceAll( "www.", "" );;
         if ( !keyUrl.endsWith( "/" ) )
             keyUrl = keyUrl + "/";//.substring( 0, keyUrl.length() - 1 );
         while( keyUrl.contains( "/" ) ) {

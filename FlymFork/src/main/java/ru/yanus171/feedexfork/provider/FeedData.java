@@ -380,6 +380,7 @@ public class FeedData {
         public static final Uri UNREAD_ENTRIES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/unread_entries");
 
         public static final Uri FAVORITES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/favorites");
+        public static final Uri FAVORITES_UNREAD_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/unread_favorites");
 
         public static boolean isSearchUri(Uri uri) {
             return uri != null && uri.toString().startsWith(CONTENT_AUTHORITY + "/entries/search/");

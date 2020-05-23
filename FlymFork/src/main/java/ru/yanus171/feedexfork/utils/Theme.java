@@ -127,7 +127,7 @@ public class Theme {
 		return Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
 	}
 
-	
+
 //	private static String getTextColorDarkTheme() {
 //
 //		int b = 200;

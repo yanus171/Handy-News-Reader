@@ -119,6 +119,7 @@ public class FeedDataContentProvider extends ContentProvider {
     public static final int URI_UNREAD_ENTRIES_FOR_GROUP = 25;
     private static final int URI_UNREAD_ENTRY_FOR_GROUP = 26;
     private static final int URI_GROUPS_AND_ROOT_FEEDS = 27;
+    public static final int URI_FAVORITES_UNREAD = 28;
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -149,6 +150,7 @@ public class FeedDataContentProvider extends ContentProvider {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "unread_entries/#", URI_UNREAD_ENTRIES_ENTRY);
 
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites", URI_FAVORITES);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "unread_favorites", URI_FAVORITES_UNREAD);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites/#", URI_FAVORITES_ENTRY);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks", URI_TASKS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks/#", URI_TASK);
@@ -393,6 +395,13 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_FAVORITES: {
                 queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
                 queryBuilder.appendWhere(new StringBuilder(EntryColumns.IS_FAVORITE).append(Constants.DB_IS_TRUE));
+                break;
+            }
+            case URI_FAVORITES_UNREAD: {
+                queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
+                queryBuilder.appendWhere(new StringBuilder(EntryColumns.IS_FAVORITE).append(Constants.DB_IS_TRUE));
+                queryBuilder.appendWhere(Constants.DB_AND);
+                queryBuilder.appendWhere(new StringBuilder(EntryColumns.WHERE_UNREAD));
                 break;
             }
             case URI_TASKS: {
