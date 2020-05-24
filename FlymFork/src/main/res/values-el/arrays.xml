@@ -40,6 +40,7 @@
     <string-array name="themeList">
         <item>Ανοιχτόχρωμο</item>
         <item>Σκούρο</item>
+        <item>Black</item>
     </string-array>
     <string-array name="buttons_layout_captions">
         <item>Οριζόντια</item>

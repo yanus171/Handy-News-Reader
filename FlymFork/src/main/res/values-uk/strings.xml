@@ -77,6 +77,8 @@
  <br/>    ]]></string>
     <string name="app_name">Зручне читання новин</string>
     <string name="about_title_version">версія</string>
+    <string name="about_handy_news_reader">Про Зручне читання новин</string>
+    <string name="about_handy_news_reader_descr">Ліцензія, допомога та зв\'язок з розробником </string>
     <string name="welcome_title">Додати стрічку?</string>
     <string name="never">ніколи</string>
     <string name="last_update">Оновлення</string>
@@ -509,6 +511,7 @@
     <string name="show_article_category">"Показувати категорію статті"</string>
     <string name="article_text_information">Додаткова інформація в заголовку</string>
     <string name="article_text_progress">Прогрес читання в заголовку</string>
+    <string name="global_removeText_filter_rule_descr">Regex (один на рядок) застосовується до любого вмісту статті</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>

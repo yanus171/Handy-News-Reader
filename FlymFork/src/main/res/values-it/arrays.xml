@@ -40,5 +40,11 @@
     <string-array name="themeList">
         <item>Chiaro</item>
         <item>Scuro</item>
+        <item>Black</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Orizzontale</item>
+        <item>Verticale</item>
+        <item>Non mostrare i pulsanti</item>
     </string-array>
 </resources>

@@ -31,6 +31,8 @@
 <resources>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Versión</string>
+    <string name="about_handy_news_reader">Acerca de Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">Licencia, ayuda y cómo contactar al desarrollador </string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
     <string name="never">nunca</string>
     <string name="last_update">Actualizar</string>
@@ -53,6 +55,7 @@
     <string name="new_feed_title">Nueva fuente</string>
     <string name="context_menu_edit">Editar</string>
     <string name="menu_add_group">Añadir grupo</string>
+    <string name="menu_import_export">Exportar e importar</string>
     <string name="menu_import">Importar desde OPML</string>
     <string name="menu_export">Exportar a OPML</string>
     <string name="storage_request_explanation">Para poder importar o exportar los feeds desde o a un archivo, debe permitir que la aplicación acceda a la memoria de almacenamiento.</string>
@@ -216,6 +219,9 @@
     <string name="underline_links">Subrayar enlaces</string>
     <string name="article_text_show_clock">Mostrar reloj</string>
     <string name="article_text_show_clock_description">Mostrar la hora actual en la esquina superior derecha en modo de pantalla completa</string>
+    <string name="settings_informations_size">Tamaño del texto de la información adicional</string>
+    <string name="article_text_information_color">Color de texto de información y fondo</string>
+    <string name="article_text_information_color_descr">Color y fondo de la información adicional del encabezado de la página</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Barra de progreso de lectura</string>
@@ -235,6 +241,7 @@
     <string name="brightness_gesture_descr">Comprobar para ajustar el brillo deslizándose hacia arriba/abajo a lo largo del borde izquierdo de la pantalla</string>
     <string name="brightness_with_dim_activity">Capa de software</string>
     <string name="brightness_with_dim_activity_descr">Disminuir el brillo reduciendo la transparencia del color de fondo de la ventana (comprobar esto si el cambio de brillo no funciona)</string>
+    <string name="settings_category_notification">Notificaciones</string>
     <string name="settings_notifications_enabled">Habilitar notificaciones</string>
     <string name="settings_notifications_enabled_description">Habilita las notificaciones de nuevas entradas</string>
     <string name="settings_notifications_ringtone">Tono</string>

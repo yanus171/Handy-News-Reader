@@ -78,6 +78,8 @@
     ]]></string>
     <string name="app_name">Leitor de Notícias Conveniente</string>
     <string name="about_title_version">versão</string>
+    <string name="about_handy_news_reader">Sobre o Leitor de Notícias Conveniente</string>
+    <string name="about_handy_news_reader_descr">Licença, ajuda e como entrar em contato com o desenvolvedor </string>
     <string name="welcome_title">Bem-vindo ao Leitor de Notícias Conveniente. Gostaria de adicionar um feed?</string>
     <string name="never">nunca</string>
     <string name="last_update">Atualizar</string>
@@ -286,6 +288,8 @@
     <string name="brightness_gesture_descr">Marque esta opção para ajustar o brilho deslizando para cima/para baixo ao longo da borda esquerda da tela</string>
     <string name="brightness_with_dim_activity">Sobreposição de software</string>
     <string name="brightness_with_dim_activity_descr">Escurecer o brilho reduzindo a transparência da cor de fundo da janela (verifique se a mudança de brilho não funciona)</string>
+    <string name="settings_category_notification">Notificações</string>
+    <string name="settings_category_notification_summary">Notificações de novos artigos</string>
     <string name="settings_notifications_enabled">Ativar notificações</string>
     <string name="settings_notifications_enabled_description">Habilitar notificações em caso de novas postagens</string>
     <string name="settings_notifications_ringtone">Toque</string>
@@ -327,6 +331,8 @@
     <string name="setupConnection">Configurar conexão</string>
     <string name="settings_content_extract_rules">Regras de extração de conteúdo</string>
     <string name="settings_content_extract_rules_description">Configura para cada site (base de conhecimento HTML necessária)</string>
+    <string name="settings_category_extract_rules">Regras de extração de categoria</string>
+    <string name="settings_category_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
     <string name="settings_tap_zones_dialogtitle">somente para informações, mudanças indisponíveis</string>
     <string name="downloadNext">"Baixar próximo "</string>
     <string name="downloadAll">", Tudo"</string>
@@ -482,12 +488,28 @@
     <string name="search_in_browser">Pesquisar no navegador</string>
     <string name="search_in_yandex">Pesquisar via Yandex</string>
     <string name="search_in_google">Pesquisar via Google</string>
+    <string name="reading_notification">Notificação de leitura do artigo</string>
+    <string name="reading_notification_descr">Notificação persistente na barra de status para impedir que o aplicativo seja encerrado pelo sistema - para acelerar o início do aplicativo após um longo atraso</string>
+    <string name="feed_list_loading">Carregando lista de feed</string>
+    <string name="article_text_show_battery">Exibir nível de bateria</string>
     <string name="article_text_show_battery_description">Exibe o nível atual da bateria no canto superior direito no modo de tela cheia</string>
+    <string name="settings_category_header_descr">Para o texto do artigo e telas de lista de artigos</string>
+    <string name="article_text_buttons_layout">Layout do botão</string>
+    <string name="article_text_buttons_layout_descr">Orientação e visibilidade dos botões ao final de um artigo</string>
+    <string name="article_reading_notification_hint">Para manter o app na memória durante a leitura de um artigo</string>
     <string name="auto_set_as_read">Definir automaticamente o artigo como lido quando seu título era visível na lista</string>
     <string name="removeText">Remover texto</string>
+    <string name="set_category">Definir como categoria</string>
     <string name="menu_more_options">Mais opções</string>
+    <string name="reset_feed_and_delete_all_articles">Redefinir feed e apagar todos os artigos não favoritos</string>
+    <string name="filter_apply_to_category">Aplicar à categoria</string>
+    <string name="filter_apply_to_url">Aplicar à URL</string>
+    <string name="open_tag_menu_hint">Escolha uma parte do URL para usar como chave para a regra</string>
+    <string name="open_tag_menu_dialog_title">"Definindo uma regra para a classe "</string>
+    <string name="show_article_category">"Mostrar categoria do artigo"</string>
     <string name="article_text_information">Informação adicional do cabeçalho</string>
     <string name="article_text_progress">Barra de progresso de leitura no cabeçalho</string>
+    <string name="global_removeText_filter_rule_descr">Regex (um por linha) aplicado a qualquer conteúdo do artigo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>

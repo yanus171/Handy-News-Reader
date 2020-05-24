@@ -40,5 +40,11 @@
     <string-array name="themeList">
         <item>Claro</item>
         <item>Escuro</item>
+        <item>Black</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Horizontal</item>
+        <item>Vertical</item>
+        <item>Não mostrar os botões</item>
     </string-array>
 </resources>

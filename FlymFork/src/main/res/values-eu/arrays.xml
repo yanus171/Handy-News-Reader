@@ -40,5 +40,6 @@
     <string-array name="themeList">
         <item>Argia</item>
         <item>Iluna</item>
+        <item>Black</item>
     </string-array>
 </resources>
