@@ -1513,6 +1513,7 @@ public class FetcherService extends IntentService {
                 if ( FeedDataContentProvider.URI_MATCHER.match(entriesUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
                     ContentValues values = new ContentValues();
                     values.putNull(FeedColumns.LAST_UPDATE);
+                    values.putNull(FeedColumns.ICON_URL);
                     values.putNull(FeedColumns.REAL_LAST_UPDATE);
                     cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
                 }

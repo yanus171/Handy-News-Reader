@@ -12,6 +12,10 @@
         <item name="colorPrefCategoryBackground">@color/light_theme_prefCategoryBackground</item>
         <item name="colorPrefItemBackground">@color/light_theme_prefItemBackground</item>
     </style>
+    <style name="Theme.Light.Pref" parent="Theme.Light">
+        <item name="android:windowBackground">@color/light_theme_prefItemBackground</item>
+        <item name="android:textColor">@color/light_theme_color_unread</item>
+    </style>
 
     <style name="Theme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
@@ -23,6 +27,10 @@
         <item name="colorPrefCategoryBackground">@color/dark_theme_prefCategoryBackground</item>
         <item name="colorPrefItemBackground">@color/dark_theme_prefItemBackground</item>
     </style>
+    <style name="Theme.Dark.Pref" parent="Theme.Dark">
+        <item name="android:windowBackground">@color/dark_theme_prefItemBackground</item>
+        <item name="android:textColor">@color/dark_theme_color_unread</item>
+    </style>
 
     <style name="Theme.Black" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
@@ -33,6 +41,11 @@
         <!--         <item name="colorReadState">@color/black_read_state</item> -->
         <item name="colorPrefCategoryBackground">@color/black_theme_prefCategoryBackground</item>
         <item name="colorPrefItemBackground">@color/black_theme_prefItemBackground</item>
+    </style>
+
+    <style name="Theme.Black.Pref" parent="Theme.Black">
+        <item name="android:windowBackground">@color/black_theme_prefItemBackground</item>
+        <item name="android:textColor">@color/black_theme_color_unread</item>
     </style>
 
     <style name="TapZone" >

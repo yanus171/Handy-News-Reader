@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         InitLocale(this);
-        UiUtils.setPreferenceTheme(this);
+        UiUtils.setTheme(this);
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
     }

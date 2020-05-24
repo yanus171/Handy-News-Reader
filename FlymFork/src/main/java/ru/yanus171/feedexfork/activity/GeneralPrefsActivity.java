@@ -54,6 +54,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Theme;
+import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
@@ -62,6 +63,7 @@ public class GeneralPrefsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UiUtils.setPreferenceTheme(this);
 
         setContentView(R.layout.activity_general_prefs);
 

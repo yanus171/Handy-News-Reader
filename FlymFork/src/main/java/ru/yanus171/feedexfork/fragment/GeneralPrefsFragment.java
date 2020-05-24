@@ -64,6 +64,7 @@ import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.ColorPreference;
 import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
@@ -188,8 +189,9 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         if ( preference instanceof PreferenceScreen) {
             PreferenceScreen screen = (PreferenceScreen) preference;
             Brightness br =  ((BaseActivity) activity ).mBrightness;
-            if (screen.getDialog() != null)
-                Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow() );
+            if (screen.getDialog() != null) {
+                Brightness.Companion.setBrightness(br.getMCurrentAlpha(), screen.getDialog().getWindow());
+            }
         }
     }
 }

@@ -57,8 +57,12 @@ public class UiUtils {
 
     //static private final HashMap<String, Bitmap> FAVICON_CACHE = new HashMap<>();
 
-    static public void setPreferenceTheme(Activity a) {
+    static public void setTheme(Activity a) {
         a.setTheme( Theme.GetResID( Theme.STYLE_THEME ) );
+    }
+
+    static public void setPreferenceTheme(Activity a) {
+        a.setTheme( Theme.GetResID( Theme.PREF_STYLE_THEME ) );
     }
 
     static public int dpToPixel(int dp) {

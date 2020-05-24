@@ -184,7 +184,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
                 + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
                 + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
-                + "div.bottom-page {display: block; min-height: 90vh} "
+                + "div.bottom-page {display: block; min-height: 80vh} "
                 + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
                 + "div {text-align:" + getAlign(text) + "} "
                 + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "

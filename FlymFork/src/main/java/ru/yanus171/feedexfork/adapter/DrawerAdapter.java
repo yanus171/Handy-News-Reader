@@ -232,8 +232,11 @@ public class DrawerAdapter extends BaseAdapter {
                 }
 
                 Uri iconUri = mFeedsCursor.isNull(POS_ICON_URL) ? Uri.EMPTY : GetImageFileUri(mFeedsCursor.getString(POS_ICON_URL), mFeedsCursor.getString(POS_ICON_URL) );
+                final int dim = UiUtils.dpToPixel(35);
                 Glide.with(parent.getContext())
                     .load(iconUri)
+                    //.override( dim, dim )
+                    //.centerCrop()
                     .placeholder( R.drawable.cup_new_empty )
                     .into(holder.iconView);
 
