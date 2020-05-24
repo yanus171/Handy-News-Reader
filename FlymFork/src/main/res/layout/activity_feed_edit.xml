@@ -91,7 +91,11 @@
                                             android:checkedButton="@+id/rbRss"
                                             android:orientation="vertical">
 
-
+                                            <RadioButton
+                                                android:id="@+id/rbWebPageSearch"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@string/loadTypeWebPageSearch" />
                                             <RadioButton
                                                 android:id="@+id/rbRss"
                                                 android:layout_width="wrap_content"
@@ -110,11 +114,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:text="@string/loadTypeOneWebPage" />
 
-                                            <RadioButton
-                                                android:id="@+id/rbWebPageSearch"
-                                                  android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="@string/loadTypeWebPageSearch" />*h\
+
                                         </RadioGroup>
 
                                     <TextView

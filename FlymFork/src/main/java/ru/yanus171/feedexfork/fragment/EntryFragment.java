@@ -40,6 +40,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -254,7 +255,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mEntryPager = mRootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
-        mEntryPager.setAdapter(mEntryPagerAdapter);
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         //    mEntryPager.setNestedScrollingEnabled( true );
         if (savedInstanceState != null) {
@@ -881,78 +881,84 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return "";
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void setData(final Uri uri) {
-        Timer timer = new Timer( "EntryFr.setData" );
-        Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
-
         mCurrentPagerPos = -1;
-
-        //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
-
         mBaseUri = null;
-        if ( !IsExternalLink( uri ) ) {
-            mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
-            Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
-            try {
-                mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
-            } catch (Exception unused) {
-                mInitialEntryId = -1;
-            }
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Timer timer = new Timer( "EntryFr.setData" );
+                Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
 
 
-            String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
+                //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
 
-            final ContentResolver cr = MainApplication.getContext().getContentResolver();
-            // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-            Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
-
-            if (entriesCursor != null && entriesCursor.getCount() > 0) {
-                synchronized ( this ) {
-                    mEntriesIds = new Entry[entriesCursor.getCount()];
-                }
-                int i = 0;
-                while (entriesCursor.moveToNext()) {
-                    SetEntryID( i, entriesCursor.getLong(0), entriesCursor.getString(1) );
-                    if (GetEntry( i ).mID == mInitialEntryId) {
-                        mCurrentPagerPos = i; // To immediately display the good entry
-                        mLastPagerPos = i;
-                        CancelStarNotification(getCurrentEntryID());
+                if ( !IsExternalLink( uri ) ) {
+                    mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
+                    Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
+                    try {
+                        mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
+                    } catch (Exception unused) {
+                        mInitialEntryId = -1;
                     }
-                    i++;
-                }
 
-                entriesCursor.close();
-            }
-            if ( IsFeedUri( mBaseUri ) ) {
-                Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
-                final String feedId = mBaseUri.getPathSegments().get(1);
-                if (feedId.equals(FetcherService.GetExtrenalLinkFeedID())) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Dog.v("EntryFragment.setData() update time to current");
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            ContentValues values = new ContentValues();
-                            values.put(EntryColumns.DATE, (new Date()).getTime());
-                            cr.update(uri, values, null, null);
+
+                    String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
+
+                    final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
+                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
+
+                    if (entriesCursor != null && entriesCursor.getCount() > 0) {
+                        synchronized ( this ) {
+                            mEntriesIds = new Entry[entriesCursor.getCount()];
                         }
-                    }).start();
+                        int i = 0;
+                        while (entriesCursor.moveToNext()) {
+                            SetEntryID( i, entriesCursor.getLong(0), entriesCursor.getString(1) );
+                            if (GetEntry( i ).mID == mInitialEntryId) {
+                                mCurrentPagerPos = i; // To immediately display the good entry
+                                mLastPagerPos = i;
+                                CancelStarNotification(getCurrentEntryID());
+                            }
+                            i++;
+                        }
+
+                        entriesCursor.close();
+                    }
+                    if ( IsFeedUri( mBaseUri ) ) {
+                        Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
+                        final String feedId = mBaseUri.getPathSegments().get(1);
+                        if (feedId.equals(FetcherService.GetExtrenalLinkFeedID())) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Dog.v("EntryFragment.setData() update time to current");
+                                    ContentValues values = new ContentValues();
+                                    values.put(EntryColumns.DATE, (new Date()).getTime());
+                                    cr.update(uri, values, null, null);
+                                }
+                            }).start();
+                        }
+                        mFilters = new FeedFilters(feedId);
+                    }
+                } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
+                    mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
+                    mCurrentPagerPos = 0;
                 }
-                mFilters = new FeedFilters(feedId);
+                timer.End();
+                return null;
             }
-        } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
-            mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
-            mCurrentPagerPos = 0;
-        }
-
-
-        mEntryPagerAdapter.notifyDataSetChanged();
-        if (mCurrentPagerPos != -1) {
-            mEntryPager.setCurrentItem(mCurrentPagerPos);
-        }
-
-
-        timer.End();
+            @Override
+            protected void onPostExecute(Void result) {
+                mEntryPager.setAdapter(mEntryPagerAdapter);
+                if (mCurrentPagerPos != -1) {
+                    mEntryPager.setCurrentItem(mCurrentPagerPos);
+                }
+            }
+        }.execute();
     }
 
     private boolean IsFeedUri( Uri uri ) {
