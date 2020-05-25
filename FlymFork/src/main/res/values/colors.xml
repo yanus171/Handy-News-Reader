@@ -14,7 +14,7 @@
 
     <color name="dark_theme_color_primary">#175073</color>
     <color name="dark_theme_color_primary_dark">#10364e</color>
-    <color name="dark_theme_color_accent">#808080</color>
+    <color name="dark_theme_color_accent">#349ad0</color>
     <color name="dark_theme_drawer_background">#202020</color>
     <color name="dark_theme_color_unread">#ffffff</color>
     <color name="dark_theme_color_read">#808080</color>
@@ -25,7 +25,7 @@
 
     <color name="black_theme_color_primary">#303030</color>
     <color name="black_theme_color_primary_dark">#000000</color>
-    <color name="black_theme_color_accent">#808080</color>
+    <color name="black_theme_color_accent">#349ad0</color>
     <color name="black_theme_drawer_background">#303030</color>
     <color name="black_theme_color_unread">#ffffff</color>
     <color name="black_theme_color_read">#808080</color>
