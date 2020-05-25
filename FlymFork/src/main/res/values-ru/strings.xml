@@ -78,6 +78,8 @@
     ]]></string>
     <string name="app_name">Удобное чтение новостей</string>
     <string name="about_title_version">версия</string>
+    <string name="about_handy_news_reader">Об Удобном Чтении Новостей</string>
+    <string name="about_handy_news_reader_descr">Лицензия, поддержка, переводы и т.д.</string>
     <string name="welcome_title">Добавить канал?</string>
     <string name="never">никогда</string>
     <string name="last_update">Обновление</string>
@@ -478,7 +480,7 @@
     <string name="menu_copy_feed">Дублировать текущую ленту</string>
     <string name="feed_copied">Лента дублирована</string>
     <string name="menu_show_entry_text">Текст статьи</string>
-    <string name="read_more">Читать далее …</string>
+    <string name="read_more">Подробнее …</string>
     <string name="cant_open_image">Не удается открыть изображение</string>
     <string name="parsing_one_web_page">Разбор страницы</string>
     <string name="end_editing">Завершить редактирование</string>
@@ -510,6 +512,7 @@
     <string name="show_article_category">"Показать категорию статьи"</string>
     <string name="article_text_information">Дополнительная информация о заголовке</string>
     <string name="article_text_progress">Чтение строки прогресса в заголовке</string>
+    <string name="global_removeText_filter_rule_descr">Регулярные выражения (по одному в строке) применяются к любой статье</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
