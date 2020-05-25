@@ -262,8 +262,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             //mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID);
             //mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS);
-            mEntryPager.getAdapter().notifyDataSetChanged();
-            mEntryPager.setCurrentItem(mCurrentPagerPos);
             mLastPagerPos = mCurrentPagerPos;
         }
 
