@@ -20,6 +20,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
+
 /**
  * This class is thread safe.
  *
@@ -52,6 +54,7 @@ public class ArticleTextExtractor {
     public static final String TAG_BUTTON_CLASS = "tag_button";
     public static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
     public static final String TAG_BUTTON_CLASS_CATEGORY = "tag_button_category";
+    public static final String TAG_BUTTON_CLASS_DATE = "tag_button_date";
     public static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
     static final String CLASS_ATTRIBUTE = "class";
     public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
@@ -92,7 +95,7 @@ public class ArticleTextExtractor {
                                         String contentIndicator,
                                         FeedFilters filters,
                                         MobilizeType mobilize,
-                                        ArrayList<String> tagList,
+                                        ArrayList<String> categoryList,
                                         boolean isFindBestElement,
                                         boolean isWithTables) {
         if (doc == null)
@@ -104,14 +107,14 @@ public class ArticleTextExtractor {
         prepareDocument(doc, mobilize);
 
         {
-            tagList.clear();
+            categoryList.clear();
             Element tagsElements = getCategoriesElementFromPref(doc, url);
             if (tagsElements != null)
                 for (Element item : tagsElements.getAllElements())
                     if ( !item.ownText().isEmpty() )
-                        tagList.add(item.ownText());
+                        categoryList.add(item.ownText());
         }
-        Dog.v( "tagList = " + TextUtils.join( " ", tagList ));
+        Dog.v( "tagList = " + TextUtils.join( " ", categoryList ));
 
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
@@ -249,10 +252,14 @@ public class ArticleTextExtractor {
     public static void AddTagButtons(Document doc, String url, Element bestMatchElement) {
         doc.addClass( HANDY_NEWS_READER_ROOT_CLASS );
 
+        String fullTextRootElementFromPrefClassName = getUrlClassNameFromPref( url, CONTENT_TEXT_ROOT_EXTRACT_RULES );
+
         final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
 
         final Element categoriesElement = getCategoriesElementFromPref(doc, url);
         final Elements categoriesAllElements = categoriesElement != null ? categoriesElement.getAllElements() : null;
+
+        final Element dateElement = getDateElementFromPref(doc, url);
 
         final String baseUrl = url;//NetworkUtils.getUrlDomain(url);
         for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
@@ -267,8 +274,11 @@ public class ArticleTextExtractor {
                         continue;
                     final boolean isHidden = removeClassList.contains(className);
                     final boolean isCategory = categoriesAllElements != null && categoriesAllElements.contains( el );
-                    final boolean isTextRoot = el.equals( bestMatchElement ) || el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS );
-                    AddTagButton(el, className, baseUrl, isHidden, isTextRoot, isCategory );
+                    final boolean isDate = dateElement != null && dateElement.equals( el );
+                    final boolean isTextRoot = el.equals( bestMatchElement ) ||
+                        el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS ) ||
+                        el.classNames().contains( fullTextRootElementFromPrefClassName );
+                    AddTagButton( el, className, baseUrl, isHidden, isTextRoot, isCategory, isDate );
                     if ( isHidden && el.parent() != null ) {
                         Element elementS = doc.createElement("s");
                         elementS.addClass( TAG_BUTTON_CLASS_HIDDEN );
@@ -280,7 +290,7 @@ public class ArticleTextExtractor {
     }
 
     private static void AddTagButton(Element el, String className, String baseUrl,
-                                     boolean isHidden, boolean isFullTextRoot, boolean isCategory) {
+                                     boolean isHidden, boolean isFullTextRoot, boolean isCategory, boolean isDate) {
         final String paramValue = isHidden ? "show" : "hide";
         final String methodText = "openTagMenu('" + className + "', '" + baseUrl + "', '" + paramValue + "')";
         //final String fullTextRoot = isFullTextRoot ? " !!! " + MainApplication.getContext().getString( R.string.fullTextRoot ).toUpperCase() + " !!! " : "";
@@ -289,6 +299,8 @@ public class ArticleTextExtractor {
             tagClass = TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
         else if ( isCategory )
             tagClass = TAG_BUTTON_CLASS_CATEGORY;
+        else if ( isDate )
+            tagClass = TAG_BUTTON_CLASS_DATE;
         else if ( isHidden )
             tagClass = TAG_BUTTON_CLASS_HIDDEN;
         else
@@ -299,11 +311,14 @@ public class ArticleTextExtractor {
 
 
     public static Element getFullTextRootElementFromPref(Element doc, final String url ) {
-        return getElementWithClassNameFromPref( doc, url, PrefUtils.getString(PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES, R.string.full_text_root_default),
+        return getElementWithClassNameFromPref( doc, url, PrefUtils.getString(CONTENT_TEXT_ROOT_EXTRACT_RULES, R.string.full_text_root_default),
                                                 HANDY_NEWS_READER_CATEGORY_CLASS);
     }
     private static Element getCategoriesElementFromPref(Element doc, final String url) {
         return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.CATEGORY_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS);
+    }
+    public static Element getDateElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS);
     }
     private static Element getElementWithClassNameFromPref(Element doc, final String url, final String pref, final String className ) {
         Element result = null;
@@ -338,6 +353,27 @@ public class ArticleTextExtractor {
                     }
                     break;
                 }
+            } catch ( Exception e ) {
+                Dog.e( e.getMessage() );
+            }
+
+        }
+        return result;
+    }
+    private static String getUrlClassNameFromPref(final String url, final String prefKey ) {
+        String result = "";
+        final String pref = PrefUtils.getString( prefKey, "" );
+        for( String line: pref.split( "\\n|\\s" ) ) {
+            if ( ( line == null ) || line.isEmpty() )
+                continue;
+            try {
+                String[] list1 = line.split(":");
+                String keyWord = list1[0];
+                String[] list2 = list1[1].split("=");
+                String elementType = list2[0].toLowerCase();
+                String elementValue = list2[1];
+                if (url.contains(keyWord))
+                    return elementValue;
             } catch ( Exception e ) {
                 Dog.e( e.getMessage() );
             }

@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/entry_list_layout_root_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -270,11 +271,13 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:letterSpacing="0.04"
+        android:lineSpacingMultiplier="1.1"
         android:focusable="true"
         android:justificationMode="inter_word"
         android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/dark_theme_color_unread" />
+        android:textColor="@color/dark_theme_color_unread"
+        tools:targetApi="o" />
     <TextView
         android:id="@+id/textSourceReadMore"
         android:layout_width="match_parent"

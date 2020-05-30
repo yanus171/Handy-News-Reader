@@ -20,7 +20,6 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -85,8 +84,6 @@ import androidx.viewpager.widget.ViewPager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -120,7 +117,6 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
@@ -128,6 +124,7 @@ import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
+import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
@@ -1120,25 +1117,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText), true); try {
-                        FetcherService.mobilizeEntry( getCurrentEntryID(),
-                                                      mFilters,
-                                                      mobilize,
-                                                      FetcherService.AutoDownloadEntryImages.Yes,
-                                                      true,
-                                                      true,
-                                                      isForceReload);
+                        FetcherService.mobilizeEntry(getCurrentEntryID(),
+                                                     mFilters,
+                                                     mobilize,
+                                                     FetcherService.AutoDownloadEntryImages.Yes,
+                                                     true,
+                                                     true,
+                                                     isForceReload,
+                                                     true );
                     } finally { FetcherService.Status().End( status ); }
                 }
             }.start();
-
-
-
-            /*activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    refreshSwipeProgress();
-                }
-            });*/
         } else {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -1309,6 +1298,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 dialog.dismiss();
             }
         });
+
+        AddActionButton(parent, R.string.set_date, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDate(GetSelectedUrlPart(groupUrl), className);
+                dialog.dismiss();
+            }
+        });
+
         AddActionButton(parent, R.string.copyClassNameToClipboard, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1348,6 +1346,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
     private void setCategory(String baseUrl, String className) {
         setClassObject(baseUrl, className, CATEGORY_EXTRACT_RULES, "" );
+    }
+    private void setDate(String baseUrl, String className) {
+        setClassObject(baseUrl, className, DATE_EXTRACT_RULES, "" );
     }
     private void setClassObject(String baseUrl, String className, String prefKey, String defaultPrefValue) {
         ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString(prefKey, defaultPrefValue ),

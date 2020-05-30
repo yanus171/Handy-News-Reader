@@ -72,6 +72,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -141,6 +142,7 @@ import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
+import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
@@ -362,7 +364,7 @@ public class FetcherService extends IntentService {
                                  FetcherService.ForceReload.No,
                                  true,
                                  true,
-                                 intent.getBooleanExtra(EXTRA_STAR, false), AutoDownloadEntryImages.Yes);
+                                 intent.getBooleanExtra(EXTRA_STAR, false), AutoDownloadEntryImages.Yes, false);
 
                         downloadAllImages(executor);
                     } finally { executor.shutdown(); }
@@ -647,7 +649,7 @@ public class FetcherService extends IntentService {
                         final String feedID = curEntry.getString( 0 );
                         curEntry.close();
                         FeedFilters filters = new FeedFilters( feedID );
-                        if ( mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false)) {
+                        if ( mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false,  false)) {
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                             result.mResultCount = 1;
@@ -691,7 +693,8 @@ public class FetcherService extends IntentService {
                                         final AutoDownloadEntryImages autoDownloadEntryImages,
                                         final boolean isCorrectTitle,
                                         final boolean isShowError,
-                                        final boolean isForceReload ) {
+                                        final boolean isForceReload,
+                                        boolean isParseDateFromHTML) {
         boolean success = false;
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
@@ -735,6 +738,14 @@ public class FetcherService extends IntentService {
                             title = titleEls.first().text();
                     }
 
+                    String dateText = "";
+                    if ( isParseDateFromHTML ){
+                        Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
+                        if (element != null )
+                            dateText = element.text();
+                    }
+                    Dog.v( "date = " + dateText );
+
                     ArrayList<String> categoryList = new ArrayList<>();
                     mobilizedHtml = ArticleTextExtractor.extractContent(doc,
                                                                         link,
@@ -752,6 +763,11 @@ public class FetcherService extends IntentService {
                         if ( !categoryList.isEmpty() )
                             values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList ) );
 
+                        {
+                            Date date = parseDate( dateText, 0 );
+                            if ( date != null )
+                                values.put(EntryColumns.DATE, date.getTime());
+                        }
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
                         if ( title != null )
                             values.put(EntryColumns.TITLE, title);
@@ -862,7 +878,8 @@ public class FetcherService extends IntentService {
                                              final boolean isCorrectTitle,
                                              final boolean isShowError,
                                              final boolean isStarred,
-                                             AutoDownloadEntryImages autoDownloadEntryImages) {
+                                             AutoDownloadEntryImages autoDownloadEntryImages,
+                                             boolean isParseDateFromHTML) {
         boolean load;
         Dog.v( "LoadLink " + url );
 
@@ -903,7 +920,7 @@ public class FetcherService extends IntentService {
 
             if ( load && !FetcherService.isCancelRefresh() )
                 mobilizeEntry(Long.parseLong(entryUri.getLastPathSegment()), filters,
-                              ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages,  isCorrectTitle, isShowError, false);
+                              ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, isParseDateFromHTML);
             return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);
@@ -1008,6 +1025,10 @@ public class FetcherService extends IntentService {
         int countOK = 0;
         for ( Future<DownloadResult> item: futures ) {
             try {
+                if ( isCancelRefresh() ) {
+                    item.cancel(false );
+                    continue;
+                }
                 final DownloadResult result = item.get();
                 if (result.mResultCount > 0 ) {
                     countOK += result.mResultCount;// If we are here, everything WAS OK

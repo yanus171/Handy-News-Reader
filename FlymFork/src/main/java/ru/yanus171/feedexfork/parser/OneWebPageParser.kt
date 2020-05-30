@@ -181,7 +181,9 @@ object OneWebPageParser {
                 val listA = list.first().getElementsByTag(tag)
                 if (!listA.isEmpty()) {
                     result = listA.first().attr(attrName)
-                    if (!result.startsWith("http") )
+                    if ( result.startsWith("//") )
+                        result = "http:$result"
+                    else if (!result.startsWith("http")  )
                         result = feedBaseUrl + result
                 }
 

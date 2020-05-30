@@ -140,6 +140,7 @@ public class RssAtomParser extends DefaultHandler {
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd", Locale.US),
+            new SimpleDateFormat("dd.MM.yyyy", Locale.US),
             new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US)
 
     };
@@ -588,7 +589,7 @@ public class RssAtomParser extends DefaultHandler {
         this.mFetchImages = fetchImages;
     }
 
-    static Date parseDate(String dateStr, long now) {
+    public static Date parseDate(String dateStr, long now) {
         Dog.d( "parseDate " + dateStr );
         long dateBorder = 5 * 365 * 24 * 60 * 60 * 1000L; // five years ago
         dateStr = improveDateString(dateStr);

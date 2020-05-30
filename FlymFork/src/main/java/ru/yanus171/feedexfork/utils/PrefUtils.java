@@ -84,6 +84,7 @@ public class PrefUtils {
 
     public static final String CONTENT_TEXT_ROOT_EXTRACT_RULES = "content_extract_rules";
     public static final String CATEGORY_EXTRACT_RULES = "category_extract_rules";
+    public static final String DATE_EXTRACT_RULES = "date_extract_rules";
     public static final String LOAD_COMMENTS = "load_comments";
     public static final String REMEBER_LAST_ENTRY = "remember_last_entry";
     public static final String TAP_ZONES_VISIBLE = "settings_tap_zones_visible";

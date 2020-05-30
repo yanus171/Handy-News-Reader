@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -787,7 +788,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     IconCompat image = null;
                     if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.all_entries);
-                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_pot);
+                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_pot);
                     } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.favorites);
                         image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
@@ -804,8 +805,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                 null, null, null);
                         if (cursor.moveToFirst()) {
                             name = cursor.getString(0);
-                            if (!cursor.isNull(1) && !cursor.isNull(2))
-                                image = IconCompat.createWithBitmap(UiUtils.getFaviconBitmap( cursor.getString( 1 ) ));
+                            if (!cursor.isNull(1) ) {
+                                final Bitmap bitmap = UiUtils.getFaviconBitmap(cursor.getString(1) );
+                                if ( bitmap != null )
+                                    image = IconCompat.createWithBitmap(bitmap);
+                            }
                         }
                         cursor.close();
                     }

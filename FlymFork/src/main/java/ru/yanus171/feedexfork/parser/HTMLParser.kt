@@ -63,9 +63,11 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
+import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
+import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.*
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
@@ -86,6 +88,8 @@ object HTMLParser {
         val maxRecursionCount = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getInt(NEXT_PAGE_MAX_COUNT) else 20
         if (recursionCount > maxRecursionCount)
             return 0
+        val statusText = MainApplication.getContext().getString( R.string.parsing_web_page_links ) + ": " + recursionCount.toString();
+        val status = Status().Start( statusText, false)
         val urlNextPageClassName = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) else ""
         val newEntries: Int
         Status().ChangeProgress("Loading main page")
@@ -112,8 +116,11 @@ object HTMLParser {
         } finally {
             connection?.disconnect()
         }
+        if ( doc == null )
+            return 0;
+
         val filters = FeedFilters(feedID)
-        val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID)).first
+        val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false).first
         val cr = MainApplication.getContext().contentResolver
         run {
             val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
@@ -127,7 +134,8 @@ object HTMLParser {
 
         class Item(var mUrl: String, var mCaption: String)
 
-        val urlNextPage: String
+        val urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl))
+
         val listItem = ArrayList<Item>()
         val categoryList = ArrayList<String>()
         val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, filters,
@@ -153,10 +161,7 @@ object HTMLParser {
                 if (filters.isEntryFiltered(el.text(), "", link, "", null) ) continue
                 listItem.add(Item(link, el.text()))
             }
-            urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl))
         }
-        val statusText = "" //MainApplication.getContext().getString(R.string.loadingLink );
-        val status = Status().Start(statusText, false)
         try {
             val futures = ArrayList<Future<DownloadResult>>()
             for (item: Item in listItem) {
@@ -167,7 +172,7 @@ object HTMLParser {
                     result.mAttemptNumber = 0
                     result.mTaskID = 0L
                     result.mResultCount = 0
-                    val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID))
+                    val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true)
                     val uri = load.first
                     if (load.second) {
                         result.mResultCount = 1
@@ -226,9 +231,9 @@ object HTMLParser {
 			//String link = matcher.group().replace( "<a href=\"", "" );
 			FetcherService.OpenExternalLink( link, intent.getStringExtra( Constants.TITLE_TO_LOAD ), null  );
 		}*/
-        return if ( urlNextPage.isEmpty() )
+        return if ( urlNextPage.isEmpty() || isCancelRefresh() )
             newEntries
         else
-            Parse( executor, feedID, feedUrlparam, jsonOptions, recursionCount + 1 )
+            Parse( executor, feedID, urlNextPage, jsonOptions, recursionCount + 1 )
     }
 }

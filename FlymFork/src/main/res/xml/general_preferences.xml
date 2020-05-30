@@ -677,6 +677,13 @@
                 android:inputType="text|textMultiLine"
                 android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
             <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:key="date_extract_rules"
+                android:inputType="text|textMultiLine"
+                android:defaultValue=""
+                android:dialogTitle="site_url:site_url:class=XXX\n"
+                android:title="@string/settings_date_extract_rules"
+                android:summary="@string/settings_date_extract_rules_description"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
                 android:key="category_extract_rules"
                 android:inputType="text|textMultiLine"
                 android:defaultValue=""
