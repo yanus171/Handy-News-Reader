@@ -187,7 +187,7 @@
     <string name="download_and_save">تحميل وحفظ</string>
     <string name="open_link">فتح الرابط</string>
     <string name="tip_sentence">تلميح: إسحب لليمين للتحديد كمقروء، واسحب لليسار للإضافة إلى المُميّزة</string>
-    <string name="undo">تراجُع</string>
+    <string name="undo">تَراجُعٌ         </string>
     <string name="marked_as_read">تمَّ تحديد الكل كمقروء</string>
     <string name="image_count">عَدَدُ الصّوَرِ</string>
     <!-- WIDGET -->
@@ -268,7 +268,7 @@
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
     <string name="settings_informations_size">حَجْمُ النَّصِّ (الأَرْقامُ)</string>
     <string name="article_text_information_color">لَوْنُ النَّصِّ (الأَرْقامُ) وَخَلْفيَّتُها</string>
-    <string name="article_text_information_color_descr">لَوْنُ السّاعَةِ وَنِسْبَةُ البَطّاريَّةِ وَخَلْفيَّتُهُمَا</string>
+    <string name="article_text_information_color_descr">لَوْنُ أَرْقامِ (السّاعَةِ وَنِسْبَةُ البَطّاريَّةِ) وَخَلْفيَّتُهُمَا</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">إِظْهارُ شَريطِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
