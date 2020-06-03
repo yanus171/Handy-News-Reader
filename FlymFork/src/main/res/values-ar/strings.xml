@@ -77,6 +77,8 @@
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
+    <string name="about_handy_news_reader">حَوْلَ Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ إِلَخْ.</string>
     <string name="welcome_title">مرحباً بك مع Handy News Reader. أتَرغَب بإضافة خلاصة؟</string>
     <string name="never">مُطْلَقًا</string>
     <string name="last_update">تَحْديث</string>
@@ -492,6 +494,7 @@
     <string name="reading_notification_descr">إِشْعارٌ مُسْتَمِرٌّ بِشَريطِ الحالَةِ، لِمَنْعِ النِّظامِ مِنْ قَتْلِ التَّطْبيقِ - لِتَسْرِيعِ تَشْغيلِ التَّطْبيقِ بَعْدَ فَتْرَةِ تَأْخيرٍ طَويلَةٍ</string>
     <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
     <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
+    <string name="article_text_show_battery_description">عَرْضُ النِّسْبَةِ الحاليَّةِ لِلْبَطَّارِيَّةِ، بِالزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
     <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
     <string name="article_text_buttons_layout">تَخْطيطُ الزِرْ</string>
     <string name="article_text_buttons_layout_descr">النَّسَقُ والرُّؤْيَةُ لِلْأَزْرَارِ فِي نِهايَةِ المَقالِ</string>
@@ -507,6 +510,9 @@
     <string name="open_tag_menu_hint">إِخْتِيَارُ جُزْءٍ مِنَ الرّابِطِ، لِإِسْتِخْدَامِهِ كَمِفْتاحٍ لِلْقَاعِدَةِ</string>
     <string name="open_tag_menu_dialog_title">"وَضْعُ قاعِدَةٍ لِلْفِئَةِ "</string>
     <string name="show_article_category">"إِظْهارُ تَصْنيفُ المَقالِ"</string>
+    <string name="article_text_information">السّاعَةُ وَاَلْبَطّاريَّةُ</string>
+    <string name="article_text_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
+    <string name="global_removeText_filter_rule_descr">Regex (تَعْبيرٌ واحِدٌ لِكُلِّ سَطْرٍ) يُطَبَّقُ عَلَى كُلِّ مُحْتَوَى المَقالِ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
