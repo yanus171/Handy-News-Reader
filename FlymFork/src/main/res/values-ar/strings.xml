@@ -264,6 +264,9 @@
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_show_clock">إِظْهارُ السّاعَةِ</string>
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
+    <string name="settings_informations_size">حَجْمُ النَّصِّ (الأَرْقامُ)</string>
+    <string name="article_text_information_color">لَوْنُ النَّصِّ (الأَرْقامُ) وَخَلْفيَّتُها</string>
+    <string name="article_text_information_color_descr">لَوْنُ السّاعَةِ وَنِسْبَةُ البَطّاريَّةِ وَخَلْفيَّتُهُمَا</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
@@ -495,7 +498,15 @@
     <string name="article_reading_notification_hint">لِلْحِفَاظِ عَلَى التَّطْبيقِ فِي الذّاكِرَةِ أَثْناءَ قِراءَةِ مَقالٍ</string>
     <string name="auto_set_as_read">تَحْديدُ المَقالِ تِلْقَائِيًّا كَمَقْروءٍ، عِنْدَمَا يَكونُ عُنْوانُهُ مَرْئِيًّا فِي القائِمَةِ</string>
     <string name="removeText">إِزالَةُ النَّصِّ</string>
+    <string name="set_category">تَحْديدُ كَتَصْنيفٍ</string>
     <string name="menu_more_options">الْمَزِيدُ مِنَ الْخِيَارَاتِ</string>
+    <string name="reset_feed_and_delete_all_articles">حَذْفُ غَيْرُ المُمَيَّزَةِ وَإِعادَةُ التَّبدِئَةِ</string>
+    <string name="filter_apply_to_author">تَطْبيقٌ عَلَى المُؤَلِّفِ</string>
+    <string name="filter_apply_to_category">تَطْبيقٌ عَلَى التَّصْنيفِ</string>
+    <string name="filter_apply_to_url">تَطْبيقٌ عَلَى الرّابِطِ</string>
+    <string name="open_tag_menu_hint">إِخْتِيَارُ جُزْءٍ مِنَ الرّابِطِ، لِإِسْتِخْدَامِهِ كَمِفْتاحٍ لِلْقَاعِدَةِ</string>
+    <string name="open_tag_menu_dialog_title">"وَضْعُ قاعِدَةٍ لِلْفِئَةِ "</string>
+    <string name="show_article_category">"إِظْهارُ تَصْنيفُ المَقالِ"</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
