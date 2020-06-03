@@ -372,7 +372,7 @@
     <string name="keyword">الكلمات الدلالية</string>
     <string name="loadTypeWeb"><b>صَفْحَةُ وِيبْ - رَوابِطُ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
     <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
-    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ </b> <font color="gray"> (DuckDuckGo - بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
+    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ</b> <font color="gray"> (DuckDuckGo - بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
     <string name="loadTypeOneWebPage"><b>صَفْحَةُ وِيبْ - تَقْسيمٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
