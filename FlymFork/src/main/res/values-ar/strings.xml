@@ -128,7 +128,7 @@
     <string name="reject">رفض</string>
     <string name="feed_search">نتائج البحث</string>
     <string name="web_page_search_duckduckgo">نَتائِجُ البَحْثِ</string>
-    <string name="select_file">حدّد ملفاً (من بطاقة SD)</string>
+    <string name="select_file">إِخْتَرْ مَلَفًّا</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
     <string name="question_delete_filter">هل حقاً تريد حدف هذا الفلتر؟</string>
@@ -271,7 +271,7 @@
     <string name="article_text_information_color_descr">لَوْنُ السّاعَةِ وَنِسْبَةُ البَطّاريَّةِ وَخَلْفيَّتُهُمَا</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
+    <string name="article_text_show_progress">إِظْهارُ شَريطِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
     <string name="article_text_show_progress_descr">يَعْرِضُ نِسْبَةَ التَّقَدُّمِ اَلْمُحْرَزِ بِقِراءَةِ المَقالِ فِي الأَعْلَى</string>
     <string name="article_text_progress_height">سُمْكُ الشَّريطِ</string>
     <string name="article_text_progress_color">لَوْنُ الشَّريطِ</string>
@@ -330,7 +330,7 @@
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
     <string name="settings_content_extract_rules">قواعد إستخراج المحتوى</string>
-    <string name="settings_content_extract_rules_description">تعيين لكل موقع (يلزم معرفة HTML الأساسية)</string>
+    <string name="settings_content_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
     <string name="settings_category_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
@@ -421,7 +421,7 @@
     <string name="custom_data_folder">مسار الملفات الخارجية المخصصة</string>
     <string name="custom_data_folder_descr">(إستخدام مسار إفتراضي فارغ) لمجلد feedex، الذي يُخَزِّن الصور التي تم تنزيلها والنسخ الاحتياطية</string>
     <string name="entry_text_title_link">الرابط في عنوان المقال</string>
-    <string name="entry_text_title_link_description">يُتيحُ لكَ فتح صفحة المقال في المتصفح عندَ النقرِ على عنوان المقال</string>
+    <string name="entry_text_title_link_description">يَسْمَحُ لَكَ بِالنَّقْرِ عَلَى عُنْوانِ المَقالِ؛ لِلْفَتْحِ بِمُتَصَفِّحِ الوِيبْ - أَوْ القِراءَةُ لَاحِقًا بِمَقالاتِ الوِيبْ</string>
     <string name="delete_read_articles">حَذف المَقالات المَقروءة</string>
     <string name="delete_read_articles_descr">بِغَض النَظَر عَن فَترَة الإحتِفاظ بالمَقال</string>
     <string name="data_folder">مُجَلّد البَيانات</string>
