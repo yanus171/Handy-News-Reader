@@ -331,6 +331,8 @@
     <string name="setupConnection">Ρύθμιση σύνδεσης</string>
     <string name="settings_content_extract_rules">Εξαγωγή κανόνων περιεχομένου</string>
     <string name="settings_content_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
+    <string name="settings_category_extract_rules">Κατηγορίες κανόνων εξαγωγής</string>
+    <string name="settings_category_extract_rules_description">Ορισμός για κάθε ιστοσελίδα (απαιτούνται βασικές γνώσεις HTML)</string>
     <string name="settings_tap_zones_dialogtitle">μόνο για ενημέρωσή σας, δεν γίνονται αλλαγές</string>
     <string name="downloadNext">"Λήψη κειμένου "</string>
     <string name="downloadAll">", Όλα"</string>
@@ -492,12 +494,17 @@
     <string name="reading_notification_descr">Μόνιμη ειδοποίηση στη γραμμή κατάστασης για να μη κλείσει η εφαρμογή από το σύστημα - θα φορτώσει πιο γρήγορα μετά από πολλή ώρα</string>
     <string name="feed_list_loading">Η λίστα ροών φορτώθηκε</string>
     <string name="article_text_show_battery">Εμφάνιση επιπέδου μπαταρίας</string>
+    <string name="article_text_show_battery_description">Απεικονίζει το επίπεδο μπαταρίας άνω αριστερά όταν είναι η πλήρης οθόνη ενεργή</string>
     <string name="settings_category_header_descr">Για το κείμενο του άρθρου και τη λίστα των άρθρων</string>
     <string name="article_text_buttons_layout">Διάταξη πληκτρων</string>
     <string name="article_text_buttons_layout_descr">Προσανατολισμός και εμφάνιση των κουμπιών στο τέλος του άρθρου</string>
     <string name="article_reading_notification_hint">Διατήρηση της εφαρμογής στη μνήμη ενώ διαβάζετε ένα άρθρο</string>
     <string name="auto_set_as_read">Αυτόματος ορισμός του άρθρου ως διαβασμένο όταν ο τίτλος του είναι στην ορατή λίστα</string>
     <string name="removeText">Κατάργηση κειμένου</string>
+    <string name="set_category">Ορισμός ως κατηγορία</string>
+    <string name="menu_more_options">Περισσότερες επιλογές</string>
+    <string name="reset_feed_and_delete_all_articles">Επαναφορά ροών και διαγραφή όλων των άρθρων χωρίς αστέρι</string>
+    <string name="filter_apply_to_author">Εφαρμογή ανά συγγραφέα</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
