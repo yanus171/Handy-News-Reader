@@ -67,7 +67,6 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
-import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.*
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
@@ -119,9 +118,12 @@ object HTMLParser {
         if ( doc == null )
             return 0;
 
+        val cr = MainApplication.getContext().contentResolver
+        val entryUri = GetEnryUri( feedUrl)
+        if ( entryUri != null )
+            cr.delete( entryUri, null, null );
         val filters = FeedFilters(feedID)
         val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false).first
-        val cr = MainApplication.getContext().contentResolver
         run {
             val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
             if (cursor.moveToFirst()) {

@@ -255,7 +255,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 public boolean onTouch(View v, MotionEvent event) {
                     final int minX = 40;
                     final int minY = 20;
-                    final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel( 10 );
+                    final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel( 5 );
                     final ViewHolder holder = (ViewHolder) ( (ViewGroup)v.getParent().getParent() ).getTag(R.id.holder);
                     if ( event.getAction() == MotionEvent.ACTION_DOWN) {
                         Dog.v( "onTouch ACTION_DOWN" );
@@ -310,7 +310,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if ( event.getAction() == MotionEvent.ACTION_UP ) {
                             Dog.v("onTouch ACTION_UP" );
-                            if (!mShowEntryText && !holder.isTextShown() &&
+                            if (!mShowEntryText &&
                                 mEntryActivityStartingStatus == 0 &&
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
@@ -658,6 +658,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void OpenArticle(Context context, long entryID) {
+        EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
+        PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
     }
 

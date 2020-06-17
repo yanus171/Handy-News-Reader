@@ -130,18 +130,20 @@ public class RssAtomParser extends DefaultHandler {
             {"ICT", "+0700"}};
 
     private static final DateFormat[] DATE_FORMATS = {
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'Z", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'z", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd", Locale.US),
-            new SimpleDateFormat("dd.MM.yyyy", Locale.US),
-            new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US)
+        new SimpleDateFormat("HH:mm' 'dd.MM.yyyy", Locale.US),
+        new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
+        new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
+        new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
+        new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'z", Locale.US),
+        new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd", Locale.US),
+        new SimpleDateFormat("dd.MM.yyyy", Locale.US),
+        new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US),
+        new SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
 
     };
     private static final String TAG_CATEGORY = "category";
@@ -610,10 +612,10 @@ public class RssAtomParser extends DefaultHandler {
 
     static String improveDateString(String dateStr) {
         // We remove the first part if necessary (the day display)
-        int coma = dateStr.indexOf(", ");
-        if (coma != -1) {
-            dateStr = dateStr.substring(coma + 2);
-        }
+//        int coma = dateStr.indexOf(", ");
+//        if (coma != -1) {
+//            dateStr = dateStr.substring(coma + 2);
+//        }
 
         dateStr = dateStr.replaceAll("([0-9])T([0-9])", "$1 $2")
                 .replaceAll("Z$", "")

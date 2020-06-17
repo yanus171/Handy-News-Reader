@@ -64,6 +64,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.Xml;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -1096,6 +1097,16 @@ public class FetcherService extends IntentService {
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
         if ( isCancelRefresh() )
             return;
+        {
+            //int status = Status().Start(MainApplication.getContext().getString(R.string.clearingWebViewChache), false);
+            UiUtils.RunOnGuiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new WebView(MainApplication.getContext()).clearCache(true );
+                }
+            });
+            //Status().End( status );
+        }
         int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries), false);
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
@@ -1209,7 +1220,7 @@ public class FetcherService extends IntentService {
                     else if ( isOneWebPage )
                         newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages, 0 );
                     else
-                        newCount = HTMLParser.Parse(executor, feedID, feedUrl, jsonOptions, 1);
+                        newCount = HTMLParser.Parse(executor, feedID, feedUrl, jsonOptions, 0);
                 } finally {
                     Status().End(status);
                 }

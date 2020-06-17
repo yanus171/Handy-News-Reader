@@ -533,6 +533,7 @@
     <string name="global_date_class_list">Date class list</string>
     <string name="settings_date_extract_rules">Date extract rules</string>
     <string name="set_date">Set as date</string>
+    <string name="clearingWebViewChache">Clearing webview cache</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
