@@ -730,7 +730,21 @@ public class FetcherService extends IntentService {
                     if (FetcherService.isCancelRefresh())
                         return false;
                     Document doc = Jsoup.parse(connection.getInputStream(), null, "");
-
+                    {
+                        Elements els = doc.getElementsByTag("meta");
+                        if (!els.isEmpty()) {
+                            Element el = els.first();
+                            if (el.hasAttr("content") &&
+                                el.hasAttr("http-equiv") &&
+                                el.attr("http-equiv").equals("refresh")) {
+                                String s = els.first().attr("content");
+                                final String url = s.replaceFirst("\\d+;URL=", "");
+                                connection.disconnect();
+                                connection = new Connection(url);
+                                doc = Jsoup.parse(connection.getInputStream(), null, "");
+                            }
+                        }
+                    }
                     String title = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.TITLE));
                     //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
                     if ( isCorrectTitle ) {
