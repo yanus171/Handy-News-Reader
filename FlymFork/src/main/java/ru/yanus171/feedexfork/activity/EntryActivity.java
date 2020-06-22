@@ -19,7 +19,6 @@
 
 package ru.yanus171.feedexfork.activity;
 
-import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -28,17 +27,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
-
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.regex.Matcher;
@@ -46,14 +42,15 @@ import java.util.regex.Matcher;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.ReadingService;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.service.ReadingService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -63,7 +60,7 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
-import static ru.yanus171.feedexfork.service.FetcherService.GetEnryUri;
+import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
@@ -164,7 +161,7 @@ public class EntryActivity extends BaseActivity implements Observer {
             @Override
             public void run() {
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
-                Uri entryUri = GetEnryUri(url);
+                Uri entryUri = GetEntryUri(url);
                 if (entryUri == null) {
                     final String feedID = GetExtrenalLinkFeedID();
                     Timer timer = new Timer("LoadAndOpenLink insert");
@@ -178,6 +175,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                     FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
                     entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
                     SetEntryID(entryUri, url);
+                    EntryUrlVoc.INSTANCE.set( url, entryUri );
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();

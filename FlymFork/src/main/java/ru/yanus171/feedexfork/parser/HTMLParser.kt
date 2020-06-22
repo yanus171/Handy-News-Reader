@@ -70,6 +70,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
 import ru.yanus171.feedexfork.service.FetcherService.*
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
+import ru.yanus171.feedexfork.utils.EntryUrlVoc.remove
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -119,9 +120,11 @@ object HTMLParser {
             return 0;
 
         val cr = MainApplication.getContext().contentResolver
-        val entryUri = GetEnryUri( feedUrl)
-        if ( entryUri != null )
-            cr.delete( entryUri, null, null );
+        val entryUri = GetEntryUri( feedUrl )
+        if ( entryUri != null ) {
+            cr.delete(entryUri, null, null);
+            EntryUrlVoc.remove( feedUrl )
+        }
         val filters = FeedFilters(feedID)
         val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false).first
         run {
@@ -200,6 +203,7 @@ object HTMLParser {
                             if ( filters.isEntryFiltered(title, author, item.mUrl, "", categoryList ) ) {
                                 FileUtils.deleteMobilizedFile( item.mUrl );
                                 cr.delete( uri, null, null );
+                                remove( item.mUrl );
                             }
                             cursor.close()
                         }

@@ -14,11 +14,8 @@ import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME
 import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
 import ru.yanus171.feedexfork.service.MarkItem
-import ru.yanus171.feedexfork.utils.ArticleTextExtractor
+import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHiddenElements
-import ru.yanus171.feedexfork.utils.Connection
-import ru.yanus171.feedexfork.utils.HtmlUtils
-import ru.yanus171.feedexfork.utils.NetworkUtils
 import java.net.URL
 import java.util.*
 
@@ -127,6 +124,7 @@ object OneWebPageParser {
                             entryID = cr.insert(feedEntriesUri, values ).lastPathSegment.toLong()
                             newCount++
                         }
+                        EntryUrlVoc.set( entryUrl, entryID )
                         val imagesToDl = ArrayList<String>()
                         if ( mainImageUrl.isNotEmpty() )
                             imagesToDl.add( mainImageUrl )

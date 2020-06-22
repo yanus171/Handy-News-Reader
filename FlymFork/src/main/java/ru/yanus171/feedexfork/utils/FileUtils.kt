@@ -41,6 +41,7 @@ object FileUtils {
 
     private var mGetImagesFolder: File? = null
 
+
     @Throws(IOException::class)
     fun copy(src: File, dst: File) {
         val inStream = FileInputStream(src)
@@ -247,5 +248,6 @@ object FileUtils {
         return list
     }
     public const val EMPTY_MOBILIZED_VALUE = "EMPTY_MOB"
+
 
 }

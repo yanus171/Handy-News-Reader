@@ -275,7 +275,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             public void run() {
                                 if (isPress) {
                                     //wasMove = true;
-                                    EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID);
+                                    EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
                                 }
                             }
                         }, ViewConfiguration.getLongPressTimeout());

@@ -46,10 +46,6 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -154,9 +150,10 @@ public class NetworkUtils {
                         fileOutput.close();
                     }
 
-                    if ( !abort )
+                    if ( !abort ) {
                         new File(tempImgPath).renameTo(new File(finalImgPath));
-                    else
+                        ImageFileVoc.INSTANCE.addImageFile(finalImgPath );
+                    } else
                         new File(tempImgPath).delete();
                 }
             } catch (IOException e) {
@@ -273,7 +270,7 @@ public class NetworkUtils {
         final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
         Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {
-            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && GetImageFile( imageUrl, imageUrl ).exists() ) )
+            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && ImageFileVoc.INSTANCE.isExists(GetImageFile(imageUrl, imageUrl ).getPath() ) ) )
                 return;
         } finally {
             cursor.close();

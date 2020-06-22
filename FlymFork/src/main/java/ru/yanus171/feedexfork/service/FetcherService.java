@@ -123,8 +123,10 @@ import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.ImageFileVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -403,7 +405,7 @@ public class FetcherService extends IntentService {
                                         Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
                             } else if (mMarkAsStarredFoundList.size() > 0)
                                 for (MarkItem item : mMarkAsStarredFoundList) {
-                                    Uri entryUri = getEntryUri(item.mLink, item.mFeedID);
+                                    Uri entryUri = GetEntryUri(item.mLink);
 
                                     int ID = -1;
                                     try {
@@ -449,6 +451,7 @@ public class FetcherService extends IntentService {
         cursor.close();
         deleteGhostHtmlFiles( mapEntryLinkHash );
         deleteGhostImages( mapEntryLinkHash );
+        EntryUrlVoc.INSTANCE.reinit();
         Status().End( status );
     }
 
@@ -506,7 +509,7 @@ public class FetcherService extends IntentService {
                 if ( deletedCount < FIRST_COUNT_TO_DELETE && !setEntryLinkHashFavorities.contains(linkHash) ||
                      list.length != 3 ||
                      list.length >= 2 && !setEntryLinkHash.contains(linkHash) ){
-                    if (new File(folder, fileName).delete())
+                    if (ImageFileVoc.INSTANCE.removeImageFile(fileName))
                         deletedCount++;
                     Status().ChangeProgress(getString(R.string.deleteImages) + String.format(" %d", deletedCount));
                     if (FetcherService.isCancelRefresh())
@@ -865,25 +868,28 @@ public class FetcherService extends IntentService {
 //        MainApplication.getContext().startActivity( intent );
 //    }
 
-    public static Uri GetEnryUri( final String url ) {
-        Timer timer = new Timer( "GetEnryUri" );
-        Uri entryUri = null;
-        String url1 = url.replace("https:", "http:");
-        String url2 = url.replace("http:", "https:");
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
-        Cursor cursor = cr.query(EntryColumns.CONTENT_URI,
-                new String[]{_ID, EntryColumns.FEED_ID},
-                LINK + "='" + url1 + "'" + DB_OR + LINK + "='" + url2 + "'",
-                null,
-                null);
-        try {
-            if (cursor.moveToFirst())
-                entryUri = Uri.withAppendedPath( EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( cursor.getString(1) ), cursor.getString(0) );
-        } finally {
-            cursor.close();
-        }
-        timer.End();
-        return entryUri;
+    public static Uri GetEntryUri( final String url ) {
+        Long id = EntryUrlVoc.INSTANCE.get( url );
+        return id == null ? null : EntryColumns.CONTENT_URI(id);
+
+//        Timer timer = new Timer( "GetEnryUri" );
+//        Uri entryUri = null;
+//        String url1 = url.replace("https:", "http:");
+//        String url2 = url.replace("http:", "https:");
+//        ContentResolver cr = MainApplication.getContext().getContentResolver();
+//        Cursor cursor = cr.query(EntryColumns.CONTENT_URI,
+//                new String[]{_ID, EntryColumns.FEED_ID},
+//                LINK + "='" + url1 + "'" + DB_OR + LINK + "='" + url2 + "'",
+//                null,
+//                null);
+//        try {
+//            if (cursor.moveToFirst())
+//                entryUri = Uri.withAppendedPath( EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( cursor.getString(1) ), cursor.getString(0) );
+//        } finally {
+//            cursor.close();
+//        }
+//        timer.End();
+//        return entryUri;
     }
     public static Pair<Uri,Boolean> LoadLink(final String feedID,
                                              final String url,
@@ -900,7 +906,7 @@ public class FetcherService extends IntentService {
 
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
         final int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
-            Uri entryUri = GetEnryUri( url );
+            Uri entryUri = GetEntryUri( url );
             if ( entryUri != null ) {
                 load = (forceReload == ForceReload.Yes);
                 if (load) {
@@ -927,6 +933,7 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.MOBILIZED_HTML, enclosureString);
                 //values.put(EntryColumns.ENCLOSURE, enclosureString);
                 entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
+                EntryUrlVoc.INSTANCE.set( url, entryUri );
                 load = true;
             }
 
@@ -1033,11 +1040,12 @@ public class FetcherService extends IntentService {
             downloadAllImages( executor );
         }
     }
-    public static int FinishExecutionService(String statusText,
+    public static int FinishExecutionService( String statusText,
                                               int status,
                                               ArrayList<ContentProviderOperation> operations,
                                               ArrayList<Future<DownloadResult>> futures) {
         int countOK = 0;
+        Status().Change(status, statusText + String.format(" %d/%d", 0, futures.size()));
         for ( Future<DownloadResult> item: futures ) {
             try {
                 if ( isCancelRefresh() ) {
@@ -1151,6 +1159,7 @@ public class FetcherService extends IntentService {
                     cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
                 }
             }
+            EntryUrlVoc.INSTANCE.reinit();
         } finally {
             Status().ChangeProgress( "" );
             Status().End(status);
@@ -1289,19 +1298,20 @@ public class FetcherService extends IntentService {
 
     }
 
-    private Uri getEntryUri(String entryLink, String feedID) {
-        Uri entryUri = null;
-        Cursor cursor = MainApplication.getContext().getContentResolver().query(
-                EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID),
-                new String[]{_ID},
-                LINK + "='" + entryLink + "'",
-                null,
-                null);
-        if (cursor.moveToFirst())
-            entryUri = EntryColumns.CONTENT_URI(cursor.getLong(0));
-        cursor.close();
-        return entryUri;
-    }
+    //private Uri getEntryUri(String entryLink) {
+    //    return EntryColumns.CONTENT_URI(EntryUrlVoc.INSTANCE.get( entryLink ));
+//        Uri entryUri = null;
+//        Cursor cursor = MainApplication.getContext().getContentResolver().query(
+//                EntryColumns.CONTENT_URI, //ENTRIES_FOR_FEED_CONTENT_URI(feedID),
+//                new String[]{_ID},
+//                LINK + "='" + entryLink + "'",
+//                null,
+//                null);
+//        if (cursor.moveToFirst())
+//            entryUri = EntryColumns.CONTENT_URI(cursor.getLong(0));
+//        cursor.close();
+//        return entryUri;
+    //}
 
 
     private static String ToString (InputStream inputStream, Xml.Encoding encoding ) throws
@@ -1546,11 +1556,12 @@ public class FetcherService extends IntentService {
 
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
                 final String feedID = entriesUri.getPathSegments().get( 1 );
-                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns.LINK}, WHERE_NOT_FAVORITE, null, null );
+                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, WHERE_NOT_FAVORITE, null, null );
                 if ( cursor != null  ){
                     while ( cursor.moveToNext() ) {
                         Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
-                        FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(0));
+                        FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(1));
+                        EntryUrlVoc.INSTANCE.remove(  cursor.getString(1) );
                     }
                     cursor.close();
                 }
@@ -1563,6 +1574,7 @@ public class FetcherService extends IntentService {
                     values.putNull(FeedColumns.REAL_LAST_UPDATE);
                     cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
                 }
+                EntryUrlVoc.INSTANCE.reinit();
             } finally {
                 Status().End(status);
             }

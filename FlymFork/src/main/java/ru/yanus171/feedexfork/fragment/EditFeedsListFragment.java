@@ -91,6 +91,7 @@ import ru.yanus171.feedexfork.adapter.FeedsCursorAdapter;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -168,6 +169,7 @@ public class EditFeedsListFragment extends ListFragment {
                             public void run() {
                                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                                 cr.delete(feedUri, null, null);
+                                EntryUrlVoc.INSTANCE.reinit();
                             }
                         }.start();
                         if ( activity instanceof EditFeedActivity )

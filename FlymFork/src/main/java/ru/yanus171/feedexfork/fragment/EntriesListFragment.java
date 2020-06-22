@@ -89,6 +89,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -540,7 +541,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     }
 
-    public static void ShowDeleteDialog(Context context, final String title, final long id) {
+    public static void ShowDeleteDialog(Context context, final String title, final long id, final String entryLink) {
         AlertDialog dialog = new AlertDialog.Builder(context) //
                 .setIcon(android.R.drawable.ic_dialog_alert) //
                 .setTitle( R.string.question_delete_entry ) //
@@ -553,6 +554,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                             public void run() {
                                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                                 cr.delete(EntryColumns.CONTENT_URI(id), null, null);
+                                EntryUrlVoc.INSTANCE.remove( entryLink );
                             }
                         }.start();
                     }

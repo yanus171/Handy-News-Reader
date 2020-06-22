@@ -24,7 +24,7 @@
         android:theme="@style/Theme.Dark"
         android:usesCleartextTraffic="true">
         <service
-            android:name=".ReadingService"
+            android:name=".service.ReadingService"
             android:enabled="true"
             android:exported="false"></service>
         <!-- <service -->

@@ -31,6 +31,8 @@ import java.lang.reflect.Method;
 
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.ImageFileVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.DebugApp;
 
@@ -86,6 +88,8 @@ public class MainApplication extends Application {
             }
         }
 
+        ImageFileVoc.INSTANCE.init1();
+        EntryUrlVoc.INSTANCE.init1();
     }
 
 

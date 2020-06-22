@@ -1218,7 +1218,7 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                     final String icon = fieldList[3];
                     final String action = fieldList.length > 4 ? fieldList[4] : "";
                     String read = "";
-                    if ( !url.startsWith( IS_READ_STUMB ) && FetcherService.GetEnryUri(url ) != null )
+                    if ( !url.startsWith( IS_READ_STUMB ) && FetcherService.GetEntryUri(url ) != null )
                         read = IS_READ_STUMB;
                     map.put(ITEM_TITLE, read + title);
                     map.put(ITEM_URL, read + url);
@@ -1276,7 +1276,7 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                          String descr,
                          String iconUrl) {
         HashMap<String, String> map = new HashMap<>();
-        final String read = ( FetcherService.GetEnryUri(url ) != null ? IS_READ_STUMB : "" );
+        final String read = ( FetcherService.GetEntryUri(url ) != null ? IS_READ_STUMB : "" );
         map.put(ITEM_TITLE, read + title );
         map.put(ITEM_URL, read + url);
         map.put(ITEM_DESC, read + descr);
