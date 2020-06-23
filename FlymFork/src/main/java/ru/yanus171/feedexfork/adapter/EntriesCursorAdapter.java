@@ -221,7 +221,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.readMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    OpenArticle(view.getContext(), holder.entryID);
+                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown());
                 }
             });
 
@@ -318,7 +318,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 ( IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v) ) &&
                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
-                                OpenArticle(v.getContext(), holder.entryID);
+                                OpenArticle(v.getContext(), holder.entryID, holder.isTextShown());
                             } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
                                 toggleReadState(holder, view);
                             else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
@@ -657,9 +657,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
     }
 
-    private void OpenArticle(Context context, long entryID) {
-        EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
-        PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
+    private void OpenArticle(Context context, long entryID, boolean isExpanded) {
+        if( isExpanded ) {
+            EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
+            PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
+        }
         context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
     }
 
