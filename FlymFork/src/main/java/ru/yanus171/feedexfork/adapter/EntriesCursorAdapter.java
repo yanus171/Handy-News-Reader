@@ -671,8 +671,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         //holder.textTextView.setText( s.length() > MAX_TEXT_LEN ? s.substring( 0, MAX_TEXT_LEN ) + " ..." : s );
         //Linkify.addLinks(holder.textTextView, Linkify.ALL);
         //holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
-        holder.readMore.setText( isReadMore ? R.string.read_more : R.string.open_article );
-        holder.readMore.setVisibility( View.VISIBLE );
+        //holder.readMore.setText( isReadMore ? R.string.read_more : R.string.open_article );
+        holder.readMore.setText( R.string.read_more );
+        holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
     }
 
     private static void SetContentImage(Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {

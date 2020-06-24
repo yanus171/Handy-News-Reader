@@ -37,6 +37,16 @@
         android:paddingStart="2dp"
         android:paddingEnd="2dp" />
     <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="21 su"
+        android:textSize="8dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp" />
+    <TextView
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

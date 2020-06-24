@@ -132,6 +132,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private ProgressBar mProgressBar = null;
     private TextView mLabelClock = null;
     private TextView mLabelBattery = null;
+    private TextView mLabelDate = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
@@ -477,6 +478,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mLabelClock.setText("");
         mLabelBattery = rootView.findViewById(R.id.textBattery);
         mLabelBattery.setText("");
+        mLabelDate = rootView.findViewById(R.id.textDate);
+        mLabelDate.setText("");
 
         timer.End();
         return rootView;
@@ -493,6 +496,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                   mListView.getFirstVisiblePosition(),
                                   mLabelClock,
                                   mLabelBattery,
+                                  mLabelDate,
                                   HomeActivity.GetIsStatusBarEntryListHidden() );
     }
 

@@ -37,7 +37,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -164,8 +166,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public static void UpdateFooter( ProgressBar progressBar, int max, int progress,
-                                     TextView labelClock, TextView labelBattery, boolean isStatusBarHiddent) {
-        if ( progressBar == null || labelClock == null || labelBattery == null )
+                                     TextView labelClock, TextView labelDate, TextView labelBattery, boolean isStatusBarHiddent) {
+        if ( progressBar == null || labelClock == null || labelBattery == null || labelDate == null )
             return;
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
             progressBar.setVisibility( View.VISIBLE );
@@ -198,6 +200,16 @@ public abstract class BaseActivity extends AppCompatActivity {
             labelBattery.setText("");
             labelBattery.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
         }
+
+        if ( PrefUtils.getBoolean( "article_text_footer_show_date", true ) && isStatusBarHiddent ) {
+            labelDate.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
+            labelDate.setText( GetDateText() );
+            labelDate.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
+            labelDate.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
+        } else {
+            labelDate.setText("");
+            labelDate.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
+        }
     }
     private static String GetBatteryText() {
         Intent intent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -209,5 +221,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (plugged != 0)
             statusStr = "~";
         return String.format("%s%d %%", statusStr, percent);
+    }
+    private static String GetDateText() {
+        final Calendar cal = Calendar.getInstance();
+        final String week = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
+        final int day = cal.get(Calendar.DAY_OF_MONTH);
+        return String.format( "%d %s", day, week  );
     }
 }

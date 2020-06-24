@@ -534,6 +534,8 @@
     <string name="settings_date_extract_rules">Date extract rules</string>
     <string name="set_date">Set as date</string>
     <string name="clearingWebViewChache">Clearing webview cache</string>
+    <string name="article_text_show_date">Show date</string>
+    <string name="article_text_show_date_description">The day of month and a weekday</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
