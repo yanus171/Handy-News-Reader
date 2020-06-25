@@ -1230,7 +1230,7 @@ public class FetcherService extends IntentService {
                 JSONObject jsonOptions = new JSONObject();
                 try {
                     jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
-                } catch ( JSONException e) {
+                } catch ( Exception e) {
                     e.printStackTrace();
                 }
                 isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);

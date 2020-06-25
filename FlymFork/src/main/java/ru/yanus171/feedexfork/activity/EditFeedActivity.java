@@ -142,6 +142,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
+import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_MAX_COUNT;
 import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME;
 
@@ -558,10 +559,18 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                             }
 
                     try {
-                        JSONObject jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
-                        if ( jsonOptions.getBoolean( "isRss" ) )
+                        JSONObject jsonOptions = new JSONObject();
+                        try {
+                            jsonOptions  = new JSONObject( cursor.getString( cursor.getColumnIndex(FeedColumns.OPTIONS) ) );
+                        } catch ( Exception e) {
+                            e.printStackTrace();
+                        }
+                        final boolean isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
+                        final boolean isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+
+                        if ( isRss )
                             mLoadTypeRG.check( R.id.rbRss );
-                        else if ( jsonOptions.has( IS_ONE_WEB_PAGE ) && jsonOptions.getBoolean( IS_ONE_WEB_PAGE ) )
+                        else if ( isOneWebPage )
                             mLoadTypeRG.check( R.id.rbOneWebPage );
                         else
                             mLoadTypeRG.check( R.id.rbWebLinks);
