@@ -720,6 +720,14 @@ public class FeedDataContentProvider extends ContentProvider {
                 priorityCursor.close();
                 break;
             }
+            case URI_FEEDS: {
+                table = FeedColumns.TABLE_NAME;
+
+                delete(TaskColumns.CONTENT_URI, null, null);
+                delete(FilterColumns.CONTENT_URI, null, null);
+                delete(EntryColumns.CONTENT_URI, null, null);
+                break;
+            }
             case URI_FEED: {
                 table = FeedColumns.TABLE_NAME;
 
@@ -739,18 +747,18 @@ public class FeedDataContentProvider extends ContentProvider {
 
                 // Update the priorities
                 Cursor priorityCursor = database.query(FeedColumns.TABLE_NAME, new String[]{FeedColumns.PRIORITY, FeedColumns.GROUP_ID},
-                        _ID + '=' + feedId, null, null, null, null);
+                                                       _ID + '=' + feedId, null, null, null, null);
 
                 if (priorityCursor.moveToNext()) {
                     int priority = priorityCursor.getInt(0);
                     String groupId = priorityCursor.getString(1);
 
                     String groupWhere = '(' + (groupId != null ? FeedColumns.GROUP_ID + '=' + groupId : FeedColumns.IS_GROUP + Constants.DB_IS_TRUE
-                            + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL) + ')';
+                        + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL) + ')';
                     String priorityWhere = FeedColumns.PRIORITY + " > " + priority;
 
                     database.execSQL("UPDATE " + FeedColumns.TABLE_NAME + " SET " + FeedColumns.PRIORITY + " = " + FeedColumns.PRIORITY + "-1 WHERE "
-                            + groupWhere + Constants.DB_AND + priorityWhere);
+                                         + groupWhere + Constants.DB_AND + priorityWhere);
                 }
                 priorityCursor.close();
                 break;

@@ -83,6 +83,7 @@ import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
+import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -495,8 +496,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                   mEntriesCursorAdapter.getCount(),
                                   mListView.getFirstVisiblePosition(),
                                   mLabelClock,
-                                  mLabelBattery,
                                   mLabelDate,
+                                  mLabelBattery,
                                   HomeActivity.GetIsStatusBarEntryListHidden() );
     }
 
@@ -780,6 +781,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
                     setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 }
+                return true;
+            }
+            case R.id.menu_create_backup: {
+                OPML.OnMenuExportImportClick( getActivity(), OPML.ExportImport.Backup );
                 return true;
             }
             case R.id.menu_create_auto_backup: {

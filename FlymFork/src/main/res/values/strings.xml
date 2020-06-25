@@ -536,6 +536,13 @@
     <string name="clearingWebViewChache">Clearing webview cache</string>
     <string name="article_text_show_date">Show date</string>
     <string name="article_text_show_date_description">The day of month and a weekday</string>
+    <string name="remove_existing_feeds_question">Remove existing feeds before import?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="remove_existing_feeds_confirmation">This will remove ALL existing articles from ALL feeds (exept read it later), even starred. Are you sure?</string>
+    <string name="yes_I_realize_btn_caption">Yes, I realize !</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh ... I was wrong. Get me out of here quick!</string>
+    <string name="create_backup">Create backup</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

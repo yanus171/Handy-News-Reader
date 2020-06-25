@@ -1070,9 +1070,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       contentHeight - webViewHeight,
                                       entryView.getScrollY(),
                                       mLabelClock,
-                                      mLabelBattery,
                                       mLabelDate,
-                                      GetIsStatusBarHidden());
+                                      mLabelBattery,
+                                      GetIsStatusBarHidden() );
         }
     }
 

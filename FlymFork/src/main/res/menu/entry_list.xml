@@ -64,6 +64,10 @@
                 android:icon="@drawable/ic_file_download"
                 android:title="@string/create_auto_backup"/>
             <item
+                android:id="@+id/menu_create_backup"
+                android:icon="@drawable/ic_file_download"
+                android:title="@string/create_backup"/>
+            <item
                 android:id="@+id/menu_add_feed_shortcut"
                 android:icon="@drawable/ic_home"
                 android:title="@string/menu_add_feed_shortcut"/>

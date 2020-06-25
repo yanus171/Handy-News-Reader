@@ -54,7 +54,6 @@ import com.google.android.material.appbar.AppBarLayout;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.List;
 
 import ru.yanus171.feedexfork.Constants;
@@ -371,6 +370,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onClickEditFeeds(View view) {
         startActivity(new Intent(this, EditFeedsListActivity.class));
     }
+    public void onClickOPMLImport(View view) {
+        OPML.OnMenuExportImportClick(this, OPML.ExportImport.Import );
+    }
 
     public void onClickAdd(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -412,6 +414,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        OPML.OnActivityResult(this, requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -618,13 +621,15 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
-            // If request is cancelled, the result arrays are empty.
-            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                 new File(OPML.GetAutoBackupOPMLFileName()).exists() )
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
-                                                 .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
-        }
+        OPML.OnRequestPermissionResult(this, requestCode, grantResults);
+
+        //        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
+//            // If request is cancelled, the result arrays are empty.
+//            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+//                 new File(OPML.GetAutoBackupOPMLFileName()).exists() )
+//                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
+//                                                 .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
+//        }
     }
 
     @Override

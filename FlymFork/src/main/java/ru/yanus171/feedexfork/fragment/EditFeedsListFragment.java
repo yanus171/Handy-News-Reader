@@ -44,22 +44,14 @@
 
 package ru.yanus171.feedexfork.fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.ListFragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -74,15 +66,13 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.ListFragment;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.AddGoogleNewsActivity;
@@ -90,20 +80,12 @@ import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.adapter.FeedsCursorAdapter;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
-import ru.yanus171.feedexfork.utils.FileUtils;
-import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
 import ru.yanus171.feedexfork.view.DragNDropListener;
 
 public class EditFeedsListFragment extends ListFragment {
 
-    private static final int REQUEST_PICK_OPML_FILE = 1;
-    private static final int PERMISSIONS_REQUEST_IMPORT_FROM_OPML = 1;
-    private static final int PERMISSIONS_REQUEST_EXPORT_TO_OPML = 2;
 
     private final ActionMode.Callback mFeedActionModeCallback = new ActionMode.Callback() {
 
@@ -463,43 +445,12 @@ public class EditFeedsListFragment extends ListFragment {
                         }).setNegativeButton(android.R.string.cancel, null).show();
                 return true;
             }
-            case R.id.menu_export:
+            case R.id.menu_export: {
+                OPML.OnMenuExportImportClick(getActivity(), OPML.ExportImport.ExportToOPML );
+                return true;
+            }
             case R.id.menu_import: {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    // Should we show an explanation?
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(R.string.storage_request_explanation).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (item.getItemId() == R.id.menu_export) {
-                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXPORT_TO_OPML);
-                                } else if (item.getItemId() == R.id.menu_import) {
-                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_IMPORT_FROM_OPML);
-                                }
-                            }
-                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        });
-                        builder.show();
-                    } else {
-                        // No explanation needed, we can request the permission.
-                        if (item.getItemId() == R.id.menu_export) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXPORT_TO_OPML);
-                        } else if (item.getItemId() == R.id.menu_import) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_IMPORT_FROM_OPML);
-                        }
-                    }
-                } else {
-                    if (item.getItemId() == R.id.menu_export) {
-                        exportToOpml();
-                    } else if (item.getItemId() == R.id.menu_import) {
-                        importFromOpml();
-                    }
-                }
-
+                OPML.OnMenuExportImportClick(getActivity(), OPML.ExportImport.Import );
                 return true;
             }
             /*case R.id.menu_fix_order: {
@@ -570,119 +521,20 @@ public class EditFeedsListFragment extends ListFragment {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_EXPORT_TO_OPML: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    exportToOpml();
-                }
-                return;
-            }
-            case PERMISSIONS_REQUEST_IMPORT_FROM_OPML: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    importFromOpml();
-                }
-                return;
-            }
-        }
+        OPML.OnRequestPermissionResult(getActivity(), requestCode, grantResults);
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        if (requestCode == REQUEST_PICK_OPML_FILE) {
-            if (resultCode == Activity.RESULT_OK) {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
-                        .putExtra( Constants.EXTRA_URI, data.getData().toString() ) );
-            } else {
-                displayCustomFilePicker();
-            }
-        }
+        OPML.OnActivityResult(getActivity(), requestCode, resultCode, data);
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void displayCustomFilePicker() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.select_file);
 
-        try {
-            final String[] fileNames = FileUtils.INSTANCE.getFolder().list(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return new File(dir, filename).isFile();
-                }
-            });
-            builder.setItems(fileNames, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, final int which) {
-                    FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).
-                            putExtra( Constants.EXTRA_FILENAME, FileUtils.INSTANCE.getFolder().toString() + File.separator
-                                    + fileNames[which]) );
-                }
-            });
-            builder.show();
-        } catch (Exception unused) {
-            UiUtils.showMessage(getActivity(), R.string.error_feed_import);
-        }
-    }
-
-    private void importFromOpml() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-                || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-
-            if (PrefUtils.getBoolean("use_standard_file_manager", false)) {
-                // First, try to use a file app
-                try {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-
-                    intent.setType("*/*");
-                    startActivityForResult(intent, REQUEST_PICK_OPML_FILE);
-                } catch (Exception unused) { // Else use a custom file selector
-                    unused.printStackTrace();
-                    displayCustomFilePicker();
-                }
-            } else
-                displayCustomFilePicker();
-        } else {
-            UiUtils.showMessage(getActivity(), R.string.error_external_storage_not_available);
-        }
-    }
-
-    private void exportToOpml() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-                || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-
-            new WaitDialog(getActivity(), R.string.exportingToFile, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final String dateTimeStr = new SimpleDateFormat( "yyyyMMdd_HHmmss" ).format( new Date( System.currentTimeMillis() ) );
-                        final String filename =  FileUtils.INSTANCE.getFolder() +  "/HandyNewsReader_" + dateTimeStr + ".opml";
-
-                        OPML.exportToFile(filename);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                UiUtils.showMessage(getActivity(), String.format(getString(R.string.message_exported_to), filename));
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                UiUtils.showMessage(getActivity(), R.string.error_feed_export);
-                            }
-                        });
-                    }
-                }
-            }).execute();
-        } else {
-            UiUtils.showMessage(getActivity(), R.string.error_external_storage_not_available);
-        }
-    }
 }

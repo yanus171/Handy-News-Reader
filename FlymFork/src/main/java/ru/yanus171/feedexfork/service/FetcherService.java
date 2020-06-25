@@ -145,6 +145,7 @@ import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
+import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
@@ -274,7 +275,7 @@ public class FetcherService extends IntentService {
                 public void run() {
                 try {
                     final String sourceFileName = OPML.GetAutoBackupOPMLFileName();
-                    OPML.exportToFile( sourceFileName );
+                    OPML.exportToFile( sourceFileName, true );
                     //final ArrayList<String> resultList = new ArrayList<>();
                     //resultList.add( sourceFileName );
                     for (StorageItem destDir: FileUtils.INSTANCE.createStorageList() ) {
@@ -310,10 +311,11 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     try {
+                        final boolean isRemoveExistingFeeds = intent.getBooleanExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, false );
                         if ( intent.hasExtra( EXTRA_FILENAME ) )
-                            OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ) );
+                            OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ), isRemoveExistingFeeds );
                         else if ( intent.hasExtra( EXTRA_URI ) )
-                            OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ) );
+                            OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ), isRemoveExistingFeeds );
                     } catch (Exception e) {
                         DebugApp.SendException(e, FetcherService.this);
                     }

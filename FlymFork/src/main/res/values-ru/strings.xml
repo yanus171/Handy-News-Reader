@@ -129,7 +129,7 @@
     <string name="reject">Не загружать</string>
     <string name="feed_search">Поиск лент</string>
     <string name="web_page_search_duckduckgo">Веб поиск статьи (Duck Duck Go)</string>
-    <string name="select_file">Выбрать файл (корень SD-карты)</string>
+    <string name="select_file">Выбрать файл из директории: </string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
     <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее ленты?</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
