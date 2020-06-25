@@ -92,6 +92,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
@@ -402,6 +403,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
+        mProgressBarRefresh.setBackgroundColor(Theme.GetToolBarColorInt() );
         mListView = rootView.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mListView.setNestedScrollingEnabled(true);

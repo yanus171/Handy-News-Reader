@@ -88,7 +88,7 @@ object HTMLParser {
         val maxRecursionCount = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getInt(NEXT_PAGE_MAX_COUNT) else 20
         if (recursionCount > maxRecursionCount)
             return 0
-        val statusText = MainApplication.getContext().getString( R.string.parsing_web_page_links ) + ": " + recursionCount.toString();
+        val statusText = if (recursionCount > 0) {(MainApplication.getContext().getString( R.string.parsing_web_page_links ) + ": " + recursionCount.toString() ) } else "";
         val status = Status().Start( statusText, false)
         val urlNextPageClassName = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) else ""
         val newEntries: Int

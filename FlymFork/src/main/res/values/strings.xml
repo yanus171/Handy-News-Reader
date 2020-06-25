@@ -498,7 +498,7 @@
     <string name="menu_show_entry_text">Article text</string>
     <string name="read_more">Read more …</string>
     <string name="cant_open_image">Can\'t open image</string>
-    <string name="parsing_one_web_page">Parsing page</string>
+    <string name="parsing_one_web_page">Page</string>
     <string name="end_editing">End editing</string>
     <string name="open_article">Open article</string>
     <string name="search_in_browser">Search in browser</string>
@@ -529,7 +529,7 @@
     <string name="article_text_information">Header additional information</string>
     <string name="article_text_progress">Reading progress bar in header</string>
     <string name="global_removeText_filter_rule_descr">Regex (one per line) applied to any article content</string>
-    <string name="parsing_web_page_links">Parsing WebPage links</string>
+    <string name="parsing_web_page_links">Page</string>
     <string name="global_date_class_list">Date class list</string>
     <string name="settings_date_extract_rules">Date extract rules</string>
     <string name="set_date">Set as date</string>

@@ -1450,14 +1450,14 @@ public class FetcherService extends IntentService {
                         outputStream.write(byteBuffer, 0, n);
                     }
 
-                    String xmlText = outputStream.toString();
+                    String xmlText = outputStream.toString().trim();
 
                     int start = xmlText != null ? xmlText.indexOf(ENCODING) : -1;
 
                     if (start > -1) {
                         parseXml( new StringReader(new String(outputStream.toByteArray(),
                                                    xmlText.substring(start + 10,
-                                                                     xmlText.indexOf('"', start + 11)))),
+                                                                     xmlText.indexOf('"', start + 11))).trim()),
                                   handler );
                     } else {
                         // use content type
@@ -1532,7 +1532,7 @@ public class FetcherService extends IntentService {
         encoding,
                 ContentHandler contentHandler) throws IOException, SAXException {
             Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(ToString(in, encoding), contentHandler);
+            Xml.parse(ToString(in, encoding).trim(), contentHandler);
             Status().ChangeProgress("");
             Status().AddBytes(contentHandler.toString().length());
         }

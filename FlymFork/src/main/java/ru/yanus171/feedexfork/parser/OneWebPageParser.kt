@@ -39,7 +39,7 @@ object OneWebPageParser {
             return 0
         var newCount = 0
         val cr = MainApplication.getContext().contentResolver
-        val status = FetcherService.Status().Start(MainApplication.getContext().getString( R.string.parsing_one_web_page ) + ": " + recursionCount.toString() , false)
+        val status = FetcherService.Status().Start(if (recursionCount > 0) {MainApplication.getContext().getString( R.string.parsing_one_web_page ) + ": " + recursionCount.toString() } else "", false)
         var urlNextPage = ""
         try { /* check and optionally find favicon */
             try {

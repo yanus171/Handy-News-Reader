@@ -43,6 +43,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible">
+            <include layout="@layout/colontitul" />
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBarRefresh"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="true" />
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/coordinator_layout"
@@ -61,14 +69,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-                    <include layout="@layout/colontitul" />
-                    <ProgressBar
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/progressBarRefresh"
-                        android:layout_gravity="center_horizontal"
-                        android:indeterminate="true" />
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">

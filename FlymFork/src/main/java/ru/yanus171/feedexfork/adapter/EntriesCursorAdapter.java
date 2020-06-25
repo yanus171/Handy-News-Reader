@@ -841,7 +841,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     @Override
     public void notifyDataSetChanged() {
         reinit(null);
+        Status().mIsHideByScrollEnabled = false;
         super.notifyDataSetChanged();
+        Status().mIsHideByScrollEnabled = true;
     }
 
     @Override

@@ -163,6 +163,7 @@ public class StatusText implements Observer {
         private String mErrorEntryID;
         ArrayList<Integer> mProgressBarStatusList = new ArrayList<>();
         private boolean mIsProgressTextVisible = false;
+        public volatile boolean mIsHideByScrollEnabled = true;
 
         @Override
         public boolean hasChanged () {
@@ -314,18 +315,19 @@ public class StatusText implements Observer {
             }
         }
         public void HideByScroll() {
-            UiUtils.RunOnGuiThread( new Runnable() {
-                    @Override
-                    public void run() {
-                synchronized (mList) {
-                    if ( mList.isEmpty() ) {
-                        mBytesRecievedLast = 0;
-                        mErrorText = "";
-                        NotifyObservers( "", "", "", "", false, "" );
+            if ( mIsHideByScrollEnabled )
+                UiUtils.RunOnGuiThread( new Runnable() {
+                        @Override
+                        public void run() {
+                    synchronized (mList) {
+                        if ( mList.isEmpty() ) {
+                            mBytesRecievedLast = 0;
+                            mErrorText = "";
+                            NotifyObservers( "", "", "", "", false, "" );
+                        }
                     }
-                }
-                }
-            });
+                    }
+                });
         }
 
         public void ClearProgress() {
