@@ -526,6 +526,14 @@ GENERAL]]></string>
     <string name="set_date">Ustaw jako datę</string>
     <string name="clearingWebViewChache">Czyszczenie pamięci podręcznej WebView</string>
     <string name="article_text_show_date">Pokaż datę</string>
+    <string name="article_text_show_date_description">Dzień miesiąca i tygodnia</string>
+    <string name="remove_existing_feeds_question">Usunąć istniejące kanały przed importem?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="remove_existing_feeds_confirmation">Zostaną usunięte WSZYSTKIE istniejące artykuły z WSZYSTKICH kanałów (poza „Przeczytaj Później”), nawet zagwiazdkowane. Czy na pewno?</string>
+    <string name="yes_I_realize_btn_caption">Tak, zdaję sobie sprawę!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh... to była pomyłka. Wypuść mnie stąd natychmiast!</string>
+    <string name="create_backup">Utwórz kopię zapasową</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
