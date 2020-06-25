@@ -527,7 +527,7 @@
     <string name="remove_existing_feeds_question">Vorhandene Feeds vor dem Importieren entfernen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="remove_existing_feeds_confirmation">Dadurch werden ALLE vorhandenen Artikel aus ALLEN Feeds entfernt (außer wenn sie als „Später gelesen” gekennzeichnet wurden), auch wenn sie mit einem Sternchen versehen sind. Dennoch fortfahren?</string>
+    <string name="remove_existing_feeds_confirmation">Dadurch werden ALLE vorhandenen Artikel, selbst Favoriten, aus ALLEN Feeds entfernt („Später lesen” ausgenommen). Dennoch fortfahren?</string>
     <string name="yes_I_realize_btn_caption">Ja, verstanden!</string>
     <string name="sorry_I_was_wrong_btn_caption">Nein, Feeds und Artikel nicht entfernen!</string>
     <string name="create_backup">Datensicherung erstellen</string>
