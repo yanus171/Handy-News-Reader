@@ -423,7 +423,7 @@
     <string name="auto_refresh_requires_charging">Only while charging</string>
     <string name="global_class_list_to_remove_from_article_text">Remove text rules</string>
     <string name="global_class_list_to_remove_from_article_text_summary">class name per line</string>
-    <string name="global_date_class_list_summary">Class name per line. The elements of these classes are considered as date of article when loading WebPageLinks</string>
+    <string name="global_date_class_list_summary">Class name per line. The elements of these classes are considered as date of article when loading Web Page - Links</string>
     <string name="hide">Hide</string>
     <string name="show">Show</string>
     <string name="setFullTextRoot">Choose as full text root</string>
@@ -533,15 +533,15 @@
     <string name="global_date_class_list">Date class list</string>
     <string name="settings_date_extract_rules">Date extract rules</string>
     <string name="set_date">Set as date</string>
-    <string name="clearingWebViewChache">Clearing webview cache</string>
+    <string name="clearingWebViewChache">Clearing WebView cache</string>
     <string name="article_text_show_date">Show date</string>
     <string name="article_text_show_date_description">The day of month and a weekday</string>
     <string name="remove_existing_feeds_question">Remove existing feeds before import?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="remove_existing_feeds_confirmation">This will remove ALL existing articles from ALL feeds (exept read it later), even starred. Are you sure?</string>
-    <string name="yes_I_realize_btn_caption">Yes, I realize !</string>
-    <string name="sorry_I_was_wrong_btn_caption">Ohh ... I was wrong. Get me out of here quick!</string>
+    <string name="remove_existing_feeds_confirmation">This will remove ALL existing articles from ALL feeds (except “Read It Later”), even starred. Are you sure?</string>
+    <string name="yes_I_realize_btn_caption">Yes, I realize!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh... I was wrong. Get me out of here quick!</string>
     <string name="create_backup">Create backup</string>
 
     <plurals name="number_of_new_entries">
