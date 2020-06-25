@@ -489,7 +489,7 @@ GENERAL]]></string>
     <string name="menu_show_entry_text">Tekst artykułu</string>
     <string name="read_more">Czytaj więcej …</string>
     <string name="cant_open_image">Nie można otworzyć obrazka</string>
-    <string name="parsing_one_web_page">Przetwarzanie strony</string>
+    <string name="parsing_one_web_page">Strona</string>
     <string name="end_editing">Koniec edycji</string>
     <string name="open_article">Otwórz artykuł</string>
     <string name="search_in_browser">Szukaj w przeglądarce</string>
@@ -520,7 +520,7 @@ GENERAL]]></string>
     <string name="article_text_information">Dodatkowe informacje w nagłówku</string>
     <string name="article_text_progress">Pasek postępu lektury w nagłówku</string>
     <string name="global_removeText_filter_rule_descr">Wyrażenie regularne (po jednym w jednej linii) stosowane do treści artykułu</string>
-    <string name="parsing_web_page_links">Analizowanie linków strony internetowej</string>
+    <string name="parsing_web_page_links">Strona</string>
     <string name="global_date_class_list">Lista klas daty</string>
     <string name="settings_date_extract_rules">Zasady pozyskiwania daty</string>
     <string name="set_date">Ustaw jako datę</string>
