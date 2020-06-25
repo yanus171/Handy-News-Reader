@@ -338,6 +338,7 @@ GENERAL]]></string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
     <string name="settings_category_extract_rules">Reguły pozyskiwania kategorii</string>
     <string name="settings_category_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
+    <string name="settings_date_extract_rules_description">Ustaw dla każdej strony (potrzebna podstawowa znajomość HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
     <string name="downloadNext">", Następny "</string>
     <string name="downloadAll">", Wszystko"</string>
@@ -413,6 +414,7 @@ GENERAL]]></string>
     <string name="auto_refresh_requires_charging">Tylko podczas ładowania urządzenia</string>
     <string name="global_class_list_to_remove_from_article_text">Reguły usuwania treści</string>
     <string name="global_class_list_to_remove_from_article_text_summary">każda nazwa klasy w osobnej linii</string>
+    <string name="global_date_class_list_summary">Nazwa klasy na linię. Elementy o tych klasach są uznawane za datę artykułu podczas trybu wczytywania Strona Internetowa - Linki</string>
     <string name="hide">Ukryj</string>
     <string name="show">Pokaż</string>
     <string name="setFullTextRoot">Wybierz źródło pełnego tekstu</string>
@@ -518,6 +520,12 @@ GENERAL]]></string>
     <string name="article_text_information">Dodatkowe informacje w nagłówku</string>
     <string name="article_text_progress">Pasek postępu lektury w nagłówku</string>
     <string name="global_removeText_filter_rule_descr">Wyrażenie regularne (po jednym w jednej linii) stosowane do treści artykułu</string>
+    <string name="parsing_web_page_links">Analizowanie linków strony internetowej</string>
+    <string name="global_date_class_list">Lista klas daty</string>
+    <string name="settings_date_extract_rules">Zasady pozyskiwania daty</string>
+    <string name="set_date">Ustaw jako datę</string>
+    <string name="clearingWebViewChache">Czyszczenie pamięci podręcznej WebView</string>
+    <string name="article_text_show_date">Pokaż datę</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
