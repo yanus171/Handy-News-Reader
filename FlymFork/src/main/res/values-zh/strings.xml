@@ -525,6 +525,10 @@
     <string name="remove_existing_feeds_question">导入前移除现有的源？</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="remove_existing_feeds_confirmation">这将从所有源中删除所有现存文章（“稍后阅读”除外），甚至包括标星文章。 你确定吗？</string>
+    <string name="yes_I_realize_btn_caption">是的，我了解！</string>
+    <string name="sorry_I_was_wrong_btn_caption">哦，我错了。 让我快点离开这里！</string>
+    <string name="create_backup">创建备份</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
