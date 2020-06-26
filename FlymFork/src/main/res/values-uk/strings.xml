@@ -332,6 +332,7 @@
     <string name="settings_content_extract_rules_description">Встановлюються для кожного сайту (необхідні базові знання HTML)</string>
     <string name="settings_category_extract_rules">Правила видобування категорій</string>
     <string name="settings_category_extract_rules_description">Встановлюються для кожного сайту (потрібні базові знання HTML)</string>
+    <string name="settings_date_extract_rules_description">Встановлюються для кожного сайту (необхідні базові знання HTML)</string>
     <string name="settings_tap_zones_dialogtitle">для інформації, зміна неможлива</string>
     <string name="downloadNext">"Завантажити наступні "</string>
     <string name="downloadAll">", Все"</string>
@@ -512,6 +513,14 @@
     <string name="article_text_information">Додаткова інформація в заголовку</string>
     <string name="article_text_progress">Прогрес читання в заголовку</string>
     <string name="global_removeText_filter_rule_descr">Regex (один на рядок) застосовується до любого вмісту статті</string>
+    <string name="parsing_web_page_links">Сторінка</string>
+    <string name="clearingWebViewChache">Очищення кешу WebView</string>
+    <string name="article_text_show_date">Показувати дату</string>
+    <string name="article_text_show_date_description">День місяця і тижня</string>
+    <string name="remove_existing_feeds_question">Видалити існуючі стрічки перед імпортом?</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="create_backup">Створити резервну копію</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
