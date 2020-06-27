@@ -335,7 +335,7 @@
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
     <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
-    <string name="settings_date_extract_rules_description">Für jede Website festgelegt (grundlegende HTML-Kenntnisse erforderlich)</string>
+    <string name="settings_date_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
     <string name="downloadNext">", Nächste "</string>
     <string name="downloadAll">", Alle"</string>
@@ -411,7 +411,7 @@
     <string name="auto_refresh_requires_charging">Nur beim Laden</string>
     <string name="global_class_list_to_remove_from_article_text">Textregeln entfernen</string>
     <string name="global_class_list_to_remove_from_article_text_summary">Klassenname pro Zeile</string>
-    <string name="global_date_class_list_summary">Klassenname pro Zeile. Die Elemente dieser Klassen werden beim Laden von WebPageLinks als Datum des Artikels betrachtet</string>
+    <string name="global_date_class_list_summary">Klassenname pro Zeile. Die Elemente dieser Klassen werden beim Laden von WebPage-Links als Datum des Artikels betrachtet</string>
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
     <string name="setFullTextRoot">Volltext-Stammverzeichnis auswählen</string>
