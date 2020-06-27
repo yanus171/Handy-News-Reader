@@ -28,6 +28,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Build;
 import android.text.Html;
 
@@ -42,6 +43,7 @@ import java.io.InputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -220,15 +222,18 @@ public class NetworkUtils {
 
     public static String getBaseUrl(String link) {
         String baseUrl = link;
-        Pattern p = Pattern.compile("(http?.://[^/]+)");
-        Matcher m = p.matcher(baseUrl);
-        if (m.find())
-            baseUrl = m.group(1);  // The matched substring
-        else {
-            int index = link.lastIndexOf( '/' ); // this also covers https://
-            if (index > -1)
-                baseUrl = link.substring(0, index + 1);
-        }
+//        Pattern p = Pattern.compile("(http?.://[^/]+)");
+//        Matcher m = p.matcher(baseUrl);
+//        if (m.find())
+//            baseUrl = m.group(1);  // The matched substring
+//        else {
+//            if ( link.endsWith( "/" ) )
+//                link = link.substring(0, link.length() - 1 );
+//            int index = link.lastIndexOf('/'); // this also covers https://
+//            if (index > -1) {
+//                baseUrl = link.substring(0, index + 1);
+//            }
+//        }
         return baseUrl;
     }
 
