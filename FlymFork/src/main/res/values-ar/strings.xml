@@ -287,6 +287,7 @@
     <string name="settings_content_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
     <string name="settings_category_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
+    <string name="settings_date_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
     <string name="downloadNext">"، التَّالِي "</string>
     <string name="downloadAll">"، الكُلُّ"</string>
@@ -362,6 +363,7 @@
     <string name="auto_refresh_requires_charging">أثناء الشحن فقط</string>
     <string name="global_class_list_to_remove_from_article_text">إزالة قواعد النص</string>
     <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
+    <string name="global_date_class_list_summary">إسْمُ الْفِئَةِ لِكُلِّ سَطْرٍ. تُعْتَبَرُ عَنَاصِرُ هَذِهِ الْفِئَاتِ تَارِيخًا لِلْمَقَالِ، فِي حَالِ كَانَ نَوْعُ التَّحْمِيلِ \"صَفْحَةُ وِيبْ - رَوابِطُ\"</string>
     <string name="hide">إخفاء</string>
     <string name="show">إظهار</string>
     <string name="setFullTextRoot">اختر كأصل النص الكامل</string>
@@ -467,6 +469,16 @@
     <string name="article_text_information">السّاعَةُ وَاَلْبَطّاريَّةُ</string>
     <string name="article_text_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
     <string name="global_removeText_filter_rule_descr">Regex (تَعْبيرٌ واحِدٌ لِكُلِّ سَطْرٍ) يُطَبَّقُ عَلَى كُلِّ مُحْتَوَى المَقالِ</string>
+    <string name="parsing_web_page_links">الصَّفْحَةُ</string>
+    <string name="global_date_class_list">قائِمَةُ فِئاتِ التّاريخِ</string>
+    <string name="settings_date_extract_rules">قَواعِدُ إِسْتِخْراجِ التّاريخِ</string>
+    <string name="set_date">تَعْيينُ كَتاريخٍ</string>
+    <string name="clearingWebViewChache">مَسْحُ ذَاكِرَةِ التَّخْزِينِ الْمُؤَقَّتْ لِلـ WebView</string>
+    <string name="article_text_show_date">إِظْهارُ التّاريخِ</string>
+    <string name="article_text_show_date_description">يَوْمُ الشَّهْرِ وَالْإِسْبُوعِ</string>
+    <string name="remove_existing_feeds_question">أَتُريدُ إِزالَةَ التَّغَذِيَاتِ الْحَالِيَّةِ، قَبْلَ الْإِسْتيرادِ؟</string>
+    <string name="yes">نَعَمْ</string>
+    <string name="no">كَلًّا</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
