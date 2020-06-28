@@ -32,7 +32,7 @@
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
     <string name="about_handy_news_reader">حَوْلَ Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ إِلَخْ.</string>
+    <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ، إِلَخْ.</string>
     <string name="welcome_title">مرحباً بك مع Handy News Reader. أتَرغَب بإضافة خلاصة؟</string>
     <string name="never">مُطْلَقًا</string>
     <string name="last_update">تَحْديث</string>
@@ -438,7 +438,7 @@
     <string name="menu_show_entry_text">نَصُّ المَقالِ</string>
     <string name="read_more">قِراءَةُ المَزيدِ …</string>
     <string name="cant_open_image">يَتَعَذَّرُ فَتْحُ الصّورَةِ</string>
-    <string name="parsing_one_web_page">يَتِمُّ تَحْليلُ الصَّفْحَةِ</string>
+    <string name="parsing_one_web_page">الصَّفْحَةُ</string>
     <string name="end_editing">إِنْهاءُ الوَضْعِ</string>
     <string name="open_article">فَتْحُ المَقالِ</string>
     <string name="search_in_browser">البَحْثُ بِمُتَصَفِّحٍ آخَرَ</string>
@@ -468,7 +468,7 @@
     <string name="show_article_category">"إِظْهارُ تَصْنيفُ المَقالِ"</string>
     <string name="article_text_information">السّاعَةُ وَاَلْبَطّاريَّةُ</string>
     <string name="article_text_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
-    <string name="global_removeText_filter_rule_descr">Regex (تَعْبيرٌ واحِدٌ لِكُلِّ سَطْرٍ) يُطَبَّقُ عَلَى كُلِّ مُحْتَوَى المَقالِ</string>
+    <string name="global_removeText_filter_rule_descr">الـ Regex (تَعْبيرٌ واحِدٌ لِكُلِّ سَطْرٍ) يُطَبَّقُ عَلَى كُلِّ مُحْتَوَى المَقالِ</string>
     <string name="parsing_web_page_links">الصَّفْحَةُ</string>
     <string name="global_date_class_list">قائِمَةُ فِئاتِ التّاريخِ</string>
     <string name="settings_date_extract_rules">قَواعِدُ إِسْتِخْراجِ التّاريخِ</string>
@@ -479,6 +479,10 @@
     <string name="remove_existing_feeds_question">أَتُريدُ إِزالَةَ التَّغَذِيَاتِ الْحَالِيَّةِ، قَبْلَ الْإِسْتيرادِ؟</string>
     <string name="yes">نَعَمْ</string>
     <string name="no">كَلًّا</string>
+    <string name="remove_existing_feeds_confirmation">سَيُؤَدّي هذَا إِلَى إِزالَةِ كُلِّ الْمَقالاتِ الْمَوْجُودَةِ مِنْ جَميعِ التَّغذياتِ، حَتَّى الْمُمَيَّزَةِ بِنَجْمَةِ (ما عَدا \"مَقالاتُ الوِيبْ\"). هَلْ أَنْتَ مُتَأَكِّدٌ؟</string>
+    <string name="yes_I_realize_btn_caption">نَعَمْ، اُدرِكُ ذَلِكَ!</string>
+    <string name="sorry_I_was_wrong_btn_caption">اوه... كُنْتُ مُخْطِئًا. أَخْرِجْني مِنْ هُنا بِسُرْعَة!</string>
+    <string name="create_backup">إِنْشَاءُ نُسْخَةٍ إحْتياطيَّةٍ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
