@@ -490,6 +490,8 @@
     <string name="search_in_browser">Pesquisar no navegador</string>
     <string name="search_in_yandex">Pesquisar via Yandex</string>
     <string name="search_in_google">Pesquisar via Google</string>
+    <string name="long_operation">Operação longa</string>
+    <string name="reading_article">Lendo um artigo</string>
     <string name="reading_notification">Notificação de leitura do artigo</string>
     <string name="reading_notification_descr">Notificação persistente na barra de status para impedir que o aplicativo seja encerrado pelo sistema - para acelerar o início do aplicativo após um longo atraso</string>
     <string name="feed_list_loading">Carregando lista de feed</string>
@@ -504,6 +506,7 @@
     <string name="set_category">Definir como categoria</string>
     <string name="menu_more_options">Mais opções</string>
     <string name="reset_feed_and_delete_all_articles">Redefinir feed e apagar todos os artigos não favoritos</string>
+    <string name="filter_apply_to_author">Aplicar ao autor</string>
     <string name="filter_apply_to_category">Aplicar à categoria</string>
     <string name="filter_apply_to_url">Aplicar à URL</string>
     <string name="open_tag_menu_hint">Escolha uma parte do URL para usar como chave para a regra</string>
@@ -524,6 +527,8 @@
     <string name="no">Não</string>
     <string name="remove_existing_feeds_confirmation">Isso removerá TODOS os artigos existentes de TODOS os feeds (exceto \"Leia Isto mais tarde\"), mesmo os favoritos. Tem certeza?</string>
     <string name="yes_I_realize_btn_caption">Sim, eu percebi!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh... Eu estava errado. Me tire daqui depressa!</string>
+    <string name="create_backup">Criar cópia de segurança</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
