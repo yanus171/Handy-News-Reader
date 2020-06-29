@@ -408,6 +408,7 @@
     <string name="auto_refresh_requires_charging">Лише під час зарядження</string>
     <string name="global_class_list_to_remove_from_article_text">Правила вилучення тексту</string>
     <string name="global_class_list_to_remove_from_article_text_summary">ім\'я класу на кожен рядок</string>
+    <string name="global_date_class_list_summary">Назва класу на рядок. Елементи цих класів розглядаються за датою статті під час завантаження Веб сторінки - Посилання</string>
     <string name="hide">Приховати</string>
     <string name="show">Показати</string>
     <string name="setFullTextRoot">Вибрати як джерело для повного тексту</string>
@@ -514,6 +515,9 @@
     <string name="article_text_progress">Прогрес читання в заголовку</string>
     <string name="global_removeText_filter_rule_descr">Regex (один на рядок) застосовується до любого вмісту статті</string>
     <string name="parsing_web_page_links">Сторінка</string>
+    <string name="global_date_class_list">Список класів дати</string>
+    <string name="settings_date_extract_rules">Правила пошуку даних</string>
+    <string name="set_date">Встановити як дату</string>
     <string name="clearingWebViewChache">Очищення кешу WebView</string>
     <string name="article_text_show_date">Показувати дату</string>
     <string name="article_text_show_date_description">День місяця і тижня</string>
