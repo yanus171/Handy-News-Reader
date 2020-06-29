@@ -334,6 +334,7 @@
     <string name="settings_content_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
     <string name="settings_category_extract_rules">Règles d\'extraction des catégories</string>
     <string name="settings_category_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
+    <string name="settings_date_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
     <string name="settings_tap_zones_dialogtitle">uniquement pour les informations, les modifications ne sont pas disponibles</string>
     <string name="downloadNext">", Suivant "</string>
     <string name="downloadAll">", Tous"</string>
@@ -409,6 +410,7 @@
     <string name="auto_refresh_requires_charging">Seulement pendant la charge de la batterie</string>
     <string name="global_class_list_to_remove_from_article_text">Supprimer les réglages de texte</string>
     <string name="global_class_list_to_remove_from_article_text_summary">nom de classe par ligne</string>
+    <string name="global_date_class_list_summary">Nom de la classe par ligne. Les éléments de ces classes sont considérés comme la date de l\'article lors du chargement de la page Web - Liens</string>
     <string name="hide">Masquer</string>
     <string name="show">Afficher</string>
     <string name="setFullTextRoot">Choisir comme racine pour le texte complet</string>
@@ -514,6 +516,17 @@
     <string name="article_text_information">Informations supplémentaires sur l\'en-tête</string>
     <string name="article_text_progress">Lecture de la barre de progression dans l\'en-tête</string>
     <string name="global_removeText_filter_rule_descr">Regex (un par ligne) appliqué à n\'importe quel contenu d\'article</string>
+    <string name="parsing_web_page_links">Page</string>
+    <string name="global_date_class_list">Liste de la classe des dates</string>
+    <string name="settings_date_extract_rules">Règles d\'extraction de date</string>
+    <string name="set_date">Définir comme date</string>
+    <string name="clearingWebViewChache">Nettoyage du cache WebView</string>
+    <string name="article_text_show_date">Afficher la date</string>
+    <string name="article_text_show_date_description">Le jour du mois et un jour de la semaine</string>
+    <string name="remove_existing_feeds_question">Supprimer les flux existants avant l\'import ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="remove_existing_feeds_confirmation">Ceci supprimera TOUS les articles existants de TOUS les flux (sauf « A lire plus tard »), même les favoris. Êtes-vous sûr ?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
