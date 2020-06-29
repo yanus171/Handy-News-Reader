@@ -527,6 +527,9 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="remove_existing_feeds_confirmation">Ceci supprimera TOUS les articles existants de TOUS les flux (sauf « A lire plus tard »), même les favoris. Êtes-vous sûr ?</string>
+    <string name="yes_I_realize_btn_caption">Oui, je me rends compte !</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh... Je me suis trompé. Sortez moi vite d\'ici !</string>
+    <string name="create_backup">Créer une sauvegarde</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
