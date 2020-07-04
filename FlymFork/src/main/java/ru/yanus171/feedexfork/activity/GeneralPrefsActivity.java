@@ -85,7 +85,7 @@ public class GeneralPrefsActivity extends BaseActivity {
     }
 
     public void onBackPressed() {
-        GeneralPrefsFragment.mSetupChanged = true;
+        GeneralPrefsFragment.SetupChanged();
         if (Build.VERSION.SDK_INT >= 21 )
             AutoJobService.init( this );
         Theme.ReInit();

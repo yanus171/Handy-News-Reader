@@ -29,6 +29,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.getApplyTypeCaption;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 
 public class FiltersCursorAdapter extends ResourceCursorAdapter {
 
@@ -48,9 +50,9 @@ public class FiltersCursorAdapter extends ResourceCursorAdapter {
 
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
-        TextView isAcceptRuleTextView = view.findViewById(android.R.id.text1);
-        TextView filterTextTextView = view.findViewById(android.R.id.text2);
-        TextView isAppliedToTitleTextView = view.findViewById(R.id.text3);
+        TextView isAcceptRuleTextView = SetupSmallTextView( view, android.R.id.text1);
+        TextView filterTextTextView = SetupSmallTextView( view, android.R.id.text2);
+        TextView isAppliedToTitleTextView = SetupSmallTextView( view, R.id.text3);
 
         if (cursor.getPosition() == mSelectedFilter) {
             view.setBackgroundResource(android.R.color.holo_blue_dark);

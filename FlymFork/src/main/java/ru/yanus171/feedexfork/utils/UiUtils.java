@@ -21,17 +21,12 @@ package ru.yanus171.feedexfork.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.collection.LongSparseArray;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -42,18 +37,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.widget.FontSelectPreference;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 
 public class UiUtils {
+    private static Typeface mCachedTypeFace = null;
 
     //static private final HashMap<String, Bitmap> FAVICON_CACHE = new HashMap<>();
 
@@ -93,11 +93,19 @@ public class UiUtils {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    static public void SetFontSize(TextView textView, float coeff) {
-        textView.setTextSize(COMPLEX_UNIT_DIP, ( 18 + PrefUtils.getFontSizeEntryList() ) * coeff );
+    public static void SetTypeFace(TextView textView) {
+        if ( mCachedTypeFace == null )
+            mCachedTypeFace = FontSelectPreference.GetTypeFace("fontFamily" );
+        textView.setTypeface( mCachedTypeFace );
     }
 
-    private static void SetSmallFontSize(TextView textView) {
+    static public void SetFont(TextView textView, float sizeCoeff) {
+        SetTypeFace( textView );
+        textView.setTextSize(COMPLEX_UNIT_DIP, ( 18 + PrefUtils.getFontSizeEntryList() ) * sizeCoeff );
+    }
+
+    public static void SetSmallFont(TextView textView) {
+        SetTypeFace( textView );
         textView.setTextSize(COMPLEX_UNIT_DIP, 14 + PrefUtils.getFontSizeEntryList() );
     }
 
@@ -208,13 +216,13 @@ public class UiUtils {
         result.setPadding(10, 0, 10, 0);
 
         result.setTextColor(color != null ? color.Text : Theme.GetMenuFontColor());
-        SetSmallFontSize( result );
+        SetSmallFont(result );
         return result;
     }
 
     // -------------------------------------------------------------------
     public static TextView AddText(LinearLayout layout, LinearLayout.LayoutParams lp, String text) {
-        TextView result = new TextView(layout.getContext());
+        TextView result = CreateTextView(layout.getContext());
         if (lp != null) {
             layout.addView(result, lp);
         } else {
@@ -232,5 +240,34 @@ public class UiUtils {
         return result;
     }
 
+
+    public static void InvalidateTypeFace() {
+        mCachedTypeFace = null;
+    }
+
+    public static TextView SetupTextView(View rootView, int id) {
+        TextView result = rootView.findViewById(id);
+        SetupTextView(result);
+        return result;
+    }
+    public static TextView SetupSmallTextView(View rootView, int id) {
+        TextView result = rootView.findViewById(id);
+        SetupSmallTextView(result);
+        return result;
+    }
+
+    public static void SetupSmallTextView(TextView result) {
+        //result.setText("");
+        SetSmallFont(result);
+    }
+    public static void SetupTextView(TextView result) {
+        //result.setText("");
+        SetFont(result, 1);
+    }
+    public static TextView CreateTextView(Context context) {
+        TextView result = new TextView( context );
+        SetupTextView( result );
+        return result;
+    }
 
 }

@@ -28,6 +28,9 @@ import android.widget.TextView;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Theme;
+import ru.yanus171.feedexfork.utils.UiUtils;
+
+import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 
 public class MessageBox extends BaseActivity {
 	static final int PAD = 10;
@@ -47,7 +50,7 @@ public class MessageBox extends BaseActivity {
 		parent.setGravity(Gravity.CENTER);
 		scrollView.addView(parent);
 
-		TextView label = new TextView(this);
+		TextView label = CreateTextView(this);
 		label.setText(getIntent().getStringExtra("Text"));
 		label.setPadding(PAD, PAD, PAD, PAD);
 		label.setTextColor(Theme.GetMenuFontColor());

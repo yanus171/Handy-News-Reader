@@ -145,6 +145,8 @@ import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_MAX_COUNT;
 import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetTypeFace;
 
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_WEB_SEARCH = "EXTRA_WEB_SEARCH";
@@ -251,11 +253,11 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         if (c.moveToPosition(mFiltersCursorAdapter.getSelectedFilter())) {
             final View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_edit, null);
             final EditText filterText = dialogView.findViewById(R.id.filterText);
-            final CheckBox regexCheckBox = dialogView.findViewById(R.id.regexCheckBox);
-            final RadioButton acceptRadio = dialogView.findViewById(R.id.acceptRadio);
-            final RadioButton markAsStarredRadio = dialogView.findViewById(R.id.markAsStarredRadio);
-            final RadioButton removeTextRadio = dialogView.findViewById(R.id.removeText);
-            final RadioButton rejectRadio = dialogView.findViewById(R.id.rejectRadio);
+            final CheckBox regexCheckBox = (CheckBox) UiUtils.SetupSmallTextView(dialogView, R.id.regexCheckBox);
+            final RadioButton acceptRadio = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.acceptRadio);
+            final RadioButton markAsStarredRadio = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.markAsStarredRadio);
+            final RadioButton removeTextRadio = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.removeText);
+            final RadioButton rejectRadio = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.rejectRadio);
 
             final RadioGroup applyType = dialogView.findViewById(R.id.applyTypeRadioGroup);
             SetupFilterDialog(dialogView, applyType, removeTextRadio);
@@ -309,11 +311,11 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
     private RadioGroup SetupFilterDialog(View dialogView, final RadioGroup applyType, final RadioButton removeTextRadio) {
         final RadioGroup actionType = dialogView.findViewById(R.id.actionTypeRadioGroup);
-        final RadioButton applyTitleButton = dialogView.findViewById(R.id.applyTitleRadio);
-        final RadioButton applyAuthorButton = dialogView.findViewById(R.id.applyAuthorRadio);
-        final RadioButton applyCategoryButton = dialogView.findViewById(R.id.applyCategoryRadio);
-        final RadioButton applyUrlButton = dialogView.findViewById(R.id.applyUrlRadio);
-        final RadioButton applyContentButton = dialogView.findViewById(R.id.applyContentRadio);
+        final RadioButton applyTitleButton = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.applyTitleRadio);
+        final RadioButton applyAuthorButton = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.applyAuthorRadio);
+        final RadioButton applyCategoryButton = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.applyCategoryRadio);
+        final RadioButton applyUrlButton = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.applyUrlRadio);
+        final RadioButton applyContentButton = (RadioButton) UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio);
 
         actionType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -391,6 +393,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_feed_edit);
+        SetupFont( findViewById( R.id.root ) );
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -403,16 +406,16 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mTabHost = findViewById(R.id.tabHost);
         mNameEditText = findViewById(R.id.feed_title);
         mUrlEditText = findViewById(R.id.feed_url);
-        mRetrieveFulltextCb = findViewById(R.id.retrieve_fulltext);
-        mShowTextInEntryListCb = findViewById(R.id.show_text_in_entry_list);
-        mIsAutoRefreshCb = findViewById(R.id.auto_refresh);
-        mIsAutoImageLoadCb = findViewById(R.id.auto_image_load);
-        mIsAutoSetAsRead = findViewById(R.id.auto_set_as_read);
+        mRetrieveFulltextCb = (CheckBox) SetupSmallTextView(R.id.retrieve_fulltext);
+        mShowTextInEntryListCb = (CheckBox) SetupSmallTextView(R.id.show_text_in_entry_list);
+        mIsAutoRefreshCb = (CheckBox) SetupSmallTextView(R.id.auto_refresh);
+        mIsAutoImageLoadCb = (CheckBox) SetupSmallTextView(R.id.auto_image_load);
+        mIsAutoSetAsRead = (CheckBox) SetupSmallTextView(R.id.auto_set_as_read);
         mIsAutoSetAsRead.setChecked( false );
         mFiltersListView = findViewById(android.R.id.list);
         mGroupSpinner = findViewById(R.id.spin_group);
 
-        mKeepTimeCB = findViewById(R.id.cbCustomKeepTime);
+        mKeepTimeCB = (CheckBox) SetupSmallTextView(R.id.cbCustomKeepTime);
         mKeepTimeCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -428,7 +431,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                 break;
             }
 
-        mHasGroupCb = findViewById(R.id.has_group);
+        mHasGroupCb = (CheckBox) SetupSmallTextView(R.id.has_group);
         mHasGroupCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -458,6 +461,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         mTabHost.setup();
         mTabHost.addTab(mTabHost.newTabSpec("feedTab").setIndicator(getString(R.string.tab_feed_title)).setContent(R.id.feed_tab));
         mTabHost.addTab(mTabHost.newTabSpec("filtersTab").setIndicator(getString(R.string.tab_filters_title)).setContent(R.id.filters_tab));
+        SetupFont( findViewById( R.id.feed_tab ) );
 
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -733,7 +737,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
                     values.putNull(FeedColumns.ERROR);
 
-                    GeneralPrefsFragment.mSetupChanged = true;
+                    GeneralPrefsFragment.SetupChanged();
                     cr.update(getIntent().getData(), values, null, null);
 
                 }
@@ -924,6 +928,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                     adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
                         @Override
                         public boolean setViewValue(View view, Object data, String s) {
+                            if ( view instanceof TextView )
+                                SetTypeFace( (TextView)view );
                             String value = (String) data;
                             if ( view instanceof TextView && value.startsWith(IS_READ_STUMB) ) {
                                 String text = value;

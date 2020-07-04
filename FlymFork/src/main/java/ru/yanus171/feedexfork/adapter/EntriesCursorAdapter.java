@@ -121,9 +121,14 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 
@@ -189,15 +194,17 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         if (view.getTag(R.id.holder) == null) {
             final ViewHolder holder = new ViewHolder();
-            holder.titleTextView = view.findViewById(android.R.id.text1);
-            holder.urlTextView = view.findViewById(R.id.textUrl);
-            holder.textTextView = view.findViewById(R.id.textSource);
-            if ( mShowEntryText )
-                holder.dateTextView = view.findViewById(R.id.textDate);
-            else
-                holder.dateTextView = view.findViewById(android.R.id.text2);
-            holder.authorTextView = view.findViewById(R.id.textAuthor);
-            holder.imageSizeTextView = view.findViewById(R.id.imageSize);
+            holder.titleTextView = SetupTextView( view, android.R.id.text1);
+            holder.urlTextView = SetupSmallTextView( view, R.id.textUrl);
+            holder.textTextView = SetupTextView( view, R.id.textSource);
+            if ( mShowEntryText ) {
+                holder.dateTextView = SetupSmallTextView( view, R.id.textDate);
+            }
+            else {
+                holder.dateTextView = SetupSmallTextView( view, android.R.id.text2);
+            }
+            holder.authorTextView = SetupSmallTextView( view, R.id.textAuthor);
+            holder.imageSizeTextView = SetupSmallTextView( view, R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
             //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
@@ -211,13 +218,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView1 = view.findViewById(R.id.image1);
             holder.contentImgView2 = view.findViewById(R.id.image2);
             holder.contentImgView3 = view.findViewById(R.id.image3);
-            holder.readMore = view.findViewById(R.id.textSourceReadMore);
+            holder.readMore = SetupTextView( view, R.id.textSourceReadMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
-            holder.categoriesTextView = view.findViewById(R.id.textCategories);
-            UiUtils.SetFontSize(holder.textTextView, 1 );
+            holder.categoriesTextView = SetupSmallTextView( view, R.id.textCategories);
 
             view.setTag(R.id.holder, holder);
 
+            holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
+            holder.readMore.setBackgroundColor( Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
             holder.readMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -419,14 +427,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final String feedTitle = cursor.getString(mFeedTitlePos);
         String titleText = GetTitle(cursor);
         holder.titleTextView.setVisibility( titleText.isEmpty() ? View.GONE : View.VISIBLE );
-        holder.titleTextView.setText(titleText);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            holder.titleTextView.setTextDirection( isTextRTL( titleText ) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_ANY_RTL );
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
-        holder.titleTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
+        if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
+            holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
+        else
+            holder.titleTextView.setText(titleText);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            holder.titleTextView.setTextDirection( isTextRTL( titleText ) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_ANY_RTL );
 
         holder.urlTextView.setText(cursor.getString(mUrlPos));
 
@@ -435,7 +445,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final boolean isTextShown = mShowEntryText || holder.isTextShown();
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
-        UiUtils.SetFontSize(holder.titleTextView, isTextShown ? 1.4F : 1 );
+        SetFont(holder.titleTextView, isTextShown ? 1.4F : 1 );
         holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             String mainImgUrl = cursor.getString(mMainImgPos);
@@ -542,8 +552,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
-            holder.textTextView.setTypeface( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT );
-            SetupEntryText(holder, Html.fromHtml( html ), IsReadMore(html ) );
+            SetupEntryText(holder, getBoldText(html), IsReadMore(html ) );
             //holder.textTextView.setMovementMethod(LinkMovementMethod.getInstance());
             //final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
             //if ( html.contains( "<img" ) /*|| isMobilized*/ ) {
@@ -583,6 +592,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
 
+    }
+
+    private Spanned getBoldText(String html) {
+        return Html.fromHtml(PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html );
     }
 
     public static String CategoriesToOutput(String categories) {
@@ -644,7 +657,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                imagesToDl,
                                                mImageUrlList,
                                                3 );
-            mText = Html.fromHtml( GetHtmlAligned( temp ));
+            mText = getBoldText( GetHtmlAligned( temp ));
             mIsReadMore = IsReadMore(temp);
             synchronized ( this ) {
                 mIsLoaded = true;
@@ -658,16 +671,17 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void OpenArticle(Context context, long entryID, boolean isExpanded) {
+        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
         if( isExpanded ) {
             EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         }
-        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
     }
 
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
         //final String s = text.toString();
-        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
+//        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
+        holder.textTextView.setText( text );
         //holder.textTextView.setText( s.length() > MAX_TEXT_LEN ? s.substring( 0, MAX_TEXT_LEN ) + " ..." : s );
         //Linkify.addLinks(holder.textTextView, Linkify.ALL);
         //holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
@@ -743,7 +757,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.categoriesTextView.setTextColor(color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
-            holder.readMore.setTextColor( color );
+            //holder.readMore.setTextColor( color );
             holder.titleTextView.setTextColor( color );
             holder.urlTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );

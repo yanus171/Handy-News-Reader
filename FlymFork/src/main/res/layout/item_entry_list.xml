@@ -272,6 +272,8 @@
         android:layout_marginTop="5dp"
         android:letterSpacing="0.04"
         android:lineSpacingMultiplier="1.1"
+        android:maxLength="2500"
+        android:ellipsize="end"
         android:focusable="true"
         android:justificationMode="inter_word"
         android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "

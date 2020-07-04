@@ -543,6 +543,13 @@
     <string name="yes_I_realize_btn_caption">Yes, I realize!</string>
     <string name="sorry_I_was_wrong_btn_caption">Ohh... I was wrong. Get me out of here quick!</string>
     <string name="create_backup">Create backup</string>
+    <string name="defaultFontFamily">System Default</string>
+    <string name="fontTextSample">Text</string>
+    <string name="fontFamily">Font</string>
+    <string name="fontFamilySummary">Of almost all texts in app. You can add custom font ttf files in sdcard/feedex/fonts storage folder</string>
+    <string name="settings_font_rules">Font rules</string>
+    <string name="settings_font_rules_description">To set custom fonts for separate classes in article text</string>
+    <string name="bold">Bold</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

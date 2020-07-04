@@ -187,7 +187,7 @@ public class DebugApp {
 
 		PrefUtils.putStringCommit( "crashText", st.toString() );
 
-		Log.e("HandyNewsLog", st.toString());
+		Dog.e("HandyNewsLog", st.toString());
 
 		throwable.printStackTrace();
 

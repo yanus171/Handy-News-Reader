@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
@@ -51,6 +50,9 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 
 public class DrawerAdapter extends BaseAdapter {
 
@@ -111,12 +113,12 @@ public class DrawerAdapter extends BaseAdapter {
 
             ViewHolder holder = new ViewHolder();
             holder.iconView = convertView.findViewById(android.R.id.icon);
-            holder.titleTxt = convertView.findViewById(android.R.id.text1);
-            holder.stateTxt = convertView.findViewById(android.R.id.text2);
-            holder.imageSizeTxt = convertView.findViewById(R.id.imageSize);
-            holder.unreadTxt = convertView.findViewById(R.id.unread_count);
-            holder.readTxt = convertView.findViewById(R.id.read_count);
-            holder.tasksTxt = convertView.findViewById(R.id.tasks);
+            holder.titleTxt = SetupTextView( convertView, android.R.id.text1);
+            holder.stateTxt = SetupSmallTextView( convertView, android.R.id.text2);
+            holder.imageSizeTxt = SetupSmallTextView( convertView, R.id.imageSize);
+            holder.unreadTxt = SetupTextView( convertView, R.id.unread_count);
+            holder.readTxt = SetupTextView( convertView, R.id.read_count);
+            holder.tasksTxt = SetupSmallTextView( convertView, R.id.tasks);
             holder.autoRefreshIcon = convertView.findViewById(R.id.auto_refresh_icon);
             holder.separator = convertView.findViewById(R.id.separator);
             convertView.setTag(R.id.holder, holder);
@@ -129,12 +131,12 @@ public class DrawerAdapter extends BaseAdapter {
         holder.titleTxt.setText("");
         holder.titleTxt.setTextColor(NORMAL_TEXT_COLOR);
         holder.titleTxt.setAllCaps(false);
-        UiUtils.SetFontSize(holder.titleTxt, 1);
+        UiUtils.SetFont(holder.titleTxt, 1);
         holder.stateTxt.setVisibility(View.GONE);
         holder.unreadTxt.setText("");
-        UiUtils.SetFontSize(holder.unreadTxt, 1);
+        UiUtils.SetFont(holder.unreadTxt, 1);
         holder.readTxt.setText("");
-        UiUtils.SetFontSize(holder.readTxt, 1);
+        UiUtils.SetFont(holder.readTxt, 1);
         convertView.setPadding(0, 0, 0, 0);
         holder.separator.setVisibility(View.GONE);
         holder.autoRefreshIcon.setVisibility( View.GONE );

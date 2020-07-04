@@ -248,4 +248,5 @@ public class Theme {
 	public static AlertDialog.Builder CreateDialog(Context context) {
 		return new AlertDialog.Builder(context, GetThemeDialog());
 	}
+
 }

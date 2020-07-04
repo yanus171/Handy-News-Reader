@@ -149,8 +149,13 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
     @Override
     public void onDestroy() {
-        mSetupChanged = true;
+        SetupChanged();
         super.onDestroy();
+    }
+
+    public static void SetupChanged() {
+        mSetupChanged = true;
+        UiUtils.InvalidateTypeFace();
     }
 
     @Override

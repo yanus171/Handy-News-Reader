@@ -103,6 +103,10 @@ import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
+import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
@@ -449,7 +453,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
 
         if (PrefUtils.getBoolean(PrefUtils.DISPLAY_TIP, true) && mListView instanceof ListView ) {
-            final TextView header = new TextView(mListView.getContext());
+            final TextView header = CreateTextView(mListView.getContext());
             header.setMinimumHeight(UiUtils.dpToPixel(70));
             int footerPadding = UiUtils.dpToPixel(10);
             header.setPadding(footerPadding, footerPadding, footerPadding, footerPadding);
@@ -471,22 +475,20 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mListView instanceof ListView )
             UiUtils.addEmptyFooterView(mListView, 90);
 
-        TextView emptyView = new TextView( getContext() );
+        TextView emptyView = CreateTextView( getContext() );
         emptyView.setText( getString( R.string.no_entries ) );
         mListView.setEmptyView( emptyView );
 
         mProgressBar = rootView.findViewById(R.id.progressBar);
         mProgressBar.setProgress( 0 );
-        mLabelClock = rootView.findViewById(R.id.textClock);
-        mLabelClock.setText("");
-        mLabelBattery = rootView.findViewById(R.id.textBattery);
-        mLabelBattery.setText("");
-        mLabelDate = rootView.findViewById(R.id.textDate);
-        mLabelDate.setText("");
-
+        mLabelClock = SetupSmallTextView(rootView, R.id.textClock);
+        mLabelBattery = SetupSmallTextView(rootView, R.id.textBattery);
+        mLabelDate = SetupSmallTextView(rootView, R.id.textDate);
+        UpdateFooter();
         timer.End();
         return rootView;
     }
+
 
     private HomeActivity GetActivity() {
         return (HomeActivity)getActivity();
@@ -495,7 +497,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public void UpdateFooter() {
         BaseActivity.UpdateFooter(mProgressBar,
-                                  mEntriesCursorAdapter.getCount(),
+                                  mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
                                   mListView.getFirstVisiblePosition(),
                                   mLabelClock,
                                   mLabelDate,

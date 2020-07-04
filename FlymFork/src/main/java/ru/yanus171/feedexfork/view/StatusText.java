@@ -76,6 +76,7 @@ public class StatusText implements Observer {
             }
         });
         mView.setMaxLines( 2 );
+        UiUtils.SetSmallFont( mView );
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.START | Gravity.TOP);
@@ -88,6 +89,7 @@ public class StatusText implements Observer {
             v.setVisibility(View.GONE);
             }
         });
+        UiUtils.SetSmallFont( mErrorView );
 
         mProgressBar = progressBar;
         mProgressBar.setOnClickListener(new View.OnClickListener() {

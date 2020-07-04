@@ -84,6 +84,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRI
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
@@ -236,7 +237,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         });
 
-        mPageUpBtn = findViewById(R.id.pageUpBtn);
+        mPageUpBtn = findViewById( R.id.pageUpBtn );
         mPageUpBtn.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {

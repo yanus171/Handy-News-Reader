@@ -33,6 +33,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.getFaviconBitmap;
 import static ru.yanus171.feedexfork.utils.UiUtils.getScaledBitmap;
 
@@ -57,7 +58,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
     protected void bindChildView(View view, Context context, Cursor cursor) {
         view.findViewById(R.id.indicator).setVisibility(View.INVISIBLE);
 
-        TextView textView = view.findViewById(android.R.id.text1);
+        TextView textView = SetupTextView( view, android.R.id.text1);
 
         final long feedId = cursor.getLong(mIdPos);
         Bitmap bitmap = getScaledBitmap( getFaviconBitmap( cursor.getString( mIconUrlPos ) ), 32 );

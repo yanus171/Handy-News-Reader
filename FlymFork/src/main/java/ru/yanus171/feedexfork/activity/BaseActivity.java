@@ -18,6 +18,7 @@
  */
 package ru.yanus171.feedexfork.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -32,9 +33,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.text.DateFormatSymbols;
@@ -227,5 +232,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         final String week = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
         final int day = cal.get(Calendar.DAY_OF_MONTH);
         return String.format( "%d %s", day, week  );
+    }
+    protected TextView SetupTextView(int id) {
+        TextView result = findViewById(id);
+        UiUtils.SetupTextView(result);
+        return result;
+    }
+    protected TextView SetupSmallTextView(int id) {
+        TextView result = findViewById(id);
+        UiUtils.SetupSmallTextView(result);
+        return result;
+    }
+    protected void SetupFont( View view ) {
+        if ( view instanceof ViewGroup ) {
+            ViewGroup parent = (ViewGroup) view;
+            for (int i = 0; i < parent.getChildCount(); i++)
+                SetupFont( parent.getChildAt(i));
+        } else if ( view instanceof TextView )
+            UiUtils.SetTypeFace( (TextView) view);
     }
 }

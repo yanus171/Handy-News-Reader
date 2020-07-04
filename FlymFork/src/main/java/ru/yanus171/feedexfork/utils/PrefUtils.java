@@ -116,8 +116,10 @@ public class PrefUtils {
 
     public static final String SHOW_READ_ARTICLE_COUNT = "show_read_article_count";
 
+    public static final int BASE_TEXT_FONT_SIZE = 18;
+
     public static int getFontSize() {
-        return Integer.parseInt(PrefUtils.getString("fontsize", "0"));
+        return Integer.parseInt(PrefUtils.getString("fontsize", "12"));
     }
     public static int getFontSizeEntryList() {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));

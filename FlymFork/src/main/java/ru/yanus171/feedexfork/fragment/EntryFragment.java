@@ -121,6 +121,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
@@ -132,6 +133,9 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
@@ -235,14 +239,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mProgressBar = mRootView.findViewById(R.id.progressBar);
         mProgressBar.setProgress( 0 );
 
-        mLabelClock = mRootView.findViewById(R.id.textClock);
-        mLabelClock.setText("");
-
-        mLabelBattery = mRootView.findViewById(R.id.textBattery);
-        mLabelBattery.setText("");
-
-        mLabelDate = mRootView.findViewById(R.id.textDate);
-        mLabelDate.setText("");
+        mLabelClock = SetupSmallTextView( mRootView, R.id.textClock);
+        mLabelClock.setText( "" );
+        mLabelBattery = SetupSmallTextView( mRootView, R.id.textBattery);
+        mLabelBattery.setText( "" );
+        mLabelDate = SetupSmallTextView( mRootView, R.id.textDate);
+        mLabelDate.setText( "" );
 
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
@@ -392,7 +394,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         });
         SetStarFrameWidth(0);
-
+        UpdateFooter();
         SetOrientation();
 
         return mRootView;
@@ -470,8 +472,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onResume();
         mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
-        if ( GeneralPrefsFragment.mSetupChanged ) {
-            GeneralPrefsFragment.mSetupChanged = false;
+        if ( mSetupChanged ) {
+            mSetupChanged = false;
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
         HideTapZonesText(getView().getRootView());
@@ -1063,17 +1065,19 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public void UpdateFooter() {
         EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
+        int webViewHeight = 0;
+        int contentHeight = 0;
         if (entryView != null) {
-            int webViewHeight = entryView.getMeasuredHeight();
-            int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
-            BaseActivity.UpdateFooter(mProgressBar,
+            webViewHeight = entryView.getMeasuredHeight();
+            contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
+        }
+        BaseActivity.UpdateFooter(mProgressBar,
                                       contentHeight - webViewHeight,
-                                      entryView.getScrollY(),
+                                      entryView == null ? 0 : entryView.getScrollY(),
                                       mLabelClock,
                                       mLabelDate,
                                       mLabelBattery,
                                       GetIsStatusBarHidden() );
-        }
     }
 
 
@@ -1257,7 +1261,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //groupUrl.setGravity( Gravity.CENTER );
         parent.addView(groupUrl);
         int id = 0;
-        String keyUrl = baseUrl.replaceAll( "http.+?//", "" ).replaceAll( "www.", "" );;
+        String keyUrl = baseUrl.replaceAll( "http.+?//", "" ).replaceAll( "www.", "" );
         if ( !keyUrl.endsWith( "/" ) )
             keyUrl = keyUrl + "/";//.substring( 0, keyUrl.length() - 1 );
         while( keyUrl.contains( "/" ) ) {
@@ -1532,7 +1536,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 if (newCursor != null && newCursor.moveToFirst()  ) {
                     view.setTag(newCursor);
 
-
+                    if ( mSetupChanged )
+                        view.InvalidateContentCache();
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
                     mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
                                                       newCursor,

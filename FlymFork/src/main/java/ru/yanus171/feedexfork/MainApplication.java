@@ -30,11 +30,11 @@ import android.os.StrictMode;
 import java.lang.reflect.Method;
 
 import ru.yanus171.feedexfork.activity.BaseActivity;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.ImageFileVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.DebugApp;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
@@ -53,8 +53,6 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-
-
         Status();
 
         BaseActivity.InitLocale( mContext );

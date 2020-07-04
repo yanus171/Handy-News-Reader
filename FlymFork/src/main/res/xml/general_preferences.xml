@@ -40,6 +40,13 @@
                 android:key="theme"
                 android:title="@string/theme" />
 
+            <ru.yanus171.feedexfork.widget.FontSelectPreference
+                android:defaultValue=""
+                android:key="fontFamily"
+                android:title="@string/fontFamily"
+                android:summary="@string/fontFamilySummary"/>
+
+
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="customColors"
@@ -183,7 +190,7 @@
             android:title="@string/settings_category_article_text"/>
 
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-            android:defaultValue="0"
+            android:defaultValue="12"
             android:entries="@array/settings_font_sizes"
             android:entryValues="@array/settings_font_size_values"
             android:inputType="number"
@@ -695,6 +702,13 @@
                 android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
                 android:title="@string/settings_category_extract_rules"
                 android:summary="@string/settings_category_extract_rules_description"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:key="font_rules"
+                android:inputType="text|textMultiLine"
+                android:defaultValue=""
+                android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
+                android:title="@string/settings_font_rules"
+                android:summary="@string/settings_font_rules_description"/>
 
         </PreferenceCategory>
         <CheckBoxPreference

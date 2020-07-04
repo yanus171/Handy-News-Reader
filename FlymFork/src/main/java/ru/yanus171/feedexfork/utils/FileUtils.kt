@@ -117,6 +117,15 @@ object FileUtils {
         return mGetHTMLFolder as File
     }
 
+    private var mFontsFolder: File? = null
+    public fun getFontsFolder(): File {
+        if ( mFontsFolder == null ) {
+            mFontsFolder = File(getFolder(), "fonts/")
+            MakeDirs(mFontsFolder!!)
+        }
+        return mFontsFolder as File
+    }
+
     private fun readHTMLFromFile( link: String ): String {
         val contentBuilder = StringBuilder()
         try {

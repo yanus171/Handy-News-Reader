@@ -66,6 +66,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -129,12 +131,16 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.BASE_TEXT_FONT_SIZE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.widget.FontSelectPreference.DefaultFontFamily;
+import static ru.yanus171.feedexfork.widget.FontSelectPreference.GetTypeFaceLocalUrl;
 
 public class EntryView extends WebView implements Handler.Callback {
 
@@ -162,42 +168,104 @@ public class EntryView extends WebView implements Handler.Callback {
     private long mLastTimeScrolled = 0;
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
-    private static String GetCSS(String text) {
+    private static String GetCSS(final String text, final String url) {
         return "<head><style type='text/css'> "
-                + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold()
-                + " color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; line-height: 120%} "
-                + "* {max-width: 100%; word-break: break-word}"
-                + "h1, h2 {font-weight: normal; line-height: 120%} "
-                + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
-                + "h2 {font-size: 120%} "
-                + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
-                + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
-                (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}"
-                + "h1 {color: inherit; text-decoration: none}"
-                + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "} "
-                + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
-                + "pre {white-space: pre-wrap;} "
-                + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
-                + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
-                + "hr {width: 100%; color: #777777; align: center; size: 1} "
-                + "p.button {text-align: center} "
-                + "p {margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
-                + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
-                + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
-                + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
-                + "div.bottom-page {display: block; min-height: 80vh} "
-                + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
-                + "div {text-align:" + getAlign(text) + "} "
-                + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "
-                + ".button-section p {margin: 0.1cm 0 0.2cm 0} "
-                + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-                + ".button-section input, .button-section a {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
-                + "." + TAG_BUTTON_CLASS + " i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-                + "." + TAG_BUTTON_CLASS_CATEGORY + " i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AAAA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-                + "." + TAG_BUTTON_CLASS_DATE + " i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #0000AA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-                + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-                + "." + TAG_BUTTON_CLASS_HIDDEN + " i {font-family: sans-serif-light; font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-                + "</style><meta name='viewport' content='width=device-width'/></head>";
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily)) + "\");} "
+            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(GetCustomClassAndFontName(url).mFontName) + "\");}"
+            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
+            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; line-height: 120%} "
+            + "* {max-width: 100%; word-break: break-word}"
+            + "h1, h2 {font-weight: normal; line-height: 120%} "
+            + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
+            + "h2 {font-size: 120%} "
+            + "}body{color: #000; text-align: justify; background-color: #fff;}"
+            + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
+            + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
+            (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}"
+            + "h1 {color: inherit; text-decoration: none}"
+            + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "} "
+            + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
+            + "pre {white-space: pre-wrap;} "
+            + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
+            + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
+            + "hr {width: 100%; color: #777777; align: center; size: 1} "
+            + "p.button {text-align: center} "
+            + getCustomFontClassStyle("p", url)
+            + getCustomFontClassStyle("span", url)
+            + getCustomFontClassStyle("div", url)
+            + "p {font-family: \"MainFont\"; margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
+            + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
+            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
+            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
+            + "div.bottom-page {display: block; min-height: 80vh} "
+            + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
+            + "div {text-align:" + getAlign(text) + "} "
+            + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "
+            + ".button-section p {font-family: \"MainFont\"; margin: 0.1cm 0 0.2cm 0} "
+            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
+            + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
+            + "." + TAG_BUTTON_CLASS + " i { font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + "." + TAG_BUTTON_CLASS_CATEGORY + " i {font-size: 100%; color: #FFFFFF; background-color: #00AAAA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + "." + TAG_BUTTON_CLASS_DATE + " i {font-size: 100%; color: #FFFFFF; background-color: #0000AA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + "." + TAG_BUTTON_CLASS_HIDDEN + " i {font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + "</style><meta name='viewport' content='width=device-width'/></head>";
+    }
+
+    @NotNull
+    private static String getCustomFontClassStyle(String tag, String url) {
+        final CustomClassFontInfo info = GetCustomClassAndFontName(url);
+        return tag + "." + info.mClassName
+            + " {letter-spacing: " + info.mLetterSpacing + "em; "
+            +   "font-family: \"CustomFont\"; "
+            +   "font-weight: " + info.mFontWeight + "; "
+            +   "font-size: " + info.mFontSize + "} ";
+    }
+
+    static class CustomClassFontInfo {
+        float mLetterSpacing = 0.01F;
+        String mClassName = "";
+        String mKeyword = "";
+        String mFontName = "";
+        int mFontWeight = 400;
+        int mFontSize = BASE_TEXT_FONT_SIZE + PrefUtils.getFontSize();
+        CustomClassFontInfo( String line ) {
+            String[] list1 = line.split(":");
+            if ( list1.length >= 1 ) {
+                mKeyword = list1[0];
+                if (list1.length >= 2) {
+                    String[] list2 = list1[1].split("=");
+                    if (list2.length >= 2) {
+                        mClassName = list2[0].toLowerCase();
+                        mFontName = list2[1];
+                    }
+                    if (list2.length >= 3)
+                        mFontSize = 18 + Integer.parseInt(list2[2]);
+                    if (list2.length >= 4)
+                        mLetterSpacing = Float.parseFloat(list2[3]);
+                    if (list2.length >= 5)
+                        mFontWeight = Integer.parseInt(list2[4]);
+                }
+            }
+        }
+
+    }
+    private static CustomClassFontInfo GetCustomClassAndFontName(final String url ) {
+        Pair<String, String> result = new Pair<>( "abracadabra", "" );
+        final String pref = PrefUtils.getString( "font_rules", "" );
+        for( String line: pref.split( "\\n|\\s" ) ) {
+            if ((line == null) || line.isEmpty())
+                continue;
+            try {
+                CustomClassFontInfo info = new CustomClassFontInfo( line );
+                if (url.contains(info.mKeyword)) {
+                    return info;
+                }
+            } catch (Exception e) {
+                Dog.e(e.getMessage());
+            }
+        }
+        return new CustomClassFontInfo("");
     }
 
 
@@ -376,7 +444,7 @@ public class EntryView extends WebView implements Handler.Callback {
         // Text zoom level from preferences
         int fontSize = PrefUtils.getFontSize();
         if (fontSize != 0) {
-            getSettings().setTextZoom(100 + (fontSize * 20));
+            getSettings().setTextZoom(100 + (fontSize * 15));
         }
 
 
@@ -412,7 +480,7 @@ public class EntryView extends WebView implements Handler.Callback {
                                        long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS(title)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
+        StringBuilder content = new StringBuilder(GetCSS(title, link)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
 
         if (link == null) {
             link = "";
@@ -628,7 +696,7 @@ public class EntryView extends WebView implements Handler.Callback {
                             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                                 //Use super class to create the View
                                 View v = super.getView(position, convertView, parent);
-                                TextView tv = v.findViewById(android.R.id.text1);
+                                TextView tv = SetupTextView( v, android.R.id.text1);
 
                                 //Put the image on the TextView
                                 int dp50 = (int) (50 * getResources().getDisplayMetrics().density + 0.5f);
