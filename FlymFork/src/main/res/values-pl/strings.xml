@@ -534,6 +534,9 @@ GENERAL]]></string>
     <string name="yes_I_realize_btn_caption">Tak, zdaję sobie sprawę!</string>
     <string name="sorry_I_was_wrong_btn_caption">Ohh... to była pomyłka. Wypuść mnie stąd natychmiast!</string>
     <string name="create_backup">Utwórz kopię zapasową</string>
+    <string name="defaultFontFamily">Domyślne systemowe</string>
+    <string name="fontTextSample">Tekst</string>
+    <string name="fontFamily">Czcionka</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
