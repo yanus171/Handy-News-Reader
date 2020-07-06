@@ -133,7 +133,7 @@ GENERAL]]></string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
     <string name="web_page_search_duckduckgo">Szukaj w Sieci (Duck Duck Go)</string>
-    <string name="select_file">Wybierz plik z karty SD</string>
+    <string name="select_file">Wybierz plik (z folderu feedex w miejscu przechowywania danych)</string>
     <string name="question_delete_feed">Czy na pewno chcesz usunąć ten kanał?</string>
     <string name="question_delete_group">Czy na pewno chcesz usunąć tą grupę wraz z jej kanałami?</string>
     <string name="question_delete_filter">Czy na pewno chcesz usunąć ten filtr?</string>
@@ -537,6 +537,11 @@ GENERAL]]></string>
     <string name="defaultFontFamily">Domyślne systemowe</string>
     <string name="fontTextSample">Tekst</string>
     <string name="fontFamily">Czcionka</string>
+    <string name="fontFamilySummary">Dot. prawie całego tekstu w aplikacji. Możesz dodać pliki ttf niestandardowej czcionki w folderze sdcard/feedex/fonts</string>
+    <string name="settings_font_rules">Reguły czcionki</string>
+    <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - osobno dla pojedynczej domeny</string>
+    <string name="bold">Pogrubiona</string>
+    <string name="font_rules_dialog_title">site_url:class=Nazwa pliku czcionki=rozmiar czcionki=odstęp znaków=grubość</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
