@@ -132,7 +132,7 @@
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
     <string name="web_page_search_duckduckgo">Search the Web (DuckDuckGo)</string>
-    <string name="select_file">Select a file (SD-root)</string>
+    <string name="select_file">Select a file (from feedex folder from storage additional setting)</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
     <string name="question_delete_filter">Do you really want to delete this filter?</string>
@@ -548,8 +548,9 @@
     <string name="fontFamily">Font</string>
     <string name="fontFamilySummary">Of almost all texts in app. You can add custom font ttf files in sdcard/feedex/fonts storage folder</string>
     <string name="settings_font_rules">Font rules</string>
-    <string name="settings_font_rules_description">To set custom fonts for separate classes in article text</string>
+    <string name="settings_font_rules_description">To set custom fonts for separate classe in article texts per web page domain</string>
     <string name="bold">Bold</string>
+    <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

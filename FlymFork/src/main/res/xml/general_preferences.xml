@@ -706,7 +706,7 @@
                 android:key="font_rules"
                 android:inputType="text|textMultiLine"
                 android:defaultValue=""
-                android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
+                android:dialogTitle="@string/font_rules_dialog_title"
                 android:title="@string/settings_font_rules"
                 android:summary="@string/settings_font_rules_description"/>
 

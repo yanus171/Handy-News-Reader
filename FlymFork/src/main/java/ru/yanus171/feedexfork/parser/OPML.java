@@ -641,7 +641,7 @@ public class OPML {
                 @Override
                 public void onClick(DialogInterface dialog, final int which) {
                     AskQuestionForImport(activity, FileUtils.INSTANCE.getFolder().toString() + File.separator
-                                               + fileNames[which] );
+                                               + fileNames[which], false );
                 }
             });
             builder.show();
@@ -768,14 +768,14 @@ public class OPML {
     public static void OnActivityResult( Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_OPML_FILE) {
             if (resultCode == Activity.RESULT_OK) {
-                AskQuestionForImport(activity, data.getData().toString() );
+                AskQuestionForImport(activity, data.getData().toString(), true );
             } else {
                 displayCustomFilePicker( activity );
             }
         }
     }
 
-    public static void AskQuestionForImport(final Activity activity, final String fileName) {
+    public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
         new AlertDialog.Builder( activity )
             .setTitle( activity.getString( R.string.remove_existing_feeds_question ) )
             .setItems(new CharSequence[]{
@@ -790,19 +790,19 @@ public class OPML {
                             .setPositiveButton(R.string.yes_I_realize_btn_caption, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    StartServiceForImport( fileName, true );
+                                    StartServiceForImport( fileName, true, isFileNameUri );
                                 }
                             })
                             .setNegativeButton( R.string.sorry_I_was_wrong_btn_caption, null ).show();
 
                     else if ( i == 1  ) //cancel
-                        StartServiceForImport( fileName, false);
+                        StartServiceForImport( fileName, false, isFileNameUri);
                     dialogInterface.dismiss();
                 }
 
-                private void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds) {
+                private void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
                     FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_IMPORT )
-                                                    .putExtra( Constants.EXTRA_URI, fileName )
+                                                    .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
                                                     .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ));
                 }
             }).show();
