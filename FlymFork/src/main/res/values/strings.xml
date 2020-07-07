@@ -171,7 +171,7 @@
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
-    <string name="menu_delete_non_starred">Reset feed and delete non starred articles</string>
+    <string name="menu_delete_non_starred">Reset feed and delete non-starred articles</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
     <string name="menu_load_all_images">Load all images</string>
     <string name="menu_mark_as_favorite">Mark as Favorite</string>
@@ -519,7 +519,7 @@
     <string name="removeText">Remove text</string>
     <string name="set_category">Set as category</string>
     <string name="menu_more_options">More options</string>
-    <string name="reset_feed_and_delete_all_articles">Reset feed and delete all unstarred articles</string>
+    <string name="reset_feed_and_delete_all_articles">Reset feed and delete non-starred articles</string>
     <string name="filter_apply_to_author">Apply to author</string>
     <string name="filter_apply_to_category">Apply to category</string>
     <string name="filter_apply_to_url">Apply to URL</string>
