@@ -48,6 +48,7 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
 public class FontSelectPreference extends Preference {
 	private final static String Separator = "#";
@@ -173,7 +174,7 @@ public class FontSelectPreference extends Preference {
 
 		if ((getSummary() != null) && (getSummary().length() > 0)) {
 			TextView summary = new TextView(getContext());
-			summary.setText(getSummary());
+			summary.setText(getSummary() + " " + FileUtils.INSTANCE.getFontsFolder().getPath() );
 			vLayout.addView(summary);
 		}
 
