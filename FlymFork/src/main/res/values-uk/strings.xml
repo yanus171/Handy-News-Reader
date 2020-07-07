@@ -528,10 +528,14 @@
     <string name="yes_I_realize_btn_caption">Так, зрозуміло!</string>
     <string name="sorry_I_was_wrong_btn_caption">Ооо... помилка. Заберить мене звідси!</string>
     <string name="create_backup">Створити резервну копію</string>
+    <string name="defaultFontFamily">За замовчуванням</string>
     <string name="fontTextSample">Текст</string>
     <string name="fontFamily">Шрифт</string>
-    <string name="fontFamilySummary">Шрифт майже для всіх текстів в програмі. Ви можете додати користувацькі ttf файли шрифтів у теку: </string>
+    <string name="fontFamilySummary">Шрифт майже для всіх текстів в додатку. Ви можете додати власні ttf файли шрифтів у теку: </string>
+    <string name="settings_font_rules">Правила шрифту</string>
+    <string name="settings_font_rules_description">Щоб встановити власний шрифт для окремого класу в тексті статі на домен веб-сторінки</string>
     <string name="bold">Жирний</string>
+    <string name="font_rules_dialog_title">site_url:class=Файл шрифту name=шрифт size=літера spacing=вага шрифту</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
