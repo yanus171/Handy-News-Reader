@@ -535,6 +535,9 @@
     <string name="fontFamily">Police</string>
     <string name="fontFamilySummary">Famille de polices de presque tous les textes de l\'application. Vous pouvez ajouter des fichiers ttf personnalisés dans le dossier : </string>
     <string name="settings_font_rules">Règles des polices</string>
+    <string name="settings_font_rules_description">Pour définir des polices par classe séparée dans les textes d\'article par domaine de page web</string>
+    <string name="bold">Gras</string>
+    <string name="font_rules_dialog_title">site_url:class=Fichier de police nom=police taille=lettre espacement=poids de la police</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
