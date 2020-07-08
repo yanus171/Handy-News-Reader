@@ -530,6 +530,11 @@
     <string name="yes_I_realize_btn_caption">Oui, je me rends compte !</string>
     <string name="sorry_I_was_wrong_btn_caption">Ohh... Je me suis trompé. Sortez moi vite d\'ici !</string>
     <string name="create_backup">Créer une sauvegarde</string>
+    <string name="defaultFontFamily">Par défaut</string>
+    <string name="fontTextSample">Texte</string>
+    <string name="fontFamily">Police</string>
+    <string name="fontFamilySummary">Famille de polices de presque tous les textes de l\'application. Vous pouvez ajouter des fichiers ttf personnalisés dans le dossier : </string>
+    <string name="settings_font_rules">Règles des polices</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
