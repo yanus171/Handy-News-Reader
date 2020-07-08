@@ -106,6 +106,7 @@ public class AutoJobService extends JobService {
     private static final int AUTO_BACKUP_JOB_ID = 3;
     private static final int AUTO_UPDATE_JOB_ID = 1;
     private static final int DELETE_OLD_JOB_ID = 4;
+    final static long DEFAULT_INTERVAL = 3600L * 1000 * 24;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static void initAutoJob(Context context,
@@ -114,7 +115,6 @@ public class AutoJobService extends JobService {
                                     final int jobID,
                                     boolean requiresNetwork,
                                     boolean requiresCharging) {
-        final long DEFAULT_INTERVAL = 3600L * 1000 * 24;
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
         final long lastInterval = getTimeIntervalInMSecs(LAST + keyInterval, DEFAULT_INTERVAL);
@@ -127,7 +127,7 @@ public class AutoJobService extends JobService {
         }
 
         if ( PrefUtils.getBoolean( keyEnabled, true )  ) {
-            if (lastInterval != currentInterval ||
+            if ( lastInterval != currentInterval ||
                     currentTime - lastJobOccured > currentInterval ||
                     GetPendingJobByID(jobScheduler, jobID) == null ||
                     GetPendingJobByID(jobScheduler, jobID).isRequireCharging() != requiresCharging ) {
@@ -181,12 +181,29 @@ public class AutoJobService extends JobService {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
+        String keyInterval = "";
         if ( jobParameters.getJobId() == AUTO_BACKUP_JOB_ID )
-            ExecuteAutoBackup();
-        if ( jobParameters.getJobId() == DELETE_OLD_JOB_ID )
-            ExecuteDeleteOld();
+            keyInterval = AUTO_BACKUP_INTERVAL;
         else if ( jobParameters.getJobId() == AUTO_UPDATE_JOB_ID )
-            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_REFRESH ) );
+            keyInterval = REFRESH_INTERVAL;
+        else if ( jobParameters.getJobId() == DELETE_OLD_JOB_ID )
+            keyInterval = DELETE_OLD_INTERVAL;
+        final long currentTime = System.currentTimeMillis();
+        final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+        long lastJobOccured = 0;
+        try {
+            lastJobOccured = PrefUtils.getLong(LAST_JOB_OCCURED + keyInterval, 0 );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        if ( currentTime - lastJobOccured > currentInterval ) {
+            if (jobParameters.getJobId() == AUTO_BACKUP_JOB_ID)
+                ExecuteAutoBackup();
+            else if (jobParameters.getJobId() == DELETE_OLD_JOB_ID)
+                ExecuteDeleteOld();
+            else if (jobParameters.getJobId() == AUTO_UPDATE_JOB_ID)
+                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH));
+        }
         return false;
     }
 

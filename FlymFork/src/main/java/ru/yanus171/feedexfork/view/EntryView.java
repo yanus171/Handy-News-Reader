@@ -740,15 +740,15 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
+                StatusStartPageLoading();
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 if (!mLoadTitleOnly)
                     mContentWasLoaded = true;
-                else
-                    EndStatus();
+                //else
+                //    EndStatus();
                 //if ( mActivity.mEntryFragment.getCurrentEntryID() == mEntryId )
                     StatusStartPageLoading();
                 ScheduleScrollTo(view);
@@ -943,8 +943,8 @@ public class EntryView extends WebView implements Handler.Callback {
         synchronized (EntryView.this) {
             if (mStatus == 0) {
                 mStatus = FetcherService.Status().Start(R.string.web_page_loading, true);
-                UiUtils.RemoveFromGuiThread( EndStatusRunnable );
-                UiUtils.RunOnGuiThread( EndStatusRunnable, 5000 );
+                //UiUtils.RemoveFromGuiThread( EndStatusRunnable );
+                //UiUtils.RunOnGuiThread( EndStatusRunnable, 5000 );
             }
         }
     }

@@ -1692,6 +1692,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
             }
         };
+        view.StatusStartPageLoading();
         return view;
     }
 
