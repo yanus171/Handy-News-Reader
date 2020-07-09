@@ -344,7 +344,7 @@
     <string name="parseXml">Parsing XML</string>
     <string name="setupConnection">Setup connection</string>
     <string name="settings_fulltext_extract_rules">Full text</string>
-    <string name="settings_content_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
+    <string name="settings_fulltext_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_category_extract_rules">Category</string>
     <string name="settings_category_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_date_extract_rules_description">Set for each site (base HTML knowledge needed)</string>

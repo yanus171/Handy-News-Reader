@@ -648,7 +648,7 @@
             android:defaultValue="@string/full_text_root_default"
             android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
             android:title="@string/settings_fulltext_extract_rules"
-            android:summary="@string/settings_content_extract_rules_description"/>
+            android:summary="@string/settings_fulltext_extract_rules_description"/>
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="global_class_list_to_remove_from_article_text"
             android:title="@string/global_class_list_to_remove_from_article_text"

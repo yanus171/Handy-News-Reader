@@ -78,6 +78,8 @@
    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">έκδοση</string>
+    <string name="about_handy_news_reader">Σχετικά με το Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">Άδειες, υποστήριξη, μεταφράσεις κλπ.</string>
     <string name="welcome_title">Καλώς ήρθατε στο Handy News Reader. Θα θέλατε να προσθέσετε μια Ροή;</string>
     <string name="never">ποτέ</string>
     <string name="last_update">Ενημέρωση</string>
@@ -100,6 +102,7 @@
     <string name="new_feed_title">Νέα Ροή</string>
     <string name="context_menu_edit">Επεξεργασία</string>
     <string name="menu_add_group">Προσθήκη ομάδας</string>
+    <string name="menu_import_export">Εξαγωγή και εισαγωγή</string>
     <string name="menu_import">Εισαγωγή από αρχείο OPML</string>
     <string name="menu_export">Εξαγωγή σε αρχείο OPML</string>
     <string name="storage_request_explanation">Για να μπορέσετε να εισάγετε ή να εξάγετε τις Ροές σας από/σε αρχείο, πρέπει να επιτρέψετε την πρόσβαση της εφαρμογής στη μνήμη της συσκευής σας.</string>
@@ -263,6 +266,9 @@
     <string name="underline_links">Υπογράμμιση συνδέσμων</string>
     <string name="article_text_show_clock">Εμφάνιση ρολογιού</string>
     <string name="article_text_show_clock_description">Εμφανίζει την ώρα πάνω δεξιά στην λειτουργία πλήρους οθόνης</string>
+    <string name="settings_informations_size">Μέγεθος κειμένου και επιπλέον πληροφορίες</string>
+    <string name="article_text_information_color">Πληροφορίες για το χρώμα και το φόντο του κειμένου</string>
+    <string name="article_text_information_color_descr">Χρώμα και φόντο των επιπλέον πληροφοριών στη κεφαλίδα της σελίδας</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Μπάρα προόδου διαβάσματος</string>
@@ -324,7 +330,9 @@
     <string name="parseXml">Ανάλυση XML</string>
     <string name="setupConnection">Ρύθμιση σύνδεσης</string>
     <string name="settings_fulltext_extract_rules">Εξαγωγή κανόνων περιεχομένου</string>
-    <string name="settings_content_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
+    <string name="settings_fulltext_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
+    <string name="settings_category_extract_rules">Κατηγορίες κανόνων εξαγωγής</string>
+    <string name="settings_category_extract_rules_description">Ορισμός για κάθε ιστοσελίδα (απαιτούνται βασικές γνώσεις HTML)</string>
     <string name="settings_tap_zones_dialogtitle">μόνο για ενημέρωσή σας, δεν γίνονται αλλαγές</string>
     <string name="downloadNext">"Λήψη κειμένου "</string>
     <string name="downloadAll">", Όλα"</string>
@@ -486,12 +494,25 @@
     <string name="reading_notification_descr">Μόνιμη ειδοποίηση στη γραμμή κατάστασης για να μη κλείσει η εφαρμογή από το σύστημα - θα φορτώσει πιο γρήγορα μετά από πολλή ώρα</string>
     <string name="feed_list_loading">Η λίστα ροών φορτώθηκε</string>
     <string name="article_text_show_battery">Εμφάνιση επιπέδου μπαταρίας</string>
+    <string name="article_text_show_battery_description">Απεικονίζει το επίπεδο μπαταρίας άνω αριστερά όταν είναι η πλήρης οθόνη ενεργή</string>
     <string name="settings_category_header_descr">Για το κείμενο του άρθρου και τη λίστα των άρθρων</string>
     <string name="article_text_buttons_layout">Διάταξη πληκτρων</string>
     <string name="article_text_buttons_layout_descr">Προσανατολισμός και εμφάνιση των κουμπιών στο τέλος του άρθρου</string>
     <string name="article_reading_notification_hint">Διατήρηση της εφαρμογής στη μνήμη ενώ διαβάζετε ένα άρθρο</string>
     <string name="auto_set_as_read">Αυτόματος ορισμός του άρθρου ως διαβασμένο όταν ο τίτλος του είναι στην ορατή λίστα</string>
     <string name="removeText">Κατάργηση κειμένου</string>
+    <string name="set_category">Ορισμός ως κατηγορία</string>
+    <string name="menu_more_options">Περισσότερες επιλογές</string>
+    <string name="reset_feed_and_delete_all_articles">Επαναφορά ροών και διαγραφή όλων των άρθρων χωρίς αστέρι</string>
+    <string name="filter_apply_to_author">Εφαρμογή ανά συγγραφέα</string>
+    <string name="filter_apply_to_category">Εφαρμογή ανά κατηγορία</string>
+    <string name="filter_apply_to_url">Εφαρμογή ανά URL</string>
+    <string name="open_tag_menu_hint">Επιλέξτε ένα μέρος του URL για να χρησιμοποιηθεί ως κανόνας</string>
+    <string name="open_tag_menu_dialog_title">"Ρύθμιση κανόνα για την κλάση "</string>
+    <string name="show_article_category">"Προβολή κατηγορίας άρθρου"</string>
+    <string name="article_text_information">Κεφαλίδα επιπλέον πληροφορίας</string>
+    <string name="article_text_progress">Γραμμή προόδου διαβάσματος στην κεφαλίδα</string>
+    <string name="global_removeText_filter_rule_descr">Κανονική έκφραση (RegEx μία ανά γραμμή) εφαρμόζεται σε οποιοδήποτε περιεχόμενο άρθρου</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
