@@ -321,8 +321,6 @@
     <string name="improveHtmlContent">HTML edukia hobetzen</string>
     <string name="parseXml">XML-a prozesatzen</string>
     <string name="setupConnection">Ezarri konexioa</string>
-    <string name="settings_content_extract_rules">Edukia erauzteko arauak</string>
-    <string name="settings_content_extract_rules_description">Ezarri gune bakoitzeko (HTML jakin behar da)</string>
     <string name="settings_tap_zones_dialogtitle">informaziorako bakarrik, aldaketak ez eskuragarri</string>
     <string name="downloadNext">"Deskargatu hurrengoa "</string>
     <string name="downloadAll">", Denak"</string>
