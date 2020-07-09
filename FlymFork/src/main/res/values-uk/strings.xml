@@ -328,7 +328,7 @@
     <string name="improveHtmlContent">Оптимізація HTML тексту</string>
     <string name="parseXml">Розбір XML</string>
     <string name="setupConnection">Налагодження з’єднання</string>
-    <string name="settings_content_extract_rules">Правила пошуку повних текстів</string>
+    <string name="settings_fulltext_extract_rules">Правила пошуку повних текстів</string>
     <string name="settings_content_extract_rules_description">Встановлюються для кожного сайту (необхідні базові знання HTML)</string>
     <string name="settings_category_extract_rules">Правила видобування категорій</string>
     <string name="settings_category_extract_rules_description">Встановлюються для кожного сайту (потрібні базові знання HTML)</string>

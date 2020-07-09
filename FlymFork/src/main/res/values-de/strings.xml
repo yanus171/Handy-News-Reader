@@ -331,7 +331,7 @@
     <string name="improveHtmlContent">HTML-Inhalt verbessern</string>
     <string name="parseXml">XML analysieren</string>
     <string name="setupConnection">Verbindung einstellen</string>
-    <string name="settings_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
+    <string name="settings_fulltext_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_content_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
     <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>

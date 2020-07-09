@@ -323,7 +323,7 @@
     <string name="improveHtmlContent">Βελτίωση περιεχομένου HTML</string>
     <string name="parseXml">Ανάλυση XML</string>
     <string name="setupConnection">Ρύθμιση σύνδεσης</string>
-    <string name="settings_content_extract_rules">Εξαγωγή κανόνων περιεχομένου</string>
+    <string name="settings_fulltext_extract_rules">Εξαγωγή κανόνων περιεχομένου</string>
     <string name="settings_content_extract_rules_description">Ρύθμιση για κάθε ιστοσελίδα (χρειάζεται γνώση HTML)</string>
     <string name="settings_tap_zones_dialogtitle">μόνο για ενημέρωσή σας, δεν γίνονται αλλαγές</string>
     <string name="downloadNext">"Λήψη κειμένου "</string>

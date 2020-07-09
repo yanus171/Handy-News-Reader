@@ -323,7 +323,7 @@
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
-    <string name="settings_content_extract_rules">قواعد إستخراج المحتوى</string>
+    <string name="settings_fulltext_extract_rules">قواعد إستخراج المحتوى</string>
     <string name="settings_content_extract_rules_description">تعيين لكل موقع (يلزم معرفة HTML الأساسية)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
     <string name="downloadNext">"، التَّالِي "</string>

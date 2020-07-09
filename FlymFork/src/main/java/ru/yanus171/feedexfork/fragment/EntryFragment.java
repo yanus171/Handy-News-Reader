@@ -1071,7 +1071,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             webViewHeight = entryView.getMeasuredHeight();
             contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
         }
-        BaseActivity.UpdateFooter(mProgressBar,
+        BaseActivity.UpdateFooter( mProgressBar,
                                       contentHeight - webViewHeight,
                                       entryView == null ? 0 : entryView.getScrollY(),
                                       mLabelClock,
