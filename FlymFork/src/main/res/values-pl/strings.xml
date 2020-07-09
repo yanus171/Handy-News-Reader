@@ -334,7 +334,9 @@ GENERAL]]></string>
     <string name="improveHtmlContent">Udoskonalanie treści HTML</string>
     <string name="parseXml">Parsowanie XML</string>
     <string name="setupConnection">Ustaw połączenie</string>
-    <string name="settings_category_extract_rules">Reguły pozyskiwania kategorii</string>
+    <string name="settings_fulltext_extract_rules">Pełny tekst</string>
+    <string name="settings_fulltext_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
+    <string name="settings_category_extract_rules">Kategoria</string>
     <string name="settings_category_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
     <string name="settings_date_extract_rules_description">Ustaw dla każdej strony (potrzebna podstawowa znajomość HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
@@ -410,7 +412,7 @@ GENERAL]]></string>
     <string name="text">Tekst</string>
     <string name="background1">Tło</string>
     <string name="auto_refresh_requires_charging">Tylko podczas ładowania urządzenia</string>
-    <string name="global_class_list_to_remove_from_article_text">Reguły usuwania treści</string>
+    <string name="global_class_list_to_remove_from_article_text">Usuń tekst</string>
     <string name="global_class_list_to_remove_from_article_text_summary">każda nazwa klasy w osobnej linii</string>
     <string name="global_date_class_list_summary">Nazwa klasy na linię. Elementy o tych klasach są uznawane za datę artykułu podczas trybu wczytywania Strona Internetowa - Linki</string>
     <string name="hide">Ukryj</string>
@@ -542,6 +544,15 @@ GENERAL]]></string>
     <string name="font_rules_dialog_title">site_url:class=Nazwa pliku czcionki=rozmiar czcionki=odstęp znaków=grubość</string>
     <string name="settings_main_image_extract_rules">Reguły pozyskiwania głównego zdjęcia</string>
     <string name="settings_main_image_extract_rules_description">"Nazwa klasy dla obrazka artykułu (zamiast og:image) dla pojedynczej domeny "</string>
+    <string name="settings_category_content_extract_rules">Reguły pozyskiwania treści</string>
+    <string name="settings_category_content_extract_rules_summary">Nazwy klas HTML pomocne w lokalizacji różnych części artykułu. Część tych ustawień jest automatycznie aktualizowana w trybie Edycji Treści</string>
+    <string name="settings_category_other">Inne</string>
+    <string name="settings_category_storage">Pamięć</string>
+    <string name="settings_category_autobackup">Automatyczna kopia zapasowa</string>
+    <string name="settings_show_circle_progress">Pokaż kółko postępu</string>
+    <string name="settings_show_circle_progress_summary">Podczas gdy aplikacja korzysta z CPU</string>
+    <string name="kilobytes">kB</string>
+    <string name="megabytes">MB</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
