@@ -328,8 +328,6 @@
     <string name="improveHtmlContent">Perfezionamento del contenuto HTML</string>
     <string name="parseXml">Analisi XML</string>
     <string name="setupConnection">Configurazione connessione</string>
-    <string name="settings_content_extract_rules">Regole estrattore contenuto</string>
-    <string name="settings_content_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
     <string name="settings_category_extract_rules">Regole di estrazione categoria</string>
     <string name="settings_category_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
     <string name="settings_date_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
