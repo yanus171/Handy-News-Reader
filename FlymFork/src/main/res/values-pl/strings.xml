@@ -171,7 +171,7 @@ GENERAL]]></string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
     <string name="menu_copy_clipboard">Kopiuj link do schowka</string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
-    <string name="menu_delete_non_starred">Usuń niezagwiazdkowane</string>
+    <string name="menu_delete_non_starred">Resetuj kanał i usuń niezagwiazdkowane</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
     <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
     <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
@@ -400,7 +400,7 @@ GENERAL]]></string>
     <string name="importingFromFile">Import z pliku</string>
     <string name="autobackup_interval">Przedział czasowy automatycznej kopii zapasowej</string>
     <string name="autobackup_interval_descr">Jak często będzie wykonywana kopia zapasowa źródeł oraz artykułów </string>
-    <string name="create_auto_backup">Utwórz kopię zapasową</string>
+    <string name="create_auto_backup">Utwórz kopię zapasową teraz</string>
     <string name="auto_backup_opml_file_created">Kopia zapasowa utworzona w pliku .opml:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
@@ -533,7 +533,7 @@ GENERAL]]></string>
     <string name="remove_existing_feeds_confirmation">Zostaną usunięte WSZYSTKIE istniejące artykuły z WSZYSTKICH kanałów (poza „Przeczytaj Później”), nawet zagwiazdkowane. Czy na pewno?</string>
     <string name="yes_I_realize_btn_caption">Tak, zdaję sobie sprawę!</string>
     <string name="sorry_I_was_wrong_btn_caption">Ohh... to była pomyłka. Wypuść mnie stąd natychmiast!</string>
-    <string name="create_backup">Utwórz kopię zapasową</string>
+    <string name="create_backup">Utwórz osobny plik kopii zapasowej</string>
     <string name="defaultFontFamily">Domyślne systemowe</string>
     <string name="fontTextSample">Tekst</string>
     <string name="fontFamily">Czcionka</string>
@@ -542,6 +542,8 @@ GENERAL]]></string>
     <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - osobno dla pojedynczej domeny</string>
     <string name="bold">Pogrubiona</string>
     <string name="font_rules_dialog_title">site_url:class=Nazwa pliku czcionki=rozmiar czcionki=odstęp znaków=grubość</string>
+    <string name="settings_main_image_extract_rules">Reguły pozyskiwania głównego zdjęcia</string>
+    <string name="settings_main_image_extract_rules_description">"Nazwa klasy dla obrazka artykułu (zamiast og:image) dla pojedynczej domeny "</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
