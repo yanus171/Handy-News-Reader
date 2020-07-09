@@ -334,8 +334,6 @@ GENERAL]]></string>
     <string name="improveHtmlContent">Udoskonalanie treści HTML</string>
     <string name="parseXml">Parsowanie XML</string>
     <string name="setupConnection">Ustaw połączenie</string>
-    <string name="settings_content_extract_rules">Reguły pozyskiwania treści</string>
-    <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
     <string name="settings_category_extract_rules">Reguły pozyskiwania kategorii</string>
     <string name="settings_category_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
     <string name="settings_date_extract_rules_description">Ustaw dla każdej strony (potrzebna podstawowa znajomość HTML)</string>
