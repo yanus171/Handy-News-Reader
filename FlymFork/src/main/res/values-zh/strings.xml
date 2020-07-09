@@ -538,6 +538,16 @@
     <string name="bold">粗体</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
     <string name="settings_main_image_extract_rules">主图片</string>
+    <string name="settings_main_image_extract_rules_description">"类名称，用于在每个网络域中找到文章主图像以用作文章图标并将其插入文章开头(而不是og：image)。如果文章图像在全文文章部分之外，这可能会有所帮助 "</string>
+    <string name="settings_category_content_extract_rules">内容提取规则</string>
+    <string name="settings_category_content_extract_rules_summary">帮助寻找不同文章部分的HTML类名称。其中一些设置在文章编辑内容查看模式下自动更新</string>
+    <string name="settings_category_other">其他</string>
+    <string name="settings_category_storage">存储</string>
+    <string name="settings_category_autobackup">自动备份</string>
+    <string name="settings_show_circle_progress">显示圆圈进度</string>
+    <string name="settings_show_circle_progress_summary">在应用程序 CPU 活动期间</string>
+    <string name="kilobytes">KB</string>
+    <string name="megabytes">MB</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
