@@ -515,7 +515,7 @@
     <string name="article_text_buttons_layout">Button layout</string>
     <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
     <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
-    <string name="auto_set_as_read">Auto set the article as read when its title was visible in list</string>
+    <string name="auto_set_as_read">Auto set the article as read once its title has been visible on the list</string>
     <string name="removeText">Remove text</string>
     <string name="set_category">Set as category</string>
     <string name="menu_more_options">More options</string>
