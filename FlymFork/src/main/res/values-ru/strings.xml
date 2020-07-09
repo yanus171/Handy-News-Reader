@@ -129,7 +129,7 @@
     <string name="reject">Не загружать</string>
     <string name="feed_search">Поиск лент</string>
     <string name="web_page_search_duckduckgo">Веб поиск статьи (Duck Duck Go)</string>
-    <string name="select_file">Выбрать файл из директории: </string>
+    <string name="select_file">Выбрать файл (корень SD-карты)</string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
     <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее ленты?</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
@@ -329,8 +329,6 @@
     <string name="improveHtmlContent">Оптимизация текста</string>
     <string name="parseXml">Разбор XML</string>
     <string name="setupConnection">Установка соединения</string>
-    <string name="settings_content_extract_rules">Правила поиска полных текстов</string>
-    <string name="settings_content_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
     <string name="settings_category_extract_rules">Правила извлечения категорий</string>
     <string name="settings_category_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
