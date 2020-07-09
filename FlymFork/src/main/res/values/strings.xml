@@ -552,9 +552,9 @@
     <string name="bold">Bold</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
     <string name="settings_main_image_extract_rules">Main image</string>
-    <string name="settings_main_image_extract_rules_description">"Class name where to find article main image to use it as article icon and to insert it ni the beginning of the article(instead of og:image) per web domain. This can helps if the article image is outside of the full text article section "</string>
+    <string name="settings_main_image_extract_rules_description">"Class name where to find article main image to use it as article icon and to insert it im the beginning of the article (instead of og:image) per web domain. This can helps if the article image is outside of the full text article section "</string>
     <string name="settings_category_content_extract_rules">Content extract rules</string>
-    <string name="settings_category_content_extract_rules_summary">The html class names to help the to find different article parts. Some of these settings automatically updated in article edit content view mode</string>
+    <string name="settings_category_content_extract_rules_summary">The HTML class names to help the to find different article parts. Some of these settings automatically updated in article edit content view mode</string>
     <string name="settings_category_other">Other</string>
     <string name="settings_category_storage">Storage</string>
     <string name="settings_category_autobackup">Auto backup</string>
