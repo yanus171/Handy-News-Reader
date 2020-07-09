@@ -82,7 +82,7 @@ GENERAL]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
     <string name="about_handy_news_reader">O Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">Licencja, pomoc oraz jak skontaktować się z deweloperem </string>
+    <string name="about_handy_news_reader_descr">Licencja, wsparcie, tłumaczenia, itp.</string>
     <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
     <string name="last_update">Aktualizacja</string>
@@ -133,7 +133,7 @@ GENERAL]]></string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
     <string name="web_page_search_duckduckgo">Szukaj w Sieci (Duck Duck Go)</string>
-    <string name="select_file">Wybierz plik z karty SD</string>
+    <string name="select_file">Wybierz plik (z folderu feedex w miejscu przechowywania danych)</string>
     <string name="question_delete_feed">Czy na pewno chcesz usunąć ten kanał?</string>
     <string name="question_delete_group">Czy na pewno chcesz usunąć tą grupę wraz z jej kanałami?</string>
     <string name="question_delete_filter">Czy na pewno chcesz usunąć ten filtr?</string>
@@ -171,7 +171,7 @@ GENERAL]]></string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
     <string name="menu_copy_clipboard">Kopiuj link do schowka</string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
-    <string name="menu_delete_non_starred">Usuń niezagwiazdkowane</string>
+    <string name="menu_delete_non_starred">Resetuj kanał i usuń niezagwiazdkowane</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
     <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
     <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
@@ -338,6 +338,7 @@ GENERAL]]></string>
     <string name="settings_content_extract_rules_description">Ustaw dla poszczególnych witryn (potrzebujesz podstawowej wiedzy o HTML)</string>
     <string name="settings_category_extract_rules">Reguły pozyskiwania kategorii</string>
     <string name="settings_category_extract_rules_description">Ustaw dla każdej strony (wymagana podstawowa znajomość HTML)</string>
+    <string name="settings_date_extract_rules_description">Ustaw dla każdej strony (potrzebna podstawowa znajomość HTML)</string>
     <string name="settings_tap_zones_dialogtitle">tylko informacyjnie, modyfikowanie niedostępne</string>
     <string name="downloadNext">", Następny "</string>
     <string name="downloadAll">", Wszystko"</string>
@@ -399,7 +400,7 @@ GENERAL]]></string>
     <string name="importingFromFile">Import z pliku</string>
     <string name="autobackup_interval">Przedział czasowy automatycznej kopii zapasowej</string>
     <string name="autobackup_interval_descr">Jak często będzie wykonywana kopia zapasowa źródeł oraz artykułów </string>
-    <string name="create_auto_backup">Utwórz kopię zapasową</string>
+    <string name="create_auto_backup">Utwórz kopię zapasową teraz</string>
     <string name="auto_backup_opml_file_created">Kopia zapasowa utworzona w pliku .opml:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
@@ -413,6 +414,7 @@ GENERAL]]></string>
     <string name="auto_refresh_requires_charging">Tylko podczas ładowania urządzenia</string>
     <string name="global_class_list_to_remove_from_article_text">Reguły usuwania treści</string>
     <string name="global_class_list_to_remove_from_article_text_summary">każda nazwa klasy w osobnej linii</string>
+    <string name="global_date_class_list_summary">Nazwa klasy na linię. Elementy o tych klasach są uznawane za datę artykułu podczas trybu wczytywania Strona Internetowa - Linki</string>
     <string name="hide">Ukryj</string>
     <string name="show">Pokaż</string>
     <string name="setFullTextRoot">Wybierz źródło pełnego tekstu</string>
@@ -487,7 +489,7 @@ GENERAL]]></string>
     <string name="menu_show_entry_text">Tekst artykułu</string>
     <string name="read_more">Czytaj więcej …</string>
     <string name="cant_open_image">Nie można otworzyć obrazka</string>
-    <string name="parsing_one_web_page">Przetwarzanie strony</string>
+    <string name="parsing_one_web_page">Strona</string>
     <string name="end_editing">Koniec edycji</string>
     <string name="open_article">Otwórz artykuł</string>
     <string name="search_in_browser">Szukaj w przeglądarce</string>
@@ -518,6 +520,30 @@ GENERAL]]></string>
     <string name="article_text_information">Dodatkowe informacje w nagłówku</string>
     <string name="article_text_progress">Pasek postępu lektury w nagłówku</string>
     <string name="global_removeText_filter_rule_descr">Wyrażenie regularne (po jednym w jednej linii) stosowane do treści artykułu</string>
+    <string name="parsing_web_page_links">Strona</string>
+    <string name="global_date_class_list">Lista klas daty</string>
+    <string name="settings_date_extract_rules">Zasady pozyskiwania daty</string>
+    <string name="set_date">Ustaw jako datę</string>
+    <string name="clearingWebViewChache">Czyszczenie pamięci podręcznej WebView</string>
+    <string name="article_text_show_date">Pokaż datę</string>
+    <string name="article_text_show_date_description">Dzień miesiąca i tygodnia</string>
+    <string name="remove_existing_feeds_question">Usunąć istniejące kanały przed importem?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="remove_existing_feeds_confirmation">Zostaną usunięte WSZYSTKIE istniejące artykuły z WSZYSTKICH kanałów (poza „Przeczytaj Później”), nawet zagwiazdkowane. Czy na pewno?</string>
+    <string name="yes_I_realize_btn_caption">Tak, zdaję sobie sprawę!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh... to była pomyłka. Wypuść mnie stąd natychmiast!</string>
+    <string name="create_backup">Utwórz osobny plik kopii zapasowej</string>
+    <string name="defaultFontFamily">Domyślne systemowe</string>
+    <string name="fontTextSample">Tekst</string>
+    <string name="fontFamily">Czcionka</string>
+    <string name="fontFamilySummary">Dot. prawie całego tekstu w aplikacji. Możesz dodać pliki ttf niestandardowej czcionki w folderze sdcard/feedex/fonts</string>
+    <string name="settings_font_rules">Reguły czcionki</string>
+    <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - osobno dla pojedynczej domeny</string>
+    <string name="bold">Pogrubiona</string>
+    <string name="font_rules_dialog_title">site_url:class=Nazwa pliku czcionki=rozmiar czcionki=odstęp znaków=grubość</string>
+    <string name="settings_main_image_extract_rules">Reguły pozyskiwania głównego zdjęcia</string>
+    <string name="settings_main_image_extract_rules_description">"Nazwa klasy dla obrazka artykułu (zamiast og:image) dla pojedynczej domeny "</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>

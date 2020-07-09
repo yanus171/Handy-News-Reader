@@ -32,51 +32,54 @@
     <string name="about_us_content" translatable="true"><![CDATA[    <b><big>التَّرْخيصُ وَالمَعْلومَاتِ</big></b><br/>
     هٰذَا التَّطْبيقُ مَجّانيٌّ وَمَفْتوحُ المَصْدَرِ، بِإِمْكانِكَ إِعادَةُ تَوْزيعِهِ وَ/أَوْ تَعْديلِهِ، وَفْقًا لِشُروطِ رُخْصَةِ جِنُو العُموميَّةِ، عَلَى النَّحْوِ المَنْشورِ مِنْ قِبَلِ مُؤَسَّسَةِ البَرْمَجِيَّاتِ الحُرَّةِ، بِدْءًا مِنْ الإِصْدارِ الثّالِثِ مِنْ التَّرْخيصِ أَوْ الإِصْدَارَاتِ اللّاحِقَةِ (حَسَبَ اخْتيارِكَ). إِطَّلِعْ عَلَى http://www.gnu.org/licenses<br/>
     <br/>
-    يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى \'Flym RSS Reader\'، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:<br/>
+    يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى 'Flym RSS Reader'، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:<br/>
     <br/>
-    • إمْكانيَةُ تَوْسيعِ المَجْموعاتِ<br/>
+    • إمْكانيَةُ تَوْسِعَةِ المَجْموعاتِ<br/>
     • عَرْضُ المَقَالَاتِ بِمِلْءِ الشّاشَةِ تَمَامًا<br/>
     • حَدٌّ أَقْصَى لِحَجْمِ الصّورَةِ لِحَدِّ أَقْصَى لِعَدَدِ الصّوَرِ فِي تَحْمِيلَاتِ التَّغْذِيَةِ<br/>
-    • القُدْرَةُ عَلَى الْغَاءِ عَمَليَّةِ التَحيَّينِ<br/>
-    • وَأَكْثَرُ مِنْ ذَلِكَ بِكَثِيرٍ<br/>
+    • القُدْرَةُ عَلَى إلْغاءِ عَمَليَّةِ التَحيَّينِ<br/>
+    • وَأَكْثَرُ مِنْ ذَلِكَ بِكَثيرٍ<br/>
     <br/>
     <b><big>تَفاصيلُ الوُصولِ</big></b>
     <br/>
-    • قُمْ بِزيارَةِ <a href="https://handynewsreader.blogspot.com">المَوْقِعِ الإِلِكْتِرونيِّ</a></b> لِلْحُصُولِ عَلَى الأَخْبارِ وَالمَعْلُوماتِ<br/>
-    • يُمْكِنُكَ تَنْزيلُ هٰذَا التَّطْبيقِ مِنْ <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
-    • وَكَذَلِكَ، بِإِمْكانِكَ تَنْزيلُ التَّطْبيقِ مِنْ <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
-    • أَيْضًا، هُنَالِكَ مَوْضوعٌ لِلتَّطْبِيقِ فِي <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
-    • يُمْكِنُكَ العُثورُ عَلَى شَفْرَةِ المَصْدَرِ فِي <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+    • قُمْ بِزيارَةِ <b><a href="https://handynewsreader.blogspot.com">المَوْقِعِ الإِلِكْتِرونيِّ</a></b> لِلْحُصُولِ عَلَى الأَخْبارِ وَالمَعْلُوماتِ<br/>
+    • يُمْكِنُكَ تَنْزيلُ التَّطْبيقِ مِنْ <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • وَكَذَلِكَ، بِإِمْكانِكَ تَنْزيلُ التَّطْبيقِ مِنْ <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • أَيْضًا، هُنَالِكَ مَوْضوعٌ لِلتَّطْبِيقِ فِي <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
+    • يُمْكِنُكَ العُثورُ عَلَى شَفْرَةِ المَصْدَرِ فِي <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
     <br/>
-    <b><big>دَعْمُنا</big></b>
+    <b><big>دَعْمُنا </big></b>
     <br/>
-    إِذَا واجِهَتْكَ مُشْكِلَةٌ فِي التَّطْبيقِ، فَمِن الأَفْضَلِ:<br/>
+   إِذَا واجِهَتْكَ مُشْكِلَةٌ فِي التَّطْبيقِ، فَمِن الأَفْضَلِ:<br/>
     • فَتْحُ قَضيَّةٌ فِي <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
-    • مُراسَلَةُ <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">المُطَوّر</a></b><br/>
+    • مُراسَلَةُ <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">المُطَوّر</a></b><br/>
     <br/>
     <b><big>دَعْمُكُمْ</big></b>
     <br/>
     إِذَا كَانَ لَدَيْكَ فِكْرَةٌ عَنْ ميزَةٍ جَديدَةٍ، يُمْكِنُكَ:<br/>
-    • مُشارَكَتُها مَعَنَا فِي <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
-    • مُراسَلَةُ<a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">المُطَوّر</a></b><br/>
+    • مُشارَكَتُها مَعَنَا فِي <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
+    • مُراسَلَةُ <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">المُطَوّر</a></b><br/>
     <br/>
-    <b>اذَا وَجَدَتَ هٰذَا التَّطْبيقُ مُفِيدًا ، فَيُرْجَى تَقْييمُهُ عَلَى <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <b>اذَا وَجَدَتَ التَّطْبيقُ مُفِيدًا، فَيُرْجَى تَقْييمُهُ عَلَى <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
     <br/>
-    <b><big>التَّرْجَمَاتُ</big></b>
+    <b><big>التَّرْجَمَاتُ </big></b>
     <br/>
     يُمْكِنُكَ المُساعَدَةُ فِي تَحْسينِ تَرْجَمَةِ التَّطْبيقِ عَلَى <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
     <br/>
     <b><big>الشُّكْرُ والتَّقْديرِ لـِ</big></b>
     <br/>
-    <b>المُطَوِّرُونَ:</b><br/>
+    <b>الْمُطَوِّرين:</b><br/>
     ***developerList***
     <br/>
-    <b>المُتَرْجِمُونَ:</b><br/>
+    <b>الْمُتَرْجِمين:</b><br/>
+    • ΛHMΞD (afmbsr)
     ***translatorList***
     <br/>
     ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
+    <string name="about_handy_news_reader">حَوْلَ Handy News Reader</string>
+    <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ، إِلَخْ.</string>
     <string name="welcome_title">مرحباً بك مع Handy News Reader. أتَرغَب بإضافة خلاصة؟</string>
     <string name="never">مُطْلَقًا</string>
     <string name="last_update">تَحْديث</string>
@@ -99,6 +102,7 @@
     <string name="new_feed_title">( إِشْتِرَاكٌ ، مَقالٌ ) جَديدٌ</string>
     <string name="context_menu_edit">تحرير</string>
     <string name="menu_add_group">إضافة مجموعة</string>
+    <string name="menu_import_export">التَّصْدِيرُ وَالْإِسْتِيرادُ</string>
     <string name="menu_import">جلب من .ملف opml</string>
     <string name="menu_export">تصدير إلى .ملف opml</string>
     <string name="storage_request_explanation">لكي تتمكن من جلب أو تصدير الخلاصات من أو إلى ملف، يتوجب عليك السماح للتطبيق بالوصول لذاكرة التخزين.</string>
@@ -119,19 +123,19 @@
     <string name="filter_delete_title">حذف قاعدة</string>
     <string name="filter_edit_title">تعديل قاعدة</string>
     <string name="filter_is_regex">&#8230;عبارةً عن تعبير منتظم</string>
-    <string name="filter_apply_to_title">تطبيق على عنوان المقال أو الرابط</string>
+    <string name="filter_apply_to_title">تَطْبيقٌ عَلَى عُنْوانِ المَقالِ</string>
     <string name="filter_apply_to_content">تطبيق على المحتوى</string>
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
     <string name="feed_search">نتائج البحث</string>
     <string name="web_page_search_duckduckgo">نَتائِجُ البَحْثِ</string>
-    <string name="select_file">حدّد ملفاً (من بطاقة SD)</string>
+    <string name="select_file">إِخْتَرْ مَلَفًّا</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
     <string name="question_delete_filter">هل حقاً تريد حدف هذا الفلتر؟</string>
     <string name="add_group_title">حدّد إسم المجموعة</string>
     <string name="edit_group_title">تعديل إسم المجموعة</string>
-    <string name="message_exported_to">تصديرها إلى %s.</string>
+    <string name="message_exported_to">تَمَّ التَّصْديرُ لـِ %s.</string>
     <string name="to_group_title">إجراءات تحريك الخلاصة</string>
     <string name="to_group_message">هل ترغب بوضع الخلاصة داخل أو خارج هذه المجموعة؟</string>
     <string name="to_group_above">خارج المجموعة</string>
@@ -163,7 +167,7 @@
     <string name="menu_font_bold">خَطٌّ سَميكٌ</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
     <string name="menu_cancel_refresh">إلغاء التحديث</string>
-    <string name="menu_delete_non_starred">حَذْفُ غَيْرُ المُمَيَّزَةِ</string>
+    <string name="menu_delete_non_starred">حَذْفُ غَيْرِ المُمَيَّزَةِ، وَإِعادَةُ التَّبدِئَةِ</string>
     <string name="menu_toogle_unread_all">غير المقروءة|الكل</string>
     <string name="menu_load_all_images">تحميل كل الصور</string>
     <string name="menu_mark_as_favorite">تحديده كمُميّز</string>
@@ -184,7 +188,7 @@
     <string name="download_and_save">تحميل وحفظ</string>
     <string name="open_link">فتح الرابط</string>
     <string name="tip_sentence">تلميح: إسحب لليمين للتحديد كمقروء، واسحب لليسار للإضافة إلى المُميّزة</string>
-    <string name="undo">تراجُع</string>
+    <string name="undo">تَراجُعٌ         </string>
     <string name="marked_as_read">تمَّ تحديد الكل كمقروء</string>
     <string name="image_count">عَدَدُ الصّوَرِ</string>
     <!-- WIDGET -->
@@ -263,9 +267,12 @@
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_show_clock">إِظْهارُ السّاعَةِ</string>
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
+    <string name="settings_informations_size">حَجْمُ النَّصِّ (الأَرْقامُ)</string>
+    <string name="article_text_information_color">لَوْنُ النَّصِّ (الأَرْقامُ) وَخَلْفيَّتُها</string>
+    <string name="article_text_information_color_descr">لَوْنُ أَرْقامِ (السّاعَةِ وَنِسْبَةُ البَطّاريَّةِ) وَخَلْفيَّتُهُمَا</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
+    <string name="article_text_show_progress">إِظْهارُ شَريطِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
     <string name="article_text_show_progress_descr">يَعْرِضُ نِسْبَةَ التَّقَدُّمِ اَلْمُحْرَزِ بِقِراءَةِ المَقالِ فِي الأَعْلَى</string>
     <string name="article_text_progress_height">سُمْكُ الشَّريطِ</string>
     <string name="article_text_progress_color">لَوْنُ الشَّريطِ</string>
@@ -324,7 +331,10 @@
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
     <string name="settings_content_extract_rules">قواعد إستخراج المحتوى</string>
-    <string name="settings_content_extract_rules_description">تعيين لكل موقع (يلزم معرفة HTML الأساسية)</string>
+    <string name="settings_content_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
+    <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
+    <string name="settings_category_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
+    <string name="settings_date_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
     <string name="downloadNext">"، التَّالِي "</string>
     <string name="downloadAll">"، الكُلُّ"</string>
@@ -364,7 +374,7 @@
     <string name="keyword">الكلمات الدلالية</string>
     <string name="loadTypeWeb"><b>صَفْحَةُ وِيبْ - رَوابِطُ</b> <font color="gray">(تَحْميلُ جَميعِ الرَّوابِطِ مِنْ الصَّفْحَةِ كَمَقالاتٍ مُخْتَلِفَةٍ)</font></string>
     <string name="loadTypeRSS"><b>آرْ إِسْ إِسْ</b> <font color="gray">(رابِطُ الخُلَاصَةِ أَوْ المَوْقِعِ، أَوْ الْإِسْمُ)</font></string>
-    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ </b> <font color="gray"> (DuckDuckGo - بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
+    <string name="loadTypeWebPageSearch"><b>البَحْثُ فِي الوِيبْ</b> <font color="gray"> (DuckDuckGo - بَحْثٌ عَنِ الْمَقَالِ الْمَطْلُوبِ وَتَحْمِيلِهِ)</font></string>
     <string name="loadTypeOneWebPage"><b>صَفْحَةُ وِيبْ - تَقْسيمٌ</b><font color="gray"> (تَقْسيمُ مُحْتَوَى صَفْحَةِ وِيبْ واحِدَةٌ لِعِدَّةِ مَقالاتٍ بِاسْتِخْدَامِ أَسْماءِ الفِئَاتِ لِعَلاماتِ الـ HTML)</font></string>
     <string name="loadType">نوع التحميل:</string>
     <string name="global_filter">الفلتر العام&#8230;</string>
@@ -389,7 +399,7 @@
     <string name="create_auto_backup">إنشاء نسخه إحتياطية</string>
     <string name="auto_backup_opml_file_created">تَمَّ إنشاء ملف .opml للنسخ الإحتياطي التلقائي:</string>
     <string name="use_standard_file_manager">إستخدام مدير الملفات القياسي</string>
-    <string name="use_standard_file_manager_descr">وبخلاف ذلك، حدد ملف .opml - من خارج مجلد feedex (عبر نافذة الحوار)</string>
+    <string name="use_standard_file_manager_descr">وَعِنْدَ التَّراجُعِ، إِخْتِرْ مَلَفّ . opml مِنْ خِلالِ نافِذَةِ الحِوارِ اَلَّتِي تَظْهَرُ تَالِيًا</string>
     <string name="settings">الإعدادات</string>
     <string name="entry_go_prev">المقال السابق</string>
     <string name="entry_go_next">المقال التالي</string>
@@ -400,6 +410,7 @@
     <string name="auto_refresh_requires_charging">أثناء الشحن فقط</string>
     <string name="global_class_list_to_remove_from_article_text">إزالة قواعد النص</string>
     <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
+    <string name="global_date_class_list_summary">إسْمُ الْفِئَةِ لِكُلِّ سَطْرٍ. تُعْتَبَرُ عَنَاصِرُ هَذِهِ الْفِئَاتِ تَارِيخًا لِلْمَقَالِ، فِي حَالِ كَانَ نَوْعُ التَّحْمِيلِ \"صَفْحَةُ وِيبْ - رَوابِطُ\"</string>
     <string name="hide">إخفاء</string>
     <string name="show">إظهار</string>
     <string name="setFullTextRoot">اختر كأصل النص الكامل</string>
@@ -413,7 +424,7 @@
     <string name="custom_data_folder">مسار الملفات الخارجية المخصصة</string>
     <string name="custom_data_folder_descr">(إستخدام مسار إفتراضي فارغ) لمجلد feedex، الذي يُخَزِّن الصور التي تم تنزيلها والنسخ الاحتياطية</string>
     <string name="entry_text_title_link">الرابط في عنوان المقال</string>
-    <string name="entry_text_title_link_description">يُتيحُ لكَ فتح صفحة المقال في المتصفح عندَ النقرِ على عنوان المقال</string>
+    <string name="entry_text_title_link_description">يَسْمَحُ لَكَ بِالنَّقْرِ عَلَى عُنْوانِ المَقالِ؛ لِلْفَتْحِ بِمُتَصَفِّحِ الوِيبْ - أَوْ القِراءَةُ لَاحِقًا بِمَقالاتِ الوِيبْ</string>
     <string name="delete_read_articles">حَذف المَقالات المَقروءة</string>
     <string name="delete_read_articles_descr">بِغَض النَظَر عَن فَترَة الإحتِفاظ بالمَقال</string>
     <string name="data_folder">مُجَلّد البَيانات</string>
@@ -474,7 +485,7 @@
     <string name="menu_show_entry_text">نَصُّ المَقالِ</string>
     <string name="read_more">قِراءَةُ المَزيدِ …</string>
     <string name="cant_open_image">يَتَعَذَّرُ فَتْحُ الصّورَةِ</string>
-    <string name="parsing_one_web_page">يَتِمُّ تَحْليلُ الصَّفْحَةِ</string>
+    <string name="parsing_one_web_page">الصَّفْحَةُ</string>
     <string name="end_editing">إِنْهاءُ الوَضْعِ</string>
     <string name="open_article">فَتْحُ المَقالِ</string>
     <string name="search_in_browser">البَحْثُ بِمُتَصَفِّحٍ آخَرَ</string>
@@ -486,12 +497,39 @@
     <string name="reading_notification_descr">إِشْعارٌ مُسْتَمِرٌّ بِشَريطِ الحالَةِ، لِمَنْعِ النِّظامِ مِنْ قَتْلِ التَّطْبيقِ - لِتَسْرِيعِ تَشْغيلِ التَّطْبيقِ بَعْدَ فَتْرَةِ تَأْخيرٍ طَويلَةٍ</string>
     <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
     <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
+    <string name="article_text_show_battery_description">عَرْضُ النِّسْبَةِ الحاليَّةِ لِلْبَطَّارِيَّةِ، بِالزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
     <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
     <string name="article_text_buttons_layout">تَخْطيطُ الزِرْ</string>
     <string name="article_text_buttons_layout_descr">النَّسَقُ والرُّؤْيَةُ لِلْأَزْرَارِ فِي نِهايَةِ المَقالِ</string>
     <string name="article_reading_notification_hint">لِلْحِفَاظِ عَلَى التَّطْبيقِ فِي الذّاكِرَةِ أَثْناءَ قِراءَةِ مَقالٍ</string>
     <string name="auto_set_as_read">تَحْديدُ المَقالِ تِلْقَائِيًّا كَمَقْروءٍ، عِنْدَمَا يَكونُ عُنْوانُهُ مَرْئِيًّا فِي القائِمَةِ</string>
     <string name="removeText">إِزالَةُ النَّصِّ</string>
+    <string name="set_category">تَحْديدُ كَتَصْنيفٍ</string>
+    <string name="menu_more_options">الْمَزِيدُ مِنَ الْخِيَارَاتِ</string>
+    <string name="reset_feed_and_delete_all_articles">حَذْفُ غَيْرُ المُمَيَّزَةِ وَإِعادَةُ التَّبدِئَةِ</string>
+    <string name="filter_apply_to_author">تَطْبيقٌ عَلَى المُؤَلِّفِ</string>
+    <string name="filter_apply_to_category">تَطْبيقٌ عَلَى التَّصْنيفِ</string>
+    <string name="filter_apply_to_url">تَطْبيقٌ عَلَى الرّابِطِ</string>
+    <string name="open_tag_menu_hint">إِخْتِيَارُ جُزْءٍ مِنَ الرّابِطِ، لِإِسْتِخْدَامِهِ كَمِفْتاحٍ لِلْقَاعِدَةِ</string>
+    <string name="open_tag_menu_dialog_title">"وَضْعُ قاعِدَةٍ لِلْفِئَةِ "</string>
+    <string name="show_article_category">"إِظْهارُ تَصْنيفُ المَقالِ"</string>
+    <string name="article_text_information">السّاعَةُ وَاَلْبَطّاريَّةُ</string>
+    <string name="article_text_progress">شَريطُ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
+    <string name="global_removeText_filter_rule_descr">الـ Regex (تَعْبيرٌ واحِدٌ لِكُلِّ سَطْرٍ) يُطَبَّقُ عَلَى كُلِّ مُحْتَوَى المَقالِ</string>
+    <string name="parsing_web_page_links">الصَّفْحَةُ</string>
+    <string name="global_date_class_list">قائِمَةُ فِئاتِ التّاريخِ</string>
+    <string name="settings_date_extract_rules">قَواعِدُ إِسْتِخْراجِ التّاريخِ</string>
+    <string name="set_date">تَعْيينُ كَتاريخٍ</string>
+    <string name="clearingWebViewChache">مَسْحُ ذَاكِرَةِ التَّخْزِينِ الْمُؤَقَّتْ لِلـ WebView</string>
+    <string name="article_text_show_date">إِظْهارُ التّاريخِ</string>
+    <string name="article_text_show_date_description">يَوْمُ الشَّهْرِ وَالْإِسْبُوعِ</string>
+    <string name="remove_existing_feeds_question">أَتُريدُ إِزالَةَ التَّغَذِيَاتِ الْحَالِيَّةِ، قَبْلَ الْإِسْتيرادِ؟</string>
+    <string name="yes">نَعَمْ</string>
+    <string name="no">كَلًّا</string>
+    <string name="remove_existing_feeds_confirmation">سَيُؤَدّي هذَا إِلَى إِزالَةِ كُلِّ الْمَقالاتِ الْمَوْجُودَةِ مِنْ جَميعِ التَّغذياتِ، حَتَّى الْمُمَيَّزَةِ بِنَجْمَةِ (ما عَدا \"مَقالاتُ الوِيبْ\"). هَلْ أَنْتَ مُتَأَكِّدٌ؟</string>
+    <string name="yes_I_realize_btn_caption">نَعَمْ، اُدرِكُ ذَلِكَ!</string>
+    <string name="sorry_I_was_wrong_btn_caption">اوه... كُنْتُ مُخْطِئًا. أَخْرِجْني مِنْ هُنا بِسُرْعَة!</string>
+    <string name="create_backup">إِنْشَاءُ نُسْخَةٍ إحْتياطيَّةٍ</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>

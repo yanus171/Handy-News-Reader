@@ -332,6 +332,7 @@
     <string name="settings_content_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
     <string name="settings_category_extract_rules">Regole di estrazione categoria</string>
     <string name="settings_category_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
+    <string name="settings_date_extract_rules_description">Imposta per ogni sito (necessaria conoscenza HTML di base)</string>
     <string name="settings_tap_zones_dialogtitle">solo per le informazioni, le modifiche non sono disponibili</string>
     <string name="downloadNext">"Scarica il prossimo "</string>
     <string name="downloadAll">", Tutti"</string>
@@ -407,6 +408,7 @@
     <string name="auto_refresh_requires_charging">Solo durante la carica</string>
     <string name="global_class_list_to_remove_from_article_text">Rimuovi regole di testo</string>
     <string name="global_class_list_to_remove_from_article_text_summary">nome classe per riga</string>
+    <string name="global_date_class_list_summary">Nome della classe per riga. Gli elementi di queste classi sono considerati come data dell\'articolo durante il caricamento della Pagina Web - Collegamenti</string>
     <string name="hide">Nascondi</string>
     <string name="show">Mostra</string>
     <string name="setFullTextRoot">Scegli come root di testo completo</string>
@@ -511,6 +513,21 @@
     <string name="show_article_category">"Mostra categoria articolo"</string>
     <string name="article_text_information">Informazioni aggiuntive sull\'intestazione</string>
     <string name="article_text_progress">Barra di progresso della lettura nell\'intestazione</string>
+    <string name="global_removeText_filter_rule_descr">Regex (una per riga) applicato a qualsiasi contenuto di articoli</string>
+    <string name="parsing_web_page_links">Pagina</string>
+    <string name="global_date_class_list">Lista classe data</string>
+    <string name="settings_date_extract_rules">Regole di estrazione data</string>
+    <string name="set_date">Imposta come data</string>
+    <string name="clearingWebViewChache">Pulisci cache di WebView</string>
+    <string name="article_text_show_date">Mostra Data</string>
+    <string name="article_text_show_date_description">Il giorno del mese e un giorno della settimana</string>
+    <string name="remove_existing_feeds_question">Rimuovere i feed esistenti prima dell\'importazione?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="remove_existing_feeds_confirmation">Questo rimuoverà TUTTI gli articoli esistenti da TUTTI i feed (tranne “Leggi più tardi”), anche preferiti. Sei sicuro?</string>
+    <string name="yes_I_realize_btn_caption">Sì, Ho capito!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh... mi sbagliavo. Mi porti fuori da qui velocemente!</string>
+    <string name="create_backup">Crea backup</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
