@@ -692,16 +692,23 @@
                 android:key="date_extract_rules"
                 android:inputType="text|textMultiLine"
                 android:defaultValue=""
-                android:dialogTitle="site_url:site_url:class=XXX\n"
+                android:dialogTitle="site_url:class=XXX\n"
                 android:title="@string/settings_date_extract_rules"
                 android:summary="@string/settings_date_extract_rules_description"/>
             <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
                 android:key="category_extract_rules"
                 android:inputType="text|textMultiLine"
                 android:defaultValue=""
-                android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
+                android:dialogTitle="site_url:class=XXX\n"
                 android:title="@string/settings_category_extract_rules"
                 android:summary="@string/settings_category_extract_rules_description"/>
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:key="main_image_extract_rules"
+                android:inputType="text|textMultiLine"
+                android:defaultValue=""
+                android:dialogTitle="site_url:class=XXX\n"
+                android:title="@string/settings_main_image_extract_rules"
+                android:summary="@string/settings_main_image_extract_rules_description"/>
             <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
                 android:key="font_rules"
                 android:inputType="text|textMultiLine"

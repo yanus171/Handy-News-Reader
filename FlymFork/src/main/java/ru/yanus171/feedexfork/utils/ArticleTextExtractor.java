@@ -59,7 +59,9 @@ public class ArticleTextExtractor {
     static final String CLASS_ATTRIBUTE = "class";
     public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
     public static final String HANDY_NEWS_READER_CATEGORY_CLASS = "Handy_News_Reader_tag";
+    public static final String HANDY_NEWS_READER_MAIN_IMAGE_CLASS = "Handy_News_Reader_main_image";
     public static final String P_HR = "</p><hr>";
+    public static final String EMPTY_TAG = "EMPTY_TAG";
 
     public enum MobilizeType {Yes, No, Tags}
     //public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
@@ -116,6 +118,22 @@ public class ArticleTextExtractor {
         }
         Dog.v( "tagList = " + TextUtils.join( " ", categoryList ));
 
+        String ogImage = null;
+        Element mainImageElement = getMainImageElementFromPref(doc, url);
+        if (mainImageElement != null ) {
+            for (Element item : mainImageElement.getAllElements())
+                if ( item.tagName().equals( "img" ) )
+                    ogImage = item.attr( "src" );
+        } else {
+            Collection<Element> metas = getMetas(doc);
+            for (Element entry : metas) {
+                if (entry.hasAttr("property") && "og:image".equals(entry.attr("property"))) {
+                    ogImage = entry.attr("content");
+                    break;
+                }
+            }
+        }
+
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
             rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
@@ -125,14 +143,6 @@ public class ArticleTextExtractor {
         if ( rootElement == null )
             rootElement = doc;
 
-        Collection<Element> metas = getMetas(doc);
-        String ogImage = null;
-        for (Element entry : metas) {
-            if (entry.hasAttr("property") && "og:image".equals(entry.attr("property"))) {
-                ogImage = entry.attr("content");
-                break;
-            }
-        }
 
 
         Elements title = rootElement.getElementsByClass("title");
@@ -312,15 +322,22 @@ public class ArticleTextExtractor {
 
     public static Element getFullTextRootElementFromPref(Element doc, final String url ) {
         return getElementWithClassNameFromPref( doc, url, PrefUtils.getString(CONTENT_TEXT_ROOT_EXTRACT_RULES, R.string.full_text_root_default),
-                                                HANDY_NEWS_READER_CATEGORY_CLASS);
+                                                HANDY_NEWS_READER_CATEGORY_CLASS, false);
     }
     private static Element getCategoriesElementFromPref(Element doc, final String url) {
-        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.CATEGORY_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS);
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.CATEGORY_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS, false);
+    }
+    private static Element getMainImageElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.MAIN_IMAGE_EXTRACT_RULES, ""), HANDY_NEWS_READER_MAIN_IMAGE_CLASS, true);
     }
     public static Element getDateElementFromPref(Element doc, final String url) {
-        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS);
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS, false);
     }
-    private static Element getElementWithClassNameFromPref(Element doc, final String url, final String pref, final String className ) {
+    private static Element getElementWithClassNameFromPref(Element doc,
+                                                           final String url,
+                                                           final String pref,
+                                                           final String className,
+                                                           boolean canReturnEmptyElement ) {
         Element result = null;
         for( String line: pref.split( "\\n|\\s" ) ) {   //while ( result == null ) {
             if ( ( line == null ) || line.isEmpty() )
@@ -339,6 +356,8 @@ public class ArticleTextExtractor {
                         result = doc.getElementById(elementValue);
                     else if (elementType.equals("class")) {
                         final Elements elements = doc.getElementsByClass(elementValue);
+                        if ( canReturnEmptyElement && elements.isEmpty() )
+                            result = new Element(EMPTY_TAG);
                         if (!elements.isEmpty()) {
                             if ( elements.size() == 1 )
                                 result = elements.first();

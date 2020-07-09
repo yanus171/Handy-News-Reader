@@ -551,6 +551,8 @@
     <string name="settings_font_rules_description">To set custom fonts for separate classe in article texts per web page domain</string>
     <string name="bold">Bold</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
+    <string name="settings_main_image_extract_rules">Main image extract rules</string>
+    <string name="settings_main_image_extract_rules_description">"Class name where to find article image (instead of og:image) per web domain "</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
