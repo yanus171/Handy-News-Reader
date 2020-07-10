@@ -331,6 +331,8 @@
     <string name="improveHtmlContent">HTML-Inhalt verbessern</string>
     <string name="parseXml">XML analysieren</string>
     <string name="setupConnection">Verbindung einstellen</string>
+    <string name="settings_fulltext_extract_rules">Kompletter Text</string>
+    <string name="settings_fulltext_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
     <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
     <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_date_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
@@ -529,6 +531,16 @@
     <string name="yes_I_realize_btn_caption">Ja, verstanden!</string>
     <string name="sorry_I_was_wrong_btn_caption">Nein, Feeds und Artikel nicht entfernen!</string>
     <string name="create_backup">Datensicherung erstellen</string>
+    <string name="defaultFontFamily">Systemvorgabe</string>
+    <string name="fontTextSample">Text</string>
+    <string name="fontFamily">Schriftart</string>
+    <string name="fontFamilySummary">Schriftfamilie fast aller Texte in der App. Ergänzung eigener Schriftarten als ttf-Dateien in Ordner: </string>
+    <string name="settings_font_rules">Schriftart</string>
+    <string name="settings_font_rules_description">Benutzerdefinierte Schriften für verschiedene Klassen in Artikeltexten nach Webseiten-Domäne festlegen</string>
+    <string name="bold">Fett</string>
+    <string name="settings_category_other">Andere</string>
+    <string name="settings_category_storage">Speicher</string>
+    <string name="kilobytes">kB</string>
     <string name="megabytes">MB</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
