@@ -538,8 +538,14 @@
     <string name="settings_font_rules">Schriftart</string>
     <string name="settings_font_rules_description">Benutzerdefinierte Schriften für verschiedene Klassen in Artikeltexten nach Webseiten-Domäne festlegen</string>
     <string name="bold">Fett</string>
+    <string name="settings_main_image_extract_rules">Hauptabbildung</string>
+    <string name="settings_main_image_extract_rules_description">"Klassenname, unter der die Hauptabbildung des Artikels zu finden ist, um es als Artikelsymbol zu verwenden und es am Anfang des Artikels (statt og:image) pro Web-Domain einzufügen. Dies kann hilfreich sein, wenn sich die Hauptabbildung außerhalb des Volltextartikels befindet. "</string>
+    <string name="settings_category_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
+    <string name="settings_category_content_extract_rules_summary">Die HTML-Klassennamen, um das Auffinden verschiedener Artikelteile zu erleichtern. Einige dieser Einstellungen werden im Ansichtsmodus für die Bearbeitung von Artikelinhalten automatisch aktualisiert.</string>
     <string name="settings_category_other">Andere</string>
     <string name="settings_category_storage">Speicher</string>
+    <string name="settings_category_autobackup">Automatische Sicherung</string>
+    <string name="settings_show_circle_progress_summary">Während der CPU-Aktivität der Anwendung</string>
     <string name="kilobytes">kB</string>
     <string name="megabytes">MB</string>
     <plurals name="number_of_new_entries">
