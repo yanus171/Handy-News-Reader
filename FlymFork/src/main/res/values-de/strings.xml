@@ -529,6 +529,7 @@
     <string name="yes_I_realize_btn_caption">Ja, verstanden!</string>
     <string name="sorry_I_was_wrong_btn_caption">Nein, Feeds und Artikel nicht entfernen!</string>
     <string name="create_backup">Datensicherung erstellen</string>
+    <string name="megabytes">MB</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
