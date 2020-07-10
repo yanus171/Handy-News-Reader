@@ -538,6 +538,7 @@
     <string name="settings_font_rules">Schriftart</string>
     <string name="settings_font_rules_description">Benutzerdefinierte Schriften für verschiedene Klassen in Artikeltexten nach Webseiten-Domäne festlegen</string>
     <string name="bold">Fett</string>
+    <string name="font_rules_dialog_title">site_url:class=Schriftdateinamen=font size=letter spacing=font weight</string>
     <string name="settings_main_image_extract_rules">Hauptabbildung</string>
     <string name="settings_main_image_extract_rules_description">"Klassenname, unter der die Hauptabbildung des Artikels zu finden ist, um es als Artikelsymbol zu verwenden und es am Anfang des Artikels (statt og:image) pro Web-Domain einzufügen. Dies kann hilfreich sein, wenn sich die Hauptabbildung außerhalb des Volltextartikels befindet. "</string>
     <string name="settings_category_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
