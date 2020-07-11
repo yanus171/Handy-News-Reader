@@ -542,6 +542,7 @@
     <string name="settings_category_storage">Сховище</string>
     <string name="settings_category_autobackup">Автоматичне резервне копіювання</string>
     <string name="settings_show_circle_progress">Показувати коло прогресу</string>
+    <string name="settings_show_circle_progress_summary">Під час використання додатком ЦП</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
