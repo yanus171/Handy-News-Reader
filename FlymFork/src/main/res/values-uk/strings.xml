@@ -534,6 +534,7 @@
     <string name="settings_font_rules_description">Щоб встановити власний шрифт для окремого класу в тексті статі на домен веб-сторінки</string>
     <string name="bold">Жирний</string>
     <string name="font_rules_dialog_title">site_url:class=Файл шрифту name=шрифт size=літера spacing=вага шрифту</string>
+    <string name="settings_main_image_extract_rules">Головне зображення</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
