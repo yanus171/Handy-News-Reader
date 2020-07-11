@@ -167,7 +167,7 @@
     <string name="menu_font_bold">粗体</string>
     <string name="menu_copy_clipboard">复制链接</string>
     <string name="menu_cancel_refresh">取消更新</string>
-    <string name="menu_delete_non_starred">删除未加星标的</string>
+    <string name="menu_delete_non_starred">重置订阅源并删除未加星标的文章</string>
     <string name="menu_toogle_unread_all">未读|全部</string>
     <string name="menu_load_all_images">加载所有图片</string>
     <string name="menu_mark_as_favorite">标记为喜爱</string>
@@ -396,7 +396,7 @@
     <string name="autobackup_interval">自动备份间隔</string>
     <string name="autobackup_interval_descr">创建feed和文章的备份文件的频率</string>
     <string name="create_auto_backup">创建备份</string>
-    <string name="auto_backup_opml_file_created">自动备份.opml 文件已创建：</string>
+    <string name="auto_backup_opml_file_created">自动备份已创建的.opml 文件：</string>
     <string name="use_standard_file_manager">使用标准文件管理器</string>
     <string name="use_standard_file_manager_descr">否则只能选择 .opml 文件导入到feedex文件夹之外(通过内部对话)</string>
     <string name="settings">设置</string>
@@ -505,7 +505,7 @@
     <string name="removeText">删除文本</string>
     <string name="set_category">设置为类别</string>
     <string name="menu_more_options">更多选项</string>
-    <string name="reset_feed_and_delete_all_articles">重置订阅源并删除所有未加星标的文章</string>
+    <string name="reset_feed_and_delete_all_articles">重置订阅源并删除未加星标的文章</string>
     <string name="filter_apply_to_author">应用于作者</string>
     <string name="filter_apply_to_category">应用到类别</string>
     <string name="filter_apply_to_url">应用到 url</string>
@@ -528,7 +528,7 @@
     <string name="remove_existing_feeds_confirmation">这将从所有源中删除所有现存文章（“稍后阅读”除外），甚至包括标星文章。 你确定吗？</string>
     <string name="yes_I_realize_btn_caption">是的，我了解！</string>
     <string name="sorry_I_was_wrong_btn_caption">哦，我错了。 让我快点离开这里！</string>
-    <string name="create_backup">创建备份</string>
+    <string name="create_backup">创建单独的备份文件</string>
     <string name="defaultFontFamily">系统默认</string>
     <string name="fontTextSample">文本</string>
     <string name="fontFamily">字体</string>
