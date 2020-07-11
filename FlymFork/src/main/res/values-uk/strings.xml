@@ -538,6 +538,7 @@
     <string name="font_rules_dialog_title">site_url:class=Файл шрифту name=шрифт size=літера spacing=вага шрифту</string>
     <string name="settings_main_image_extract_rules">Головне зображення</string>
     <string name="settings_main_image_extract_rules_description">"Ім'я класу, де шукати головне зображення статті для використання його в якості іконки статті та щоб вставити його на початок статті (замість og:image) на веб-домен. Це може допомогти якщо зображення статті не входить до повного тексту "</string>
+    <string name="settings_category_content_extract_rules">Правила пошуку текстів</string>
     <string name="settings_category_other">Інше</string>
     <string name="settings_category_storage">Сховище</string>
     <string name="settings_category_autobackup">Автоматичне резервне копіювання</string>
