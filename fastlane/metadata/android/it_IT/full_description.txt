@@ -5,15 +5,15 @@
 <ul>
 	<li><b>crea la tua rivista!</b></li>
 	<li><b>gli articoli che ti interessano arriveranno dirtti nelle tue mani</b></li>
-	<li><b>goditi finalmente la lettura</b></li>
+	<li><b>goditi la lettura</b></li>
 </ul>
 
-...goditi la vita <b>libero da distrazioni - e aggiornato con i tuoi interessi</b> allo stesso tempo. Concentrati sull'Essenziale...
+... <b>libero da distrazioni e mantenendo aggiornati i tuoi interessi</b>. Concentrati su ciò che è essenziale...
 
-Scopri <i>Handy NR</i> - un lettore <i>RSS</i> offline, ricco di funzionalità, che <b>rispetta il tuo tempo e la tua Pace Interiore</b>: evita di perdere la concentrazione e le distrazioni che oggi sono così comuni quando pensi ai dispositivi mobile.
+<i>Handy NR</i> è un lettore <i>RSS</i> offline ricco di funzionalità, che <b>rispetta il tuo tempo e la tua pace interiore</b>, evitando le distrazioni che si presentano comunemente utilizzando i dispositivi mobili.
 
 <ul>
-<b><u>Funzionalità</u>:</b>
+<b><u>Caratteristiche</u>:</b>
 	<li><b><u>articoli completi</u> a portata di mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
 	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Tap Zones</i>, ricorda la posizione della lettura <u>per singolo articolo</u>,</li>
 	<li><b>notifiche per gli articoli importanti</b>: non ti perderai più nulla di ciò che ritieni particolarmente importante,</li>
