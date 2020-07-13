@@ -302,11 +302,11 @@
     <string name="settings_remember_last_entry">Ricorda l\'ultimo articolo</string>
     <string name="settings_remeber_last_entry_description">All\'avvio apri l\'ultimo articolo visualizzato, altrimenti la lista degli aricoli non letti</string>
     <string name="auto_unstart_at_bottom">Rimuovi Preferito quando Letto</string>
-    <string name="auto_unstart_at_bottom_descr">Rimuove automaticamente l\'articolo dai Preferiti quando è stato raggiunto il fondo dell\'articolo</string>
+    <string name="auto_unstart_at_bottom_descr">Rimuovi un articolo dai preferiti al termine della lettura (quando è stato raggiunto il fondo)</string>
     <string name="settings_category_advanced">Avanzate</string>
-    <string name="settings_category_advanced_summary">Caratteristiche aggiuntive (come backup, filtri e altro)</string>
-    <string name="settings_autobackup_enabled">Abilita backup automatico</string>
-    <string name="settings_autobackup_enabled_descr">Per salvare periodicamente il tuo feed e la lista degli articoli preferiti in un file .opml</string>
+    <string name="settings_category_advanced_summary">Caratteristiche Aggiuntive (Backup, Filtri, …)</string>
+    <string name="settings_autobackup_enabled">Attiva Backup Automatico</string>
+    <string name="settings_autobackup_enabled_descr">Esporta periodicamente feed e preferiti in un file OPML</string>
     <string name="settings_category_content_presentation">Aspetto e contenuti</string>
     <string name="settings_display_text_color">Luminosità del testo</string>
     <string name="settings_visible_feeds">Feed visibili</string>
