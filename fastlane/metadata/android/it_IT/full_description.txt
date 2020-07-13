@@ -1,10 +1,10 @@
-<i>"Rimanere in contatto con tutti i Miei interessi non è mai stato così facile".</i>
+<i>"Rimanere in contatto con tutti i tuoi interessi non è mai stato così semplice".</i>
 
-<b><i>Handy News Reader</i>: nessuna pubblicità/software gratuito sotto <i>licenza GNU GPL</i>.</b>
+<b><i>Handy News Reader</i>: software gratuito senza pubblicità, con licenza <i>GNU GPL</i>.</b>
 
 <ul>
-	<li><b>crea la tua rivista dei sogni!</b></li>
-	<li><b>articoli interessanti direttamente nelle Tue mani</b></li>
+	<li><b>crea la tua rivista!</b></li>
+	<li><b>gli articoli che ti interessano arriveranno dirtti nelle tue mani</b></li>
 	<li><b>goditi finalmente la lettura</b></li>
 </ul>
 
