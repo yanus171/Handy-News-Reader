@@ -297,11 +297,11 @@
     <string name="settings_notifications_vibrate_description">Attiva la vibrazione all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_light">LED di Notifica</string>
     <string name="settings_notifications_light_description">Usa il LED di notifica quando si trovano nuovi articoli</string>
-    <string name="page_up_down_90_pct">Scorri pagina 90%</string>
-    <string name="page_up_down_90_pct_descr">Per preservare diverse linee dalla pagina precedente - se non controllate, l\'intera pagina verrà scrollata</string>
+    <string name="page_up_down_90_pct">Scorri Pagina al 90%</string>
+    <string name="page_up_down_90_pct_descr">Per mantenere alcune righe della pagina precedente. La funzione è disattivata, scorrerà l\'intera pagina verrà</string>
     <string name="settings_remember_last_entry">Ricorda l\'ultimo articolo</string>
-    <string name="settings_remeber_last_entry_description">Apri l\'ultimo articolo visualizzato all\'avvio, altrimenti i non letti nella lista introduttiva</string>
-    <string name="auto_unstart_at_bottom">Auto-deselezionato quando si conclude la lettura</string>
+    <string name="settings_remeber_last_entry_description">All\'avvio apri l\'ultimo articolo visualizzato, altrimenti la lista degli aricoli non letti</string>
+    <string name="auto_unstart_at_bottom">Rimuovi Preferito quando Letto</string>
     <string name="auto_unstart_at_bottom_descr">Rimuove automaticamente l\'articolo dai Preferiti quando è stato raggiunto il fondo dell\'articolo</string>
     <string name="settings_category_advanced">Avanzate</string>
     <string name="settings_category_advanced_summary">Caratteristiche aggiuntive (come backup, filtri e altro)</string>
