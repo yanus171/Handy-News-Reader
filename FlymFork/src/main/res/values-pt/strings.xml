@@ -329,6 +329,8 @@
     <string name="improveHtmlContent">Melhorando conteúdo HTML</string>
     <string name="parseXml">Análise sintática XML</string>
     <string name="setupConnection">Configurar conexão</string>
+    <string name="settings_fulltext_extract_rules">Texto completo</string>
+    <string name="settings_fulltext_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
     <string name="settings_category_extract_rules">Regras de extração de categoria</string>
     <string name="settings_category_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
     <string name="settings_date_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
@@ -527,6 +529,25 @@
     <string name="yes_I_realize_btn_caption">Sim, eu percebi!</string>
     <string name="sorry_I_was_wrong_btn_caption">Ohh... Eu estava errado. Me tire daqui depressa!</string>
     <string name="create_backup">Criar cópia de segurança</string>
+    <string name="defaultFontFamily">Padrão do sistema</string>
+    <string name="fontTextSample">Texto</string>
+    <string name="fontFamily">Fonte</string>
+    <string name="fontFamilySummary">Família de fontes de quase todos os textos no aplicativo. Você pode adicionar arquivos personalizados de fonte ttf na pasta: </string>
+    <string name="settings_font_rules">Fonte</string>
+    <string name="settings_font_rules_description">Para definir fontes personalizadas para classes separadas nos textos dos artigos por domínio de página web</string>
+    <string name="bold">Negrito</string>
+    <string name="font_rules_dialog_title">site_url:class=nome do arquivo de fonte=tamanho da fonte=espaçamento entre letras=peso da fonte</string>
+    <string name="settings_main_image_extract_rules">Imagem principal</string>
+    <string name="settings_main_image_extract_rules_description">"Nome da classe onde encontrar a imagem principal do artigo para usá-lo como ícone do artigo e inseri-lo no início do artigo (em vez do og:image) por domínio web. Isso pode ajudar se a imagem do artigo estiver fora da seção de texto completo "</string>
+    <string name="settings_category_content_extract_rules">Regras de extração de conteúdo</string>
+    <string name="settings_category_content_extract_rules_summary">Os nomes das classes HTML para ajudar a encontrar partes diferentes de artigos. Algumas dessas configurações são atualizadas automaticamente no modo de edição de visualização do conteúdo dos artigos</string>
+    <string name="settings_category_other">Outros</string>
+    <string name="settings_category_storage">Armazenamento</string>
+    <string name="settings_category_autobackup">Backup automático</string>
+    <string name="settings_show_circle_progress">Mostrar progresso em círculo</string>
+    <string name="settings_show_circle_progress_summary">Durante a atividade de CPU do aplicativo</string>
+    <string name="kilobytes">KB</string>
+    <string name="megabytes">MB</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
