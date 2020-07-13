@@ -21,7 +21,7 @@
 	<li><b><i>"Rimuovi alla fine della Lettura"</i></b>: una volta finita la lettura di un articolo, questo può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggi Dopo'</i>),</li>
 	<li><b>Lettura Offline</b>: una volta aggiornato, l'articolo completo sarà disponibile anche senza connessione Internet,</li>
 	<li><b>usa meno dati</b>: vai online solo per recuperare nuovi articoli, non per caricare la loro versione completa; gestisci cosa deve essere scaricato e in quale maniera,</li>
-	<li><b>supporto per le gesture</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
+	<li><b>supporto per i gesti</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
 	<li><b>facile da usare</b>: prenditi cura dei tuoi occhi con un tema scuro, regola dimensione, colore e luminosità del testo per soddisfare le tue esigenze personali,</li>
 	<li><b>idee interessanti</b>: le intestazioni degli articoli senza hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli per il 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
 	<li><b>altamente personalizzabile</b>: dalla dimensione delle <i>Zone di tocco'</i> al colore e alla sottolineatura degli hyperlink - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>
