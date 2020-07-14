@@ -1,5 +1,9 @@
 package ru.yanus171.feedexfork.utils
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.FileUtils.GetImagesFolder
 import java.io.File
@@ -46,8 +50,12 @@ object ImageFileVoc {
         }
     }
     public fun init1(){
+
         synchronized( mIsInitialized ) {
             if ( mIsInProcess || mIsInitialized )
+                return
+            else if ( ContextCompat.checkSelfPermission(MainApplication.getContext(),
+                                                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED )
                 return
             else if ( !mIsInitialized )
                 mIsInProcess = true

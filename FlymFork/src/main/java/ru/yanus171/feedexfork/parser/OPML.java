@@ -90,6 +90,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -118,6 +119,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
 import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
 
@@ -775,37 +777,43 @@ public class OPML {
         }
     }
 
+    private static void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
+        FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_IMPORT )
+                                        .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
+                                        .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ));
+    }
     public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
-        new AlertDialog.Builder( activity )
-            .setTitle( activity.getString( R.string.remove_existing_feeds_question ) )
-            .setItems(new CharSequence[]{
-                activity.getString(R.string.yes),
-                activity.getString(R.string.no),
-                activity.getString(android.R.string.cancel),}, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if ( i == 0 )
-                        new AlertDialog.Builder( activity )
-                            .setTitle( activity.getString( R.string.remove_existing_feeds_confirmation ) )
-                            .setPositiveButton(R.string.yes_I_realize_btn_caption, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    StartServiceForImport( fileName, true, isFileNameUri );
-                                }
-                            })
-                            .setNegativeButton( R.string.sorry_I_was_wrong_btn_caption, null ).show();
+        Cursor cursor = MainApplication.getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );
+        if ( cursor.moveToFirst() ) {
+            new AlertDialog.Builder( activity )
+                .setTitle( activity.getString( R.string.remove_existing_feeds_question ) )
+                .setItems(new CharSequence[]{
+                    activity.getString(R.string.yes),
+                    activity.getString(R.string.no),
+                    activity.getString(android.R.string.cancel),}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if ( i == 0 ) //yes
+                            new AlertDialog.Builder( activity )
+                                .setTitle( activity.getString( R.string.remove_existing_feeds_confirmation ) )
+                                .setPositiveButton(R.string.yes_I_realize_btn_caption, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        StartServiceForImport( fileName, true, isFileNameUri );
+                                    }
+                                })
+                                .setNegativeButton( R.string.sorry_I_was_wrong_btn_caption, null ).show();
 
-                    else if ( i == 1  ) //cancel
-                        StartServiceForImport( fileName, false, isFileNameUri);
-                    dialogInterface.dismiss();
-                }
+                        else if ( i == 1  ) //no
+                            StartServiceForImport( fileName, false, isFileNameUri);
+                        dialogInterface.dismiss();
+                    }
 
-                private void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
-                    FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_IMPORT )
-                                                    .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
-                                                    .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ));
-                }
-            }).show();
+
+                }).show();
+        } else
+            StartServiceForImport( fileName, false, isFileNameUri);
+        cursor.close();
 
     }
 
