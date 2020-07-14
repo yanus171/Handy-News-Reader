@@ -131,6 +131,8 @@ public class RssAtomParser extends DefaultHandler {
 
     private static final DateFormat[] DATE_FORMATS = {
         new SimpleDateFormat("HH:mm' 'dd.MM.yyyy", Locale.US),
+        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
