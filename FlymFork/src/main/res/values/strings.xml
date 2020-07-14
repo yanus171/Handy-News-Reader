@@ -343,9 +343,9 @@
     <string name="improveHtmlContent">Improving HTML content</string>
     <string name="parseXml">Parsing XML</string>
     <string name="setupConnection">Setup connection</string>
-    <string name="settings_content_extract_rules">Content extract rules</string>
-    <string name="settings_content_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
-    <string name="settings_category_extract_rules">Category extract rules</string>
+    <string name="settings_fulltext_extract_rules">Full text</string>
+    <string name="settings_fulltext_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
+    <string name="settings_category_extract_rules">Category</string>
     <string name="settings_category_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_date_extract_rules_description">Set for each site (base HTML knowledge needed)</string>
     <string name="settings_tap_zones_dialogtitle">only for info, changes unavailable</string>
@@ -421,7 +421,7 @@
     <string name="text">Text</string>
     <string name="background1">Background</string>
     <string name="auto_refresh_requires_charging">Only while charging</string>
-    <string name="global_class_list_to_remove_from_article_text">Remove text rules</string>
+    <string name="global_class_list_to_remove_from_article_text">Remove text</string>
     <string name="global_class_list_to_remove_from_article_text_summary">class name per line</string>
     <string name="global_date_class_list_summary">Class name per line. The elements of these classes are considered as date of article when loading Web Page - Links</string>
     <string name="hide">Hide</string>
@@ -468,7 +468,7 @@
     <string name="article_tap_enabled_summary">on Tap Zones and in non link areas (for menu show)</string>
     <string name="menu_calculate_image_sizes">Calculate images size</string>
     <string name="setting_calculate_image_sizes">Images size on storage</string>
-    <string name="setting_calculate_image_sizes_descr">Calculate and show loaded images sum size on storage per article, feed, group, etc. (numbers are updated during refresh)</string>
+    <string name="setting_calculate_image_sizes_descr">Calculate during Delete old operation and show loaded images sum size on storage per article, feed, group, etc. (numbers are updated during refresh)</string>
     <string name="settings_category_theme">Theme</string>
     <string name="settings_category_header">Page header</string>
     <string name="tasks_to_download">To load</string>
@@ -531,7 +531,7 @@
     <string name="global_removeText_filter_rule_descr">Regex (one per line) applied to any article content</string>
     <string name="parsing_web_page_links">Page</string>
     <string name="global_date_class_list">Date class list</string>
-    <string name="settings_date_extract_rules">Date extract rules</string>
+    <string name="settings_date_extract_rules">Date</string>
     <string name="set_date">Set as date</string>
     <string name="clearingWebViewChache">Clearing WebView cache</string>
     <string name="article_text_show_date">Show date</string>
@@ -547,12 +547,21 @@
     <string name="fontTextSample">Text</string>
     <string name="fontFamily">Font</string>
     <string name="fontFamilySummary">Font family of almost all texts in app. You can add custom font ttf files in folder: </string>
-    <string name="settings_font_rules">Font rules</string>
-    <string name="settings_font_rules_description">To set custom fonts for separate classe in article texts per web page domain</string>
+    <string name="settings_font_rules">Font</string>
+    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per web page domain</string>
     <string name="bold">Bold</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
-    <string name="settings_main_image_extract_rules">Main image extract rules</string>
-    <string name="settings_main_image_extract_rules_description">"Class name where to find article image (instead of og:image) per web domain "</string>
+    <string name="settings_main_image_extract_rules">Main image</string>
+    <string name="settings_main_image_extract_rules_description">"Class name where to find article main image to use it as article icon and to insert it im the beginning of the article (instead of og:image) per web domain. This can helps if the article image is outside of the full text article section "</string>
+    <string name="settings_category_content_extract_rules">Content extract rules</string>
+    <string name="settings_category_content_extract_rules_summary">The HTML class names to help the to find different article parts. Some of these settings automatically updated in article edit content view mode</string>
+    <string name="settings_category_other">Other</string>
+    <string name="settings_category_storage">Storage</string>
+    <string name="settings_category_autobackup">Auto backup</string>
+    <string name="settings_show_circle_progress">Show circle progress</string>
+    <string name="settings_show_circle_progress_summary">During the app CPU activity</string>
+    <string name="kilobytes">KB</string>
+    <string name="megabytes">MB</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

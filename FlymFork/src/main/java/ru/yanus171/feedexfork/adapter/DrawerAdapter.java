@@ -269,7 +269,7 @@ public class DrawerAdapter extends BaseAdapter {
     static private String GetImageSizeText(int imageSize) {
         final int MEGABYTE = 1024 * 1024;
         return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > MEGABYTE ?
-            String.format( "%d M ", imageSize / MEGABYTE ).replace( ",", "." ) : "";
+            EntriesCursorAdapter.GetImageSizeText( imageSize ).replace( ",", "." ) : "";
     }
 
     @Override

@@ -713,15 +713,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    static private String GetImageSizeText(int imageSize) {
+    static String GetImageSizeText(int imageSize) {
         final double MEGABYTE = 1024.0 * 1024.0;
         return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > 1024 * 100 ?
-            String.format( "%.1f\u00A0M", imageSize / MEGABYTE ).replace( ",", "." ) : "";
+            String.format( "%.1f\u00A0%s", imageSize / MEGABYTE, MainApplication.getContext().getString( R.string.megabytes ) ).replace( ",", "." ) : "";
     }
 
     static private String GetTextSizeText(int imageSize) {
         final int KBYTE = 1024;
-        return imageSize > KBYTE ? String.format( "%d\u00A0K", imageSize / KBYTE ) : "";
+        return imageSize > KBYTE ? String.format( "%d\u00A0%s", imageSize / KBYTE, MainApplication.getContext().getString( R.string.kilobytes ) ) : "";
     }
 
     private void UpdateStarImgView(ViewHolder holder) {

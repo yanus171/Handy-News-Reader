@@ -575,6 +575,11 @@
                 android:key="delete_read_articles"
                 android:title="@string/delete_read_articles"
                 android:summary="@string/delete_read_articles_descr"/>
+            <CheckBoxPreference
+                android:key="calculate_images_size"
+                android:defaultValue="false"
+                android:title="@string/setting_calculate_image_sizes"
+                android:summary="@string/setting_calculate_image_sizes_descr"/>
         </PreferenceCategory>
     </PreferenceScreen>
 
@@ -588,136 +593,143 @@
         android:title="@string/settings_category_advanced">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_advanced">
+            android:title="@string/settings_category_advanced"/>
 
-            <CheckBoxPreference
-                android:key="settings_show_progress_info"
-                android:defaultValue="false"
-                android:title="@string/show_progress_info"
-                android:summary="@string/show_progress_info_descr"/>
+        <CheckBoxPreference
+            android:key="settings_show_progress_info"
+            android:defaultValue="false"
+            android:title="@string/show_progress_info"
+            android:summary="@string/show_progress_info_descr"/>
+        <CheckBoxPreference
+            android:key="settings_show_circle_progress"
+            android:defaultValue="true"
+            android:title="@string/settings_show_circle_progress"
+            android:summary="@string/settings_show_circle_progress_summary"/>
 
-            <CheckBoxPreference
-                android:key="calculate_images_size"
-                android:defaultValue="false"
-                android:title="@string/setting_calculate_image_sizes"
-                android:summary="@string/setting_calculate_image_sizes_descr"/>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_storage"/>
+        <ru.yanus171.feedexfork.view.StorageSelectPreference
+            android:defaultValue="external"
+            android:key="data_folder"
+            android:title="@string/data_folder"
+            android:summary="@string/data_folder_descr"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="use_standard_file_manager"
+            android:title="@string/use_standard_file_manager"
+            android:summary="@string/use_standard_file_manager_descr"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="autobackup.enabled"
-                android:title="@string/settings_autobackup_enabled"
-                android:summary="@string/settings_autobackup_enabled_descr"/>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_autobackup"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autobackup.enabled"
+            android:title="@string/settings_autobackup_enabled"
+            android:summary="@string/settings_autobackup_enabled_descr"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="86400000"
+            android:entries="@array/settings_intervals"
+            android:entryValues="@array/settings_interval_values"
+            android:inputType="number"
+            android:key="autobackup.interval"
+            android:dependency="autobackup.enabled"
+            android:title="@string/autobackup_interval"
+            android:summary="@string/autobackup_interval_descr"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:defaultValue="86400000"
-                android:entries="@array/settings_intervals"
-                android:entryValues="@array/settings_interval_values"
-                android:inputType="number"
-                android:key="autobackup.interval"
-                android:dependency="autobackup.enabled"
-                android:title="@string/autobackup_interval"
-                android:summary="@string/autobackup_interval_descr"/>
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="settings_add_google_news_dialog"
-                android:summary="@string/settings_add_google_news_dialog_descr"
-                android:title="@string/settings_add_google_news_dialog" />
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:summary="@string/settings_category_content_extract_rules_summary"
+            android:title="@string/settings_category_content_extract_rules"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="content_extract_rules"
+            android:inputType="text|textMultiLine"
+            android:defaultValue="@string/full_text_root_default"
+            android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
+            android:title="@string/settings_fulltext_extract_rules"
+            android:summary="@string/settings_fulltext_extract_rules_description"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="global_class_list_to_remove_from_article_text"
+            android:title="@string/global_class_list_to_remove_from_article_text"
+            android:inputType="text|textMultiLine"
+            android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="date_extract_rules"
+            android:inputType="text|textMultiLine"
+            android:defaultValue=""
+            android:dialogTitle="site_url:class=XXX\n"
+            android:title="@string/settings_date_extract_rules"
+            android:summary="@string/settings_date_extract_rules_description"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="category_extract_rules"
+            android:inputType="text|textMultiLine"
+            android:defaultValue=""
+            android:dialogTitle="site_url:class=XXX\n"
+            android:title="@string/settings_category_extract_rules"
+            android:summary="@string/settings_category_extract_rules_description"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="main_image_extract_rules"
+            android:inputType="text|textMultiLine"
+            android:defaultValue=""
+            android:dialogTitle="site_url:class=XXX\n"
+            android:title="@string/settings_main_image_extract_rules"
+            android:summary="@string/settings_main_image_extract_rules_description"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="font_rules"
+            android:inputType="text|textMultiLine"
+            android:defaultValue=""
+            android:dialogTitle="@string/font_rules_dialog_title"
+            android:title="@string/settings_font_rules"
+            android:summary="@string/settings_font_rules_description"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="use_standard_file_manager"
-                android:title="@string/use_standard_file_manager"
-                android:summary="@string/use_standard_file_manager_descr"/>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_other"/>
+        <PreferenceScreen
+            android:title="@string/global_filter"
+            android:summary="@string/global_filter_descr">
+            <PreferenceCategory
+                android:layout="@layout/preference_category"
+                android:title="@string/markAsStarred">
+                <CheckBoxPreference
+                    android:key="global_marks_as_star_filter_on"
+                    android:defaultValue="false"
+                    android:title="@string/turnOn"/>
+                <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                    android:key="global_marks_as_star_filter_rule"
+                    android:dependency="global_marks_as_star_filter_on"
+                    android:title="@string/rule_text"
+                    android:inputType="text|textMultiLine"
+                    android:summary="@string/global_marks_as_star_filter_rule_descr"/>
+                <CheckBoxPreference
+                    android:key="global_marks_as_star_filter_rule_is_regex"
+                    android:dependency="global_marks_as_star_filter_on"
+                    android:defaultValue="false"
+                    android:title="@string/filter_is_regex"/>
+                <CheckBoxPreference
+                    android:key="global_marks_as_star_filter_apply_to_title"
+                    android:dependency="global_marks_as_star_filter_on"
+                    android:defaultValue="false"
+                    android:title="@string/filter_apply_to_title"
+                    android:summary= "@string/global_marks_as_star_filter_apply_to_title_descr"/>
 
-            <ru.yanus171.feedexfork.view.StorageSelectPreference
-                android:defaultValue="external"
-                android:key="data_folder"
-                android:title="@string/data_folder"
-                android:summary="@string/data_folder_descr"/>
-
-            <PreferenceScreen
-                android:title="@string/global_filter"
-                android:summary="@string/global_filter_descr">
-
-                <PreferenceCategory
-                    android:layout="@layout/preference_category"
-                    android:title="@string/markAsStarred">
-                    <CheckBoxPreference
-                        android:key="global_marks_as_star_filter_on"
-                        android:defaultValue="false"
-                        android:title="@string/turnOn"/>
-                    <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                        android:key="global_marks_as_star_filter_rule"
-                        android:dependency="global_marks_as_star_filter_on"
-                        android:title="@string/rule_text"
-                        android:inputType="text|textMultiLine"
-                        android:summary="@string/global_marks_as_star_filter_rule_descr"/>
-                    <CheckBoxPreference
-                        android:key="global_marks_as_star_filter_rule_is_regex"
-                        android:dependency="global_marks_as_star_filter_on"
-                        android:defaultValue="false"
-                        android:title="@string/filter_is_regex"/>
-                    <CheckBoxPreference
-                        android:key="global_marks_as_star_filter_apply_to_title"
-                        android:dependency="global_marks_as_star_filter_on"
-                        android:defaultValue="false"
-                        android:title="@string/filter_apply_to_title"
-                        android:summary= "@string/global_marks_as_star_filter_apply_to_title_descr"/>
-
-                </PreferenceCategory>
-                <PreferenceCategory
-                    android:layout="@layout/preference_category"
-                    android:title="@string/removeText">
-                    <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                        android:key="global_removeText_filter_rule"
-                        android:title="@string/rule_text"
-                        android:inputType="text|textMultiLine"
-                        android:summary="@string/global_removeText_filter_rule_descr"/>
-                </PreferenceCategory>
-            </PreferenceScreen>
-
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="content_extract_rules"
-                android:inputType="text|textMultiLine"
-                android:defaultValue="@string/full_text_root_default"
-                android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
-                android:title="@string/settings_content_extract_rules"
-                android:summary="@string/settings_content_extract_rules_description"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="global_class_list_to_remove_from_article_text"
-                android:title="@string/global_class_list_to_remove_from_article_text"
-                android:inputType="text|textMultiLine"
-                android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="date_extract_rules"
-                android:inputType="text|textMultiLine"
-                android:defaultValue=""
-                android:dialogTitle="site_url:class=XXX\n"
-                android:title="@string/settings_date_extract_rules"
-                android:summary="@string/settings_date_extract_rules_description"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="category_extract_rules"
-                android:inputType="text|textMultiLine"
-                android:defaultValue=""
-                android:dialogTitle="site_url:class=XXX\n"
-                android:title="@string/settings_category_extract_rules"
-                android:summary="@string/settings_category_extract_rules_description"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="main_image_extract_rules"
-                android:inputType="text|textMultiLine"
-                android:defaultValue=""
-                android:dialogTitle="site_url:class=XXX\n"
-                android:title="@string/settings_main_image_extract_rules"
-                android:summary="@string/settings_main_image_extract_rules_description"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="font_rules"
-                android:inputType="text|textMultiLine"
-                android:defaultValue=""
-                android:dialogTitle="@string/font_rules_dialog_title"
-                android:title="@string/settings_font_rules"
-                android:summary="@string/settings_font_rules_description"/>
-
-        </PreferenceCategory>
+            </PreferenceCategory>
+            <PreferenceCategory
+                android:layout="@layout/preference_category"
+                android:title="@string/removeText">
+                <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                    android:key="global_removeText_filter_rule"
+                    android:title="@string/rule_text"
+                    android:inputType="text|textMultiLine"
+                    android:summary="@string/global_removeText_filter_rule_descr"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="settings_add_google_news_dialog"
+            android:summary="@string/settings_add_google_news_dialog_descr"
+            android:title="@string/settings_add_google_news_dialog" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="setting_convert_xml_symbols_before_parsing"

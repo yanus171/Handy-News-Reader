@@ -133,7 +133,7 @@ public class StatusText implements Observer {
         final String error =
             errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
             errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
-        final boolean showProgress = Boolean.valueOf( list[4] );
+        final boolean showProgress = PrefUtils.getBoolean( "settings_show_circle_progress", true ) && Boolean.valueOf( list[4] );
         final String progressText = list[5];
 
         if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || text.trim().isEmpty() )

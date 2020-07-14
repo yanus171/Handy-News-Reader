@@ -281,6 +281,8 @@
     <string name="improveHtmlContent">Mejorando el contenido HTML</string>
     <string name="parseXml">Analizando XML</string>
     <string name="setupConnection">Configurar conexión</string>
+    <string name="settings_fulltext_extract_rules">Reglas de extracción de contenido</string>
+    <string name="settings_fulltext_extract_rules_description">Conjunto para cada sitio (se necesita conocimiento básico de HTML)</string>
     <string name="settings_tap_zones_dialogtitle">sólo para información, cambios no disponibles</string>
     <string name="downloadNext">", Siguiente "</string>
     <string name="downloadAll">", Todo"</string>
