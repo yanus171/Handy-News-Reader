@@ -281,8 +281,6 @@
     <string name="improveHtmlContent">Mejorando el contenido HTML</string>
     <string name="parseXml">Analizando XML</string>
     <string name="setupConnection">Configurar conexión</string>
-    <string name="settings_fulltext_extract_rules">Reglas de extracción de contenido</string>
-    <string name="settings_fulltext_extract_rules_description">Conjunto para cada sitio (se necesita conocimiento básico de HTML)</string>
     <string name="settings_tap_zones_dialogtitle">sólo para información, cambios no disponibles</string>
     <string name="downloadNext">", Siguiente "</string>
     <string name="downloadAll">", Todo"</string>
@@ -383,6 +381,12 @@
     <string name="reload_fulltext_after_tag_editing">Recargar texto después de editar etiquetas</string>
     <string name="article_menu_show_by_tap">Mostrar el menú de artículos con un toque</string>
     <string name="article_list_loading">Cargando lista de artículos</string>
+    <string name="menu_go_back">Volver</string>
+    <string name="menu_go_top">Desplazar hasta arriba</string>
+    <string name="menu_close">Cerrar</string>
+    <string name="add_entry_shortcut">Añadir acceso directo al artículo</string>
+    <string name="settings_category_theme">Tema</string>
+    <string name="settings_category_header">Encabezado de página</string>
     <string name="settings_current_setting">Configuración actual</string>
     <string name="settings_delete_old_interval">Eliminar intervalo anterior</string>
     <string name="settings_delete_old_interval_descr">Cuándo borrar los artículos antiguos y calcular el tamaño del artículo, el feed y las imágenes de grupo en la tarjeta Sd</string>
@@ -418,6 +422,12 @@
     <string name="reading_article">Leyendo un artículo</string>
     <string name="reading_notification">Notificación de lectura de artículo</string>
     <string name="reading_notification_descr">Notificación de barra de estado persistente para evitar que el sistema cierre la aplicación - para acelerar el inicio de la aplicación después de un largo retraso</string>
+    <string name="article_text_show_battery">Mostrar nivel de batería</string>
+    <string name="removeText">Eliminar texto</string>
+    <string name="menu_more_options">Más opciones</string>
+    <string name="filter_apply_to_url">Aplicar a la URL</string>
+    <string name="show_article_category">"Mostrar categoría de artículo"</string>
+    <string name="article_text_progress">Leyendo barra de progreso en el encabezado</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">One new entry</item>
         <item quantity="other">%d new entries</item>
