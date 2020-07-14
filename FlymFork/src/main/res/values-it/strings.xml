@@ -371,23 +371,23 @@
     <string name="filter_hint">L\'azione di un filtro sarà avviata se almeno una condizione (regola) viene soddisfatta. \'Accetta\' sovrascrive \'Rifiuta\'</string>
     <string name="keyword">parola/e chiave</string>
     <string name="loadTypeWeb">Web (carica tutti i link dalla pagina)</string>
-    <string name="loadTypeRSS">RSS (feed o link al sito o parole chiave)</string>
-    <string name="loadTypeWebPageSearch">Pagina di ricerca web Duck Duck Go (trova e carica un articolo)</string>
-    <string name="loadTypeOneWebPage">Una pagina ( sviluppa un contenuto di una pagina web in molti articoli usando i tag di nome html</string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(feed, URL o parole chiave)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Ricerca Web </b> <font color="gray"> (DuckDuckGo - trova e carica un articolo)</font></string>
+    <string name="loadTypeOneWebPage"><b>Pagina Web - Dividi</b><font color="gray"> (divide il contenuto di una pagina web in più articoli utilizzando i nomi delle classi dei tag HTML)</font></string>
     <string name="loadType">Tipo di caricamento:</string>
-    <string name="global_filter">Filtro globale&#8230;</string>
-    <string name="global_filter_descr">Un filtro che si applica ad ogni feed - lascia vuoto il testo del filtro (e il testo regex) per disabilitare</string>
+    <string name="global_filter">Filtro Globale</string>
+    <string name="global_filter_descr">Applicato a tutti i feed. Lascia vuoto il campo del filtro (e quello regex) per disabilitarlo</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">altrimenti si applica al contenuto</string>
-    <string name="rule_text">Regole del testo</string>
+    <string name="rule_text">Regola Testo</string>
     <string name="global_marks_as_star_filter_rule_descr">una regola per riga</string>
     <string name="customKeepTime">Articoli personalizzati mantienili nel tempo</string>
-    <string name="menu_toggle_theme">Cambia tema</string>
+    <string name="menu_toggle_theme">Cambia Tema</string>
     <string name="turnOn">Attiva</string>
     <string name="brightness">Luminosità</string>
-    <string name="brightness_change">Cambio luminosità</string>
-    <string name="criticalErrorOccured">Si è verificato un errore critico nell\'applicazione. Si prega di inviare questo testo allo sviluppatore</string>
+    <string name="brightness_change">Cambia Luminosità</string>
+    <string name="criticalErrorOccured">Si è verificato un errore critico. Si prega di inviare questo testo allo sviluppatore</string>
     <string name="criticalErrorSending">Invio errore critico…</string>
-    <string name="copyToClipboard">Agli appunti</string>
+    <string name="copyToClipboard">Negli Appunti</string>
     <string name="sendEmail">Invia e-mail</string>
     <string name="toastAppCrashed">L\'applicazione ha inaspettatamente fallito: (Per favore invia una email allo sviluppatore)</string>
     <string name="exportingToFile">Esportazione in file</string>
