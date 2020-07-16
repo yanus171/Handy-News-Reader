@@ -19,6 +19,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class Brightness( private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
@@ -29,7 +31,7 @@ class Brightness( private val mActivity: Activity, rootView: View) {
         mInfo?.visibility = View.GONE
         mCurrentAlpha = PrefUtils.getFloat( PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
         UiUtils.HideButtonText(rootView, R.id.brightnessSlider, true)
-        SetSize(rootView, R.id.brightnessSlider, GetTapZoneSize(), MATCH_PARENT)
+        SetSize(rootView, R.id.brightnessSlider, GetTapZoneSize() * 2, MATCH_PARENT)
 
         if (PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false))
             rootView.findViewById<View>(R.id.brightnessSlider).setOnTouchListener(object : View.OnTouchListener {
@@ -64,10 +66,11 @@ class Brightness( private val mActivity: Activity, rootView: View) {
                             paddingY = currentY - initialY
 
                             if (abs(paddingY) > abs(paddingX) ) {
-                                val coeff : Float = 10 - abs( paddingY.toFloat() ) / mDimFrame.height.toFloat() * 10 //mInitialAlpha / 255F * 10
+                                //val coeff : Float = 10 - abs( paddingY.toFloat() ) / mDimFrame.height.toFloat() * 10 //mInitialAlpha / 255F * 10
                                 val height = mDimFrame.height;
                                 val delta : Float = 255F * paddingY.toFloat() / mDimFrame.height.toFloat()
-                                var currentAlpha : Float = mInitialAlpha + delta / coeff
+                                val coeff : Float = max(0.1F, ( 1F - min( 1F, (mInitialAlpha + delta) / 255F) ) * 6 )
+                                var currentAlpha : Float = mInitialAlpha + delta * coeff
                                 if (currentAlpha > 255)
                                     currentAlpha = 255F
                                 else if (currentAlpha < 1)

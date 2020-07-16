@@ -251,9 +251,14 @@ object FileUtils {
         list += StorageItem( MainApplication.getContext().cacheDir, R.string.internalMemory )
         list += StorageItem( Environment.getExternalStorageDirectory(), R.string.externalMemory )
         if (Build.VERSION.SDK_INT >= 19)
-            for (item in MainApplication.getContext().getExternalFilesDirs(null))
-                if ( !item.path.startsWith( Environment.getExternalStorageDirectory().path ) )
-                    list += StorageItem( item, R.string.externalMemory )
+            for (item in MainApplication.getContext().getExternalFilesDirs(null)) {
+                try {
+                    if (!item.path.startsWith(Environment.getExternalStorageDirectory().path))
+                        list += StorageItem(item, R.string.externalMemory)
+                } catch ( e: IllegalStateException ) {
+                    e.printStackTrace();
+                }
+            }
         return list
     }
     public const val EMPTY_MOBILIZED_VALUE = "EMPTY_MOB"
