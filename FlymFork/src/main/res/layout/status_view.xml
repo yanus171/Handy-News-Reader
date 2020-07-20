@@ -4,6 +4,7 @@
     tools:showIn="@layout/fragment_entry_list">
 
     <LinearLayout
+        android:id="@+id/statusLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start|bottom"

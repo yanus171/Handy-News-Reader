@@ -267,7 +267,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     private void PageUpDown( int downOrUp ) {
-        mEntriesFragment.mListView.smoothScrollBy( downOrUp * mEntriesFragment.mListView.getHeight(), PAGE_SCROLL_DURATION_MSEC * 2 );
+        final int appBarHeight = mEntriesFragment.getView().findViewById(R.id.appbar).getHeight();
+        final int statusHeight = mEntriesFragment.getView().findViewById(R.id.statusLayout).getHeight();
+        mEntriesFragment.mListView.smoothScrollBy( downOrUp * mEntriesFragment.mListView.getHeight() - appBarHeight - statusHeight, PAGE_SCROLL_DURATION_MSEC * 2 );
     }
 
     private void CloseDrawer() {

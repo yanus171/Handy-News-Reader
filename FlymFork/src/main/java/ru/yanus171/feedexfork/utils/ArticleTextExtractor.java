@@ -59,6 +59,7 @@ public class ArticleTextExtractor {
     static final String CLASS_ATTRIBUTE = "class";
     public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
     public static final String HANDY_NEWS_READER_CATEGORY_CLASS = "Handy_News_Reader_tag";
+    public static final String HANDY_NEWS_READER_DATE_CLASS = "Handy_News_Reader_date";
     public static final String HANDY_NEWS_READER_MAIN_IMAGE_CLASS = "Handy_News_Reader_main_image";
     public static final String P_HR = "</p><hr>";
     public static final String EMPTY_TAG = "EMPTY_TAG";
@@ -300,7 +301,7 @@ public class ArticleTextExtractor {
     }
 
     private static void AddTagButton(Element el, String className, String baseUrl,
-                                     boolean isHidden, boolean isFullTextRoot, boolean isCategory, boolean isDate) {
+                                     boolean isHidden, boolean isFullTextRoot, boolean isCategory, boolean isDate ) {
         final String paramValue = isHidden ? "show" : "hide";
         final String methodText = "openTagMenu('" + className + "', '" + baseUrl + "', '" + paramValue + "')";
         //final String fullTextRoot = isFullTextRoot ? " !!! " + MainApplication.getContext().getString( R.string.fullTextRoot ).toUpperCase() + " !!! " : "";
@@ -322,7 +323,7 @@ public class ArticleTextExtractor {
 
     public static Element getFullTextRootElementFromPref(Element doc, final String url ) {
         return getElementWithClassNameFromPref( doc, url, PrefUtils.getString(CONTENT_TEXT_ROOT_EXTRACT_RULES, R.string.full_text_root_default),
-                                                HANDY_NEWS_READER_CATEGORY_CLASS, false);
+                                                HANDY_NEWS_READER_ROOT_CLASS, false);
     }
     private static Element getCategoriesElementFromPref(Element doc, final String url) {
         return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.CATEGORY_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS, false);
@@ -331,7 +332,7 @@ public class ArticleTextExtractor {
         return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.MAIN_IMAGE_EXTRACT_RULES, ""), HANDY_NEWS_READER_MAIN_IMAGE_CLASS, true);
     }
     public static Element getDateElementFromPref(Element doc, final String url) {
-        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS, false);
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_DATE_CLASS, true);
     }
     private static Element getElementWithClassNameFromPref(Element doc,
                                                            final String url,
@@ -370,6 +371,29 @@ public class ArticleTextExtractor {
                         } else if ( HANDY_NEWS_READER_ROOT_CLASS.equals( className ) )
                             result = doc;
                     }
+                    break;
+                }
+            } catch ( Exception e ) {
+                Dog.e( e.getMessage() );
+            }
+
+        }
+        return result;
+    }
+    public static String getDataForUrlFromPref(final String url, final String pref ) {
+        String result = "";
+        for( String line: pref.split( "\\n" ) ) {   //while ( result == null ) {
+            if ( ( line == null ) || line.isEmpty() )
+                continue;
+            try {
+                String[] list1 = line.split(":");
+                String keyWord = list1[0];
+                if (url.contains(keyWord)) {
+                    String[] list2 = list1[1].split("=");
+                    //String elementType = list2[0].toLowerCase();
+                    //String elementValue = list2[1];
+                    if (list2.length >= 3)
+                        result = list2[2];
                     break;
                 }
             } catch ( Exception e ) {

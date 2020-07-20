@@ -58,6 +58,7 @@ public class HtmlUtils {
             .addAttributes( ":all", "id", "name", "class", "displaystyle", "scriptlevel" )
             .addAttributes( "textroot", HANDY_NEWS_READER_ROOT_CLASS )
             .addTags("s")
+            .addTags("time")
             .addAttributes("track", "src", "kind", "srclang", "label");
 
     public static final String URL_SPACE = "%20";

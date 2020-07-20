@@ -69,11 +69,11 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -90,12 +90,15 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -129,7 +132,6 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.ImageFileVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
@@ -759,10 +761,20 @@ public class FetcherService extends IntentService {
                     }
 
                     String dateText = "";
-                    if ( isParseDateFromHTML ){
+                    if (isParseDateFromHTML) {
                         Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
-                        if (element != null )
-                            dateText = element.text();
+                        if (element != null) {
+                            for (Element el : element.getAllElements())
+                                if (el.hasText())
+                                    dateText += el.ownText() + " ";
+                            dateText = dateText.trim();
+                        } else {
+                            try {
+                                dateText = doc.getElementsByTag("time").first().attr( "datetime" );
+                            } catch ( Exception e ) {
+
+                            }
+                        }
                     }
                     Dog.v( "date = " + dateText );
 
@@ -783,8 +795,17 @@ public class FetcherService extends IntentService {
                         if ( !categoryList.isEmpty() )
                             values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList ) );
 
-                        {
-                            Date date = parseDate( dateText, 0 );
+                        if ( !dateText.isEmpty() ){
+                            final String format = ArticleTextExtractor.getDataForUrlFromPref(link, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, "") );
+                            Date date = null;
+                            if ( !format.isEmpty()  ) {
+                                try {
+                                    date = new SimpleDateFormat(format, Locale.getDefault()).parse(dateText);
+                                } catch ( ParseException e ) {
+                                    Status().SetError( format, String.valueOf( feedId ), String.valueOf( entryId ), e );
+                                }
+                            } else
+                                date = parseDate( dateText, 0 );
                             if ( date != null )
                                 values.put(EntryColumns.DATE, date.getTime());
                         }
