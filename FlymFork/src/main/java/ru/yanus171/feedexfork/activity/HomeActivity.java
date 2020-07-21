@@ -78,6 +78,8 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
+import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
@@ -130,6 +132,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
     private int mCurrentDrawerPos;
+    enum AppBarLayoutState {
+        EXPANDED,
+        COLLAPSED,
+        IDLE
+    };
+
+    private AppBarLayoutState mAppBarLayoutState = AppBarLayoutState.IDLE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +260,24 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 PageUpDown( 1 );
             }
         });
+        ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            // State
+
+            @Override
+            public final void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+                if (i == 0) {
+                    mAppBarLayoutState = EXPANDED;
+                } else if (Math.abs(i) >= appBarLayout.getTotalScrollRange()) {
+                    mAppBarLayoutState = COLLAPSED;
+                } else {
+                    mAppBarLayoutState = AppBarLayoutState.IDLE;
+                }
+            }
+
+        });
+
+
+
         timer.End();
     }
 
@@ -267,9 +294,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     private void PageUpDown( int downOrUp ) {
-        final int appBarHeight = mEntriesFragment.getView().findViewById(R.id.appbar).getHeight();
-        final int statusHeight = mEntriesFragment.getView().findViewById(R.id.statusLayout).getHeight();
-        mEntriesFragment.mListView.smoothScrollBy( downOrUp * mEntriesFragment.mListView.getHeight() - appBarHeight - statusHeight, PAGE_SCROLL_DURATION_MSEC * 2 );
+        int appBarHeight = ( mAppBarLayoutState == EXPANDED ) ? mEntriesFragment.getView().findViewById(R.id.appbar).getHeight() : 0;
+        View statusView =  mEntriesFragment.getView().findViewById(R.id.statusLayout);
+        final int statusHeight = statusView.isShown() ? statusView.getHeight() : 0;
+        mEntriesFragment.mListView.smoothScrollBy( downOrUp * ( mEntriesFragment.mListView.getHeight() - appBarHeight - statusHeight), PAGE_SCROLL_DURATION_MSEC * 2 );
     }
 
     private void CloseDrawer() {
