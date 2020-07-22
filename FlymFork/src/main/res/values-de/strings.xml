@@ -540,7 +540,7 @@
     <string name="bold">Fett</string>
     <string name="font_rules_dialog_title">site_url:class=Schriftdateiname=Schriftgrad=Laufweite=Schriftauszeichnung</string>
     <string name="settings_main_image_extract_rules">Hauptabbildung</string>
-    <string name="settings_main_image_extract_rules_description">"Klassenname, unter der die Hauptabbildung des Artikels zu finden ist, um es als Artikelsymbol zu verwenden und es am Anfang des Artikels (statt og:image) pro Web-Domain einzufügen. Dies kann hilfreich sein, wenn sich die Hauptabbildung außerhalb des Volltextartikels befindet. "</string>
+    <string name="settings_main_image_extract_rules_description">"Klassenname, unter dem die Hauptabbildung des Artikels zu finden ist, um sie als Artikelsymbol zu verwenden und sie am Anfang des Artikels (statt og:image) pro Web-Domain einzufügen. Dies kann hilfreich sein, wenn sich die Hauptabbildung außerhalb des Volltextartikels befindet "</string>
     <string name="settings_category_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
     <string name="settings_category_content_extract_rules_summary">Die HTML-Klassennamen, um das Auffinden verschiedener Artikelteile zu erleichtern. Einige dieser Einstellungen werden im Ansichtsmodus für die Bearbeitung von Artikelinhalten automatisch aktualisiert.</string>
     <string name="settings_category_other">Andere</string>
