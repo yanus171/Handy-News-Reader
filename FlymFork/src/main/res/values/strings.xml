@@ -548,11 +548,11 @@
     <string name="fontFamily">Font</string>
     <string name="fontFamilySummary">Font family of almost all texts in app. You can add custom font ttf files in folder: </string>
     <string name="settings_font_rules">Font</string>
-    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per web page domain</string>
+    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per domain</string>
     <string name="bold">Bold</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
     <string name="settings_main_image_extract_rules">Main image</string>
-    <string name="settings_main_image_extract_rules_description">"Class name where to find article main image to use it as article icon and to insert it im the beginning of the article (instead of og:image) per web domain. This can helps if the article image is outside of the full text article section "</string>
+    <string name="settings_main_image_extract_rules_description">"Class name where to find article main image to use it as article icon and to insert it im the beginning of the article (instead of og:image) per domain. This can helps if the article image is outside of the full text article section "</string>
     <string name="settings_category_content_extract_rules">Content extract rules</string>
     <string name="settings_category_content_extract_rules_summary">The HTML class names to help the to find different article parts. Some of these settings automatically updated in article edit content view mode</string>
     <string name="settings_category_other">Other</string>
@@ -562,7 +562,7 @@
     <string name="settings_show_circle_progress_summary">During the app CPU activity</string>
     <string name="kilobytes">KB</string>
     <string name="megabytes">MB</string>
-    <string name="create_start_auto_refersh">Start auto refresh</string>
+    <string name="create_start_auto_refersh">Refresh</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
