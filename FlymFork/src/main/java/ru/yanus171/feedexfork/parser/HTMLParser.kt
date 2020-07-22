@@ -177,36 +177,41 @@ object HTMLParser {
                     result.mAttemptNumber = 0
                     result.mTaskID = 0L
                     result.mResultCount = 0
-                    val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true)
-                    val uri = load.first
-                    if (load.second) {
-                        result.mResultCount = 1
-                        val cursor = cr.query(uri, arrayOf(EntryColumns.TITLE, EntryColumns.AUTHOR, EntryColumns.CATEGORIES), null, null, null)
-                        if ( cursor != null ) {
-                            cursor.moveToFirst();
-                            val title = cursor.getString(0)
-                            val author = cursor.getString(1)
-                            val categoryList = TextUtils.split( cursor.getString(2), CATEGORY_LIST_SEP);
-                            if ( filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList ) ) {
-                                synchronized(mMarkAsStarredFoundList) {
-                                    mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl))
+                    try {
+                        val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true)
+                        val uri = load.first
+                        if (load.second) {
+                            result.mResultCount = 1
+                            val cursor = cr.query(uri, arrayOf(EntryColumns.TITLE, EntryColumns.AUTHOR, EntryColumns.CATEGORIES), null, null, null)
+                            if ( cursor != null ) {
+                                if ( cursor.moveToFirst() ) {
+                                    val title = cursor.getString(0)
+                                    val author = cursor.getString(1)
+                                    val categoryList = TextUtils.split(cursor.getString(2), CATEGORY_LIST_SEP);
+                                    if (filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList)) {
+                                        synchronized(mMarkAsStarredFoundList) {
+                                            mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl))
+                                        }
+                                        val values = ContentValues()
+                                        values.put(EntryColumns.IS_FAVORITE, 1)
+                                        cr.update(uri, values, null, null)
+                                    }
+                                    if (isTomorrow) {
+                                        val values = ContentValues()
+                                        values.put(EntryColumns.DATE, System.currentTimeMillis() + Constants.MILLS_IN_DAY)
+                                        cr.update(uri, values, null, null)
+                                    }
+                                    if (filters.isEntryFiltered(title, author, item.mUrl, "", categoryList)) {
+                                        FileUtils.deleteMobilizedFile(item.mUrl);
+                                        cr.delete(uri, null, null);
+                                        remove(item.mUrl);
+                                    }
                                 }
-                                val values = ContentValues()
-                                values.put(EntryColumns.IS_FAVORITE, 1)
-                                cr.update(uri, values, null, null)
+                                cursor.close()
                             }
-                            if (isTomorrow) {
-                                val values = ContentValues()
-                                values.put(EntryColumns.DATE, System.currentTimeMillis() + Constants.MILLS_IN_DAY)
-                                cr.update(uri, values, null, null)
-                            }
-                            if ( filters.isEntryFiltered(title, author, item.mUrl, "", categoryList ) ) {
-                                FileUtils.deleteMobilizedFile( item.mUrl );
-                                cr.delete( uri, null, null );
-                                remove( item.mUrl );
-                            }
-                            cursor.close()
                         }
+                    } catch ( e: Exception ) {
+                        Status().SetError( "", "", "", e );
                     }
                     result
                 }))

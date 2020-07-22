@@ -651,16 +651,22 @@ public class FetcherService extends IntentService {
                         result.mAttemptNumber = finalAttemptCount;
                         result.mTaskID = taskId;
                         result.mResultCount = 0;
-
-                        Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null);
-                        curEntry.moveToFirst();
-                        final String feedID = curEntry.getString( 0 );
-                        curEntry.close();
-                        FeedFilters filters = new FeedFilters( feedID );
-                        if ( mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages( feedID ), true, false, false,  false)) {
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                            result.mResultCount = 1;
+                        try {
+                            Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null);
+                            if ( curEntry != null ) {
+                                if (curEntry.moveToFirst()) {
+                                    final String feedID = curEntry.getString(0);
+                                    FeedFilters filters = new FeedFilters(feedID);
+                                    if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
+                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                        cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
+                                        result.mResultCount = 1;
+                                    }
+                                }
+                                curEntry.close();
+                            }
+                        } catch ( Exception e ) {
+                            Status().SetError( "", "", "", e );
                         }
                         return result;
                     }
@@ -1213,8 +1219,8 @@ public class FetcherService extends IntentService {
                         try {
                             if (!isCancelRefresh())
                                 result.mResultCount = refreshFeed(executor, feedId, keepDateBorderTime);
-                        } catch (Exception ignored) {
-
+                        } catch (Exception e) {
+                            Status().SetError( "", "", "", e );
                         }
                         return result;
                     }
