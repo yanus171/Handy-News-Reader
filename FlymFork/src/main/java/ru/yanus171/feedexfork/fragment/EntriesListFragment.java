@@ -717,6 +717,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
 
+            case R.id.menu_start_auto_refersh: {
+                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH));
+                return true;
+            }
+
             case R.id.menu_cancel_refresh: {
                 FetcherService.cancelRefresh();
                 return true;

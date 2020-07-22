@@ -58,7 +58,8 @@ object OneWebPageParser {
                 val imageUrlClassName = jsonOptions.getString(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME)
                 val urlClassName = jsonOptions.getString(ONE_WEB_PAGE_URL_CLASS_NAME)
                 val urlNextPageClassName = jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME)
-
+                if ( articleClassName.isEmpty() )
+                    return 1;
                 val articleList = doc.getElementsByClass(articleClassName)
                 val feedEntriesUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID)
                 val feedBaseUrl = NetworkUtils.getBaseUrl(feedUrl)
@@ -158,6 +159,8 @@ object OneWebPageParser {
 
     private fun getDate(elArticle: Element, dateClassName: String ): Long {
         var result = 0L
+        if ( dateClassName.isEmpty() )
+            return result;
         val list = elArticle.getElementsByClass(dateClassName)
         if ( list.isNotEmpty() )
             for (item in list.first().allElements)
@@ -173,19 +176,19 @@ object OneWebPageParser {
 
     fun getUrl(elArticle: Element, urlClassName: String, tag: String, attrName: String, feedBaseUrl: String): String {
         var result = ""
-        if ( urlClassName.isNotEmpty() ) {
-            val list = elArticle.getElementsByClass(urlClassName)
-            if (!list.isEmpty()) {
-                val listA = list.first().getElementsByTag(tag)
-                if (!listA.isEmpty()) {
-                    result = listA.first().attr(attrName)
-                    if ( result.startsWith("//") )
-                        result = "http:$result"
-                    else if (!result.startsWith("http")  )
-                        result = feedBaseUrl + result
-                }
-
+        if ( urlClassName.isEmpty() )
+            return result;
+        val list = elArticle.getElementsByClass(urlClassName)
+        if (!list.isEmpty()) {
+            val listA = list.first().getElementsByTag(tag)
+            if (!listA.isEmpty()) {
+                result = listA.first().attr(attrName)
+                if ( result.startsWith("//") )
+                    result = "http:$result"
+                else if (!result.startsWith("http")  )
+                    result = feedBaseUrl + result
             }
+
         }
         return result
     }

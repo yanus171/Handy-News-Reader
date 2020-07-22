@@ -196,9 +196,10 @@ public class ArticleTextExtractor {
     public static void RemoveHiddenElements(Element rootElement) {
         final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
         for (String classItem : removeClassList) {
-            Elements list = rootElement.getElementsByClass(classItem);
-            for (Element item : list) {
-                item.remove();
+            if ( !classItem.isEmpty() ) {
+                Elements list = rootElement.getElementsByClass(classItem);
+                for (Element item : list)
+                    item.remove();
             }
         }
     }
