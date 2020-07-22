@@ -562,7 +562,7 @@
     <string name="settings_show_circle_progress_summary">During the app CPU activity</string>
     <string name="kilobytes">KB</string>
     <string name="megabytes">MB</string>
-    <string name="create_start_auto_refersh">Refresh</string>
+    <string name="create_start_auto_refersh">Start Auto refresh</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
