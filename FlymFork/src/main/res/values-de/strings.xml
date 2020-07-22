@@ -168,7 +168,7 @@
     <string name="menu_font_bold">Fettschrift</string>
     <string name="menu_copy_clipboard">Link kopieren</string>
     <string name="menu_cancel_refresh">Aktualisierung abbrechen</string>
-    <string name="menu_delete_non_starred">Nicht gekennzeichnete löschen</string>
+    <string name="menu_delete_non_starred">Feed neu laden</string>
     <string name="menu_toogle_unread_all">Ungelesen|Alle</string>
     <string name="menu_load_all_images">Alle Bilder laden</string>
     <string name="menu_mark_as_favorite">Als Favorit markieren</string>
@@ -507,7 +507,7 @@
     <string name="removeText">Text entfernen</string>
     <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
-    <string name="reset_feed_and_delete_all_articles">Nicht markierte Artikel löschen</string>
+    <string name="reset_feed_and_delete_all_articles">Feed neu laden</string>
     <string name="filter_apply_to_author">Auf Autor anwenden</string>
     <string name="filter_apply_to_category">Auf Kategorie anwenden</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
