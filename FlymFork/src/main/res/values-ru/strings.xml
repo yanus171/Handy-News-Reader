@@ -329,8 +329,6 @@
     <string name="improveHtmlContent">Оптимизация текста</string>
     <string name="parseXml">Разбор XML</string>
     <string name="setupConnection">Установка соединения</string>
-    <string name="settings_fulltext_extract_rules">Правила поиска полных текстов</string>
-    <string name="settings_fulltext_extract_rules_description">задаются для отдельных сайтов (необходимы базовые знания HTML)</string>
     <string name="settings_category_extract_rules">Правила извлечения категорий</string>
     <string name="settings_category_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
