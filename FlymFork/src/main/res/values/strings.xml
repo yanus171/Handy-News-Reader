@@ -187,7 +187,7 @@
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
-    <string name="menu_delete_non_starred">Reset feed and delete non-starred articles</string>
+    <string name="menu_delete_non_starred">Reset the feed</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
     <string name="menu_load_all_images">Load all images</string>
     <string name="menu_mark_as_favorite">Mark as Favorite</string>
