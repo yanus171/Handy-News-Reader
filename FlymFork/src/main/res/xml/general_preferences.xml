@@ -686,6 +686,12 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_other"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="thread_count"
+            android:inputType="numberDecimal"
+            android:defaultValue="9"
+            android:title="@string/settings_thread_count"
+            android:summary="@string/settings_thread_count_description"/>
         <PreferenceScreen
             android:title="@string/global_filter"
             android:summary="@string/global_filter_descr">

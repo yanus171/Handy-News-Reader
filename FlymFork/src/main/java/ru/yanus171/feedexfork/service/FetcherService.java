@@ -852,10 +852,6 @@ public class FetcherService extends IntentService {
                             title = cursor.getString( 0 );
                         cursor.close();
                         Status().SetError(title + ": ", String.valueOf( feedId ), String.valueOf( entryId ), e);
-                    } else {
-                        ContentValues values = new ContentValues();
-                        FileUtils.INSTANCE.saveMobilizedHTML( link, e.toString(), values );
-                        cr.update( entryUri, values, null, null );
                     }
                 } finally {
                     if (connection != null) {
@@ -1124,7 +1120,7 @@ public class FetcherService extends IntentService {
                                 }
                             }
                             return result;
-                        } } ) );
+                        }}));
                 }
                 downloadedCount = FinishExecutionService(statusText, status, null, futures );
                 //Dog.v( "downloadedCount = " + downloadedCount );
@@ -1141,8 +1137,13 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private static ExecutorService CreateExecutorService() {
-        return Executors.newFixedThreadPool(THREAD_NUMBER);
+    public static ExecutorService CreateExecutorService() {
+        int threadCount = PrefUtils.getIntFromText( "thread_count", 9 );
+        if ( threadCount < 1 )
+            threadCount = 1;
+        else if ( threadCount > 100 )
+            threadCount = 100;
+        return Executors.newFixedThreadPool( threadCount );
     }
 
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
@@ -1199,36 +1200,39 @@ public class FetcherService extends IntentService {
     private int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
         String statusText = "";
         int status = Status().Start( statusText, false ); try {
-            ContentResolver cr = getContentResolver();
-            final Cursor cursor;
-            String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
-            if (groupID != null)
-                cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), FeedColumns.PROJECTION_ID, null, null, null);
-            else
-                cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID, where, null, null);
-
-            ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                //Status().Start(String.format("%d from %d", cursor.getPosition(), cursor.getCount()));
-                final String feedId = cursor.getString(0);
-                futures.add(executor.submit(new Callable<DownloadResult>() {
-                    @Override
-                    public DownloadResult call() {
-                        DownloadResult result = new DownloadResult();
-                        result.mResultCount = 0;
-                        try {
-                            if (!isCancelRefresh())
-                                result.mResultCount = refreshFeed(executor, feedId, keepDateBorderTime);
-                        } catch (Exception e) {
-                            Status().SetError( "", "", "", e );
+            final ExecutorService executorInner = CreateExecutorService(); try {
+                ContentResolver cr = getContentResolver();
+                final Cursor cursor;
+                String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
+                if (groupID != null)
+                    cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), FeedColumns.PROJECTION_ID, null, null, null);
+                else
+                    cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID, where, null, null);
+                ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    //Status().Start(String.format("%d from %d", cursor.getPosition(), cursor.getCount()));
+                    final String feedId = cursor.getString(0);
+                    futures.add(executor.submit(new Callable<DownloadResult>() {
+                        @Override
+                        public DownloadResult call() {
+                            DownloadResult result = new DownloadResult();
+                            result.mResultCount = 0;
+                            try {
+                                if (!isCancelRefresh())
+                                    result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
+                            } catch (Exception e) {
+                                Status().SetError( "", "", "", e );
+                            }
+                            return result;
                         }
-                        return result;
-                    }
-                }));
-                //Status().End();
+                    }));
+                    //Status().End();
+                }
+                cursor.close();
+                return FinishExecutionService( statusText, status, null, futures );
+            } finally {
+                executorInner.shutdown();
             }
-            cursor.close();
-            return FinishExecutionService( statusText, status, null, futures );
         } finally { Status().End( status ); }
     }
 

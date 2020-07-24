@@ -563,6 +563,8 @@
     <string name="kilobytes">KB</string>
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">Start Auto refresh</string>
+    <string name="settings_thread_count">Thread count</string>
+    <string name="settings_thread_count_description">(1-100) The count of parallel operations executing simultaneously during the article refresh process. The small values makes less cpu activity and less memory consumption of refresh operation. The large values makes the operation run faster. Optimal value depends on the count of the phone CPU cores</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

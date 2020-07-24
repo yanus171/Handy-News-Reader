@@ -64,14 +64,17 @@
                     android:layout_height="wrap_content">
                     <include layout="@layout/view_toolbar" />
                 </com.google.android.material.appbar.AppBarLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <ListView
                             android:id="@android:id/list"
                             android:layout_width="match_parent"
@@ -79,7 +82,7 @@
                             android:layout_gravity="fill"
                             android:divider="#66888888"
                             android:dividerHeight="5dp"
-                            android:footerDividersEnabled="false"/>
+                            android:footerDividersEnabled="false" />
 
                         <include layout="@layout/brightness_slider_layout" />
 
@@ -88,13 +91,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
                             android:orientation="vertical">
+
                             <TextView
                                 android:id="@+id/pageUpBtn"
                                 style="@style/TapZone"
                                 android:layout_width="match_parent"
                                 android:layout_height="10mm"
                                 android:text="@string/pageUp" />
-                            </LinearLayout>
+                        </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
