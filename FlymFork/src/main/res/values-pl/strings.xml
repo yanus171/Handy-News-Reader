@@ -554,6 +554,8 @@ GENERAL]]></string>
     <string name="kilobytes">kB</string>
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">Odśwież</string>
+    <string name="settings_thread_count">Liczba wątków</string>
+    <string name="settings_thread_count_description">(1-100) Liczba równoległych procesów wykonywanych jednocześnie podczas odświeżania artykułów. Przy mniejszej wartości odświeżanie zużywa mniej pamięci oraz aktywności CPU. Przy większej odświeżanie przebiega szybciej. Optymalna wartość zależy od ilości rdzeni CPU urządzenia</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
