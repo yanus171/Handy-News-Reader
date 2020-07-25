@@ -533,16 +533,23 @@
     <string name="fontFamily">Carattere</string>
     <string name="fontFamilySummary">Famiglia di caratteri di quasi tutti il testo presente nell\'app. Puoi aggiungere file .TTF nella cartella: </string>
     <string name="settings_font_rules">Carattere</string>
+    <string name="settings_font_rules_description">Per impostare caratteri personalizzati per classi separate nei testi degli articoli per dominio</string>
     <string name="bold">Grassetto</string>
+    <string name="font_rules_dialog_title">site_url:class=Font file name=font size=letter spacing=font weight</string>
     <string name="settings_main_image_extract_rules">Immagine Principale</string>
+    <string name="settings_main_image_extract_rules_description">"Nome della classe dove trovare l'immagine principale dell'articolo per usarla come icona dell'articolo e per inserirla all'inizio dell'articolo (invece di og:immagine) per dominio. Questo può aiutare se l'immagine dell'articolo è al di fuori della sezione articolo intero "</string>
     <string name="settings_category_content_extract_rules">Regole Estrazione Contenuto</string>
     <string name="settings_category_content_extract_rules_summary">I nomi delle classi HTML per trovare le diverse parti degli articoli. Alcune di queste impostazioni vengono automaticamente aggiornate nella modalità di visualizzazione dei contenuti</string>
     <string name="settings_category_other">Altro</string>
     <string name="settings_category_storage">Archiviazione</string>
     <string name="settings_category_autobackup">Backup Automatico</string>
     <string name="settings_show_circle_progress">Mostra Indicatore Avanzamento (cerchio)</string>
+    <string name="settings_show_circle_progress_summary">Durante l\'attività della CPU dell\'app</string>
     <string name="kilobytes">KB</string>
     <string name="megabytes">MB</string>
+    <string name="create_start_auto_refersh">Avvia aggiornamento automatico</string>
+    <string name="settings_thread_count">Quantità thread</string>
+    <string name="settings_thread_count_description">(1-100) Il conteggio delle operazioni parallele eseguite simultaneamente durante l\'aggiornamento dell\'articolo. I piccoli valori rendono meno attività CPU e meno consumo di memoria dell\'aggiornamento. I grandi valori lo rendono più veloce. Il valore ottimale dipende dalla quantità dei core CPU del dispositivo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
