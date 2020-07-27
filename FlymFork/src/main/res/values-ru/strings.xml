@@ -534,6 +534,10 @@
     <string name="fontFamily">Шрифт</string>
     <string name="fontFamilySummary">Семейство шрифтов почти всех текстов в приложении. Вы можете добавить пользовательские ttf-файлы шрифтов в папку: </string>
     <string name="settings_font_rules">Шрифт</string>
+    <string name="settings_font_rules_description">Установить пользовательские шрифты для отдельных классов в текстах статьи для каждого домена</string>
+    <string name="bold">Жирный</string>
+    <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=размер шрифта=межбуквенное расстояние=насыщенность шрифта</string>
+    <string name="settings_main_image_extract_rules">Основное изображение</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
