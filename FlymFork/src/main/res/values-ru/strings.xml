@@ -538,6 +538,13 @@
     <string name="bold">Жирный</string>
     <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=размер шрифта=межбуквенное расстояние=насыщенность шрифта</string>
     <string name="settings_main_image_extract_rules">Основное изображение</string>
+    <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image) для каждого домена. Это может помочь, если изображение находится за пределами полнотекстового раздела статьи "</string>
+    <string name="settings_category_content_extract_rules">Правила извлечения содержимого</string>
+    <string name="settings_category_content_extract_rules_summary">Имена классов HTML, которые помогут найти различные части статьи. Некоторые из этих настроек автоматически обновляются в режиме просмотра содержания статьи</string>
+    <string name="settings_category_other">Другое</string>
+    <string name="settings_category_storage">Хранилище</string>
+    <string name="settings_category_autobackup">Автоматическое резервное копирование</string>
+    <string name="settings_show_circle_progress">Отображать прогресс загрузки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
