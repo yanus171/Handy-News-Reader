@@ -527,6 +527,13 @@
     <string name="no">Нет</string>
     <string name="remove_existing_feeds_confirmation">Это удалит ВСЕ существующие статьи из ВСЕ каналы (кроме «Читать позже»). Вы уверены?</string>
     <string name="yes_I_realize_btn_caption">Да, понимаю!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ох... Я ошибся. Не надо удалять каналы и статьи!</string>
+    <string name="create_backup">Создать отдельный файл резервной копии</string>
+    <string name="defaultFontFamily">Системный по-умолчанию</string>
+    <string name="fontTextSample">Текст</string>
+    <string name="fontFamily">Шрифт</string>
+    <string name="fontFamilySummary">Семейство шрифтов почти всех текстов в приложении. Вы можете добавить пользовательские ttf-файлы шрифтов в папку: </string>
+    <string name="settings_font_rules">Шрифт</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
