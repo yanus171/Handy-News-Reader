@@ -590,7 +590,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         synchronized ( mWasVisibleList ) {
             FetcherService.StartService( FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
-                                         .putStringArrayListExtra(Constants.URL_LIST, mWasVisibleList) );
+                                         .putStringArrayListExtra(Constants.URL_LIST, mWasVisibleList), false );
             mWasVisibleList.clear();
         }
         mFab = null;
@@ -718,7 +718,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_start_auto_refersh: {
-                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH));
+                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
                 return true;
             }
 
@@ -759,7 +759,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             }
             case R.id.menu_delete_old: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ) );
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
                 return true;
 
             }
@@ -797,7 +797,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_create_auto_backup: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ), false );
                 return true;
             }
             case R.id.menu_add_feed_shortcut: {
@@ -962,14 +962,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                  uriMatcher == FeedDataContentProvider.URI_UNREAD_ENTRIES_FOR_FEED ) {
                 FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
-                        .putExtra(Constants.FEED_ID, mCurrentUri.getPathSegments().get(1)));
+                        .putExtra(Constants.FEED_ID, mCurrentUri.getPathSegments().get(1)), true);
             } else if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_GROUP ) {
                 FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
-                        .putExtra(Constants.GROUP_ID, mCurrentUri.getPathSegments().get(1)));
+                        .putExtra(Constants.GROUP_ID, mCurrentUri.getPathSegments().get(1)), true);
             } else {
                 FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
-                        .setAction(FetcherService.ACTION_REFRESH_FEEDS));
+                        .setAction(FetcherService.ACTION_REFRESH_FEEDS), true);
             }
         }
 

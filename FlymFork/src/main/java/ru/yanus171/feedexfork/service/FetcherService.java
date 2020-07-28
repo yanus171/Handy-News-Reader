@@ -878,11 +878,11 @@ public class FetcherService extends IntentService {
         return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
     }
     public static void StartServiceLoadExternalLink(String url, String title, boolean star) {
-        FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
+        FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class )
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
                 .putExtra(Constants.TITLE_TO_LOAD, title)
-                .putExtra( EXTRA_STAR, star ));
+                .putExtra( EXTRA_STAR, star ), false );
     }
 
     public enum ForceReload {Yes, No}
@@ -1683,7 +1683,7 @@ public class FetcherService extends IntentService {
 //
 //        }
 
-    public static void StartService(Intent intent) {
+    public static void StartService(Intent intent, boolean requiresNetwork) {
         final Context context = MainApplication.getContext();
 
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
@@ -1692,7 +1692,7 @@ public class FetcherService extends IntentService {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         // Connectivity issue, we quit
-        if (networkInfo == null || networkInfo.getState() != NetworkInfo.State.CONNECTED) {
+        if (requiresNetwork && (networkInfo == null || networkInfo.getState() != NetworkInfo.State.CONNECTED) ) {
             if (ACTION_REFRESH_FEEDS.equals(intent.getAction()) && !isFromAutoRefresh) {
                 // Display a toast in that case
                 UiUtils.RunOnGuiThread( new Runnable() {
@@ -1705,7 +1705,7 @@ public class FetcherService extends IntentService {
             return;
         }
 
-        boolean skipFetch = isFromAutoRefresh && PrefUtils.getBoolean(PrefUtils.REFRESH_WIFI_ONLY, false)
+        boolean skipFetch = requiresNetwork && isFromAutoRefresh && PrefUtils.getBoolean(PrefUtils.REFRESH_WIFI_ONLY, false)
                 && networkInfo.getType() != ConnectivityManager.TYPE_WIFI;
         // We need to skip the fetching process, so we quit
         if (skipFetch)

@@ -778,9 +778,9 @@ public class OPML {
     }
 
     private static void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
-        FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_IMPORT )
+        FetcherService.StartService( FetcherService.GetIntent(Constants.FROM_IMPORT )
                                         .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
-                                        .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ));
+                                        .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ), false);
     }
     public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
         Cursor cursor = MainApplication.getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );

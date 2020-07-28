@@ -1023,7 +1023,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
 
                     FetcherService.StartService(new Intent(EditFeedActivity.this, FetcherService.class)
                             .setAction(FetcherService.ACTION_REFRESH_FEEDS)
-                            .putExtra(Constants.FEED_ID, result.first.getLastPathSegment()));
+                            .putExtra(Constants.FEED_ID, result.first.getLastPathSegment()), true);
                     HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(result.first.getLastPathSegment());
                     setResult(RESULT_OK);
                     startActivity( new Intent( EditFeedActivity.this, HomeActivity.class )

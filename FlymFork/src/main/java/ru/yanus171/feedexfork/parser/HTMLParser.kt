@@ -163,7 +163,8 @@ object HTMLParser {
                 }
                 Dog.v("link after = " + link)
                 if (link.endsWith(".pdf") || link.endsWith(".epub") || link.endsWith(".doc") || link.endsWith(".docx")) continue
-                if (filters.isEntryFiltered(el.text(), "", link, "", null) ) continue
+                if (filters.isEntryFiltered(el.text(), "", link, "", null) )
+                    continue
                 listItem.add(Item(link, el.text()))
             }
         }
