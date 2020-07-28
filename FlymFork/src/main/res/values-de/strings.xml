@@ -418,7 +418,7 @@
     <string name="fullTextRoot">Volltext-Stammverzeichnis</string>
     <string name="fullTextReloadStarted">Neuladen des Volltextes wurde gestartet</string>
     <string name="brightness_update_from_system_period_min">Zeit für Helligkeitsaktualisierung</string>
-    <string name="brightness_update_from_system_period_min_descr">(in Minuten) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) aus der aktuellen Systemstufe (0 - Aus) wiederhergestellt</string>
+    <string name="brightness_update_from_system_period_min_descr">(in Minuten, 0 = Aus) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) an die momentane Helligkeitsstufe des Systems angepasst.</string>
     <string name="menu_add_feed_shortcut">Zum Startbildschirm hinzufügen</string>
     <string name="new_feed_shortcut_added">Neue Verknüpfung wurde erfolgreich auf dem Startbildschirm hinzugefügt</string>
     <string name="new_feed_shortcut_add_failed">Der verwendete Launcher kann keine Verknüpfung erstellen</string>
