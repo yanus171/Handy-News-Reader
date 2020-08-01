@@ -52,6 +52,7 @@ public class HtmlUtils {
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
+            .addAttributes("img", "data-original")
             .addAttributes("a", "data-fancybox-href")
             //.addAttributes("math", "xmlns")
             //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
@@ -182,6 +183,7 @@ public class HtmlUtils {
             Timer timer = new Timer( "replaceImageURLs" );
             if (!TextUtils.isEmpty(content)) {
                 content = ReplaceImagesWithALink(content);
+                content = ReplaceImagesWithDataOriginal(content);
                 Matcher matcher;
 
                 final boolean isShowImages = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
@@ -262,6 +264,17 @@ public class HtmlUtils {
                 String replace = match.replaceAll("<a([^>]+)>", "").replaceAll("</a>", "");
                 content = content.replace(match, replace);
             }
+        }
+        return content;
+    }
+
+    private static String ReplaceImagesWithDataOriginal(String content) {
+        final Pattern IMG_DATA_ORIGINAL = Pattern.compile("<img[^>]+data-original=([^>]+)>", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = IMG_DATA_ORIGINAL.matcher(content);
+        while (matcher.find()) {
+            String match = matcher.group();
+            String newText = "<img src=" + matcher.group(1) + " />";
+            content = content.replace(match, newText);
         }
         return content;
     }

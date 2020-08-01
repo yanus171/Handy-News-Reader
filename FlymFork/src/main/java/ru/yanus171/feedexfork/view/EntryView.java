@@ -170,10 +170,10 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mIsEditingMode = false;
     private static String GetCSS(final String text, final String url) {
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily)) + "\");} "
-            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(GetCustomClassAndFontName(url).mFontName) + "\");}"
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily)) + "\");" + "} "
+            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(GetCustomClassAndFontName("font_rules", url).mFontName) + "\");}"
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
-            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; line-height: 120%} "
+            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
             + "h1, h2 {font-weight: normal; line-height: 120%} "
             + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
@@ -214,12 +214,9 @@ public class EntryView extends WebView implements Handler.Callback {
 
     @NotNull
     private static String getCustomFontClassStyle(String tag, String url) {
-        final CustomClassFontInfo info = GetCustomClassAndFontName(url);
+        final CustomClassFontInfo info = GetCustomClassAndFontName("font_rules", url);
         return tag + "." + info.mClassName
-            + " {letter-spacing: " + info.mLetterSpacing + "em; "
-            +   "font-family: \"CustomFont\"; "
-            +   "font-weight: " + info.mFontWeight + "; "
-            +   "font-size: " + info.mFontSize + "} ";
+            +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
     }
 
     static class CustomClassFontInfo {
@@ -227,8 +224,7 @@ public class EntryView extends WebView implements Handler.Callback {
         String mClassName = "";
         String mKeyword = "";
         String mFontName = "";
-        int mFontWeight = 400;
-        int mFontSize = BASE_TEXT_FONT_SIZE + PrefUtils.getFontSize();
+        String mStyleText = "";
         CustomClassFontInfo( String line ) {
             String[] list1 = line.split(":");
             if ( list1.length >= 1 ) {
@@ -240,20 +236,19 @@ public class EntryView extends WebView implements Handler.Callback {
                         mFontName = list2[1];
                     }
                     if (list2.length >= 3)
-                        mFontSize = 18 + Integer.parseInt(list2[2]);
-                    if (list2.length >= 4)
-                        mLetterSpacing = Float.parseFloat(list2[3]);
-                    if (list2.length >= 5)
-                        mFontWeight = Integer.parseInt(list2[4]);
+                        mStyleText = list2[2];
                 }
             }
+            for ( int i = 0; i < list1.length; i++ )
+                if (i >= 2)
+                    mStyleText += ":" + list1[i];
         }
 
     }
-    private static CustomClassFontInfo GetCustomClassAndFontName(final String url ) {
+    private static CustomClassFontInfo GetCustomClassAndFontName(final String key, final String url ) {
         Pair<String, String> result = new Pair<>( "abracadabra", "" );
-        final String pref = PrefUtils.getString( "font_rules", "" );
-        for( String line: pref.split( "\\n|\\s" ) ) {
+        final String pref = PrefUtils.getString( key, "" );
+        for( String line: pref.split( "\\n" ) ) {
             if ((line == null) || line.isEmpty())
                 continue;
             try {

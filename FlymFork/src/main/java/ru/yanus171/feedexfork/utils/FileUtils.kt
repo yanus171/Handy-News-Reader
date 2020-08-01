@@ -99,7 +99,7 @@ object FileUtils {
     }
 
     fun getLinkHash(link: String ): String {
-        return StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE);
+        return StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE)
     }
 
     private var mGetHTMLFolder: File? = null
