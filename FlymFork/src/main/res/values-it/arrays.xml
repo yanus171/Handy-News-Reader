@@ -29,7 +29,7 @@
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>Predefinito</item>
-        <item>Passa al prossimo | precedente articolo</item>
+        <item>Articolo Successivo/Precedente</item>
         <item>Pagina su | giù</item>
     </string-array>
     <string-array name="settings_preload_image_modes">

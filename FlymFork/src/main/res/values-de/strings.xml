@@ -168,7 +168,7 @@
     <string name="menu_font_bold">Fettschrift</string>
     <string name="menu_copy_clipboard">Link kopieren</string>
     <string name="menu_cancel_refresh">Aktualisierung abbrechen</string>
-    <string name="menu_delete_non_starred">Nicht gekennzeichnete löschen</string>
+    <string name="menu_delete_non_starred">Feed zurücksetzen</string>
     <string name="menu_toogle_unread_all">Ungelesen|Alle</string>
     <string name="menu_load_all_images">Alle Bilder laden</string>
     <string name="menu_mark_as_favorite">Als Favorit markieren</string>
@@ -331,8 +331,8 @@
     <string name="improveHtmlContent">HTML-Inhalt verbessern</string>
     <string name="parseXml">XML analysieren</string>
     <string name="setupConnection">Verbindung einstellen</string>
-    <string name="settings_fulltext_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
-    <string name="settings_fulltext_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
+    <string name="settings_fulltext_extract_rules">Kompletter Text</string>
+    <string name="settings_fulltext_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
     <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
     <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_date_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
@@ -368,7 +368,7 @@
     <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatisch als Favorit markieren</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="deleteAllEntries">Alle nicht als Favorit markierten Artikel löschen?</string>
+    <string name="deleteAllEntries">Feed zurücksetzen und dabei alle nicht als Favorit markierten Artikel löschen?</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Artikelansicht bearbeiten</string>
     <string name="filter_hint">Ein Filter wird dann aktiv, wenn mindestens eine Bedingung (Regel) zutrifft. \'Zulassen\' überschreibt \'Ablehnen\'</string>
@@ -418,7 +418,7 @@
     <string name="fullTextRoot">Volltext-Stammverzeichnis</string>
     <string name="fullTextReloadStarted">Neuladen des Volltextes wurde gestartet</string>
     <string name="brightness_update_from_system_period_min">Zeit für Helligkeitsaktualisierung</string>
-    <string name="brightness_update_from_system_period_min_descr">(in Minuten) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) aus der aktuellen Systemstufe (0 - Aus) wiederhergestellt</string>
+    <string name="brightness_update_from_system_period_min_descr">(in Minuten, 0 = Aus) Nach dieser Zeitspanne wird die Helligkeit (durch Wischen) an die momentane Helligkeitsstufe des Systems angepasst.</string>
     <string name="menu_add_feed_shortcut">Zum Startbildschirm hinzufügen</string>
     <string name="new_feed_shortcut_added">Neue Verknüpfung wurde erfolgreich auf dem Startbildschirm hinzugefügt</string>
     <string name="new_feed_shortcut_add_failed">Der verwendete Launcher kann keine Verknüpfung erstellen</string>
@@ -476,7 +476,7 @@
     <string name="one_webpage_author_classname_label">Autor</string>
     <string name="one_webpage_image_url_classname_label">Bild-URL</string>
     <string name="one_webpage_date_classname_label">Datum (mehrere möglich, mit Leerzeichen getrennt)</string>
-    <string name="copyClassNameToClipboard">Klassenname in die Zwischenablage kopieren</string>
+    <string name="copyClassNameToClipboard">Den Klassennamen in die Zwischenablage kopieren</string>
     <string name="text_was_copied_to_clipboard">Text wurde in die Zwischenablage kopiert</string>
     <string name="next_page_classname">Klassenname für „Nächste Seite”\n(für rekursives Laden)</string>
     <string name="articleCountLoaded">geladene Artikel</string>
@@ -507,7 +507,7 @@
     <string name="removeText">Text entfernen</string>
     <string name="set_category">Als Kategorie festlegen</string>
     <string name="menu_more_options">Weitere Optionen</string>
-    <string name="reset_feed_and_delete_all_articles">Nicht markierte Artikel löschen</string>
+    <string name="reset_feed_and_delete_all_articles">Feed zurücksetzen</string>
     <string name="filter_apply_to_author">Auf Autor anwenden</string>
     <string name="filter_apply_to_category">Auf Kategorie anwenden</string>
     <string name="filter_apply_to_url">Auf URL anwenden</string>
@@ -531,6 +531,28 @@
     <string name="yes_I_realize_btn_caption">Ja, verstanden!</string>
     <string name="sorry_I_was_wrong_btn_caption">Nein, Feeds und Artikel nicht entfernen!</string>
     <string name="create_backup">Datensicherung erstellen</string>
+    <string name="defaultFontFamily">Systemvorgabe</string>
+    <string name="fontTextSample">Text</string>
+    <string name="fontFamily">Schriftart</string>
+    <string name="fontFamilySummary">Schriftfamilie fast aller Texte in der App. Ergänzung eigener Schriftarten als ttf-Dateien in Ordner: </string>
+    <string name="settings_font_rules">Schriftart</string>
+    <string name="settings_font_rules_description">Benutzerdefinierte Schriften für verschiedene Klassen in Artikeltexten nach Webseiten-Domäne festlegen</string>
+    <string name="bold">Fett</string>
+    <string name="font_rules_dialog_title">site_url:class=Schriftdateiname=Schriftgröße=Zeichenabstand=Schriftstärke</string>
+    <string name="settings_main_image_extract_rules">Hauptabbildung</string>
+    <string name="settings_main_image_extract_rules_description">"Klassenname, unter dem die Hauptabbildung des Artikels zu finden ist, um sie als Artikelsymbol zu verwenden und sie am Anfang des Artikels (statt og:image) pro Web-Domain einzufügen. Dies kann hilfreich sein, wenn sich die Hauptabbildung außerhalb des Volltextartikels befindet "</string>
+    <string name="settings_category_content_extract_rules">Regeln zum Extrahieren des Inhaltes</string>
+    <string name="settings_category_content_extract_rules_summary">Die HTML-Klassennamen, um das Auffinden verschiedener Artikelteile zu erleichtern. Einige dieser Einstellungen werden im Ansichtsmodus für die Bearbeitung von Artikelinhalten automatisch aktualisiert.</string>
+    <string name="settings_category_other">Andere</string>
+    <string name="settings_category_storage">Speicher</string>
+    <string name="settings_category_autobackup">Automatische Sicherung</string>
+    <string name="settings_show_circle_progress">Ladefortschritt anzeigen</string>
+    <string name="settings_show_circle_progress_summary">Während der CPU-Aktivität der Anwendung</string>
+    <string name="kilobytes">kB</string>
+    <string name="megabytes">MB</string>
+    <string name="create_start_auto_refersh">Aktualisieren</string>
+    <string name="settings_thread_count">Thread-Anzahl</string>
+    <string name="settings_thread_count_description">(1-100) Die Zahl der simultan durchgeführten Operationen während der Artikelaktualisierung. Je kleiner der Wert ist, desto kleiner ist die CPU- und Speicherauslastung bei der Aktualisierung. Je größer, desto schneller ist sie. Der optimale Wert hängt von der Zahl der CPU-Cores des Gerätes ab.</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

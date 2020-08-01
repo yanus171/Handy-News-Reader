@@ -1,27 +1,27 @@
-<i>"Rimanere in contatto con tutti i Miei interessi non è mai stato così facile".</i>
+<i>"Rimanere in contatto con tutti i tuoi interessi non è mai stato così semplice".</i>
 
-<b><i>Handy News Reader</i>: nessuna pubblicità/software gratuito sotto <i>licenza GNU GPL</i>.</b>
+<b><i>Handy News Reader</i>: software gratuito senza pubblicità, con licenza <i>GNU GPL</i>.</b>
 
 <ul>
-	<li><b>crea la tua rivista dei sogni!</b></li>
-	<li><b>articoli interessanti direttamente nelle Tue mani</b></li>
-	<li><b>goditi finalmente la lettura</b></li>
+	<li><b>crea la tua rivista!</b></li>
+	<li><b>gli articoli che ti interessano arriveranno dirtti nelle tue mani</b></li>
+	<li><b>goditi la lettura</b></li>
 </ul>
 
-...goditi la vita <b>libero da distrazioni - e aggiornato con i tuoi interessi</b> allo stesso tempo. Concentrati sull'Essenziale...
+... <b>libero da distrazioni e mantenendo aggiornati i tuoi interessi</b>. Concentrati su ciò che è essenziale...
 
-Scopri <i>Handy NR</i> - un lettore <i>RSS</i> offline, ricco di funzionalità, che <b>rispetta il tuo tempo e la tua Pace Interiore</b>: evita di perdere la concentrazione e le distrazioni che oggi sono così comuni quando pensi ai dispositivi mobile.
+<i>Handy NR</i> è un lettore <i>RSS</i> offline ricco di funzionalità, che <b>rispetta il tuo tempo e la tua pace interiore</b>, evitando le distrazioni che si presentano comunemente utilizzando i dispositivi mobili.
 
 <ul>
-<b><u>Funzionalità</u>:</b>
-	<li><b><u>articoli completi</u> a portata di mano</b>: nessun bisogno di utilizzare un browser web esterno per raggiungere il testo completo,</li>
-	<li><b><u>Lettura</u> comoda</b>: passaggio tra gli articoli tramite pulsanti o swipe, <i>Tap Zones</i>, ricorda la posizione della lettura <u>per singolo articolo</u>,</li>
+<b><u>Caratteristiche</u>:</b>
+	<li><b><u>articoli completi</u></b>: senza bisogno di usare un browser esterno per leggerne il contenuto,</li>
+	<li><b><u>Lettura comoda</u></b>: è possibile cambiare articolo tramite swipe o utilizzando i pulsanti per il volume, <i>Aree di Tocco</i>, ricorda la posizione di lettura <u>per ogni articolo</u>,</li>
 	<li><b>notifiche per gli articoli importanti</b>: non ti perderai più nulla di ciò che ritieni particolarmente importante,</li>
-	<li><b><i>"Leggilo dopo"</i></b>: Puoi scorrere rapidamente tra gli articoli - <b>marcando (mettendo la stella) quelli scelti per essere letti più tardi</b> nel tuo tempo libero - o solamente da conservare,</li>
-	<li><b><i>"Rimuovi quando finito"</i></b> - una volta finito un articolo - può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggilo dopo'</i>),</li>
-	<li><b>pronto per andare offline</b> - immergiti in una lettura interessante senza distrazioni: una volta aggiornato, non c'è bisogno di caricare nulla - funzionerà davvero senza Internet :),</li>
-	<li><b>risparmia sulla larghezza di banda</b>: vai online solo per i nuovi articoli - non per caricare la loro versione completa ogni singola volta; gestisci cosa deve essere scaricato - e in quale maniera,</li>
-	<li><b>supporto per le gesture</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
+	<li><b><i>"Leggi Dopo"</i></b>: Puoi scorrere rapidamente tra gli articoli <b>marcando (con una stella) quelli che vuoi leggere più tardi</b> o conservare,</li>
+	<li><b><i>"Rimuovi alla fine della Lettura"</i></b>: una volta finita la lettura di un articolo, questo può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggi Dopo'</i>),</li>
+	<li><b>Lettura Offline</b>: una volta aggiornato, l'articolo completo sarà disponibile anche senza connessione Internet,</li>
+	<li><b>usa meno dati</b>: vai online solo per recuperare nuovi articoli, non per caricare la loro versione completa; gestisci cosa deve essere scaricato e in quale maniera,</li>
+	<li><b>supporto per i gesti</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
 	<li><b>facile da usare</b>: prenditi cura dei tuoi occhi con un tema scuro, regola dimensione, colore e luminosità del testo per soddisfare le tue esigenze personali,</li>
 	<li><b>idee interessanti</b>: le intestazioni degli articoli senza hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli per il 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
 	<li><b>altamente personalizzabile</b>: dalla dimensione delle <i>Zone di tocco'</i> al colore e alla sottolineatura degli hyperlink - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>

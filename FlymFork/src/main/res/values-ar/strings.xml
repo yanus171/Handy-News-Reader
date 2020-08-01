@@ -32,7 +32,7 @@
     <string name="about_us_content" translatable="true"><![CDATA[    <b><big>التَّرْخيصُ وَالمَعْلومَاتِ</big></b><br/>
     هٰذَا التَّطْبيقُ مَجّانيٌّ وَمَفْتوحُ المَصْدَرِ، بِإِمْكانِكَ إِعادَةُ تَوْزيعِهِ وَ/أَوْ تَعْديلِهِ، وَفْقًا لِشُروطِ رُخْصَةِ جِنُو العُموميَّةِ، عَلَى النَّحْوِ المَنْشورِ مِنْ قِبَلِ مُؤَسَّسَةِ البَرْمَجِيَّاتِ الحُرَّةِ، بِدْءًا مِنْ الإِصْدارِ الثّالِثِ مِنْ التَّرْخيصِ أَوْ الإِصْدَارَاتِ اللّاحِقَةِ (حَسَبَ اخْتيارِكَ). إِطَّلِعْ عَلَى http://www.gnu.org/licenses<br/>
     <br/>
-    يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى \'Flym RSS Reader\'، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:<br/>
+    يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى 'Flym RSS Reader'، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:<br/>
     <br/>
     • إمْكانيَةُ تَوْسِعَةِ المَجْموعاتِ<br/>
     • عَرْضُ المَقَالَاتِ بِمِلْءِ الشّاشَةِ تَمَامًا<br/>
@@ -330,8 +330,6 @@
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
-    <string name="settings_fulltext_extract_rules">قواعد إستخراج المحتوى</string>
-    <string name="settings_fulltext_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
     <string name="settings_category_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_date_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>

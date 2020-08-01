@@ -328,7 +328,7 @@
     <string name="improveHtmlContent">Оптимізація HTML тексту</string>
     <string name="parseXml">Розбір XML</string>
     <string name="setupConnection">Налагодження з’єднання</string>
-    <string name="settings_fulltext_extract_rules">Правила пошуку повних текстів</string>
+    <string name="settings_fulltext_extract_rules">Весь текст</string>
     <string name="settings_fulltext_extract_rules_description">Встановлюються для кожного сайту (необхідні базові знання HTML)</string>
     <string name="settings_category_extract_rules">Правила видобування категорій</string>
     <string name="settings_category_extract_rules_description">Встановлюються для кожного сайту (потрібні базові знання HTML)</string>
@@ -536,6 +536,20 @@
     <string name="settings_font_rules_description">Щоб встановити власний шрифт для окремого класу в тексті статі на домен веб-сторінки</string>
     <string name="bold">Жирний</string>
     <string name="font_rules_dialog_title">site_url:class=Файл шрифту name=шрифт size=літера spacing=вага шрифту</string>
+    <string name="settings_main_image_extract_rules">Головне зображення</string>
+    <string name="settings_main_image_extract_rules_description">"Ім'я класу, де шукати головне зображення статті для використання його в якості іконки статті та щоб вставити його на початок статті (замість og:image) на веб-домен. Це може допомогти якщо зображення статті не входить до повного тексту "</string>
+    <string name="settings_category_content_extract_rules">Правила пошуку текстів</string>
+    <string name="settings_category_content_extract_rules_summary">Назви класів HTML для пошуку різних розділів статей. Деякі з цих параметрів автоматично оновлюються в режимі редагування статті</string>
+    <string name="settings_category_other">Інше</string>
+    <string name="settings_category_storage">Сховище</string>
+    <string name="settings_category_autobackup">Автоматичне резервне копіювання</string>
+    <string name="settings_show_circle_progress">Показувати коло прогресу</string>
+    <string name="settings_show_circle_progress_summary">Під час використання додатком ЦП</string>
+    <string name="kilobytes">Кб</string>
+    <string name="megabytes">Мб</string>
+    <string name="create_start_auto_refersh">Почати автоматичне оновлення</string>
+    <string name="settings_thread_count">Кількість потоків</string>
+    <string name="settings_thread_count_description">(1-100) Число паралельних операцій, що виконуються одночасно під час оновлення статті. Невеликі значення - менша активність процесора і менше споживання пам\'яті при оновленні. Великі значення пришвидшують роботу. Оптимальне значення залежить від кількості ядер процесора пристрою</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
