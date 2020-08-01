@@ -539,9 +539,9 @@ GENERAL]]></string>
     <string name="fontFamily">Czcionka</string>
     <string name="fontFamilySummary">Dot. prawie całego tekstu w aplikacji. Możesz dodać pliki ttf niestandardowej czcionki w folderze sdcard/feedex/fonts</string>
     <string name="settings_font_rules">Czcionka</string>
-    <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - osobno dla pojedynczej domeny</string>
+    <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - osobno dla pojedynczej domeny. Format: adres strony:klasa=nazwa pliku czcionki=CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="bold">Pogrubiona</string>
-    <string name="font_rules_dialog_title">site_url:class=Nazwa pliku czcionki=rozmiar czcionki=odstęp znaków=grubość</string>
+    <string name="font_rules_dialog_title"> adres strony:klasa=nazwa pliku czcionki=CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="settings_main_image_extract_rules">Główny obrazek</string>
     <string name="settings_main_image_extract_rules_description">"Nazwa klasy głównego obrazka artykułu do użycia jako ikona artykułu oraz wstawienia na początku tekstu (zamiast og:image) - dla pojedynczej domeny. Może się przydać gdy obrazek artykułu znajduje się poza sekcją pełnego tekstu"</string>
     <string name="settings_category_content_extract_rules">Reguły pozyskiwania treści</string>
@@ -556,6 +556,8 @@ GENERAL]]></string>
     <string name="create_start_auto_refersh">Odśwież</string>
     <string name="settings_thread_count">Liczba wątków</string>
     <string name="settings_thread_count_description">(1-100) Liczba równoległych procesów wykonywanych jednocześnie podczas odświeżania artykułów. Przy mniejszej wartości odświeżanie zużywa mniej pamięci oraz aktywności CPU. Przy większej odświeżanie przebiega szybciej. Optymalna wartość zależy od ilości rdzeni CPU urządzenia</string>
+    <string name="main_font_css_text_title">Styl CSS głównej czcionki</string>
+    <string name="main_font_css_text_title_description">by ustawić grubość czcionki, odstęp znaków, itp. - dla tekstu artykułu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
