@@ -187,7 +187,7 @@
     <string name="menu_font_bold">Bold font</string>
     <string name="menu_copy_clipboard">Copy link</string>
     <string name="menu_cancel_refresh">Cancel update</string>
-    <string name="menu_delete_non_starred">Reset feed and delete non-starred articles</string>
+    <string name="menu_delete_non_starred">Reset the feed</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
     <string name="menu_load_all_images">Load all images</string>
     <string name="menu_mark_as_favorite">Mark as Favorite</string>
@@ -580,9 +580,13 @@
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">Start Auto refresh</string>
     <string name="settings_thread_count">Thread count</string>
+<<<<<<< HEAD
     <string name="settings_thread_count_description">(1-100) The count of parallel operations executing simultaneously during the article refresh process. The small values makes less cpu activity and less memory consumption of refresh operation. The large values makes the operation run faster. Optimal value depends on the count of the phone CPU cores</string>
     <string name="main_font_css_text_title">Main font CSS style text</string>
     <string name="main_font_css_text_title_description">to set font weight, letter spacing etc for article text window</string>
+=======
+    <string name="settings_thread_count_description">(1-100) The count of parallel operations executing simultaneously during the article refresh. The small values makes less CPU activity and less memory consumption of the refresh. The large values makes it faster. Optimal value depends on the count of the device CPU cores</string>
+>>>>>>> 1af919a51b17b42e96ba100200b4c27604381efa
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
