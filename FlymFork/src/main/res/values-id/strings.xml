@@ -327,8 +327,6 @@ maksimum per umpan<br/>
     <string name="improveHtmlContent">Menyempurnakan konten HTML</string>
     <string name="parseXml">Mengurai XML</string>
     <string name="setupConnection">Pasang koneksi</string>
-    <string name="settings_fulltext_extract_rules">Aturan ekstraksi konten</string>
-    <string name="settings_fulltext_extract_rules_description">Pasang untuk setiap situs (perlu pengetahuan dasar HTML)</string>
     <string name="settings_tap_zones_dialogtitle">sekadar info, tidak dapat diubah</string>
     <string name="downloadNext">", Berikut "</string>
     <string name="downloadAll">", Semua"</string>
