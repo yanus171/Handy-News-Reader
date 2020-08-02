@@ -330,6 +330,8 @@
     <string name="improveHtmlContent">Amélioration du contenu HTML</string>
     <string name="parseXml">Analyse XML</string>
     <string name="setupConnection">Configurer la connexion</string>
+    <string name="settings_fulltext_extract_rules">Texte complet</string>
+    <string name="settings_fulltext_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
     <string name="settings_category_extract_rules">Règles d\'extraction des catégories</string>
     <string name="settings_category_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
     <string name="settings_date_extract_rules_description">Définir pour chaque site (connaissance HTML de base nécessaire)</string>
@@ -536,6 +538,13 @@
     <string name="settings_font_rules_description">Pour définir des polices par classe séparée dans les textes d\'article par domaine de page web</string>
     <string name="bold">Gras</string>
     <string name="font_rules_dialog_title">site_url:class=Fichier de police nom=police taille=lettre espacement=poids de la police</string>
+    <string name="settings_main_image_extract_rules">Image principale</string>
+    <string name="settings_main_image_extract_rules_description">"Nom de la classe où trouver l'image principale de l'article pour l'utiliser comme icône d'article et l'insérer au début de l'article (au lieu de og:image) par domaine. Cela peut aider si l'image de l'article est en dehors de la section texte complet de l'article "</string>
+    <string name="settings_category_content_extract_rules">Règles d\'extraction de contenu</string>
+    <string name="settings_category_content_extract_rules_summary">Noms de classe HTML aidant à trouver différentes parties d\'article. Certains de ces paramètres sont automatiquement mis à jour en mode édition de contenu de l\'article</string>
+    <string name="settings_category_other">Autre</string>
+    <string name="settings_category_storage">Stockage</string>
+    <string name="settings_category_autobackup">Sauvegarde automatique</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
