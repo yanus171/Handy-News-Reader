@@ -545,6 +545,15 @@
     <string name="settings_category_other">Autre</string>
     <string name="settings_category_storage">Stockage</string>
     <string name="settings_category_autobackup">Sauvegarde automatique</string>
+    <string name="settings_show_circle_progress">Afficher le cercle de progression</string>
+    <string name="settings_show_circle_progress_summary">Activité du CPU durant l\'application</string>
+    <string name="kilobytes">Ko</string>
+    <string name="megabytes">Mo</string>
+    <string name="create_start_auto_refersh">Démarrer la mise à jour automatique</string>
+    <string name="settings_thread_count">Nombre de sujets</string>
+    <string name="settings_thread_count_description">(1-100) Nombre d\'opérations parallèles s\'exécutant simultanément pendant le processus de rafraîchissement de l\'article. Les petites valeurs réduisent l\'activité du processeur et la consommation de mémoire de rafraîchissement. Les grandes valeurs rendent l\'opération plus rapide. La valeur optimale dépend du nombre de cœurs du CPU de l\'appareil</string>
+    <string name="main_font_css_text_title">Police principale du style CSS</string>
+    <string name="main_font_css_text_title_description">pour définir le poids de la police, l\'espacement des lettres, etc., pour le texte de l\'article</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
