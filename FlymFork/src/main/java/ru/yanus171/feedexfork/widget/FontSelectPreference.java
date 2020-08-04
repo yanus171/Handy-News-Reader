@@ -100,8 +100,8 @@ public class FontSelectPreference extends Preference {
 		return result;
 	}
 	// -----------------------------------------------------------------------------
-	static public String GetTypeFaceLocalUrl(String fontName) {
-		if (!fontName.equals(FontSelectPreference.DefaultFontFamily)) {
+	static public String GetTypeFaceLocalUrl(String fontName, boolean isEditingMode ) {
+		if (!fontName.equals(FontSelectPreference.DefaultFontFamily) && !isEditingMode) {
 			try {
 				if ( Arrays.asList(MainApplication.getContext().getAssets().list(FontsDir ) ).contains(fontName ) )
 					return "file:///android_asset/" + FontsDir + "/" + fontName;

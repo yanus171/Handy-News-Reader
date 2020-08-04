@@ -563,8 +563,8 @@
     <string name="fontTextSample">Text</string>
     <string name="fontFamily">Font</string>
     <string name="fontFamilySummary">Font family of almost all texts in app. You can add custom font ttf files in folder: </string>
-    <string name="settings_font_rules">Font</string>
-    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per domain. Format: site_url:class=Font file name=CSS text. For example: font-weight: 400; font-size: 12; letter-spacing: 0.1em</string>
+    <string name="settings_font_rules">Custom Font</string>
+    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per domain. Leave classname empty to apply font to whole text. Format: site_url:class=Font file name=CSS text. For example: font-weight: 400; font-size: 12; letter-spacing: 0.1em</string>
     <string name="bold">Bold</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=CSS text. For example: font-weight: 400; font-size: 12; letter-spacing: 0.1em</string>
     <string name="settings_main_image_extract_rules">Main image</string>

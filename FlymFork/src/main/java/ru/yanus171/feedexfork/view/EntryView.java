@@ -168,10 +168,10 @@ public class EntryView extends WebView implements Handler.Callback {
     private long mLastTimeScrolled = 0;
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
-    private static String GetCSS(final String text, final String url) {
+    private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily)) + "\");" + "} "
-            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(GetCustomClassAndFontName("font_rules", url).mFontName) + "\");}"
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode) + "\");" + "} "
+            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(GetCustomClassAndFontName("font_rules", url).mFontName, isEditingMode) + "\");}"
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
             + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
@@ -190,10 +190,10 @@ public class EntryView extends WebView implements Handler.Callback {
             + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
             + "hr {width: 100%; color: #777777; align: center; size: 1} "
             + "p.button {text-align: center} "
+            + "p {font-family: \"MainFont\"; margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
             + getCustomFontClassStyle("p", url)
             + getCustomFontClassStyle("span", url)
             + getCustomFontClassStyle("div", url)
-            + "p {font-family: \"MainFont\"; margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
             + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
@@ -215,7 +215,7 @@ public class EntryView extends WebView implements Handler.Callback {
     @NotNull
     private static String getCustomFontClassStyle(String tag, String url) {
         final CustomClassFontInfo info = GetCustomClassAndFontName("font_rules", url);
-        return tag + "." + info.mClassName
+        return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
             +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
     }
 
@@ -475,7 +475,7 @@ public class EntryView extends WebView implements Handler.Callback {
                                        long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS(title, link)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
+        StringBuilder content = new StringBuilder(GetCSS(title, link, mIsEditingMode)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
 
         if (link == null) {
             link = "";

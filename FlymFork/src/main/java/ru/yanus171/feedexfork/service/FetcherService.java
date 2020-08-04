@@ -800,7 +800,8 @@ public class FetcherService extends IntentService {
                         ContentValues values = new ContentValues();
                         if ( !categoryList.isEmpty() )
                             values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList ) );
-
+                        else
+                            values.putNull( EntryColumns.CATEGORIES );
                         if ( !dateText.isEmpty() ){
                             final String format = ArticleTextExtractor.getDataForUrlFromPref(link, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, "") );
                             Date date = null;
