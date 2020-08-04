@@ -189,12 +189,12 @@
     <string name="menu_cancel_refresh">Cancel update</string>
     <string name="menu_delete_non_starred">Reset the feed</string>
     <string name="menu_toogle_unread_all">Unread|All</string>
-    <string name="menu_load_all_images">Load all images</string>
+    <string name="menu_load_all_images">All images</string>
     <string name="menu_mark_as_favorite">Mark as Favorite</string>
     <string name="menu_mark_as_unfavorite">Unmark as Favorite</string>
     <string name="menu_mark_as_unread">Mark as unread</string>
-    <string name="menu_reload_full_text">Reload full text</string>
-    <string name="menu_reload_full_text_without_mobilizer">Reload without Mobilizer</string>
+    <string name="menu_reload_full_text">Full text</string>
+    <string name="menu_reload_full_text_without_mobilizer">Without Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: starred entries</string>
     <string name="link_was_copied_to_clipboard">Link copied</string>
     <string name="get_full_text">Load full article</string>
@@ -398,7 +398,7 @@
     <string name="markedAsStarred">The article has been marked as starred: </string>
     <string name="deleteAllEntries">Delete all non-starred displayed articles?</string>
     <string name="question">Question</string>
-    <string name="reload_full_text_with_tags">Edit Content View</string>
+    <string name="reload_full_text_with_tags">Edit Content</string>
     <string name="filter_hint">A filter\'s action will be initiated if at least one condition (rule) is met. \'Accept\' overrides \'Reject\'</string>
     <string name="keyword">keyword(s)</string>
     <string name="loadTypeWeb"><b>Web Page - Links</b> <font color="gray">(load all links from page as different articles)</font></string>
