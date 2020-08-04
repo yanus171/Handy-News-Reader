@@ -50,6 +50,8 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
+import static ru.yanus171.feedexfork.utils.UiUtils.AddSmallText;
+
 public class FontSelectPreference extends Preference {
 	private final static String Separator = "#";
 	// final static int cImageHeight = 40;
@@ -196,22 +198,6 @@ public class FontSelectPreference extends Preference {
 		}
 		return result;
 	}
-
-//	// --------------------------------------------------------------
-//	static Typeface GetTypefaceByName(String name) {
-//		Typeface result = null;
-//		if (mFontList != null) {
-//			for (FontInfo item : mFontList) {
-//				if (item.mFontName.equals(name)) {
-//					result = item.mTypeface;
-//					break;
-//				}
-//			}
-//		}
-//		return result;
-//	}
-
-
 	// --------------------------------------------------------------
     private String GetCurrentFontName() {
 		String result = "";
@@ -238,28 +224,35 @@ public class FontSelectPreference extends Preference {
 		@Override
 		public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-			//LinearLayout vLayout = new LinearLayout(getContext());
-			//vLayout.setOrientation(LinearLayout.VERTICAL);
+			LinearLayout vLayout = new LinearLayout(getContext());
+			vLayout.setOrientation(LinearLayout.VERTICAL);
+			//vLayout.setBackgroundColor(Theme.GetMenuBackgroundColor());
 
 			LinearLayout hLayout = new LinearLayout(getContext());
 			hLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-			hLayout.setBackgroundColor(Theme.GetMenuBackgroundColor());
+			//hLayout.setBackgroundColor(Theme.GetMenuBackgroundColor());
 
 			TextView textView = new TextView(getContext());
-			textView.setText(Html.fromHtml( getItem(position).mFontName + " (<b>" + getContext().getString(R.string.bold) + "</b>)" ) );
+			textView.setText(Html.fromHtml( getItem(position).mFontName.replace( ".ttf", "" ) + " (<b>" + getContext().getString(R.string.bold) + "</b>)" ) );
 			textView.setTextColor(Theme.GetMenuFontColor());
 			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-			final int PAD = UiUtils.dpToPixel(20);
+			final int PAD = UiUtils.dpToPixel(5);
 			textView.setPadding(PAD, PAD, 0, PAD);
 			textView.setSingleLine();
 			textView.setGravity(Gravity.CENTER_VERTICAL);
 			textView.setTypeface( getItem(position).mTypeface );
 			hLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
-			//AddSmallText( vLayout, null, Gravity.LEFT, null, getItem(position).mFontName ).setTypeface( Typeface.DEFAULT );
-			//vLayout.addView( hLayout );
-
-			return hLayout;
+			vLayout.addView(hLayout);
+			if ( position > 0 ){
+				TextView small = AddSmallText(vLayout, null, Gravity.LEFT, null, getItem(position).mFontName);
+				small.setTypeface(Typeface.DEFAULT);
+				small.setPadding(PAD, 0, 0, PAD);
+				small.setTextColor(Theme.GetMenuFontColor());
+				small.setEnabled( false );
+			}
+//			vLayout.setBackgroundResource(android.R.drawable.dialog_frame);
+			return vLayout;
 
 		}
 

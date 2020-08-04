@@ -211,7 +211,7 @@ public class UiUtils {
         result.setFocusable(false);
         result.setFocusableInTouchMode(true);
 
-        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        //result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         result.setGravity(gravity);
         result.setPadding(10, 0, 10, 0);
 
