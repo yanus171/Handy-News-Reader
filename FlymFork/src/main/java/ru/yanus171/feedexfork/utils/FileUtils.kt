@@ -27,6 +27,7 @@ import android.os.Environment
 import android.provider.BaseColumns._ID
 import android.widget.Toast
 import ru.yanus171.feedexfork.MainApplication
+import ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
@@ -153,6 +154,7 @@ object FileUtils {
                 out.use { out ->
                     out.write(html)
                 }
+                mHTMLFileVoc.addFile( file.name )
                 result = Uri.parse("file://" + file.absolutePath)
             } catch (e: Exception) {
                 AddErrorToLog(null, e)
@@ -200,7 +202,7 @@ object FileUtils {
     fun isMobilized (link: String?, cursor: Cursor?, colMob: Int, colID: Int ): Boolean {
         if ( link != null && ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) ) {
             val file = LinkToFile( link )
-            val mobValue = if ( file.exists() ) {
+            val mobValue = if ( mHTMLFileVoc.isExists( file.name ) ) {
                 "${file.length()}"
             } else {
                 EMPTY_MOBILIZED_VALUE
@@ -208,12 +210,6 @@ object FileUtils {
 
             if ( cursor != null )
                 UpdateMob( mobValue, cursor.getLong( colID ) ).start()
-//            object : Thread() {
-//                override fun run() {
-//                    cr.update(FeedData.EntryColumns.CONTENT_URI( cursor.getLong( colID ) ), values, null, null)
-//                }
-//            }.start()
-
 
             return mobValue != EMPTY_MOBILIZED_VALUE
         } else if ( cursor != null )
@@ -233,11 +229,11 @@ object FileUtils {
             deleteMobilized(cursor.getString(1), FeedData.EntryColumns.CONTENT_URI( cursor.getString(0) ))
         cursor.close()
 
-
     }
 
     public fun deleteMobilizedFile(link: String) {
         with(LinkToFile(link)) { if (exists()) delete() }
+        mHTMLFileVoc.removeFile( link )
     }
     public fun deleteMobilized(link: String, entryUri: Uri) {
         deleteMobilizedFile( link )

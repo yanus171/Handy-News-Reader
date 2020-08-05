@@ -64,7 +64,7 @@ class FileVoc(val mFolder: File ) {
         }
         Thread() {
             synchronized(mVoc) {
-                val status = FetcherService.Status().Start("Reading images folder", true)
+                val status = FetcherService.Status().Start("Reading folder $mFolder", true)
                 mVoc.clear()
                 for (item in File(mFolder.path).listFiles())
                     mVoc.add(getKey( item.toString() ))

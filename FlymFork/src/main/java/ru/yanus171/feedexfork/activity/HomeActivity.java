@@ -77,6 +77,7 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
@@ -657,6 +658,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mImageFileVoc.init1();
+        mHTMLFileVoc.init1();
         OPML.OnRequestPermissionResult(this, requestCode, grantResults);
 
         //        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {

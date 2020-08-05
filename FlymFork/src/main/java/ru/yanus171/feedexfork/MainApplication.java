@@ -48,6 +48,7 @@ public class MainApplication extends Application {
     }
 
     public static FileVoc mImageFileVoc = null;
+    public static FileVoc mHTMLFileVoc = null;
 
     public static final String OPERATION_NOTIFICATION_CHANNEL_ID = "operation_channel";
     public static final String READING_NOTIFICATION_CHANNEL_ID = "reading_channel";
@@ -58,6 +59,7 @@ public class MainApplication extends Application {
         mContext = getApplicationContext();
         Status();
         mImageFileVoc = new FileVoc(FileUtils.INSTANCE.GetImagesFolder() );
+        mHTMLFileVoc = new FileVoc(FileUtils.INSTANCE.GetHTMLFolder() );
         BaseActivity.InitLocale( mContext );
 
         Thread.setDefaultUncaughtExceptionHandler(new DebugApp().new UncaughtExceptionHandler(this));
@@ -90,6 +92,7 @@ public class MainApplication extends Application {
         }
 
         mImageFileVoc.init1();
+        mHTMLFileVoc.init1();
         EntryUrlVoc.INSTANCE.init1();
     }
 
