@@ -144,6 +144,7 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
@@ -212,7 +213,7 @@ public class FetcherService extends IntentService {
     }
 
     public static boolean hasMobilizationTask(long entryId) {
-        Cursor cursor = MainApplication.getContext().getContentResolver().query(TaskColumns.CONTENT_URI, TaskColumns.PROJECTION_ID,
+        Cursor cursor = getContext().getContentResolver().query(TaskColumns.CONTENT_URI, TaskColumns.PROJECTION_ID,
                 TaskColumns.ENTRY_ID + '=' + entryId + DB_AND + TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
 
         boolean result = cursor.getCount() > 0;
@@ -230,7 +231,7 @@ public class FetcherService extends IntentService {
                 values[i].put(TaskColumns.IMG_URL_TO_DL, images.get(i));
             }
 
-            MainApplication.getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+            getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
         }
     }
 
@@ -241,13 +242,13 @@ public class FetcherService extends IntentService {
             values[i].put(TaskColumns.ENTRY_ID, entriesId[i]);
         }
 
-        MainApplication.getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+        getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
     }
 
     static boolean isBatteryLow() {
 
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent battery = MainApplication.getContext().registerReceiver(null, ifilter);
+        Intent battery = getContext().registerReceiver(null, ifilter);
         int level = battery.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = battery.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
@@ -295,7 +296,7 @@ public class FetcherService extends IntentService {
                         @Override
                         public void run() {
                             for ( int i =0; i < 2; i++ )
-                                Toast.makeText( MainApplication.getContext(), getString(R.string.auto_backup_opml_file_created) + "\n" + sourceFileName, Toast.LENGTH_LONG ).show();
+                                Toast.makeText( getContext(), getString(R.string.auto_backup_opml_file_created) + "\n" + sourceFileName, Toast.LENGTH_LONG ).show();
                         }
                     });
                 } catch (FileNotFoundException e) {
@@ -558,7 +559,7 @@ public class FetcherService extends IntentService {
 
     private static boolean mIsWiFi = false;
     private boolean GetIsWifi() {
-        ConnectivityManager cm = (ConnectivityManager) MainApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI );
     }
@@ -657,7 +658,7 @@ public class FetcherService extends IntentService {
                                     final String feedID = curEntry.getString(0);
                                     FeedFilters filters = new FeedFilters(feedID);
                                     if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
-                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                        ContentResolver cr = getContext().getContentResolver();
                                         cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                                         result.mResultCount = 1;
                                     }
@@ -689,7 +690,7 @@ public class FetcherService extends IntentService {
     }
 
     public static AutoDownloadEntryImages IsAutoDownloadImages(String feedId) {
-        final ContentResolver cr = MainApplication.getContext().getContentResolver();
+        final ContentResolver cr = getContext().getContentResolver();
         AutoDownloadEntryImages result = AutoDownloadEntryImages.Yes;
         Cursor curFeed = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[] { FeedColumns.IS_IMAGE_AUTO_LOAD }, null, null, null );
         if ( curFeed.moveToFirst() )
@@ -709,7 +710,7 @@ public class FetcherService extends IntentService {
                                         final boolean isForceReload,
                                         boolean isParseDateFromHTML) {
         boolean success = false;
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        ContentResolver cr = getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
         Cursor entryCursor = cr.query(entryUri, null, null, null, null);
 
@@ -869,16 +870,16 @@ public class FetcherService extends IntentService {
 
 
     public static Intent GetActionIntent( String action, Uri uri, Class<?> class1 ) {
-        return new Intent(action, uri).setPackage( MainApplication.getContext().getPackageName() ).setClass( MainApplication.getContext(), class1 );
+        return new Intent(action, uri).setPackage( getContext().getPackageName() ).setClass( getContext(), class1 );
     }
     public static Intent GetActionIntent( String action, Uri uri ) {
         return GetActionIntent( action, uri, EntryActivity.class );
     }
     public static Intent GetIntent( String extra ) {
-        return new Intent(MainApplication.getContext(), FetcherService.class).putExtra( extra, true );
+        return new Intent(getContext(), FetcherService.class).putExtra(extra, true );
     }
     public static void StartServiceLoadExternalLink(String url, String title, boolean star) {
-        FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class )
+        FetcherService.StartService( new Intent(getContext(), FetcherService.class )
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
                 .putExtra(Constants.TITLE_TO_LOAD, title)
@@ -929,8 +930,8 @@ public class FetcherService extends IntentService {
         boolean load;
         Dog.v( "LoadLink " + url );
 
-        final ContentResolver cr = MainApplication.getContext().getContentResolver();
-        final int status = FetcherService.Status().Start(MainApplication.getContext().getString(R.string.loadingLink), false); try {
+        final ContentResolver cr = getContext().getContentResolver();
+        final int status = FetcherService.Status().Start(getContext().getString(R.string.loadingLink), false); try {
             Uri entryUri = GetEntryUri( url );
             if ( entryUri != null ) {
                 load = (forceReload == ForceReload.Yes);
@@ -981,7 +982,7 @@ public class FetcherService extends IntentService {
         synchronized ( mExtrenalLinkFeedID ) {
             if (mExtrenalLinkFeedID.isEmpty()) {
 
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                ContentResolver cr = getContext().getContentResolver();
                 Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                         FeedColumns.PROJECTION_ID,
                         FeedColumns.FETCH_MODE + "=" + FetcherService.FETCHMODE_EXERNAL_LINK, null, null);
@@ -992,7 +993,7 @@ public class FetcherService extends IntentService {
                 if (mExtrenalLinkFeedID.isEmpty()) {
                     ContentValues values = new ContentValues();
                     values.put(FeedColumns.FETCH_MODE, FetcherService.FETCHMODE_EXERNAL_LINK);
-                    values.put(FeedColumns.NAME, MainApplication.getContext().getString(R.string.externalLinks));
+                    values.put(FeedColumns.NAME, getContext().getString(R.string.externalLinks));
                     mExtrenalLinkFeedID = cr.insert(FeedColumns.CONTENT_URI, values).getLastPathSegment();
                 }
             }
@@ -1009,10 +1010,10 @@ public class FetcherService extends IntentService {
     }
     private static void downloadAllImages( ExecutorService executor ) {
         StatusText.FetcherObservable obs = Status();
-        final String statusText = MainApplication.getContext().getString(R.string.AllImages);
+        final String statusText = getContext().getString(R.string.AllImages);
         int status = obs.Start(statusText, false); try {
 
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            ContentResolver cr = getContext().getContentResolver();
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
                     TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
@@ -1100,7 +1101,7 @@ public class FetcherService extends IntentService {
     }
     public static void downloadEntryImages(final String feedId, final long entryId, final String entryLink, final ArrayList<String> imageList ) {
         final StatusText.FetcherObservable obs = Status();
-        final String statusText = MainApplication.getContext().getString(R.string.article_images_downloading);
+        final String statusText = getContext().getString(R.string.article_images_downloading);
         int status = obs.Start( statusText, true); try {
             int downloadedCount = 0;
             ExecutorService executor = CreateExecutorService(); try {
@@ -1154,13 +1155,13 @@ public class FetcherService extends IntentService {
             UiUtils.RunOnGuiThread(new Runnable() {
                 @Override
                 public void run() {
-                    new WebView(MainApplication.getContext()).clearCache(true );
+                    new WebView(getContext()).clearCache(true );
                 }
             });
             //Status().End( status );
         }
-        int status = Status().Start(MainApplication.getContext().getString(R.string.deleteOldEntries), false);
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        int status = Status().Start(getContext().getString(R.string.deleteOldEntries), false);
+        ContentResolver cr = getContext().getContentResolver();
         final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                                        new String[]{_ID, FeedColumns.OPTIONS},
                                        FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL + DB_OR + FeedColumns._ID + "=" + GetExtrenalLinkFeedID(), null, null);
@@ -1294,7 +1295,7 @@ public class FetcherService extends IntentService {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(MainApplication.getContext()) //
+        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //
                 .setSmallIcon(R.mipmap.ic_launcher) //
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher)) //
@@ -1380,7 +1381,7 @@ public class FetcherService extends IntentService {
         int iconUrlPosition = cursor.getColumnIndex(FeedColumns.ICON_URL);
 
         Connection connection = null;
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        ContentResolver cr = getContext().getContentResolver();
         try {
 
             connection = new Connection( feedUrl);
@@ -1578,7 +1579,7 @@ public class FetcherService extends IntentService {
 
         public static void cancelRefresh () {
             synchronized (mCancelRefresh) {
-                MainApplication.getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
+                getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
                 mCancelRefresh = true;
             }
         }
@@ -1587,7 +1588,7 @@ public class FetcherService extends IntentService {
             int status = Status().Start("deleteAllFeedEntries", true);
             try {
 
-                final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                final ContentResolver cr = getContext().getContentResolver();
                 final String feedID = entriesUri.getPathSegments().get( 1 );
                 final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, WHERE_NOT_FAVORITE, null, null );
                 if ( cursor != null  ){
@@ -1684,7 +1685,7 @@ public class FetcherService extends IntentService {
 //        }
 
     public static void StartService(Intent intent, boolean requiresNetwork) {
-        final Context context = MainApplication.getContext();
+        final Context context = getContext();
 
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
         //boolean isOpenActivity = intent.getBooleanExtra(Constants.OPEN_ACTIVITY, false);
@@ -1722,7 +1723,7 @@ public class FetcherService extends IntentService {
     }
 
     static Intent GetStartIntent() {
-        return new Intent(MainApplication.getContext(), FetcherService.class)
+        return new Intent(getContext(), FetcherService.class)
                 .setAction( FetcherService.ACTION_REFRESH_FEEDS );
     }
 
