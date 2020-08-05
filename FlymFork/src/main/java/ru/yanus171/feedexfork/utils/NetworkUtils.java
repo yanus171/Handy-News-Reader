@@ -55,6 +55,8 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.view.EntryView;
 
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+
 public class NetworkUtils {
 
     //public static final File IMAGE_FOLDER_FILE = new File(MainApplication.getContext().getCacheDir(), "images/");
@@ -158,7 +160,7 @@ public class NetworkUtils {
 
                     if ( !abort ) {
                         new File(tempImgPath).renameTo(new File(finalImgPath));
-                        ImageFileVoc.INSTANCE.addImageFile(finalImgPath );
+                        mImageFileVoc.addFile(finalImgPath );
                     } else
                         new File(tempImgPath).delete();
                 }
@@ -279,7 +281,7 @@ public class NetworkUtils {
         final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
         Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {
-            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && ImageFileVoc.INSTANCE.isExists(GetImageFile(imageUrl, imageUrl ).getPath() ) ) )
+            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && mImageFileVoc.isExists(GetImageFile(imageUrl, imageUrl ).getPath() ) ) )
                 return;
         } finally {
             cursor.close();

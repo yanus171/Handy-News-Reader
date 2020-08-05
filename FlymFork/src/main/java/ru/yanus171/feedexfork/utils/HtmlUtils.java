@@ -39,6 +39,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
@@ -204,7 +205,7 @@ public class HtmlUtils {
                         imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
                         LINK_TAG_END;
                     if ( isShowImages ) {
-                        final boolean isFileExists = ImageFileVoc.INSTANCE.isExists( file.getPath() );
+                        final boolean isFileExists = mImageFileVoc.isExists( file.getPath() );
                         if ( !isFileExists && isImageToLoad )
                             imagesToDl.add(srcUrl);
                         String btnLoadNext = "";

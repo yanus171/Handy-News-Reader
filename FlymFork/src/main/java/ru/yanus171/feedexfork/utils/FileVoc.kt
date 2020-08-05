@@ -5,28 +5,30 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.service.FetcherService
-import ru.yanus171.feedexfork.utils.FileUtils.GetImagesFolder
 import java.io.File
 import java.util.*
 
-object ImageFileVoc {
+class FileVoc(val mFolder: File ) {
     private var mIsInProcess = false
     private var mIsInitialized = false
     private val mVoc = HashSet<String>()
 
-    private fun getKey( fileName: String ): String {
-        return fileName.replace( GetImagesFolder().absolutePath + "/", "" )
+    init {
+
     }
-    public fun addImageFile(fileName: String ) {
+    private fun getKey( fileName: String ): String {
+        return fileName.replace( mFolder.absolutePath + "/", "" )
+    }
+    fun addFile(fileName: String ) {
         init1()
         synchronized(mVoc) {
             mVoc.add( getKey( fileName ) )
         }
     }
-    public fun removeImageFile(fileName: String ): Boolean {
+    public fun removeFile(fileName: String ): Boolean {
         init1()
         synchronized(mVoc) {
-            return if( File(GetImagesFolder(), fileName).delete() ) {
+            return if( File(mFolder, fileName).delete() ) {
                 mVoc.remove(getKey( fileName ))
                 true
             } else
@@ -64,13 +66,13 @@ object ImageFileVoc {
             synchronized(mVoc) {
                 val status = FetcherService.Status().Start("Reading images folder", true)
                 mVoc.clear()
-                for (item in File(GetImagesFolder().path).listFiles())
+                for (item in File(mFolder.path).listFiles())
                     mVoc.add(getKey( item.toString() ))
                 FetcherService.Status().End(status)
             }
             synchronized(mIsInitialized) {
-                mIsInitialized = true;
-                mIsInProcess = false;
+                mIsInitialized = true
+                mIsInProcess = false
             }
         }.start()
     }
