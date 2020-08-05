@@ -1037,8 +1037,8 @@ public class FetcherService extends IntentService {
                         result.mTaskID = taskId;
                         result.mResultCount = 0;
                         try {
-                            NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-                            result.mResultCount = 1;
+                            if ( NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false) )
+                                result.mResultCount = 1;
                         } catch ( Exception e ) {
                             Status().SetError( "", "", "", e );
                         }
@@ -1114,8 +1114,8 @@ public class FetcherService extends IntentService {
                             result.mResultCount = 0;
                             if ( !isCancelRefresh() && isEntryIDActive( entryId ) ) {
                                 try {
-                                    NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false);
-                                    result.mResultCount = 1;
+                                    if ( NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false) )
+                                        result.mResultCount = 1;
                                 } catch (Exception e) {
                                     obs.SetError(entryLink, feedId, String.valueOf(entryId), e);
                                 }

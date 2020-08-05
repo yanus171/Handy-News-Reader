@@ -103,16 +103,16 @@ public class NetworkUtils {
         //return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
     }
 
-    public static void downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit, boolean notify ) throws IOException {
+    public static boolean downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit, boolean notify ) throws IOException {
+        boolean result = false;
         if ( FetcherService.isCancelRefresh() )
-            return;
+            return result;
         String tempImgPath = getTempDownloadedImagePath(entryUrl, imgUrl);
         String finalImgPath = getDownloadedImagePath(entryUrl, imgUrl);
 
 
         if (!new File(tempImgPath).exists() && !new File(finalImgPath).exists()) {
             boolean abort = false;
-            boolean success = false;
             Connection imgURLConnection = null;
             try {
                 //IMAGE_FOLDER_FILE.mkdir(); // create images dir
@@ -147,7 +147,7 @@ public class NetworkUtils {
                                     //FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
                                 }
                             }
-                            success = true;
+                            result = true;
                             FetcherService.Status().AddBytes(bytesRecieved);
 
                         } finally {
@@ -173,10 +173,10 @@ public class NetworkUtils {
                 }
             }
 
-            if ( success && !abort && notify && entryId > 0 )
+            if ( result && !abort && notify && entryId > 0 )
                 EntryView.NotifyToUpdate( entryId, entryUrl );
         }
-        //if ( updateGUI )
+        return result;
     }
 
     private static String getProgressText(int bytesRecieved) {
