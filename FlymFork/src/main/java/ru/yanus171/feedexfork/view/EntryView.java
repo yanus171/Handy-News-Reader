@@ -169,9 +169,13 @@ public class EntryView extends WebView implements Handler.Callback {
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
+        String mainFontLaocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
+        final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
+        if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
+            mainFontLaocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode) + "\");" + "} "
-            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(GetCustomClassAndFontName("font_rules", url).mFontName, isEditingMode) + "\");}"
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLaocalUrl + "\");" + "} "
+            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}"
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
             + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
             + "* {max-width: 100%; word-break: break-word}"
@@ -191,9 +195,9 @@ public class EntryView extends WebView implements Handler.Callback {
             + "hr {width: 100%; color: #777777; align: center; size: 1} "
             + "p.button {text-align: center} "
             + "p {font-family: \"MainFont\"; margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
-            + getCustomFontClassStyle("p", url)
-            + getCustomFontClassStyle("span", url)
-            + getCustomFontClassStyle("div", url)
+            + getCustomFontClassStyle("p", url, customFontInfo)
+            + getCustomFontClassStyle("span", url, customFontInfo)
+            + getCustomFontClassStyle("div", url, customFontInfo)
             + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
@@ -213,8 +217,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     @NotNull
-    private static String getCustomFontClassStyle(String tag, String url) {
-        final CustomClassFontInfo info = GetCustomClassAndFontName("font_rules", url);
+    private static String getCustomFontClassStyle(String tag, String url, CustomClassFontInfo info) {
         return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
             +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
     }
@@ -246,7 +249,6 @@ public class EntryView extends WebView implements Handler.Callback {
 
     }
     private static CustomClassFontInfo GetCustomClassAndFontName(final String key, final String url ) {
-        Pair<String, String> result = new Pair<>( "abracadabra", "" );
         final String pref = PrefUtils.getString( key, "" );
         for( String line: pref.split( "\\n" ) ) {
             if ((line == null) || line.isEmpty())
@@ -519,7 +521,7 @@ public class EntryView extends WebView implements Handler.Callback {
             }
 
             if (canSwitchToFullText)
-                content.append(BUTTON_START(layout)).append(context.getString(R.string.menu_reload_full_text)).append(BUTTON_MIDDLE)
+                content.append(BUTTON_START(layout)).append(context.getString(R.string.btn_reload_full_text)).append(BUTTON_MIDDLE)
                     .append("injectedJSObject.onReloadFullText();").append(BUTTON_END(layout));
             if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
                 content.append(BUTTON_START(layout)).append(context.getString(R.string.see_enclosure)).append(BUTTON_MIDDLE)
