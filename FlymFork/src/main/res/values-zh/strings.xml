@@ -550,6 +550,9 @@
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">开始自动刷新</string>
     <string name="settings_thread_count">线程计数</string>
+    <string name="settings_thread_count_description">(1-100) 文章刷新过程中同时执行的并行操作的数目。较小的值可以减少cpu活动和刷新操作的内存消耗。较大的值使操作运行得更快。最佳值取决于手机CPU核心数量</string>
+    <string name="main_font_css_text_title">主字体 CSS 样式文本</string>
+    <string name="main_font_css_text_title_description">为文章窗口设置字体粗细度、字母间距等</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
