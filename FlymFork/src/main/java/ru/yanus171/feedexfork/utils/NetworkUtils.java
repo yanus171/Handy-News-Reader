@@ -276,8 +276,6 @@ public class NetworkUtils {
     }
 
     public static void retrieveFavicon(Context context, URL url, String id) {
-        boolean success = false;
-
         final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
         Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {

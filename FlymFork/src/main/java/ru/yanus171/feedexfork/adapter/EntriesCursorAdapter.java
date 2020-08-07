@@ -175,7 +175,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return super.getView(position, convertView, parent);
     }
 
-    public Uri EntryUri( long id ) {
+    public static Uri EntryUri( long id ) {
         return EntryColumns.CONTENT_URI( id ); //ContentUris.withAppendedId(mUri, id);
     }
 
@@ -183,8 +183,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
 
-
-        final Vibrator vibrator = (Vibrator) view.getContext().getSystemService( Context.VIBRATOR_SERVICE );
+        final Vibrator vibrator = (Vibrator) view.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
         view.findViewById(R.id.textDate).setVisibility(View.GONE);
         view.findViewById(android.R.id.text2).setVisibility(View.GONE);
@@ -194,23 +193,22 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         if (view.getTag(R.id.holder) == null) {
             final ViewHolder holder = new ViewHolder();
-            holder.titleTextView = SetupTextView( view, android.R.id.text1);
-            holder.urlTextView = SetupSmallTextView( view, R.id.textUrl);
-            holder.textTextView = SetupTextView( view, R.id.textSource);
-            if ( mShowEntryText ) {
-                holder.dateTextView = SetupSmallTextView( view, R.id.textDate);
+            holder.titleTextView = SetupTextView(view, android.R.id.text1);
+            holder.urlTextView = SetupSmallTextView(view, R.id.textUrl);
+            holder.textTextView = SetupTextView(view, R.id.textSource);
+            if (mShowEntryText) {
+                holder.dateTextView = SetupSmallTextView(view, R.id.textDate);
+            } else {
+                holder.dateTextView = SetupSmallTextView(view, android.R.id.text2);
             }
-            else {
-                holder.dateTextView = SetupSmallTextView( view, android.R.id.text2);
-            }
-            holder.authorTextView = SetupSmallTextView( view, R.id.textAuthor);
-            holder.imageSizeTextView = SetupSmallTextView( view, R.id.imageSize);
+            holder.authorTextView = SetupSmallTextView(view, R.id.textAuthor);
+            holder.imageSizeTextView = SetupSmallTextView(view, R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
             //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
-            holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE ); //
+            holder.readImgView.setVisibility(PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE); //
             holder.textLayout = view.findViewById(R.id.textLayout);
             holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
             holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
@@ -218,14 +216,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView1 = view.findViewById(R.id.image1);
             holder.contentImgView2 = view.findViewById(R.id.image2);
             holder.contentImgView3 = view.findViewById(R.id.image3);
-            holder.readMore = SetupTextView( view, R.id.textSourceReadMore);
+            holder.readMore = SetupTextView(view, R.id.textSourceReadMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
-            holder.categoriesTextView = SetupSmallTextView( view, R.id.textCategories);
+            holder.categoriesTextView = SetupSmallTextView(view, R.id.textCategories);
 
             view.setTag(R.id.holder, holder);
 
             holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
-            holder.readMore.setBackgroundColor( Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
+            holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
             holder.readMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -238,16 +236,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 public void onClick(View view) {
                     final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     if (shownId == holder.entryID) {
-                        PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
+                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     } else {
-                        SetIsRead( EntryUri(shownId), true, true );
-                        PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, holder.entryID );
+                        SetIsRead(shownId, true, true);
+                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
                     }
-                    MainApplication.getContext().getContentResolver().notifyChange( mUri, null );//notifyDataSetChanged();
-                    EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( holder.entryID ) ) );
+                    MainApplication.getContext().getContentResolver().notifyChange(mUri, null);//notifyDataSetChanged();
+                    EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 }
             });
-            view.findViewById( R.id.layout_ontouch ).setOnTouchListener( new View.OnTouchListener() {
+            view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
                 private int initialx = 0;
@@ -263,10 +261,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 public boolean onTouch(View v, MotionEvent event) {
                     final int minX = 40;
                     final int minY = 20;
-                    final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel( 5 );
-                    final ViewHolder holder = (ViewHolder) ( (ViewGroup)v.getParent().getParent() ).getTag(R.id.holder);
-                    if ( event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Dog.v( "onTouch ACTION_DOWN" );
+                    final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel(5);
+                    final ViewHolder holder = (ViewHolder) ((ViewGroup) v.getParent().getParent()).getTag(R.id.holder);
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        Dog.v("onTouch ACTION_DOWN");
                         paddingX = 0;
                         paddingY = 0;
                         initialx = (int) event.getX();
@@ -278,7 +276,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         view.getParent().requestDisallowInterceptTouchEvent(true);
 
                         isPress = true;
-                        UiUtils.RunOnGuiThread( new Runnable() {
+                        UiUtils.RunOnGuiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (isPress) {
@@ -288,49 +286,49 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             }
                         }, ViewConfiguration.getLongPressTimeout());
                     }
-                    if ( event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (event.getAction() == MotionEvent.ACTION_MOVE) {
 
                         currentx = (int) event.getX();
                         currenty = (int) event.getY();
                         paddingX = currentx - initialx;
                         paddingY = currenty - initialy;
-                        Dog.v( "onTouch ACTION_MOVE " + paddingX + ", " + paddingY );
+                        Dog.v("onTouch ACTION_MOVE " + paddingX + ", " + paddingY);
 
                         //allow vertical scrolling
-                        if ( ( initialx < minX * 2 || Math.abs( paddingY ) > Math.abs( paddingX ) ) &&
-                             Math.abs( initialy - event.getY() ) > minY &&
-                             view.getParent() != null )
+                        if ((initialx < minX * 2 || Math.abs(paddingY) > Math.abs(paddingX)) &&
+                            Math.abs(initialy - event.getY()) > minY &&
+                            view.getParent() != null)
                             view.getParent().requestDisallowInterceptTouchEvent(false);
-                        if ( Math.abs( initialy - event.getY() ) > minY  )
+                        if (Math.abs(initialy - event.getY()) > minY)
                             isPress = false;
-                        holder.readToggleSwypeBtnView.setVisibility( View.VISIBLE );
-                        holder.starToggleSwypeBtnView.setVisibility( View.VISIBLE );
+                        holder.readToggleSwypeBtnView.setVisibility(View.VISIBLE);
+                        holder.starToggleSwypeBtnView.setVisibility(View.VISIBLE);
                     }
 
 
                     int overlap = holder.readToggleSwypeBtnView.getWidth() / 2;
                     int threshold = holder.readToggleSwypeBtnView.getWidth();
-                    if ( threshold < minX )
+                    if (threshold < minX)
                         threshold = minX + 5;
                     int max = threshold + overlap;
 
-                    if ( event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL ) {
+                    if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         isPress = false;
-                        if ( event.getAction() == MotionEvent.ACTION_UP ) {
-                            Dog.v("onTouch ACTION_UP" );
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            Dog.v("onTouch ACTION_UP");
                             if (!mShowEntryText &&
                                 mEntryActivityStartingStatus == 0 &&
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&
-                                ( IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v) ) &&
+                                (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 OpenArticle(v.getContext(), holder.entryID, holder.isTextShown());
-                            } else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold)
+                            } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
                                 toggleReadState(holder, view);
-                            else if ( Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold)
-                                toggleFavoriteState( holder.entryID, view );
+                            else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
+                                toggleFavoriteState(holder.entryID, view);
                         } else {
                             Dog.v("onTouch ACTION_CANCEL");
                         }
@@ -342,47 +340,47 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         wasVibrateRead = false;
                         wasVibrateStar = false;
 
-                        if ( view.getParent() != null )
+                        if (view.getParent() != null)
                             view.getParent().requestDisallowInterceptTouchEvent(false);
-                        holder.readToggleSwypeBtnView.setVisibility( View.GONE );
-                        holder.starToggleSwypeBtnView.setVisibility( View.GONE );
+                        holder.readToggleSwypeBtnView.setVisibility(View.GONE);
+                        holder.starToggleSwypeBtnView.setVisibility(View.GONE);
 
                     }
 
-                    if ( paddingX > max )
+                    if (paddingX > max)
                         paddingX = max;
-                    if ( paddingX < -max )
+                    if (paddingX < -max)
                         paddingX = -max;
 
                     // block left drawable area
-                    if ( initialx < minX * 2 ) {
+                    if (initialx < minX * 2) {
                         isPress = false;
                         paddingX = 0;
                     }
 
-                    if ( Math.abs( paddingX ) < minX )
+                    if (Math.abs(paddingX) < minX)
                         paddingX = 0;
 
-                    if ( Math.abs( paddingY ) < minY )
+                    if (Math.abs(paddingY) < minY)
                         paddingY = 0;
 
                     // no long tap when large move
-                    if( Math.abs( paddingX ) > minX || Math.abs( paddingY ) > minY )
+                    if (Math.abs(paddingX) > minX || Math.abs(paddingY) > minY)
                         isPress = false;
 
                     final boolean prefVibrate = PrefUtils.getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
-                    if( prefVibrate && Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX >= threshold ) {
-                        if ( !wasVibrateRead ) {
-                            vibrator.vibrate( VIBRATE_DURATION );
+                    if (prefVibrate && Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold) {
+                        if (!wasVibrateRead) {
+                            vibrator.vibrate(VIBRATE_DURATION);
                             wasVibrateRead = true;
                         }
                         //holder.readToggleSwypeBtnView.setVisibility(View.VISIBLE);
                     } else
                         wasVibrateRead = false;
 
-                    if( prefVibrate && Math.abs( paddingX ) > Math.abs( paddingY ) && paddingX <= -threshold ) {
-                        if ( !wasVibrateStar ) {
-                            vibrator.vibrate( VIBRATE_DURATION );
+                    if (prefVibrate && Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold) {
+                        if (!wasVibrateStar) {
+                            vibrator.vibrate(VIBRATE_DURATION);
                             wasVibrateStar = true;
                         }
                         //holder.starToggleSwypeBtnView.setVisibility( View.VISIBLE );
@@ -391,7 +389,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     v.setPadding(Math.max(paddingX, 0), 0, paddingX < 0 ? -paddingX : 0, 0);
 
-                    Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold );
+                    Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold);
                     return true;
                 }
 
@@ -408,14 +406,23 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     final int bottom = top + view.getHeight();
                     return x > left && x < right && y > top && y < bottom;
                 }
-            } );
+            });
         }
 
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        holder.isRead = EntryColumns.IsRead( cursor, mIsReadPos ) || mMarkAsReadList.contains( EntryUri( holder.entryID ) );
+        if ( mMapRead.containsKey(holder.entryID) )
+            holder.isRead = mMapRead.get( holder.entryID );
+        else
+            holder.isRead = EntryColumns.IsRead(cursor, mIsReadPos);
+        holder.isRead = holder.isRead || mMarkAsReadList.contains(EntryUri(holder.entryID));
+
+        if ( mMapFavourite.containsKey(holder.entryID) )
+            holder.isFavorite = mMapFavourite.get( holder.entryID );
+        else
+            holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
 
@@ -488,7 +495,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         } else
             holder.mainImgView.setVisibility( View.GONE );
 
-        holder.isFavorite = cursor.getInt(mFavoritePos) == 1;
 
         holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos, mIdPos );
 
@@ -590,7 +596,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }*/
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
-
 
     }
 
@@ -769,14 +774,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.isRead = !holder.isRead;
 
             UpdateReadView(holder, parentView);
-            SetIsRead(EntryUri(holder.entryID), holder.isRead, true);
+            SetIsRead(holder.entryID, holder.isRead, true);
             if ( holder.isRead && mShowUnread ) {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
                         .setAction(R.string.undo, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                SetIsRead(EntryUri(holder.entryID), false, false);
+                                SetIsRead(holder.entryID, false, false);
                             }
                         });
                 snackbar.getView().setBackgroundResource(R.color.material_grey_900);
@@ -785,7 +790,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    private static void SetIsRead(final Uri entryUri, final boolean isRead, final boolean isSilent ) {
+    private void SetIsRead(final long entryId, final boolean isRead, final boolean isSilent ) {
+        final Uri entryUri = EntryUri( entryId );
+        mMapRead.put( entryId, isRead );
         new Thread() {
             @Override
             public void run() {
@@ -807,10 +814,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
             UpdateStarImgView(holder);
-            SetIsFavorite(EntryUri(holder.entryID), holder.isFavorite, true);
+            SetIsFavorite( holder.entryID, holder.isFavorite, true );
         }
     }
-    private static void SetIsFavorite(final Uri entryUri, final boolean isFavorite, final boolean isSilent ) {
+    private void SetIsFavorite(final long entryId, final boolean isFavorite, final boolean isSilent ) {
+        final Uri entryUri = EntryUri( entryId );
+        mMapFavourite.put( entryId, isFavorite );
         new Thread() {
             @Override
             public void run() {
@@ -900,6 +909,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mPos = pos;
         }
     }
+
+    HashMap<Long, Boolean> mMapRead = new HashMap<>();
+    HashMap<Long, Boolean> mMapFavourite = new HashMap<>();
+
     private static class ViewHolder {
         ImageView collapsedBtn;
         TextView titleTextView;
@@ -918,8 +931,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView readToggleSwypeBtnView;
         ImageView starToggleSwypeBtnView;
         LinearLayout textLayout;
-        boolean isRead;
-        boolean isFavorite;
         boolean isMobilized;
         long entryID = -1;
         String entryLink;
@@ -927,6 +938,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView contentImgView2;
         ImageView contentImgView3;
         TextView readMore;
+        boolean isRead;
+        boolean isFavorite;
 
         boolean isTextShown() {
             return entryID == PrefUtils.getLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
