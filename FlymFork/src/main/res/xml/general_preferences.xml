@@ -642,47 +642,47 @@
             android:layout="@layout/preference_category"
             android:summary="@string/settings_category_content_extract_rules_summary"
             android:title="@string/settings_category_content_extract_rules"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="content_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue="@string/full_text_root_default"
             android:dialogTitle="site_url:id=XXX\nsite_url:class=XXX\n"
             android:title="@string/settings_fulltext_extract_rules"
             android:summary="@string/settings_fulltext_extract_rules_description"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="global_class_list_to_remove_from_article_text"
             android:title="@string/global_class_list_to_remove_from_article_text"
             android:inputType="text|textMultiLine"
             android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="date_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue=""
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_date_extract_rules"
             android:summary="@string/settings_date_extract_rules_description"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="category_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue=""
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_category_extract_rules"
             android:summary="@string/settings_category_extract_rules_description"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="main_image_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue=""
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_main_image_extract_rules"
             android:summary="@string/settings_main_image_extract_rules_description"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="font_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue=""
             android:dialogTitle="@string/font_rules_dialog_title"
             android:title="@string/settings_font_rules"
             android:summary="@string/settings_font_rules_description"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+        <EditTextPreference
             android:key="main_font_css_text"
             android:inputType="text"
             android:defaultValue="letter-spacing: 0.02em"
