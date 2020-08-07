@@ -126,7 +126,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final int FILTERS_LOADER_ID = 3;
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
 
-    private Uri mCurrentUri, mOriginalUri;
+    public static Uri mCurrentUri = null;
+    private Uri mOriginalUri;
     private boolean mOriginalUriShownEntryText = false;
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;

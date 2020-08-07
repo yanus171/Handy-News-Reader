@@ -146,6 +146,7 @@ import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
@@ -156,6 +157,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
 
 public class FetcherService extends IntentService {
@@ -1201,6 +1203,8 @@ public class FetcherService extends IntentService {
     private int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
         String statusText = "";
         int status = Status().Start( statusText, false ); try {
+            if ( isFromAutoRefresh )
+                FeedDataContentProvider.mNotifyEnabled = false;
             final ExecutorService executorInner = CreateExecutorService(); try {
                 ContentResolver cr = getContentResolver();
                 final Cursor cursor;
@@ -1233,6 +1237,10 @@ public class FetcherService extends IntentService {
                 return FinishExecutionService( statusText, status, null, futures );
             } finally {
                 executorInner.shutdown();
+                if ( isFromAutoRefresh ) {
+                    FeedDataContentProvider.mNotifyEnabled = true;
+                    FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
+                }
             }
         } finally { Status().End( status ); }
     }
@@ -1601,7 +1609,7 @@ public class FetcherService extends IntentService {
                 }
                 Status().ChangeProgress( "" );
                 cr.delete(entriesUri, WHERE_NOT_FAVORITE, null);
-                if ( FeedDataContentProvider.URI_MATCHER.match(entriesUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
+                if ( FeedDataContentProvider.URI_MATCHER.match(entriesUri) == URI_ENTRIES_FOR_FEED ) {
                     ContentValues values = new ContentValues();
                     values.putNull(FeedColumns.LAST_UPDATE);
                     values.putNull(FeedColumns.ICON_URL);

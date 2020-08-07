@@ -110,6 +110,14 @@ public class ArticleTextExtractor {
         prepareDocument(doc, mobilize);
 
         {
+            Elements elList = doc.getElementsByAttribute( "id" );
+            for (Element item : elList)
+                if ( !item.hasAttr( "class" ) )
+                    item.attr( "class", item.attr( "id") );
+
+        }
+
+        {
             categoryList.clear();
             Element tagsElements = getCategoriesElementFromPref(doc, url);
             if (tagsElements != null)
@@ -152,6 +160,7 @@ public class ArticleTextExtractor {
                 title.first().remove();
                 break;
             }
+
 
         String ret = rootElement.toString();
         if (ogImage != null && !ret.contains(ogImage)) {

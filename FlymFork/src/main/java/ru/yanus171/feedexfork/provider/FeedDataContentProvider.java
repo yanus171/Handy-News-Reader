@@ -905,8 +905,8 @@ public class FeedDataContentProvider extends ContentProvider {
         return count;
     }
 
-    private void notifyChangeOnAllUris(int matchCode, Uri uri) {
-        ContentResolver cr = getContext().getContentResolver();
+    public static void notifyChangeOnAllUris(int matchCode, Uri uri) {
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
         cr.notifyChange(uri, null);
 
         if (matchCode != URI_FILTERS && matchCode != URI_FILTERS_FOR_FEED && matchCode != URI_TASKS && matchCode != URI_TASK) {
