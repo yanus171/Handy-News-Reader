@@ -131,6 +131,7 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
@@ -138,6 +139,7 @@ import ru.yanus171.feedexfork.view.StorageItem;
 import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
@@ -155,6 +157,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
@@ -237,11 +240,22 @@ public class FetcherService extends IntentService {
         }
     }
 
-    public static void addEntriesToMobilize(Long[] entriesId) {
-        ContentValues[] values = new ContentValues[entriesId.length];
-        for (int i = 0; i < entriesId.length; i++) {
+    public static void addEntriesToMobilize( Uri uri ) {
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+
+        ArrayList<Long> entriesId = new ArrayList<>();
+        Cursor c = cr.query(uri, new String[]{EntryColumns._ID, EntryColumns.LINK, MOBILIZED_HTML},
+                            MOBILIZED_HTML + DB_IS_NULL + DB_OR + MOBILIZED_HTML + " = '" + FileUtils.EMPTY_MOBILIZED_VALUE + "'", null, EntryColumns.DATE + Constants.DB_DESC);
+        while (c.moveToNext()) {
+            if (!FileUtils.INSTANCE.isMobilized( c.getString(1), c, 2, 0 ))
+                entriesId.add(c.getLong(0));
+        }
+        c.close();
+
+        ContentValues[] values = new ContentValues[entriesId.size()];
+        for (int i = 0; i < entriesId.size(); i++) {
             values[i] = new ContentValues();
-            values[i].put(TaskColumns.ENTRY_ID, entriesId[i]);
+            values[i].put(TaskColumns.ENTRY_ID, entriesId.get(i));
         }
 
         getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
@@ -373,7 +387,10 @@ public class FetcherService extends IntentService {
                                  FetcherService.ForceReload.No,
                                  true,
                                  true,
-                                 intent.getBooleanExtra(EXTRA_STAR, false), AutoDownloadEntryImages.Yes, false);
+                                 intent.getBooleanExtra(EXTRA_STAR, false),
+                                 AutoDownloadEntryImages.Yes,
+                                 false,
+                                 true);
 
                         downloadAllImages(executor);
                     } finally { executor.shutdown(); }
@@ -934,12 +951,14 @@ public class FetcherService extends IntentService {
                                              final boolean isShowError,
                                              final boolean isStarred,
                                              AutoDownloadEntryImages autoDownloadEntryImages,
-                                             boolean isParseDateFromHTML) {
+                                             boolean isParseDateFromHTML,
+                                             boolean isLoadingLinkStatus) {
         boolean load;
         Dog.v( "LoadLink " + url );
 
         final ContentResolver cr = getContext().getContentResolver();
-        final int status = FetcherService.Status().Start(getContext().getString(R.string.loadingLink), false); try {
+        final int status = isLoadingLinkStatus ? FetcherService.Status().Start(getContext().getString(R.string.loadingLink), false) : -1;
+        try {
             Uri entryUri = GetEntryUri( url );
             if ( entryUri != null ) {
                 load = (forceReload == ForceReload.Yes);
@@ -1284,8 +1303,10 @@ public class FetcherService extends IntentService {
                         newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, feedID);
                     else if ( isOneWebPage )
                         newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages, 0 );
-                    else
+                    else {
                         newCount = HTMLParser.Parse(executor, feedID, feedUrl, jsonOptions, 0);
+                        FetcherService.addEntriesToMobilize(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedId));
+                    }
                 } finally {
                     Status().End(status);
                 }

@@ -222,14 +222,19 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             view.setTag(R.id.holder, holder);
 
-            holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
-            holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
-            holder.readMore.setOnClickListener(new View.OnClickListener() {
+            final View.OnClickListener openArticle = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     OpenArticle(view.getContext(), holder.entryID, holder.isTextShown());
                 }
-            });
+            };
+
+            holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
+            holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
+            holder.readMore.setOnClickListener( openArticle );
+
+            holder.urlTextView.setOnClickListener( openArticle );
+            holder.dateTextView.setOnClickListener( openArticle );
 
             holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

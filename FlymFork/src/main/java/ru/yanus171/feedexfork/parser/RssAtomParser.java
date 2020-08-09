@@ -675,16 +675,8 @@ public class RssAtomParser extends DefaultHandler {
 
                 }
             }
-            if (mRetrieveFullText) {
-                Cursor c = cr.query(mFeedEntriesUri, new String[]{EntryColumns._ID, EntryColumns.LINK, MOBILIZED_HTML},
-                        MOBILIZED_HTML + DB_IS_NULL + DB_OR + MOBILIZED_HTML + " = '" + FileUtils.EMPTY_MOBILIZED_VALUE + "'", null, EntryColumns.DATE + Constants.DB_DESC);
-                while (c.moveToNext()) {
-                    if (!FileUtils.INSTANCE.isMobilized( c.getString(1), c, 2, 0 ))
-                        entriesId.add(c.getLong(0));
-                }
-                c.close();
-                FetcherService.addEntriesToMobilize(entriesId.toArray( new Long[entriesId.size()] ));
-            }
+            if (mRetrieveFullText)
+                FetcherService.addEntriesToMobilize(mFeedEntriesUri);
 
         } catch (  Exception e ) {
             FetcherService.Status().SetError( e.getMessage(), String.valueOf( mId ), "", e );

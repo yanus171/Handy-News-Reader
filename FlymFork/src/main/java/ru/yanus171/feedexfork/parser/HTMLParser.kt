@@ -126,7 +126,7 @@ object HTMLParser {
             EntryUrlVoc.remove( feedUrl )
         }
         val filters = FeedFilters(feedID)
-        val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false).first
+        val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false).first
         run {
             val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
             if (cursor.moveToFirst()) {
@@ -137,7 +137,12 @@ object HTMLParser {
             cursor.close()
         }
 
-        class Item(var mUrl: String, var mCaption: String)
+        class Item(var mUrl: String, var mCaption: String){
+            override fun equals(other: Any?): Boolean {
+                val otherItem: Item = other as Item
+                return mUrl == otherItem.mUrl
+            }
+        }
 
         val urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl))
 
@@ -165,7 +170,9 @@ object HTMLParser {
                 if (link.endsWith(".pdf") || link.endsWith(".epub") || link.endsWith(".doc") || link.endsWith(".docx")) continue
                 if (filters.isEntryFiltered(el.text(), "", link, "", null) )
                     continue
-                listItem.add(Item(link, el.text()))
+                val newItem = Item(link, el.text())
+                if ( !listItem.contains( newItem ) )
+                    listItem.add( newItem )
             }
         }
         try {
@@ -179,7 +186,7 @@ object HTMLParser {
                         result.mTaskID = 0L
                         result.mResultCount = 0
                         try {
-                            val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true)
+                            val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true, false)
                             val uri = load.first
                             if (load.second) {
                                 result.mResultCount = 1
