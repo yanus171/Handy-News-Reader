@@ -214,7 +214,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 getActivity().setProgressBarIndeterminateVisibility(false);
                 Status().End(mStatus);
                 timer.End();
-            } else if (loader.getId() == FILTERS_LOADER_ID) {
+            } else if (loader.getId() == FILTERS_LOADER_ID && mEntriesCursorAdapter != null ) {
                 mFilters = new FeedFilters(data);
                 mEntriesCursorAdapter.setFilter(mFilters);
             }

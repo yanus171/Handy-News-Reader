@@ -855,8 +855,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public Cursor swapCursor(Cursor newCursor) {
         if ( mIgnoreClearContentVocOnCursorChange )
             mIgnoreClearContentVocOnCursorChange = false;
-        else
+        else {
             mContentVoc.clear();
+            mMapRead.clear();
+            mMapFavourite.clear();
+        }
         reinit(newCursor);
         return super.swapCursor(newCursor);
     }

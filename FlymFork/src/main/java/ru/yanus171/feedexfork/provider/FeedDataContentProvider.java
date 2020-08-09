@@ -907,7 +907,8 @@ public class FeedDataContentProvider extends ContentProvider {
 
     public static void notifyChangeOnAllUris(int matchCode, Uri uri) {
         ContentResolver cr = MainApplication.getContext().getContentResolver();
-        cr.notifyChange(uri, null);
+        if ( uri != null )
+            cr.notifyChange(uri, null);
 
         if (matchCode != URI_FILTERS && matchCode != URI_FILTERS_FOR_FEED && matchCode != URI_TASKS && matchCode != URI_TASK) {
             // Notify everything else (except EntryColumns.CONTENT_URI to not update the
