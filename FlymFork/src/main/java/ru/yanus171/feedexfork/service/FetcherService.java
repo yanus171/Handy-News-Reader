@@ -395,6 +395,8 @@ public class FetcherService extends IntentService {
                     mMarkAsStarredFoundList.clear();
                     int newCount;
                     ExecutorService executor = CreateExecutorService(); try {
+                        if ( isFromAutoRefresh )
+                            FeedDataContentProvider.mNotifyEnabled = false;
                         try {
                             newCount = (feedId == null ?
                                     refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
@@ -437,6 +439,10 @@ public class FetcherService extends IntentService {
                             Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
                         mobilizeAllEntries( executor );
+                        if ( isFromAutoRefresh ) {
+                            FeedDataContentProvider.mNotifyEnabled = true;
+                            FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
+                        }
                         downloadAllImages( executor );
                     } finally {
                         executor.shutdown();
@@ -1203,8 +1209,6 @@ public class FetcherService extends IntentService {
     private int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
         String statusText = "";
         int status = Status().Start( statusText, false ); try {
-            if ( isFromAutoRefresh )
-                FeedDataContentProvider.mNotifyEnabled = false;
             final ExecutorService executorInner = CreateExecutorService(); try {
                 ContentResolver cr = getContentResolver();
                 final Cursor cursor;
@@ -1237,10 +1241,6 @@ public class FetcherService extends IntentService {
                 return FinishExecutionService( statusText, status, null, futures );
             } finally {
                 executorInner.shutdown();
-                if ( isFromAutoRefresh ) {
-                    FeedDataContentProvider.mNotifyEnabled = true;
-                    FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
-                }
             }
         } finally { Status().End( status ); }
     }
