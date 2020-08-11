@@ -204,6 +204,7 @@ public class EntryView extends WebView implements Handler.Callback {
             + "div.bottom-page {display: block; min-height: 80vh} "
             + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
             + "div {text-align:" + getAlign(text) + "} "
+            //+ "* { -webkit-tap-highlight-color: rgba(" + Theme.GetToolBarColorRGBA() + "); } "
             + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "
             + ".button-section p {font-family: \"MainFont\"; margin: 0.1cm 0 0.2cm 0} "
             + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
@@ -437,7 +438,6 @@ public class EntryView extends WebView implements Handler.Callback {
         getSettings().setSupportZoom(false);
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
-
         // Text zoom level from preferences
         int fontSize = PrefUtils.getFontSize();
         if (fontSize != 0) {
@@ -562,8 +562,6 @@ public class EntryView extends WebView implements Handler.Callback {
         addJavascriptInterface(mImageDownloadObject, mImageDownloadObject.toString());
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         //    setNestedScrollingEnabled(true);
-
-
         // For HTML5 video
         setWebChromeClient(new WebChromeClient() {
             private View mCustomView;
@@ -755,7 +753,20 @@ public class EntryView extends WebView implements Handler.Callback {
                 Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                     double newContentHeight = GetContentHeight();
                     if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
-                        ScrollToY();
+                        final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
+                        if ( searchText != null && !searchText.isEmpty() ) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                                findAllAsync(searchText);
+                            else
+                                findAll(searchText);
+                            UiUtils.RunOnGuiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.clearMatches();
+                                }
+                            }, 5000 );
+                        } else
+                            ScrollToY();
                         EndStatus();
                     } else
                         view.postDelayed(new Runnable() {

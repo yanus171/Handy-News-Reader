@@ -2,6 +2,7 @@ package ru.yanus171.feedexfork.utils;
 
 import java.util.HashMap;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -166,6 +167,12 @@ public class Theme {
 	//-------------------------------------------------------------------
 	public static String GetToolBarColor() {
 		return Theme.GetColor(TOOL_BAR_COLOR, R.string.default_toolbar_color );
+	}
+	//-------------------------------------------------------------------
+	@SuppressLint("DefaultLocale")
+	public static String GetToolBarColorRGBA() {
+		final int color = GetToolBarColorInt();
+		return String.format( "%d, %d, %d, %d", Color.red( color ), Color.green( color ), Color.blue( color ), Color.alpha( color ) );
 	}
 	//-------------------------------------------------------------------
 	public static int GetMenuBackgroundColor() {

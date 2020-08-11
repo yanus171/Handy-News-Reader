@@ -349,15 +349,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( !PrefUtils.getBoolean("show_mark_all_as_read_button", true) )
             mFab.hide();
 
-        if (mCurrentUri != null) {
-            // If the list is empty when we are going back here, try with the last display date
-//            if (mNewEntriesNumber != 0 && mOldUnreadEntriesNumber == 0) {
-//                mListDisplayDate = new Date().getTime();
-//            } else {
-//                mAutoRefreshDisplayDate = true; // We will try to update the list after if necessary
-//            }
-            restartLoaders();
-        }
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
         mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
         UpdateActions();
@@ -1012,9 +1003,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         //if ( mListView instanceof ListView )
             mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
         //mListDisplayDate = new Date().getTime();
-        if (mCurrentUri != null) {
+        if (mCurrentUri != null)
             restartLoaders();
-        }
 
         //refreshUI();
         UpdateFooter();

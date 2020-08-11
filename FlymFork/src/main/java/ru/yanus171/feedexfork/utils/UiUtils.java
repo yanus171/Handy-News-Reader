@@ -158,11 +158,11 @@ public class UiUtils {
             mHandler.post( r );
         //}
     }
-    public static void RunOnGuiThread( final Runnable r, int delay ) {
+    public static void RunOnGuiThread( final Runnable r, int delayMills ) {
         if ( mHandler == null )
             mHandler  = new Handler(Looper.getMainLooper());
         //synchronized ( mHandler ) {
-            mHandler.postDelayed( r, delay );
+            mHandler.postDelayed( r, delayMills );
         //}
 
     }

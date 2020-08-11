@@ -225,13 +225,28 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final View.OnClickListener openArticle = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown());
+                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), "");
                 }
             };
 
             holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
             holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
-            holder.readMore.setOnClickListener( openArticle );
+            holder.readMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String searchText = "";
+                    if ( holder.isTextShown() ) {
+                        CharSequence text = holder.textTextView.getText();
+                        String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
+                        if ( list.length > 1 ) {
+                            searchText = list[list.length - 2];
+                        }
+                    }
+                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), searchText);
+
+
+                }
+            });
 
             holder.urlTextView.setOnClickListener( openArticle );
             holder.dateTextView.setOnClickListener( openArticle );
@@ -329,7 +344,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
-                                OpenArticle(v.getContext(), holder.entryID, holder.isTextShown());
+                                OpenArticle(v.getContext(), holder.entryID, holder.isTextShown(), "");
                             } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
                                 toggleReadState(holder, view);
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
@@ -680,8 +695,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
     }
 
-    private void OpenArticle(Context context, long entryID, boolean isExpanded) {
-        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)));
+    private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
+        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)).putExtra( "SCROLL_TEXT", searchText ));
         if( isExpanded ) {
             EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
