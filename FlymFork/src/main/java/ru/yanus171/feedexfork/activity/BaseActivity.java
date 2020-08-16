@@ -178,7 +178,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView mLabelDate = null;
     private View mRootView = null;
 
-    public void UpdateFooter( View rootView, int max, int progress, boolean isStatusBarHidden) {
+    public void UpdateHeader(View rootView, int max, int progress, boolean isStatusBarHidden) {
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null ) {
             mProgressBar = rootView.findViewById(R.id.progressBar);
             mProgressBar.setProgress(0);

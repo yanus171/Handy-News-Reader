@@ -133,7 +133,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
@@ -1059,7 +1058,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             webViewHeight = entryView.getMeasuredHeight();
             contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
         }
-        getBaseActivity().UpdateFooter(mRootView,
+        getBaseActivity().UpdateHeader(mRootView,
                                        contentHeight - webViewHeight,
                                        entryView == null ? 0 : entryView.getScrollY(),
                                        GetIsStatusBarHidden() );

@@ -104,7 +104,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
@@ -479,10 +478,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     public void UpdateFooter() {
-        getBaseActivity().UpdateFooter( mRootView,
-                                        mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
-                                        mListView.getFirstVisiblePosition(),
-                                        HomeActivity.GetIsStatusBarEntryListHidden() );
+        getBaseActivity().UpdateHeader(mRootView,
+                                       mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
+                                       mListView.getFirstVisiblePosition(),
+                                       HomeActivity.GetIsStatusBarEntryListHidden() );
     }
 
     private BaseActivity getBaseActivity() {
