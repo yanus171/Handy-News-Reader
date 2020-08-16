@@ -179,6 +179,7 @@ public class ArticleTextExtractor {
                 for (Element entry : ul) {
                     entry.tagName("p");
                 }
+                RemoveHiddenElements(comments);
                 ret += comments;
             }
         }

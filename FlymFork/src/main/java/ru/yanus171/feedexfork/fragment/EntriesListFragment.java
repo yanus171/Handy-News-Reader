@@ -136,17 +136,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private FloatingActionButton mFab;
     public ListView mListView;
     private ProgressBar mProgressBarRefresh = null;
-    private ProgressBar mProgressBar = null;
-    private TextView mLabelClock = null;
-    private TextView mLabelBattery = null;
-    private TextView mLabelDate = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
     private FeedFilters mFilters = null;
-
+    private View mRootView = null;
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     static class VisibleReadItem {
@@ -381,15 +377,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreateView" );
 
-        View rootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
+        mRootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
 
-        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
-                                       (TextView)rootView.findViewById( R.id.errorText ),
-                                       (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
-                                       (TextView)rootView.findViewById( R.id.progressText ),
+        mStatusText  = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
+                                       (TextView)mRootView.findViewById( R.id.errorText ),
+                                       (ProgressBar) mRootView.findViewById( R.id.progressBarLoader),
+                                       (TextView)mRootView.findViewById( R.id.progressText ),
                                        Status());
 
-        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
+        Toolbar toolbar = mRootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
         //toolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
         activity.setSupportActionBar( toolbar );
@@ -398,9 +394,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
+        mProgressBarRefresh = mRootView.findViewById(R.id.progressBarRefresh);
         mProgressBarRefresh.setBackgroundColor(Theme.GetToolBarColorInt() );
-        mListView = rootView.findViewById(android.R.id.list);
+        mListView = mRootView.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mListView.setNestedScrollingEnabled(true);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -471,14 +467,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         emptyView.setText( getString( R.string.no_entries ) );
         mListView.setEmptyView( emptyView );
 
-        mProgressBar = rootView.findViewById(R.id.progressBar);
-        mProgressBar.setProgress( 0 );
-        mLabelClock = SetupSmallTextView(rootView, R.id.textClock);
-        mLabelBattery = SetupSmallTextView(rootView, R.id.textBattery);
-        mLabelDate = SetupSmallTextView(rootView, R.id.textDate);
         UpdateFooter();
         timer.End();
-        return rootView;
+        return mRootView;
     }
 
 
@@ -488,13 +479,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     public void UpdateFooter() {
-        BaseActivity.UpdateFooter(mProgressBar,
-                                  mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
-                                  mListView.getFirstVisiblePosition(),
-                                  mLabelClock,
-                                  mLabelDate,
-                                  mLabelBattery,
-                                  HomeActivity.GetIsStatusBarEntryListHidden() );
+        getBaseActivity().UpdateFooter( mRootView,
+                                        mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
+                                        mListView.getFirstVisiblePosition(),
+                                        HomeActivity.GetIsStatusBarEntryListHidden() );
     }
 
     private BaseActivity getBaseActivity() {

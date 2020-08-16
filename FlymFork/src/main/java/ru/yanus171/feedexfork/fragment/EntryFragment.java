@@ -165,18 +165,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame = null;
-    private ProgressBar mProgressBar = null;
-    private TextView mLabelClock = null;
-    private TextView mLabelBattery = null;
-    private TextView mLabelDate = null;
-
     private StatusText mStatusText = null;
 
     private boolean mLockLandOrientation = false;
 
     public boolean mMarkAsUnreadOnFinish = false;
     private boolean mRetrieveFullText = false;
-    private View mRootView;
+    private View mRootView = null;
     public boolean mIsFinishing = false;
     private View mBtnEndEditing = null;
     private FeedFilters mFilters = null;
@@ -207,6 +202,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean IsExternalLink( Uri uri ) {
         return uri == null || uri.toString().startsWith( "http" );
     }
+    private BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
+    }
 
     //@Override
     //public View inflateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -235,16 +233,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
             }
         });
-
-        mProgressBar = mRootView.findViewById(R.id.progressBar);
-        mProgressBar.setProgress( 0 );
-
-        mLabelClock = SetupSmallTextView( mRootView, R.id.textClock);
-        mLabelClock.setText( "" );
-        mLabelBattery = SetupSmallTextView( mRootView, R.id.textBattery);
-        mLabelBattery.setText( "" );
-        mLabelDate = SetupSmallTextView( mRootView, R.id.textDate);
-        mLabelDate.setText( "" );
 
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
@@ -1071,13 +1059,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             webViewHeight = entryView.getMeasuredHeight();
             contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
         }
-        BaseActivity.UpdateFooter( mProgressBar,
-                                      contentHeight - webViewHeight,
-                                      entryView == null ? 0 : entryView.getScrollY(),
-                                      mLabelClock,
-                                      mLabelDate,
-                                      mLabelBattery,
-                                      GetIsStatusBarHidden() );
+        getBaseActivity().UpdateFooter(mRootView,
+                                       contentHeight - webViewHeight,
+                                       entryView == null ? 0 : entryView.getScrollY(),
+                                       GetIsStatusBarHidden() );
     }
 
 

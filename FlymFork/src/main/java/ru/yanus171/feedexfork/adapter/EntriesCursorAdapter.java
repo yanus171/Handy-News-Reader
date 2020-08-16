@@ -239,7 +239,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         CharSequence text = holder.textTextView.getText();
                         String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
                         if ( list.length > 1 ) {
-                            searchText = list[list.length - 2];
+                            searchText = list[list.length - 2].replace( "\n", "" ).trim();
                         }
                     }
                     OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), searchText);
