@@ -141,7 +141,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
     private FeedFilters mFilters = null;
-    private View mRootView = null;
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     static class VisibleReadItem {
@@ -376,15 +375,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreateView" );
 
-        mRootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
+        getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
+        View rootView = getBaseActivity().mRootView;
 
-        mStatusText  = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
-                                       (TextView)mRootView.findViewById( R.id.errorText ),
-                                       (ProgressBar) mRootView.findViewById( R.id.progressBarLoader),
-                                       (TextView)mRootView.findViewById( R.id.progressText ),
-                                       Status());
+        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
+                                   (TextView)rootView.findViewById( R.id.errorText ),
+                                   (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
+                                   (TextView)rootView.findViewById( R.id.progressText ),
+                                   Status());
 
-        Toolbar toolbar = mRootView.findViewById(R.id.toolbar);
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
         //toolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
         activity.setSupportActionBar( toolbar );
@@ -393,9 +393,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        mProgressBarRefresh = mRootView.findViewById(R.id.progressBarRefresh);
+        mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
         mProgressBarRefresh.setBackgroundColor(Theme.GetToolBarColorInt() );
-        mListView = mRootView.findViewById(android.R.id.list);
+        mListView = rootView.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mListView.setNestedScrollingEnabled(true);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -468,7 +468,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         UpdateFooter();
         timer.End();
-        return mRootView;
+        return rootView;
     }
 
 
@@ -478,8 +478,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     public void UpdateFooter() {
-        getBaseActivity().UpdateHeader(mRootView,
-                                       mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
+        getBaseActivity().UpdateHeader(mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
                                        mListView.getFirstVisiblePosition(),
                                        HomeActivity.GetIsStatusBarEntryListHidden() );
     }

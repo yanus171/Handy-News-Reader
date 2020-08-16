@@ -170,7 +170,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public boolean mMarkAsUnreadOnFinish = false;
     private boolean mRetrieveFullText = false;
-    private View mRootView = null;
     public boolean mIsFinishing = false;
     private View mBtnEndEditing = null;
     private FeedFilters mFilters = null;
@@ -210,22 +209,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
-        TapZonePreviewPreference.SetupZoneSizes( mRootView );
+        getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
+        View rootView = getBaseActivity().mRootView;
+        TapZonePreviewPreference.SetupZoneSizes( rootView );
 
-        mStatusText = new StatusText( (TextView)mRootView.findViewById( R.id.statusText ),
-                                      (TextView)mRootView.findViewById( R.id.errorText ),
-                                      (ProgressBar) mRootView.findViewById( R.id.progressBarLoader),
-                                      (TextView) mRootView.findViewById( R.id.progressText),
+        mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
+                                      (TextView)rootView.findViewById( R.id.errorText ),
+                                      (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
+                                      (TextView) rootView.findViewById( R.id.progressText),
                                       FetcherService.Status());
-        mRootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EntryActivity activity = (EntryActivity) getActivity();
                 activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
             }
         });
-        mRootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EntryActivity activity = (EntryActivity) getActivity();
@@ -233,7 +233,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
 
-        mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
+        mBtnEndEditing = rootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,7 +243,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
 
-        mEntryPager = mRootView.findViewById(R.id.pager);
+        mEntryPager = rootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         //    mEntryPager.setNestedScrollingEnabled( true );
@@ -290,14 +290,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             });
 
 
-        mRootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
             }
         });
 
-        mRootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, false );
@@ -312,10 +312,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         };
 
-        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        mRootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+        rootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
+        rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
 
-        mRootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+        rootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PageUp();
@@ -325,16 +325,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //disableSwipe();
 
 
-        mRootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
-        mRootView.findViewById(R.id.statusText).setVisibility(View.GONE);
+        rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
         mLockLandOrientation = getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
 
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
-        mStarFrame = mRootView.findViewById(R.id.frameStar);
-        final ImageView frameStarImage  = mRootView.findViewById(R.id.frameStarImage);
+        mStarFrame = rootView.findViewById(R.id.frameStar);
+        final ImageView frameStarImage  = rootView.findViewById(R.id.frameStarImage);
         final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
-        mRootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
+        rootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
             private int initialy = 0;
             private boolean mWasVibrate = false;
             private boolean mWasSwipe = false;
@@ -384,7 +384,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         UpdateFooter();
         SetOrientation();
 
-        return mRootView;
+        return rootView;
     }
 
     private void SetStarFrameWidth(int w) {
@@ -732,7 +732,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_menu_by_tap_enabled: {
                     PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false) ;
                     item.setChecked( PrefUtils.isArticleTapEnabled() );
-                    TapZonePreviewPreference.SetupZoneSizes( mRootView );
+                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView );
                     break;
                 }
 
@@ -1058,8 +1058,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             webViewHeight = entryView.getMeasuredHeight();
             contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
         }
-        getBaseActivity().UpdateHeader(mRootView,
-                                       contentHeight - webViewHeight,
+        getBaseActivity().UpdateHeader(contentHeight - webViewHeight,
                                        entryView == null ? 0 : entryView.getScrollY(),
                                        GetIsStatusBarHidden() );
     }

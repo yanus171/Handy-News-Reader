@@ -517,6 +517,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             mLoadTypeRG.check( R.id.rbRss );
         } else if (Intent.ACTION_WEB_SEARCH.equals(intent.getAction())) {
             mLoadTypeRG.check( R.id.rbWebPageSearch );
+            if ( intent.hasExtra( SearchManager.QUERY ) )
+                mUrlEditText.setText( intent.getStringExtra( SearchManager.QUERY ) );
         } else if (Intent.ACTION_EDIT.equals(intent.getAction())) {
             setTitle(R.string.edit_feed_title);
             tabWidget.setVisibility(View.VISIBLE);
@@ -629,6 +631,8 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         });
         ShowControls();
         findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
+        if ( intent.hasExtra( SearchManager.QUERY ) )
+            Validate();
     }
 
     @Override

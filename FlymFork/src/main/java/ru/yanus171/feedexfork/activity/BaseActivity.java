@@ -68,6 +68,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Brightness mBrightness = null;
 
     public static final int PAGE_SCROLL_DURATION_MSEC = 450;
+    private int mLastMax = 0;
+    private int mLastProgress = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             else
                 getSupportActionBar().show();
         }
-
+        UpdateHeader( mLastMax, mLastProgress, statusBarHidden );
         invalidateOptionsMenu();
     }
 
@@ -176,16 +178,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView mLabelClock = null;
     private TextView mLabelBattery = null;
     private TextView mLabelDate = null;
-    private View mRootView = null;
+    public View mRootView = null;
 
-    public void UpdateHeader(View rootView, int max, int progress, boolean isStatusBarHidden) {
+    public void UpdateHeader(int max, int progress, boolean isStatusBarHidden) {
+        if ( mRootView == null )
+            return;
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null ) {
-            mProgressBar = rootView.findViewById(R.id.progressBar);
+            mProgressBar = mRootView.findViewById(R.id.progressBar);
             mProgressBar.setProgress(0);
-            mHeaderLayout = rootView.findViewById(R.id.layoutColontitul);
-            mLabelClock = UiUtils.SetupSmallTextView(rootView, R.id.textClock);
-            mLabelBattery = UiUtils.SetupSmallTextView(rootView, R.id.textBattery);
-            mLabelDate = UiUtils.SetupSmallTextView(rootView, R.id.textDate);
+            mHeaderLayout = mRootView.findViewById(R.id.layoutColontitul);
+            mLabelClock = UiUtils.SetupSmallTextView(mRootView, R.id.textClock);
+            mLabelClock.setText( "" );
+            mLabelBattery = UiUtils.SetupSmallTextView(mRootView, R.id.textBattery);
+            mLabelBattery.setText( "" );
+            mLabelDate = UiUtils.SetupSmallTextView(mRootView, R.id.textDate);
+            mLabelDate.setText( "" );
         }
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null )
             return;
@@ -194,6 +201,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             isLayoutVisible = true;
             mProgressBar.setVisibility( View.VISIBLE );
             mProgressBar.setMax( max );
+            mLastMax = max;
+            mLastProgress = progress;
             mProgressBar.setProgress( progress );
             ( (LinearLayout) mProgressBar.getParent() ).setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
             String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
@@ -202,41 +211,26 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
         } else
             mProgressBar.setVisibility( View.GONE );
-
-        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) && isStatusBarHidden ) {
-            isLayoutVisible = true;
-            mLabelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
-            mLabelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
-            mLabelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
-            mLabelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
-            mLabelClock.setText("");
-            mLabelClock.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
-        }
-
-        if ( PrefUtils.getBoolean( "article_text_footer_show_battery", true ) && isStatusBarHidden ) {
-            isLayoutVisible = true;
-            mLabelBattery.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
-            mLabelBattery.setText( GetBatteryText() );
-            mLabelBattery.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
-            mLabelBattery.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
-            mLabelBattery.setText("");
-            mLabelBattery.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
-        }
-
-        if ( PrefUtils.getBoolean( "article_text_footer_show_date", true ) && isStatusBarHidden ) {
-            isLayoutVisible = true;
-            mLabelDate.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
-            mLabelDate.setText( GetDateText() );
-            mLabelDate.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
-            mLabelDate.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
-            mLabelDate.setText("");
-            mLabelDate.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
-        }
-        rootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
+        isLayoutVisible = SetupHeaderLabel( mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel( mLabelBattery, GetBatteryText(),"article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel( mLabelDate,  GetDateText(),"article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
+        mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
     }
+
+    private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean isStatusBarHidden, boolean isLayoutVisible) {
+        if ( PrefUtils.getBoolean(key, true ) && isStatusBarHidden ) {
+            isLayoutVisible = true;
+            textView.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
+            textView.setText( text );
+            textView.setTextColor(Theme.GetColorInt("article_text_footer_clock_color", R.string.default_article_text_footer_color) );
+            textView.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
+        } else {
+            textView.setText("");
+            textView.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
+        }
+        return isLayoutVisible;
+    }
+
     private static String GetBatteryText() {
         Intent intent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         double level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
@@ -262,7 +256,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected TextView SetupSmallTextView(int id) {
         TextView result = findViewById(id);
         UiUtils.SetupSmallTextView(result);
-        result.setText( "" );
         return result;
     }
     protected void SetupFont( View view ) {

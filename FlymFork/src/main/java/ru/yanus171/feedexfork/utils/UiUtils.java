@@ -253,7 +253,6 @@ public class UiUtils {
     public static TextView SetupSmallTextView(View rootView, int id) {
         TextView result = rootView.findViewById(id);
         SetupSmallTextView(result);
-        result.setText( "" );
         return result;
     }
 
