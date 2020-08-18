@@ -551,6 +551,9 @@
     <string name="create_start_auto_refersh">Iniciar Atualização Automática</string>
     <string name="settings_thread_count">Contagem de tópicos</string>
     <string name="settings_thread_count_description">(1-100) A contagem de operações paralelas executando simultaneamente durante a atualização do artigo. Valores menores produzem menos atividade de CPU e menos consumo de memória da atualização. Valores maiores o tornam mais rápido. O valor ideal depende da contagem dos núcleos de CPU do dispositivo</string>
+    <string name="main_font_css_text_title">Texto de estilo CSS da fonte principal</string>
+    <string name="main_font_css_text_title_description">para definir o peso da fonte, espaçamento de letras, etc., para o texto do artigo</string>
+    <string name="btn_reload_full_text">Recarregar texto completo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>

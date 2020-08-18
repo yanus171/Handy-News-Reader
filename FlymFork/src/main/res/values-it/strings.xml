@@ -552,6 +552,7 @@
     <string name="settings_thread_count_description">(1-100) Il conteggio delle operazioni parallele eseguite simultaneamente durante l\'aggiornamento dell\'articolo. I piccoli valori rendono meno attività CPU e meno consumo di memoria dell\'aggiornamento. I grandi valori lo rendono più veloce. Il valore ottimale dipende dalla quantità dei core CPU del dispositivo</string>
     <string name="main_font_css_text_title">Testo principale stile CSS del carattere</string>
     <string name="main_font_css_text_title_description">per impostare lo spessore del carattere, la spaziatura delle lettere, ecc., per il testo dell\'articolo</string>
+    <string name="btn_reload_full_text">Ricarica testo completo</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>

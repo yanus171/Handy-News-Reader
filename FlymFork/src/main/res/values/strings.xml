@@ -130,7 +130,7 @@
     <string name="error_feed_url_exists">The address already exists.</string>
     <string name="error_feed_import">The selected file could not be imported.</string>
     <string name="error_feed_export">Export has failed. Make sure you have a writable SD-card mounted.</string>
-    <string name="error_external_storage_not_available">The external storage (e.g. SD-card) is not available.</string>
+    <string name="error_external_storage_not_available">The external storage (e.g., SD-card) is not available.</string>
     <string name="feed_url">URL address</string>
     <string name="optional">(optional)</string>
     <string name="website_or_feed">(feed URL or search keyword)</string>
@@ -564,7 +564,7 @@
     <string name="fontFamily">Font</string>
     <string name="fontFamilySummary">Font family of almost all texts in app. You can add custom font ttf files in folder: </string>
     <string name="settings_font_rules">Custom Font</string>
-    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per domain. Leave classname empty to apply font to whole text. Format: site_url:class=Font file name=CSS text(e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
+    <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per domain. Leave class name empty to apply font to whole text. Format: site_url:class=Font file name=CSS text (e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="bold">Bold</string>
     <string name="font_rules_dialog_title">site_url:class=Font file name=CSS text. For example: font-weight: 400; font-size: 12; letter-spacing: 0.1em</string>
     <string name="settings_main_image_extract_rules">Main image</string>
@@ -580,7 +580,7 @@
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">Start Auto refresh</string>
     <string name="settings_thread_count">Thread count</string>
-    <string name="settings_thread_count_description">(1-100) The count of parallel operations executing simultaneously during the article refresh process. The small values makes less cpu activity and less memory consumption of refresh operation. The large values makes the operation run faster. Optimal value depends on the count of the device CPU cores</string>
+    <string name="settings_thread_count_description">(1-100) The count of parallel operations executing simultaneously during the article refresh process. The small values makes less CPU activity and less memory consumption of refresh operation. The large values makes the operation run faster. Optimal value depends on the count of the device CPU cores</string>
     <string name="main_font_css_text_title">Main font CSS style text</string>
     <string name="main_font_css_text_title_description">to set font weight, letter spacing, etc., for article text</string>
     <string name="btn_reload_full_text">Reload full text</string>
