@@ -87,7 +87,7 @@ public class NetworkUtils {
         String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
         fileExtension = fileExtension.replace( ".", "" );
         if ( fileExtension.isEmpty() && imgUrl.contains("/svg/") )
-            fileExtension = ".svg";
+            fileExtension = "svg";
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
         fileExtension = fileExtension.replace( ";", "" );
@@ -95,7 +95,7 @@ public class NetworkUtils {
         fileExtension = fileExtension.replace( "?", "" );
 
         return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + FileUtils.INSTANCE.getLinkHash( entryLink ) + ID_SEPARATOR +
-               FileUtils.INSTANCE.getLinkHash( imgUrl ) + fileExtension;
+               FileUtils.INSTANCE.getLinkHash( imgUrl ) + "." + fileExtension;
     }
 
     private static String getTempDownloadedImagePath(String entryLink, String imgUrl) {

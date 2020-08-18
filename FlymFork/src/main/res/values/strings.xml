@@ -527,7 +527,7 @@
     <string name="feed_list_loading">Feed list loading</string>
     <string name="article_text_show_battery">Show battery level</string>
     <string name="article_text_show_battery_description">Displays the current battery level at the top right corner in fullscreen mode</string>
-    <string name="settings_category_header_descr">For the article text and the article list screens. These text are visible only when status bar is hidden (except progress bar)</string>
+    <string name="settings_category_header_descr">For the article text and the article list screens. </string>
     <string name="article_text_buttons_layout">Button layout</string>
     <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
     <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
@@ -584,6 +584,7 @@
     <string name="main_font_css_text_title">Main font CSS style text</string>
     <string name="main_font_css_text_title_description">to set font weight, letter spacing, etc., for article text</string>
     <string name="btn_reload_full_text">Reload full text</string>
+    <string name="article_text_information_summary">These text are visible only when status bar is hidden</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>
