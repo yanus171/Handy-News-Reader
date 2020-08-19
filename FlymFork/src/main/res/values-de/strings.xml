@@ -556,6 +556,7 @@
     <string name="main_font_css_text_title">Text im CSS-Stil der Hauptschriftart</string>
     <string name="main_font_css_text_title_description">zum Einstellen der Schriftstärke, des Buchstabenabstands usw. für das Artikeltextfenster</string>
     <string name="btn_reload_full_text">Text vollständig neu laden</string>
+    <string name="article_text_information_summary">Dieser Text ist nur sichtbar, wenn die Statusleiste ausgeblendet ist</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>

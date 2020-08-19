@@ -173,12 +173,12 @@ GENERAL]]></string>
     <string name="menu_cancel_refresh">Anuluj aktualizację</string>
     <string name="menu_delete_non_starred">Resetuj kanał</string>
     <string name="menu_toogle_unread_all">Nieprzeczytane|Wszystkie</string>
-    <string name="menu_load_all_images">Wczytuj wszystkie obrazki</string>
+    <string name="menu_load_all_images">Wszystkie obrazki</string>
     <string name="menu_mark_as_favorite">Oznacz jako Ulubione</string>
     <string name="menu_mark_as_unfavorite">Usuń z Ulubionych</string>
     <string name="menu_mark_as_unread">Oznacz jako nieprzeczytane</string>
-    <string name="menu_reload_full_text">Przeładuj pełną treść</string>
-    <string name="menu_reload_full_text_without_mobilizer">Przeładuj bez Mobilizera</string>
+    <string name="menu_reload_full_text">Pełna treść</string>
+    <string name="menu_reload_full_text_without_mobilizer">Bez Mobilizera</string>
     <string name="share_favorites_title">Handy News Reader: Ulubione artykuły</string>
     <string name="link_was_copied_to_clipboard">Link skopiowany</string>
     <string name="get_full_text">Wczytuj pełne artykuły</string>
@@ -373,7 +373,7 @@ GENERAL]]></string>
     <string name="markedAsStarred">Artykuł został dodany do Ulubionych:</string>
     <string name="deleteAllEntries">Usunąć wszystkie niezagwiazdkowane artykuły?</string>
     <string name="question">Pytanie</string>
-    <string name="reload_full_text_with_tags">Tryb Edycji Treści</string>
+    <string name="reload_full_text_with_tags">Edytuj Treść</string>
     <string name="filter_hint">Akcja przypisana filtrom zostanie wykonana przy spełnieniu co najmniej jednego z warunków (reguł). \'Akceptuj\' nadpisuje \'Odrzuć\'</string>
     <string name="keyword">słowo/a kluczowe</string>
     <string name="loadTypeWeb"><b>Strona internetowa - Linki</b> <font color="gray">(załaduj wszystkie linki ze strony jako osobne artykuły)</font></string>
@@ -502,7 +502,7 @@ GENERAL]]></string>
     <string name="feed_list_loading">Wczytywanie listy kanałów</string>
     <string name="article_text_show_battery">Pokaż stan baterii</string>
     <string name="article_text_show_battery_description">Wyświetla aktualny poziom baterii w prawym górnym rogu w trybie pełnoekranowym</string>
-    <string name="settings_category_header_descr">Dla ekranów tekstu artykułu oraz listy artykułów</string>
+    <string name="settings_category_header_descr">Dla ekranów tekstu artykułu oraz listy artykułów. </string>
     <string name="article_text_buttons_layout">Układ przycisków</string>
     <string name="article_text_buttons_layout_descr">Układ oraz widoczność przycisków na końcu artykułu</string>
     <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
@@ -538,8 +538,8 @@ GENERAL]]></string>
     <string name="fontTextSample">Tekst</string>
     <string name="fontFamily">Czcionka</string>
     <string name="fontFamilySummary">Dot. prawie całego tekstu w aplikacji. Możesz dodać pliki ttf niestandardowej czcionki w folderze sdcard/feedex/fonts</string>
-    <string name="settings_font_rules">Czcionka</string>
-    <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - osobno dla pojedynczej domeny. Format: adres strony:klasa=nazwa pliku czcionki=CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
+    <string name="settings_font_rules">Czcionka Niestandardowa</string>
+    <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - dla poszczególnych domen. Pozostaw nazwę klasy pustą by zastosować czcionkę do całego tekstu. Format: site_url:nazwa klasy=nazwa pliku czcionki=komendy CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="bold">Pogrubiona</string>
     <string name="font_rules_dialog_title"> adres strony:klasa=nazwa pliku czcionki=CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="settings_main_image_extract_rules">Główny obrazek</string>
@@ -559,6 +559,7 @@ GENERAL]]></string>
     <string name="main_font_css_text_title">Styl CSS głównej czcionki</string>
     <string name="main_font_css_text_title_description">by ustawić grubość czcionki, odstęp znaków, itp. - dla tekstu artykułu</string>
     <string name="btn_reload_full_text">Przeładuj pełny tekst</string>
+    <string name="article_text_information_summary">Ten tekst jest widoczny tylko przy ukrytym pasku statusu</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
