@@ -29,24 +29,26 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
-   Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
-    <br/>
-    Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
-    <br/>
-    • сворачивание папок лент новостей<br/>
-    • тап зоны изменения яркости и листания страниц<br/>
-    • ограничения на размер и количество загружаемых изображений<br/>
-    • возможность отмены процесса обновления<br/>
-    • и многое другое<br/>
-    <br/>
-    <b><big>Контакты</big></b>
-    <br/>
-    • На нашем  <b><a href=\"https://handynewsreader.blogspot.com">сайте</a></b> много информации и новостей о развитии приложения<br/>
-    • Загрузить приложение можно с  <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Лицензия</big></b><br/>
+Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/><br/>
+Это приложение разработано на основе исходных текстов \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. <h2>Среди добавленных возможностей:<br/>
+<br/>
+• сворачивание папок лент новостей<br/>
+• тап зоны изменения яркости и листания страниц<br/>
+• ограничения на размер и количество загружаемых изображений<br/>
+• возможность отмены процесса обновления<br/>
+• и многое другое<br/>
+<br/>
+<b><big>Контакты</big></b>
+<br/>
+• На нашем  <b><a href=\"https://handynewsreader.blogspot.com">сайте</a></b> много информации и новостей о развитии приложения<br/>
+• Загрузить приложение можно с  <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
     • или с <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b><br/>
-    • Есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
-    • Исходные тексты на <b><a href=\"https://github.com/yanus171/Handy-News-Reader\">GitHub</a></b><br/>
+• Есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
+• А также тема на <b><a href=\"https://4pda.ru/forum/index.php?showtopic=939306\">4pda</a></b><br/>
+• Но наиболее активное обсуждение происходит на  <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">Github</a></b> (на русском языке тоже)<br/>
+• Там же можно быстрее всего найти <b><a href=\"https://github.com/yanus171/Handy-News-Reader/Releases\">новые версии приложения </a></b><br/>
+• Исходные тексты на <b><a href=\"https://github.com/yanus171/Handy-News-Reader\">GitHub</a></b><br/>
     <br/>
     <b><big>Наша помощь:</big></b>
     <br/>
@@ -60,7 +62,7 @@
     • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b> or<br/>
     • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea\">письмо</a></b><br/>
     <br/>
-    <b>Если Вам понравилось приложение, оцените его на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a>.</b><br/>
+    <b>Если Вам понравилось приложение, оцените его пожалуйста на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a></b>. Вы также можете поддержать автора <a href=\"https://github.com/yanus171/Handy-News-Reader\">материально</a></b> (ссылка в конце описания) от <br/>
     <br/>
     <b><big>Перевод на Ваш язык</big></b>
     <br/>
@@ -129,7 +131,7 @@
     <string name="reject">Не загружать</string>
     <string name="feed_search">Поиск лент</string>
     <string name="web_page_search_duckduckgo">Веб поиск статьи (Duck Duck Go)</string>
-    <string name="select_file">Выбрать файл (корень SD-карты)</string>
+    <string name="select_file">Выбрать файл (из папки feedex в памяти телефона)</string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
     <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее ленты?</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
@@ -167,14 +169,14 @@
     <string name="menu_font_bold">Жирный шрифт</string>
     <string name="menu_copy_clipboard">Скопировать ссылку</string>
     <string name="menu_cancel_refresh">Отменить обновление</string>
-    <string name="menu_delete_non_starred">Удалить не избранное</string>
+    <string name="menu_delete_non_starred">Сбросить ленту</string>
     <string name="menu_toogle_unread_all">Прочитанные|Все</string>
     <string name="menu_load_all_images">Загрузить все картинки</string>
     <string name="menu_mark_as_favorite">В избранное</string>
     <string name="menu_mark_as_unfavorite">Убрать из избранного</string>
     <string name="menu_mark_as_unread">Отметить как непрочитанное</string>
     <string name="menu_reload_full_text">Перезагрузить весь текст</string>
-    <string name="menu_reload_full_text_without_mobilizer">Перезагрузить без мобилайзера</string>
+    <string name="menu_reload_full_text_without_mobilizer">Без мобилайзера</string>
     <string name="share_favorites_title">Избранные новости</string>
     <string name="link_was_copied_to_clipboard">Ссылка скопирована</string>
     <string name="get_full_text">Загрузить весь текст</string>
