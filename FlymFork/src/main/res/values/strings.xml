@@ -580,11 +580,11 @@
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">Start Auto refresh</string>
     <string name="settings_thread_count">Thread count</string>
-    <string name="settings_thread_count_description">(1-100) The count of parallel operations executing simultaneously during the article refresh process. The small values makes less CPU activity and less memory consumption of refresh operation. The large values makes the operation run faster. Optimal value depends on the count of the device CPU cores</string>
+    <string name="settings_thread_count_description">(1-100) The count of operations executed simultaneously during the article refresh. The smaller the value, the less CPU activity and memory consumption during the refresh. The bigger, the faster it is. Optimal value depends on the count of the device CPU cores</string>
     <string name="main_font_css_text_title">Main font CSS style text</string>
     <string name="main_font_css_text_title_description">to set font weight, letter spacing, etc., for article text</string>
     <string name="btn_reload_full_text">Reload full text</string>
-    <string name="article_text_information_summary">These text are visible only when status bar is hidden</string>
+    <string name="article_text_information_summary">This text is visible only when status bar is hidden</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article.</item>

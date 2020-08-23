@@ -29,24 +29,26 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Лицензия</big></b><br/>
-   Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/>
-    <br/>
-    Это приложение основано на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Среди добавленных возможностей:<br/>
-    <br/>
-    • сворачивание папок лент новостей<br/>
-    • тап зоны изменения яркости и листания страниц<br/>
-    • ограничения на размер и количество загружаемых изображений<br/>
-    • возможность отмены процесса обновления<br/>
-    • и многое другое<br/>
-    <br/>
-    <b><big>Контакты</big></b>
-    <br/>
-    • На нашем  <b><a href=\"https://handynewsreader.blogspot.com">сайте</a></b> много информации и новостей о развитии приложения<br/>
-    • Загрузить приложение можно с  <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Лицензия</big></b><br/>
+Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/><br/>
+Это приложение разработано на основе исходных текстов \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. <h2>Среди добавленных возможностей:<br/>
+<br/>
+• сворачивание папок лент новостей<br/>
+• тап зоны изменения яркости и листания страниц<br/>
+• ограничения на размер и количество загружаемых изображений<br/>
+• возможность отмены процесса обновления<br/>
+• и многое другое<br/>
+<br/>
+<b><big>Контакты</big></b>
+<br/>
+• На нашем  <b><a href=\"https://handynewsreader.blogspot.com">сайте</a></b> много информации и новостей о развитии приложения<br/>
+• Загрузить приложение можно с  <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
     • или с <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b><br/>
-    • Есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
-    • Исходные тексты на <b><a href=\"https://github.com/yanus171/Handy-News-Reader\">GitHub</a></b><br/>
+• Есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
+• А также тема на <b><a href=\"https://4pda.ru/forum/index.php?showtopic=939306\">4pda</a></b><br/>
+• Но наиболее активное обсуждение происходит на  <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">Github</a></b> (на русском языке тоже)<br/>
+• Там же можно быстрее всего найти <b><a href=\"https://github.com/yanus171/Handy-News-Reader/Releases\">новые версии приложения </a></b><br/>
+• Исходные тексты на <b><a href=\"https://github.com/yanus171/Handy-News-Reader\">GitHub</a></b><br/>
     <br/>
     <b><big>Наша помощь:</big></b>
     <br/>
@@ -60,7 +62,7 @@
     • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b> or<br/>
     • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea\">письмо</a></b><br/>
     <br/>
-    <b>Если Вам понравилось приложение, оцените его на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a>.</b><br/>
+    <b>Если Вам понравилось приложение, оцените его пожалуйста на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a></b>. Вы также можете поддержать автора <a href=\"https://github.com/yanus171/Handy-News-Reader\">материально</a></b> (ссылка в конце описания) от <br/>
     <br/>
     <b><big>Перевод на Ваш язык</big></b>
     <br/>
@@ -129,7 +131,7 @@
     <string name="reject">Не загружать</string>
     <string name="feed_search">Поиск лент</string>
     <string name="web_page_search_duckduckgo">Веб поиск статьи (Duck Duck Go)</string>
-    <string name="select_file">Выбрать файл (корень SD-карты)</string>
+    <string name="select_file">Выбрать файл (из папки feedex в памяти телефона)</string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
     <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее ленты?</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
@@ -167,14 +169,14 @@
     <string name="menu_font_bold">Жирный шрифт</string>
     <string name="menu_copy_clipboard">Скопировать ссылку</string>
     <string name="menu_cancel_refresh">Отменить обновление</string>
-    <string name="menu_delete_non_starred">Удалить не избранное</string>
+    <string name="menu_delete_non_starred">Сбросить ленту</string>
     <string name="menu_toogle_unread_all">Прочитанные|Все</string>
     <string name="menu_load_all_images">Загрузить все картинки</string>
     <string name="menu_mark_as_favorite">В избранное</string>
     <string name="menu_mark_as_unfavorite">Убрать из избранного</string>
     <string name="menu_mark_as_unread">Отметить как непрочитанное</string>
     <string name="menu_reload_full_text">Перезагрузить весь текст</string>
-    <string name="menu_reload_full_text_without_mobilizer">Перезагрузить без мобилайзера</string>
+    <string name="menu_reload_full_text_without_mobilizer">Без мобилайзера</string>
     <string name="share_favorites_title">Избранные новости</string>
     <string name="link_was_copied_to_clipboard">Ссылка скопирована</string>
     <string name="get_full_text">Загрузить весь текст</string>
@@ -206,7 +208,7 @@
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКогда вы ухаживаете за хорошенькой девушкой, час кажется секундой. Когда вы сидите на раскаленных углях, секунда кажется часом. Это и есть относительность.\u201d\n(Альберт Эйнштейн)</string>
     <string name="settings_category_refresh">Обновление статей</string>
-    <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
+    <string name="settings_category_refresh_summary">Автоматическое обновление, время хранения статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
     <string name="settings_refresh_interval">Интервал обновления</string>
     <string name="settings_min_update_battery_level">Min уровень батареи</string>
@@ -225,7 +227,7 @@
     <string name="max_single_refresh_traffic_mb">Max траффик обновления</string>
     <string name="max_single_refresh_traffic_mb_descr">Обновление остановится, когда трафик превысит максимальное значение и не WiFi (в МБ)</string>
     <string name="settings_load_comments">Загружать комментарии</string>
-    <string name="settings_load_comments_description">в полных текстах статей</string>
+    <string name="settings_load_comments_description">В полных текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
     <string name="settings_category_article_list_summary">Внешний вид списка статей</string>
     <string name="settings_font_size">Размер текста</string>
@@ -409,7 +411,7 @@
     <string name="auto_refresh_requires_charging">Только во время зарядки</string>
     <string name="global_class_list_to_remove_from_article_text">Правила удаления текста</string>
     <string name="global_class_list_to_remove_from_article_text_summary">Название класса (атрибут class) в каждой строке</string>
-    <string name="global_date_class_list_summary">Имя класса в одной строке. Элементы этих классов считаются датой статьи при загрузке Веб-страницы - Ссылки</string>
+    <string name="global_date_class_list_summary">Каждая строка - имя класса. Элементы этих классов считаются датой статьи при загрузке Веб-страницы - Ссылки</string>
     <string name="hide">Скрыть</string>
     <string name="show">Показать</string>
     <string name="setFullTextRoot">Выбрать корень полного текста</string>
@@ -464,7 +466,7 @@
     <string name="settings_delete_old_interval_descr">Как часто удалять старые статьи, а также вычислять размеры статей, лент и групп изображений на SD-карте</string>
     <string name="menu_delete_old">Удалить старые статьи</string>
     <string name="settings_category_delete_old">Удаление старых статей</string>
-    <string name="tool_bar_color">Цвет панели инструментов</string>
+    <string name="tool_bar_color">Цвет кнопок и панели инструментов</string>
     <string name="tool_bar_color_desc">Также этот цвет используется для кнопок текста статьи и для строки состояния</string>
     <string name="one_webpage_hint">Подсказка: в этом типе загрузки содержание веб-страницы делится на статьи в соответствиии с классом HTML элемента, заданным в настройках ленты. Также нужно задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Читать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов … короче, если Вы совсем не разбираетесь в HTML то это не для Вас</string>
     <string name="one_webpage_article_classname_label">Корневой элемент статьи</string>
@@ -497,7 +499,7 @@
     <string name="feed_list_loading">Загрузка списка каналов</string>
     <string name="article_text_show_battery">Заряд батареи</string>
     <string name="article_text_show_battery_description">Отображает текущий уровень заряда батареи в правом верхнем углу в полноэкранном режиме</string>
-    <string name="settings_category_header_descr">Для экранов чтения статьи, а также на списка статей</string>
+    <string name="settings_category_header_descr">Для экранов чтения статьи, а также списка статей</string>
     <string name="article_text_buttons_layout">Расположение кнопок</string>
     <string name="article_text_buttons_layout_descr">Ориентация и видимость кнопок в конце статьи</string>
     <string name="article_reading_notification_hint">Чтобы оставлять приложение в памяти во время чтения статьи</string>
@@ -512,8 +514,8 @@
     <string name="open_tag_menu_hint">Выберите часть URL для использования в качестве ключа для правила</string>
     <string name="open_tag_menu_dialog_title">"Установка правила для класса "</string>
     <string name="show_article_category">"Показать категорию статьи"</string>
-    <string name="article_text_information">Дополнительная информация о заголовке</string>
-    <string name="article_text_progress">Чтение строки прогресса в заголовке</string>
+    <string name="article_text_information">Дополнительная информация в заголовке</string>
+    <string name="article_text_progress">Полоса прочитанного в заголовке</string>
     <string name="global_removeText_filter_rule_descr">Регулярные выражения (по одному в строке) применяются к любой статье</string>
     <string name="parsing_web_page_links">Страница</string>
     <string name="global_date_class_list">Список классов даты</string>
@@ -522,21 +524,21 @@
     <string name="clearingWebViewChache">Очистка кэша WebView</string>
     <string name="article_text_show_date">Показывать дату</string>
     <string name="article_text_show_date_description">День месяца и день недели</string>
-    <string name="remove_existing_feeds_question">Удалить существующие каналы перед импортом?</string>
+    <string name="remove_existing_feeds_question">Удалить существующие ленты перед импортом?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="remove_existing_feeds_confirmation">Это удалит ВСЕ существующие статьи из ВСЕ каналы (кроме «Читать позже»). Вы уверены?</string>
+    <string name="remove_existing_feeds_confirmation">Это удалит ВСЕ существующие статьи и ВСЕ ленты (кроме «Читать позже»). Вы уверены?</string>
     <string name="yes_I_realize_btn_caption">Да, понимаю!</string>
-    <string name="sorry_I_was_wrong_btn_caption">Ох... Я ошибся. Не надо удалять каналы и статьи!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ох... Я ошибся. Не надо удалять ленты и статьи!</string>
     <string name="create_backup">Создать отдельный файл резервной копии</string>
     <string name="defaultFontFamily">Системный по-умолчанию</string>
     <string name="fontTextSample">Текст</string>
     <string name="fontFamily">Шрифт</string>
     <string name="fontFamilySummary">Семейство шрифтов почти всех текстов в приложении. Вы можете добавить пользовательские ttf-файлы шрифтов в папку: </string>
-    <string name="settings_font_rules">Шрифт</string>
-    <string name="settings_font_rules_description">Установить пользовательские шрифты для отдельных классов в текстах статьи для каждого домена</string>
+    <string name="settings_font_rules">Особый шрифт</string>
+    <string name="settings_font_rules_description">Для отдельных классов элементов текста статьи для определенных сайтов. Формат: сайт:class=имя_файла_шрифта.ttf=CSS_text (e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em). Имя класса можно не задавать, если нужно применить особой шрифт ко всему тексту статей с соответствующего сайта</string>
     <string name="bold">Жирный</string>
-    <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=размер шрифта=межбуквенное расстояние=насыщенность шрифта</string>
+    <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=CSS text</string>
     <string name="settings_main_image_extract_rules">Основное изображение</string>
     <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image) для каждого домена. Это может помочь, если изображение находится за пределами полнотекстового раздела статьи "</string>
     <string name="settings_category_content_extract_rules">Правила извлечения содержимого</string>
@@ -544,13 +546,17 @@
     <string name="settings_category_other">Другое</string>
     <string name="settings_category_storage">Хранилище</string>
     <string name="settings_category_autobackup">Автоматическое резервное копирование</string>
-    <string name="settings_show_circle_progress">Отображать прогресс загрузки</string>
-    <string name="settings_show_circle_progress_summary">Пока приложение использует CPU</string>
+    <string name="settings_show_circle_progress">Отображать круг индикатора загрузки статьи</string>
+    <string name="settings_show_circle_progress_summary">Во время высокий загрузки процессора приложением</string>
     <string name="kilobytes">КБ</string>
     <string name="megabytes">МБ</string>
     <string name="create_start_auto_refersh">Запустить автообновление</string>
     <string name="settings_thread_count">Количество потоков</string>
-    <string name="settings_thread_count_description">(1-100) Количество параллельных операций, выполняемых одновременно во время обновления статьи. Маленькие значения повышают активность ЦП и уменьшают потребление памяти при обновлении. Большие значения делают его быстрее. Оптимальное значение зависит от количества ядер процессора устройства</string>
+    <string name="settings_thread_count_description">(1-100) Количество параллельных операций, выполняемых одновременно во время обновления статей, а также загрузки картинок. Маленькие значения повышают активность ЦП и уменьшают потребление памяти при обновлении. Большие значения ускоряют процесс и повышают загрузку процессора. Оптимальное значение зависит от количества ядер процессора устройства и других факторов и определяется экспериментально</string>
+    <string name="main_font_css_text_title">Текст стиля CSS основного шрифта</string>
+    <string name="main_font_css_text_title_description">для установки веса шрифта, интервала букв и т. д. в тексте статьи</string>
+    <string name="btn_reload_full_text">Перезагрузить текст</string>
+    <string name="article_text_information_summary">Этот текст отображается только когда строка состояния скрыта</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
