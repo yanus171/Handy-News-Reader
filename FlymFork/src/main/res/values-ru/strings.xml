@@ -208,7 +208,7 @@
     <string name="settings_color_text_sample_short">Текст</string>
     <string name="settings_color_text_sample_long">\u201cКогда вы ухаживаете за хорошенькой девушкой, час кажется секундой. Когда вы сидите на раскаленных углях, секунда кажется часом. Это и есть относительность.\u201d\n(Альберт Эйнштейн)</string>
     <string name="settings_category_refresh">Обновление статей</string>
-    <string name="settings_category_refresh_summary">Автоматическое обновление, время храненния статей</string>
+    <string name="settings_category_refresh_summary">Автоматическое обновление, время хранения статей</string>
     <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
     <string name="settings_refresh_interval">Интервал обновления</string>
     <string name="settings_min_update_battery_level">Min уровень батареи</string>
