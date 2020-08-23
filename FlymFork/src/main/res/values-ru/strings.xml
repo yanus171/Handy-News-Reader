@@ -227,7 +227,7 @@
     <string name="max_single_refresh_traffic_mb">Max траффик обновления</string>
     <string name="max_single_refresh_traffic_mb_descr">Обновление остановится, когда трафик превысит максимальное значение и не WiFi (в МБ)</string>
     <string name="settings_load_comments">Загружать комментарии</string>
-    <string name="settings_load_comments_description">в полных текстах статей</string>
+    <string name="settings_load_comments_description">В полных текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
     <string name="settings_category_article_list_summary">Внешний вид списка статей</string>
     <string name="settings_font_size">Размер текста</string>
@@ -411,7 +411,7 @@
     <string name="auto_refresh_requires_charging">Только во время зарядки</string>
     <string name="global_class_list_to_remove_from_article_text">Правила удаления текста</string>
     <string name="global_class_list_to_remove_from_article_text_summary">Название класса (атрибут class) в каждой строке</string>
-    <string name="global_date_class_list_summary">Имя класса в одной строке. Элементы этих классов считаются датой статьи при загрузке Веб-страницы - Ссылки</string>
+    <string name="global_date_class_list_summary">Каждая строка - имя класса. Элементы этих классов считаются датой статьи при загрузке Веб-страницы - Ссылки</string>
     <string name="hide">Скрыть</string>
     <string name="show">Показать</string>
     <string name="setFullTextRoot">Выбрать корень полного текста</string>
@@ -466,7 +466,7 @@
     <string name="settings_delete_old_interval_descr">Как часто удалять старые статьи, а также вычислять размеры статей, лент и групп изображений на SD-карте</string>
     <string name="menu_delete_old">Удалить старые статьи</string>
     <string name="settings_category_delete_old">Удаление старых статей</string>
-    <string name="tool_bar_color">Цвет панели инструментов</string>
+    <string name="tool_bar_color">Цвет кнопок и панели инструментов</string>
     <string name="tool_bar_color_desc">Также этот цвет используется для кнопок текста статьи и для строки состояния</string>
     <string name="one_webpage_hint">Подсказка: в этом типе загрузки содержание веб-страницы делится на статьи в соответствиии с классом HTML элемента, заданным в настройках ленты. Также нужно задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Читать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов … короче, если Вы совсем не разбираетесь в HTML то это не для Вас</string>
     <string name="one_webpage_article_classname_label">Корневой элемент статьи</string>
@@ -499,7 +499,7 @@
     <string name="feed_list_loading">Загрузка списка каналов</string>
     <string name="article_text_show_battery">Заряд батареи</string>
     <string name="article_text_show_battery_description">Отображает текущий уровень заряда батареи в правом верхнем углу в полноэкранном режиме</string>
-    <string name="settings_category_header_descr">Для экранов чтения статьи, а также на списка статей</string>
+    <string name="settings_category_header_descr">Для экранов чтения статьи, а также списка статей</string>
     <string name="article_text_buttons_layout">Расположение кнопок</string>
     <string name="article_text_buttons_layout_descr">Ориентация и видимость кнопок в конце статьи</string>
     <string name="article_reading_notification_hint">Чтобы оставлять приложение в памяти во время чтения статьи</string>
@@ -514,8 +514,8 @@
     <string name="open_tag_menu_hint">Выберите часть URL для использования в качестве ключа для правила</string>
     <string name="open_tag_menu_dialog_title">"Установка правила для класса "</string>
     <string name="show_article_category">"Показать категорию статьи"</string>
-    <string name="article_text_information">Дополнительная информация о заголовке</string>
-    <string name="article_text_progress">Чтение строки прогресса в заголовке</string>
+    <string name="article_text_information">Дополнительная информация в заголовке</string>
+    <string name="article_text_progress">Полоса прочитанного в заголовке</string>
     <string name="global_removeText_filter_rule_descr">Регулярные выражения (по одному в строке) применяются к любой статье</string>
     <string name="parsing_web_page_links">Страница</string>
     <string name="global_date_class_list">Список классов даты</string>
@@ -524,7 +524,7 @@
     <string name="clearingWebViewChache">Очистка кэша WebView</string>
     <string name="article_text_show_date">Показывать дату</string>
     <string name="article_text_show_date_description">День месяца и день недели</string>
-    <string name="remove_existing_feeds_question">Удалить существующие каналы перед импортом?</string>
+    <string name="remove_existing_feeds_question">Удалить существующие ленты перед импортом?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="remove_existing_feeds_confirmation">Это удалит ВСЕ существующие статьи из ВСЕ каналы (кроме «Читать позже»). Вы уверены?</string>
