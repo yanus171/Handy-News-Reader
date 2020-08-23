@@ -527,18 +527,18 @@
     <string name="remove_existing_feeds_question">Удалить существующие ленты перед импортом?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="remove_existing_feeds_confirmation">Это удалит ВСЕ существующие статьи из ВСЕ каналы (кроме «Читать позже»). Вы уверены?</string>
+    <string name="remove_existing_feeds_confirmation">Это удалит ВСЕ существующие статьи и ВСЕ ленты (кроме «Читать позже»). Вы уверены?</string>
     <string name="yes_I_realize_btn_caption">Да, понимаю!</string>
-    <string name="sorry_I_was_wrong_btn_caption">Ох... Я ошибся. Не надо удалять каналы и статьи!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ох... Я ошибся. Не надо удалять ленты и статьи!</string>
     <string name="create_backup">Создать отдельный файл резервной копии</string>
     <string name="defaultFontFamily">Системный по-умолчанию</string>
     <string name="fontTextSample">Текст</string>
     <string name="fontFamily">Шрифт</string>
     <string name="fontFamilySummary">Семейство шрифтов почти всех текстов в приложении. Вы можете добавить пользовательские ttf-файлы шрифтов в папку: </string>
-    <string name="settings_font_rules">Шрифт</string>
-    <string name="settings_font_rules_description">Установить пользовательские шрифты для отдельных классов в текстах статьи для каждого домена</string>
+    <string name="settings_font_rules">Особый шрифт</string>
+    <string name="settings_font_rules_description">Для отдельных классов элементов текста статьи для определенных сайтов. Формат: сайт:class=имя_файла_шрифта.ttf=CSS_text (e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em). Имя класса можно не задавать, если нужно применить особой шрифт ко всему тексту статей с соответствующего сайта</string>
     <string name="bold">Жирный</string>
-    <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=размер шрифта=межбуквенное расстояние=насыщенность шрифта</string>
+    <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=CSS text</string>
     <string name="settings_main_image_extract_rules">Основное изображение</string>
     <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image) для каждого домена. Это может помочь, если изображение находится за пределами полнотекстового раздела статьи "</string>
     <string name="settings_category_content_extract_rules">Правила извлечения содержимого</string>
