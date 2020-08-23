@@ -99,19 +99,7 @@
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
-            </intent-filter>
-            <intent-filter
-                android:icon="@drawable/cup_new_load_later"
-                android:label="@string/loadLinkLater">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -142,15 +130,6 @@
             <intent-filter
                 android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-            <intent-filter
-                android:icon="@drawable/cup_new_load_now"
-                android:label="@string/loadLink">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -158,6 +137,15 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+            </intent-filter>
+            <intent-filter
+                android:icon="@drawable/cup_new_load_now"
+                android:label="@string/loadLink">
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
@@ -197,18 +185,15 @@
                 android:icon="@drawable/cup_new_add"
                 android:label="@string/addFeed">
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter
                 android:icon="@drawable/cup_new_add"
                 android:label="@string/addFeed">
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />

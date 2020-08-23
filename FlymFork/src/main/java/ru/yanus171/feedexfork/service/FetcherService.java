@@ -741,7 +741,7 @@ public class FetcherService extends IntentService {
 
         if (entryCursor.moveToFirst()) {
             int linkPos = entryCursor.getColumnIndex(LINK);
-            final String link = entryCursor.getString(linkPos);
+            String link = entryCursor.getString(linkPos);
 
             if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
@@ -760,7 +760,7 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    connection = new Connection( link);
+                    connection = new Connection( link );
 
                     String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);
@@ -776,9 +776,9 @@ public class FetcherService extends IntentService {
                                 el.hasAttr("http-equiv") &&
                                 el.attr("http-equiv").equals("refresh")) {
                                 String s = els.first().attr("content");
-                                final String url = s.replaceFirst("\\d+;URL=", "");
+                                link = s.replaceFirst("\\d+;URL=", "");
                                 connection.disconnect();
-                                connection = new Connection(url);
+                                connection = new Connection(link);
                                 doc = Jsoup.parse(connection.getInputStream(), null, "");
                             }
                         }
@@ -848,7 +848,7 @@ public class FetcherService extends IntentService {
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
                             //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
-                            HtmlUtils.replaceImageURLs( mobilizedHtml, "", -1, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
+                            HtmlUtils.replaceImageURLs( mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
                         }
 
                         String mainImgUrl;
@@ -1166,7 +1166,7 @@ public class FetcherService extends IntentService {
     }
 
     public static ExecutorService CreateExecutorService() {
-        int threadCount = PrefUtils.getIntFromText( "thread_count", 9 );
+        int threadCount = PrefUtils.getIntFromText( "thread_count", 5  );
         if ( threadCount < 1 )
             threadCount = 1;
         else if ( threadCount > 100 )
