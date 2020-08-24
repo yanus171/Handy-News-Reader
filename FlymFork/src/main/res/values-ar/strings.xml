@@ -273,10 +273,8 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">إِظْهارُ شَريطِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
-    <string name="article_text_show_progress_descr">يَعْرِضُ نِسْبَةَ التَّقَدُّمِ اَلْمُحْرَزِ بِقِراءَةِ المَقالِ فِي الأَعْلَى</string>
     <string name="article_text_progress_height">سُمْكُ الشَّريطِ</string>
     <string name="article_text_progress_color">لَوْنُ الشَّريطِ</string>
-    <string name="article_text_progress_color_descr">لَوْنُ نِسْبَةِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
     <string name="settings_category_operation">العمليّات</string>
     <string name="settings_category_operation_summary">الإعدادات التشغيلية</string>
     <string name="tap_zone_size">حَجْمُ مَناطِقِ النَّقْرِ</string>
@@ -290,7 +288,6 @@
     <string name="brightness_with_dim_activity">تراكُب البرمجيات</string>
     <string name="brightness_with_dim_activity_descr">تعتيم الإضاءة عن طريق تقليل شفافية لون خلفية النافذة (تحقق من ذلك فيما إذا كان تغيير السطوع لا يعمل)</string>
     <string name="settings_category_notification">الإِشْعاراتُ</string>
-    <string name="settings_category_notification_summary">إِشْعاراتُ المَقَالَاتِ الجَديدَةِ</string>
     <string name="settings_notifications_enabled">تمكين الإشعارات</string>
     <string name="settings_notifications_enabled_description">تمكين الإشعارات في حالة وجود مقالات جديدة</string>
     <string name="settings_notifications_ringtone">النغمة</string>
@@ -331,7 +328,6 @@
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
     <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
-    <string name="settings_category_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_date_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
     <string name="downloadNext">"، التَّالِي "</string>
@@ -495,7 +491,6 @@
     <string name="reading_notification_descr">إِشْعارٌ مُسْتَمِرٌّ بِشَريطِ الحالَةِ، لِمَنْعِ النِّظامِ مِنْ قَتْلِ التَّطْبيقِ - لِتَسْرِيعِ تَشْغيلِ التَّطْبيقِ بَعْدَ فَتْرَةِ تَأْخيرٍ طَويلَةٍ</string>
     <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
     <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
-    <string name="article_text_show_battery_description">عَرْضُ النِّسْبَةِ الحاليَّةِ لِلْبَطَّارِيَّةِ، بِالزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
     <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
     <string name="article_text_buttons_layout">تَخْطيطُ الزِرْ</string>
     <string name="article_text_buttons_layout_descr">النَّسَقُ والرُّؤْيَةُ لِلْأَزْرَارِ فِي نِهايَةِ المَقالِ</string>
