@@ -31,7 +31,7 @@
 <resources>
     <string name="about_us_content" translatable="true"><![CDATA[<b><big>Лицензия</big></b><br/>
 Эта программа является свободным программным обеспечением: вы можете распространять ее и / или изменять в соответствии с условиями Универсальной общественной лицензии GNU, опубликованной Фондом свободного программного обеспечения, либо версии 3 Лицензии, либо (по вашему выбору) любой более поздней версии. См. Http://www.gnu.org/licenses <br/><br/>
-Это приложение разработано на основе исходных текстов \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. <h2>Среди добавленных возможностей:<br/>
+Это приложение разработано на основе исходных текстов \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. <h2>Среди добавленных возможностей:</h2>
 <br/>
 • сворачивание папок лент новостей<br/>
 • тап зоны изменения яркости и листания страниц<br/>
@@ -41,10 +41,10 @@
 <br/>
 <b><big>Контакты</big></b>
 <br/>
-• На нашем  <b><a href=\"https://handynewsreader.blogspot.com">сайте</a></b> много информации и новостей о развитии приложения<br/>
+• На нашем <b><a href=\"https://handynewsreader.blogspot.com\">сайте</a></b> много информации и новостей о развитии приложения<br/>
 • Загрузить приложение можно с  <b><a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google Play</a></b><br/>
-    • или с <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b><br/>
-• Есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
+или с <b><a href=\"https://f-droid.org/de/packages/ru.yanus171.feedexfork/\">F-Droid</a></b><br/>
+• Для обсуждения есть тема на <b><a href=\"https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126\">XDA</a></b><br/>
 • А также тема на <b><a href=\"https://4pda.ru/forum/index.php?showtopic=939306\">4pda</a></b><br/>
 • Но наиболее активное обсуждение происходит на  <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">Github</a></b> (на русском языке тоже)<br/>
 • Там же можно быстрее всего найти <b><a href=\"https://github.com/yanus171/Handy-News-Reader/Releases\">новые версии приложения </a></b><br/>
@@ -54,15 +54,15 @@
     <br/>
     Если Вы столкнулись с проблемой, лучше всего<br/>
     • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub </a></b> or<br/>
-    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">письмо</a></b><br/>
+    • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem\">письмо</a></b><br/>
     <br/>
     <b><big>Ваша помощь:</big></b>
     <br/>
     Если у Вас есть идея, Вы можете<br/>
-    • задать вопрос (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b> or<br/>
+    • изложить ее (issue) на <b><a href=\"https://github.com/yanus171/Handy-News-Reader/issues\">GitHub</a></b> or<br/>
     • написать разработчику <b><a href=\"mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea\">письмо</a></b><br/>
     <br/>
-    <b>Если Вам понравилось приложение, оцените его пожалуйста на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a></b>. Вы также можете поддержать автора <a href=\"https://github.com/yanus171/Handy-News-Reader\">материально</a></b> (ссылка в конце описания) от <br/>
+    <b>Если Вам понравилось приложение, оцените его пожалуйста на  <a href=\"https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork\">Google play</a></b>. Вы также можете поддержать автора <a href=\"https://github.com/yanus171/Handy-News-Reader\">материально</a></b> (ссылка в конце описания)<br/>
     <br/>
     <b><big>Перевод на Ваш язык</big></b>
     <br/>
@@ -209,11 +209,11 @@
     <string name="settings_color_text_sample_long">\u201cКогда вы ухаживаете за хорошенькой девушкой, час кажется секундой. Когда вы сидите на раскаленных углях, секунда кажется часом. Это и есть относительность.\u201d\n(Альберт Эйнштейн)</string>
     <string name="settings_category_refresh">Обновление статей</string>
     <string name="settings_category_refresh_summary">Автоматическое обновление, время хранения статей</string>
-    <string name="settings_refresh_enabled">Включить автоматическое обновление</string>
+    <string name="settings_refresh_enabled">Обновлять автоматически</string>
     <string name="settings_refresh_interval">Интервал обновления</string>
     <string name="settings_min_update_battery_level">Min уровень батареи</string>
     <string name="settings_refresh_only_selected">Только выбранные</string>
-    <string name="settings_refresh_only_selected_summary">автоматическое обновление только выбранных лент</string>
+    <string name="settings_refresh_only_selected_summary">Автоматическое обновление только выбранных лент</string>
     <string name="settings_refresh_on_open">Обновлять при запуске</string>
     <string name="settings_refresh_on_open_description">Обновлять все ленты при запуске приложения</string>
     <string name="settings_refresh_wifi_only">Обновлять только по WiFi</string>
@@ -223,7 +223,7 @@
     <string name="settings_max_image_download_count">Макс. число картинок при загрузке</string>
     <string name="settings_max_image_download_count_description">на одну статью</string>
     <string name="settings_max_image_download_size_kb">Макс. размер изображения</string>
-    <string name="settings_max_image_download_size_kb_summary">(в kb). Не загружать автоматически изображения, имеющие больший размер</string>
+    <string name="settings_max_image_download_size_kb_summary">(в KБ). Не загружать автоматически изображения, имеющие больший размер</string>
     <string name="max_single_refresh_traffic_mb">Max траффик обновления</string>
     <string name="max_single_refresh_traffic_mb_descr">Обновление остановится, когда трафик превысит максимальное значение и не WiFi (в МБ)</string>
     <string name="settings_load_comments">Загружать комментарии</string>
@@ -239,16 +239,16 @@
     <string name="show_mark_all_as_read_button">Кнопка пометить все как прочитанное</string>
     <string name="show_mark_all_as_read_button_summary">Показывать кнопку Пометить все статьи, как прочитанные. Иначе это действие доступно через меню </string>
     <string name="show_read_checkbox">Галка прочитанного</string>
-    <string name="show_read_checkbox_descr">Показывать галку прочитанного</string>
+    <string name="show_read_checkbox_descr">Показывать галку прочитанного для каждой статьи</string>
     <string name="show_full_text_indicator">Индикация полного текста</string>
     <string name="show_full_text_indicator_descr">Показывать иконку маленькой дискеты, если для статьи загружен полный текст</string>
     <string name="show_new_icon">Подкрашивать новые</string>
-    <string name="show_new_icon_descr">Маленькая иконка с полюсом на новых статьях (названия которых еще никогда не были видимы)</string>
+    <string name="show_new_icon_descr">Маленькая иконка с полюсом на новых статьях (названия которых еще никогда не были просмотрены)</string>
     <string name="show_read_article_count">Число прочитанных статей</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
-    <string name="textColorRead">Прочитанные статьи</string>
+    <string name="textColorRead">Цвет прочитанных статей</string>
     <string name="textColorRead_descr">Цвет прочитанных</string>
     <string name="settings_color_text_read_sample_short">Прочитанные</string>
     <string name="settings_color_text_read_sample_long">Прочитанные статьи</string>
@@ -266,34 +266,34 @@
     <string name="settings_color_link_sample_short">Ссылки</string>
     <string name="settings_color_link_sample_long">Цвет ссылки</string>
     <string name="underline_links">Подчеркивать ссылки</string>
-    <string name="article_text_show_clock">Показать часы</string>
+    <string name="article_text_show_clock">Часы</string>
     <string name="article_text_show_clock_description">Отображать текущее время в верхнем правом углу в полноэкранном режиме</string>
-    <string name="settings_informations_size">Размер текста дополнительной информации</string>
-    <string name="article_text_information_color">Цвет и фон текста информации</string>
-    <string name="article_text_information_color_descr">Цвет и фон дополнительной информации заголовка страницы</string>
+    <string name="settings_informations_size">Размер текста заголовка страницы</string>
+    <string name="article_text_information_color">Цвет и фон текста заголовка</string>
+    <string name="article_text_information_color_descr"></string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
-    <string name="article_text_show_progress">Полоса прочитанного</string>
-    <string name="article_text_show_progress_descr">Показывать полосу прочитанного вверху окна текста статьи</string>
-    <string name="article_text_progress_height">Высота полосы</string>
-    <string name="article_text_progress_color">Цвет полосы прочитанного</string>
-    <string name="article_text_progress_color_descr">Цвет полосы прочитанного</string>
+    <string name="article_text_show_progress">Показывать</string>
+    <string name="article_text_show_progress_descr"></string>
+    <string name="article_text_progress_height">Высота</string>
+    <string name="article_text_progress_color">Цвет</string>
+    <string name="article_text_progress_color_descr"></string>
     <string name="settings_category_operation">Операции</string>
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
-    <string name="tap_zone_size_descr">Ширина или высота зон нажатий в миллиметрах</string>
+    <string name="tap_zone_size_descr">Ширина и высота зон нажатий в миллиметрах</string>
     <string name="settings_show_tap_zones">Зоны нажатий видимы</string>
-    <string name="settings_show_tap_zone_description">полупрозрачные квадратики в окне чтения статьи</string>
+    <string name="settings_show_tap_zone_description">Показывать полупрозрачные квадратики на месте тап зон</string>
     <string name="settings_tapZones">Зоны нажатий (предпросмотр)</string>
     <string name="settings_volume_buttons_action">Действие кнопок громкости</string>
     <string name="brightness_gesture">Изменение яркости жестом</string>
-    <string name="brightness_gesture_descr">Если галка отмечена, то движение пвльцем вверх/вниз по правому краю экрана статьи изменяет яркость</string>
+    <string name="brightness_gesture_descr">Если включено, то свайп вверх/вниз по правому краю экрана статьи изменяет яркость</string>
     <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
     <string name="brightness_with_dim_activity_descr">Включите, если иначе изменение яркости не работает</string>
     <string name="settings_category_notification">Уведомления</string>
-    <string name="settings_category_notification_summary">Уведомления о новых статьях</string>
-    <string name="settings_notifications_enabled">Включить уведомления</string>
-    <string name="settings_notifications_enabled_description">Включить уведомления о новых записях</string>
+    <string name="settings_category_notification_summary"></string>
+    <string name="settings_notifications_enabled">Включить</string>
+    <string name="settings_notifications_enabled_description">Уведоления о новых загруженных статьях</string>
     <string name="settings_notifications_ringtone">Звук</string>
     <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>
@@ -301,15 +301,15 @@
     <string name="settings_notifications_light">Светодиод</string>
     <string name="settings_notifications_light_description">Мигание светодиода при появлении новых статей</string>
     <string name="page_up_down_90_pct">Прокрутка страницы 90 %</string>
-    <string name="page_up_down_90_pct_descr">Чтобы оставлять несколько строк с предыдущей страницы, если выключена, то листается страница целиком</string>
+    <string name="page_up_down_90_pct_descr">(по тапу на верх или низ экрана) Чтобы оставлять несколько строк с предыдущей страницы. Если отключено, то листается страница целиком</string>
     <string name="settings_remember_last_entry">Запоминать статью</string>
-    <string name="settings_remeber_last_entry_description">Открывать последнюю просмотренную статью при запуске, иначе список непрочитанных статей</string>
+    <string name="settings_remeber_last_entry_description">Открывать последнюю просмотренную статью при запуске, иначе октывать список непрочитанных статей</string>
     <string name="auto_unstart_at_bottom">Убирать звезду по прочтении</string>
-    <string name="auto_unstart_at_bottom_descr">Автоматически убирать статью из избранного при достижении ее нижнего края</string>
+    <string name="auto_unstart_at_bottom_descr">Автоматически убирать статью из избранного при пролистывании ее нижнего края</string>
     <string name="settings_category_advanced">Дополнительно</string>
     <string name="settings_category_advanced_summary">Настройки фильтрации, автоматизческих резервных копий и др.</string>
     <string name="settings_autobackup_enabled">Автоматическое резервное копирование</string>
-    <string name="settings_autobackup_enabled_descr">Периодчиески сохранять OPML файл c данными лент и избранных статей</string>
+    <string name="settings_autobackup_enabled_descr">Периодчиески сохранять файл c данными лент и избранных статей</string>
     <string name="settings_category_content_presentation">Представление содержания</string>
     <string name="settings_display_text_color">Яркость текста</string>
     <string name="settings_visible_feeds">Видимые ленты</string>
@@ -332,10 +332,10 @@
     <string name="parseXml">Разбор XML</string>
     <string name="setupConnection">Установка соединения</string>
     <string name="settings_fulltext_extract_rules">Весь текст</string>
-    <string name="settings_fulltext_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
-    <string name="settings_category_extract_rules">Правила извлечения категорий</string>
-    <string name="settings_category_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
-    <string name="settings_date_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
+    <string name="settings_fulltext_extract_rules_description">Каждая строка это правило, позволяющее для определенного сайта задать имя класса HTML, с которого начинается полный текст статьи (требуются базовые знания HTML), чтобы не оторажать в тексте статьи лишние элементы. Эта настройка автоматически обновляется в режиме редактинования содержания статьи</string>
+    <string name="settings_category_extract_rules">Категории статьи</string>
+    <string name="settings_category_extract_rules_description"></string>
+    <string name="settings_date_extract_rules_description"></string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
     <string name="downloadNext">", След. "</string>
     <string name="downloadAll">", Все"</string>
@@ -357,10 +357,10 @@
     <string name="share_all_text">Поделиться текстом</string>
     <string name="group">Группа</string>
     <string name="auto_image_load">Загружать изображения при автоматической загрузке</string>
-    <string name="show_progress_info">Подробная информация процесса</string>
-    <string name="show_progress_info_descr">Показывать подробную информацию о текущих действиях в процессе загрузки лент</string>
+    <string name="show_progress_info">Подробная информация процессов</string>
+    <string name="show_progress_info_descr">Показывать подробную информацию о текущих действиях приложения (в процессе обновления статей, загрузки изображений, открытия статей и др.)</string>
     <string name="vibrate_on_article_list_entry_swype">Вибрация при свайпе</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">элемента списка статей или при чтении статьи для помещения ее в избранныее</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Статьи в списке</string>
     <string name="entry_marked_unfavourite">Статья убрана из избранного</string>
     <string name="entry_marked_favourite">Статья добавлена в избранное</string>
     <string name="new_feed_was_added">Добавлена новая лента</string>
@@ -379,7 +379,7 @@
     <string name="loadTypeOneWebPage"><b>Одна страница</b><font color="gray"> (разделить содержимое одной страницы на множество статей, используя теги имен html класса)</font></string>
     <string name="loadType">Тип загрузки:</string>
     <string name="global_filter">Глобальный фильтр &#8230;</string>
-    <string name="global_filter_descr">Фильтр, применяемый к каждой ленте. Для отключения оставьте текст фильтра (и регулярного выражения) пустым</string>
+    <string name="global_filter_descr">Фильтр, применяемый к каждой ленте</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">в противном случае применить к содержимому</string>
     <string name="rule_text">Текст правила</string>
     <string name="global_marks_as_star_filter_rule_descr">Каждое правило на своей строке</string>
@@ -410,15 +410,15 @@
     <string name="background1">Фон</string>
     <string name="auto_refresh_requires_charging">Только во время зарядки</string>
     <string name="global_class_list_to_remove_from_article_text">Правила удаления текста</string>
-    <string name="global_class_list_to_remove_from_article_text_summary">Название класса (атрибут class) в каждой строке</string>
-    <string name="global_date_class_list_summary">Каждая строка - имя класса. Элементы этих классов считаются датой статьи при загрузке Веб-страницы - Ссылки</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">В отличие от другиих эти правила задаются для всех сайтов. В каждой строке только название класса</string>
+    <string name="global_date_class_list_summary">Элементы этих классов используются для определения даты статей лент типа Веб-страницы - Ссылки</string>
     <string name="hide">Скрыть</string>
     <string name="show">Показать</string>
     <string name="setFullTextRoot">Выбрать корень полного текста</string>
     <string name="fullTextRoot">Корень полного текста</string>
     <string name="fullTextReloadStarted">Началась перезагрузка полного текста</string>
     <string name="brightness_update_from_system_period_min">Время обновления яркости</string>
-    <string name="brightness_update_from_system_period_min_descr">(в минутах) После этого периода яркость (свайп) будет восстановлена на текущего системный уровень (0 - выкл)</string>
+    <string name="brightness_update_from_system_period_min_descr">(в минутах) После этого периода яркость будет восстановлена на текущий системный уровень (0 - выкл)</string>
     <string name="menu_add_feed_shortcut">Создать ярлык на домашнем экране</string>
     <string name="new_feed_shortcut_added">Новый ярлык был создан на домашнем экране</string>
     <string name="new_feed_shortcut_add_failed">Ваш лаунчер не может создать ярлык</string>
@@ -426,8 +426,8 @@
     <string name="custom_data_folder_descr">(пустой - использовать путь по умолчанию) для папки feedex для сохранения загруженных изображений и резервного копирования</string>
     <string name="entry_text_title_link">Ссылка в названии</string>
     <string name="entry_text_title_link_description">позволяет открывать веб-страницу в браузере нажатием на название</string>
-    <string name="delete_read_articles">Удалить прочитанные статьи</string>
-    <string name="delete_read_articles_descr">независимо от времени хранения статей</string>
+    <string name="delete_read_articles">Удалять все прочитанные статьи</string>
+    <string name="delete_read_articles_descr">Независимо от настроек времени хранения статей</string>
     <string name="data_folder">Папка данных</string>
     <string name="data_folder_descr">Где хранить загруженные полные тексты статей и изображения</string>
     <string name="internalMemory">Внутренняя память (кэш)</string>
@@ -453,20 +453,20 @@
     <string name="menu_display_options">Отображение</string>
     <string name="menu_reload">Загрузка</string>
     <string name="article_tap_enabled">Действия по нажатию</string>
-    <string name="article_tap_enabled_summary">На тап зоны и на обычный текст (для показа меню)</string>
+    <string name="article_tap_enabled_summary">На тап зоны и на текст статьи (для показа меню)</string>
     <string name="menu_calculate_image_sizes">Расчет размера картниок</string>
     <string name="setting_calculate_image_sizes">Размер хранящихся картинок</string>
-    <string name="setting_calculate_image_sizes_descr">Расчитывать и показывать суммарный размер на карте памяти загруженных картинок для статей, лент, групп и т.д. (данные обновляются во время обновления)</string>
+    <string name="setting_calculate_image_sizes_descr">Также при удалении старых статей рассчитывать и показывать суммарный размер на карте памяти загруженных картинок для статей, лент, групп и т.д. Эти данные обновляются во время удаления старых статей - может существенно увеличить время этой операции</string>
     <string name="settings_category_theme">Тема</string>
     <string name="settings_category_header">Заголовок страницы</string>
     <string name="tasks_to_download">К загрузке</string>
     <string name="settings_current_setting">Текущие настройки</string>
     <string name="unable_to_load_article_icon">Не удается загрузить значок статьи</string>
     <string name="settings_delete_old_interval">Интервал удаления старых статей</string>
-    <string name="settings_delete_old_interval_descr">Как часто удалять старые статьи, а также вычислять размеры статей, лент и групп изображений на SD-карте</string>
+    <string name="settings_delete_old_interval_descr">Как часто удалять старые статьи</string>
     <string name="menu_delete_old">Удалить старые статьи</string>
     <string name="settings_category_delete_old">Удаление старых статей</string>
-    <string name="tool_bar_color">Цвет кнопок и панели инструментов</string>
+    <string name="tool_bar_color">Цвет панели инструментов</string>
     <string name="tool_bar_color_desc">Также этот цвет используется для кнопок текста статьи и для строки состояния</string>
     <string name="one_webpage_hint">Подсказка: в этом типе загрузки содержание веб-страницы делится на статьи в соответствиии с классом HTML элемента, заданным в настройках ленты. Также нужно задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Читать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов … короче, если Вы совсем не разбираетесь в HTML то это не для Вас</string>
     <string name="one_webpage_article_classname_label">Корневой элемент статьи</string>
@@ -495,10 +495,10 @@
     <string name="long_operation">Длительная операция</string>
     <string name="reading_article">Чтение статьи</string>
     <string name="reading_notification">Постоянное уведомление чтения</string>
-    <string name="reading_notification_descr">Постоянное уведомление в строке состояния для предотвращения закрытия приложения системой - для ускорения запуска после перерыва</string>
+    <string name="reading_notification_descr">Постоянное уведомление в строке состояния для предотвращения закрытия приложения системой - для ускорения запуска приложения после работы с другими приложениями</string>
     <string name="feed_list_loading">Загрузка списка каналов</string>
     <string name="article_text_show_battery">Заряд батареи</string>
-    <string name="article_text_show_battery_description">Отображает текущий уровень заряда батареи в правом верхнем углу в полноэкранном режиме</string>
+    <string name="article_text_show_battery_description"></string>
     <string name="settings_category_header_descr">Для экранов чтения статьи, а также списка статей</string>
     <string name="article_text_buttons_layout">Расположение кнопок</string>
     <string name="article_text_buttons_layout_descr">Ориентация и видимость кнопок в конце статьи</string>
@@ -515,14 +515,14 @@
     <string name="open_tag_menu_dialog_title">"Установка правила для класса "</string>
     <string name="show_article_category">"Показать категорию статьи"</string>
     <string name="article_text_information">Дополнительная информация в заголовке</string>
-    <string name="article_text_progress">Полоса прочитанного в заголовке</string>
+    <string name="article_text_progress">Полоса прочитанного</string>
     <string name="global_removeText_filter_rule_descr">Регулярные выражения (по одному в строке) применяются к любой статье</string>
     <string name="parsing_web_page_links">Страница</string>
     <string name="global_date_class_list">Список классов даты</string>
     <string name="settings_date_extract_rules">Дата</string>
     <string name="set_date">Установить как дату</string>
     <string name="clearingWebViewChache">Очистка кэша WebView</string>
-    <string name="article_text_show_date">Показывать дату</string>
+    <string name="article_text_show_date">Текущуая дата</string>
     <string name="article_text_show_date_description">День месяца и день недели</string>
     <string name="remove_existing_feeds_question">Удалить существующие ленты перед импортом?</string>
     <string name="yes">Да</string>
@@ -534,15 +534,15 @@
     <string name="defaultFontFamily">Системный по-умолчанию</string>
     <string name="fontTextSample">Текст</string>
     <string name="fontFamily">Шрифт</string>
-    <string name="fontFamilySummary">Семейство шрифтов почти всех текстов в приложении. Вы можете добавить пользовательские ttf-файлы шрифтов в папку: </string>
+    <string name="fontFamilySummary">Шрифтов текста в приложении. Вы можете добавить пользовательские ttf-файлы шрифтов в папку </string>
     <string name="settings_font_rules">Особый шрифт</string>
-    <string name="settings_font_rules_description">Для отдельных классов элементов текста статьи для определенных сайтов. Формат: сайт:class=имя_файла_шрифта.ttf=CSS_text (e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em). Имя класса можно не задавать, если нужно применить особой шрифт ко всему тексту статей с соответствующего сайта</string>
+    <string name="settings_font_rules_description">Правила использования особых шрифтов для отдельных элементов текста статьи на заданных сайтых. Формат: сайт:class=имя_файла_шрифта.ttf=CSS_text (e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em). Имя класса можно не задавать, если нужно применить особой шрифт ко всему тексту статей с соответствующего сайта</string>
     <string name="bold">Жирный</string>
     <string name="font_rules_dialog_title">site_url:class=Имя файла шрифта=CSS text</string>
     <string name="settings_main_image_extract_rules">Основное изображение</string>
-    <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image) для каждого домена. Это может помочь, если изображение находится за пределами полнотекстового раздела статьи "</string>
+    <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image). Это может помочь, если изображение находится за пределами области полного текста статьи"</string>
     <string name="settings_category_content_extract_rules">Правила извлечения содержимого</string>
-    <string name="settings_category_content_extract_rules_summary">Имена классов HTML, которые помогут найти различные части статьи. Некоторые из этих настроек автоматически обновляются в режиме просмотра содержания статьи</string>
+    <string name="settings_category_content_extract_rules_summary"></string>
     <string name="settings_category_other">Другое</string>
     <string name="settings_category_storage">Хранилище</string>
     <string name="settings_category_autobackup">Автоматическое резервное копирование</string>

@@ -651,11 +651,6 @@
             android:title="@string/settings_fulltext_extract_rules"
             android:summary="@string/settings_fulltext_extract_rules_description"/>
         <EditTextPreference
-            android:key="global_class_list_to_remove_from_article_text"
-            android:title="@string/global_class_list_to_remove_from_article_text"
-            android:inputType="text|textMultiLine"
-            android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
-        <EditTextPreference
             android:key="date_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue=""
@@ -683,16 +678,20 @@
             android:dialogTitle="@string/font_rules_dialog_title"
             android:title="@string/settings_font_rules"
             android:summary="@string/settings_font_rules_description"/>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_other"/>
         <EditTextPreference
             android:key="main_font_css_text"
             android:inputType="text"
             android:defaultValue="letter-spacing: 0.02em"
             android:title="@string/main_font_css_text_title"
             android:summary="@string/main_font_css_text_title_description"/>
-
-        <PreferenceCategory
-            android:layout="@layout/preference_category"
-            android:title="@string/settings_category_other"/>
+        <EditTextPreference
+            android:key="global_class_list_to_remove_from_article_text"
+            android:title="@string/global_class_list_to_remove_from_article_text"
+            android:inputType="text|textMultiLine"
+            android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="thread_count"
             android:inputType="numberDecimal"
