@@ -249,7 +249,7 @@
     <string name="show_group_entrries_count">Число статей в группах</string>
     <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
     <string name="textColorRead">Цвет прочитанных статей</string>
-    <string name="textColorRead_descr">Текст и фон</string>
+    <string name="textColorRead_descr">Цвет прочитанных</string>
     <string name="settings_color_text_read_sample_short">Прочитанные</string>
     <string name="settings_color_text_read_sample_long">Прочитанные статьи</string>
     <string name="settings_category_article_text">Текст статьи</string>
@@ -462,7 +462,7 @@
     <string name="settings_delete_old_interval_descr">Как часто удалять старые статьи</string>
     <string name="menu_delete_old">Удалить старые статьи</string>
     <string name="settings_category_delete_old">Удаление старых статей</string>
-    <string name="tool_bar_color">Цвет кнопок и панели инструментов</string>
+    <string name="tool_bar_color">Цвет панели инструментов</string>
     <string name="tool_bar_color_desc">Также этот цвет используется для кнопок текста статьи и для строки состояния</string>
     <string name="one_webpage_hint">Подсказка: в этом типе загрузки содержание веб-страницы делится на статьи в соответствиии с классом HTML элемента, заданным в настройках ленты. Также нужно задать имена классов для заголовка статьи, даты и ссылки на изображение. Чтобы найти требуемые имена классов, необходимо загрузить эту страницу (Читать сейчас) и переключиться в режим редактирования, где можно найти и скопировать имена классов для требуемых элементов … короче, если Вы совсем не разбираетесь в HTML то это не для Вас</string>
     <string name="one_webpage_article_classname_label">Корневой элемент статьи</string>
