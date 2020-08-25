@@ -549,6 +549,8 @@
     <string name="settings_thread_count_description">(1-100) Nombre d\'opérations parallèles s\'exécutant simultanément pendant le processus de rafraîchissement de l\'article. Les petites valeurs réduisent l\'activité du processeur et la consommation de mémoire de rafraîchissement. Les grandes valeurs rendent l\'opération plus rapide. La valeur optimale dépend du nombre de cœurs du CPU de l\'appareil</string>
     <string name="main_font_css_text_title">Police principale du style CSS</string>
     <string name="main_font_css_text_title_description">pour définir le poids de la police, l\'espacement des lettres, etc., pour le texte de l\'article</string>
+    <string name="btn_reload_full_text">Recharger le texte complet</string>
+    <string name="article_text_information_summary">Ce texte n\'est visible que quand la barre d\'état est cachée</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
