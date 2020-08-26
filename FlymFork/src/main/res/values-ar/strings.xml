@@ -305,7 +305,7 @@
     <string name="settings_category_advanced">الإعدادات المُتقدمة</string>
     <string name="settings_category_advanced_summary">ميزات إضافية (مثل النسخ الاحتياطي، الفلاتر والمزيد)</string>
     <string name="settings_autobackup_enabled">تمكين النسخ الإحتياطي التلقائي</string>
-    <string name="settings_autobackup_enabled_descr">لحفظ قائمة الخلاصة والمقالات المميزة بشكل دوري في ملف .opml</string>
+    <string name="settings_autobackup_enabled_descr">لِحِفْظِ قَوائِمِ التَّغَذِيَاتِ والْمَقالاتِ المُمَيَّزَةِ بِشَكْلٍ دَوْريٍّ فِي مَلَفِّ النَسْخِ الإحْتيّاطيِّ</string>
     <string name="settings_category_content_presentation">طريقة عرض المحتوى</string>
     <string name="settings_display_text_color">سطوع النص</string>
     <string name="settings_visible_feeds">خلاصات مرئية</string>
@@ -462,7 +462,7 @@
     <string name="menu_delete_old">حَذْفُ المَقَالَاتِ القَديمَةِ</string>
     <string name="settings_category_delete_old">حَذْفُ القَديمِ</string>
     <string name="tool_bar_color">لَوْنُ شَريطِ الأَدَواتِ وَاَلْأَزْرارِ</string>
-    <string name="tool_bar_color_desc">يَتِمُّ إسْتِخْدامُ هذَا اللَّوْنِ لِلْأَزْرَارِ أَسْفَلَ المَقالِ وَلِشَريطِ الأَدَواتِ</string>
+    <string name="tool_bar_color_desc">كَذَلِكَ يَتِمُّ إِسْتِخْدَامُ هَذَا اللَّوْنِ لِلْأَزْرَارِ أَسْفَلَ المَقالِ وَشَريطِ الحالَةِ</string>
     <string name="one_webpage_hint">تَلْميحٌ: فِي هٰذَا النَّوْعِ مِنْ التَّحْميلِ، يَتِمُّ تَقْسيمُ مُحْتَوَى صَفْحَةِ الوِيبْ إلى مَقالاتٍ، وَفْقًا لِأَسْماءِ الفِئَاتِ لِعَناصِرِ الـ HTML، والْمَوْجودَةِ فِي إِعْداداتِ التَّغْذِيَةِ، يَجِبُ عَلَيْكَ تَعْيينُ أَسْماءِ الفِئَاتِ لِكُلٍّ مِنْ عُنْوانِ المَقالِ وَتاريخِهِ وَرابِطِ الصّورَةِ، وَلِإيجادِ أَسْماءِ الفِئَاتِ المَطْلوبَةِ، يَسْتَوْجِبُ عَلَيْكَ تَحْميلُ صَفْحَةِ الوِيبْ عَنْ طَريقِ (القِراءَةِ الآنَ)، والتَّبْديلُ إلى خِيَارِ (تَحْريرُ طَريقَةِ عَرْضِ المُحْتَوَى)، حَيْثُ يُمْكِنُكَ العُثورُ عَلَى أَسْماءِ الفِئَاتِ لِلْعَنَاصِرِ المَطْلوبَةِ وَنَسخُها.</string>
     <string name="one_webpage_article_classname_label">العُنْصُرُ الجِذْريُّ لِلْمَقَالِ</string>
     <string name="one_webpage_edittext_classname_hint">إِسْمُ الفِئَةِ</string>
@@ -492,7 +492,7 @@
     <string name="reading_notification">إِشْعارُ قِراءَةِ المَقالِ</string>
     <string name="reading_notification_descr">إِشْعارٌ مُسْتَمِرٌّ بِشَريطِ الحالَةِ، لِمَنْعِ النِّظامِ مِنْ قَتْلِ التَّطْبيقِ - لِتَسْرِيعِ تَشْغيلِ التَّطْبيقِ بَعْدَ فَتْرَةِ تَأْخيرٍ طَويلَةٍ</string>
     <string name="feed_list_loading">يَتِمُّ تَحْميلُ قائِمَةِ التَّغْذِيَةِ</string>
-    <string name="article_text_show_battery">إِظْهارُ مُسْتَوَى البَطّاريَّةِ</string>
+    <string name="article_text_show_battery">مُسْتَوَى البَطّاريَّةِ</string>
     <string name="settings_category_header_descr">لِلْمَقَالِ وَقَوائِمِ المَقَالَاتِ</string>
     <string name="article_text_buttons_layout">تَخْطيطُ الزِرْ</string>
     <string name="article_text_buttons_layout_descr">النَّسَقُ والرُّؤْيَةُ لِلْأَزْرَارِ فِي نِهايَةِ المَقالِ</string>
