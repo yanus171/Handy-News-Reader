@@ -237,7 +237,7 @@
     <string name="settings_display_oldest_first_description">عرض المقالات الأقدم أولاً</string>
     <string name="show_mark_all_as_read_button">زر تحديد الكل كمقروء</string>
     <string name="show_mark_all_as_read_button_summary">إظهار زر على كل المقالات لتحديدها كمقروءة، وإلا فستجد هذا الخيار في القائمة</string>
-    <string name="show_read_checkbox">مربع التحديد كمقروء</string>
+    <string name="show_read_checkbox">مُرَبَّعُ حالَةِ القِراءَةِ</string>
     <string name="show_read_checkbox_descr">إظْهارُ (مُرَبَّعِ إِخْتِيَارٍ) صَغيرٌ، لِلْإِشَارَةِ إِلَى قِراءَةِ المَقالِ</string>
     <string name="show_full_text_indicator">مؤشر النص الكامل</string>
     <string name="show_full_text_indicator_descr">إِظْهارُ رَمْزٍ لِـ (قُرْصٍ مَرِنٍ) صَغيرٍ، لِلْإِشَارَةِ إِلَى أَنَّهُ تَمَّ تَحْميلُ النَّصِّ الكامِلِ لِلْمَقَالِ</string>
@@ -411,7 +411,7 @@
     <string name="show">إظهار</string>
     <string name="setFullTextRoot">اختر كأصل النص الكامل</string>
     <string name="fullTextRoot">أصل النص الكامل</string>
-    <string name="fullTextReloadStarted">بدأت عملية إعادة تحميل النص الكامل</string>
+    <string name="fullTextReloadStarted">جَارٍ إِعَادَةُ تَحْمِيلِ النَّصِّ الْكَامِلِ</string>
     <string name="brightness_update_from_system_period_min">وقت تحديث السطوع</string>
     <string name="brightness_update_from_system_period_min_descr">(بالدقائق) بعد هذا الوقت سيتم إستعادة السطوع (بواسطة السحب) من مستوى النظام الحالي (0 -تعني عدم الإستعادة)</string>
     <string name="menu_add_feed_shortcut">إنشاء إختصار على الشاشة الرئيسية</string>
