@@ -497,7 +497,7 @@
     <string name="article_text_buttons_layout">تَخْطيطُ الزِرْ</string>
     <string name="article_text_buttons_layout_descr">النَّسَقُ والرُّؤْيَةُ لِلْأَزْرَارِ فِي نِهايَةِ المَقالِ</string>
     <string name="article_reading_notification_hint">لِلْحِفَاظِ عَلَى التَّطْبيقِ فِي الذّاكِرَةِ أَثْناءَ قِراءَةِ مَقالٍ</string>
-    <string name="auto_set_as_read">تَحْديدُ المَقالِ تِلْقَائِيًّا كَمَقْروءٍ، عِنْدَمَا يَكونُ عُنْوانُهُ مَرْئِيًّا فِي القائِمَةِ</string>
+    <string name="auto_set_as_read">تَحْديدُ المَقالِ كَمَقْروءٍ تِلْقَائِيًّا، بِمُجَرَّدِ ظُهورِ عُنْوانِهِ فِي القائِمَةِ </string>
     <string name="removeText">إِزالَةُ النَّصِّ</string>
     <string name="set_category">تَحْديدُ كَتَصْنيفٍ</string>
     <string name="menu_more_options">الْمَزِيدُ مِنَ الْخِيَارَاتِ</string>
@@ -513,10 +513,10 @@
     <string name="global_removeText_filter_rule_descr">الـ Regex (تَعْبيرٌ واحِدٌ لِكُلِّ سَطْرٍ) يُطَبَّقُ عَلَى كُلِّ مُحْتَوَى المَقالِ</string>
     <string name="parsing_web_page_links">الصَّفْحَةُ</string>
     <string name="global_date_class_list">قائِمَةُ فِئاتِ التّاريخِ</string>
-    <string name="settings_date_extract_rules">قَواعِدُ إِسْتِخْراجِ التّاريخِ</string>
+    <string name="settings_date_extract_rules">التّاريخُ</string>
     <string name="set_date">تَعْيينُ كَتاريخٍ</string>
     <string name="clearingWebViewChache">مَسْحُ ذَاكِرَةِ التَّخْزِينِ الْمُؤَقَّتْ لِلـ WebView</string>
-    <string name="article_text_show_date">إِظْهارُ التّاريخِ</string>
+    <string name="article_text_show_date">التّاريخُ</string>
     <string name="article_text_show_date_description">يَوْمُ الشَّهْرِ وَالْإِسْبُوعِ</string>
     <string name="remove_existing_feeds_question">أَتُريدُ إِزالَةَ التَّغَذِيَاتِ الْحَالِيَّةِ، قَبْلَ الْإِسْتيرادِ؟</string>
     <string name="yes">نَعَمْ</string>
