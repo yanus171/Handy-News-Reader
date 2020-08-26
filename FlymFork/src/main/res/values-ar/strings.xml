@@ -110,7 +110,7 @@
     <string name="error_feed_process">لا يمكن معالجة الخلاصة.</string>
     <string name="error_feed_url_exists">العنوان موجود مسبقاً.</string>
     <string name="error_feed_import">لا يمكن جلب الملف المحدد.</string>
-    <string name="error_feed_export">فشل في التصدير. تأكد من أنَّ بطاقة-SD المدرجة لديك قابلةً للكتابة.</string>
+    <string name="error_feed_export">فَشَلُ التَّصْدِيرِ. تَأَكَّدْ مِنْ تَثْبيتِ بِطاقَةِ-SD قابِلَةٍ لِلْكِتَابَةِ</string>
     <string name="error_external_storage_not_available">وَحْدَةُ التَّخْزينِ الخارِجيَّةِ (مِثْلُ.، بِطاقَةِ SD) غَيْرِ مُتَوَفِّرَةٍ</string>
     <string name="feed_url">العُنْوانُ</string>
     <string name="optional">(إختياري)</string>
@@ -142,7 +142,7 @@
     <string name="to_group_into">داخِل المجموعة</string>
     <string name="add_custom_feed">أَضِفْ وَسيلَةً مُحَدَّدَةً، أَوْ إِسْتَخْدِمْ خاصّيَّةَ البَحْثِ</string>
     <string name="google_news_title">مواضيع أخبار جوجل</string>
-    <string name="google_news_indicator">حدّد موضوعاً واحداً أو عدة مواضيع لإضافتها. قد لا تُقَدّم جوجل بعضًا منها بلغتك.</string>
+    <string name="google_news_indicator">حَدَّدَ مَوْضُوعًا وَاحِدًا أَوْ أَكْثَرَ، لِلْإِضَافِهِ. قَدْ لَا توَفِّرُ جُوجَلْ بَعْضَها لِلْغَتِكَ</string>
     <string name="google_news_top_stories">أهمُّ الأخبار</string>
     <string name="google_news_world">العالم</string>
     <string name="google_news_business">أعمال</string>
