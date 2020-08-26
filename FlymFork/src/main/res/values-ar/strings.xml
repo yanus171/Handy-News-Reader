@@ -328,6 +328,7 @@
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
     <string name="settings_fulltext_extract_rules">أَصْلُ النَّصِّ الكامِلِ</string>
+    <string name="settings_fulltext_extract_rules_description">كُلُّ سَطْرٍ عِبارَةٌ عَنْ قاعِدَةٍ، تَسْمَحُ لِمَوْقِعٍ مُعَيَّنٍ بِتَعْيِينِ اسْمِ فِئَةِ الْـ HTML، اَلَّتِي يَبْدَأُ بِهَا النَّصُّ الكامِلُ لِلْمَقَالِ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بَالْـ HTML)، حَتَّى لَا يَتِمَّ تَضْمينُ عَناصِرَ غَيْرِ ضَروريَّةٍ فِي نَصِّ المَقالِ. يَتِمُّ تَحْديثُ هَذَا الإِعْدادِ تِلْقَائِيًّا فِي وَضْعِ تَحْريرِ المُحْتَوَى</string>
     <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
     <string name="settings_date_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
@@ -534,6 +535,15 @@
     <string name="font_rules_dialog_title">رَابِطُ_الْمَوْقِعِ:الفِئَةُ=اسْمُ مِلَفِّ الْخَطِّ=نص CSS. عَلَى سَبيلِ المِثَالِ: وَزْنُ-الْخَطِّ: 400؛ حَجْمُ-الخَطِّ: 12؛ تَبَاعُدُ-الْأَحْرُفِ: 0.1em</string>
     <string name="settings_main_image_extract_rules">الصّورَةُ الرَّئيسيَّةُ</string>
     <string name="settings_main_image_extract_rules_description">"إسْمُ الفِئَةِ اَلَّتِي يُمْكِنُ العُثورُ فِيهَا عَلَى الصّورَةِ الرَّئيسيَّةِ لِلْمَقَالِ، لِكَيْ يَتِمَّ اسْتِخْدامُها كَصورَةٍ مُصَغَّرَةٍ لِلْمَقَالِ، وَإِدْراجِها فِي بِدايَةِ المَقالِ (بَدَلًا مِنْ og:image) لِكُلِّ نِطاقٍ. يُمْكِنُ أَنْ يَكونَ ذَلِكَ مُفِيدًا عِنْدَمَا تَكونُ صورَةُ المَقالِ خارِجَ قِسْمِ النَّصِّ الكامِلِ "</string>
+    <string name="settings_category_content_extract_rules">قَواعِدُ إِسْتِخْرَاجِ المُحْتَوَى</string>
+    <string name="settings_category_content_extract_rules_summary">أَسْماءُ فِئاتِ الـ HTML لِتَسْهِيلِ العُثورِ عَلَى أَجْزاءِ المَقالِ المُخْتَلِفَةِ. يَتِمُّ تَحْديثُ بَعْضِ هَذِهِ الإِعْدَادَاتِ تِلْقَائِيًّا فِي وَضْعِ تَحْريرُ المُحْتَوَى</string>
+    <string name="settings_category_other">الاُخْرَى</string>
+    <string name="settings_category_storage">التَّخْزينُ</string>
+    <string name="settings_category_autobackup">النَّسْخُ الِاحْتياطيُّ التِّلْقائيُّ</string>
+    <string name="settings_show_circle_progress">إِظْهارُ دائِرَةِ التَّقَدُّمِ</string>
+    <string name="settings_show_circle_progress_summary">أَثْناءَ نَشاطِ وَحْدَةِ اَلْمُعالَجَةِ اَلْمَرْكَزيَّةِ لِلتَّطْبِيقِ</string>
+    <string name="kilobytes">ك.بايت</string>
+    <string name="megabytes">م.بايت</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
