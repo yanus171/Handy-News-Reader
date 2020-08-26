@@ -97,6 +97,8 @@ public class HtmlUtils {
         //content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$1");
         content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
         content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
+        content = ReplaceImagesWithALink(content);
+        content = ReplaceImagesWithDataOriginal(content);
 
         // clean by JSoup
         final Whitelist whiteList =
@@ -183,8 +185,6 @@ public class HtmlUtils {
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
             Timer timer = new Timer( "replaceImageURLs" );
             if (!TextUtils.isEmpty(content)) {
-                content = ReplaceImagesWithALink(content);
-                content = ReplaceImagesWithDataOriginal(content);
                 Matcher matcher;
 
                 final boolean isShowImages = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);

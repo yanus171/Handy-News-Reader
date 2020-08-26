@@ -225,7 +225,7 @@ object HTMLParser {
                     }))
                 }
             }
-            newEntries = FinishExecutionService(statusText, status, null, futures)
+            newEntries = FinishExecutionService(statusText, status, futures)
         } finally {
             Status().End(status)
         }

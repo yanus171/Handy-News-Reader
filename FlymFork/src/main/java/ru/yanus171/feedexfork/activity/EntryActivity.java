@@ -181,23 +181,28 @@ public class EntryActivity extends BaseActivity implements Observer {
                     timer.End();
 
                     FetcherService.LoadLink(feedID, url, title, null, FetcherService.ForceReload.Yes, true, true, false, FetcherService.AutoDownloadEntryImages.Yes, false, true);
-                } else
-                    SetEntryID( entryUri, url );
+                } else {
+                    SetEntryID(entryUri, url);
+                }
+                RestartLoadersOnGUI();
             }
 
             private void SetEntryID(Uri entryUri, String entryLink) {
                 final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
                 mEntryFragment.SetEntryID( 0, entryID, entryLink );
                 FetcherService.addActiveEntryID(entryID);
-                UiUtils.RunOnGuiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
-                    }
-                } );
             }
         }).start();
         setIntent( getIntent().putExtra( NO_DB_EXTRA, true ) );
+    }
+
+    private void RestartLoadersOnGUI() {
+        UiUtils.RunOnGuiThread(new Runnable() {
+            @Override
+            public void run() {
+                mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
+            }
+        } );
     }
 
     @Override

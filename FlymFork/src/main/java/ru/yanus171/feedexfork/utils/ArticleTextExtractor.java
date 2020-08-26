@@ -118,6 +118,16 @@ public class ArticleTextExtractor {
         }
 
         {
+            Elements elList = doc.getElementsByClass( "turbo-image" );
+            for (Element item : elList)
+                if ( item.hasAttr( "data-src" ) ) {
+                    item.attr("src", item.attr("data-src"));
+                    item.tagName( "img" );
+                }
+
+        }
+
+        {
             categoryList.clear();
             Element tagsElements = getCategoriesElementFromPref(doc, url);
             if (tagsElements != null)

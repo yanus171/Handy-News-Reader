@@ -103,6 +103,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -137,6 +138,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
 
 import static android.provider.BaseColumns._ID;
+import static java.lang.Thread.MIN_PRIORITY;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
@@ -656,10 +658,7 @@ public class FetcherService extends IntentService {
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
                     TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
             Status().ChangeProgress("");
-            final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-
             ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
-
             while (cursor.moveToNext() && !isCancelRefresh()) {
                 final long taskId = cursor.getLong(0);
                 final long entryId = cursor.getLong(1);
@@ -698,17 +697,9 @@ public class FetcherService extends IntentService {
                 }) );
             }
 
-            FinishExecutionService( statusText, status,  operations, futures );
+            FinishExecutionService( statusText, status, futures );
 
             cursor.close();
-
-            if (!operations.isEmpty()) {
-                Status().ChangeProgress(R.string.applyOperations);
-                try {
-                    cr.applyBatch(FeedData.AUTHORITY, operations);
-                } catch (Throwable ignored) {
-                }
-            }
         } finally { Status().End( status ); }
 
 
@@ -865,9 +856,8 @@ public class FetcherService extends IntentService {
                         cr.update( entryUri, values, null, null );//operations.add(ContentProviderOperation.newUpdate(entryUri).withValues(values).build());
 
                         success = true;
-                        if ( imgUrlsToDownload != null && !imgUrlsToDownload.isEmpty() ) {
+                        if ( !imgUrlsToDownload.isEmpty() )
                             addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
-                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -993,14 +983,24 @@ public class FetcherService extends IntentService {
             if ( forceReload == ForceReload.Yes )
                 FileUtils.INSTANCE.deleteMobilized( entryUri );
 
-            if ( load && !FetcherService.isCancelRefresh() )
-                mobilizeEntry(Long.parseLong(entryUri.getLastPathSegment()), filters,
-                              ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, isParseDateFromHTML);
+            if ( load && !FetcherService.isCancelRefresh() ) {
+                final long entryId = Long.parseLong(entryUri.getLastPathSegment());
+                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, isParseDateFromHTML);
+            }
             return new Pair<>(entryUri, load);
         } finally {
             FetcherService.Status().End(status);
         }
         //stopForeground( true );
+    }
+
+    private static void downloadAllImages() {
+        ExecutorService executor = CreateExecutorService();
+        try {
+            downloadAllImages(executor);
+        } finally {
+            executor.shutdown();
+        }
     }
 
     private static String mExtrenalLinkFeedID = "";
@@ -1043,8 +1043,6 @@ public class FetcherService extends IntentService {
             ContentResolver cr = getContext().getContentResolver();
             Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
                     TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
-            ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-
             ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
             while (cursor != null && cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
                 final long taskId = cursor.getLong(0);
@@ -1073,19 +1071,11 @@ public class FetcherService extends IntentService {
                     }
                 }) );
             }
-            FinishExecutionService( statusText, status, operations, futures);
+            FinishExecutionService( statusText, status, futures);
 
             cursor.close();
 
-            if (!operations.isEmpty()) {
-                //obs.Change( status, statusText );
-                obs.ChangeProgress(R.string.applyOperations);
-                try {
-                    cr.applyBatch(FeedData.AUTHORITY, operations);
-                } catch (Throwable ignored) {
 
-                }
-            }
         } finally { obs.End( status ); }
 
         if ( isDownloadImageCursorNeedsRequery() ) {
@@ -1095,8 +1085,8 @@ public class FetcherService extends IntentService {
     }
     public static int FinishExecutionService( String statusText,
                                               int status,
-                                              ArrayList<ContentProviderOperation> operations,
                                               ArrayList<Future<DownloadResult>> futures) {
+        final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         int countOK = 0;
         Status().Change(status, statusText + String.format(" %d/%d", 0, futures.size()));
         for ( Future<DownloadResult> item: futures ) {
@@ -1106,9 +1096,10 @@ public class FetcherService extends IntentService {
                     continue;
                 }
                 final DownloadResult result = item.get();
+                Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
                 if (result.mResultCount > 0 ) {
                     countOK += result.mResultCount;// If we are here, everything WAS OK
-                    if ( operations != null )
+                    if ( operations != null && result.mTaskID != null )
                         operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(result.mTaskID)).build());
                 } else if ( operations != null ) {
                     if (result.mAttemptNumber + 1 > MAX_TASK_ATTEMPT) {
@@ -1119,14 +1110,26 @@ public class FetcherService extends IntentService {
                         operations.add(ContentProviderOperation.newUpdate(TaskColumns.CONTENT_URI(result.mTaskID)).withValues(values).build());
                     }
                 }
-                Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
             } catch (Exception e) {
                 e.printStackTrace();//DebugApp.AddErrorToLog( null ,e );
             }
         }
+        if (!operations.isEmpty()) {
+            new Thread() {
+                @Override public void run() {
+                    Status().ChangeProgress(R.string.applyOperations);
+                    try {
+                        MainApplication.getContext().getContentResolver().applyBatch(FeedData.AUTHORITY, operations);
+                    } catch (Throwable ignored) {
+
+                    }
+                }
+            }.start();
+
+        }
         return countOK;
     }
-    public static void downloadEntryImages(final String feedId, final long entryId, final String entryLink, final ArrayList<String> imageList ) {
+    public static void downloadEntryImages( final String feedId, final long entryId, final String entryLink, final ArrayList<String> imageList ) {
         final StatusText.FetcherObservable obs = Status();
         final String statusText = getContext().getString(R.string.article_images_downloading);
         int status = obs.Start( statusText, true); try {
@@ -1150,7 +1153,7 @@ public class FetcherService extends IntentService {
                             return result;
                         }}));
                 }
-                downloadedCount = FinishExecutionService(statusText, status, null, futures );
+                downloadedCount = FinishExecutionService(statusText, status, futures );
                 //Dog.v( "downloadedCount = " + downloadedCount );
             } finally {
                 executor.shutdown();
@@ -1171,7 +1174,15 @@ public class FetcherService extends IntentService {
             threadCount = 1;
         else if ( threadCount > 100 )
             threadCount = 100;
-        return Executors.newFixedThreadPool( threadCount );
+
+        return Executors.newFixedThreadPool( threadCount, new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable runnable) {
+                Thread thread = new Thread( runnable );
+                thread.setPriority( MIN_PRIORITY );
+                return thread;
+            }
+        } );
     }
 
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
@@ -1257,7 +1268,7 @@ public class FetcherService extends IntentService {
                     //Status().End();
                 }
                 cursor.close();
-                return FinishExecutionService( statusText, status, null, futures );
+                return FinishExecutionService( statusText, status,  futures );
             } finally {
                 executorInner.shutdown();
             }
