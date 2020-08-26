@@ -327,6 +327,7 @@
     <string name="improveHtmlContent">جارِ تحسين محتوى HTML</string>
     <string name="parseXml">جارِ تحليل XML</string>
     <string name="setupConnection">إعداد إتصال</string>
+    <string name="settings_fulltext_extract_rules">أَصْلُ النَّصِّ الكامِلِ</string>
     <string name="settings_category_extract_rules">قَواعِدُ إِسْتِخْراجِ التَّصْنيفاتِ</string>
     <string name="settings_date_extract_rules_description">إِعْدادٌ لِكُلِّ مَوْقِعٍ (يَتَطَلَّبُ مَعْرِفَةً أَساسيَّةً بِالْـ HTML)</string>
     <string name="settings_tap_zones_dialogtitle">معاينه فقط ، التغييرات غير متاحة</string>
@@ -530,6 +531,9 @@
     <string name="settings_font_rules">الخَطُّ المُخَصَّصُ</string>
     <string name="settings_font_rules_description">تَعْيينُ خُطوطٍ مُخَصَّصَةٍ لِفِئَاتٍ مُنْفَصِلَةٍ فِي نُصوصِ المَقَالَاتِ لِكُلِّ نِطاقٍ. وَلِتَطْبيقِ خَطٍّ عَلَى النَّصِّ بِأَكْمَلِهِ، اُتْرُكْ اسْمَ الفِئَةِ فَارِغًا. التَّنْسيقُ: رَابِطُ_الْمَوْقِعِ:الفِئَةُ=اسْمُ مِلَفِّ الْخَطِّ=نص CSS. (على سبيل المثال.، وَزْنُ-الْخَطِّ: 400؛ حَجْمُ-الخَطِّ: 12؛ تَبَاعُدُ-الْأَحْرُفِ: 0.1em)</string>
     <string name="bold">سَميكٌ</string>
+    <string name="font_rules_dialog_title">رَابِطُ_الْمَوْقِعِ:الفِئَةُ=اسْمُ مِلَفِّ الْخَطِّ=نص CSS. عَلَى سَبيلِ المِثَالِ: وَزْنُ-الْخَطِّ: 400؛ حَجْمُ-الخَطِّ: 12؛ تَبَاعُدُ-الْأَحْرُفِ: 0.1em</string>
+    <string name="settings_main_image_extract_rules">الصّورَةُ الرَّئيسيَّةُ</string>
+    <string name="settings_main_image_extract_rules_description">"إسْمُ الفِئَةِ اَلَّتِي يُمْكِنُ العُثورُ فِيهَا عَلَى الصّورَةِ الرَّئيسيَّةِ لِلْمَقَالِ، لِكَيْ يَتِمَّ اسْتِخْدامُها كَصورَةٍ مُصَغَّرَةٍ لِلْمَقَالِ، وَإِدْراجِها فِي بِدايَةِ المَقالِ (بَدَلًا مِنْ og:image) لِكُلِّ نِطاقٍ. يُمْكِنُ أَنْ يَكونَ ذَلِكَ مُفِيدًا عِنْدَمَا تَكونُ صورَةُ المَقالِ خارِجَ قِسْمِ النَّصِّ الكامِلِ "</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
