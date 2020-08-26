@@ -79,7 +79,7 @@
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">الإصدار</string>
     <string name="about_handy_news_reader">حَوْلَ Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ، إِلَخْ.</string>
+    <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ، إِلَخْ</string>
     <string name="welcome_title">مرحباً بك مع Handy News Reader. أتَرغَب بإضافة خلاصة؟</string>
     <string name="never">مُطْلَقًا</string>
     <string name="last_update">تَحْديث</string>
@@ -267,7 +267,7 @@
     <string name="underline_links">تسطير الروابط</string>
     <string name="article_text_show_clock">إِظْهارُ السّاعَةِ</string>
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
-    <string name="settings_informations_size">حَجْمُ النَّصِّ (الأَرْقامُ)</string>
+    <string name="settings_informations_size">حَجْمُ النَّصِّ</string>
     <string name="article_text_information_color">اللَّوْنُ</string>
     <string name="article_text_information_color_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_clock_sample_short">08:15</string>
