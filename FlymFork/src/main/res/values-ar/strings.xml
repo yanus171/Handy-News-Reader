@@ -353,7 +353,7 @@
     <string name="group">المجموعة</string>
     <string name="auto_image_load">تحميل الصور تلقائياً</string>
     <string name="show_progress_info">المعلومات الفنية المفصلة</string>
-    <string name="show_progress_info_descr">عرض معلومات آنيه ومفصلة حالَ حدوث أي عمليات داخل الخلاصات</string>
+    <string name="show_progress_info_descr">عَرْضُ مَعْلوماتٍ تَفْصيليَّةً حَوْلَ العَمَليَّةِ الحاليَّةِ (أَثْناءَ تَحْديثِ المَقَالَاتِ وَتَنْزيلِ الصّوَرِ وَفَتْحِ نَصِّ المَقالِ، وَمَا إِلَى ذَلِكَ)</string>
     <string name="vibrate_on_article_list_entry_swype">الإهتزاز عند السحب</string>
     <string name="vibrate_on_article_list_entry_swype_summary">عِنْدَ السَّحْبِ نَحْوَ اليَمينِ أَوْ اليَسارِ فِي قَوائِمِ المَقَالَاتِ، لِغَرَضِ تَحْديدِ المَقالِ كَمَقْروءٍ أَوْ كَمُمَيَّزٍ</string>
     <string name="entry_marked_unfavourite">تمَّ إزالة المقال من المُميّزة</string>
@@ -391,7 +391,7 @@
     <string name="exportingToFile">يُصَدّر إلى الملف</string>
     <string name="importingFromFile">يُجلَب منَ الملف</string>
     <string name="autobackup_interval">الفاصل الزمني للنسخ الإحتياطي التلقائي</string>
-    <string name="autobackup_interval_descr">الفترات التي سيتم فيها إنشاء ملف نسخ احتياطي للخلاصات والمقالات</string>
+    <string name="autobackup_interval_descr">الفَتَرَاتُ اَلَّتِي سَيَتِمُّ فِيهَا إِنْشاءُ مَلَفِّ نَسَخٍ إِحْتِيَاطِيٍّ</string>
     <string name="create_auto_backup">إنشاء نسخه إحتياطية</string>
     <string name="auto_backup_opml_file_created">تَمَّ إنشاء ملف .opml للنسخ الإحتياطي التلقائي:</string>
     <string name="use_standard_file_manager">إستخدام مدير الملفات القياسي</string>
@@ -405,8 +405,8 @@
     <string name="background1">الخلفيّة</string>
     <string name="auto_refresh_requires_charging">أثناء الشحن فقط</string>
     <string name="global_class_list_to_remove_from_article_text">إِزالَةُ النَّصِّ</string>
-    <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
-    <string name="global_date_class_list_summary">إسْمُ الْفِئَةِ لِكُلِّ سَطْرٍ. تُعْتَبَرُ عَنَاصِرُ هَذِهِ الْفِئَاتِ تَارِيخًا لِلْمَقَالِ، فِي حَالِ كَانَ نَوْعُ التَّحْمِيلِ \"صَفْحَةُ وِيبْ - رَوابِطُ\"</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">عَلَى عَكْسِ الآخَرِينَ، يَتِمُّ تَعْيينُ هَذِهِ القَواعِدِ لِجَمِيعِ المَواقِعِ. يَحْتَوِي كُلُّ سَطْرٍ عَلَى اسْمِ الفِئَةِ فَقَطْ</string>
+    <string name="global_date_class_list_summary">إسْمُ الْفِئَةِ لِكُلِّ سَطْرٍ. تُعْتَبَرُ عَنَاصِرُ هَذِهِ الْفِئَاتِ تَارِيخًا لِلْمَقَالِ، فِي حَالِ كَانَ نَوْعُ التَّحْمِيلِ لِلتَغْذِيّاتِ \"صَفْحَةُ وِيبْ - رَوابِطُ\"</string>
     <string name="hide">إخفاء</string>
     <string name="show">إظهار</string>
     <string name="setFullTextRoot">اختر كأصل النص الكامل</string>
