@@ -111,7 +111,7 @@
     <string name="error_feed_url_exists">العنوان موجود مسبقاً.</string>
     <string name="error_feed_import">لا يمكن جلب الملف المحدد.</string>
     <string name="error_feed_export">فشل في التصدير. تأكد من أنَّ بطاقة-SD المدرجة لديك قابلةً للكتابة.</string>
-    <string name="error_external_storage_not_available">وحدة التخزين الخارجية (كبطاقة-SD) غير متوفرة.</string>
+    <string name="error_external_storage_not_available">وَحْدَةُ التَّخْزينِ الخارِجيَّةِ (مِثْلُ.، بِطاقَةِ SD) غَيْرِ مُتَوَفِّرَةٍ</string>
     <string name="feed_url">العُنْوانُ</string>
     <string name="optional">(إختياري)</string>
     <string name="website_or_feed">(الرّابِطُ أَوْ الْإِسْمِ)</string>
@@ -132,7 +132,7 @@
     <string name="select_file">إِخْتَرْ مَلَفًّا</string>
     <string name="question_delete_feed">هل حقاً تريد حذف هذه الخلاصة؟</string>
     <string name="question_delete_group">هل حقاً تريد حذف هذه المجموعة وجميع خلاصاتها؟</string>
-    <string name="question_delete_filter">هل حقاً تريد حدف هذا الفلتر؟</string>
+    <string name="question_delete_filter">هَلْ حَقًّا تُرِيدُ حَذْفَ هَذَا اَلْفِلْتِرْ؟</string>
     <string name="add_group_title">حدّد إسم المجموعة</string>
     <string name="edit_group_title">تعديل إسم المجموعة</string>
     <string name="message_exported_to">تَمَّ التَّصْديرُ لـِ %s.</string>
@@ -210,7 +210,7 @@
     <string name="settings_category_refresh_summary">التَحيينُ وَالْحَذْفِ التِّلْقائيِّ لِلْمَقَالَاتِ</string>
     <string name="settings_refresh_enabled">تمكين التحيين التلقائي</string>
     <string name="settings_refresh_interval">الفاصل الزمني للتحيين</string>
-    <string name="settings_min_update_battery_level">الحد الإدنى لمستوى البطارية</string>
+    <string name="settings_min_update_battery_level">الحَدُّ الأَدْنَى لِمُسْتَوَى البَطّاريَّةِ</string>
     <string name="settings_refresh_only_selected">المحددةُ فقط</string>
     <string name="settings_refresh_only_selected_summary">التحيين التلقائي للخلاصات المُحدّدةُ فقط</string>
     <string name="settings_refresh_on_open">تحيين الخلاصات عند الفتح</string>
@@ -440,7 +440,7 @@
     <string name="article_menu_show_by_tap_descr">عِنْدَمَا يَكونُ شَريطُ العَمَلِ مَخْفيًّا</string>
     <string name="menu_go_back">رُجوعٌ لِلْقَائِمَةِ</string>
     <string name="menu_go_top">إنْتِقْالٌ إلَى الأَعْلَى</string>
-    <string name="menu_close">إنْهاءٌ</string>
+    <string name="menu_close">إِغْلاقُ المَقالِ</string>
     <string name="reading_file_list">جَارٍ قِرَاءةِ قَائِمَةِ الْمَلَفَّاتِ</string>
     <string name="add_entry_shortcut">إِنْشاءُ إِخْتِصَارٍ لِلْمَقَالِ</string>
     <string name="new_entry_shortcut_added">تَمَّ انْشَاءُ إخْتِصارٍ جَديدٍ لِمَقالٍ عَلَى الشّاشَةِ الرَّئيسيَّةِ</string>
