@@ -524,7 +524,7 @@
     <string name="remove_existing_feeds_confirmation">سَيُؤَدّي هذَا إِلَى إِزالَةِ كُلِّ الْمَقالاتِ الْمَوْجُودَةِ مِنْ جَميعِ التَّغذياتِ، حَتَّى الْمُمَيَّزَةِ بِنَجْمَةِ (ما عَدا \"مَقالاتُ الوِيبْ\"). هَلْ أَنْتَ مُتَأَكِّدٌ؟</string>
     <string name="yes_I_realize_btn_caption">نَعَمْ، اُدرِكُ ذَلِكَ!</string>
     <string name="sorry_I_was_wrong_btn_caption">اوه... كُنْتُ مُخْطِئًا. أَخْرِجْني مِنْ هُنا بِسُرْعَة!</string>
-    <string name="create_backup">إِنْشَاءُ نُسْخَةٍ إحْتياطيَّةٍ</string>
+    <string name="create_backup">إِنْشاءُ مَلَفِّ نَسَخٍ إحْتياطيٍّ مُنْفَصِلٍ</string>
     <string name="defaultFontFamily">النَّمَطُ الْإِفْتِرَاضِيُّ</string>
     <string name="fontTextSample">النَّصُّ</string>
     <string name="fontFamily">الْخَطُّ</string>
@@ -544,6 +544,13 @@
     <string name="settings_show_circle_progress_summary">أَثْناءَ نَشاطِ وَحْدَةِ اَلْمُعالَجَةِ اَلْمَرْكَزيَّةِ لِلتَّطْبِيقِ</string>
     <string name="kilobytes">ك.بايت</string>
     <string name="megabytes">م.بايت</string>
+    <string name="create_start_auto_refersh">تَحْيينُ</string>
+    <string name="settings_thread_count">عَدَدُ مَساراتِ المُعالَجَةِ</string>
+    <string name="settings_thread_count_description">(100-1) عَدَدُ العَمَلِيَّاتِ المُنَفَّذَةِ فِي نَفْسِ الوَقْتِ أَثْناءَ تَحْديثِ المَقالِ. كُلَّمَا كَانَتْ القيمَةُ أَصْغَرَ، كُلَّمَا قَلَّ اسْتِهْلاكُ وَحْدَةِ اَلْمُعالَجَةِ اَلْمَرْكَزيَّةِ والذّاكِرَةِ أَثْناءَ التَّحْديثِ. كُلَّمَا كَانَتْ القيمَةُ أَكْبَرَ، كُلَّمَا كَانَ ذَلِكَ أَسْرَعَ. تَعْتَمِدُ القيمَةُ المُثْلَى عَلَى عَدَدِ أَنْويَةِ وَحْدَةِ اَلْمُعالَجَةِ اَلْمَرْكَزيَّةِ لِلْجِهَازِ</string>
+    <string name="main_font_css_text_title">نَمَطٌ CSS لِنَصِّ الخَطِّ الرَّئيسيِّ</string>
+    <string name="main_font_css_text_title_description">لِضَبْطِ وَزْنِ الخَطِّ، وَتَباعُدِ الأَحْرُفِ، وَمَا إِلَى ذَلِكَ.، لِنَصِّ المَقالِ</string>
+    <string name="btn_reload_full_text">إِعادَةُ تَحْميلِ النَّصِّ الكامِلِ</string>
+    <string name="article_text_information_summary">يَكونُ هَذَا النَّصُّ مَرْئِيًّا، فَقَطْ عِنْدَمَا يَكونُ شَريطُ الحالَةِ مَخْفيًّا</string>
     <plurals name="number_of_new_entries">
         <item quantity="zero">ليس هنالك مقالات جديدة.</item>
         <item quantity="one">مقال جديد.</item>
