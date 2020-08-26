@@ -404,7 +404,7 @@
     <string name="text">النص</string>
     <string name="background1">الخلفيّة</string>
     <string name="auto_refresh_requires_charging">أثناء الشحن فقط</string>
-    <string name="global_class_list_to_remove_from_article_text">إزالة قواعد النص</string>
+    <string name="global_class_list_to_remove_from_article_text">إِزالَةُ النَّصِّ</string>
     <string name="global_class_list_to_remove_from_article_text_summary">إسم الفئه في كل سطر</string>
     <string name="global_date_class_list_summary">إسْمُ الْفِئَةِ لِكُلِّ سَطْرٍ. تُعْتَبَرُ عَنَاصِرُ هَذِهِ الْفِئَاتِ تَارِيخًا لِلْمَقَالِ، فِي حَالِ كَانَ نَوْعُ التَّحْمِيلِ \"صَفْحَةُ وِيبْ - رَوابِطُ\"</string>
     <string name="hide">إخفاء</string>
@@ -451,7 +451,7 @@
     <string name="article_tap_enabled_summary">لِمَناطِقِ النَّقْرِ. والنَّصُّ العاديُّ لِإِظْهَارِ القائِمَةِ، عِنْدَمَا يَكونُ شَريطُ الأَدَواتِ مَخْفيًّا</string>
     <string name="menu_calculate_image_sizes">حِسابُ حَجْمِ الصّوَرِ</string>
     <string name="setting_calculate_image_sizes">حَجْمُ الصّوَرِ المُخَزَّنَةِ</string>
-    <string name="setting_calculate_image_sizes_descr">عَرْضَ اَلْحَجْمِ اَلْإِجْماليُّ المَحْسوبِ لِلصُّوَرِ المُحَمَّلَةِ فِي الذّاكِرَةِ، لِكُلِّ مَقالَةٍ وَتَغْذيَةٍ وَمَجْموعَةٍ، وَمَا إِلَى ذَلِكَ. (يَتِمُّ تَعْديلُ القيَمِ أَثْناءَ التَحيينِ)</string>
+    <string name="setting_calculate_image_sizes_descr">عَرْضُ اَلْحَجْمِ اَلْإِجْماليُّ المَحْسوبِ لِلصُّوَرِ المُحَمَّلَةِ فِي الذّاكِرَةِ، لِكُلِّ مَقالَةٍ وَتَغْذيَةٍ وَمَجْموعَةٍ، وَمَا إِلَى ذَلِكَ، أَثْناءَ عَمَليَّةِ الحَذْفِ. (يَتِمُّ تَعْديلُ القيَمِ أَثْناءَ الحَذْفِ)</string>
     <string name="settings_category_theme">المَظاهِرُ</string>
     <string name="settings_category_header">رَأْسُ الصَّفْحَةِ</string>
     <string name="tasks_to_download">لِلتَّحْمِيلِ</string>
