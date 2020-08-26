@@ -162,7 +162,7 @@
     <string name="menu_star">مُميّز</string>
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
-    <string name="menu_full_screen">وضع مِلء الشاشة</string>
+    <string name="menu_full_screen">كامِلُ الشّاشَةِ</string>
     <string name="menu_actionbar_visible">شَريطُ الأَدَواتِ</string>
     <string name="menu_font_bold">خَطٌّ سَميكٌ</string>
     <string name="menu_copy_clipboard">نسخ الرابط</string>
@@ -255,13 +255,13 @@
     <string name="settings_category_article_text_summary">ظهور نص المقال</string>
     <string name="settings_display_images">تَحْميلُ الصّوَرِ</string>
     <string name="settings_display_images_description">عرض الصور في المقالات</string>
-    <string name="settings_display_entries_fullscreen">وَضْعُ القِراءَةِ بِمِلْءِ الشّاشَةِ</string>
+    <string name="settings_display_entries_fullscreen">فَتْحُ المَقَالَاتِ بِمِلْءِ الشّاشَةِ</string>
     <string name="settings_entry_margins">الهوامش</string>
     <string name="settings_entry_margins_description">يسار | يمين</string>
     <string name="entry_text_align_justify">نص بمحاذاة متساوية</string>
     <string name="entry_text_align_justify_description">بخلاف ذلك، فالمحاذاة تكون حسب اللغة</string>
-    <string name="linkColor">لَوْنُ الرّابِطِ وَخَلْفيَّتُهُ</string>
-    <string name="linkColor_descr">لَوْنُ الرَّوابِطِ التُّشعِبيَّةِ وَخَلْفيَّتُها</string>
+    <string name="linkColor">لَوْنُ الرّابِطِ</string>
+    <string name="linkColor_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_link_sample_short">الروابط</string>
     <string name="settings_color_link_sample_long">لون الروابط</string>
     <string name="underline_links">تسطير الروابط</string>
@@ -269,7 +269,7 @@
     <string name="article_text_show_clock_description">عَرْضُ الوَقْتِ الحاليِّ فِي الزّاويَةِ العُلُويَّةِ اليُسْرَى، فِي وَضْعِ مِلْءِ الشّاشَةِ</string>
     <string name="settings_informations_size">حَجْمُ النَّصِّ (الأَرْقامُ)</string>
     <string name="article_text_information_color">اللَّوْنُ</string>
-    <string name="article_text_information_color_descr">لَوْنُ أَرْقامِ (السّاعَةِ وَنِسْبَةُ البَطّاريَّةِ) وَخَلْفيَّتُهُمَا</string>
+    <string name="article_text_information_color_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">إِظْهارُ شَريطِ التَّقَدُّمِ بِالْقِرَاءَةِ</string>
