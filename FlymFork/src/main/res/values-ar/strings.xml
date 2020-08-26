@@ -29,49 +29,45 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>التَّرْخيصُ وَالمَعْلومَاتِ</big></b><br/>
-    هٰذَا التَّطْبيقُ مَجّانيٌّ وَمَفْتوحُ المَصْدَرِ، بِإِمْكانِكَ إِعادَةُ تَوْزيعِهِ وَ/أَوْ تَعْديلِهِ، وَفْقًا لِشُروطِ رُخْصَةِ جِنُو العُموميَّةِ، عَلَى النَّحْوِ المَنْشورِ مِنْ قِبَلِ مُؤَسَّسَةِ البَرْمَجِيَّاتِ الحُرَّةِ، بِدْءًا مِنْ الإِصْدارِ الثّالِثِ مِنْ التَّرْخيصِ أَوْ الإِصْدَارَاتِ اللّاحِقَةِ (حَسَبَ اخْتيارِكَ). إِطَّلِعْ عَلَى http://www.gnu.org/licenses<br/>
-    <br/>
-    يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى Flym RSS Reader، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:<br/>
-    <br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>التَّرْخيصُ وَالمَعْلومَاتِ</h2>
+    <p>هٰذَا التَّطْبيقُ مَجّانيٌّ وَمَفْتوحُ المَصْدَرِ، بِإِمْكانِكَ إِعادَةُ تَوْزيعِهِ وَ/أَوْ تَعْديلِهِ، وَفْقًا لِشُروطِ رُخْصَةِ جِنُو العُموميَّةِ، عَلَى النَّحْوِ المَنْشورِ مِنْ قِبَلِ مُؤَسَّسَةِ البَرْمَجِيَّاتِ الحُرَّةِ، بِدْءًا مِنْ الإِصْدارِ الثّالِثِ مِنْ التَّرْخيصِ أَوْ الإِصْدَارَاتِ اللّاحِقَةِ (حَسَبَ اخْتيارِكَ). إِطَّلِعْ عَلَى <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
+    <p>يَسْتَنِدُ هٰذَا التَّطْبيقُ عَلى Flym RSS Reader، حُقوقُ النَّشْرِ 2013–2016 Frédéric Julian. مِن بَيْنِ الْمِيزَاتِ المُضافَةِ لِهٰذَا اَلْتَفَرَّعِ:</p>
+    
     • إمْكانيَةُ تَوْسِعَةِ المَجْموعاتِ<br/>
     • عَرْضُ المَقَالَاتِ بِمِلْءِ الشّاشَةِ تَمَامًا<br/>
     • حَدٌّ أَقْصَى لِحَجْمِ الصّورَةِ لِحَدِّ أَقْصَى لِعَدَدِ الصّوَرِ فِي تَحْمِيلَاتِ التَّغْذِيَةِ<br/>
     • القُدْرَةُ عَلَى إلْغاءِ عَمَليَّةِ التَحيَّينِ<br/>
-    • وَأَكْثَرُ مِنْ ذَلِكَ بِكَثيرٍ<br/>
-    <br/>
-    <b><big>تَفاصيلُ الوُصولِ</big></b>
-    <br/>
-    • قُمْ بِزيارَةِ <b><a href="https://handynewsreader.blogspot.com">المَوْقِعِ الإِلِكْتِرونيِّ</a></b> لِلْحُصُولِ عَلَى الأَخْبارِ وَالمَعْلُوماتِ<br/>
-    • يُمْكِنُكَ تَنْزيلُ التَّطْبيقِ مِنْ <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
-    • وَكَذَلِكَ، بِإِمْكانِكَ تَنْزيلُ التَّطْبيقِ مِنْ <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
-    • أَيْضًا، هُنَالِكَ مَوْضوعٌ لِلتَّطْبِيقِ فِي <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
-    • يُمْكِنُكَ العُثورُ عَلَى شَفْرَةِ المَصْدَرِ فِي <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
-    <br/>
-    <b><big>دَعْمُنا </big></b>
-    <br/>
-   إِذَا واجِهَتْكَ مُشْكِلَةٌ فِي التَّطْبيقِ، فَمِن الأَفْضَلِ:<br/>
-    • فَتْحُ قَضيَّةٌ فِي <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
-    • مُراسَلَةُ <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">المُطَوّر</a></b><br/>
-    <br/>
-    <b><big>دَعْمُكُمْ</big></b>
-    <br/>
-    إِذَا كَانَ لَدَيْكَ فِكْرَةٌ عَنْ ميزَةٍ جَديدَةٍ، يُمْكِنُكَ:<br/>
-    • مُشارَكَتُها مَعَنَا فِي <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> أوْ<br/>
-    • مُراسَلَةُ <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">المُطَوّر</a></b><br/>
-    <br/>
-    <b>اذَا وَجَدَتَ التَّطْبيقُ مُفِيدًا، فَيُرْجَى تَقْييمُهُ عَلَى <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
-    <br/>
-    <b><big>التَّرْجَمَاتُ </big></b>
-    <br/>
-    يُمْكِنُكَ المُساعَدَةُ فِي تَحْسينِ تَرْجَمَةِ التَّطْبيقِ عَلَى <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
-    <br/>
-    <b><big>الشُّكْرُ والتَّقْديرِ لـِ</big></b>
-    <br/>
-    <b>الْمُطَوِّرين:</b><br/>
+    • وَأَكْثَرُ مِنْ ذَلِكَ بِكَثيرٍ
+
+    <h2>تَفاصيلُ الوُصولِ</h2>
+
+    • تَفَضَّل بِزيارَةِ <b><a href=\"https://handynewsreader.blogspot.com\">المَوْقِعِ الإِلِكْتِرونيِّ</a></b> (لِلْحُصُولِ عَلَى الأَخْبارِ وَالمَعْلُوماتِ)<br/>
+    • <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/>
+    • <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a><br/>
+    • <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a>
+
+    <h2>دَعْمُنا</h2>
+    <p>إِذَا واجِهَتْكَ مُشْكِلَةٌ فِي التَّطْبيقِ، فَيُمْكِنُكَ:</p>
+    • التَّحَقُّقُ مِمَّا إِذَا تَمَّتْ مُعالَجَةُ المُشْكِلَةِ فِي الأَسْئِلَةِ الشّائِعَةِ الخاصَّةِ بِنَا <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a><br/>
+    • فَتْحُ قَضيَّةٌ فِي<a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a><br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">مُراسَلَةُ المُطَوّر</a><br/>
+
+    <h2>دَعْمُكُمْ</h2>
+    <p>إِذَا كَانَ لَدَيْكَ فِكْرَةٌ عَنْ ميزَةٍ جَديدَةٍ، يُمْكِنُكَ:</p>
+    • مُشارَكَتُها مَعَنَا فِي <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a><br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">مُراسَلَةُ المُطَوّر</a>
+
+<p>اذَا وَجَدَتَ التَّطْبيقُ مُفِيدًا، فَيُرْجَى تَقْييمُهُ عَلَى<a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></p>
+    يُمْكِنُكَ أَيْضًا <a href=\"https://github.com/yanus171/Handy-News-Reader\">التَّبَرُّعُ</a> </b> (الرّابِطُ فِي نِهايَةِ الوَصْفِ)
+ 
+    <h2>التَّرْجَمَاتُ</h2>
+<p>يُمْكِنُكَ المُساعَدَةُ فِي تَحْسينِ تَرْجَمَةِ التَّطْبيقِ عَلَى <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>
+
+    <h2>الشُّكْرُ والتَّقْديرِ لـِ </h2>
+    <h3>الْمُطَوِّرين:</h3>
     ***developerList***
-    <br/>
-    <b>الْمُتَرْجِمين:</b><br/>
+    <br/><br/>
+<h3>الْمُتَرْجِمين:</h3>
     • ΛHMΞD (afmbsr)
     ***translatorList***
     <br/>
