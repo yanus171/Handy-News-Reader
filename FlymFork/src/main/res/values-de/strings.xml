@@ -274,10 +274,8 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Lese-Fortschrittsbalken anzeigen</string>
-    <string name="article_text_show_progress_descr">Wenn aktiviert, wird am Oberrand der Lesefortschritt des aktuellen Artikels angezeigt</string>
     <string name="article_text_progress_height">Höhe des Fortschrittsbalkens</string>
     <string name="article_text_progress_color">Farbe des Fortschrittsbalkens</string>
-    <string name="article_text_progress_color_descr">Farbe des Fortschrittsbalkens am Oberrand</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
@@ -291,7 +289,6 @@
     <string name="brightness_with_dim_activity">Software-Overlay</string>
     <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
     <string name="settings_category_notification">Benachrichtigungen</string>
-    <string name="settings_category_notification_summary">Benachrichtigung bei neuen Artikeln</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
     <string name="settings_notifications_ringtone">Benachrichtigungston</string>
@@ -334,7 +331,6 @@
     <string name="settings_fulltext_extract_rules">Kompletter Text</string>
     <string name="settings_fulltext_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
     <string name="settings_category_extract_rules">Regeln zum Extrahieren der Kategorie</string>
-    <string name="settings_category_extract_rules_description">Einstellung pro Seite (HTML-Kenntnisse erforderlich)</string>
     <string name="settings_date_extract_rules_description">Für jede Website festlegen (grundlegende HTML-Kenntnisse erforderlich)</string>
     <string name="settings_tap_zones_dialogtitle">Nur zur Information, Änderungen sind nicht möglich</string>
     <string name="downloadNext">", Nächste "</string>
@@ -360,7 +356,7 @@
     <string name="show_progress_info">Detaillierte technische Informationen</string>
     <string name="show_progress_info_descr">Zeigt detaillierte Informationen der aktuellen Vorgänge</string>
     <string name="vibrate_on_article_list_entry_swype">Beim Wischen vibrieren</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">Beim Wischen eines Eintrages in der Artikelliste und im Artikel zur Markierung als Favorit</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Bei Markierung als Favorit in der Artikelliste und in der Artikelansicht</string>
     <string name="entry_marked_unfavourite">Artikel wurde aus den Favoriten entfernt</string>
     <string name="entry_marked_favourite">Artikel wurde zu den Favoriten hinzugefügt</string>
     <string name="new_feed_was_added">Neuer Feed wurde hinzugefügt</string>
@@ -466,8 +462,8 @@
     <string name="settings_delete_old_interval_descr">Wann werden alte Artikel gelöscht und die Größe von Artikeln, Feeds und Gruppenbildern auf der SD-Karte berechnet?</string>
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
-    <string name="tool_bar_color">Farbe der Werkzeugleiste &amp; Tasten</string>
-    <string name="tool_bar_color_desc">Diese Farbeinstellung wird für die Tasten innerhalb der Artikel und für die Statusleiste verwendet</string>
+    <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
+    <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
     <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Artikelansicht bearbeiten\". Hiermit werden die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
     <string name="one_webpage_article_classname_label">Root-Artikel-Element</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
@@ -498,7 +494,6 @@
     <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
     <string name="feed_list_loading">Feed-Liste wird geladen</string>
     <string name="article_text_show_battery">Akkustand anzeigen</string>
-    <string name="article_text_show_battery_description">Wenn aktiviert, wird im Vollbildmodus der aktuelle Akkustand in der oberen rechten Ecke angezeigt</string>
     <string name="settings_category_header_descr">Artikeltext- und Artikellistenanzeige</string>
     <string name="article_text_buttons_layout">Tastenanordnung</string>
     <string name="article_text_buttons_layout_descr">Ausrichtung und Sichtbarkeit der Tasten am Ende eines Artikels</string>
