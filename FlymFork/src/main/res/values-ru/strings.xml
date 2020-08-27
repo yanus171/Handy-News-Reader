@@ -82,7 +82,7 @@
     <string name="about_title_version">версия</string>
     <string name="about_handy_news_reader">Об Удобном Чтении Новостей</string>
     <string name="about_handy_news_reader_descr">Лицензия, поддержка, переводы и т.д.</string>
-    <string name="welcome_title">Добавить ленту?</string>
+    <string name="welcome_title">Добавить канал?</string>
     <string name="never">никогда</string>
     <string name="last_update">Обновление</string>
     <string name="menu_settings">Настройки</string>
@@ -171,11 +171,11 @@
     <string name="menu_cancel_refresh">Отменить обновление</string>
     <string name="menu_delete_non_starred">Сбросить ленту</string>
     <string name="menu_toogle_unread_all">Прочитанные|Все</string>
-    <string name="menu_load_all_images">Все картинки</string>
+    <string name="menu_load_all_images">Загрузить все картинки</string>
     <string name="menu_mark_as_favorite">В избранное</string>
     <string name="menu_mark_as_unfavorite">Убрать из избранного</string>
     <string name="menu_mark_as_unread">Отметить как непрочитанное</string>
-    <string name="menu_reload_full_text">Текст</string>
+    <string name="menu_reload_full_text">Перезагрузить весь текст</string>
     <string name="menu_reload_full_text_without_mobilizer">Без мобилайзера</string>
     <string name="share_favorites_title">Избранные новости</string>
     <string name="link_was_copied_to_clipboard">Ссылка скопирована</string>
@@ -233,7 +233,7 @@
     <string name="settings_font_size">Размер текста</string>
     <string name="show_article_icon">Показывать иконки статей</string>
     <string name="show_article_icon_descr">отключите для экономии места на экране</string>
-    <string name="show_article_url">Адреса статей</string>
+    <string name="show_article_url">Показывать адрес статьи</string>
     <string name="settings_display_oldest_first">Порядок статей</string>
     <string name="settings_display_oldest_first_description">Старые вначале</string>
     <string name="show_mark_all_as_read_button">Кнопка пометить все как прочитанное</string>
@@ -252,7 +252,7 @@
     <string name="textColorRead_descr">Цвет прочитанных</string>
     <string name="settings_color_text_read_sample_short">Прочитанные</string>
     <string name="settings_color_text_read_sample_long">Прочитанные статьи</string>
-    <string name="settings_category_article_text">Тексты статей</string>
+    <string name="settings_category_article_text">Текст статьи</string>
     <string name="settings_category_article_text_summary">Внешний вид текста статьи</string>
     <string name="settings_display_images">Отображать картинки</string>
     <string name="settings_display_images_description">в тексте статей</string>
@@ -270,14 +270,12 @@
     <string name="article_text_show_clock_description">Отображать текущее время в верхнем правом углу в полноэкранном режиме</string>
     <string name="settings_informations_size">Размер текста заголовка страницы</string>
     <string name="article_text_information_color">Цвет и фон текста заголовка</string>
-    <string name="article_text_information_color_descr"></string>
+    <string name="article_text_information_color_descr">Цвет и фон дополнительной информации заголовка страницы</string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_show_progress">Показывать</string>
-    <string name="article_text_show_progress_descr"></string>
     <string name="article_text_progress_height">Высота</string>
     <string name="article_text_progress_color">Цвет</string>
-    <string name="article_text_progress_color_descr"></string>
     <string name="settings_category_operation">Операции</string>
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
@@ -291,7 +289,6 @@
     <string name="brightness_with_dim_activity">Программное уменьшение яркости</string>
     <string name="brightness_with_dim_activity_descr">Включите, если иначе изменение яркости не работает</string>
     <string name="settings_category_notification">Уведомления</string>
-    <string name="settings_category_notification_summary"></string>
     <string name="settings_notifications_enabled">Включить</string>
     <string name="settings_notifications_enabled_description">Уведоления о новых загруженных статьях</string>
     <string name="settings_notifications_ringtone">Звук</string>
@@ -334,8 +331,7 @@
     <string name="settings_fulltext_extract_rules">Весь текст</string>
     <string name="settings_fulltext_extract_rules_description">Каждая строка это правило, позволяющее для определенного сайта задать имя класса HTML, с которого начинается полный текст статьи (требуются базовые знания HTML), чтобы не оторажать в тексте статьи лишние элементы. Эта настройка автоматически обновляется в режиме редактинования содержания статьи</string>
     <string name="settings_category_extract_rules">Категории статьи</string>
-    <string name="settings_category_extract_rules_description"></string>
-    <string name="settings_date_extract_rules_description"></string>
+    <string name="settings_date_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
     <string name="downloadNext">", След. "</string>
     <string name="downloadAll">", Все"</string>
@@ -343,7 +339,7 @@
     <string name="loadLink">Читать сейчас</string>
     <string name="loadLinkLater">Читать позже</string>
     <string name="loadLinkLaterStarred">Читать позже в избранном</string>
-    <string name="addFeed">Добавить ленту</string>
+    <string name="addFeed">Добавить канал</string>
     <string name="externalLinks">Без ленты</string>
     <string name="markAllAsRead">Отметить все как прочитанные</string>
     <string name="pageUp">Страница вверх / Свайп для отметки избранной</string>
@@ -435,7 +431,7 @@
     <string name="show_html">Показать HTML</string>
     <string name="image_white_background">Изображения на белом фоне</string>
     <string name="settings_add_google_news_dialog">Диалог выбора типа канала Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Снимите флажок, чтобы не показывать диалоговое окно выбора типа канала (RSS/Google News) при добавлении ленты</string>
+    <string name="settings_add_google_news_dialog_descr">Снимите флажок, чтобы не показывать диалоговое окно выбора типа канала (RSS/Google News) при добавлении канала</string>
     <string name="reload_fulltext_after_tag_editing">Перезагружать текст после редактирования тегов</string>
     <string name="reload_fulltext_after_tag_editing_descr">если флажок снят, полный текст не будет перезагружен после редактирования тегов (Показать|Спрятать|Выбрать полный текст), поэтому вы можете внести несколько изменений (в таком случае вам нужно вручную перезагрузить полный текст после завершения редактирования)</string>
     <string name="article_menu_show_by_tap">Показывать меню статьи по нажатию на тексте статьи</string>
@@ -496,9 +492,8 @@
     <string name="reading_article">Чтение статьи</string>
     <string name="reading_notification">Постоянное уведомление чтения</string>
     <string name="reading_notification_descr">Постоянное уведомление в строке состояния для предотвращения закрытия приложения системой - для ускорения запуска приложения после работы с другими приложениями</string>
-    <string name="feed_list_loading">Загрузка списка лент</string>
+    <string name="feed_list_loading">Загрузка списка каналов</string>
     <string name="article_text_show_battery">Заряд батареи</string>
-    <string name="article_text_show_battery_description"></string>
     <string name="settings_category_header_descr">Для экранов чтения статьи, а также списка статей</string>
     <string name="article_text_buttons_layout">Расположение кнопок</string>
     <string name="article_text_buttons_layout_descr">Ориентация и видимость кнопок в конце статьи</string>
@@ -513,7 +508,7 @@
     <string name="filter_apply_to_url">Применить к URL</string>
     <string name="open_tag_menu_hint">Выберите часть URL для использования в качестве ключа для правила</string>
     <string name="open_tag_menu_dialog_title">"Установка правила для класса "</string>
-    <string name="show_article_category">Категории статей</string>
+    <string name="show_article_category">"Показать категорию статьи"</string>
     <string name="article_text_information">Дополнительная информация в заголовке</string>
     <string name="article_text_progress">Полоса прочитанного</string>
     <string name="global_removeText_filter_rule_descr">Регулярные выражения (по одному в строке) применяются к любой статье</string>
@@ -542,7 +537,7 @@
     <string name="settings_main_image_extract_rules">Основное изображение</string>
     <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image). Это может помочь, если изображение находится за пределами области полного текста статьи"</string>
     <string name="settings_category_content_extract_rules">Правила извлечения содержимого</string>
-    <string name="settings_category_content_extract_rules_summary"></string>
+    <string name="settings_category_content_extract_rules_summary">Имена классов HTML, которые помогут найти различные части статьи. Некоторые из этих настроек автоматически обновляются в режиме просмотра содержания статьи</string>
     <string name="settings_category_other">Другое</string>
     <string name="settings_category_storage">Хранилище</string>
     <string name="settings_category_autobackup">Автоматическое резервное копирование</string>
