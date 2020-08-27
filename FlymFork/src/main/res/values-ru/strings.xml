@@ -270,7 +270,7 @@
     <string name="article_text_show_clock_description">Отображать текущее время в верхнем правом углу в полноэкранном режиме</string>
     <string name="settings_informations_size">Размер текста заголовка страницы</string>
     <string name="article_text_information_color">Цвет и фон текста заголовка</string>
-    <string name="article_text_information_color_descr">Цвет и фон дополнительной информации заголовка страницы</string>
+    <string name="article_text_information_color_descr"></string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_show_progress">Показывать</string>
@@ -331,7 +331,8 @@
     <string name="settings_fulltext_extract_rules">Весь текст</string>
     <string name="settings_fulltext_extract_rules_description">Каждая строка это правило, позволяющее для определенного сайта задать имя класса HTML, с которого начинается полный текст статьи (требуются базовые знания HTML), чтобы не оторажать в тексте статьи лишние элементы. Эта настройка автоматически обновляется в режиме редактинования содержания статьи</string>
     <string name="settings_category_extract_rules">Категории статьи</string>
-    <string name="settings_date_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
+    <string name="settings_category_extract_rules_description"></string>
+    <string name="settings_date_extract_rules_description">Используется при определении даты статей в лентах типа Web</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
     <string name="downloadNext">", След. "</string>
     <string name="downloadAll">", Все"</string>
@@ -508,7 +509,7 @@
     <string name="filter_apply_to_url">Применить к URL</string>
     <string name="open_tag_menu_hint">Выберите часть URL для использования в качестве ключа для правила</string>
     <string name="open_tag_menu_dialog_title">"Установка правила для класса "</string>
-    <string name="show_article_category">"Категории статей"</string>
+    <string name="show_article_category">Категории статей</string>
     <string name="article_text_information">Дополнительная информация в заголовке</string>
     <string name="article_text_progress">Полоса прочитанного</string>
     <string name="global_removeText_filter_rule_descr">Регулярные выражения (по одному в строке) применяются к любой статье</string>
@@ -537,7 +538,7 @@
     <string name="settings_main_image_extract_rules">Основное изображение</string>
     <string name="settings_main_image_extract_rules_description">"Имя класса, где ищется основное изображение статьи, которое используется в качестве иконки и вставляется начало статьи (вместо og:image). Это может помочь, если изображение находится за пределами области полного текста статьи"</string>
     <string name="settings_category_content_extract_rules">Правила извлечения содержимого</string>
-    <string name="settings_category_content_extract_rules_summary">Имена классов HTML, которые помогут найти различные части статьи. Некоторые из этих настроек автоматически обновляются в режиме просмотра содержания статьи</string>
+    <string name="settings_category_content_extract_rules_summary"></string>
     <string name="settings_category_other">Другое</string>
     <string name="settings_category_storage">Хранилище</string>
     <string name="settings_category_autobackup">Автоматическое резервное копирование</string>
