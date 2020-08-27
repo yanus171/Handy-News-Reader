@@ -169,12 +169,12 @@ public class EntryView extends WebView implements Handler.Callback {
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
-        String mainFontLaocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
+        String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
         final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
         if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
-            mainFontLaocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
+            mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLaocalUrl + "\");" + "} "
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} "
             + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}"
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
             + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
@@ -219,8 +219,11 @@ public class EntryView extends WebView implements Handler.Callback {
 
     @NotNull
     private static String getCustomFontClassStyle(String tag, String url, CustomClassFontInfo info) {
-        return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
-            +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
+        if ( info.mKeyword.isEmpty() )
+            return "";
+        else
+            return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
+                       +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
     }
 
     static class CustomClassFontInfo {
