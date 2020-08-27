@@ -409,7 +409,7 @@
     <string name="show">Показати</string>
     <string name="setFullTextRoot">Вибрати як джерело для повного тексту</string>
     <string name="fullTextRoot">Джерело повного тексту</string>
-    <string name="fullTextReloadStarted">Весь текст перезавантажується</string>
+    <string name="fullTextReloadStarted">Текст перезавантажується</string>
     <string name="brightness_update_from_system_period_min">Час відновлення яскравості</string>
     <string name="brightness_update_from_system_period_min_descr">(в хвилинах) Через який час яскравість змінена за допомогою свайпа буде відновлена до існуючого загального рівня</string>
     <string name="menu_add_feed_shortcut">Додати ярлик стрічки на домашній екран</string>
@@ -547,7 +547,7 @@
     <string name="settings_thread_count_description">(1-100) Число паралельних операцій, що виконуються одночасно під час оновлення статті. Невеликі значення - менша активність процесора і менше споживання пам\'яті при оновленні. Великі значення пришвидшують роботу. Оптимальне значення залежить від кількості ядер процесора пристрою</string>
     <string name="main_font_css_text_title">Стиль CSS основного шрифту</string>
     <string name="main_font_css_text_title_description">щоб встановити товщину шрифту, відстань між літерами та інше для тексту статті</string>
-    <string name="btn_reload_full_text">Оновити повний текст статті</string>
+    <string name="btn_reload_full_text">Оновити текст статті</string>
     <string name="article_text_information_summary">Цей текст відображається тільки тоді, коли панель стану прихована</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
