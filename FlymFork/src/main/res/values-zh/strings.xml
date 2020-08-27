@@ -272,10 +272,8 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">读取进度条</string>
-    <string name="article_text_show_progress_descr">在顶部显示文章阅读进度</string>
     <string name="article_text_progress_height">进度条高度</string>
     <string name="article_text_progress_color">进度条颜色</string>
-    <string name="article_text_progress_color_descr">阅读进度条颜色</string>
     <string name="settings_category_operation">操作</string>
     <string name="settings_category_operation_summary">操作选项</string>
     <string name="tap_zone_size">点击区域大小</string>
@@ -289,7 +287,6 @@
     <string name="brightness_with_dim_activity">软件叠加</string>
     <string name="brightness_with_dim_activity_descr">通过降低窗口背景颜色的透明度来降低亮度(请检查是否亮度变化不起作用)</string>
     <string name="settings_category_notification">通知事项</string>
-    <string name="settings_category_notification_summary">关于新文章和应用程序行为的通知</string>
     <string name="settings_notifications_enabled">开启推送</string>
     <string name="settings_notifications_enabled_description">启用新条目通知</string>
     <string name="settings_notifications_ringtone">铃声</string>
@@ -332,7 +329,6 @@
     <string name="settings_fulltext_extract_rules">全文</string>
     <string name="settings_fulltext_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
     <string name="settings_category_extract_rules">类别提取规则</string>
-    <string name="settings_category_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
     <string name="settings_date_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
     <string name="settings_tap_zones_dialogtitle">仅用于信息，更改不可用</string>
     <string name="downloadNext">"，下一个 "</string>
@@ -496,7 +492,6 @@
     <string name="reading_notification_descr">持续状态栏通知以防止应用被系统杀死-在长时间延迟后加速启动应用</string>
     <string name="feed_list_loading">Feed列表加载</string>
     <string name="article_text_show_battery">显示电池电量</string>
-    <string name="article_text_show_battery_description">在全屏模式下在右上角显示当前电量水平</string>
     <string name="settings_category_header_descr">文章文本和文章列表屏幕</string>
     <string name="article_text_buttons_layout">按钮布局</string>
     <string name="article_text_buttons_layout_descr">本文结尾处的按钮的方向和可见性</string>
