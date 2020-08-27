@@ -331,7 +331,7 @@
     <string name="settings_fulltext_extract_rules">Весь текст</string>
     <string name="settings_fulltext_extract_rules_description">Каждая строка это правило, позволяющее для определенного сайта задать имя класса HTML, с которого начинается полный текст статьи (требуются базовые знания HTML), чтобы не оторажать в тексте статьи лишние элементы. Эта настройка автоматически обновляется в режиме редактинования содержания статьи</string>
     <string name="settings_category_extract_rules">Категории статьи</string>
-    <string name="settings_date_extract_rules_description">Установка для каждого сайта (требуются базовые знания HTML)</string>
+    <string name="settings_date_extract_rules_description">Используется при определении даты статей в лентах типа Web</string>
     <string name="settings_tap_zones_dialogtitle">Для информации, изменение невозможно</string>
     <string name="downloadNext">", След. "</string>
     <string name="downloadAll">", Все"</string>
