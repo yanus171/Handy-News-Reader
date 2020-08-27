@@ -272,10 +272,8 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Lendo barra de progresso</string>
-    <string name="article_text_show_progress_descr">Exibe o progresso da leitura de um artigo no topo</string>
     <string name="article_text_progress_height">Altura da barra de progresso</string>
     <string name="article_text_progress_color">Cor do progresso</string>
-    <string name="article_text_progress_color_descr">Cor da barra de progresso de leitura</string>
     <string name="settings_category_operation">Operação</string>
     <string name="settings_category_operation_summary">Configurações de operações</string>
     <string name="tap_zone_size">Tamanho da Zona de Toque</string>
@@ -289,7 +287,6 @@
     <string name="brightness_with_dim_activity">Sobreposição de software</string>
     <string name="brightness_with_dim_activity_descr">Escurecer o brilho reduzindo a transparência da cor de fundo da janela (verifique se a mudança de brilho não funciona)</string>
     <string name="settings_category_notification">Notificações</string>
-    <string name="settings_category_notification_summary">Notificações de novos artigos</string>
     <string name="settings_notifications_enabled">Ativar notificações</string>
     <string name="settings_notifications_enabled_description">Habilitar notificações em caso de novas postagens</string>
     <string name="settings_notifications_ringtone">Toque</string>
@@ -332,7 +329,6 @@
     <string name="settings_fulltext_extract_rules">Texto completo</string>
     <string name="settings_fulltext_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
     <string name="settings_category_extract_rules">Regras de extração de categoria</string>
-    <string name="settings_category_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
     <string name="settings_date_extract_rules_description">Definir para cada site (necessário conhecimento básico de HTML)</string>
     <string name="settings_tap_zones_dialogtitle">somente para informações, mudanças indisponíveis</string>
     <string name="downloadNext">"Baixar próximo "</string>
@@ -496,7 +492,6 @@
     <string name="reading_notification_descr">Notificação persistente na barra de status para impedir que o aplicativo seja encerrado pelo sistema - para acelerar o início do aplicativo após um longo atraso</string>
     <string name="feed_list_loading">Carregando lista de feed</string>
     <string name="article_text_show_battery">Exibir nível de bateria</string>
-    <string name="article_text_show_battery_description">Exibe o nível atual da bateria no canto superior direito no modo de tela cheia</string>
     <string name="settings_category_header_descr">Para o texto do artigo e telas de lista de artigos</string>
     <string name="article_text_buttons_layout">Layout do botão</string>
     <string name="article_text_buttons_layout_descr">Orientação e visibilidade dos botões ao final de um artigo</string>

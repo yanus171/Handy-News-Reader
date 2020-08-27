@@ -225,10 +225,8 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">Barra de progreso de lectura</string>
-    <string name="article_text_show_progress_descr">Mostrar el progreso de lectura de un artículo en la parte inferior</string>
     <string name="article_text_progress_height">Altura de barra de progreso</string>
     <string name="article_text_progress_color">Color de barra de progreso</string>
-    <string name="article_text_progress_color_descr">Color de la barra de progreso de lectura</string>
     <string name="settings_category_operation">Operación</string>
     <string name="settings_category_operation_summary">Configuración operacional</string>
     <string name="tap_zone_size">Tamaño de la zona de tap</string>
@@ -242,7 +240,6 @@
     <string name="brightness_with_dim_activity">Capa de software</string>
     <string name="brightness_with_dim_activity_descr">Disminuir el brillo reduciendo la transparencia del color de fondo de la ventana (comprobar esto si el cambio de brillo no funciona)</string>
     <string name="settings_category_notification">Notificaciones</string>
-    <string name="settings_category_notification_summary">Notificaciones sobre nuevos artículos</string>
     <string name="settings_notifications_enabled">Habilitar notificaciones</string>
     <string name="settings_notifications_enabled_description">Habilita las notificaciones de nuevas entradas</string>
     <string name="settings_notifications_ringtone">Tono</string>
@@ -434,7 +431,6 @@
     <string name="reading_notification">Notificación de lectura de artículo</string>
     <string name="reading_notification_descr">Notificación de barra de estado persistente para evitar que el sistema cierre la aplicación - para acelerar el inicio de la aplicación después de un largo retraso</string>
     <string name="article_text_show_battery">Mostrar nivel de batería</string>
-    <string name="article_text_show_battery_description">Mostrar el nivel de batería actual en la esquina superior derecha en modo pantalla completa</string>
     <string name="article_text_buttons_layout">Diseño del botón</string>
     <string name="auto_set_as_read">Establecer automáticamente el artículo como leído una vez que su título ha sido visible en la lista</string>
     <string name="removeText">Eliminar texto</string>
