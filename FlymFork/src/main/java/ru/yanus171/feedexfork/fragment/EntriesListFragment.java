@@ -109,7 +109,7 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
-    private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
+    public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
     //private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
@@ -738,6 +738,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_delete_old: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
+                return true;
+
+            }
+            case R.id.menu_reload_all_texts: {
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT ).setData( mCurrentUri ), false );
                 return true;
 
             }

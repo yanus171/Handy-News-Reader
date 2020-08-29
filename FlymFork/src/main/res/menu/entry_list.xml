@@ -59,6 +59,9 @@
                 android:icon="@drawable/ic_delete"
                 android:title="@string/menu_delete_old"/>
             <item
+                android:id="@+id/menu_reload_all_texts"
+                android:title="@string/menu_reload_all_texts"/>
+            <item
                 android:id="@+id/menu_start_auto_refersh"
                 android:icon="@drawable/ic_sync"
                 android:title="@string/create_start_auto_refersh"/>
