@@ -77,11 +77,8 @@ import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.FileUtils;
-import ru.yanus171.feedexfork.utils.NetworkUtils;
 
 import static android.provider.BaseColumns._ID;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 
 public class FeedDataContentProvider extends ContentProvider {
 
@@ -123,7 +120,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static boolean mNotifyEnabled = true;
+    public static int mNotifyBlockCount = 0;
 
     static {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "grouped_feeds", URI_GROUPED_FEEDS);
@@ -671,12 +668,24 @@ public class FeedDataContentProvider extends ContentProvider {
 //            mDatabaseHelper.exportToOPML();
 //        }
         FetcherService.Status().ChangeDB("");
-        if (count > 0 && mNotifyEnabled ) {
+        if (count > 0 ) {
             notifyChangeOnAllUris(matchCode, uri);
         }
         return count;
     }
 
+    static synchronized boolean IsNotifyEnabled() {
+        return mNotifyBlockCount == 0;
+    }
+
+    public static synchronized void SetNotifyEnabled(boolean value) {
+        if ( value )
+            mNotifyBlockCount--;
+        else
+            mNotifyBlockCount++;
+        if ( mNotifyBlockCount < 0 )
+            mNotifyBlockCount = 0;
+    }
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         FetcherService.Status().ChangeDB("delete DB");
@@ -894,7 +903,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
         int count = database.delete(table, where.toString(), selectionArgs);
 
-        if (count > 0 && mNotifyEnabled ) {
+        if (count > 0  ) {
 //            if (FeedColumns.TABLE_NAME.equals(table)) {
 //                mDatabaseHelper.exportToOPML();
 //            }
@@ -906,6 +915,8 @@ public class FeedDataContentProvider extends ContentProvider {
     }
 
     public static void notifyChangeOnAllUris(int matchCode, Uri uri) {
+        if ( !IsNotifyEnabled() )
+            return;
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         if ( uri != null )
             cr.notifyChange(uri, null);

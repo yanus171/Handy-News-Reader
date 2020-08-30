@@ -99,6 +99,7 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
@@ -515,10 +516,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     new Thread() {
                         @Override
                         public void run() {
-                            FeedDataContentProvider.mNotifyEnabled = false;
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update( uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
-                            FeedDataContentProvider.mNotifyEnabled = true;
+                            SetNotifyEnabled( false ); try {
+                                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
+                            } finally { SetNotifyEnabled( true ); }
                         }
                     }.start();
                 }

@@ -121,6 +121,7 @@ import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
@@ -1158,10 +1159,10 @@ public class EntryView extends WebView implements Handler.Callback {
                     ContentValues values = new ContentValues();
                     values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    FeedDataContentProvider.mNotifyEnabled = false;
+                    SetNotifyEnabled( false );
                     //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
                     cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
-                    FeedDataContentProvider.mNotifyEnabled = true;
+                    SetNotifyEnabled( true );
                     //Dog.v("EntryView", String.format("EntryView.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();
