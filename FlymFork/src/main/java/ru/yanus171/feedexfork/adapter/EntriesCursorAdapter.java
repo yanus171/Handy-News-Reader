@@ -794,7 +794,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isRead = !holder.isRead;
 
-            UpdateReadView(holder, parentView);
+            if (holder.isRead && PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0) == holder.entryID ) {
+                PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                MainApplication.getContext().getContentResolver().notifyChange(mUri, null);//notifyDataSetChanged();
+            } else
+                UpdateReadView(holder, parentView);
             SetIsRead(holder.entryID, holder.isRead, true);
             if ( holder.isRead && mShowUnread ) {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
@@ -808,6 +812,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 snackbar.getView().setBackgroundResource(R.color.material_grey_900);
                 snackbar.show();
             }
+
+
         }
     }
 
