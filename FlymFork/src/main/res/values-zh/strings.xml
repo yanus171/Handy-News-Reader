@@ -324,7 +324,7 @@
     <string name="applyOperations">应用操作</string>
     <string name="extractContent">提取内容</string>
     <string name="improveHtmlContent">改进HTML内容</string>
-    <string name="parseXml">正解析XML</string>
+    <string name="parseXml">解析XML中</string>
     <string name="setupConnection">建立连接</string>
     <string name="settings_fulltext_extract_rules">全文</string>
     <string name="settings_fulltext_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
