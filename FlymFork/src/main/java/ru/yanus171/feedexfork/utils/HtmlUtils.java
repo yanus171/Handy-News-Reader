@@ -97,8 +97,10 @@ public class HtmlUtils {
         //content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$1");
         content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
         content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
+        //content = ReplaceImagesWithDataOriginal(content, "<span[^>]+class..lazy-image-placeholder[^>]+src=\"([^\"]+)\"[^>]+>");
+        content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+)\\s.+x\"+[^>]+></a>" );
         content = ReplaceImagesWithALink(content);
-        content = ReplaceImagesWithDataOriginal(content);
+        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"[^>]+>");
 
         // clean by JSoup
         final Whitelist whiteList =
@@ -269,12 +271,12 @@ public class HtmlUtils {
         return content;
     }
 
-    private static String ReplaceImagesWithDataOriginal(String content) {
-        final Pattern IMG_DATA_ORIGINAL = Pattern.compile("<img[^>]+data-original=([^>]+)>", Pattern.CASE_INSENSITIVE);
+    private static String ReplaceImagesWithDataOriginal(String content, String regex) {
+        final Pattern IMG_DATA_ORIGINAL = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = IMG_DATA_ORIGINAL.matcher(content);
         while (matcher.find()) {
             String match = matcher.group();
-            String newText = "<img src=" + matcher.group(1) + " />";
+            String newText = "<img src=\"" + matcher.group(1) + "\" />";
             content = content.replace(match, newText);
         }
         return content;
