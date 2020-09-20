@@ -673,7 +673,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             temp = temp.replaceAll( "<iframe(.|\\n)*?/iframe>", "" );
             temp = temp.replaceAll( "<div(.|\\n)*?>", "" );
             temp = temp.replaceAll( "</div>", "" );
-            temp = temp.replaceAll( "<br>", "" );
+            //temp = temp.replaceAll( "<br>", " " );
             temp = temp.replaceAll( "\n", " " );
             temp = HtmlUtils.replaceImageURLs( temp,
                                                "",
