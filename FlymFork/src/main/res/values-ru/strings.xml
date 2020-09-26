@@ -270,7 +270,7 @@
     <string name="article_text_show_clock_description">Отображать текущее время в верхнем правом углу в полноэкранном режиме</string>
     <string name="settings_informations_size">Размер текста заголовка страницы</string>
     <string name="article_text_information_color">Цвет и фон текста заголовка</string>
-    <string name="article_text_information_color_descr">Цвет и фон дополнительной информации заголовка страницы</string>
+    <string name="article_text_information_color_descr">Текст и фон</string>
     <string name="settings_color_clock_sample_short">8:15</string>
     <string name="settings_color_clock_sample_long">8:16</string>
     <string name="article_text_show_progress">Показывать</string>
