@@ -552,6 +552,8 @@
     <string name="main_font_css_text_title_description">для установки веса шрифта, интервала букв и т. д. в тексте статьи</string>
     <string name="btn_reload_full_text">Перезагрузить текст</string>
     <string name="article_text_information_summary">Этот текст отображается только когда строка состояния скрыта</string>
+    <string name="menu_reload_all_texts">Перезагрузить все тексты</string>
+    <string name="reloading_all_texts">Перезагрузка всех текстов</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
