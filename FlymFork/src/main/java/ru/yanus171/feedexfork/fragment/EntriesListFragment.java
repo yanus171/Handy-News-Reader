@@ -99,6 +99,8 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
@@ -711,6 +713,33 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
 
+            case R.id.menu_delete_starred_articles: {
+                new AlertDialog.Builder(getContext())
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle( R.string.question )
+                    .setMessage( R.string.deleteAllStarredArtcilesComfirm )
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new AlertDialog.Builder(getContext())
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle(R.string.question)
+                                .setMessage(R.string.deleteAllStarredArtcilesComfirm2)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new Thread() {
+                                            @Override
+                                            public void run() {
+                                                FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_FAVORITE);
+                                            }
+                                        }.start();
+                                    }
+                                }).setNegativeButton(android.R.string.no, null).show();
+                        }
+                    }).setNegativeButton(android.R.string.no, null).show();
+                return true;
+            }
 
             case R.id.menu_reset_feed_and_delete_all_articles: {
                 //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
@@ -724,7 +753,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                     new Thread() {
                                         @Override
                                         public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri);
+                                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE);
                                         }
                                     }.start();
                                 }

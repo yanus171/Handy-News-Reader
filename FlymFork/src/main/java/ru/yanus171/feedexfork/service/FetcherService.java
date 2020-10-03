@@ -1666,13 +1666,13 @@ public class FetcherService extends IntentService {
             }
         }
 
-        public static void deleteAllFeedEntries ( Uri entriesUri ){
+        public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
             int status = Status().Start("deleteAllFeedEntries", true);
             try {
 
                 final ContentResolver cr = getContext().getContentResolver();
                 final String feedID = entriesUri.getPathSegments().get( 1 );
-                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, WHERE_NOT_FAVORITE, null, null );
+                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
                 if ( cursor != null  ){
                     while ( cursor.moveToNext() ) {
                         Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
@@ -1682,7 +1682,7 @@ public class FetcherService extends IntentService {
                     cursor.close();
                 }
                 Status().ChangeProgress( "" );
-                cr.delete(entriesUri, WHERE_NOT_FAVORITE, null);
+                cr.delete(entriesUri, condition, null);
                 if ( FeedDataContentProvider.URI_MATCHER.match(entriesUri) == URI_ENTRIES_FOR_FEED ) {
                     ContentValues values = new ContentValues();
                     values.putNull(FeedColumns.LAST_UPDATE);

@@ -567,6 +567,10 @@
     <string name="article_text_information_summary">This text is visible only when status bar is hidden</string>
     <string name="menu_reload_all_texts">Reload all texts</string>
     <string name="reloading_all_texts">Reloading all texts</string>
+    <string name="menu_visible_articles_action">Visible articles</string>
+    <string name="menu_delete_starred_articles">Delete starred articles</string>
+    <string name="deleteAllStarredArtcilesComfirm">Delete ALLvisible STARRED articles. Are you sure?</string>
+    <string name="deleteAllStarredArtcilesComfirm2">All visible starred articles will be deleted. Are you REALLY sure?</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
