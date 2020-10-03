@@ -560,6 +560,7 @@ GENERAL]]></string>
     <string name="menu_visible_articles_action">Widoczne artykuły</string>
     <string name="menu_delete_starred_articles">Usuń ogwiazdkowane artykuły</string>
     <string name="deleteAllStarredArtcilesComfirm">Usuń WSZYSTKIE widoczne OGWIAZDKOWANE artykuły. Na pewno?</string>
+    <string name="deleteAllStarredArtcilesComfirm2">Wszystkie widoczne ogwiazdkowane artykuły zostaną usunięte. NA PEWNO?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
