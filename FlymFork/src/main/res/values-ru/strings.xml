@@ -554,6 +554,10 @@
     <string name="article_text_information_summary">Этот текст отображается только когда строка состояния скрыта</string>
     <string name="menu_reload_all_texts">Перезагрузить все тексты</string>
     <string name="reloading_all_texts">Перезагрузка всех текстов</string>
+    <string name="menu_visible_articles_action">Видимые статьи</string>
+    <string name="menu_delete_starred_articles">Удалить избранные статьи</string>
+    <string name="deleteAllStarredArtcilesComfirm">Удалить ВСЕ видимые ИЗБРАННЫЕ статьи. Вы уверены?</string>
+    <string name="deleteAllStarredArtcilesComfirm2">Все видимые избранные статьи будут удалены. Вы ПОЛНОСТЬЮ уверены?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
