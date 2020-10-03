@@ -555,6 +555,11 @@ GENERAL]]></string>
     <string name="main_font_css_text_title_description">by ustawić grubość czcionki, odstęp znaków, itp. - dla tekstu artykułu</string>
     <string name="btn_reload_full_text">Przeładuj pełny tekst</string>
     <string name="article_text_information_summary">Ten tekst jest widoczny tylko przy ukrytym pasku statusu</string>
+    <string name="menu_reload_all_texts">Przeładuj cały tekst</string>
+    <string name="reloading_all_texts">Przeładowuje cały tekst</string>
+    <string name="menu_visible_articles_action">Widoczne artykuły</string>
+    <string name="menu_delete_starred_articles">Usuń ogwiazdkowane artykuły</string>
+    <string name="deleteAllStarredArtcilesComfirm">Usuń WSZYSTKIE widoczne OGWIAZDKOWANE artykuły. Na pewno?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł.</item>
         <item quantity="few">%d nowe artykuły.</item>
