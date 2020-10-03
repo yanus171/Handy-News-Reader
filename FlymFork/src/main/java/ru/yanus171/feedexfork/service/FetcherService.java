@@ -1683,13 +1683,6 @@ public class FetcherService extends IntentService {
                 }
                 Status().ChangeProgress( "" );
                 cr.delete(entriesUri, condition, null);
-                if ( FeedDataContentProvider.URI_MATCHER.match(entriesUri) == URI_ENTRIES_FOR_FEED ) {
-                    ContentValues values = new ContentValues();
-                    values.putNull(FeedColumns.LAST_UPDATE);
-                    values.putNull(FeedColumns.ICON_URL);
-                    values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
-                }
                 EntryUrlVoc.INSTANCE.reinit();
             } finally {
                 Status().End(status);

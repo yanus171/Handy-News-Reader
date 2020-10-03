@@ -98,10 +98,12 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
@@ -754,6 +756,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                         @Override
                                         public void run() {
                                             FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE);
+                                            // reset feed
+                                            if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
+                                                final String feedID = mCurrentUri.getPathSegments().get( 1 );
+                                                ContentValues values = new ContentValues();
+                                                values.putNull(FeedColumns.LAST_UPDATE);
+                                                values.putNull(FeedColumns.ICON_URL);
+                                                values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                                                final ContentResolver cr = getContext().getContentResolver();
+                                                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                                            }
+
                                         }
                                     }.start();
                                 }
@@ -764,17 +777,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_mark_all_as_read: {
                 markAllAsRead();
                 return true;
-
             }
             case R.id.menu_delete_old: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
                 return true;
-
             }
             case R.id.menu_reload_all_texts: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT ).setData( mCurrentUri ), false );
                 return true;
-
             }
             case R.id.menu_show_article_url_toggle: {
                 PrefUtils.toggleBoolean( SHOW_ARTICLE_URL, false );
