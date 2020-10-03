@@ -507,6 +507,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             // Needs bounds, or else it won't show up (doesn't know how big to be)
             //drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             drawable.setBounds(0, 0, DpToPx( 30 ), DpToPx( 30 ) );
+            //drawable.setBounds(-DpToPx( 30 ), 0, 0, 0 );
             ImageSpan imageSpan = new ImageSpan(drawable);
             builder.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             item.setTitle(builder);

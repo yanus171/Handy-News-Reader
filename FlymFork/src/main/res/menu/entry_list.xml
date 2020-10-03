@@ -42,18 +42,10 @@
                 android:visible="true"
                 android:title="@string/menu_toggle_theme"/>
             <item
-                android:id="@+id/menu_mark_all_as_read"
-                android:icon="@drawable/ic_done_all"
-                android:title="@string/markAllAsRead"/>
-            <item
                 android:id="@+id/menu_show_entry_text"
                 android:icon="@drawable/ic_receipt"
                 android:visible="false"
                 android:title="@string/menu_show_entry_text" />
-            <item
-                android:id="@+id/menu_reset_feed_and_delete_all_articles"
-                android:icon="@drawable/ic_delete"
-                android:title="@string/reset_feed_and_delete_all_articles"/>
             <item
                 android:id="@+id/menu_delete_old"
                 android:icon="@drawable/ic_delete"
@@ -62,18 +54,6 @@
                 android:id="@+id/menu_start_auto_refersh"
                 android:icon="@drawable/ic_sync"
                 android:title="@string/create_start_auto_refersh"/>
-            <item
-                android:id="@+id/menu_create_auto_backup"
-                android:icon="@drawable/ic_file_download"
-                android:title="@string/create_auto_backup"/>
-            <item
-                android:id="@+id/menu_create_backup"
-                android:icon="@drawable/ic_file_download"
-                android:title="@string/create_backup"/>
-            <item
-                android:id="@+id/menu_add_feed_shortcut"
-                android:icon="@drawable/ic_home"
-                android:title="@string/menu_add_feed_shortcut"/>
             <item
                 android:id="@+id/menu_show_article_url_toggle"
                 android:icon="@drawable/ic_http"
@@ -84,14 +64,54 @@
                 android:checkable="true"
                 android:title="@string/show_article_category"/>
             <item
-                android:id="@+id/menu_show_progress_info"
-                android:icon="@drawable/ic_info_outline"
-                android:checkable="true"
-                android:title="@string/show_progress_info" />
+                android:id="@+id/menu_visible_articles_action"
+                android:icon="@drawable/ic_more_vert"
+                android:title="@string/menu_visible_articles_action">
+                <menu>
+                    <item
+                        android:id="@+id/menu_mark_all_as_read"
+                        android:icon="@drawable/ic_done_all"
+                        android:title="@string/markAllAsRead"/>
+                    <item
+                        android:id="@+id/menu_reset_feed_and_delete_all_articles"
+                        android:icon="@drawable/ic_delete"
+                        android:title="@string/reset_feed_and_delete_all_articles"/>
+                    <item
+                        android:id="@+id/menu_reload_all_texts"
+                        android:title="@string/menu_reload_all_texts"/>
+                    <item
+                        android:id="@+id/menu_delete_starred_articles"
+                        android:title="@string/menu_delete_starred_articles"/>
+                </menu>
+            </item>
             <item
-                android:id="@+id/menu_copy_feed"
-                android:icon="@drawable/ic_content_copy"
-                android:title="@string/menu_copy_feed"/>
+                android:id="@+id/menu_other_action"
+                android:icon="@drawable/ic_more_vert"
+                android:title="@string/menu_more_options">
+                <menu>
+                    <item
+                        android:id="@+id/menu_copy_feed"
+                        android:icon="@drawable/ic_content_copy"
+                        android:title="@string/menu_copy_feed"/>
+                    <item
+                        android:id="@+id/menu_show_progress_info"
+                        android:icon="@drawable/ic_info_outline"
+                        android:checkable="true"
+                        android:title="@string/show_progress_info" />
+                    <item
+                        android:id="@+id/menu_add_feed_shortcut"
+                        android:icon="@drawable/ic_home"
+                        android:title="@string/menu_add_feed_shortcut"/>
+                    <item
+                        android:id="@+id/menu_create_auto_backup"
+                        android:icon="@drawable/ic_file_download"
+                        android:title="@string/create_auto_backup"/>
+                    <item
+                        android:id="@+id/menu_create_backup"
+                        android:icon="@drawable/ic_file_download"
+                        android:title="@string/create_backup"/>
+                </menu>
+            </item>
         </menu>
     </item>
 </menu>

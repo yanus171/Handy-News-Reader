@@ -117,10 +117,13 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
@@ -169,12 +172,12 @@ public class EntryView extends WebView implements Handler.Callback {
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
-        String mainFontLaocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
+        String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
         final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
         if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
-            mainFontLaocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
+            mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLaocalUrl + "\");" + "} "
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} "
             + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}"
             + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
             + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
@@ -219,8 +222,11 @@ public class EntryView extends WebView implements Handler.Callback {
 
     @NotNull
     private static String getCustomFontClassStyle(String tag, String url, CustomClassFontInfo info) {
-        return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
-            +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
+        if ( info.mKeyword.isEmpty() )
+            return "";
+        else
+            return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
+                       +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
     }
 
     static class CustomClassFontInfo {
@@ -401,8 +407,8 @@ public class EntryView extends WebView implements Handler.Callback {
         try {
             JSONObject options = new JSONObject( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.OPTIONS)) );
             hasOriginal = hasOriginal && options.has( IS_RSS ) && options.getBoolean( IS_RSS );
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
+
         }
         String contentText;
         if (mLoadTitleOnly)
@@ -1155,10 +1161,10 @@ public class EntryView extends WebView implements Handler.Callback {
                     ContentValues values = new ContentValues();
                     values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    FeedDataContentProvider.mNotifyEnabled = false;
+                    SetNotifyEnabled( false );
                     //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
                     cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
-                    FeedDataContentProvider.mNotifyEnabled = true;
+                    SetNotifyEnabled( true );
                     //Dog.v("EntryView", String.format("EntryView.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();

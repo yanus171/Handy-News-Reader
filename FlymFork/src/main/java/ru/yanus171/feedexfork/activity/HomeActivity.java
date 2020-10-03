@@ -346,7 +346,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
-                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ));
+                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ).setFlags( Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT ));
             }
         }
 

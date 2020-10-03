@@ -99,6 +99,9 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
@@ -109,7 +112,7 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
-    private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
+    public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
     //private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
@@ -515,10 +518,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     new Thread() {
                         @Override
                         public void run() {
-                            FeedDataContentProvider.mNotifyEnabled = false;
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update( uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
-                            FeedDataContentProvider.mNotifyEnabled = true;
+                            SetNotifyEnabled( false ); try {
+                                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
+                            } finally { SetNotifyEnabled( true ); }
                         }
                     }.start();
                 }
@@ -710,6 +713,33 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
 
+            case R.id.menu_delete_starred_articles: {
+                new AlertDialog.Builder(getContext())
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle( R.string.question )
+                    .setMessage( R.string.deleteAllStarredArtcilesComfirm )
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new AlertDialog.Builder(getContext())
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle(R.string.question)
+                                .setMessage(R.string.deleteAllStarredArtcilesComfirm2)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new Thread() {
+                                            @Override
+                                            public void run() {
+                                                FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_FAVORITE);
+                                            }
+                                        }.start();
+                                    }
+                                }).setNegativeButton(android.R.string.no, null).show();
+                        }
+                    }).setNegativeButton(android.R.string.no, null).show();
+                return true;
+            }
 
             case R.id.menu_reset_feed_and_delete_all_articles: {
                 //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
@@ -723,7 +753,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                     new Thread() {
                                         @Override
                                         public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri);
+                                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE);
                                         }
                                     }.start();
                                 }
@@ -738,6 +768,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_delete_old: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
+                return true;
+
+            }
+            case R.id.menu_reload_all_texts: {
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT ).setData( mCurrentUri ), false );
                 return true;
 
             }

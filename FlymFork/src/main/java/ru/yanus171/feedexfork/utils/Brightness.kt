@@ -18,9 +18,11 @@ import android.provider.Settings.System.SCREEN_BRIGHTNESS
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
+import java.lang.Math.pow
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 
 class Brightness( private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
@@ -66,11 +68,9 @@ class Brightness( private val mActivity: Activity, rootView: View) {
                             paddingY = currentY - initialY
 
                             if (abs(paddingY) > abs(paddingX) ) {
-                                //val coeff : Float = 10 - abs( paddingY.toFloat() ) / mDimFrame.height.toFloat() * 10 //mInitialAlpha / 255F * 10
-                                val height = mDimFrame.height;
-                                val delta : Float = 255F * paddingY.toFloat() / mDimFrame.height.toFloat()
-                                val coeff : Float = max(0.1F, ( 1F - min( 1F, (mInitialAlpha + delta) / 255F) ) * 6 )
-                                var currentAlpha : Float = mInitialAlpha + delta * coeff
+                                val delta : Float = paddingY.toFloat() / mDimFrame.height.toFloat()
+                                val coeff : Float = max(0.1F, ( min( 1F, abs(delta)) ) * 2 )
+                                var currentAlpha : Float = (mInitialAlpha + delta * 255F * coeff.toDouble().pow(3.0)).toFloat()
                                 if (currentAlpha > 255)
                                     currentAlpha = 255F
                                 else if (currentAlpha < 1)

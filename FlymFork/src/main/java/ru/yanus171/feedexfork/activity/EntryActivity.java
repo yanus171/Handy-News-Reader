@@ -60,6 +60,7 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -252,11 +253,13 @@ public class EntryActivity extends BaseActivity implements Observer {
         new Thread() {
             @Override
             public void run() {
-                FeedDataContentProvider.mNotifyEnabled = false;
                 ContentResolver cr = getContentResolver();
-                cr.delete(FeedData.TaskColumns.CONTENT_URI, FeedData.TaskColumns.ENTRY_ID + " = " + mEntryFragment.getCurrentEntryID(), null);
-                FetcherService.setDownloadImageCursorNeedsRequery(true);
-                FeedDataContentProvider.mNotifyEnabled = true;
+                SetNotifyEnabled( false ); try {
+                    cr.delete(FeedData.TaskColumns.CONTENT_URI, FeedData.TaskColumns.ENTRY_ID + " = " + mEntryFragment.getCurrentEntryID(), null);
+                    FetcherService.setDownloadImageCursorNeedsRequery(true);
+                } finally {
+                    SetNotifyEnabled( true );
+                }
                 if ( !mEntryFragment.mMarkAsUnreadOnFinish )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 )

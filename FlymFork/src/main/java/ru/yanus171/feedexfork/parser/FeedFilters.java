@@ -33,17 +33,17 @@ public class FeedFilters {
         init( c );
     }
     public void init(Cursor c) {
-        while (c.moveToNext()) {
-            Rule r = new Rule();
-            r.filterText = c.getString(0);
-            r.isRegex = c.getInt(1) == 1;
-            r.mApplyType = c.getInt(2);
-            r.isAcceptRule = c.getInt(3) == 1;
-            r.isMarkAsStarred = c.getInt(4) == 1;
-            r.isRemoveText = c.getInt(5) == 1;
-            mFilters.add(r);
-        }
-        c.close();
+        if ( c.moveToFirst() )
+            do {
+                Rule r = new Rule();
+                r.filterText = c.getString(0);
+                r.isRegex = c.getInt(1) == 1;
+                r.mApplyType = c.getInt(2);
+                r.isAcceptRule = c.getInt(3) == 1;
+                r.isMarkAsStarred = c.getInt(4) == 1;
+                r.isRemoveText = c.getInt(5) == 1;
+                mFilters.add(r);
+            } while ( c.moveToNext() );
 
         if ( PrefUtils.getBoolean( "global_marks_as_star_filter_on", false ) ) {
             String[] list = TextUtils.split( PrefUtils.getString( "global_marks_as_star_filter_rule",
