@@ -166,6 +166,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
+import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 
 public class FetcherService extends IntentService {
 
@@ -391,7 +392,7 @@ public class FetcherService extends IntentService {
             } finally {
                 Status().End( status );
             }
-            ExecutorService executor = CreateExecutorService();
+            ExecutorService executor = CreateExecutorService( GetThreadCount() );
             try {
                 mobilizeAllEntries(executor);
                 downloadAllImages(executor);
@@ -408,7 +409,7 @@ public class FetcherService extends IntentService {
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
 
         if (ACTION_MOBILIZE_FEEDS.equals(intent.getAction())) {
-            ExecutorService executor = CreateExecutorService(); try {
+            ExecutorService executor = CreateExecutorService( GetThreadCount() ); try {
                 mobilizeAllEntries(executor);
                 downloadAllImages(executor);
             } finally {
@@ -418,7 +419,7 @@ public class FetcherService extends IntentService {
             LongOper(R.string.loadingLink, new Runnable() {
                 @Override
                 public void run() {
-                    ExecutorService executor = CreateExecutorService(); try {
+                    ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
                         LoadLink(GetExtrenalLinkFeedID(),
                                  intent.getStringExtra(Constants.URL_TO_LOAD),
                                  intent.getStringExtra(Constants.TITLE_TO_LOAD),
@@ -450,7 +451,7 @@ public class FetcherService extends IntentService {
 
                     mMarkAsStarredFoundList.clear();
                     int newCount = 0;
-                    ExecutorService executor = CreateExecutorService(); try {
+                    ExecutorService executor = CreateExecutorService(GetThreadCount()); try {
                         if ( isFromAutoRefresh )
                             SetNotifyEnabled( false );
                         try {
@@ -1037,7 +1038,7 @@ public class FetcherService extends IntentService {
     }
 
     private static void downloadAllImages() {
-        ExecutorService executor = CreateExecutorService();
+        ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount());
         try {
             downloadAllImages(executor);
         } finally {
@@ -1176,7 +1177,7 @@ public class FetcherService extends IntentService {
         final String statusText = getContext().getString(R.string.article_images_downloading);
         int status = obs.Start( statusText, true); try {
             int downloadedCount = 0;
-            ExecutorService executor = CreateExecutorService(); try {
+            ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
                 for( final String imgPath: imageList ) {
                     futures.add( executor.submit( new Callable<DownloadResult>() {
@@ -1210,13 +1211,7 @@ public class FetcherService extends IntentService {
         }
     }
 
-    public static ExecutorService CreateExecutorService() {
-        int threadCount = PrefUtils.getIntFromText( "thread_count", 5  );
-        if ( threadCount < 1 )
-            threadCount = 1;
-        else if ( threadCount > 100 )
-            threadCount = 100;
-
+    public static ExecutorService CreateExecutorService( int threadCount ) {
         return Executors.newFixedThreadPool( threadCount, new ThreadFactory() {
             @Override
             public Thread newThread(Runnable runnable) {
@@ -1225,6 +1220,23 @@ public class FetcherService extends IntentService {
                 return thread;
             }
         } );
+    }
+
+    private static int GetThreadCount() {
+        int threadCount = PrefUtils.getIntFromText("thread_count", 5  );
+        if ( threadCount < 1 )
+            threadCount = 1;
+        else if ( threadCount > 100 )
+            threadCount = 100;
+        return threadCount;
+    }
+    private static int GetLoadImageThreadCount() {
+        int threadCount = PrefUtils.getIntFromText( MAX_IMAGE_DOWNLOAD_COUNT, GetThreadCount() );
+        if ( threadCount < 1 )
+            threadCount = GetThreadCount();
+        else if ( threadCount > 100 )
+            threadCount = 100;
+        return threadCount;
     }
 
     private void deleteOldEntries(final long defaultKeepDateBorderTime) {
@@ -1281,7 +1293,7 @@ public class FetcherService extends IntentService {
     private int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
         String statusText = "";
         int status = Status().Start( statusText, false ); try {
-            final ExecutorService executorInner = CreateExecutorService(); try {
+            final ExecutorService executorInner = CreateExecutorService(GetThreadCount()); try {
                 ContentResolver cr = getContentResolver();
                 final Cursor cursor;
                 String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;

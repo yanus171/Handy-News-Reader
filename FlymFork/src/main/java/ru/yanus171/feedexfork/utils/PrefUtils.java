@@ -73,7 +73,7 @@ public class PrefUtils {
     public static final String SHOW_ARTICLE_URL = "settings_show_article_url";
     public static final String SHOW_ARTICLE_CATEGORY = "settings_show_article_category";
     //public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
-    private static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
+    public static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
     private static final String MAX_IMAGE_DOWNLOAD_SIZE = "settings_max_image_download_size_kb";
     private static final String MAX_SINGLE_REFRESH_TRAFFIC = "settings_max_single_refresh_traffic_mb";
     public static final String ENTRY_MAGRINS = "entry_margins";
