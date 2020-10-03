@@ -569,8 +569,8 @@
     <string name="reloading_all_texts">Reloading all texts</string>
     <string name="menu_visible_articles_action">Visible articles</string>
     <string name="menu_delete_starred_articles">Delete starred articles</string>
-    <string name="deleteAllStarredArtcilesComfirm">Delete ALLvisible STARRED articles. Are you sure?</string>
-    <string name="deleteAllStarredArtcilesComfirm2">All visible starred articles will be deleted. Are you REALLY sure?</string>
+    <string name="deleteAllStarredArtcilesComfirm">Delete ALL visible STARRED articles. Are you sure?</string>
+    <string name="deleteAllStarredArtcilesComfirm2">All the visible starred articles will be deleted. Are you REALLY sure?</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
