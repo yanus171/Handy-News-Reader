@@ -553,6 +553,8 @@
     <string name="reloading_all_texts">Оновлюю всі тексти</string>
     <string name="menu_visible_articles_action">Видимі статті</string>
     <string name="menu_delete_starred_articles">Вилучити улюблені статті</string>
+    <string name="deleteAllStarredArtcilesComfirm">Вилучити ВСІ видимі УЛЮБЛЕНІ статті? Впевнені?</string>
+    <string name="deleteAllStarredArtcilesComfirm2">Всі видимі улюблені статті будуть вилучені. Добре подумали?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
