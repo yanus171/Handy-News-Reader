@@ -549,6 +549,10 @@
     <string name="main_font_css_text_title_description">щоб встановити товщину шрифту, відстань між літерами та інше для тексту статті</string>
     <string name="btn_reload_full_text">Оновити текст статті</string>
     <string name="article_text_information_summary">Цей текст відображається тільки тоді, коли панель стану прихована</string>
+    <string name="menu_reload_all_texts">Оновити все</string>
+    <string name="reloading_all_texts">Оновлюю всі тексти</string>
+    <string name="menu_visible_articles_action">Видимі статті</string>
+    <string name="menu_delete_starred_articles">Вилучити улюблені статті</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
