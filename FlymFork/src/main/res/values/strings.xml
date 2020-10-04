@@ -76,7 +76,7 @@
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">version</string>
     <string name="about_handy_news_reader">About Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">License, support, translations, etc</string>
+    <string name="about_handy_news_reader_descr">License, support, translations, etc.</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="last_update">Update</string>
@@ -317,7 +317,7 @@
     <string name="settings_category_advanced_summary">Additional features (such as backup, filters and more)</string>
 
     <string name="settings_autobackup_enabled">Enable automatic backup</string>
-    <string name="settings_autobackup_enabled_descr">To periodically save Your feeds and favorite articles list into an backup file</string>
+    <string name="settings_autobackup_enabled_descr">To periodically save Your feeds and favorite articles list into a backup file</string>
     <string name="settings_category_content_presentation">Content presentation</string>
     <string name="settings_display_text_color">Text brightness</string>
     <string name="settings_visible_feeds">Visible feeds</string>
