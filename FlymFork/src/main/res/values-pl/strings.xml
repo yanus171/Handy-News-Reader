@@ -357,9 +357,9 @@ GENERAL]]></string>
     <string name="group">Dodaj do grupy</string>
     <string name="auto_image_load">Automatycznie wczytuj obrazki</string>
     <string name="show_progress_info">Szczegółowe informacje techniczne o postępie</string>
-    <string name="show_progress_info_descr">Pokazuje szczegółowe informacje nt. aktualnie przeprowadzanej operacji</string>
+    <string name="show_progress_info_descr">Pokaż szczegółowe informacje nt. aktualnej operacji (podczas odświeżania artykułów, pobierania obrazków, otwierania tekstu, itp.)</string>
     <string name="vibrate_on_article_list_entry_swype">Wibruj przy przesunięciu palcem</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">W artykule na liście oraz w tekście artykułu podczas oznaczania gwiazdką</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Na liście artykułów oraz wyświetlając tekst artykułu podczas oznaczania gwiazdką</string>
     <string name="entry_marked_unfavourite">Artykuł został usunięty z Ulubionych</string>
     <string name="entry_marked_favourite">Artykuł został dodany do Ulubionych</string>
     <string name="new_feed_was_added">Nowy kanał został dodany</string>
@@ -395,7 +395,7 @@ GENERAL]]></string>
     <string name="exportingToFile">Eksport do pliku</string>
     <string name="importingFromFile">Import z pliku</string>
     <string name="autobackup_interval">Przedział czasowy automatycznej kopii zapasowej</string>
-    <string name="autobackup_interval_descr">Jak często będzie wykonywana kopia zapasowa źródeł oraz artykułów </string>
+    <string name="autobackup_interval_descr">Jak często będzie wykonywany plik kopii zapasowej</string>
     <string name="create_auto_backup">Utwórz kopię zapasową teraz</string>
     <string name="auto_backup_opml_file_created">Kopia zapasowa utworzona w pliku .opml:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
@@ -409,7 +409,7 @@ GENERAL]]></string>
     <string name="background1">Tło</string>
     <string name="auto_refresh_requires_charging">Tylko podczas ładowania urządzenia</string>
     <string name="global_class_list_to_remove_from_article_text">Usuń tekst</string>
-    <string name="global_class_list_to_remove_from_article_text_summary">każda nazwa klasy w osobnej linii</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">W odróżnieniu do innych, te reguły ustawianie są dla wszystkich stron. Każda linijka zawiera tylko nazwę klasy</string>
     <string name="global_date_class_list_summary">Nazwa klasy na linię. Elementy o tych klasach są uznawane za datę artykułu podczas trybu wczytywania Strona Internetowa - Linki</string>
     <string name="hide">Ukryj</string>
     <string name="show">Pokaż</string>
@@ -417,15 +417,15 @@ GENERAL]]></string>
     <string name="fullTextRoot">Źródło pełnego tekstu</string>
     <string name="fullTextReloadStarted">Przeładowanie pełnego tekstu rozpoczęte</string>
     <string name="brightness_update_from_system_period_min">Aktualizowanie jasności ekranu</string>
-    <string name="brightness_update_from_system_period_min_descr">(w minutach) Po upłynięciu tego czasu jasność tekstu zostanie przywrócona do aktualnego systemowego poziomu (0 - nie przywracaj)</string>
+    <string name="brightness_update_from_system_period_min_descr">(w minutach, 0 = wyłączone) Po tym czasie poziom jasności będzie dostosowany do aktualnej jasności urządzenia (poprzez przesunięcie palcem)</string>
     <string name="menu_add_feed_shortcut">Utwórz skrót na pulpicie</string>
     <string name="new_feed_shortcut_added">Nowy skrót został utworzony na pulpicie</string>
     <string name="new_feed_shortcut_add_failed">Twój launcher nie jest w stanie utworzyć skrótu</string>
     <string name="custom_data_folder">Własna lokalizacja plików</string>
     <string name="custom_data_folder_descr">(puste - użyj domyślnej) ścieżka do folderu feedex, przechowującego kopię zapasową oraz pobrane obrazki</string>
     <string name="entry_text_title_link">Link w tytule</string>
-    <string name="entry_text_title_link_description">zezwala na tapnięcie na tytuł artykułu by otworzyć go w przeglądarce - lub przeczytać później w Handy’m</string>
-    <string name="delete_read_articles">Usuwaj przeczytane artykuły</string>
+    <string name="entry_text_title_link_description">zezwala na tapnięcie na tytuł artykułu by otworzyć go w przeglądarce</string>
+    <string name="delete_read_articles">Usuń wszystkie przeczytane artykuły</string>
     <string name="delete_read_articles_descr">niezależnie od czasu przechowywania artykułów</string>
     <string name="data_folder">Folder danych</string>
     <string name="data_folder_descr">Gdzie przechowywać tekst i obrazki pobranych artykułów</string>
