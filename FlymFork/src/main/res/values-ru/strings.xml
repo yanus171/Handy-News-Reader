@@ -555,6 +555,9 @@
     <string name="menu_reload_all_texts">Перезагрузить все тексты</string>
     <string name="reloading_all_texts">Перезагрузка всех текстов</string>
     <string name="menu_visible_articles_action">Видимые статьи</string>
+    <string name="menu_unstar_articles">Удалить из избранных</string>
+    <string name="unstarAllArtcilesComfirm">Удалить ИЗ ИЗБРАННЫХ ВСЕ видимые статьи. Вы уверены?</string>
+    <string name="unstarAllArtcilesComfirm2">Все видимые статьи будут удалены из избранных. Вы ПОЛНОСТЬЮ уверены?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
