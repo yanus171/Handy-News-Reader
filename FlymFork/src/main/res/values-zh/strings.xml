@@ -553,6 +553,9 @@
     <string name="menu_reload_all_texts">重新加载所有文本</string>
     <string name="reloading_all_texts">重新加载所有文本中</string>
     <string name="menu_visible_articles_action">可见文章</string>
+    <string name="menu_unstar_articles">取消文章星标</string>
+    <string name="unstarAllArtcilesComfirm">取消所有可见的标星文章的星号。您确定吗？</string>
+    <string name="unstarAllArtcilesComfirm2">所有可见的标星文章的星号都将被取消。你真的确定吗?</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
