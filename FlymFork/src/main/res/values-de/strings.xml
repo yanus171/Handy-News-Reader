@@ -552,6 +552,12 @@
     <string name="main_font_css_text_title_description">zum Einstellen der Schriftstärke, des Buchstabenabstands usw. für das Artikeltextfenster</string>
     <string name="btn_reload_full_text">Text vollständig neu laden</string>
     <string name="article_text_information_summary">Dieser Text ist nur sichtbar, wenn die Statusleiste ausgeblendet ist</string>
+    <string name="menu_reload_all_texts">Alle Texte neu laden</string>
+    <string name="reloading_all_texts">Alle Texte werden neu geladen</string>
+    <string name="menu_visible_articles_action">Sichtbare Artikel</string>
+    <string name="menu_delete_starred_articles">Gekennzeichnete Artikel löschen</string>
+    <string name="deleteAllStarredArtcilesComfirm">Möchten Sie wirklich ALLE sichtbaren FAVORITEN löschen?</string>
+    <string name="deleteAllStarredArtcilesComfirm2">Möchten Sie WIRKLICH alle sichtbaren Favoriten löschen?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel.</item>
         <item quantity="other">%d neue Artikel.</item>
