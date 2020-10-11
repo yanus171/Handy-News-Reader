@@ -548,6 +548,10 @@
     <string name="main_font_css_text_title">Testo principale stile CSS del carattere</string>
     <string name="main_font_css_text_title_description">per impostare lo spessore del carattere, la spaziatura delle lettere, ecc., per il testo dell\'articolo</string>
     <string name="btn_reload_full_text">Ricarica testo completo</string>
+    <string name="article_text_information_summary">Questo testo è visibile solo quando la barra di stato è nascosta</string>
+    <string name="menu_reload_all_texts">Ricarica tutti i testi</string>
+    <string name="reloading_all_texts">Ricaricamento di tutti i testi</string>
+    <string name="menu_visible_articles_action">Articoli visibili</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>

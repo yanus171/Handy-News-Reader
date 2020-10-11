@@ -76,7 +76,7 @@
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">version</string>
     <string name="about_handy_news_reader">About Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">License, support, translations, etc</string>
+    <string name="about_handy_news_reader_descr">License, support, translations, etc.</string>
     <string name="welcome_title">Welcome to Handy News Reader. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="last_update">Update</string>
@@ -317,7 +317,7 @@
     <string name="settings_category_advanced_summary">Additional features (such as backup, filters and more)</string>
 
     <string name="settings_autobackup_enabled">Enable automatic backup</string>
-    <string name="settings_autobackup_enabled_descr">To periodically save Your feeds and favorite articles list into an backup file</string>
+    <string name="settings_autobackup_enabled_descr">To periodically save Your feeds and favorite articles list into a backup file</string>
     <string name="settings_category_content_presentation">Content presentation</string>
     <string name="settings_display_text_color">Text brightness</string>
     <string name="settings_visible_feeds">Visible feeds</string>
@@ -426,7 +426,7 @@
     <string name="fullTextRoot">Full text root</string>
     <string name="fullTextReloadStarted">Full text reload has started</string>
     <string name="brightness_update_from_system_period_min">Brightness update time</string>
-    <string name="brightness_update_from_system_period_min_descr">(in minutes) After that time period the brightness will be restored to the current system level (0 - off)</string>
+    <string name="brightness_update_from_system_period_min_descr">(in minutes, 0 = off) After this time span the brightness level will be adjusted to the current system level (by swipe)</string>
     <string name="menu_add_feed_shortcut">Create a shortcut on Home Screen</string>
     <string name="new_feed_shortcut_added">New shortcut has been created on Home Screen</string>
     <string name="new_feed_shortcut_add_failed">Your launcher is unable to create a shortcut</string>
@@ -461,7 +461,7 @@
     <string name="menu_display_options">Display options</string>
     <string name="menu_reload">Reload</string>
     <string name="article_tap_enabled">Tap actions enabled</string>
-    <string name="article_tap_enabled_summary">on Tap Zones and in non link areas (for menu show in article text)</string>
+    <string name="article_tap_enabled_summary">on Tap Zones and in non-link areas (for menu show in article text)</string>
     <string name="menu_calculate_image_sizes">Calculate images size</string>
     <string name="setting_calculate_image_sizes">Images size on storage</string>
     <string name="setting_calculate_image_sizes_descr">Also during the Delete old operation calculate and show loaded images sum size on storage per article, feed, group, etc. These numbers are updated during deletion of the old articles - so the operation duration could be significantly enlarged</string>
@@ -475,7 +475,7 @@
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>
     <string name="tool_bar_color">Toolbar color</string>
-    <string name="tool_bar_color_desc">This color is used for the in-article buttons and for the statusbar</string>
+    <string name="tool_bar_color_desc">This color is used for in-article buttons and for the status bar</string>
     <string name="one_webpage_hint">Hint: in this load type the web page content is divided into articles by HTML elements class name from feed settings. You should also set the class names for article title, date and image URL. To find the required class names you should load that page (Read now) and switch to the Edit Content View where you can find and copy class names for required elements</string>
     <string name="one_webpage_article_classname_label">Root article element</string>
     <string name="one_webpage_edittext_classname_hint">Class name</string>
@@ -568,9 +568,9 @@
     <string name="menu_reload_all_texts">Reload all texts</string>
     <string name="reloading_all_texts">Reloading all texts</string>
     <string name="menu_visible_articles_action">Visible articles</string>
-    <string name="menu_delete_starred_articles">Delete starred articles</string>
+    <string name="menu_unstar_articles">Unstar articles</string>
     <string name="unstarAllArtcilesComfirm">UNSTAR ALL visible STARRED articles. Are you sure?</string>
-    <string name="deleteAllStarredArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
+    <string name="unstarAllArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

@@ -1720,6 +1720,7 @@ public class FetcherService extends IntentService {
                     }
                 } finally {
                     FeedDataContentProvider.SetNotifyEnabled( true );
+                    FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
                 }
                 cursor.close();
             }

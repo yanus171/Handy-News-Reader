@@ -549,6 +549,10 @@
     <string name="main_font_css_text_title">Texto de estilo CSS da fonte principal</string>
     <string name="main_font_css_text_title_description">para definir o peso da fonte, espaçamento de letras, etc., para o texto do artigo</string>
     <string name="btn_reload_full_text">Recarregar texto completo</string>
+    <string name="article_text_information_summary">Este texto é visível somente quando a barra de status está oculta</string>
+    <string name="menu_reload_all_texts">Recarregar todos os textos</string>
+    <string name="reloading_all_texts">Recarregando todos os textos</string>
+    <string name="menu_visible_articles_action">Artigos visíveis</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>

@@ -724,7 +724,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                             new AlertDialog.Builder(getContext())
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .setTitle(R.string.question)
-                                .setMessage(R.string.deleteAllStarredArtcilesComfirm2)
+                                .setMessage(R.string.unstarAllArtcilesComfirm2)
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
