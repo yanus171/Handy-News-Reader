@@ -98,9 +98,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
-import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
@@ -715,11 +713,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
 
-            case R.id.menu_delete_starred_articles: {
+            case R.id.menu_unstarr_articles: {
                 new AlertDialog.Builder(getContext())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle( R.string.question )
-                    .setMessage( R.string.deleteAllStarredArtcilesComfirm )
+                    .setMessage( R.string.unstarAllArtcilesComfirm)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -733,7 +731,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                         new Thread() {
                                             @Override
                                             public void run() {
-                                                FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_FAVORITE);
+                                                FetcherService.unstarAllFeedEntries(mCurrentUri);
                                             }
                                         }.start();
                                     }

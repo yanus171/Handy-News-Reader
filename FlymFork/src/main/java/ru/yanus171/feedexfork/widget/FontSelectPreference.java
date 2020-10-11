@@ -50,6 +50,8 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static ru.yanus171.feedexfork.utils.UiUtils.AddSmallText;
 
 public class FontSelectPreference extends Preference {
@@ -249,8 +251,13 @@ public class FontSelectPreference extends Preference {
 				small.setTypeface(Typeface.DEFAULT);
 				small.setPadding(PAD, 0, 0, PAD);
 				small.setTextColor(Theme.GetMenuFontColor());
-				small.setEnabled( false );
+				small.setTextIsSelectable(false);
+				//small.setEnabled( false );
 			}
+			TextView div = new TextView( getContext() );
+			div.setBackgroundResource( android.R.drawable.divider_horizontal_dark );
+			vLayout.addView(div, MATCH_PARENT, WRAP_CONTENT);
+
 //			vLayout.setBackgroundResource(android.R.drawable.dialog_frame);
 			return vLayout;
 

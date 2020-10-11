@@ -80,7 +80,7 @@
                         android:id="@+id/menu_reload_all_texts"
                         android:title="@string/menu_reload_all_texts"/>
                     <item
-                        android:id="@+id/menu_delete_starred_articles"
+                        android:id="@+id/menu_unstarr_articles"
                         android:title="@string/menu_delete_starred_articles"/>
                 </menu>
             </item>

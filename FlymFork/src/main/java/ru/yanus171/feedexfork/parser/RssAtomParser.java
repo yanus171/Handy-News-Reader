@@ -122,6 +122,7 @@ public class RssAtomParser extends DefaultHandler {
     private static final String ATTRIBUTE_TYPE = "type";
     private static final String ATTRIBUTE_LENGTH = "length";
     private static final String ATTRIBUTE_REL = "rel";
+    private static final String ATTRIBUTE_TERM = "term";
 
     private static final String[][] TIMEZONES_REPLACE = {
             {"MEST", "+0200"},
@@ -317,8 +318,9 @@ public class RssAtomParser extends DefaultHandler {
             mCategoryTagEntered = true;
             if (mTmpCategory == null) {
                 mTmpCategory = new StringBuilder();
+            }
+            mTmpCategory.append( attributes.getValue("", ATTRIBUTE_TERM) );
         }
-    }
     }
 
     private void startEnclosure(Attributes attributes, String url) {

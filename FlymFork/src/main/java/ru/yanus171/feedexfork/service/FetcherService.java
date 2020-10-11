@@ -161,6 +161,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
@@ -1701,6 +1702,33 @@ public class FetcherService extends IntentService {
             }
 
         }
+
+    public static void unstarAllFeedEntries( Uri entriesUri ){
+        int status = Status().Start("unstarAllFeedEntries", true);
+        try {
+
+            final ContentResolver cr = getContext().getContentResolver();
+            final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null );
+            if ( cursor != null  ){
+                FeedDataContentProvider.SetNotifyEnabled( false ); try {
+                    while (cursor.moveToNext()) {
+
+                        Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
+                        ContentValues values = new ContentValues();
+                        values.putNull(EntryColumns.IS_FAVORITE);
+                        getContext().getContentResolver().update(EntryColumns.CONTENT_URI(cursor.getString(0)), values, null, null);
+                    }
+                } finally {
+                    FeedDataContentProvider.SetNotifyEnabled( true );
+                }
+                cursor.close();
+            }
+            Status().ChangeProgress( "" );
+        } finally {
+            Status().End(status);
+        }
+
+    }
 
 
 
