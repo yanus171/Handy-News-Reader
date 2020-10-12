@@ -361,7 +361,7 @@
     <string name="lock_orientation">Горизонтальна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною: </string>
-    <string name="deleteAllEntries">Вилучити всі статті крім обраних</string>
+    <string name="deleteAllEntries">Вилучити всі статті крім обраних?</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з мітками</string>
     <string name="filter_hint">Всі фільтри об’єднуються по Або. Прийняти переважує Відхилити</string>
