@@ -166,7 +166,7 @@
     <string name="menu_font_bold">Жирний шрифт</string>
     <string name="menu_copy_clipboard">Скопіювати посилання</string>
     <string name="menu_cancel_refresh">Скасувати оновлення</string>
-    <string name="menu_delete_non_starred">Вилучити не обране</string>
+    <string name="menu_delete_non_starred">Відновити стрічку до початкового стану</string>
     <string name="menu_toogle_unread_all">Прочитані|Всі</string>
     <string name="menu_load_all_images">Всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
@@ -375,7 +375,7 @@
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">інакше застосувати до вмісту</string>
     <string name="rule_text">Текст правила</string>
-    <string name="global_marks_as_star_filter_rule_descr">кожне правило на новому рядку</string>
+    <string name="global_marks_as_star_filter_rule_descr">правило на ряд</string>
     <string name="customKeepTime">Особистий час зберігання статей</string>
     <string name="menu_toggle_theme">Змінити тему</string>
     <string name="turnOn">Увімкнути</string>
