@@ -169,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             else
                 getSupportActionBar().show();
         }
-        UpdateHeader( mLastMax, mLastProgress, statusBarHidden );
+        UpdateHeader( mLastMax, mLastProgress, statusBarHidden, actionBarHidden );
         invalidateOptionsMenu();
     }
 
@@ -180,7 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView mLabelDate = null;
     public View mRootView = null;
 
-    public void UpdateHeader(int max, int progress, boolean isStatusBarHidden) {
+    public void UpdateHeader(int max, int progress, boolean isStatusBarHidden, boolean isToolBarHidden) {
         if ( mRootView == null )
             return;
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null ) {
@@ -215,17 +215,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         isLayoutVisible = SetupHeaderLabel( mLabelBattery, GetBatteryText(),"article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
         isLayoutVisible = SetupHeaderLabel( mLabelDate,  GetDateText(),"article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
         mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
+        if ( !isToolBarHidden )
+            mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( Theme.GetToolBarColorInt() );
     }
 
     private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean isStatusBarHidden, boolean isLayoutVisible) {
         if ( PrefUtils.getBoolean(key, true ) && isStatusBarHidden ) {
             isLayoutVisible = true;
+            textView.setVisibility( View.VISIBLE );
             textView.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             textView.setText( text );
             textView.setTextColor(Theme.GetColorInt("article_text_footer_clock_color", R.string.default_article_text_footer_color) );
             textView.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
         } else {
-            textView.setText("");
+            textView.setVisibility( View.GONE );
             textView.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
         }
         return isLayoutVisible;

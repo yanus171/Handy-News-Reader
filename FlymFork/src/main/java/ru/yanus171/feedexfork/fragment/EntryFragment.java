@@ -1061,7 +1061,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         getBaseActivity().UpdateHeader(contentHeight - webViewHeight,
                                        entryView == null ? 0 : entryView.getScrollY(),
-                                       GetIsStatusBarHidden() );
+                                       GetIsStatusBarHidden(),
+                                       GetIsActionBarHidden() );
     }
 
 

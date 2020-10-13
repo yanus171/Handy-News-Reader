@@ -483,7 +483,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void UpdateFooter() {
         getBaseActivity().UpdateHeader(mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
                                        mListView.getFirstVisiblePosition(),
-                                       HomeActivity.GetIsStatusBarEntryListHidden() );
+                                       HomeActivity.GetIsStatusBarEntryListHidden(),
+                                       HomeActivity.GetIsActionBarEntryListHidden());
     }
 
     private BaseActivity getBaseActivity() {

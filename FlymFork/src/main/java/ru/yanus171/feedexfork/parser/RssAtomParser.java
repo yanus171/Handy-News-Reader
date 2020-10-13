@@ -319,7 +319,8 @@ public class RssAtomParser extends DefaultHandler {
             if (mTmpCategory == null) {
                 mTmpCategory = new StringBuilder();
             }
-            mTmpCategory.append( attributes.getValue("", ATTRIBUTE_TERM) );
+            if ( attributes.getValue("", ATTRIBUTE_TERM) != null )
+                mTmpCategory.append( attributes.getValue("", ATTRIBUTE_TERM) );
         }
     }
 
