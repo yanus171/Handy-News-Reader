@@ -630,7 +630,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             }
         });
         ShowControls();
-        findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
+        //findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
         if ( intent.hasExtra( SearchManager.QUERY ) )
             Validate();
     }

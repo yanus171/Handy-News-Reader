@@ -70,6 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int PAGE_SCROLL_DURATION_MSEC = 450;
     private int mLastMax = 0;
     private int mLastProgress = 0;
+    public ProgressBar mProgressBarRefresh = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,8 +216,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         isLayoutVisible = SetupHeaderLabel( mLabelBattery, GetBatteryText(),"article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
         isLayoutVisible = SetupHeaderLabel( mLabelDate,  GetDateText(),"article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
         mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
-        if ( !isToolBarHidden )
-            mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( Theme.GetToolBarColorInt() );
+        {
+            final int color = !isToolBarHidden ? Theme.GetToolBarColorInt() :Color.TRANSPARENT;
+            mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( color );
+            if ( mProgressBarRefresh != null )
+                mProgressBarRefresh.setBackgroundColor( color );
+        }
     }
 
     private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean isStatusBarHidden, boolean isLayoutVisible) {

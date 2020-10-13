@@ -137,7 +137,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
-    private ProgressBar mProgressBarRefresh = null;
     public boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
@@ -286,11 +285,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
 
 
-        if ( mProgressBarRefresh != null ) {
+        if ( getBaseActivity().mProgressBarRefresh != null ) {
             if (isRefresh)
-                mProgressBarRefresh.setVisibility(View.VISIBLE);
+                getBaseActivity().mProgressBarRefresh.setVisibility(View.VISIBLE);
             else
-                mProgressBarRefresh.setVisibility(View.GONE);
+                getBaseActivity().mProgressBarRefresh.setVisibility(View.GONE);
         }
     }
 
@@ -396,8 +395,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
-        mProgressBarRefresh.setBackgroundColor(Theme.GetToolBarColorInt() );
+        getBaseActivity().mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
+        getBaseActivity().mProgressBarRefresh.setBackgroundColor(Theme.GetToolBarColorInt() );
         mListView = rootView.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mListView.setNestedScrollingEnabled(true);
