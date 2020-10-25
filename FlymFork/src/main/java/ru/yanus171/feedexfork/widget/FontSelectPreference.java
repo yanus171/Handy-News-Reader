@@ -251,6 +251,7 @@ public class FontSelectPreference extends Preference {
 				small.setTypeface(Typeface.DEFAULT);
 				small.setPadding(PAD, 0, 0, PAD);
 				small.setTextColor(Theme.GetMenuFontColor());
+				small.setLinksClickable( false );
 				small.setTextIsSelectable(false);
 				//small.setEnabled( false );
 			}

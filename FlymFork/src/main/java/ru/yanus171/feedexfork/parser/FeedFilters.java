@@ -160,6 +160,7 @@ public class FeedFilters {
             title = title == null ? "" : title;
             url = url == null ? "" : url;
             categories = categories == null ? "" : categories;
+            content = content == null ? "" : content;
 
             if (isRegex) {
                 try {

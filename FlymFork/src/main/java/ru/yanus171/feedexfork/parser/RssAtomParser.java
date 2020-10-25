@@ -100,6 +100,7 @@ public class RssAtomParser extends DefaultHandler {
     private static final String TAG_LINK = "link";
     private static final String TAG_DESCRIPTION = "description";
     private static final String TAG_MEDIA_DESCRIPTION = "media:description";
+    private static final String TAG_MEDIA_THUMBNAIL = "media:thumbnail";
     private static final String TAG_CONTENT = "content";
     private static final String TAG_MEDIA_CONTENT = "media:content";
     private static final String TAG_ENCODED_CONTENT = "encoded";
@@ -195,6 +196,7 @@ public class RssAtomParser extends DefaultHandler {
     private ArrayList<String> mCategoryList = new ArrayList<>();
     private StringBuilder mTmpCategory = null;
     private boolean mCategoryTagEntered = false;
+    private String mMainImageUrl = null;
 
     public RssAtomParser(Date realLastUpdateDate, long keepDateBorderTime, final String id, String feedName, String url, boolean retrieveFullText) {
         mKeepDateBorder = new Date(keepDateBorderTime);
@@ -280,8 +282,8 @@ public class RssAtomParser extends DefaultHandler {
                     }
                 }
             }
-        } else if ((TAG_DESCRIPTION.equals(localName) && !TAG_MEDIA_DESCRIPTION.equals(qName))
-                || (TAG_CONTENT.equals(localName) && !TAG_MEDIA_CONTENT.equals(qName))) {
+        } else if ((TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName))
+                || (TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName))) {
             mDescriptionTagEntered = true;
             mDescription = new StringBuilder();
         } else if (TAG_SUMMARY.equals(localName)) {
@@ -289,6 +291,8 @@ public class RssAtomParser extends DefaultHandler {
                 mDescriptionTagEntered = true;
                 mDescription = new StringBuilder();
             }
+        } else if ( TAG_MEDIA_THUMBNAIL.equals( qName ) ) {
+            mMainImageUrl = attributes.getValue( "", "url" );
         } else if (TAG_PUBDATE.equals(localName)) {
             mPubDateTagEntered = true;
             mDateStringBuilder = new StringBuilder();
@@ -365,8 +369,8 @@ public class RssAtomParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
             if (TAG_TITLE.equals(localName)) {
                 mTitleTagEntered = false;
-            } else if ((TAG_DESCRIPTION.equals(localName) && !TAG_MEDIA_DESCRIPTION.equals(qName)) || TAG_SUMMARY.equals(localName)
-                    || (TAG_CONTENT.equals(localName) && !TAG_MEDIA_CONTENT.equals(qName)) || TAG_ENCODED_CONTENT.equals(localName)) {
+            } else if (TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName) || TAG_SUMMARY.equals(localName)
+                    || TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName) || TAG_ENCODED_CONTENT.equals(localName)) {
                 mDescriptionTagEntered = false;
             } else if (TAG_LINK.equals(localName)) {
                 mLinkTagEntered = false;
@@ -423,30 +427,33 @@ public class RssAtomParser extends DefaultHandler {
                     values.put(EntryColumns.TITLE, improvedTitle);
 
                     String improvedContent = null;
-                    String mainImageUrl = null;
+                    String mainImageUrl = mMainImageUrl;
                     ArrayList<String> imagesUrls = null;
                     if (mDescription != null) {
                         // Improve the description
                         improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl, mFilters, ArticleTextExtractor.MobilizeType.Yes, true);
+                        imagesUrls = new ArrayList<>();
+                        if ( mainImageUrl != null ) {
+                            imagesUrls.add(mainImageUrl);
+                            if ( !improvedContent.contains( mMainImageUrl ) )
+                                improvedContent = String.format( "<img src=\"%s\" />", mMainImageUrl ) + improvedContent;
+                        }
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
-                            imagesUrls = new ArrayList<>();
                             HtmlUtils.replaceImageURLs( improvedContent, "", -1, mEntryLink.toString(), true, imagesUrls, null, mMaxImageDownloadCount );
-                            if (!imagesUrls.isEmpty()) {
+                            if ( mainImageUrl == null && !imagesUrls.isEmpty() ) {
                                 mainImageUrl = HtmlUtils.getMainImageURL(imagesUrls);
                             }
-                        } else {
+                        } else if ( mainImageUrl == null )
                             mainImageUrl = HtmlUtils.getMainImageURL(improvedContent);
-                        }
 
-                        if (improvedContent != null) {
+                        if (improvedContent != null)
                             values.put(EntryColumns.ABSTRACT, improvedContent);
-                        }
                     }
 
-                    if (mainImageUrl != null) {
+                    if ( mainImageUrl != null )
                         values.put(EntryColumns.IMAGE_URL, mainImageUrl);
-                    }
+                    mMainImageUrl = null;
 
                     String improvedAuthor = "";
                     if ( mAuthor != null )
