@@ -166,7 +166,7 @@
     <string name="menu_font_bold">Жирний шрифт</string>
     <string name="menu_copy_clipboard">Скопіювати посилання</string>
     <string name="menu_cancel_refresh">Скасувати оновлення</string>
-    <string name="menu_delete_non_starred">Вилучити не обране</string>
+    <string name="menu_delete_non_starred">Відновити стрічку до початкового стану</string>
     <string name="menu_toogle_unread_all">Прочитані|Всі</string>
     <string name="menu_load_all_images">Всі зображення</string>
     <string name="menu_mark_as_favorite">В обране</string>
@@ -361,7 +361,7 @@
     <string name="lock_orientation">Горизонтальна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною: </string>
-    <string name="deleteAllEntries">Вилучити всі статті крім обраних</string>
+    <string name="deleteAllEntries">Вилучити всі статті крім обраних?</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з мітками</string>
     <string name="filter_hint">Всі фільтри об’єднуються по Або. Прийняти переважує Відхилити</string>
@@ -375,7 +375,7 @@
     <string name="global_filter_descr">Фільтр, застосовуваний до кожної стрічки. Щоб вимкнути залиште текст фільтра (й регулярного виразу) пустим</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">інакше застосувати до вмісту</string>
     <string name="rule_text">Текст правила</string>
-    <string name="global_marks_as_star_filter_rule_descr">кожне правило на новому рядку</string>
+    <string name="global_marks_as_star_filter_rule_descr">правило на ряд</string>
     <string name="customKeepTime">Особистий час зберігання статей</string>
     <string name="menu_toggle_theme">Змінити тему</string>
     <string name="turnOn">Увімкнути</string>
@@ -499,7 +499,7 @@
     <string name="removeText">Вилучити текст</string>
     <string name="set_category">Встановити як категорію</string>
     <string name="menu_more_options">Більше опцій</string>
-    <string name="reset_feed_and_delete_all_articles">Відновити стрічку до початкового стану та вилучити всі непозначені статті</string>
+    <string name="reset_feed_and_delete_all_articles">Відновити стрічку до початкового стану та вилучити всі статті, крім обраних</string>
     <string name="filter_apply_to_author">Застосовано до автора</string>
     <string name="filter_apply_to_category">Застосовано до категорії</string>
     <string name="filter_apply_to_url">Застосувати до URL</string>
@@ -552,6 +552,9 @@
     <string name="menu_reload_all_texts">Оновити все</string>
     <string name="reloading_all_texts">Оновлюю всі тексти</string>
     <string name="menu_visible_articles_action">Видимі статті</string>
+    <string name="menu_unstar_articles">Вилучити з обраного</string>
+    <string name="unstarAllArtcilesComfirm">Вилучити з обраного ВСІ видимі ОБРАНІ статті. Впевнені?</string>
+    <string name="unstarAllArtcilesComfirm2">Всі видимі обрані статті будуть вилучені з обраного. Добре подумали?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>

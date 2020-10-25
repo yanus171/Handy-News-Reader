@@ -558,6 +558,9 @@ GENERAL]]></string>
     <string name="menu_reload_all_texts">Przeładuj cały tekst</string>
     <string name="reloading_all_texts">Przeładowuje cały tekst</string>
     <string name="menu_visible_articles_action">Widoczne artykuły</string>
+    <string name="menu_unstar_articles">Odznacz gwiazdkę z artykułów</string>
+    <string name="unstarAllArtcilesComfirm">ODZNACZ GWIAZDKĄ WSZYSTKIE widoczne OZNACZONE GWIAZDKĄ artykuły. Na pewno?</string>
+    <string name="unstarAllArtcilesComfirm2">Wszystkie widoczne artykuły oznaczone gwiazdką zostaną odznaczone. NA PEWNO?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
