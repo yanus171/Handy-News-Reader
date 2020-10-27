@@ -551,6 +551,9 @@
     <string name="main_font_css_text_title_description">pour définir le poids de la police, l\'espacement des lettres, etc., pour le texte de l\'article</string>
     <string name="btn_reload_full_text">Recharger le texte complet</string>
     <string name="article_text_information_summary">Ce texte n\'est visible que quand la barre d\'état est cachée</string>
+    <string name="menu_unstar_articles">Retirer les articles des favoris</string>
+    <string name="unstarAllArtcilesComfirm">RETIRER TOUS les articles visibles des FAVORIS. Êtes-vous sûr.e ?</string>
+    <string name="unstarAllArtcilesComfirm2">Tous les articles visibles vont être retirés des favoris. Êtes-vous VRAIMENT sûr.e ?</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
