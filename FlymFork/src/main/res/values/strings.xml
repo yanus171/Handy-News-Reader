@@ -571,6 +571,8 @@
     <string name="menu_unstar_articles">Unstar articles</string>
     <string name="unstarAllArtcilesComfirm">UNSTAR ALL visible STARRED articles. Are you sure?</string>
     <string name="unstarAllArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
+    <string name="tap_actions_were_enabled">Tap actions were enabled</string>
+    <string name="tap_actions_were_disabled">Tap actions were disabled! Tap top right to enable</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

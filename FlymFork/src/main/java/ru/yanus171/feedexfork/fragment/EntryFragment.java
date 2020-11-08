@@ -299,7 +299,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 else {
                     PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED, true);
                     TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView);
-                    Toast.makeText( MainApplication.getContext(), "Tap actions enabled", Toast.LENGTH_LONG ).show();
+                    Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
                 }
             }
         });
@@ -742,7 +742,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     item.setChecked( isArticleTapEnabled() );
                     TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView );
                     if ( !isArticleTapEnabled() )
-                        Toast.makeText( getContext(), "Tap actions disabled! Tap top right to enable.", Toast.LENGTH_LONG ).show();
+                        Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
                     break;
                 }
 
