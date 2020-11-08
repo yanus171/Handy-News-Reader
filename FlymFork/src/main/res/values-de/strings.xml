@@ -270,12 +270,12 @@
     <string name="article_text_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
     <string name="settings_informations_size">Textgröße der zusätzlichen Informationen</string>
     <string name="article_text_information_color">Text- und Hintergrundfarbe der Informationen</string>
-    <string name="article_text_information_color_descr">Farbe und Hintergrund der zusätzlichen Informationen in der Kopfzeile</string>
+    <string name="article_text_information_color_descr">Text- und Hintergrundfarbe der zusätzlichen Informationen in der Kopfzeile</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">Lese-Fortschrittsbalken anzeigen</string>
-    <string name="article_text_progress_height">Höhe des Fortschrittsbalkens</string>
-    <string name="article_text_progress_color">Farbe des Fortschrittsbalkens</string>
+    <string name="article_text_show_progress">Lese-Fortschrittsleiste anzeigen</string>
+    <string name="article_text_progress_height">Höhe der Fortschrittsleiste</string>
+    <string name="article_text_progress_color">Farbe der Fortschrittsleiste</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
@@ -463,7 +463,7 @@
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
     <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
-    <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
+    <string name="tool_bar_color_desc">Diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
     <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Artikelansicht bearbeiten\". Hiermit werden die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
     <string name="one_webpage_article_classname_label">Root-Artikel-Element</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
@@ -510,7 +510,7 @@
     <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
     <string name="show_article_category">"Artikelkategorie anzeigen"</string>
     <string name="article_text_information">Zusätzliche Informationen in der Kopfzeile</string>
-    <string name="article_text_progress">Lese-Fortschrittsbalken in der Kopfzeile</string>
+    <string name="article_text_progress">Lese-Fortschrittsleiste in der Kopfzeile</string>
     <string name="global_removeText_filter_rule_descr">Regex (ein Ausdruck pro Zeile) auf jeden Artikelinhalt angewendet</string>
     <string name="parsing_web_page_links">WebPage-Links analysieren</string>
     <string name="global_date_class_list">Liste der Datumsklassen</string>
