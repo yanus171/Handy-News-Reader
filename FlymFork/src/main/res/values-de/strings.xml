@@ -405,8 +405,8 @@
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
     <string name="auto_refresh_requires_charging">Nur beim Laden</string>
-    <string name="global_class_list_to_remove_from_article_text">Textregeln entfernen</string>
-    <string name="global_class_list_to_remove_from_article_text_summary">Klassenname pro Zeile</string>
+    <string name="global_class_list_to_remove_from_article_text">Text entfernen</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">Diese Regeln gelten für alle Seiten. Ein Klassenname pro Zeile</string>
     <string name="global_date_class_list_summary">Klassenname pro Zeile. Die Elemente dieser Klassen werden beim Laden von WebPage-Links als Datum des Artikels betrachtet</string>
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
@@ -421,7 +421,7 @@
     <string name="custom_data_folder">Benutzerdefinierter Pfad für externe Dateien</string>
     <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
     <string name="entry_text_title_link">Titel verknüpfen</string>
-    <string name="entry_text_title_link_description">Ermöglicht das Öffnen von Webseiten im Browser durch Antippen der Überschrift</string>
+    <string name="entry_text_title_link_description">Ermöglicht das Öffnen des Artikels im Browser durch Antippen der Überschrift</string>
     <string name="delete_read_articles">Gelesene Artikel löschen</string>
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
