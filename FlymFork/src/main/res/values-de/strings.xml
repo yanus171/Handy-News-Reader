@@ -130,7 +130,7 @@
     <string name="reject">ABLEHNEN</string>
     <string name="feed_search">Feed-Suche</string>
     <string name="web_page_search_duckduckgo">Webseitensuche (DuckDuckGo)</string>
-    <string name="select_file">Datei auswählen (SD-Stammverzeichnis)</string>
+    <string name="select_file">Datei auswählen (Feedex-Ordner)</string>
     <string name="question_delete_feed">Möchten Sie diesen Feed wirklich löschen?</string>
     <string name="question_delete_group">Möchten Sie diese Gruppe mit allen Feeds wirklich löschen?</string>
     <string name="question_delete_filter">Möchten Sie diesen Filter wirklich löschen?</string>
