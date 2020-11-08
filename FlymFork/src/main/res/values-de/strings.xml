@@ -106,7 +106,7 @@
     <string name="menu_import_export">Ex- und Importieren</string>
     <string name="menu_import">OPML-Datei importieren</string>
     <string name="menu_export">OPML-Datei exportieren</string>
-    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
+    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung für den Speicherzugriff.</string>
     <string name="error_feed_error">Zugriff auf Feed-Adresse nicht möglich.</string>
     <string name="error_feed_process">Der Feed kann nicht verarbeitet werden.</string>
     <string name="error_feed_url_exists">Diese Adresse existiert bereits.</string>
@@ -174,7 +174,7 @@
     <string name="menu_mark_as_favorite">Als Favorit markieren</string>
     <string name="menu_mark_as_unfavorite">Favorit-Markierung entfernen</string>
     <string name="menu_mark_as_unread">Als ungelesen markieren</string>
-    <string name="menu_reload_full_text">Gesamten Text neu laden</string>
+    <string name="menu_reload_full_text">Gesamten Text</string>
     <string name="menu_reload_full_text_without_mobilizer">Ohne Mobilizer neu laden</string>
     <string name="share_favorites_title">Handy News Reader: Favoriten</string>
     <string name="link_was_copied_to_clipboard">Link kopiert</string>
