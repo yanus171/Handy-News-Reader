@@ -222,7 +222,7 @@
     <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
     <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
     <string name="settings_max_image_download_size_kb">Maximale Bildgröße (kB)</string>
-    <string name="settings_max_image_download_size_kb_summary">Größere Bilder nicht automatisch laden\n</string>
+    <string name="settings_max_image_download_size_kb_summary">Größere Bilder werden nicht automatisch geladen</string>
     <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
     <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
     <string name="settings_load_comments">Kommentare laden</string>
@@ -550,7 +550,7 @@
     <string name="settings_thread_count_description">(1-100) Die Zahl der simultan durchgeführten Operationen während der Artikelaktualisierung. Je kleiner der Wert ist, desto kleiner ist die CPU- und Speicherauslastung bei der Aktualisierung. Je größer, desto schneller ist sie. Der optimale Wert hängt von der Zahl der CPU-Cores des Gerätes ab.</string>
     <string name="main_font_css_text_title">Text im CSS-Stil der Hauptschriftart</string>
     <string name="main_font_css_text_title_description">zum Einstellen der Schriftstärke, des Buchstabenabstands usw. für das Artikeltextfenster</string>
-    <string name="btn_reload_full_text">Text vollständig neu laden</string>
+    <string name="btn_reload_full_text">Gesamten Artikel neu laden</string>
     <string name="article_text_information_summary">Dieser Text ist nur sichtbar, wenn die Statusleiste ausgeblendet ist</string>
     <string name="menu_reload_all_texts">Alle Texte neu laden</string>
     <string name="reloading_all_texts">Alle Texte werden neu geladen</string>
