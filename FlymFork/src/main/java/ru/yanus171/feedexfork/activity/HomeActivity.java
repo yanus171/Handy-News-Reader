@@ -302,6 +302,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         final int statusHeight = statusView.isShown() ? statusView.getHeight() : 0;
         final float coeff = PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9F : 0.98F;
         mEntriesFragment.mListView.smoothScrollBy((int) (downOrUp * ( mEntriesFragment.mListView.getHeight() - appBarHeight - statusHeight) * coeff), PAGE_SCROLL_DURATION_MSEC * 2 );
+        if ( downOrUp > 0 )
+            ( (AppBarLayout)mRootView.findViewById(R.id.appbar) ).setExpanded( false );
     }
 
     private void CloseDrawer() {

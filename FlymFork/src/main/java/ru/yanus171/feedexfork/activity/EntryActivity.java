@@ -151,6 +151,7 @@ public class EntryActivity extends BaseActivity implements Observer {
 
     @Override
     public void onDestroy() {
+        mEntryFragment = null;
         mActivityCount--;
         if ( mActivityCount == 0 )
             stopService( new Intent(this, ReadingService.class) );
@@ -201,7 +202,8 @@ public class EntryActivity extends BaseActivity implements Observer {
         UiUtils.RunOnGuiThread(new Runnable() {
             @Override
             public void run() {
-                mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
+                if ( mEntryFragment != null )
+                    mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
             }
         } );
     }

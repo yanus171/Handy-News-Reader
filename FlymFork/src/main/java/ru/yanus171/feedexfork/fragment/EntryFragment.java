@@ -132,6 +132,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUN
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
@@ -293,7 +294,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
+                if ( isArticleTapEnabled() )
+                    mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
+                else {
+                    PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED, true);
+                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView);
+                    Toast.makeText( MainApplication.getContext(), "Tap actions enabled", Toast.LENGTH_LONG ).show();
+                }
             }
         });
 
@@ -731,9 +738,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_menu_by_tap_enabled: {
-                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false) ;
-                    item.setChecked( PrefUtils.isArticleTapEnabled() );
+                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false);
+                    item.setChecked( isArticleTapEnabled() );
                     TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView );
+                    if ( !isArticleTapEnabled() )
+                        Toast.makeText( getContext(), "Tap actions disabled! Tap top right to enable.", Toast.LENGTH_LONG ).show();
                     break;
                 }
 

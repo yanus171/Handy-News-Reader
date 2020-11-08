@@ -299,8 +299,8 @@ public class PrefUtils {
     }
 
     public static int GetTapZoneSize() {
-        if ( !isArticleTapEnabled() )
-            return 0;
+        //if ( !isArticleTapEnabled() )
+        //    return 0;
         return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
     }
     // ------------------------------------------------------------------------------------

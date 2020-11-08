@@ -56,12 +56,13 @@ public final class TapZonePreviewPreference extends DialogPreference {
         SetupZone(parentView, size, R.id.entryNextBtn, size);
         SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size);
         SetupZone(parentView, size, R.id.toggleFullscreenBtn, size);
+        HideTapZonesText(parentView.getRootView());
     }
 
     private static void SetupZone(View parentView, int size, int viewID, int matchParent) {
         View view = parentView.findViewById( viewID );
         if ( view != null ) {
-            if (isArticleTapEnabled()) {
+            if (isArticleTapEnabled() || viewID == R.id.entryNextBtn ) {
                 view.setVisibility(View.VISIBLE);
                 SetSize(parentView, viewID, matchParent, size);
             } else
@@ -74,7 +75,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
         UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, isArticleTapEnabled() && !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
