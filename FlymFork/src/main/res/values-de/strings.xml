@@ -392,7 +392,7 @@
     <string name="exportingToFile">In Datei exportieren&#8230;</string>
     <string name="importingFromFile">Aus Datei importieren&#8230;</string>
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
-    <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird\n</string>
+    <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird</string>
     <string name="create_auto_backup">Backup ausführen</string>
     <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
@@ -530,7 +530,7 @@
     <string name="fontTextSample">Text</string>
     <string name="fontFamily">Schriftart</string>
     <string name="fontFamilySummary">Schriftfamilie fast aller Texte in der App. Ergänzung eigener Schriftarten als ttf-Dateien in Ordner: </string>
-    <string name="settings_font_rules">Schriftart</string>
+    <string name="settings_font_rules">Benutzerdefinierte Schriftart</string>
     <string name="settings_font_rules_description">Benutzerdefinierte Schriften für verschiedene Klassen in Artikeltexten nach Webseiten-Domäne festlegen</string>
     <string name="bold">Fett</string>
     <string name="font_rules_dialog_title">site_url:class=Schriftdateiname=Schriftgröße=Zeichenabstand=Schriftstärke</string>
