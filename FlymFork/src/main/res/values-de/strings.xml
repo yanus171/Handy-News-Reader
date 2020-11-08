@@ -561,7 +561,7 @@
     <string name="tap_actions_were_enabled">Antippen-Aktionen wurden aktiviert</string>
     <string name="tap_actions_were_disabled">Antippen-Aktionen wurden deaktiviert! Oben-rechts antippen, um sie wieder zu aktivieren.</string>
     <plurals name="number_of_new_entries">
-        <item quantity="one">Ein neuer Artikel.</item>
-        <item quantity="other">%d neue Artikel.</item>
+        <item quantity="one">Ein neuer Artikel</item>
+        <item quantity="other">%d neue Artikel</item>
     </plurals>
 </resources>
