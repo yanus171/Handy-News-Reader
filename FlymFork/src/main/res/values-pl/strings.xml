@@ -561,6 +561,8 @@ GENERAL]]></string>
     <string name="menu_unstar_articles">Odznacz gwiazdkę z artykułów</string>
     <string name="unstarAllArtcilesComfirm">ODZNACZ GWIAZDKĄ WSZYSTKIE widoczne OZNACZONE GWIAZDKĄ artykuły. Na pewno?</string>
     <string name="unstarAllArtcilesComfirm2">Wszystkie widoczne artykuły oznaczone gwiazdką zostaną odznaczone. NA PEWNO?</string>
+    <string name="tap_actions_were_enabled">Akcje tapnięcia zostały aktywowane</string>
+    <string name="tap_actions_were_disabled">Akcje tapnięcia zostały wyłączone! Tapnij na górze po prawej by włączyć</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
