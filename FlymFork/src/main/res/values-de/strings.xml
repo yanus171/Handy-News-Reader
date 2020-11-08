@@ -267,7 +267,7 @@
     <string name="settings_color_link_sample_long">Farbe der Links</string>
     <string name="underline_links">Links unterstreichen</string>
     <string name="article_text_show_clock">Uhrzeit anzeigen</string>
-    <string name="article_text_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
+    <string name="article_text_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit angezeigt</string>
     <string name="settings_informations_size">Textgröße der zusätzlichen Informationen</string>
     <string name="article_text_information_color">Text- und Hintergrundfarbe der Informationen</string>
     <string name="article_text_information_color_descr">Text- und Hintergrundfarbe der zusätzlichen Informationen in der Kopfzeile</string>
@@ -518,7 +518,7 @@
     <string name="set_date">Als Datum festlegen</string>
     <string name="clearingWebViewChache">WebView-Zwischenspeicher leeren</string>
     <string name="article_text_show_date">Datum anzeigen</string>
-    <string name="article_text_show_date_description">Der Tag des Monats und ein Wochentag</string>
+    <string name="article_text_show_date_description">Wenn aktiviert, werden im Vollbildmodus der aktuelle Tag des Monats und der Wochentag angezeigt</string>
     <string name="remove_existing_feeds_question">Vorhandene Feeds vor dem Importieren entfernen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
