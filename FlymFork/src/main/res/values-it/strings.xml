@@ -555,6 +555,8 @@
     <string name="menu_unstar_articles">Togli preferiti agli articoli</string>
     <string name="unstarAllArtcilesComfirm">TOGLI I PREFERITI A TUTTI gli articoli visibili. Sei sicuro?</string>
     <string name="unstarAllArtcilesComfirm2">Tutti gli articoli preferiti visibili non saranno preferiti. Sei Veramente sicuro?</string>
+    <string name="tap_actions_were_enabled">Le azioni tocco erano abilitate</string>
+    <string name="tap_actions_were_disabled">Le azioni del tocco sono state disabilitate! Tocca in alto a destra per abilitarle</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
