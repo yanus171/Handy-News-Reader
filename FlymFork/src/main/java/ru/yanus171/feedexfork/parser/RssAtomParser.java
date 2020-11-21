@@ -423,6 +423,16 @@ public class RssAtomParser extends DefaultHandler {
                         mNewRealLastUpdate = mEntryDate.getTime();
                     }
 
+
+                    String entryLinkString = ""; // don't set this to null as we need *some* value
+                    if (mEntryLink != null && mEntryLink.length() > 0) {
+                        entryLinkString = mEntryLink.toString().trim();
+                        if (mFeedBaseUrl != null && !entryLinkString.startsWith(Constants.HTTP_SCHEME) && !entryLinkString.startsWith(Constants.HTTPS_SCHEME)) {
+                            entryLinkString = mFeedBaseUrl
+                                + (entryLinkString.startsWith(Constants.SLASH) ? entryLinkString : Constants.SLASH + entryLinkString);
+                        }
+                    }
+
                     String improvedTitle = unescapeTitle(mTitle.toString().trim());
                     values.put(EntryColumns.TITLE, improvedTitle);
 
@@ -431,7 +441,7 @@ public class RssAtomParser extends DefaultHandler {
                     ArrayList<String> imagesUrls = null;
                     if (mDescription != null) {
                         // Improve the description
-                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl, mFilters, ArticleTextExtractor.MobilizeType.Yes, true);
+                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), entryLinkString, mFilters, ArticleTextExtractor.MobilizeType.Yes, true);
                         imagesUrls = new ArrayList<>();
                         if ( mainImageUrl != null ) {
                             imagesUrls.add(mainImageUrl);
@@ -458,16 +468,6 @@ public class RssAtomParser extends DefaultHandler {
                     String improvedAuthor = "";
                     if ( mAuthor != null )
                         improvedAuthor = mAuthor.toString();
-
-                    String entryLinkString = ""; // don't set this to null as we need *some* value
-
-                    if (mEntryLink != null && mEntryLink.length() > 0) {
-                        entryLinkString = mEntryLink.toString().trim();
-                        if (mFeedBaseUrl != null && !entryLinkString.startsWith(Constants.HTTP_SCHEME) && !entryLinkString.startsWith(Constants.HTTPS_SCHEME)) {
-                            entryLinkString = mFeedBaseUrl
-                                    + (entryLinkString.startsWith(Constants.SLASH) ? entryLinkString : Constants.SLASH + entryLinkString);
-                        }
-                    }
 
                     // Try to find if the entry is not filtered and need to be processed
                     if (!mFilters.isEntryFiltered(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]))) {

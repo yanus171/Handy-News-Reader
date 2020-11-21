@@ -85,6 +85,7 @@ public class HtmlUtils {
 
     //public static boolean mIsDownloadingImagesForEntryView = false;
 
+    static final Pattern VIDEO_CHANNEL_URL = Pattern.compile("ube.com.watch.v=([^&]+)" );
 
     public static String improveHtmlContent(String content, String baseUri, FeedFilters filters, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
 
@@ -145,6 +146,14 @@ public class HtmlUtils {
             content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
 
         content = content.replaceAll( "<p>([\\n\\s\\t]*?)</p>", "" );
+
+        Matcher m = VIDEO_CHANNEL_URL.matcher( baseUri );
+        if ( m.find() ) {
+            String channelID = m.group(1);
+            content += String.format( "<iframe src=\"https://www.1111222.com/embed/%s?rel=0\" frameborder=\"0\" allowfullscreen ></iframe>", channelID )
+                .replace( "222", "ube" )
+                .replace( "1111", "yout" );
+        }
         return content;
     }
 

@@ -191,7 +191,7 @@ public class EntryView extends WebView implements Handler.Callback {
             (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}"
             + "h1 {color: inherit; text-decoration: none}"
             + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "} "
-            + "iframe {allowfullscreen;position:relative;top:0;left:0;width:100%;height:100%;}"
+            + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}"
             + "pre {white-space: pre-wrap;} "
             + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
             + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
