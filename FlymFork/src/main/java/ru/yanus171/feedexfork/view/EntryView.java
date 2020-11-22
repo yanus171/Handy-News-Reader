@@ -679,11 +679,18 @@ public class EntryView extends WebView implements Handler.Callback {
                             }
                         }
 
+
                         final Item[] items = {
                                 new Item(R.string.loadLink, R.drawable.cup_new_load_now),
                                 new Item(R.string.loadLinkLater, R.drawable.cup_new_load_later),
                                 new Item(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star),
-                                new Item(R.string.open_link, android.R.drawable.ic_menu_send)
+                                new Item(R.string.open_link, android.R.drawable.ic_menu_send),
+                                new Item(R.string.menu_share, android.R.drawable.ic_menu_share)
+                        };
+
+                        final Item[] itemsNoRead = {
+                            new Item(R.string.open_link, android.R.drawable.ic_menu_send),
+                            new Item(R.string.menu_share, android.R.drawable.ic_menu_share)
                         };
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -692,7 +699,7 @@ public class EntryView extends WebView implements Handler.Callback {
                                 getContext(),
                                 android.R.layout.select_dialog_item,
                                 android.R.id.text1,
-                                items) {
+                                url.endsWith(".pdf") ? itemsNoRead : items) {
                             @NonNull
                             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                                 //Use super class to create the View
@@ -717,18 +724,23 @@ public class EntryView extends WebView implements Handler.Callback {
                             public void onClick(DialogInterface dialog, int item) {
                                 final Intent intent;
                                 if (item == 0)
-                                    intent = new Intent(getContext(), EntryActivity.class);
+                                    intent = new Intent(getContext(), EntryActivity.class).setData(Uri.parse(url));
                                 else if (item == 1)
-                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class);
+                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url));
                                 else if (item == 2)
-                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class).putExtra(FetcherService.EXTRA_STAR, true );
-                                else
+                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true );
+                                else if (item == 3)
                                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                else
+                                    intent = Intent.createChooser(
+                                        new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
+                                            .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share) );
 
-                                getContext().startActivity(intent.setData(Uri.parse(url)));
+                                getContext().startActivity(intent);
                             }
                         });
 
+                        builder.setTitle( url );
                         builder.show();
                     }
                 } catch (ActivityNotFoundException e) {
