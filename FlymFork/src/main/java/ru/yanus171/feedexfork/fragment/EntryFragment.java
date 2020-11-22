@@ -1151,7 +1151,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                getActivity().onBackPressed();
+                if ( getActivity() != null )
+                    getActivity().onBackPressed();
             }
         });
     }

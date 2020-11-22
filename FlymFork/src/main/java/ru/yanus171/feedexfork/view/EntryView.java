@@ -894,7 +894,8 @@ public class EntryView extends WebView implements Handler.Callback {
         FetcherService.Status().HideByScroll();
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
-        mActivity.mEntryFragment.UpdateFooter();
+        if ( mActivity.mEntryFragment != null )
+            mActivity.mEntryFragment.UpdateFooter();
         mLastTimeScrolled = System.currentTimeMillis();
         if (mScrollChangeListener != null)
             mScrollChangeListener.run();
