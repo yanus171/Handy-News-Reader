@@ -1018,15 +1018,18 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
+        final ArrayList<String> listCopy;
+        synchronized ( mWasVisibleList ) {
+            listCopy = (ArrayList<String>) mWasVisibleList.clone();
+            mWasVisibleList.clear();
+        }
         new Thread() {
             @Override
             public void run() {
-                synchronized ( mWasVisibleList ) {
-                    SetVisibleItemsAsOld(mWasVisibleList);
-                    mWasVisibleList.clear();
-                }
+                SetVisibleItemsAsOld( listCopy );
             }
         }.start();
+
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
         SetListViewAdapter();
         //if ( mListView instanceof ListView )

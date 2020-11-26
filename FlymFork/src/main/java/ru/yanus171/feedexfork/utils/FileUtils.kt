@@ -208,8 +208,13 @@ object FileUtils {
                 EMPTY_MOBILIZED_VALUE
             }
 
-            if ( cursor != null )
-                UpdateMob( mobValue, cursor.getLong( colID ) ).start()
+            if ( cursor != null ) {
+                //UpdateMob(mobValue, cursor.getLong(colID)).start()
+                val cr = MainApplication.getContext().contentResolver
+                val values = ContentValues()
+                values.put(MOBILIZED_HTML, mobValue )
+                cr.update(FeedData.EntryColumns.CONTENT_URI( cursor.getLong(colID) ), values, null, null)
+            }
 
             return mobValue != EMPTY_MOBILIZED_VALUE
         } else if ( cursor != null )

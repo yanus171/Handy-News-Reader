@@ -458,9 +458,11 @@ public class EntryView extends WebView implements Handler.Callback {
         new Thread() {
             @Override
             public void run() {
+                final String dataWithLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
+                final String data = HtmlUtils.replaceImageURLs( dataWithLinks, mEntryId, mEntryLink, true );
                 synchronized (EntryView.this) {
-                    mDataWithWebLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
-                    mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, true );
+                    mData = data;
+                    mDataWithWebLinks = dataWithLinks;
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
@@ -922,8 +924,9 @@ public class EntryView extends WebView implements Handler.Callback {
         new Thread() {
             @Override
             public void run() {
+                final String data = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, downloadImages);
                 synchronized (EntryView.this) {
-                    mData = HtmlUtils.replaceImageURLs( mDataWithWebLinks, mEntryId, mEntryLink, downloadImages);
+                    mData = data;
                 }
                 UiUtils.RunOnGuiThread(new Runnable() {
                     @Override
@@ -942,8 +945,9 @@ public class EntryView extends WebView implements Handler.Callback {
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement(doc, mEntryLink, "", true);
         AddTagButtons(doc, mEntryLink, root);
+        final String data = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
         synchronized (EntryView.this) {
-            mData = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
+            mData = data;
         }
         mScrollY = getScrollY();
         LoadData();
@@ -954,10 +958,12 @@ public class EntryView extends WebView implements Handler.Callback {
         if (mContentWasLoaded && GetViewScrollPartY() > 0)
             mScrollPartY = GetViewScrollPartY();
         //StatusStartPageLoading();
+        final String data;
         synchronized (EntryView.this) {
-            mLastContentHeight = 0;
-            loadDataWithBaseURL(BASE_URL, mData, TEXT_HTML, Constants.UTF8, null);
+            data = mData;
         }
+        mLastContentHeight = 0;
+        loadDataWithBaseURL(BASE_URL, data, TEXT_HTML, Constants.UTF8, null);
     }
 
     private final Runnable EndStatusRunnable = new Runnable() {
