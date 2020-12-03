@@ -558,6 +558,7 @@
     <string name="menu_unstar_articles">Удалить из избранных</string>
     <string name="unstarAllArtcilesComfirm">Удалить ИЗ ИЗБРАННЫХ ВСЕ видимые статьи. Вы уверены?</string>
     <string name="unstarAllArtcilesComfirm2">Все видимые статьи будут удалены из избранных. Вы ПОЛНОСТЬЮ уверены?</string>
+    <string name="tap_actions_were_enabled">Действия по нажатию были включены</string>
     <string name="tap_actions_were_disabled">Действия при нажатии были отключены! Нажмите вверху справа для включения</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
