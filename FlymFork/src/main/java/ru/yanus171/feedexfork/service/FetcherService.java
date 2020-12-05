@@ -286,9 +286,10 @@ public class FetcherService extends IntentService {
 
     @Override
     public void onHandleIntent(final Intent intent) {
-        if (intent == null) { // No intent, we quit
+        if (intent == null) // No intent, we quit
             return;
-        }
+        if ( MainApplication.getContext() == null )
+            return;
         Status().ClearError();
 
         FileUtils.INSTANCE.reloadPrefs();
