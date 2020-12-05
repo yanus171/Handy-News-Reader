@@ -48,7 +48,7 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READE
 public class HtmlUtils {
 
     private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
-            .addTags("iframe", "video", "audio", "source", "track", "hr" )
+            .addTags("iframe", "video", "audio", "source", "track", "hr", "ruby", "rp", "rt" )
             .addAttributes("iframe", "src", "frameborder", "height", "width")
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
