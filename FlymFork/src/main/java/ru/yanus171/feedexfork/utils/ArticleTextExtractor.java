@@ -124,7 +124,14 @@ public class ArticleTextExtractor {
                     item.attr("src", item.attr("data-src"));
                     item.tagName( "img" );
                 }
+        }
 
+        {
+            Elements elList = doc.getElementsByClass( "lazy" );
+            for (Element item : elList)
+                if (item.tagName().equals("a") && item.hasAttr("data-src" ) ) {
+                    item.removeAttr("data-src");
+                }
         }
 
         {

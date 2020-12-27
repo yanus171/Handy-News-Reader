@@ -805,17 +805,16 @@ public class FetcherService extends IntentService {
                         return false;
                     Document doc = Jsoup.parse(connection.getInputStream(), null, "");
                     {
-                        Elements els = doc.getElementsByTag("meta");
-                        if (!els.isEmpty()) {
-                            Element el = els.first();
+                        for( Element el: doc.getElementsByTag("meta")) {
                             if (el.hasAttr("content") &&
                                 el.hasAttr("http-equiv") &&
                                 el.attr("http-equiv").equals("refresh")) {
-                                String s = els.first().attr("content");
+                                String s = el.attr("content");
                                 link = s.replaceFirst("\\d+;URL=", "");
                                 connection.disconnect();
                                 connection = new Connection(link);
                                 doc = Jsoup.parse(connection.getInputStream(), null, "");
+                                break;
                             }
                         }
                     }

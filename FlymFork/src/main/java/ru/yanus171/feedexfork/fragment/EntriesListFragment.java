@@ -133,7 +133,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private boolean mOriginalUriShownEntryText = false;
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;
-    private EntriesCursorAdapter mEntriesCursorAdapter;
+    private EntriesCursorAdapter mEntriesCursorAdapter = null;
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
