@@ -143,6 +143,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
     private FeedFilters mFilters = null;
+    private boolean mIsResumed = false;
+
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
     static class VisibleReadItem {
@@ -360,10 +362,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void onResume() {
         super.onResume();
         mImageDownloadObservable.addObserver(this);
+        mIsResumed = true;
     }
 
     @Override
     public void onPause() {
+        mIsResumed = false;
         mImageDownloadObservable.deleteObserver( this);
         super.onPause();
     }
@@ -408,7 +412,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if ( mEntriesCursorAdapter == null )
+                if ( mEntriesCursorAdapter == null || !mIsResumed )
                     return;
                 if ( GetActivity().mPageUpBtn != null )
                     GetActivity().mPageUpBtn.setVisibility( firstVisibleItem == 0 ? View.GONE : View.VISIBLE );
