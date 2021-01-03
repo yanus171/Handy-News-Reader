@@ -45,6 +45,7 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -71,6 +72,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
@@ -130,6 +132,10 @@ import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_DESC;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_ICON;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_TITLE;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.ITEM_URL;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.LAST_DATE;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.LAST_URL_TEXT;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.SEARCH_RESULTS_FIRST_VISISBLE_ITEM;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.SEARCH_RESULTS_Y_OFFSET;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_ARTICLE_CLASS_NAME;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_AUTHOR_CLASS_NAME;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_DATE_CLASS_NAME;
@@ -137,15 +143,14 @@ import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_IAMG
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_TEXT_CLASS_NAME;
 import static ru.yanus171.feedexfork.parser.OneWebPageParserKt.ONE_WEB_PAGE_URL_CLASS_NAME;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_AUTHOR;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CATEGORY;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_MAX_COUNT;
 import static ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetTypeFace;
 
 public class EditFeedActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -153,7 +158,6 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     static final String ITEM_TITLE = "title";
     static final String ITEM_URL = "feedId";
     static final String ITEM_DESC = "description";
-    static final String ITEM_ISREAD = "read";
     static final String ITEM_ICON = "icon";
     static final String ITEM_ACTION = "action";
     private static final String STATE_CURRENT_TAB = "STATE_CURRENT_TAB";
@@ -165,11 +169,18 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
     private static final String STATE_LAST_LOAD_TYPE = "STATE_LAST_LOAD_TYPE";
 
     public static final String DIALOG_IS_SHOWN = "EDIT_FEED_USER_SELECTION_DIALOG_IS_SHOWN";
+    public static final String SEARCH_RESULTS_FIRST_VISISBLE_ITEM = "SEARCH_RESULTS_FIRST_VISISBLE_ITEM";
+    public static final String SEARCH_RESULTS_Y_OFFSET = "SEARCH_RESULTS_Y_OFFSET";
     static final String IS_READ_STUMB = "[IS_READ]";
     public static final String AUTO_SET_AS_READ = "AUTO_SET_AS_READ";
     private String[] mKeepTimeValues;
 
-
+    static final String LAST_DATE = "DuckDuckGoSearchLastUrlDate";
+    static final String LAST_URL_TEXT = "DuckDuckGoSearchLastUrl";
+    static boolean IsSameUrl( String url ) {
+        return PrefUtils.getString(LAST_URL_TEXT, "" ).equals( url ) &&
+            System.currentTimeMillis() - PrefUtils.getLong( LAST_DATE, 0) < 1000* 60 * 60 * 24;
+    }
     private final ActionMode.Callback mFilterActionModeCallback = new ActionMode.Callback() {
 
         // Called when the action mode is created; startActionMode() was called
@@ -645,8 +656,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
             mUrlEditText.requestFocus();
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+        if ( mUserSelectionDialog != null && mUserSelectionDialog.isShowing() )
+            mUserSelectionDialog.dismiss();
         if ( PrefUtils.getBoolean(DIALOG_IS_SHOWN, false )  &&
-                ( mUserSelectionDialog == null || !mUserSelectionDialog.isShowing() ) &&
              mLoadTypeRG.getCheckedRadioButtonId() == R.id.rbWebPageSearch ) {
             final String urlOrSearch = mUrlEditText.getText().toString().trim();
             GetWebSearchDuckDuckGoResultsLoader loader = new GetWebSearchDuckDuckGoResultsLoader(EditFeedActivity.this, urlOrSearch );
@@ -889,6 +901,7 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         }
     }
 
+
     private void AddFeedFromUserSelection(final String name, final String dialogCaption, final Loader<ArrayList<HashMap<String, String>>> loader) {
         final ProgressDialog pd = new ProgressDialog(EditFeedActivity.this);
         pd.setMessage(getString(R.string.loading));
@@ -962,22 +975,31 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                 return false;
                         }
                     });
-
-                    builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    ListView lv = new ListView( getBaseContext() );
+                    builder.setView( lv );
+                    lv.setAdapter( adapter );
+                    lv.setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            AddFeed(data.get(which));
+                        public void onScrollStateChanged(AbsListView absListView, int i) {
+
                         }
 
-
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                            if ( PrefUtils.getBoolean( DIALOG_IS_SHOWN, false ) && visibleItemCount > 0 ) {
+                                PrefUtils.putInt(SEARCH_RESULTS_FIRST_VISISBLE_ITEM, firstVisibleItem);
+                                View v = view.getChildAt(0);
+                                PrefUtils.putInt(SEARCH_RESULTS_Y_OFFSET, v.getTop() - view.getPaddingTop());
+                            }
+                        }
                     });
-                    builder.setOnCancelListener( new AlertDialog.OnCancelListener(){
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onCancel(DialogInterface dialogInterface) {
-                            mUserSelectionDialog = null;
-                            PrefUtils.putBoolean( DIALOG_IS_SHOWN, false );
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            mUserSelectionDialog.dismiss();
+                            AddFeed(data.get(i));
                         }
-                    } );
+                    });
                     if (Build.VERSION.SDK_INT >= 17 )
                         builder.setOnDismissListener( new AlertDialog.OnDismissListener(){
                             @Override
@@ -985,8 +1007,11 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
                                 mUserSelectionDialog = null;
                             }
                         } );
+
                     PrefUtils.putBoolean( DIALOG_IS_SHOWN, true );
                     mUserSelectionDialog = builder.show();
+                    lv.setSelectionFromTop( PrefUtils.getInt( SEARCH_RESULTS_FIRST_VISISBLE_ITEM, 0 ),
+                                            PrefUtils.getInt( SEARCH_RESULTS_Y_OFFSET, 0 ) );
                 }
             }
 
@@ -1201,32 +1226,31 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
     private static final String GOOGLE_SEARCH_TEXT_URL = "https://google.com/search?ie=UTF-8&q=";
     public static final String GOOGLE_FAVICON_URL = "https://www.google.com/favicon.ico";
 
+
     final String mUrl;
-    private String mSearchText;
+    final private String mSearchText;
 
     GetWebSearchDuckDuckGoResultsLoader(Context context, String searchText) {
         super(context);
         mSearchText = searchText;
+        String s = searchText;
         try {
-            mSearchText = URLEncoder.encode(searchText, Constants.UTF8);
+            s = URLEncoder.encode(searchText, Constants.UTF8);
         } catch (UnsupportedEncodingException ignored) {
         }
-        mUrl = EditFeedActivity.DUCKDUCKGO_SEARCH_URL + mSearchText + "&kl=" + Locale.getDefault().getLanguage();
+        mUrl = EditFeedActivity.DUCKDUCKGO_SEARCH_URL + s + "&kl=" + Locale.getDefault().getLanguage();
     }
 
     private final String ITEM_FIELD_SEP = "__#__";
 
     @Override
     public ArrayList<HashMap<String, String>> loadInBackground() {
-        final String LAST_URL = "DuckDuckGoSearchLastUrl";
         final String LAST_RESULTS = "DuckDuckGoSearchLastResults";
-        final String LAST_DATE = "DuckDuckGoSearchLastUrlDate";
         final String ITEM_SEP = "__####__";
 
         final ArrayList<HashMap<String, String>> results = new ArrayList<>();
 
-        if ( PrefUtils.getString( LAST_URL, "" ).equals( mUrl ) &&
-             System.currentTimeMillis() - PrefUtils.getLong( LAST_DATE, 0) < 1000* 60 * 60 * 24 ) {
+        if (EditFeedActivity.IsSameUrl( mSearchText )) {
             for ( String item: TextUtils.split( PrefUtils.getString( LAST_RESULTS, "" ), ITEM_SEP ) ) {
                 HashMap<String, String> map = new HashMap<>();
                 String[] fieldList = TextUtils.split(item, ITEM_FIELD_SEP);
@@ -1237,7 +1261,7 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                     final String icon = fieldList[3];
                     final String action = fieldList.length > 4 ? fieldList[4] : "";
                     String read = "";
-                    if ( !url.startsWith( IS_READ_STUMB ) && FetcherService.GetEntryUri(url ) != null )
+                    if ( FetcherService.GetEntryUri(url ) != null )
                         read = IS_READ_STUMB;
                     map.put(ITEM_TITLE, read + title);
                     map.put(ITEM_URL, read + url);
@@ -1274,8 +1298,10 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                 AddItem(results, data, Intent.ACTION_VIEW, getContext().getString( R.string.search_in_yandex ), YANDEX_SEARCH_TEXT_URL + TextUtils.htmlEncode(mSearchText ), "", YANDEX_FAVICON_URL);
                 AddItem(results, data, Intent.ACTION_VIEW, getContext().getString( R.string.search_in_google ), GOOGLE_SEARCH_TEXT_URL + TextUtils.htmlEncode(mSearchText ), "", GOOGLE_FAVICON_URL);
 
-                PrefUtils.putString( LAST_URL, mUrl );
                 PrefUtils.putString( LAST_RESULTS, TextUtils.join( ITEM_SEP, data ) );
+                PrefUtils.putString( LAST_URL_TEXT, mSearchText );
+                PrefUtils.putInt( SEARCH_RESULTS_FIRST_VISISBLE_ITEM, 0 );
+                PrefUtils.putInt( SEARCH_RESULTS_Y_OFFSET, 0 );
                 PrefUtils.putLong( LAST_DATE, System.currentTimeMillis() );
                 return results;
             } finally {
