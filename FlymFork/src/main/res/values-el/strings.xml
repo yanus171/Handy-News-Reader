@@ -541,6 +541,7 @@
     <string name="megabytes">ΜΒ</string>
     <string name="create_start_auto_refersh">Έναρξη αυτόματης ανανέωσης</string>
     <string name="settings_thread_count">Μέτρηση νήματος</string>
+    <string name="menu_visible_articles_action">Ορατά άρθρα</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο.</item>
         <item quantity="other">%d νέα άρθρα.</item>
