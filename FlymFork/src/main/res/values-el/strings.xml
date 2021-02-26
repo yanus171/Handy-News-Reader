@@ -424,7 +424,7 @@
     <string name="delete_read_articles_descr">ανεξάρτητα από το χρόνο που κρατιούνται τα άρθρα</string>
     <string name="data_folder">Φάκελος δεδομένων</string>
     <string name="data_folder_descr">Που θα αποθηκεύονται τα κείμενα και οι εικόνες των κατεβασμένων άρθρων</string>
-    <string name="internalMemory">Προσωρινή μνήμη (Cache)</string>
+    <string name="internalMemory">Εσωτερική μνήμη (Cache)</string>
     <string name="externalMemory">Εξωτερική μνήμη</string>
     <string name="show_html">Να ναι ορατή η ηλεκτρονική διεύθυνση</string>
     <string name="image_white_background">Λευκή εικόνα φόντου</string>
@@ -541,7 +541,11 @@
     <string name="megabytes">ΜΒ</string>
     <string name="create_start_auto_refersh">Έναρξη αυτόματης ανανέωσης</string>
     <string name="settings_thread_count">Μέτρηση νήματος</string>
+    <string name="menu_reload_all_texts">Επαναφόρτωση όλων των κειμένων</string>
+    <string name="reloading_all_texts">Επαναφόρτωση όλων των κειμένων</string>
     <string name="menu_visible_articles_action">Ορατά άρθρα</string>
+    <string name="tap_actions_were_enabled">Οι ενέργειες αφής ενεργοποιήθηκαν</string>
+    <string name="tap_actions_were_disabled">Οι ενέργειες του χτυπήματος απενεργοποιήθηκαν! Πατήστε πάνω δεξιά για ενεργοποίηση</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ένα νέο άρθρο</item>
         <item quantity="other">%d νέα άρθρα</item>
