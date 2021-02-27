@@ -89,6 +89,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -133,7 +134,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private boolean mOriginalUriShownEntryText = false;
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;
-    private EntriesCursorAdapter mEntriesCursorAdapter = null;
+    public EntriesCursorAdapter mEntriesCursorAdapter = null;
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
@@ -209,6 +210,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
                 }
                 RestoreListScrollPosition();
+
                 getActivity().setProgressBarIndeterminateVisibility(false);
                 Status().End(mStatus);
                 timer.End();

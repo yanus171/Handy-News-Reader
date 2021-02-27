@@ -148,17 +148,17 @@ object FileUtils {
     private fun saveHTMLToFile(link: String, html: String): Uri? {
         var result: Uri? = null
         val out: OutputStreamWriter
-            val file = LinkToFile( link )
-            try {
-                out = OutputStreamWriter( FileOutputStream(file.absolutePath))
-                out.use { out ->
-                    out.write(html)
-                }
-                mHTMLFileVoc.addFile( file.name )
-                result = Uri.parse("file://" + file.absolutePath)
-            } catch (e: Exception) {
-                AddErrorToLog(null, e)
+        val file = LinkToFile( link )
+        try {
+            out = OutputStreamWriter( FileOutputStream(file.absolutePath))
+            out.use { out ->
+                out.write(html)
             }
+            mHTMLFileVoc.addFile( file.name )
+            result = Uri.parse("file://" + file.absolutePath)
+        } catch (e: Exception) {
+            AddErrorToLog(null, e)
+        }
 
         return result
     }

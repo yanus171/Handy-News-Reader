@@ -1180,10 +1180,12 @@ public class EntryView extends WebView implements Handler.Callback {
                     ContentValues values = new ContentValues();
                     values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    SetNotifyEnabled( false );
-                    //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
-                    cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
-                    SetNotifyEnabled( true );
+                    SetNotifyEnabled(false ); try {
+                        //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
+                        cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
+                    } finally {
+                        SetNotifyEnabled( true );
+                    }
                     //Dog.v("EntryView", String.format("EntryView.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();

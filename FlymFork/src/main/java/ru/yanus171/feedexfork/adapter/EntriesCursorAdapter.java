@@ -44,19 +44,23 @@
 
 package ru.yanus171.feedexfork.adapter;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -64,11 +68,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
@@ -95,7 +102,6 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -127,7 +133,6 @@ import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
@@ -175,7 +180,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         return super.getView(position, convertView, parent);
     }
-
+    public int getItemPosition( long feedID ) {
+        for( int i = 0; i < getCount(); i++ )
+            if ( getItemId( i ) == feedID )
+                return i;
+        return -1;
+    }
     public static Uri EntryUri( long id ) {
         return EntryColumns.CONTENT_URI( id ); //ContentUris.withAppendedId(mUri, id);
     }
@@ -188,9 +198,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         view.findViewById(R.id.textDate).setVisibility(View.GONE);
         view.findViewById(android.R.id.text2).setVisibility(View.GONE);
-
+        final int cursorPosition = cursor.getPosition();
         final String feedId = cursor.getString(mFeedIdPos);
         //final long entryID = cursor.getLong(mIdPos);
+        final String feedTitle = cursor.getString(mFeedTitlePos);
 
         if (view.getTag(R.id.holder) == null) {
             final ViewHolder holder = new ViewHolder();
@@ -301,8 +312,70 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             @Override
                             public void run() {
                                 if (isPress) {
+                                    class Item {
+                                        public final String text;
+                                        public final int icon;
+
+                                        private Item(int textID, Integer icon) {
+                                            this.text = context.getString(textID);
+                                            this.icon = icon;
+                                        }
+
+                                        @Override
+                                        public String toString() {
+                                            return text;
+                                        }
+                                    }
+
+                                    final Item[] items = {
+                                        new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
+                                        new Item(R.string.menu_mark_upper_as_read, 0),
+                                        new Item(R.string.menu_mark_all_as_unread, 0)
+                                    };
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder( context );
+                                    builder.setTitle( feedTitle );
+                                    builder.setAdapter(new ArrayAdapter<Item>(
+                                        context,
+                                        android.R.layout.select_dialog_item,
+                                        android.R.id.text1,
+                                        items) {
+                                        @NonNull
+                                        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                                            //Use super class to create the View
+                                            View v = super.getView(position, convertView, parent);
+                                            TextView tv = SetupTextView( v, android.R.id.text1);
+
+                                            if ( items[position].icon > 0 ) {
+                                                //Put the image on the TextView
+                                                int dp50 = (int) (50 * context.getResources().getDisplayMetrics().density + 0.5f);
+                                                Drawable dr = context.getResources().getDrawable(items[position].icon);
+                                                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+                                                Drawable d = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
+                                                d.setBounds(0, 0, dp50, dp50);
+                                                tv.setCompoundDrawables(d, null, null, null);
+                                            }
+                                            //Add margin between image and text (support various screen densities)
+                                            int dp5 = (int) (5 * context.getResources().getDisplayMetrics().density + 0.5f);
+                                            tv.setCompoundDrawablePadding(dp5);
+
+                                            return v;
+                                        }
+                                    }, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int item) {
+                                            final Intent intent;
+                                            if (item == 0)
+                                                EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
+                                            else if (item == 1)
+                                                ShowMarkUpperAsReadDialog( context, getItemPosition(holder.entryID) );
+                                            else if (item == 2)
+                                                ShowMarkAllAsUnReadDialog( context  );
+                                        }
+                                    });
+
+                                    builder.setTitle( holder.titleTextView.getText() );
+                                    builder.show();
                                     //wasMove = true;
-                                    EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
                                 }
                             }
                         }, ViewConfiguration.getLongPressTimeout());
@@ -452,7 +525,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.dateTextView.setVisibility(View.VISIBLE);
 
-        final String feedTitle = cursor.getString(mFeedTitlePos);
         String titleText = GetTitle(cursor);
         holder.titleTextView.setVisibility( titleText.isEmpty() ? View.GONE : View.VISIBLE );
         Calendar date = Calendar.getInstance();
@@ -704,6 +776,52 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
+    public void ShowDialog(Context context, int messageID, final Runnable action ) {
+        AlertDialog dialog = new AlertDialog.Builder(context) //
+            .setIcon(android.R.drawable.ic_dialog_alert) //
+            .setTitle( R.string.confirmation ) //
+            .setMessage( messageID ) //
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            action.run();
+                        }
+                    }.start();
+                }
+            }).setNegativeButton(android.R.string.no, null).create();
+        dialog.getWindow().setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        dialog.show();
+    }
+
+    public void ShowMarkUpperAsReadDialog(Context context, final int pos) {
+        ShowDialog(context, R.string.question_mark_upper_as_read, new Runnable() {
+           @Override
+           public void run() {
+               ContentResolver cr = MainApplication.getContext().getContentResolver();
+               ArrayList<Long> ids = new ArrayList<>();
+               for (int i = 0; i < pos; i++)
+                   ids.add(getItemId(i));
+               String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
+               cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
+           }
+       } );
+    }
+
+    public void ShowMarkAllAsUnReadDialog(Context context) {
+        ShowDialog(context, R.string.question_mark_all_as_unread, new Runnable() {
+            @Override
+            public void run() {
+                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                cr.update(FeedData.EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), null, null);
+            }
+        } );
+    }
+
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
         //final String s = text.toString();
 //        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
@@ -739,7 +857,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    static String GetImageSizeText(int imageSize) {
+    static String GetImageSizeText(long imageSize) {
         final double MEGABYTE = 1024.0 * 1024.0;
         return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > 1024 * 100 ?
             String.format( "%.1f\u00A0%s", imageSize / MEGABYTE, MainApplication.getContext().getString( R.string.megabytes ) ).replace( ",", "." ) : "";
@@ -769,8 +887,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.categoriesTextView.setEnabled(!holder.isRead);
         holder.urlTextView.setEnabled(!holder.isRead);
 //        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
-        holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_indicator_read : R.drawable.ic_indicator_unread);
+        {
+            boolean v = PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown();
+            holder.readImgView.setVisibility( v ? View.VISIBLE : View.GONE );
+            if ( v )
+                holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_indicator_read : R.drawable.ic_indicator_unread);
+        }
         holder.readToggleSwypeBtnView.setImageResource(holder.isRead ? R.drawable.ic_check_box_outline_blank_gray : R.drawable.ic_check_box_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
@@ -825,12 +947,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             public void run() {
                 if (isSilent)
                     SetNotifyEnabled(false);
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.update(entryUri, isRead ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), null, null);
-                CancelStarNotification( Long.parseLong(entryUri.getLastPathSegment()) );
-                if ( isSilent )
-                    SetNotifyEnabled( true );
-
+                try {
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    cr.update(entryUri, isRead ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), null, null);
+                    CancelStarNotification(Long.parseLong(entryUri.getLastPathSegment()));
+                } finally {
+                    if ( isSilent )
+                        SetNotifyEnabled( true );
+                }
             }
         }.start();
     }
@@ -852,16 +976,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             public void run() {
                 if ( isSilent )
                     SetNotifyEnabled( false );
-                ContentValues values = new ContentValues();
-                values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
 
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.update(entryUri, values, null, null);
-                if ( !isFavorite )
-                    CancelStarNotification( Long.parseLong(entryUri.getLastPathSegment()) );
-                if ( isSilent )
-                    SetNotifyEnabled( true );
-
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    cr.update(entryUri, values, null, null);
+                    if (!isFavorite)
+                        CancelStarNotification(Long.parseLong(entryUri.getLastPathSegment()));
+                } finally {
+                    if ( isSilent )
+                        SetNotifyEnabled( true );
+                }
             }
         }.start();
     }

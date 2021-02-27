@@ -165,7 +165,9 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORI
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 
@@ -357,17 +359,23 @@ public class FetcherService extends IntentService {
             synchronized (mCancelRefresh) {
                 mCancelRefresh = false;
             }
-            long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
-            long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-            deleteOldEntries(keepDateBorderTime);
-            deleteGhost();
-            if ( PrefUtils.CALCULATE_IMAGES_SIZE() )
-                CalculateImageSizes();
-            if ( Build.VERSION.SDK_INT >= 21 )
-                PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis() );
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
-            stopForeground(true);
+            SetNotifyEnabled( false );
+            try {
+                long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
+                long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                deleteOldEntries(keepDateBorderTime);
+                deleteGhost();
+                if (PrefUtils.CALCULATE_IMAGES_SIZE())
+                    CalculateImageSizes();
+                if (Build.VERSION.SDK_INT >= 21)
+                    PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
+            } finally {
+                SetNotifyEnabled( true );
+                notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
+                stopForeground(true);
+            }
             return;
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
@@ -376,7 +384,8 @@ public class FetcherService extends IntentService {
                 synchronized (mCancelRefresh) {
                     mCancelRefresh = false;
                 }
-                SetNotifyEnabled( false ); try {
+                SetNotifyEnabled( false );
+                try {
                     Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, null, null, null);
                     ContentValues[] values = new ContentValues[cursor.getCount()];
                     while (cursor.moveToNext()) {
@@ -489,7 +498,7 @@ public class FetcherService extends IntentService {
                                 }
                             if ( isFromAutoRefresh ) {
                                 SetNotifyEnabled( true );
-                                FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
+                                notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
                             }
                         }
 
@@ -1710,7 +1719,7 @@ public class FetcherService extends IntentService {
             final ContentResolver cr = getContext().getContentResolver();
             final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null );
             if ( cursor != null  ){
-                FeedDataContentProvider.SetNotifyEnabled( false ); try {
+                SetNotifyEnabled( false ); try {
                     while (cursor.moveToNext()) {
 
                         Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
@@ -1719,8 +1728,8 @@ public class FetcherService extends IntentService {
                         getContext().getContentResolver().update(EntryColumns.CONTENT_URI(cursor.getString(0)), values, null, null);
                     }
                 } finally {
-                    FeedDataContentProvider.SetNotifyEnabled( true );
-                    FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
+                    SetNotifyEnabled( true );
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
                 }
                 cursor.close();
             }
