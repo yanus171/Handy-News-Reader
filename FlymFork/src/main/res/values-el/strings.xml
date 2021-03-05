@@ -29,8 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Άδεια και πληροφορίες</big></b><br/>
-    Αυτό το πρόγραμμα είναι έργο ελεύθερου λογισμικού: μπορεί να διανεμηθεί ή/και να τροποποιηθεί με τους όρους της  GNU General Public License όπως δημοσιοποιήθηκαν από το Free Software Foundation, στην τρίτη ή νεότερη έκδοσή της. Δείτε http://www.gnu.org/licenses<br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Άδεια και πληροφορίες</h2>
+    <p>Αυτό το πρόγραμμα είναι έργο ελεύθερου λογισμικού: μπορεί να διανεμηθεί ή/και να τροποποιηθεί με τους όρους της  GNU General Public License όπως δημοσιοποιήθηκαν από το Free Software Foundation, στην τρίτη ή νεότερη έκδοσή της. Δείτε http://www.gnu.org/licenses<br/>
     <br/>
     Αυτή τη εφαρογή βασίζεται στο \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Έχουν προστεθεί επιπλέον χαρακτηριστικά όπως:<br/>
     <br/>
