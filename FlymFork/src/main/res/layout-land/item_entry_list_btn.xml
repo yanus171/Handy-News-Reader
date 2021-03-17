@@ -7,41 +7,19 @@
     android:layout_gravity="bottom|end"
     android:paddingBottom="0dp"
     android:paddingLeft="10dp"
-    android:paddingRight="5dp"
     android:paddingTop="0dp"
     android:orientation="horizontal"
     android:paddingStart="10dp"
     android:paddingEnd="5dp">
 
     <ImageView
-        android:id="@+id/mobilized_icon"
+        android:id="@+id/collapsed_btn"
         android:layout_width="30dp"
-        android:layout_gravity="end"
         android:layout_height="30dp"
-        android:scaleType="fitCenter"
         android:alpha="0.5"
-        android:src="@drawable/disket_gray"/>
-
-
-
-    <ImageView
-        android:id="@+id/read_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:scaleType="fitCenter"
         android:paddingRight="5dp"
-        android:alpha="0.5"
-        android:src="@drawable/rounded_checbox_white"
-        android:paddingEnd="5dp" />
-
-    <ImageView
-        android:id="@+id/favorite_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
         android:scaleType="fitCenter"
-        android:paddingRight="5dp"
-        android:alpha="0.5"
-        android:src="@drawable/star_yellow"
+        android:src="@drawable/ic_keyboard_arrow_right_gray"
         android:paddingEnd="5dp" />
 
 </LinearLayout>

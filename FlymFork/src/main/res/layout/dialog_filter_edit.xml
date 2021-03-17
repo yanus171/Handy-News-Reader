@@ -5,6 +5,7 @@
               android:orientation="vertical">
 
     <RadioGroup
+        android:id="@+id/actionTypeRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
@@ -23,6 +24,13 @@
             android:checked="true"
             android:text="@string/reject"
             android:textColor="#CC0000"/>
+        <RadioButton
+            android:id="@+id/removeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/removeText"
+            android:textColor="@android:color/holo_red_dark"/>
 
         <RadioButton
             android:id="@+id/markAsStarredRadio"
@@ -31,6 +39,7 @@
             android:checked="true"
             android:text="@string/markAsStarred"
             android:textColor="@android:color/holo_blue_dark"/>
+
     </RadioGroup>
 
     <EditText
@@ -38,7 +47,8 @@
         android:layout_width="match_parent"
         android:hint="@string/keyword"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:importantForAutofill="no">
 
         <requestFocus/>
     </EditText>
@@ -50,6 +60,7 @@
         android:text="@string/filter_is_regex"/>
 
     <RadioGroup
+        android:id="@+id/applyTypeRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
@@ -67,6 +78,21 @@
             android:layout_height="wrap_content"
             android:text="@string/filter_apply_to_content"/>
 
+        <RadioButton
+            android:id="@+id/applyAuthorRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter_apply_to_author"/>
+        <RadioButton
+            android:id="@+id/applyCategoryRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter_apply_to_category"/>
+        <RadioButton
+            android:id="@+id/applyUrlRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter_apply_to_url"/>
     </RadioGroup>
 
 </LinearLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutColontitul"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:visibility="visible"
+    tools:showIn="@layout/fragment_entry_list">
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_weight="0.6"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0dp"
+        android:indeterminate="false"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:padding="0dp"
+        android:paddingTop="0dp"
+        android:progress="33"
+        android:progressBackgroundTint="#00000000"
+        android:progressTint="#FF777777" />
+
+    <TextView
+        android:id="@+id/textBattery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="36 %"
+        android:textSize="8dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp" />
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="21 su"
+        android:textSize="8dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp" />
+    <TextView
+        android:id="@+id/textClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="21:26"
+        android:textSize="8dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp" />
+
+</LinearLayout>

@@ -2,23 +2,25 @@ package ru.yanus171.feedexfork.view
 
 import android.app.AlertDialog
 import android.content.Context
-import android.os.Build
-import android.os.Environment
 import android.os.StatFs
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.*
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import ru.yanus171.feedexfork.MainApplication
-import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.utils.FileUtils
+import ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR
 import ru.yanus171.feedexfork.utils.FileUtils.GetDefaultStoragePath
 import ru.yanus171.feedexfork.utils.PrefUtils
 import java.io.File
-import java.util.*
 
 
 class StorageItem (val mPath: File, private val mCaptionID: Int  ) {
+    init {
+        val appDir = File ( mPath, APP_SUBDIR )
+        if ( mPath.exists() && !appDir.exists() )
+            appDir.mkdir()
+    }
     private val BYTES_IN_GIGABYTE =  1024.0 * 1024.0 * 1024.0
     fun getCaption(): String {
         return try {
@@ -39,16 +41,7 @@ class StorageItem (val mPath: File, private val mCaptionID: Int  ) {
 class StorageSelectPreference(context: Context?, attrs: AttributeSet?) : AutoSummaryEditPreference(context, attrs) {
 
 
-    private fun createList(): ArrayList<StorageItem> {
-        val list = ArrayList<StorageItem>()
-        list += StorageItem( MainApplication.getContext().cacheDir, R.string.internalMemory )
-        list += StorageItem( Environment.getExternalStorageDirectory(), R.string.externalMemory )
-        if (Build.VERSION.SDK_INT >= 19)
-            for (item in MainApplication.getContext().getExternalFilesDirs(null))
-                if ( !item.path.startsWith( Environment.getExternalStorageDirectory().path ) )
-                    list += StorageItem( item, R.string.externalMemory )
-        return list
-    }
+
 
     override fun onClick() {
 
@@ -62,7 +55,7 @@ class StorageSelectPreference(context: Context?, attrs: AttributeSet?) : AutoSum
         val scrollLayout = RadioGroup(context)
         scroll.addView(scrollLayout, WRAP_CONTENT, WRAP_CONTENT)
         scrollLayout.orientation = LinearLayout.VERTICAL
-        val storageList = createList()
+        val storageList = FileUtils.createStorageList()
         var rbList = emptyArray<RadioButton>()
         val value = PrefUtils.getString( key, GetDefaultStoragePath().absolutePath )
         for (item in storageList) {
@@ -91,7 +84,6 @@ class StorageSelectPreference(context: Context?, attrs: AttributeSet?) : AutoSum
                     break
                 }
             dialog.dismiss()
-            summary = GetSummary()
         }.setNegativeButton(android.R.string.cancel, null).create().show()
     }
 }

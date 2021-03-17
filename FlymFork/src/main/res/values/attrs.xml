@@ -2,11 +2,13 @@
 <resources>
     <attr name="card_color" format="reference"/>
     <attr name="colorReadState" format="color|reference" />
-    <attr name="colorPrefBackground" format="color|reference" />
+    <attr name="colorDrawerBackground" format="color" />
+    <attr name="colorPrefCategoryBackground" format="color|reference" />
+    <attr name="colorPrefItemBackground" format="color" />
     <declare-styleable name="ru.yanus171.feedexfork.view.ColorPreference">
         <attr name="istransparency" format="boolean" />
         <attr name="text" format="string" />
-        <attr name="backgroundColor" format="string" />
+        <attr name="backgroundColor1" format="string" />
         <attr name="sampletextShort" format="string" />
         <attr name="sampletextLong" format="string" />
     </declare-styleable>

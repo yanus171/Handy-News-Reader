@@ -22,19 +22,25 @@ package ru.yanus171.feedexfork.utils
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.provider.BaseColumns._ID
 import android.widget.Toast
-
 import ru.yanus171.feedexfork.MainApplication
+import ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc
+import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData
-
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML
+import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.DebugApp.AddErrorToLog
+import ru.yanus171.feedexfork.view.StorageItem
 import java.io.*
+import java.util.*
 
 object FileUtils {
 
     private var mGetImagesFolder: File? = null
-
 
 
     @Throws(IOException::class)
@@ -48,14 +54,15 @@ object FileUtils {
         outStream.close()
     }
 
+    public const val APP_SUBDIR = "feedex/"
+
     fun getFolder(): File {
         val customPath = PrefUtils.getString(PrefUtils.DATA_FOLDER, "").trim { it <= ' ' }
-        var result = File(if (customPath.isEmpty()) GetDefaultStoragePath() else File(customPath), "feedex/")
-        if (!result.exists())
-            if (!result.mkdirs()) {
-                result = File(MainApplication.getContext().cacheDir, "feedex/")
-                MakeDirs(result)
-            }
+        var result = File(if (customPath.isEmpty()) GetDefaultStoragePath() else File(customPath), APP_SUBDIR)
+        if ( !result.exists() && !result.mkdirs() ) {
+            result = File(MainApplication.getContext().cacheDir, APP_SUBDIR)
+            MakeDirs(result)
+        }
 
         return result
     }
@@ -63,15 +70,15 @@ object FileUtils {
     public fun GetDefaultStoragePath() = Environment.getExternalStorageDirectory()
 
     private fun MakeDirs(result: File) {
-        if (!result.mkdirs())
+        if ( !result.exists() && !result.mkdirs())
             Toast.makeText(MainApplication.getContext(), "Cannot create dir: " + result.path, Toast.LENGTH_LONG).show()
     }
 
     fun GetImagesFolder(): File {
         if (mGetImagesFolder == null) {
             mGetImagesFolder = File(getFolder(), "images/")
-            if (!mGetImagesFolder!!.exists())
-                MakeDirs(mGetImagesFolder!!)
+
+            MakeDirs(mGetImagesFolder!!)
             try {
                 val file = File(mGetImagesFolder!!.toString() + "/.nomedia")
                 file.createNewFile()
@@ -85,18 +92,22 @@ object FileUtils {
     }
     fun reloadPrefs() {
         mGetImagesFolder = null
+        mGetHTMLFolder = null
     }
 
-    fun LinkToFile(  link: String ): File {
-        return File(GetHTMLFolder(), StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE) )
+    fun LinkToFile( link: String ): File {
+        return File(GetHTMLFolder(), getLinkHash( link ) )
     }
 
-    private lateinit var mGetHTMLFolder: File
-    private fun GetHTMLFolder(): File {
-        if (! ::mGetHTMLFolder.isInitialized ) {
+    fun getLinkHash(link: String ): String {
+        return StringUtils.getMd5( link ).replace(" ", HtmlUtils.URL_SPACE)
+    }
+
+    private var mGetHTMLFolder: File? = null
+    public fun GetHTMLFolder(): File {
+        if ( mGetHTMLFolder == null ) {
             mGetHTMLFolder = File(getFolder(), "html/")
-            if (!mGetHTMLFolder.exists())
-                MakeDirs(mGetHTMLFolder)
+            MakeDirs(mGetHTMLFolder!!)
             try {
                 val file = File("$mGetHTMLFolder/.nomedia")
                 file.createNewFile()
@@ -104,7 +115,16 @@ object FileUtils {
                 e.printStackTrace()
             }
         }
-        return mGetHTMLFolder
+        return mGetHTMLFolder as File
+    }
+
+    private var mFontsFolder: File? = null
+    public fun getFontsFolder(): File {
+        if ( mFontsFolder == null ) {
+            mFontsFolder = File(getFolder(), "fonts/")
+            MakeDirs(mFontsFolder!!)
+        }
+        return mFontsFolder as File
     }
 
     private fun readHTMLFromFile( link: String ): String {
@@ -115,11 +135,12 @@ object FileUtils {
             var str: String?
             do  {
                 str = reader.readLine()
-                contentBuilder.append(str)
+                if ( str != null )
+                    contentBuilder.append(str).append( "\n" )
             } while ( str != null )
             reader.close()
         } catch (e: IOException) {
-
+            e.printStackTrace()
         }
         return contentBuilder.toString()
     }
@@ -133,6 +154,7 @@ object FileUtils {
                 out.use { out ->
                     out.write(html)
                 }
+                mHTMLFileVoc.addFile( file.name )
                 result = Uri.parse("file://" + file.absolutePath)
             } catch (e: Exception) {
                 AddErrorToLog(null, e)
@@ -145,41 +167,102 @@ object FileUtils {
         values.put(FeedData.EntryColumns.LINK, link)
         if ( mobilizedHtml != null ) {
             saveHTMLToFile(link, mobilizedHtml)
-            values.put(FeedData.EntryColumns.MOBILIZED_HTML, mobilizedHtml.length)
+            values.put(MOBILIZED_HTML, mobilizedHtml.length)
         }
     }
 
-    val MIN_MOBILIZED_LEN = 10
+    private const val MIN_MOBILIZED_LEN = 10
 
-    fun loadMobilizedHTML(link: String, cursor: Cursor) : String {
-        val columnIndex = cursor.getColumnIndex(FeedData.EntryColumns.MOBILIZED_HTML)
-        if ( !cursor.isNull( columnIndex ) ) {
-            val content: String = cursor.getString(columnIndex)
-            if ( content.length > MIN_MOBILIZED_LEN )
-                saveHTMLToFile( link, content )
+    fun loadMobilizedHTML(link: String, cursor: Cursor?) : String {
+        val status = FetcherService.Status().Start("Reading article file", true)
+        try {
+            if ( cursor != null ) {
+                val columnIndex = cursor.getColumnIndex(MOBILIZED_HTML)
+                if (!cursor.isNull(columnIndex)) {
+                    val content: String = cursor.getString(columnIndex)
+                    if (content.length > MIN_MOBILIZED_LEN)
+                        saveHTMLToFile(link, content)
+                }
+            }
+            return readHTMLFromFile(link)
+        } finally {
+            FetcherService.Status().End( status )
         }
-        return readHTMLFromFile( link )
     }
 
-    fun isMobilized (link: String, cursor: Cursor, col: Int ): Boolean {
-        return !cursor.isNull( col ) && cursor.getString(col).length > MIN_MOBILIZED_LEN ||
-                LinkToFile( link ).exists()
+    class UpdateMob(private val mMobValue: String, private val mEntryID: Long ) : Thread() {
+        override fun run() {
+            val cr = MainApplication.getContext().contentResolver
+            val values = ContentValues()
+            values.put(MOBILIZED_HTML, mMobValue )
+            cr.update(FeedData.EntryColumns.CONTENT_URI( mEntryID ), values, null, null)
+        }
     }
 
-    fun isMobilized (link: String, cursor: Cursor ): Boolean {
-        return isMobilized( link, cursor, cursor.getColumnIndex( FeedData.EntryColumns.MOBILIZED_HTML ) )
+    fun isMobilized (link: String?, cursor: Cursor?, colMob: Int, colID: Int ): Boolean {
+        if ( link != null && ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) ) {
+            val file = LinkToFile( link )
+            val mobValue = if ( mHTMLFileVoc.isExists( file.name ) ) {
+                "${file.length()}"
+            } else {
+                EMPTY_MOBILIZED_VALUE
+            }
+
+            if ( cursor != null ) {
+                //UpdateMob(mobValue, cursor.getLong(colID)).start()
+                val cr = MainApplication.getContext().contentResolver
+                val values = ContentValues()
+                values.put(MOBILIZED_HTML, mobValue )
+                cr.update(FeedData.EntryColumns.CONTENT_URI( cursor.getLong(colID) ), values, null, null)
+            }
+
+            return mobValue != EMPTY_MOBILIZED_VALUE
+        } else if ( cursor != null )
+            return !cursor.isNull( colMob ) && cursor.getString( colMob ) != EMPTY_MOBILIZED_VALUE
+        else
+            return false
+    }
+
+    fun isMobilized (link: String?, cursor: Cursor ): Boolean {
+        return isMobilized( link, cursor, cursor.getColumnIndex( MOBILIZED_HTML ), cursor.getColumnIndex( FeedData.EntryColumns._ID ) )
     }
 
     fun deleteMobilized(uri: Uri ) {
         val cr = MainApplication.getContext().contentResolver
-        val cursor = cr.query(uri, arrayOf(FeedData.EntryColumns.LINK), null, null, null)
+        val cursor = cr.query(uri, arrayOf(_ID, LINK), null, null, null)
         if ( cursor.moveToFirst() )
-            with ( LinkToFile(cursor.getString(0)) ) { if ( exists() ) delete() }
+            deleteMobilized(cursor.getString(1), FeedData.EntryColumns.CONTENT_URI( cursor.getString(0) ))
         cursor.close()
 
-        val values = ContentValues()
-        values.putNull(FeedData.EntryColumns.MOBILIZED_HTML)
-        cr.update(uri, values, null, null)
-
     }
+
+    public fun deleteMobilizedFile(link: String) {
+        with(LinkToFile(link)) { if (exists()) delete() }
+        mHTMLFileVoc.removeFile( link )
+    }
+    public fun deleteMobilized(link: String, entryUri: Uri) {
+        deleteMobilizedFile( link )
+        val values = ContentValues()
+        values.put(MOBILIZED_HTML, EMPTY_MOBILIZED_VALUE)
+        MainApplication.getContext().contentResolver.update(entryUri, values, null, null)
+    }
+
+    public fun createStorageList(): ArrayList<StorageItem> {
+        val list = ArrayList<StorageItem>()
+        list += StorageItem( MainApplication.getContext().cacheDir, R.string.internalMemory )
+        list += StorageItem( Environment.getExternalStorageDirectory(), R.string.externalMemory )
+        if (Build.VERSION.SDK_INT >= 19)
+            for (item in MainApplication.getContext().getExternalFilesDirs(null)) {
+                try {
+                    if (!item.path.startsWith(Environment.getExternalStorageDirectory().path))
+                        list += StorageItem(item, R.string.externalMemory)
+                } catch ( e: IllegalStateException ) {
+                    e.printStackTrace();
+                }
+            }
+        return list
+    }
+    public const val EMPTY_MOBILIZED_VALUE = "EMPTY_MOB"
+
+
 }

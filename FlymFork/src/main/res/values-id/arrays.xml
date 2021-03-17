@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_intervals">
+        <item>1 menit</item>
+        <item>5 menit</item>
+        <item>15 menit</item>
+        <item>30 menit</item>
+        <item>1 jam</item>
+        <item>2 jam</item>
+        <item>3 jam</item>
+        <item>6 jam</item>
+        <item>12 jam</item>
+        <item>1 hari</item>
+        <item>2 hari</item>
+        <item>3 hari</item>
+    </string-array>
+    <string-array name="settings_keep_times">
+        <item>1 jam</item>
+        <item>12 jam</item>
+        <item>1 hari</item>
+        <item>2 hari</item>
+        <item>4 hari</item>
+        <item>1 minggu</item>
+        <item>2 minggu</item>
+        <item>1 bulan</item>
+        <item>2 bulan</item>
+        <item>3 bulan</item>
+        <item>Selamanya</item>
+    </string-array>
+    <string-array name="settings_volume_buttons_action">
+        <item>Bawaan</item>
+        <item>Beralih ke artikel berikut | sebelum</item>
+        <item>Halaman naik | turun</item>
+    </string-array>
+    <string-array name="settings_preload_image_modes">
+        <item>Jangan pernah</item>
+        <item>Hanya melalui Wi-Fi</item>
+        <item>Selalu</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Terang</item>
+        <item>Gelap</item>
+        <item>Black</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Horizontal</item>
+        <item>Vertikal</item>
+        <item>Jangan tampilkan tombol</item>
+    </string-array>
+</resources>

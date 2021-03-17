@@ -44,15 +44,26 @@
 
 package ru.yanus171.feedexfork.parser;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Xml;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -60,20 +71,30 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
+import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
@@ -96,10 +117,22 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.RETRIEVE_FULL
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.SHOW_TEXT_IN_ENTRY_LIST;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
+import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
 
 public class OPML {
 
-    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.getFolder() + "/HandyNewsReader_auto_backup.opml"; }
+    public static final String AUTO_BACKUP_OPML_FILENAME = "HandyNewsReader_auto.backup";
+    private static final int REQUEST_PICK_OPML_FILE = 1;
+    private static final int PERMISSIONS_REQUEST_IMPORT_FROM_OPML = 1;
+    private static final int PERMISSIONS_REQUEST_EXPORT_TO_OPML = 2;
+    private static final int PERMISSIONS_REQUEST_BACKUP = 3;
+    public static final String EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT = "EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT";
+
+    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.getFolder() + "/" + AUTO_BACKUP_OPML_FILENAME; }
 
     private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
@@ -134,13 +167,19 @@ public class OPML {
     private static Boolean mAutoBackupEnabled = true;
 
     public static
-    void importFromFile(String filename) throws IOException, SAXException {
-        importFromFile(new FileInputStream(filename));
+    void importFromFile(String filename, boolean isRemoveExistingFeeds) throws IOException, SAXException {
+        importFromFile(new FileInputStream(filename), isRemoveExistingFeeds);
+    }
+    public static
+    void importFromFile(Uri fileUri, boolean isRemoveExistingFeeds) throws IOException, SAXException {
+        importFromFile( MainApplication.getContext().getContentResolver().openInputStream(fileUri), isRemoveExistingFeeds);
     }
 
-    private static void importFromFile(InputStream input) throws IOException, SAXException {
+    private static void importFromFile(InputStream input, boolean isRemoveExistingFeeds) throws IOException, SAXException {
         SetAutoBackupEnabled(false); // Do not write the auto backup file while reading it...
         try {
+            if ( isRemoveExistingFeeds )
+                MainApplication.getContext().getContentResolver().delete(FeedData.FeedColumns.CONTENT_URI, _ID + "<> " + FetcherService.GetExtrenalLinkFeedID(), null );
             final OPMLParser parser = new OPMLParser();
             Xml.parse(new InputStreamReader(input), parser);
             //parser.mEditor.commit();
@@ -161,9 +200,10 @@ public class OPML {
         }
     }
 
-    public static void exportToFile(String filename) throws IOException {
+    public static void exportToFile(String filename, boolean isBackup) throws IOException {
         if ( GetAutoBackupOPMLFileName().equals(filename) && !IsAutoBackupEnabled() )
             return;
+
 
         final Context context = MainApplication.getContext();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
@@ -175,16 +215,18 @@ public class OPML {
             writer.write( START );
             writer.write( String.valueOf( System.currentTimeMillis() ) );
             writer.write( AFTER_DATE);
-            SaveSettings( writer, "\t\t");
 
-            {
+            if ( isBackup ) {
+                SaveSettings( writer, "\t\t");
                 Cursor cursor = context.getContentResolver().query(CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ), FEEDS_PROJECTION, null, null, null);
-                if ( cursor.moveToFirst() )
-                    ExportFeed(writer, cursor);
+                if ( cursor.moveToFirst() && isNotCancelRefresh() )
+                    ExportFeed(writer, cursor, true);
                 cursor.close();
             }
 
             while (cursorGroupsAndRoot.moveToNext()) {
+                if ( isCancelRefresh() )
+                    break;
                 if (cursorGroupsAndRoot.getInt(1) == 1) { // If it is a group
                     writer.write( OUTLINE_TITLE);
                     writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
@@ -193,13 +235,13 @@ public class OPML {
                     Cursor cursorFeeds = context.getContentResolver()
                             .query(FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
                     while (cursorFeeds.moveToNext()) {
-                        ExportFeed(writer, cursorFeeds);
+                        ExportFeed(writer, cursorFeeds, isBackup);
                     }
                     cursorFeeds.close();
 
                     writer.write( OUTLINE_END);
                 } else
-                    ExportFeed(writer, cursorGroupsAndRoot);
+                    ExportFeed(writer, cursorGroupsAndRoot, isBackup);
             }
             writer.write( CLOSING );
 
@@ -225,28 +267,32 @@ public class OPML {
             IS_IMAGE_AUTO_LOAD, OPTIONS, LAST_UPDATE, REAL_LAST_UPDATE,
             PRIORITY, FETCH_MODE };
 
-    private static void ExportFeed(Writer writer, Cursor cursor) throws IOException {
+    private static void ExportFeed(Writer writer, Cursor cursor, boolean isBackup) throws IOException {
         final String feedID = cursor.getString(0);
         writer.write( "\t");
         writer.write( OUTLINE_TITLE);
         writer.write(GetEncoded( cursor ,2) );
         writer.write(OUTLINE_XMLURL);
         writer.write(GetEncoded( cursor, 3));
-        writer.write(OUTLINE_RETRIEVE_FULLTEXT);
-        writer.write(GetBoolText( cursor, 4 ));
-        WriteBoolValue(writer, cursor, SHOW_TEXT_IN_ENTRY_LIST, 5);
-        WriteBoolValue(writer, cursor, IS_AUTO_REFRESH, 6);
-        WriteBoolValue(writer, cursor, IS_IMAGE_AUTO_LOAD, 7);
-        WriteEncodedText( writer, cursor, OPTIONS, 8 );
-        WriteLongValue(writer, cursor, LAST_UPDATE, 9);
-        WriteLongValue(writer, cursor, REAL_LAST_UPDATE, 10);
-        WriteLongValue(writer, cursor, PRIORITY, 11);
-        WriteLongValue(writer, cursor, FETCH_MODE, 12);
+        if ( isBackup ) {
+            writer.write(OUTLINE_RETRIEVE_FULLTEXT);
+            writer.write(GetBoolText(cursor, 4));
+            WriteBoolValue(writer, cursor, SHOW_TEXT_IN_ENTRY_LIST, 5);
+            WriteBoolValue(writer, cursor, IS_AUTO_REFRESH, 6);
+            WriteBoolValue(writer, cursor, IS_IMAGE_AUTO_LOAD, 7);
+            WriteEncodedText(writer, cursor, OPTIONS, 8);
+            WriteLongValue(writer, cursor, LAST_UPDATE, 9);
+            WriteLongValue(writer, cursor, REAL_LAST_UPDATE, 10);
+            WriteLongValue(writer, cursor, PRIORITY, 11);
+            WriteLongValue(writer, cursor, FETCH_MODE, 12);
+        }
         writer.write(OUTLINE_NORMAL_CLOSING);
 
-        ExportFilters(writer, feedID);
-        final boolean saveAbstract = !TRUE.equals( GetBoolText( cursor, 4 ) );
-        ExportEntries(writer, feedID, saveAbstract);
+        if ( isBackup ) {
+            ExportFilters(writer, feedID);
+            final boolean saveAbstract = !TRUE.equals(GetBoolText(cursor, 4));
+            ExportEntries(writer, feedID, saveAbstract);
+        }
         writer.write(OUTLINE_END);
     }
 
@@ -262,7 +308,8 @@ public class OPML {
     private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
-            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID };
+            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR,
+            EntryColumns.IS_WITH_TABLES};
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -279,7 +326,7 @@ public class OPML {
     private static void ExportEntries(Writer writer, String feedID, boolean saveAbstract) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
                 .query(ENTRIES_FOR_FEED_CONTENT_URI( feedID ), ENTRIES_PROJECTION, null, null, null);
-        if (cur.getCount() != 0) {
+        if (cur != null && cur.getCount() != 0) {
             while (cur.moveToNext()) {
                 writer.write("\t");
                 writer.write(String.format( TAG_START, TAG_ENTRY, EntryColumns.TITLE) );
@@ -303,6 +350,8 @@ public class OPML {
 //                    writer.write(text == null ? "" : TextUtils.htmlEncode(text));
 //                }
                 WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
+                WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
+                WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
                 writer.write(TAG_CLOSING);
             }
             writer.write("\t");
@@ -330,7 +379,7 @@ public class OPML {
     }
 
     private static final String[] FILTERS_PROJECTION = new String[]{FilterColumns.FILTER_TEXT, FilterColumns.IS_REGEX,
-            FilterColumns.IS_APPLIED_TO_TITLE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED};
+            FilterColumns.APPLY_TYPE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED, FilterColumns.IS_REMOVE_TEXT,};
 
     private static void ExportFilters(Writer writer, String feedID) throws IOException {
         Cursor cur = MainApplication.getContext().getContentResolver()
@@ -403,6 +452,7 @@ public class OPML {
         private static final String ATTRIBUTE_IS_APPLIED_TO_TITLE = "isAppliedToTitle";
         private static final String ATTRIBUTE_IS_ACCEPT_RULE = "isAcceptRule";
         private static final String ATTRIBUTE_IS_MARK_AS_STARRED = "isMarkAsStarred";
+        private static final String ATTRIBUTE_IS_REMOVE_TEXT = "isRemoveText";
         private final SharedPreferences.Editor mEditor;
 
         private boolean mBodyTagEntered = false;
@@ -484,9 +534,20 @@ public class OPML {
                     ContentValues values = new ContentValues();
                     values.put(FilterColumns.FILTER_TEXT, attributes.getValue("", ATTRIBUTE_TEXT));
                     values.put(FilterColumns.IS_REGEX, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REGEX)));
-                    values.put(FilterColumns.IS_APPLIED_TO_TITLE, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_APPLIED_TO_TITLE)));
+                    {
+                        final String text = attributes.getValue("", ATTRIBUTE_IS_APPLIED_TO_TITLE);
+                        final int value;
+                        if ( text.equals( "true" ) )
+                            value = DB_APPLIED_TO_TITLE;
+                        else if ( text.equals( "false" ) )
+                            value = DB_APPLIED_TO_CONTENT;
+                        else
+                            value = Integer.parseInt( text );
+                        values.put(FilterColumns.APPLY_TYPE, value );
+                    }
                     values.put(FilterColumns.IS_ACCEPT_RULE, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_ACCEPT_RULE)));
                     values.put(FilterColumns.IS_MARK_STARRED, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_MARK_AS_STARRED)));
+                    values.put(FilterColumns.IS_REMOVE_TEXT, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REMOVE_TEXT)));
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(mFeedId), values);
@@ -508,6 +569,8 @@ public class OPML {
                     values.put(EntryColumns.AUTHOR, GetText( attributes, EntryColumns.AUTHOR) );
                     values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
                     values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
+                    values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
+                    values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( mFeedId ), values);
@@ -526,9 +589,6 @@ public class OPML {
                     mEditor.putLong(key, Long.parseLong(value));
                 } else if (className.contains(PREF_CLASS_FLOAT)) {
                     mEditor.putFloat(key, Float.parseFloat(value));
-                } else {
-                    // throw new ClassNotFoundException("Unknown type: "
-                    // + prefClass);
                 }
                 mEditor.apply();
             }
@@ -566,4 +626,195 @@ public class OPML {
             }
         }
     }
+    static private void displayCustomFilePicker(final Activity activity ) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity );
+
+        builder.setTitle(activity.getString( R.string.select_file ) );
+        //builder.setMessage( FileUtils.INSTANCE.getFolder().getPath() );
+
+        try {
+            final String[] fileNames = FileUtils.INSTANCE.getFolder().list(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    return new File(dir, filename).isFile();
+                }
+            });
+            builder.setItems(fileNames, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, final int which) {
+                    AskQuestionForImport(activity, FileUtils.INSTANCE.getFolder().toString() + File.separator
+                                               + fileNames[which], false );
+                }
+            });
+            builder.show();
+        } catch (Exception unused) {
+            UiUtils.showMessage(activity, R.string.error_feed_import);
+        }
+    }
+    private static void exportToOpml(final Activity activity, final boolean isBackup) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
+            || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
+
+            new WaitDialog(activity, R.string.exportingToFile, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        final String dateTimeStr = new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date(System.currentTimeMillis() ) );
+                        final String filename =  FileUtils.INSTANCE.getFolder() +  "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
+
+                        OPML.exportToFile( filename, isBackup );
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), filename));
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                UiUtils.showMessage(activity, R.string.error_feed_export);
+                            }
+                        });
+                    }
+                }
+            }).execute();
+        } else {
+            UiUtils.showMessage(activity, R.string.error_external_storage_not_available);
+        }
+    }
+    static private void importFromOpml( final Activity activity ) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
+            || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
+
+            if (PrefUtils.getBoolean("use_standard_file_manager", false)) {
+                // First, try to use a file app
+                try {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+
+                    intent.setType("*/*");
+                    activity.startActivityForResult(intent, REQUEST_PICK_OPML_FILE);
+                } catch (Exception unused) { // Else use a custom file selector
+                    unused.printStackTrace();
+                    displayCustomFilePicker( activity );
+                }
+            } else
+                displayCustomFilePicker( activity );
+        } else {
+            UiUtils.showMessage(activity, R.string.error_external_storage_not_available);
+        }
+    }
+    private static void RequestPermissions(Activity activity, ExportImport operType) {
+        if ( operType == ExportImport.ExportToOPML )
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXPORT_TO_OPML);
+        else if ( operType == ExportImport.Backup )
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXPORT_TO_OPML);
+        else if ( operType == ExportImport.Import )
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_IMPORT_FROM_OPML);
+    }
+    public enum ExportImport { ExportToOPML, Backup, Import };
+    static public void OnMenuExportImportClick(final Activity activity, final ExportImport operType) {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage(R.string.storage_request_explanation).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        RequestPermissions( activity, operType );
+                    }
+
+
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                builder.show();
+            } else {
+                // No explanation needed, we can request the permission.
+                RequestPermissions( activity, operType );
+            }
+        } else {
+            if ( operType == ExportImport.ExportToOPML )
+                exportToOpml( activity, false );
+            else if ( operType == ExportImport.Backup )
+                exportToOpml( activity, true );
+            else if ( operType == ExportImport.Import )
+                importFromOpml( activity );
+        }
+    }
+    static public void OnRequestPermissionResult(Activity activity, int requestCode, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_EXPORT_TO_OPML: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    exportToOpml( activity, false );
+                }
+            }
+            case PERMISSIONS_REQUEST_BACKUP: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    exportToOpml( activity, true );
+                }
+            }
+            case PERMISSIONS_REQUEST_IMPORT_FROM_OPML: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    importFromOpml( activity );
+                }
+            }
+        }
+    }
+    public static void OnActivityResult( Activity activity, int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_PICK_OPML_FILE) {
+            if (resultCode == Activity.RESULT_OK) {
+                AskQuestionForImport(activity, data.getData().toString(), true );
+            } else {
+                displayCustomFilePicker( activity );
+            }
+        }
+    }
+
+    private static void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
+        FetcherService.StartService( FetcherService.GetIntent(Constants.FROM_IMPORT )
+                                        .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
+                                        .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ), false);
+    }
+    public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
+        Cursor cursor = MainApplication.getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );
+        if ( cursor.moveToFirst() ) {
+            new AlertDialog.Builder( activity )
+                .setTitle( activity.getString( R.string.remove_existing_feeds_question ) )
+                .setItems(new CharSequence[]{
+                    activity.getString(R.string.yes),
+                    activity.getString(R.string.no),
+                    activity.getString(android.R.string.cancel),}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if ( i == 0 ) //yes
+                            new AlertDialog.Builder( activity )
+                                .setTitle( activity.getString( R.string.remove_existing_feeds_confirmation ) )
+                                .setPositiveButton(R.string.yes_I_realize_btn_caption, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        StartServiceForImport( fileName, true, isFileNameUri );
+                                    }
+                                })
+                                .setNegativeButton( R.string.sorry_I_was_wrong_btn_caption, null ).show();
+
+                        else if ( i == 1  ) //no
+                            StartServiceForImport( fileName, false, isFileNameUri);
+                        dialogInterface.dismiss();
+                    }
+
+
+                }).show();
+        } else
+            StartServiceForImport( fileName, false, isFileNameUri);
+        cursor.close();
+
+    }
+
 }

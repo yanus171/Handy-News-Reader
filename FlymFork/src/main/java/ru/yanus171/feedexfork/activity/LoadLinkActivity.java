@@ -30,7 +30,7 @@ public class LoadLinkActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UiUtils.setPreferenceTheme(this);
+        UiUtils.setTheme(this);
         super.onCreate(savedInstanceState);
 
         setContentView( android.R.layout.browser_link_context_header );

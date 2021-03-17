@@ -63,6 +63,8 @@ public class StringUtils {
             outString = DATE_SHORT_FORMAT.format(date) + ' ' + TIME_FORMAT.format(date);
         }
 
+        if ( calCurrent.get(Calendar.YEAR) != calTimestamp.get(Calendar.YEAR) )
+            outString = String.valueOf( calTimestamp.get(Calendar.YEAR) ) + " " + outString;
         return outString;
     }
 

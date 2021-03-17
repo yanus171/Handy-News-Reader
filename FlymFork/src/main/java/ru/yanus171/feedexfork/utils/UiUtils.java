@@ -21,17 +21,12 @@ package ru.yanus171.feedexfork.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.collection.LongSparseArray;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -42,25 +37,43 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.yanus171.feedexfork.MainApplication;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.widget.FontSelectPreference;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 
 public class UiUtils {
+    private static Typeface mCachedTypeFace = null;
 
-    static private final LongSparseArray<Bitmap> FAVICON_CACHE = new LongSparseArray<>();
+    //static private final HashMap<String, Bitmap> FAVICON_CACHE = new HashMap<>();
 
-    static public void setPreferenceTheme(Activity a) {
+    static public void setTheme(Activity a) {
         a.setTheme( Theme.GetResID( Theme.STYLE_THEME ) );
     }
 
+    static public void setPreferenceTheme(Activity a) {
+        a.setTheme( Theme.GetResID( Theme.PREF_STYLE_THEME ) );
+    }
+
     static public int dpToPixel(int dp) {
-        return (int) TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, MainApplication.getContext().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
     static public int mmToPixel(int mm) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, mm, MainApplication.getContext().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, mm, getContext().getResources().getDisplayMetrics());
     }
+//    static public void clearFaviconCache() {
+//        FAVICON_CACHE.clear();
+//    }
     static public void addEmptyFooterView(ListView listView, int dp) {
         View view = new View(listView.getContext());
         view.setMinimumHeight(dpToPixel(dp));
@@ -76,8 +89,24 @@ public class UiUtils {
         Toast.makeText(context, messageId, Toast.LENGTH_LONG).show();
     }
 
-    static public void SetFontSize(TextView textView) {
-        textView.setTextSize(COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList() );
+    static public void toast(@NonNull Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void SetTypeFace(TextView textView) {
+        if ( mCachedTypeFace == null )
+            mCachedTypeFace = FontSelectPreference.GetTypeFace("fontFamily" );
+        textView.setTypeface( mCachedTypeFace );
+    }
+
+    static public void SetFont(TextView textView, float sizeCoeff) {
+        SetTypeFace( textView );
+        textView.setTextSize(COMPLEX_UNIT_DIP, ( 18 + PrefUtils.getFontSizeEntryList() ) * sizeCoeff );
+    }
+
+    public static void SetSmallFont(TextView textView) {
+        SetTypeFace( textView );
+        textView.setTextSize(COMPLEX_UNIT_DIP, 14 + PrefUtils.getFontSizeEntryList() );
     }
 
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
@@ -87,22 +116,26 @@ public class UiUtils {
         snackbar.show();
     }
 
-    static public Bitmap getFaviconBitmap(long feedId, Cursor cursor, int iconCursorPos) {
-        Bitmap bitmap = UiUtils.FAVICON_CACHE.get(feedId);
-        if (bitmap == null) {
-            byte[] iconBytes = cursor.getBlob(iconCursorPos);
-            if (iconBytes != null && iconBytes.length > 0) {
-                bitmap = UiUtils.getScaledBitmap(iconBytes, 18);
-                UiUtils.FAVICON_CACHE.put(feedId, bitmap);
+    static public Bitmap getFaviconBitmap( /*Long feedID,*/ String iconUrl ) {
+        //Bitmap bitmap = UiUtils.FAVICON_CACHE.get(iconUrl);
+        //if (bitmap == null && iconUrl != null ) {
+        Bitmap bitmap = null;
+        if ( iconUrl != null )
+            try {
+                InputStream imageStream = getContext().getContentResolver().openInputStream( GetImageFileUri( iconUrl, iconUrl ));
+                bitmap = BitmapFactory.decodeStream(imageStream);
+                //UiUtils.FAVICON_CACHE.put(iconUrl, bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        }
+        //}
         return bitmap;
     }
 
-    static public Bitmap getScaledBitmap(byte[] iconBytes, int sizeInDp) {
-        if (iconBytes != null && iconBytes.length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
-            if (bitmap != null && bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
+    static public Bitmap getScaledBitmap(Bitmap bitmap, int sizeInDp) {
+        if (bitmap != null ) {
+            //Bitmap bitmap = Bitmap.createBitmap( sourceBitmap );
+            if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
                 int bitmapSizeInDip = UiUtils.dpToPixel(sizeInDp);
                 if (bitmap.getHeight() != bitmapSizeInDip) {
                     Bitmap tmp = bitmap;
@@ -121,35 +154,32 @@ public class UiUtils {
     public static void RunOnGuiThread( final Runnable r ) {
         if ( mHandler == null )
             mHandler  = new Handler(Looper.getMainLooper());
-        synchronized ( mHandler ) {
+        //synchronized ( mHandler ) {
             mHandler.post( r );
-        }
-
+        //}
     }
-    public static void RunOnGuiThread( final Runnable r, int delay ) {
+    public static void RunOnGuiThread( final Runnable r, int delayMills ) {
         if ( mHandler == null )
             mHandler  = new Handler(Looper.getMainLooper());
-        synchronized ( mHandler ) {
-            mHandler.postDelayed( r, delay );
-        }
+        //synchronized ( mHandler ) {
+            mHandler.postDelayed( r, delayMills );
+        //}
 
     }
-    public static void RunOnGuiThreadInFront( final Runnable r ) {
-        if ( mHandler == null )
-            mHandler  = new Handler(Looper.getMainLooper());
-        synchronized ( mHandler ) {
-            mHandler.postAtFrontOfQueue( r );
-        }
-
+    public static void RemoveFromGuiThread( final Runnable r ) {
+        if ( mHandler != null )
+            mHandler.removeCallbacks( r );
     }
 
     public static void HideButtonText(View rootView, int ID, boolean transparent) {
         TextView btn = rootView.findViewById(ID);
-        if ( transparent )
-            btn.setBackgroundColor(Color.TRANSPARENT);
-        else
-            btn.setBackgroundResource( R.drawable.round_background );
-        btn.setText("");
+        if ( btn != null ) {
+            if (transparent)
+                btn.setBackgroundColor(Color.TRANSPARENT);
+            else
+                btn.setBackgroundResource(R.drawable.round_background);
+            btn.setText("");
+        }
     }
 
     public static void SetSize( View parent, int ID, int width, int height ) {
@@ -161,52 +191,83 @@ public class UiUtils {
 
     // -------------------------------------------------------------------
     static TextView AddSmallText(LinearLayout layout, int textID) {
-        return AddSmallText(layout, null, Gravity.LEFT, null, MainApplication.getContext().getString(textID));
+        return AddSmallText(layout, null, Gravity.LEFT, null, getContext().getString(textID));
     }
-    static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
-        TextView result = new TextView(layout.getContext());
+    public static TextView AddSmallText(LinearLayout layout, LinearLayout.LayoutParams lp, int gravity, ColorTB color, String text) {
+        TextView result = CreateSmallText( layout.getContext(), gravity, color, text );
         if (lp != null) {
             layout.addView(result, lp);
         } else {
             layout.addView(result);
         }
+        return result;
+    }
+    public static TextView CreateSmallText(Context context, int gravity, ColorTB color, String text) {
+        TextView result = new TextView(context);
         result.setAutoLinkMask(Linkify.ALL);
         result.setLinkTextColor(Color.LTGRAY);
         result.setText(text);
-        if (Build.VERSION.SDK_INT >= 11)
-            result.setTextIsSelectable(true);
+        result.setTextIsSelectable(true);
         result.setFocusable(false);
         result.setFocusableInTouchMode(true);
 
-        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        //result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         result.setGravity(gravity);
         result.setPadding(10, 0, 10, 0);
 
         result.setTextColor(color != null ? color.Text : Theme.GetMenuFontColor());
-
+        SetSmallFont(result );
         return result;
     }
 
     // -------------------------------------------------------------------
-    static TextView AddText(LinearLayout layout, LinearLayout.LayoutParams lp, String text) {
-        TextView result = new TextView(layout.getContext());
+    public static TextView AddText(LinearLayout layout, LinearLayout.LayoutParams lp, String text) {
+        TextView result = CreateTextView(layout.getContext());
         if (lp != null) {
             layout.addView(result, lp);
         } else {
             layout.addView(result);
         }
         result.setText(text);
-        if (Build.VERSION.SDK_INT >= 11)
-            result.setTextIsSelectable(true);
+        result.setTextIsSelectable(true);
         result.setFocusable(false);
         result.setFocusableInTouchMode(false);
 
-        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18 + PrefUtils.getFontSizeEntryList());
         result.setTextColor(Theme.GetMenuFontColor());
         result.setGravity(Gravity.CENTER);
         result.setPadding(10, 10, 10, 0);
         return result;
     }
 
+
+    public static void InvalidateTypeFace() {
+        mCachedTypeFace = null;
+    }
+
+    public static TextView SetupTextView(View rootView, int id) {
+        TextView result = rootView.findViewById(id);
+        SetupTextView(result);
+        return result;
+    }
+    public static TextView SetupSmallTextView(View rootView, int id) {
+        TextView result = rootView.findViewById(id);
+        SetupSmallTextView(result);
+        return result;
+    }
+
+    public static void SetupSmallTextView(TextView result) {
+        //result.setText("");
+        SetSmallFont(result);
+    }
+    public static void SetupTextView(TextView result) {
+        //result.setText("");
+        SetFont(result, 1);
+    }
+    public static TextView CreateTextView(Context context) {
+        TextView result = new TextView( context );
+        SetupTextView( result );
+        return result;
+    }
 
 }

@@ -75,8 +75,15 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
+
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 
 public class RssAtomParser extends DefaultHandler {
     private static final String AND_SHARP = "&#";
@@ -93,6 +100,7 @@ public class RssAtomParser extends DefaultHandler {
     private static final String TAG_LINK = "link";
     private static final String TAG_DESCRIPTION = "description";
     private static final String TAG_MEDIA_DESCRIPTION = "media:description";
+    private static final String TAG_MEDIA_THUMBNAIL = "media:thumbnail";
     private static final String TAG_CONTENT = "content";
     private static final String TAG_MEDIA_CONTENT = "media:content";
     private static final String TAG_ENCODED_CONTENT = "encoded";
@@ -115,6 +123,7 @@ public class RssAtomParser extends DefaultHandler {
     private static final String ATTRIBUTE_TYPE = "type";
     private static final String ATTRIBUTE_LENGTH = "length";
     private static final String ATTRIBUTE_REL = "rel";
+    private static final String ATTRIBUTE_TERM = "term";
 
     private static final String[][] TIMEZONES_REPLACE = {
             {"MEST", "+0200"},
@@ -122,18 +131,26 @@ public class RssAtomParser extends DefaultHandler {
             {"PST", "-0800"},
             {"ICT", "+0700"}};
 
-    private final DateFormat[] DATE_FORMATS = {
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
-            new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'Z", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'z", Locale.US),
-            new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private static final DateFormat[] DATE_FORMATS = {
+        new SimpleDateFormat("HH:mm' 'dd.MM.yyyy", Locale.US),
+        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
+        new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
+        new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
+        new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
+        new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'z", Locale.US),
+        new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSz", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd", Locale.US),
+        new SimpleDateFormat("dd.MM.yyyy", Locale.US),
+        new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US),
+        new SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
+
     };
+    private static final String TAG_CATEGORY = "category";
 
 
     private final Date mRealLastUpdateDate;
@@ -176,6 +193,10 @@ public class RssAtomParser extends DefaultHandler {
     private long mNow = System.currentTimeMillis();
     private StringBuilder mGuid;
     private StringBuilder mAuthor, mTmpAuthor;
+    private ArrayList<String> mCategoryList = new ArrayList<>();
+    private StringBuilder mTmpCategory = null;
+    private boolean mCategoryTagEntered = false;
+    private String mMainImageUrl = null;
 
     public RssAtomParser(Date realLastUpdateDate, long keepDateBorderTime, final String id, String feedName, String url, boolean retrieveFullText) {
         mKeepDateBorder = new Date(keepDateBorderTime);
@@ -213,87 +234,98 @@ public class RssAtomParser extends DefaultHandler {
             mEntryTagEntered = true;
             mDescription = null;
             mEntryLink = null;
+            mCategoryList.clear();
+            mTmpCategory = new StringBuilder();
 
-                // Save the previous (if no date are found for this entry)
-                mPreviousEntryDate = mEntryDate;
-                mPreviousEntryUpdateDate = mEntryUpdateDate;
-                mEntryDate = null;
-                mEntryUpdateDate = null;
+            // Save the previous (if no date are found for this entry)
+            mPreviousEntryDate = mEntryDate;
+            mPreviousEntryUpdateDate = mEntryUpdateDate;
+            mEntryDate = null;
+            mEntryUpdateDate = null;
 
-                // This is the retrieved feed title
-                if (mFeedTitle == null && mTitle != null && mTitle.length() > 0) {
-                    mFeedTitle = mTitle.toString();
-                }
-                mTitle = null;
-            } else if (TAG_TITLE.equals(localName)) {
-                if (mTitle == null) {
-                    mTitleTagEntered = true;
-                    mTitle = new StringBuilder();
-                }
-            } else if (TAG_LINK.equals(localName)) {
-                if (mAuthorTagEntered) {
-                    return;
-                }
-                if (TAG_ENCLOSURE.equals(attributes.getValue("", ATTRIBUTE_REL))) {
-                    startEnclosure(attributes, attributes.getValue("", ATTRIBUTE_HREF));
-                    //} else if(TAG_ALTERNATE.equals(attributes.getValue("", ATTRIBUTE_REL))) {
-                } else if(TAG_RELATED.equals(attributes.getValue("", ATTRIBUTE_REL))) {
-                } else if(TAG_VIA.equals(attributes.getValue("", ATTRIBUTE_REL))) {
-                } else {
-                    // Get the link only if we don't have one or if its the good one (html)
-                    if (mEntryLink == null || HTML_TEXT.equals(attributes.getValue("", ATTRIBUTE_TYPE))) {
-                        mEntryLink = new StringBuilder();
+            // This is the retrieved feed title
+            if (mFeedTitle == null && mTitle != null && mTitle.length() > 0) {
+                mFeedTitle = mTitle.toString();
+            }
+            mTitle = null;
+        } else if (TAG_TITLE.equals(localName)) {
+            if (mTitle == null) {
+                mTitleTagEntered = true;
+                mTitle = new StringBuilder();
+            }
+        } else if (TAG_LINK.equals(localName)) {
+            if (mAuthorTagEntered) {
+                return;
+            }
+            if (TAG_ENCLOSURE.equals(attributes.getValue("", ATTRIBUTE_REL))) {
+                startEnclosure(attributes, attributes.getValue("", ATTRIBUTE_HREF));
+                //} else if(TAG_ALTERNATE.equals(attributes.getValue("", ATTRIBUTE_REL))) {
+            } else if(TAG_RELATED.equals(attributes.getValue("", ATTRIBUTE_REL))) {
+            } else if(TAG_VIA.equals(attributes.getValue("", ATTRIBUTE_REL))) {
+            } else {
+                // Get the link only if we don't have one or if its the good one (html)
+                if (mEntryLink == null || HTML_TEXT.equals(attributes.getValue("", ATTRIBUTE_TYPE))) {
+                    mEntryLink = new StringBuilder();
 
-                        boolean foundLink = false;
-                        String href = attributes.getValue("", ATTRIBUTE_HREF);
-                        if (!TextUtils.isEmpty(href)) {
-                            mEntryLink.append(href);
-                            foundLink = true;
-                            mLinkTagEntered = false;
-                        } else {
-                            mLinkTagEntered = true;
-                        }
+                    boolean foundLink = false;
+                    String href = attributes.getValue("", ATTRIBUTE_HREF);
+                    if (!TextUtils.isEmpty(href)) {
+                        mEntryLink.append(href);
+                        foundLink = true;
+                        mLinkTagEntered = false;
+                    } else {
+                        mLinkTagEntered = true;
+                    }
 
-                        if (!foundLink) {
-                            mLinkTagEntered = true;
-                        }
+                    if (!foundLink) {
+                        mLinkTagEntered = true;
                     }
                 }
-            } else if ((TAG_DESCRIPTION.equals(localName) && !TAG_MEDIA_DESCRIPTION.equals(qName))
-                    || (TAG_CONTENT.equals(localName) && !TAG_MEDIA_CONTENT.equals(qName))) {
-                mDescriptionTagEntered = true;
-                mDescription = new StringBuilder();
-            } else if (TAG_SUMMARY.equals(localName)) {
-                if (mDescription == null) {
-                    mDescriptionTagEntered = true;
-                    mDescription = new StringBuilder();
-                }
-            } else if (TAG_PUBDATE.equals(localName)) {
-                mPubDateTagEntered = true;
-                mDateStringBuilder = new StringBuilder();
-            } else if (TAG_PUBLISHED.equals(localName)) {
-                mPublishedTagEntered = true;
-                mDateStringBuilder = new StringBuilder();
-            } else if (TAG_DATE.equals(localName)) {
-                mDateTagEntered = true;
-                mDateStringBuilder = new StringBuilder();
-            } else if (TAG_LAST_BUILD_DATE.equals(localName)) {
-                mLastBuildDateTagEntered = true;
-                mDateStringBuilder = new StringBuilder();
-            } else if (TAG_ENCODED_CONTENT.equals(localName)) {
-                mDescriptionTagEntered = true;
-                mDescription = new StringBuilder();
-            } else if (TAG_ENCLOSURE.equals(localName)) {
-                startEnclosure(attributes, attributes.getValue("", ATTRIBUTE_URL));
-            } else if (TAG_GUID.equals(localName)) {
-                mGuidTagEntered = true;
-                mGuid = new StringBuilder();
-            } else if (TAG_NAME.equals(localName) || TAG_AUTHOR.equals(localName) || TAG_CREATOR.equals(localName)) {
-                mAuthorTagEntered = true;
-                if (mTmpAuthor == null) {
-                    mTmpAuthor = new StringBuilder();
-                }
             }
+        } else if ((TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName))
+                || (TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName))) {
+            mDescriptionTagEntered = true;
+            mDescription = new StringBuilder();
+        } else if (TAG_SUMMARY.equals(localName)) {
+            if (mDescription == null) {
+                mDescriptionTagEntered = true;
+                mDescription = new StringBuilder();
+            }
+        } else if ( TAG_MEDIA_THUMBNAIL.equals( qName ) ) {
+            mMainImageUrl = attributes.getValue( "", "url" );
+        } else if (TAG_PUBDATE.equals(localName)) {
+            mPubDateTagEntered = true;
+            mDateStringBuilder = new StringBuilder();
+        } else if (TAG_PUBLISHED.equals(localName)) {
+            mPublishedTagEntered = true;
+            mDateStringBuilder = new StringBuilder();
+        } else if (TAG_DATE.equals(localName)) {
+            mDateTagEntered = true;
+            mDateStringBuilder = new StringBuilder();
+        } else if (TAG_LAST_BUILD_DATE.equals(localName)) {
+            mLastBuildDateTagEntered = true;
+            mDateStringBuilder = new StringBuilder();
+        } else if (TAG_ENCODED_CONTENT.equals(localName)) {
+            mDescriptionTagEntered = true;
+            mDescription = new StringBuilder();
+        } else if (TAG_ENCLOSURE.equals(localName)) {
+            startEnclosure(attributes, attributes.getValue("", ATTRIBUTE_URL));
+        } else if (TAG_GUID.equals(localName)) {
+            mGuidTagEntered = true;
+            mGuid = new StringBuilder();
+        } else if (TAG_NAME.equals(localName) || TAG_AUTHOR.equals(localName) || TAG_CREATOR.equals(localName)) {
+            mAuthorTagEntered = true;
+            if (mTmpAuthor == null) {
+                mTmpAuthor = new StringBuilder();
+            }
+        } else if (TAG_CATEGORY.equals(localName)) {
+            mCategoryTagEntered = true;
+            if (mTmpCategory == null) {
+                mTmpCategory = new StringBuilder();
+            }
+            if ( attributes.getValue("", ATTRIBUTE_TERM) != null )
+                mTmpCategory.append( attributes.getValue("", ATTRIBUTE_TERM) );
+        }
     }
 
     private void startEnclosure(Attributes attributes, String url) {
@@ -328,6 +360,8 @@ public class RssAtomParser extends DefaultHandler {
                 mGuid.append(ch, start, length);
             } else if (mAuthorTagEntered) {
                 mTmpAuthor.append(ch, start, length);
+            } else if (mCategoryTagEntered) {
+                mTmpCategory.append(ch, start, length);
             }
     }
 
@@ -335,8 +369,8 @@ public class RssAtomParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
             if (TAG_TITLE.equals(localName)) {
                 mTitleTagEntered = false;
-            } else if ((TAG_DESCRIPTION.equals(localName) && !TAG_MEDIA_DESCRIPTION.equals(qName)) || TAG_SUMMARY.equals(localName)
-                    || (TAG_CONTENT.equals(localName) && !TAG_MEDIA_CONTENT.equals(qName)) || TAG_ENCODED_CONTENT.equals(localName)) {
+            } else if (TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName) || TAG_SUMMARY.equals(localName)
+                    || TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName) || TAG_ENCODED_CONTENT.equals(localName)) {
                 mDescriptionTagEntered = false;
             } else if (TAG_LINK.equals(localName)) {
                 mLinkTagEntered = false;
@@ -345,19 +379,23 @@ public class RssAtomParser extends DefaultHandler {
                     mFeedLink = mEntryLink.toString();
                 }
             } else if (TAG_UPDATED.equals(localName)) {
-                mEntryUpdateDate = parseDate(mDateStringBuilder.toString());
+                mEntryUpdateDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mUpdatedTagEntered = false;
             } else if (TAG_PUBDATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mPubDateTagEntered = false;
+            } else if (TAG_CATEGORY.equals(localName)) {
+                mCategoryList.add(mTmpCategory.toString());
+                mTmpCategory = new StringBuilder();
+                mCategoryTagEntered = false;
             } else if (TAG_PUBLISHED.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mPublishedTagEntered = false;
             } else if (TAG_LAST_BUILD_DATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mLastBuildDateTagEntered = false;
             } else if (TAG_DATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString());
+                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mDateTagEntered = false;
             } else if (TAG_ENTRY.equals(localName) || TAG_ITEM.equals(localName)) {
                 mEntryTagEntered = false;
@@ -379,54 +417,60 @@ public class RssAtomParser extends DefaultHandler {
                 if (mTitle != null && (mEntryDate == null || (mEntryDate.after(mRealLastUpdateDate) && mEntryDate.after(mKeepDateBorder)))) {
                     ContentValues values = new ContentValues();
                     values.put(EntryColumns.SCROLL_POS, 0);
-
+                    if ( !mCategoryList.isEmpty() )
+                        values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, mCategoryList ) );
                     if (mEntryDate != null && mEntryDate.getTime() > mNewRealLastUpdate) {
                         mNewRealLastUpdate = mEntryDate.getTime();
+                    }
+
+
+                    String entryLinkString = ""; // don't set this to null as we need *some* value
+                    if (mEntryLink != null && mEntryLink.length() > 0) {
+                        entryLinkString = mEntryLink.toString().trim();
+                        if (mFeedBaseUrl != null && !entryLinkString.startsWith(Constants.HTTP_SCHEME) && !entryLinkString.startsWith(Constants.HTTPS_SCHEME)) {
+                            entryLinkString = mFeedBaseUrl
+                                + (entryLinkString.startsWith(Constants.SLASH) ? entryLinkString : Constants.SLASH + entryLinkString);
+                        }
                     }
 
                     String improvedTitle = unescapeTitle(mTitle.toString().trim());
                     values.put(EntryColumns.TITLE, improvedTitle);
 
                     String improvedContent = null;
-                    String mainImageUrl = null;
+                    String mainImageUrl = mMainImageUrl;
                     ArrayList<String> imagesUrls = null;
                     if (mDescription != null) {
                         // Improve the description
-                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), mFeedBaseUrl, ArticleTextExtractor.MobilizeType.No);
+                        improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), entryLinkString, mFilters, ArticleTextExtractor.MobilizeType.Yes, true);
+                        imagesUrls = new ArrayList<>();
+                        if ( mainImageUrl != null ) {
+                            imagesUrls.add(mainImageUrl);
+                            if ( !improvedContent.contains( mMainImageUrl ) )
+                                improvedContent = String.format( "<img src=\"%s\" />", mMainImageUrl ) + improvedContent;
+                        }
                         if (mFetchImages) {
-                            imagesUrls = HtmlUtils.getImageURLs(improvedContent);
-                            if (!imagesUrls.isEmpty()) {
+                            //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
+                            HtmlUtils.replaceImageURLs( improvedContent, "", -1, mEntryLink.toString(), true, imagesUrls, null, mMaxImageDownloadCount );
+                            if ( mainImageUrl == null && !imagesUrls.isEmpty() ) {
                                 mainImageUrl = HtmlUtils.getMainImageURL(imagesUrls);
                             }
-                        } else {
+                        } else if ( mainImageUrl == null )
                             mainImageUrl = HtmlUtils.getMainImageURL(improvedContent);
-                        }
 
-                        if (improvedContent != null) {
+                        if (improvedContent != null)
                             values.put(EntryColumns.ABSTRACT, improvedContent);
-                        }
                     }
 
-                    if (mainImageUrl != null) {
+                    if ( mainImageUrl != null )
                         values.put(EntryColumns.IMAGE_URL, mainImageUrl);
-                    }
+                    mMainImageUrl = null;
 
                     String improvedAuthor = "";
                     if ( mAuthor != null )
                         improvedAuthor = mAuthor.toString();
 
-                    String entryLinkString = ""; // don't set this to null as we need *some* value
-
-                    if (mEntryLink != null && mEntryLink.length() > 0) {
-                        entryLinkString = mEntryLink.toString().trim();
-                        if (mFeedBaseUrl != null && !entryLinkString.startsWith(Constants.HTTP_SCHEME) && !entryLinkString.startsWith(Constants.HTTPS_SCHEME)) {
-                            entryLinkString = mFeedBaseUrl
-                                    + (entryLinkString.startsWith(Constants.SLASH) ? entryLinkString : Constants.SLASH + entryLinkString);
-                        }
-                    }
-
                     // Try to find if the entry is not filtered and need to be processed
-                    if (!mFilters.isEntryFiltered(improvedTitle, improvedAuthor, entryLinkString, improvedContent)) {
+                    if (!mFilters.isEntryFiltered(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]))) {
 
                         if (mAuthor != null) {
                             values.put(EntryColumns.AUTHOR, mAuthor.toString());
@@ -471,7 +515,7 @@ public class RssAtomParser extends DefaultHandler {
 
                             values.put(EntryColumns.LINK, entryLinkString);
 
-                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent) ) {
+                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) ) {
                                 synchronized ( FetcherService.mMarkAsStarredFoundList ) {
                                     FetcherService.mMarkAsStarredFoundList.add(new MarkItem(mId, improvedTitle, entryLinkString));
                                 }
@@ -491,7 +535,7 @@ public class RssAtomParser extends DefaultHandler {
                         }
                     }
 
-                } else {
+                //} else {
                     //cancel();
                 }
                 mDescription = null;
@@ -505,6 +549,7 @@ public class RssAtomParser extends DefaultHandler {
                 mGuidTagEntered = false;
             } else if (TAG_NAME.equals(localName) || TAG_AUTHOR.equals(localName) || TAG_CREATOR.equals(localName)) {
                 mAuthorTagEntered = false;
+                mCategoryTagEntered = false;
 
                 if (mTmpAuthor != null && mTmpAuthor.indexOf("@") == -1) { // no email
                     if (mAuthor == null) {
@@ -558,14 +603,17 @@ public class RssAtomParser extends DefaultHandler {
         this.mFetchImages = fetchImages;
     }
 
-    private Date parseDate(String dateStr) {
+    public static Date parseDate(String dateStr, long now) {
+        Dog.d( "parseDate " + dateStr );
         long dateBorder = 5 * 365 * 24 * 60 * 60 * 1000L; // five years ago
         dateStr = improveDateString(dateStr);
         for (DateFormat format : DATE_FORMATS ) {
             try {
                 Date result = format.parse(dateStr);
-                if ( Math.abs( result.getTime() -  mNow ) < dateBorder )
-                    return (result.getTime() > mNow ? new Date(mNow) : result);
+                if ( now == 0 )
+                    return result;
+                if ( Math.abs( result.getTime() -  now ) < dateBorder )
+                    return (result.getTime() > now ? new Date(now) : result);
             } catch (ParseException ignored) {
 
             } // just do nothing
@@ -574,12 +622,12 @@ public class RssAtomParser extends DefaultHandler {
         return null;
     }
 
-    private String improveDateString(String dateStr) {
+    static String improveDateString(String dateStr) {
         // We remove the first part if necessary (the day display)
-        int coma = dateStr.indexOf(", ");
-        if (coma != -1) {
-            dateStr = dateStr.substring(coma + 2);
-        }
+//        int coma = dateStr.indexOf(", ");
+//        if (coma != -1) {
+//            dateStr = dateStr.substring(coma + 2);
+//        }
 
         dateStr = dateStr.replaceAll("([0-9])T([0-9])", "$1 $2")
                 .replaceAll("Z$", "")
@@ -637,15 +685,8 @@ public class RssAtomParser extends DefaultHandler {
 
                 }
             }
-            if (mRetrieveFullText) {
-                Cursor c = cr.query(mFeedEntriesUri, new String[]{EntryColumns._ID}, EntryColumns.MOBILIZED_HTML + Constants.DB_IS_NULL, null, EntryColumns.DATE + Constants.DB_DESC);
-                while (c.moveToNext()) {
-                    entriesId.add(c.getLong(0));
-                }
-                c.close();
-
-                FetcherService.addEntriesToMobilize(entriesId.toArray( new Long[entriesId.size()] ));
-            }
+            if (mRetrieveFullText)
+                FetcherService.addEntriesToMobilize(mFeedEntriesUri);
 
         } catch (  Exception e ) {
             FetcherService.Status().SetError( e.getMessage(), String.valueOf( mId ), "", e );

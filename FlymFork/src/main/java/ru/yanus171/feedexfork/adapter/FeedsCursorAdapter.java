@@ -33,13 +33,17 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.getFaviconBitmap;
+import static ru.yanus171.feedexfork.utils.UiUtils.getScaledBitmap;
+
 public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
 
     private int mIsGroupPos = -1;
     private int mNamePos = -1;
     private int mIdPos = -1;
     private int mLinkPos = -1;
-    private int mIconPos = -1;
+    private int mIconUrlPos = -1;
 
     public FeedsCursorAdapter(Activity activity, Uri groupUri) {
         super(activity, groupUri, R.layout.item_feed_list, R.layout.item_feed_list);
@@ -54,15 +58,15 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
     protected void bindChildView(View view, Context context, Cursor cursor) {
         view.findViewById(R.id.indicator).setVisibility(View.INVISIBLE);
 
-        TextView textView = view.findViewById(android.R.id.text1);
+        TextView textView = SetupTextView( view, android.R.id.text1);
 
         final long feedId = cursor.getLong(mIdPos);
-        Bitmap bitmap = UiUtils.getFaviconBitmap(feedId, cursor, mIconPos);
+        Bitmap bitmap = getScaledBitmap( getFaviconBitmap( cursor.getString( mIconUrlPos ) ), 32 );
 
         if (bitmap != null) {
             textView.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(context.getResources(), bitmap), null, null, null);
         } else {
-            textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            textView.setCompoundDrawablesWithIntrinsicBounds( R.mipmap.ic_launcher, 0, 0, 0);
         }
 
         textView.setText((cursor.isNull(mNamePos) ? cursor.getString(mLinkPos) : cursor.getString(mNamePos)));
@@ -82,9 +86,9 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
             textView.setText(cursor.getString(mNamePos));
 
             if (isExpanded)
-                indicatorImage.setImageResource(R.drawable.group_expanded);
+                indicatorImage.setImageResource(R.drawable.ic_group_expanded_gray);
             else
-                indicatorImage.setImageResource(R.drawable.group_collapsed);
+                indicatorImage.setImageResource(R.drawable.ic_group_collapsed_gray);
         } else {
             bindChildView(view, context, cursor);
             indicatorImage.setVisibility(View.GONE);
@@ -119,7 +123,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
             mNamePos = cursor.getColumnIndex(FeedColumns.NAME);
             mIdPos = cursor.getColumnIndex(FeedColumns._ID);
             mLinkPos = cursor.getColumnIndex(FeedColumns.URL);
-            mIconPos = cursor.getColumnIndex(FeedColumns.ICON);
+            mIconUrlPos = cursor.getColumnIndex(FeedColumns.ICON_URL);
         }
     }
 }

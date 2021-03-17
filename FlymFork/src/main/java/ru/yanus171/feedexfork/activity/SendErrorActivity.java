@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.utils.UiUtils;
+
+import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 
 public class SendErrorActivity extends Activity {
 	public static final String cExceptionTextExtra = "ExceptionTextExtra";
@@ -31,7 +34,7 @@ public class SendErrorActivity extends Activity {
 		// layout.setWeightSum(6);
 
 		title: {
-			TextView labelTitle = new TextView(this);
+			TextView labelTitle = CreateTextView(this);
 			labelTitle.setText(R.string.criticalErrorOccured);
 			//labelTitle.setTextSize(Global.GetViewSmallFontSize());
 			//labelTitle.setTextColor(Theme.GetMenuFontColor());
@@ -42,7 +45,7 @@ public class SendErrorActivity extends Activity {
 			ScrollView scrollView = new ScrollView(this);
 			layout.addView(scrollView, new LayoutParams(LayoutParams.FILL_PARENT, 0, 8));
 
-			TextView labelText = new TextView(this);
+			TextView labelText = CreateTextView(this);
 			labelText.setText(exceptionText);
 			//labelText.setTextColor(Theme.GetMenuFontColor());
 			//labelText.setTextSize(Global.GetViewSmallFontSize());

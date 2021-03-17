@@ -58,6 +58,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 
 import static ru.yanus171.feedexfork.utils.PrefUtils.AUTO_BACKUP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.AUTO_BACKUP_INTERVAL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.DELETE_OLD_INTERVAL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
 
@@ -103,7 +104,9 @@ public class AutoJobService extends JobService {
 
     public static  final String LAST_JOB_OCCURED = "LAST_JOB_OCCURED_";
     private static final int AUTO_BACKUP_JOB_ID = 3;
-    private static final int AUTO_UPDATE_JOB_ID = 1;
+    private static final int AUTO_REFRESH_JOB_ID = 1;
+    private static final int DELETE_OLD_JOB_ID = 4;
+    final static long DEFAULT_INTERVAL = 3600L * 1000 * 24;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static void initAutoJob(Context context,
@@ -112,7 +115,6 @@ public class AutoJobService extends JobService {
                                     final int jobID,
                                     boolean requiresNetwork,
                                     boolean requiresCharging) {
-        final long DEFAULT_INTERVAL = 3600L * 1000 * 24;
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
         final long lastInterval = getTimeIntervalInMSecs(LAST + keyInterval, DEFAULT_INTERVAL);
@@ -125,7 +127,7 @@ public class AutoJobService extends JobService {
         }
 
         if ( PrefUtils.getBoolean( keyEnabled, true )  ) {
-            if (lastInterval != currentInterval ||
+            if ( lastInterval != currentInterval ||
                     currentTime - lastJobOccured > currentInterval ||
                     GetPendingJobByID(jobScheduler, jobID) == null ||
                     GetPendingJobByID(jobScheduler, jobID).isRequireCharging() != requiresCharging ) {
@@ -152,7 +154,8 @@ public class AutoJobService extends JobService {
     }
     public static void init(Context context) {
         if (Build.VERSION.SDK_INT >= 21 ) {
-            initAutoJob( context, REFRESH_INTERVAL, REFRESH_ENABLED, AUTO_UPDATE_JOB_ID, true, PrefUtils.getBoolean( "auto_refresh_requires_charging", false ) );
+            initAutoJob(context, REFRESH_INTERVAL, REFRESH_ENABLED, AUTO_REFRESH_JOB_ID, true, PrefUtils.getBoolean("auto_refresh_requires_charging", false ) );
+            initAutoJob( context,DELETE_OLD_INTERVAL, REFRESH_ENABLED, DELETE_OLD_JOB_ID, false, PrefUtils.getBoolean( "delete_old_requires_charging", true ) );
             initAutoJob( context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, AUTO_BACKUP_JOB_ID, false, false );
         }
         /*else {
@@ -178,10 +181,29 @@ public class AutoJobService extends JobService {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        if ( jobParameters.getJobId() == AUTO_BACKUP_JOB_ID ) {
-            ExecuteAutoBackup();
-        } else if ( jobParameters.getJobId() == AUTO_UPDATE_JOB_ID )
-            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_REFRESH ) );
+        String keyInterval = "";
+        if ( jobParameters.getJobId() == AUTO_BACKUP_JOB_ID )
+            keyInterval = AUTO_BACKUP_INTERVAL;
+        else if ( jobParameters.getJobId() == AUTO_REFRESH_JOB_ID)
+            keyInterval = REFRESH_INTERVAL;
+        else if ( jobParameters.getJobId() == DELETE_OLD_JOB_ID )
+            keyInterval = DELETE_OLD_INTERVAL;
+        final long currentTime = System.currentTimeMillis();
+        final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+        long lastJobOccured = 0;
+        try {
+            lastJobOccured = PrefUtils.getLong(LAST_JOB_OCCURED + keyInterval, 0 );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        if ( currentTime - lastJobOccured > currentInterval ) {
+            if (jobParameters.getJobId() == AUTO_BACKUP_JOB_ID)
+                ExecuteAutoBackup();
+            else if (jobParameters.getJobId() == DELETE_OLD_JOB_ID)
+                ExecuteDeleteOld();
+            else if (jobParameters.getJobId() == AUTO_REFRESH_JOB_ID)
+                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
+        }
         return false;
     }
 
@@ -192,7 +214,17 @@ public class AutoJobService extends JobService {
         if ( System.currentTimeMillis() - PrefUtils.getLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() ) < 1000 * 60 * 60 * 1 )
             return;
 
-        FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ) );
+        FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ), false );
+    }
+
+    private static void ExecuteDeleteOld() {
+        if ( Build.VERSION.SDK_INT < 26 && FetcherService.isBatteryLow() )
+            return;
+
+        if ( System.currentTimeMillis() - PrefUtils.getLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() ) < 1000 * 60 * 60 * 1 )
+            return;
+
+        FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
     }
 
     @Override

@@ -23,19 +23,21 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.StrictMode;
-import android.preference.PreferenceManager;
 
 import java.lang.reflect.Method;
-import java.util.Locale;
 
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.DebugApp;
+import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.FileUtils;
+import ru.yanus171.feedexfork.utils.FileVoc;
+import ru.yanus171.feedexfork.utils.PrefUtils;
+
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
 public class MainApplication extends Application {
 
@@ -45,13 +47,19 @@ public class MainApplication extends Application {
         return mContext;
     }
 
-    public static final String NOTIFICATION_CHANNEL_ID = "main_channel";
+    public static FileVoc mImageFileVoc = null;
+    public static FileVoc mHTMLFileVoc = null;
+
+    public static final String OPERATION_NOTIFICATION_CHANNEL_ID = "operation_channel";
+    public static final String READING_NOTIFICATION_CHANNEL_ID = "reading_channel";
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-
+        Status();
+        mImageFileVoc = new FileVoc(FileUtils.INSTANCE.GetImagesFolder() );
+        mHTMLFileVoc = new FileVoc(FileUtils.INSTANCE.GetHTMLFolder() );
         BaseActivity.InitLocale( mContext );
 
         Thread.setDefaultUncaughtExceptionHandler(new DebugApp().new UncaughtExceptionHandler(this));
@@ -69,13 +77,23 @@ public class MainApplication extends Application {
 
         if (Build.VERSION.SDK_INT >= 26) {
             Context context = MainApplication.getContext();
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW);
-            channel.setDescription(context.getString(R.string.app_name));
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            {
+                NotificationChannel channel = new NotificationChannel(OPERATION_NOTIFICATION_CHANNEL_ID, context.getString(R.string.long_operation), NotificationManager.IMPORTANCE_LOW);
+                channel.setDescription(context.getString(R.string.long_operation));
+                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+            {
+                NotificationChannel channel = new NotificationChannel(READING_NOTIFICATION_CHANNEL_ID, context.getString(R.string.reading_article), NotificationManager.IMPORTANCE_LOW);
+                channel.setDescription(context.getString(R.string.reading_article));
+                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
         }
 
-
+        mImageFileVoc.init1();
+        mHTMLFileVoc.init1();
+        EntryUrlVoc.INSTANCE.init1();
     }
 
 

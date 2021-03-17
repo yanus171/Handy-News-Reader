@@ -5,24 +5,28 @@
 
     <item
         android:id="@+id/menu_add_feed"
-        android:icon="@drawable/content_new"
+        android:icon="@drawable/ic_add_circle_outline"
         android:title="@string/menu_add_feed"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/menu_add_group"
-        android:icon="@drawable/add_group"
+        android:icon="@drawable/ic_create_new_folder"
         android:title="@string/menu_add_group"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/menu_import"
-        android:icon="@drawable/action_import"
-        android:title="@string/menu_import"/>
+        android:icon="@drawable/ic_opml_import"
+        android:title="@string/menu_import"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/menu_export"
-        android:icon="@drawable/action_export"
-        android:title="@string/menu_export"/>
+        android:icon="@drawable/ic_opml_export"
+        android:title="@string/menu_export"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"/>
     <!--<item
         android:id="@+id/menu_fix_order"
         android:title="@string/menu_fix_order"/>-->

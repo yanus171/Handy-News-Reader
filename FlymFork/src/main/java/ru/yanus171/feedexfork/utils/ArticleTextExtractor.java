@@ -1,8 +1,8 @@
 package ru.yanus171.feedexfork.utils;
 
-import android.content.Context;
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,11 +13,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
+
+import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 
 /**
  * This class is thread safe.
@@ -48,10 +51,23 @@ public class ArticleTextExtractor {
 
     private static final Pattern NEGATIVE_STYLE =
             Pattern.compile("hidden|display: ?none|font-size: ?small");
-    static final String TAG_BUTTON_CLASS = "tag_button";
-    static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
-    static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
+    public static final String TAG_BUTTON_CLASS = "tag_button";
+    public static final String TAG_BUTTON_CLASS_HIDDEN = "tag_button_hidden";
+    public static final String TAG_BUTTON_CLASS_CATEGORY = "tag_button_category";
+    public static final String TAG_BUTTON_CLASS_DATE = "tag_button_date";
+    public static final String TAG_BUTTON_FULL_TEXT_ROOT_CLASS = "tag_button_full_text";
     static final String CLASS_ATTRIBUTE = "class";
+    public static final String HANDY_NEWS_READER_ROOT_CLASS = "Handy_News_Reader_root";
+    public static final String HANDY_NEWS_READER_CATEGORY_CLASS = "Handy_News_Reader_tag";
+    public static final String HANDY_NEWS_READER_DATE_CLASS = "Handy_News_Reader_date";
+    public static final String HANDY_NEWS_READER_MAIN_IMAGE_CLASS = "Handy_News_Reader_main_image";
+    public static final String P_HR = "</p><hr>";
+    public static final String EMPTY_TAG = "EMPTY_TAG";
+
+    public enum MobilizeType {Yes, No, Tags}
+    //public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
+
+    public static String mLastLoadedAllDoc = "";
 
     /**
      * @param input            extracts article text from given html string. wasn't tested
@@ -59,118 +75,117 @@ public class ArticleTextExtractor {
      * @param contentIndicator a text which should be included into the extracted content, or null
      * @return extracted article, all HTML tags stripped
      */
-    public enum MobilizeType {Yes, No, Tags}
-
-    public static String extractContent(InputStream input, final String url, String contentIndicator, MobilizeType mobilize, boolean isFindBEstElement) throws Exception {
-        return extractContent(Jsoup.parse(input, null, ""), url, contentIndicator, mobilize, isFindBEstElement);
+    public static String extractContent(InputStream input,
+                                        final String url,
+                                        String contentIndicator,
+                                        FeedFilters filters,
+                                        MobilizeType mobilize,
+                                        ArrayList<String> tagList,
+                                        boolean isFindBestElement,
+                                        boolean isWithTables ) throws Exception {
+        return extractContent(Jsoup.parse(input, null, ""),
+                              url,
+                              contentIndicator,
+                              filters,
+                              mobilize,
+                              tagList,
+                              isFindBestElement,
+                              isWithTables);
     }
 
     public static String extractContent(Document doc,
                                         final String url,
                                         String contentIndicator,
+                                        FeedFilters filters,
                                         MobilizeType mobilize,
-                                        boolean isFindBestElement) {
-        final Context context = MainApplication.getContext();
-
+                                        ArrayList<String> categoryList,
+                                        boolean isFindBestElement,
+                                        boolean isWithTables) {
         if (doc == null)
             throw new NullPointerException("missing document");
-
-
-        doc.addClass( "Handy_News_Reader_root" );
 
         FetcherService.Status().AddBytes(doc.html().length());
 
         // now remove the clutter
         prepareDocument(doc, mobilize);
 
+        {
+            Elements elList = doc.getElementsByAttribute( "id" );
+            for (Element item : elList)
+                if ( !item.hasAttr( "class" ) )
+                    item.attr( "class", item.attr( "id") );
 
-        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
-
-
-        Element bestMatchElement = doc;
-        if (mobilize != MobilizeType.No) {
-            // init elements
-            Collection<Element> nodes = getNodes(doc);
-            int maxWeight = 0;
-
-            bestMatchElement = getBestElementFromFile(doc, url);
-            if (bestMatchElement == null && isFindBestElement) {
-                for (Element entry : nodes) {
-                    int currentWeight = getWeight(entry, contentIndicator);
-                    if (currentWeight > maxWeight) {
-                        maxWeight = currentWeight;
-                        bestMatchElement = entry;
-
-                        if (maxWeight > 300) {
-                            break;
-                        }
-                    }
-                }
-            }
-            if ( bestMatchElement == null )
-                bestMatchElement = doc;
         }
 
-        if (mobilize == MobilizeType.Tags) {
-
-
-            final String baseUrl = NetworkUtils.getUrlDomain(url);
-            for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
-                if (el.hasText()) {
-                    final String classNameList =
-                            el.attr(CLASS_ATTRIBUTE).trim().replaceAll("\\r|\\n", " ").replaceAll(" +", " ");
-                    if ( classNameList.equals(TAG_BUTTON_CLASS) )
-                        continue;
-                    for ( String className: TextUtils.split( classNameList, " " ) ) {
-                        if ( className.trim().isEmpty() )
-                            continue;
-                        boolean isHidden = removeClassList.contains(className);
-                        AddTagButton(el, className, baseUrl, isHidden, el == bestMatchElement );
-                        if ( isHidden ) {
-                            Element elementS = doc.createElement("s");
-                            el.replaceWith(elementS);
-                            elementS.insertChildren(0, el);
-                        }
-                    }
+        {
+            Elements elList = doc.getElementsByClass( "turbo-image" );
+            for (Element item : elList)
+                if ( item.hasAttr( "data-src" ) ) {
+                    item.attr("src", item.attr("data-src"));
+                    item.tagName( "img" );
                 }
         }
 
-        if (mobilize != MobilizeType.Tags) {
-            for (String classItem: removeClassList ) {
-                Elements list = bestMatchElement.getElementsByClass(classItem);
-                for (Element item : list) {
-                    item.remove();
+        {
+            Elements elList = doc.getElementsByClass( "lazy" );
+            for (Element item : elList)
+                if (item.tagName().equals("a") && item.hasAttr("data-src" ) ) {
+                    item.removeAttr("data-src");
                 }
-            }
         }
 
-        if ( bestMatchElement == null || mobilize == MobilizeType.Tags )
-            bestMatchElement = doc;
+        {
+            categoryList.clear();
+            Element tagsElements = getCategoriesElementFromPref(doc, url);
+            if (tagsElements != null)
+                for (Element item : tagsElements.getAllElements())
+                    if ( !item.ownText().isEmpty() )
+                        categoryList.add(item.ownText());
+        }
+        Dog.v( "tagList = " + TextUtils.join( " ", categoryList ));
 
-        Collection<Element> metas = getMetas(doc);
         String ogImage = null;
-        for (Element entry : metas) {
-            if (entry.hasAttr("property") && "og:image".equals(entry.attr("property"))) {
-                ogImage = entry.attr("content");
-                break;
+        Element mainImageElement = getMainImageElementFromPref(doc, url);
+        if (mainImageElement != null ) {
+            for (Element item : mainImageElement.getAllElements())
+                if ( item.tagName().equals( "img" ) )
+                    ogImage = item.attr( "src" );
+        } else {
+            Collection<Element> metas = getMetas(doc);
+            for (Element entry : metas) {
+                if (entry.hasAttr("property") && "og:image".equals(entry.attr("property"))) {
+                    ogImage = entry.attr("content");
+                    break;
+                }
             }
         }
 
+        Element rootElement = doc;
+        if ( mobilize == MobilizeType.Yes) {
+            rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
+            RemoveHiddenElements(rootElement);
+        }
 
-        Elements title = bestMatchElement.getElementsByClass("title");
+        if ( rootElement == null )
+            rootElement = doc;
+
+
+
+        Elements title = rootElement.getElementsByClass("title");
         for (Element entry : title)
             if (entry.tagName().toLowerCase().equals("h1")) {
                 title.first().remove();
                 break;
             }
 
-        String ret = bestMatchElement.toString();
+
+        String ret = rootElement.toString();
         if (ogImage != null && !ret.contains(ogImage)) {
             ret = "<img src=\"" + ogImage + "\"><br>\n" + ret;
         }
 
 
-        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false)) {
+        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false) ) {
             Element comments = doc.getElementById("comments");
             if (comments != null) {
                 Elements li = comments.getElementsByTag("li");
@@ -181,40 +196,179 @@ public class ArticleTextExtractor {
                 for (Element entry : ul) {
                     entry.tagName("p");
                 }
+                RemoveHiddenElements(comments);
                 ret += comments;
             }
         }
 
-        if ( mobilize == MobilizeType.No ) {
-            ret = ret.replaceAll("<table(.)*?>", "<p>");
-            ret = ret.replaceAll("</table>", "</p>");
-
-            ret = ret.replaceAll("<tr(.)*?>", "<p>");
-            ret = ret.replaceAll("</tr>", "</p>");
-
-            ret = ret.replaceAll("<td(.)*?>", "<p>");
-            ret = ret.replaceAll("</td>", "</p>");
-
-            ret = ret.replaceAll("<th(.)*?>", "<p>");
-            ret = ret.replaceAll("</th>", "</p>");
+        if ( !isWithTables ) {
+            ret = RemoveTables(ret);
         }
+
+        final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
+        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), filters, mobilize, isAutoFullTextRoot );
+
+        if ( mobilize == MobilizeType.Tags ) {
+            mLastLoadedAllDoc = ret;
+            Document tempDoc = Jsoup.parse(ret, NetworkUtils.getUrlDomain(url));
+            rootElement = FindBestElement(tempDoc, url, contentIndicator, isFindBestElement);
+            AddTagButtons(tempDoc, url, rootElement);
+            ret = tempDoc.toString();
+        }
+
 
         return ret;
     }
 
-    private static void AddTagButton(Element el, String className, String baseUrl, boolean isHidden, boolean isFullTextRoot) {
+    public static void RemoveHiddenElements(Element rootElement) {
+        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+        for (String classItem : removeClassList) {
+            if ( !classItem.isEmpty() ) {
+                Elements list = rootElement.getElementsByClass(classItem);
+                for (Element item : list)
+                    item.remove();
+            }
+        }
+    }
+
+    @NotNull
+    public static String RemoveTables(String ret) {
+        ret = ret.replaceAll("<table(.)*?>", "<p>");
+        ret = ret.replaceAll("</table>", "</p>");
+
+        ret = ret.replaceAll("<tr(.)*?>", "<p>");
+        ret = ret.replaceAll("</tr>", P_HR);
+
+        ret = ret.replaceAll("<td(.)*?>", "<p>");
+        ret = ret.replaceAll("</td>", "</p>");
+
+        ret = ret.replaceAll("<th(.)*?>", "<p>");
+        ret = ret.replaceAll("</th>", P_HR);
+        return ret;
+    }
+
+    @NotNull
+    public static String RemoveHeaders(String ret) {
+        ret = ret.replaceAll("<h1(.)*?>", "");
+        ret = ret.replaceAll("</h1>", "");
+
+        ret = ret.replaceAll("<h2(.)*?>", "");
+        ret = ret.replaceAll("</h2>", "");
+
+        ret = ret.replaceAll("<h3(.)*?>", "");
+        ret = ret.replaceAll("</h3>", "");
+
+        return ret;
+    }
+
+    public static Element FindBestElement(Document doc, String url, String contentIndicator, boolean isFindBestElement) {
+
+        // init elements
+        Collection<Element> nodes = getNodes(doc);
+        int maxWeight = 0;
+
+        Element bestMatchElement = getFullTextRootElementFromPref(doc, url);
+        if (bestMatchElement == null && isFindBestElement) {
+            for (Element entry : nodes) {
+                int currentWeight = getWeight(entry, contentIndicator);
+                if (currentWeight > maxWeight) {
+                    maxWeight = currentWeight;
+                    bestMatchElement = entry;
+
+                    if (maxWeight > 300) {
+                        break;
+                    }
+                }
+            }
+        }
+        if ( bestMatchElement == null )
+            bestMatchElement = doc;
+
+
+        return bestMatchElement;
+    }
+
+    public static void AddTagButtons(Document doc, String url, Element bestMatchElement) {
+        doc.addClass( HANDY_NEWS_READER_ROOT_CLASS );
+
+        String fullTextRootElementFromPrefClassName = getUrlClassNameFromPref( url, CONTENT_TEXT_ROOT_EXTRACT_RULES );
+
+        final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
+
+        final Element categoriesElement = getCategoriesElementFromPref(doc, url);
+        final Elements categoriesAllElements = categoriesElement != null ? categoriesElement.getAllElements() : null;
+
+        final Element dateElement = getDateElementFromPref(doc, url);
+
+        final String baseUrl = url;//NetworkUtils.getUrlDomain(url);
+        for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
+            if (el.hasText()) {
+                //final String classNameList =
+                //       el.attr(CLASS_ATTRIBUTE).trim().replaceAll("\\r|\\n", " ").replaceAll(" +", " ");
+                final Set<String> classNameList = el.classNames();
+                if ( classNameList.contains( TAG_BUTTON_CLASS) )
+                    continue;
+                for ( String className: classNameList ) {
+                    if ( className.trim().isEmpty() )
+                        continue;
+                    final boolean isHidden = removeClassList.contains(className);
+                    final boolean isCategory = categoriesAllElements != null && categoriesAllElements.contains( el );
+                    final boolean isDate = dateElement != null && dateElement.equals( el );
+                    final boolean isTextRoot = el.equals( bestMatchElement ) ||
+                        el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS ) ||
+                        el.classNames().contains( fullTextRootElementFromPrefClassName );
+                    AddTagButton( el, className, baseUrl, isHidden, isTextRoot, isCategory, isDate );
+                    if ( isHidden && el.parent() != null ) {
+                        Element elementS = doc.createElement("s");
+                        elementS.addClass( TAG_BUTTON_CLASS_HIDDEN );
+                        el.replaceWith(elementS);
+                        elementS.insertChildren(0, el);
+                    }
+                }
+            }
+    }
+
+    private static void AddTagButton(Element el, String className, String baseUrl,
+                                     boolean isHidden, boolean isFullTextRoot, boolean isCategory, boolean isDate ) {
         final String paramValue = isHidden ? "show" : "hide";
         final String methodText = "openTagMenu('" + className + "', '" + baseUrl + "', '" + paramValue + "')";
         //final String fullTextRoot = isFullTextRoot ? " !!! " + MainApplication.getContext().getString( R.string.fullTextRoot ).toUpperCase() + " !!! " : "";
-        final String tagClass = isFullTextRoot ? TAG_BUTTON_FULL_TEXT_ROOT_CLASS : ( isHidden ? TAG_BUTTON_CLASS_HIDDEN : TAG_BUTTON_CLASS );
+        final String tagClass;
+        if ( isFullTextRoot )
+            tagClass = TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
+        else if ( isCategory )
+            tagClass = TAG_BUTTON_CLASS_CATEGORY;
+        else if ( isDate )
+            tagClass = TAG_BUTTON_CLASS_DATE;
+        else if ( isHidden )
+            tagClass = TAG_BUTTON_CLASS_HIDDEN;
+        else
+            tagClass = TAG_BUTTON_CLASS;
         el.append(HtmlUtils.getButtonHtml(methodText,  " " + className + " ]", tagClass));
         el.prepend(HtmlUtils.getButtonHtml(methodText,  "[ " + className + " ", tagClass));
     }
 
 
-    private static Element getBestElementFromFile(Element doc, final String url) {
+    public static Element getFullTextRootElementFromPref(Element doc, final String url ) {
+        return getElementWithClassNameFromPref( doc, url, PrefUtils.getString(CONTENT_TEXT_ROOT_EXTRACT_RULES, R.string.full_text_root_default),
+                                                HANDY_NEWS_READER_ROOT_CLASS, false);
+    }
+    private static Element getCategoriesElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.CATEGORY_EXTRACT_RULES, ""), HANDY_NEWS_READER_CATEGORY_CLASS, false);
+    }
+    private static Element getMainImageElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.MAIN_IMAGE_EXTRACT_RULES, ""), HANDY_NEWS_READER_MAIN_IMAGE_CLASS, true);
+    }
+    public static Element getDateElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_DATE_CLASS, true);
+    }
+    private static Element getElementWithClassNameFromPref(Element doc,
+                                                           final String url,
+                                                           final String pref,
+                                                           final String className,
+                                                           boolean canReturnEmptyElement ) {
         Element result = null;
-        for( String line: PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ).split( "\\n|\\s" ) ) {   //while ( result == null ) {
+        for( String line: pref.split( "\\n|\\s" ) ) {   //while ( result == null ) {
             if ( ( line == null ) || line.isEmpty() )
                 continue;
             try {
@@ -225,22 +379,72 @@ public class ArticleTextExtractor {
                 String elementValue = list2[1];
                 //if (doc.head().html().contains(keyWord)) {
                 if (url.contains(keyWord)) {
+                    if ( elementValue.equals( HANDY_NEWS_READER_ROOT_CLASS ) )
+                        return doc;
                     if (elementType.equals("id"))
                         result = doc.getElementById(elementValue);
                     else if (elementType.equals("class")) {
-                        Elements elements = doc.getElementsByClass(elementValue);
+                        final Elements elements = doc.getElementsByClass(elementValue);
+                        if ( canReturnEmptyElement && elements.isEmpty() )
+                            result = new Element(EMPTY_TAG);
                         if (!elements.isEmpty()) {
                             if ( elements.size() == 1 )
                                 result = elements.first();
                             else {
+                                for ( Element el: elements )
+                                    el.attr(className, "1");
                                 result = new Element("p");
-                                result.insertChildren(0, elements);
+                                result.insertChildren(0, elements.clone());
                             }
-                        } else
+                        } else if ( HANDY_NEWS_READER_ROOT_CLASS.equals( className ) )
                             result = doc;
                     }
                     break;
                 }
+            } catch ( Exception e ) {
+                Dog.e( e.getMessage() );
+            }
+
+        }
+        return result;
+    }
+    public static String getDataForUrlFromPref(final String url, final String pref ) {
+        String result = "";
+        for( String line: pref.split( "\\n" ) ) {   //while ( result == null ) {
+            if ( ( line == null ) || line.isEmpty() )
+                continue;
+            try {
+                String[] list1 = line.split(":");
+                String keyWord = list1[0];
+                if (url.contains(keyWord)) {
+                    String[] list2 = list1[1].split("=");
+                    //String elementType = list2[0].toLowerCase();
+                    //String elementValue = list2[1];
+                    if (list2.length >= 3)
+                        result = list2[2];
+                    break;
+                }
+            } catch ( Exception e ) {
+                Dog.e( e.getMessage() );
+            }
+
+        }
+        return result;
+    }
+    private static String getUrlClassNameFromPref(final String url, final String prefKey ) {
+        String result = "";
+        final String pref = PrefUtils.getString( prefKey, "" );
+        for( String line: pref.split( "\\n|\\s" ) ) {
+            if ( ( line == null ) || line.isEmpty() )
+                continue;
+            try {
+                String[] list1 = line.split(":");
+                String keyWord = list1[0];
+                String[] list2 = list1[1].split("=");
+                String elementType = list2[0].toLowerCase();
+                String elementValue = list2[1];
+                if (url.contains(keyWord))
+                    return elementValue;
             } catch ( Exception e ) {
                 Dog.e( e.getMessage() );
             }

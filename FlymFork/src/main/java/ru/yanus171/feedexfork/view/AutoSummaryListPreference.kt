@@ -26,36 +26,22 @@ package ru.yanus171.feedexfork.view
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
+import ru.yanus171.feedexfork.R
 
 import java.util.ArrayList
 
 open class AutoSummaryListPreference(context: Context, attrs: AttributeSet) : android.preference.ListPreference(context, attrs) {
-    private var mSummary: CharSequence = summary
-
-
-    override fun onDialogClosed(positiveResult: Boolean) {
-        super.onDialogClosed(positiveResult)
-        if (positiveResult) {
-            summary = summary
-        }
-    }
-
     override fun getSummary(): CharSequence {
         val list = ArrayList<CharSequence>()
-        if ( mSummary != null  )
-            list.add(mSummary)
+        if ( super.getSummary() != null )
+            list.add(super.getSummary())
         try {
             if (entry != null)
-                list.add(entry.toString().replace("%", "%%"))
+                list.add(context.getString(R.string.settings_current_setting) +": " + entry.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         return TextUtils.join("\n", list)
-    }
-
-    override fun onSetInitialValue(restoreValue: Boolean, defaultValue: Any?) {
-        super.onSetInitialValue(restoreValue, defaultValue)
-        summary = summary
     }
 }

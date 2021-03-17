@@ -26,6 +26,8 @@
         <item>21600000</item>
         <item>43200000</item>
         <item>86400000</item>
+        <item>172800000</item>
+        <item>259200000</item>
     </string-array>
     <string-array name="settings_keep_time_values" translatable="false">
         <item>0.04</item>
@@ -52,6 +54,9 @@
         <item>6</item>
         <item>7</item>
         <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
     </string-array>
     <string-array name="settings_volume_buttons_action_values" translatable="false">
         <item>Default</item>
@@ -89,52 +94,61 @@
 
     <string-array name="languageList" translatable="false">
         <item>System</item>
+        <item>Basque</item>
         <item>Català</item>
         <item>Český</item>
         <item>Deutsch</item>
+        <item>Ελληνικός</item>
         <item>Español</item>
         <item>English</item>
         <item>Basque</item>
         <item>Finnish</item>
         <item>Français</item>
+        <item>Indonesia</item>
         <item>Italiano</item>
         <item>한국어</item>
         <item>العَرَبِيَّة‎‎</item>
         <item>Polski</item>
+        <item>Portuguese Brazilian</item>
         <item>Русский</item>
         <item>Slovenskej</item>
         <item>Српски</item>
         <item>Svenska</item>
-        <item>中国</item>
-        <item>Ελληνικός</item>
+        <item>简体中文</item>
+        <item>中国传统</item>
         <item>Український</item>
     </string-array>
     <string-array name="languageValueList" translatable="false">
         <item>System</item>
+        <item>eu</item>
         <item>ca</item>
         <item>cs</item>
         <item>de</item>
+        <item>el</item>
         <item>es</item>
         <item>en</item>
         <item>eu</item>
         <item>fi</item>
         <item>fr</item>
+        <item>id</item>
         <item>it</item>
         <item>ko</item>
         <item>ar</item>
         <item>pl</item>
+        <item>pt-BR</item>
         <item>ru</item>
         <item>sk</item>
         <item>sr</item>
         <item>sv</item>
         <item>zh</item>
-        <item>el</item>
+        <item>zhtw</item>
         <item>uk</item>
     </string-array>
 
     <string-array name="themeValueList" translatable="false">
         <item>Light</item>
         <item>Dark</item>
+        <item>Black</item>
     </string-array>
 
     <string name="developerList" translatable="false"><![CDATA[• eighthave<br/>

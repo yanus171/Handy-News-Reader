@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2010-2012 Stefan Handschuh
+ Copyright (c) 2012-2015 Frederic Julian
+ Copyright (c) 2018- Thomas Leigh (en+pl)
+ Copyright (c) 2014-2016 Matthias Dill (de)
+ Copyright (c) 2018- Ronny Steiner (de)
+ Copyright (c) 2014-2014 Jaroslav Lichtblau (cs)
+ Copyright (c) 2013-2014 Danilo Treffiletti (it)
+ Copyright (c) 2014 Changwoo Ryu (ko)
+ Copyright (c) 2014-2015 Jozef Jaroščiak (sk)
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+-->
+<resources>
+    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lisensi dan informasi</big></b><br/>
+    Program ini adalah perangkat lunak bebas: Anda dapat mendistribusikannya kembali dan/atau memodifikasinya di bawah ketentuan
+Lisensi Publik Umum GNU yang diterbitkan oleh
+Free Software Foundation, baik versi 3 dari Lisensi, atau (sesuai pilihan Anda) versi yang lebih baru. Lihat http://www.gnu.org/licenses<br/>
+    <br/>
+    Aplikasi ini didasarkan pada \'Flym RSS Reader\', hak cipta 2013–2016 Frédéric Julian. Di antara fitur yang ditambahkan ke garpu ini adalah:<br/>
+    <br/>
+    • pemekaran
+grup umpan<br/>
+    • tombol halaman naik|turun kasat mata pada halaman layar penuh<br/>
+    • jumlah unduhan gambar
+maksimum per umpan<br/>
+    • kemampuan untuk membatalkan proses penyegaran<br/>
+    • dan banyak lagi<br/>
+    <br/>
+    <b><big>Tempat Anda dapat menemui kami</big></b>
+    <br/>
+    • Silakan kunjungi <b><a href="https://handynewsreader.blogspot.com"></a>situs web</b> kami untuk berita dan informasi<br/>
+    • Anda dapat mengunduh aplikasi ini di <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+    • Anda dapat mengunduh aplikasi ini di <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+    • Ada juga utas di <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a></b><br/>
+    • Sumber dapat Anda temukan di <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
+    <br/>
+    <b><big>Dukungan kami</big></b>
+    <br/>
+    Bila Anda menemui masalah dengan aplikasi ini, Anda sebaiknya<br/> 
+    • memulai isu baru di <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">halaman isu GitHub</a></b> atau<br/>
+    • kirim sepucuk <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">surel ke pengembang</a></b><br/>
+    <br/>
+    <b><big>Dukungan Anda</big></b>
+    <br/>
+    Bila Anda memiliki ide untuk fitur baru, Anda dapat:<br/>
+    • memulai isu baru di <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">halaman isu GitHub </a></b> or<br/>
+    • kirim sepucuk <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">surel ke pengembang</a></b><br/>
+    <br/>
+    <b>Bila Anda merasa aplikasi ini bermanfaat, silakan beri peringkat di <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+    <br/>
+    <b><big>Terjemahan</big></b>
+    <br/>
+    Anda dapat membantu menerjemahkan ke bahasa Anda sendiri di <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
+    Jika bahasa Anda tidak tersedia maka silakan kirim sepucuk <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">surel ke pengembang</a></b>.<br/>
+    <br/>
+    <b><big>Ucapan Terima Kasih</big></b>
+    <br/>
+    <b>Pengembang:</b><br/>
+    ***developerList***
+    <br/>
+    <b>Penerjemah:</b><br/>
+    ***translatorList***
+    <br/>
+    ]]></string>
+    <string name="app_name">Handy News Reader</string>
+    <string name="about_title_version">versi</string>
+    <string name="welcome_title">Selamat datang di Handy News Reader. Anda mau menambah sebuah umpan?</string>
+    <string name="never">jangan pernah</string>
+    <string name="last_update">Pembaruan</string>
+    <string name="menu_settings">Setelan</string>
+    <string name="menu_refresh">Segarkan</string>
+    <string name="flym_feeds">Handy News Reader Feeds</string>
+    <string name="error">Galat</string>
+    <string name="network_error">Anda offline.</string>
+    <string name="loading">Memuat…</string>
+    <string name="no_result">Tidak ada hasil</string>
+    <string name="drawer_open">Buka laci navigasi</string>
+    <string name="drawer_close">Tutup laci navigasi</string>
+    <!-- FEEDS -->
+    <string name="feeds">Umpan</string>
+    <string name="menu_add_feed">Cari Artikel Web</string>
+    <string name="no_feeds">Tak ada umpan</string>
+    <string name="no_filters">Tidak ada aturan</string>
+    <string name="context_menu_delete">Hapus</string>
+    <string name="edit_feed_title">Sunting umpan</string>
+    <string name="new_feed_title">Umpan baru atau artikel</string>
+    <string name="context_menu_edit">Edit</string>
+    <string name="menu_add_group">Tambah grup</string>
+    <string name="menu_import">Impor dari berkas .opml</string>
+    <string name="menu_export">Ekspor ke berkas .opml</string>
+    <string name="storage_request_explanation">Agar bisa impor atau ekspor umpan dari atau ke file, Anda harus mengizinkan aplikasi ini mengakses memori penyimpanan.</string>
+    <string name="error_feed_error">Umpan situs web ini tidak terjangkau.</string>
+    <string name="error_feed_process">Umpan tidak dapat diproses.</string>
+    <string name="error_feed_url_exists">Alamat ini sudah ada.</string>
+    <string name="error_feed_import">Berkas terpilih tidak dapat diimpor.</string>
+    <string name="error_feed_export">Ekspor gagal. Pastikan Anda telah memasang kartu SD yang bisa ditulisi.</string>
+    <string name="error_external_storage_not_available">Penyimpanan eksternal (mis. SD-card) tidak tersedia.</string>
+    <string name="feed_url">Alamat URL</string>
+    <string name="optional">(opsional)</string>
+    <string name="website_or_feed">(URL umpan atau kata kunci pencarian)</string>
+    <string name="tab_feed_title">Umpan</string>
+    <string name="tab_filters_title">Filter</string>
+    <string name="feed_title">JUDUL</string>
+    <string name="feed_filters">ATURAN FILTER</string>
+    <string name="filter_add_title">Tambahkan aturan</string>
+    <string name="filter_delete_title">Hapus aturan</string>
+    <string name="filter_edit_title">Edit aturan</string>
+    <string name="filter_is_regex">&#8230;adalah ekspresi reguler</string>
+    <string name="filter_apply_to_title">Terapkan pada judul atau alamat tautan</string>
+    <string name="filter_apply_to_content">Terapkan pada konten</string>
+    <string name="accept">TERIMA</string>
+    <string name="reject">TOLAK</string>
+    <string name="feed_search">Cari umpan</string>
+    <string name="web_page_search_duckduckgo">Cari halaman web (Duck Duck Go)</string>
+    <string name="select_file">Pilih berkas (akar SD)</string>
+    <string name="question_delete_feed">Apa betul Anda mau hapus umpan ini?</string>
+    <string name="question_delete_group">Apa betul Anda mau hapus grup ini dan semua isi umpannya?</string>
+    <string name="question_delete_filter">Apa betul Anda mau hapus filter ini?</string>
+    <string name="add_group_title">Pilih nama grup</string>
+    <string name="edit_group_title">Edit nama grup</string>
+    <string name="message_exported_to">Diekspor ke %s.</string>
+    <string name="to_group_title">Aksi pindah umpan</string>
+    <string name="to_group_message">Apa umpan ini mau Anda taruh di dalam atau di luar grup ini?</string>
+    <string name="to_group_above">Di luar grup</string>
+    <string name="to_group_into">Di dalam grup</string>
+    <string name="add_custom_feed">Tambah umpan kustom atau cari satu</string>
+    <string name="google_news_title">Topik Google Berita</string>
+    <string name="google_news_indicator">Pilih satu atau beberapa topik untuk ditambah. Di antaranya mungkin tidak tersedia di Google bahasa Anda.</string>
+    <string name="google_news_top_stories">Berita Utama</string>
+    <string name="google_news_world">Dunia</string>
+    <string name="google_news_business">Bisnis</string>
+    <string name="google_news_technology">Teknologi</string>
+    <string name="google_news_entertainment">Hiburan</string>
+    <string name="google_news_sports">Olahraga</string>
+    <string name="google_news_science">Sains</string>
+    <string name="google_news_health">Kesehatan</string>
+    <string name="google_news_custom_topic">Masukkan topik kustom</string>
+    <!-- ENTRIES -->
+    <string name="unread_entries">Belum dibaca</string>
+    <string name="all_entries">Semua artikel</string>
+    <string name="no_entries">Kosong artikel</string>
+    <string name="downloadOneImage">Mengunduh gambar</string>
+    <string name="favorites">Dibintangi</string>
+    <string name="context_menu_share_starred">Bagikan entri dibintangi</string>
+    <string name="menu_star">Bintang</string>
+    <string name="menu_unstar">Batal bintangi</string>
+    <string name="menu_share">Bagikan</string>
+    <string name="menu_full_screen">Layar penuh</string>
+    <string name="menu_actionbar_visible">Bilah Aksi</string>
+    <string name="menu_font_bold">Huruf tebal</string>
+    <string name="menu_copy_clipboard">Salin tautan</string>
+    <string name="menu_cancel_refresh">Batalkan pembaruan</string>
+    <string name="menu_delete_non_starred">Hapus nonbintang</string>
+    <string name="menu_toogle_unread_all">Belum baca|Semua</string>
+    <string name="menu_load_all_images">Muat semua gambar</string>
+    <string name="menu_mark_as_favorite">Tandai sebagai favorit</string>
+    <string name="menu_mark_as_unfavorite">Buang dari Favorit</string>
+    <string name="menu_mark_as_unread">Tandai belum dibaca</string>
+    <string name="menu_reload_full_text">Muat ulang teks lengkap</string>
+    <string name="menu_reload_full_text_without_mobilizer">Muat ulang tanpa Mobilizer</string>
+    <string name="share_favorites_title">Handy News Reader: entri dibintangi</string>
+    <string name="link_was_copied_to_clipboard">Tautan disalin</string>
+    <string name="get_full_text">Muat artikel lengkap</string>
+    <string name="show_text_in_entry_list">Tampilkan teks orisinal pada senarai artikel</string>
+    <string name="original_text">Tampilkan teks orisinal</string>
+    <string name="see_enclosure">Muat lampiran</string>
+    <string name="see_link">Lihat di peramban</string>
+    <string name="cant_open_link">Tak ada aplikasi untuk tautan ini</string>
+    <string name="open_enclosure">Buka lampiran</string>
+    <string name="file">Berkas</string>
+    <string name="download_and_save">Unduh dan simpan</string>
+    <string name="open_link">Buka tautan</string>
+    <string name="tip_sentence">Tip: usap kanan tanda sudah dibaca, usap kiri tambah ke Favorit</string>
+    <string name="undo">Batal</string>
+    <string name="marked_as_read">Tandai sudah dibaca</string>
+    <string name="image_count">Jumlah gambar</string>
+    <!-- WIDGET -->
+    <string name="red">Merah</string>
+    <string name="green">Hijau</string>
+    <string name="blue">Biru</string>
+    <string name="transparency">Transparansi</string>
+    <!-- SETTINGS -->
+    <string name="settings_category_common">Setelan umum</string>
+    <string name="settings_category_common_summary">Tema</string>
+    <string name="theme">Tema</string>
+    <string name="customColors">Warna kustom</string>
+    <string name="fontColorsNotFromThemeSummary">atau pakai warna tema lain</string>
+    <string name="textColor">Teks dan warna latar</string>
+    <string name="settings_color_text_sample_short">Teks</string>
+    <string name="settings_color_text_sample_long">\u201cKalau pacaran sama gadis cantik satu jam serasa satu detik. Kalau duduk satu detik di atas abu bara merah yang panas serasa satu jam. Itulah relativitas.\u201d\n(Albert Einstein)</string>
+    <string name="settings_category_refresh">Penyegaran artikel</string>
+    <string name="settings_category_refresh_summary">Penyegaran otomatis dan waktu menyimpan artikel</string>
+    <string name="settings_refresh_enabled">Aktifkan penyegaran otomatis</string>
+    <string name="settings_refresh_interval">Interval penyegaran</string>
+    <string name="settings_min_update_battery_level">Min. level baterai</string>
+    <string name="settings_refresh_only_selected">Hanya yang dipilih</string>
+    <string name="settings_refresh_only_selected_summary">Penyegaran otomatis hanya untuk umpan dicentang</string>
+    <string name="settings_refresh_on_open">Segarkan umpan ketika dibuka</string>
+    <string name="settings_refresh_on_open_description">Segarkan semua umpan setelah aplikasi dibuka</string>
+    <string name="settings_refresh_wifi_only">Segarkan hanya lewat Wi-Fi</string>
+    <string name="settings_refresh_wifi_only_description">Penyegaran otomatis hanya dilakukan kalau tersambung ke Wi-Fi</string>
+    <string name="settings_keep_time">Lama waktu entri akan disimpan</string>
+    <string name="settings_preload_image_mode">Pramuat gambar</string>
+    <string name="settings_max_image_download_count">Jumlah maks unduhan gambar</string>
+    <string name="settings_max_image_download_count_description">Per satu artikel</string>
+    <string name="settings_max_image_download_size_kb">Ukuran maks gambar</string>
+    <string name="settings_max_image_download_size_kb_summary">(dalam kb). Jangan muat otomatis gambar lebih dari</string>
+    <string name="max_single_refresh_traffic_mb">Maks besar data sekali penyegaran</string>
+    <string name="max_single_refresh_traffic_mb_descr">Penyegaran akan berhenti ketika pemakaian data mencapai batas maks (dalam MB) dan tidak sedang tersambung ke WiFi</string>
+    <string name="settings_load_comments">Muat komentar</string>
+    <string name="settings_load_comments_description">Di artikel teks lengkap</string>
+    <string name="settings_category_article_list">Senarai artikel</string>
+    <string name="settings_category_article_list_summary">Penampakan senarai artikel</string>
+    <string name="settings_font_size">Ukuran teks</string>
+    <string name="show_article_icon">Tampilkan ikon artikel</string>
+    <string name="show_article_icon_descr">Matikan untuk peroleh lebih banyak ruang pada layar</string>
+    <string name="show_article_url">Tampilkan URL artikel</string>
+    <string name="settings_display_oldest_first">Susunan artikel</string>
+    <string name="settings_display_oldest_first_description">Tampilkan lebih dulu entri tertua</string>
+    <string name="show_mark_all_as_read_button">Tombol tandai sudah semua dibaca</string>
+    <string name="show_mark_all_as_read_button_summary">Tampilkan tombol Tandai semua artikel sudah dibaca - kalau tidak Anda bisa temukan opsi ini di menu</string>
+    <string name="show_read_checkbox">Kotak centang dibaca</string>
+    <string name="show_read_checkbox_descr">Tampilkan kotak centang kecil tanda artikel sudah dibaca</string>
+    <string name="show_full_text_indicator">Indikator teks lengkap</string>
+    <string name="show_full_text_indicator_descr">Tampilkan ikon disket kecil tanda artikel teks lengkap sudah dimuat</string>
+    <string name="show_new_icon">Ikon artikel baru</string>
+    <string name="show_new_icon_descr">Ikon kecil tanda tambah pada artikel baru (belum pernah dilihat)</string>
+    <string name="show_read_article_count">Tampilkan jumlah artikel dibaca</string>
+    <string name="show_read_article_count_descr">Di senarai umpan</string>
+    <string name="show_group_entrries_count">Jumlah grup artikel</string>
+    <string name="show_group_entries_count_descr">bisa mengurangi performa</string>
+    <string name="textColorRead">Baca artikel</string>
+    <string name="textColorRead_descr">Warna teks artikel sudah dibaca dan latar</string>
+    <string name="settings_color_text_read_sample_short">Baca</string>
+    <string name="settings_color_text_read_sample_long">Baca artikel</string>
+    <string name="settings_category_article_text">Teks artikel</string>
+    <string name="settings_category_article_text_summary">Penampakan teks artikel</string>
+    <string name="settings_display_images">Muat gambar</string>
+    <string name="settings_display_images_description">Tampilkan gambar pada entri</string>
+    <string name="settings_display_entries_fullscreen">Entri layar penuh otomatis</string>
+    <string name="settings_entry_margins">Margin</string>
+    <string name="settings_entry_margins_description">Kiri | kanan</string>
+    <string name="entry_text_align_justify">Teks diratakan</string>
+    <string name="entry_text_align_justify_description">Kalau tidak ratakan ke kiri</string>
+    <string name="linkColor">Warna tautan dan latar</string>
+    <string name="linkColor_descr">Warna pranala dan latar</string>
+    <string name="settings_color_link_sample_short">Tautan</string>
+    <string name="settings_color_link_sample_long">Warna tautan</string>
+    <string name="underline_links">Garis bawah tautan</string>
+    <string name="article_text_show_clock">Tampilkan jam</string>
+    <string name="article_text_show_clock_description">Tampilkan waktu sekarang pada sudut kanan atas pada mode layar penuh</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_show_progress">Indikator kemajuan membaca</string>
+    <string name="article_text_progress_height">Tinggi indikator kemajuan</string>
+    <string name="article_text_progress_color">Warna kemajuan</string>
+    <string name="settings_category_operation">Operasi</string>
+    <string name="settings_category_operation_summary">Setelan operasional</string>
+    <string name="tap_zone_size">Ukuran Zona Sentuh</string>
+    <string name="tap_zone_size_descr">Tinggi atau lebar semua Zona Sentuh dalam milimeter (tampilan entri)</string>
+    <string name="settings_show_tap_zones">Zona Sentuh terlihat</string>
+    <string name="settings_show_tap_zone_description">Sebagai kotak transparan di tampilan entri</string>
+    <string name="settings_tapZones">Pratayang Zona Sentuh</string>
+    <string name="settings_volume_buttons_action">Aksi pakai tombol volume</string>
+    <string name="brightness_gesture">Gestur ganti kecerahan</string>
+    <string name="brightness_gesture_descr">Centang ini untuk atur kecerahan dengan usap ke atas/bawah di sepanjang tepi kiri layar</string>
+    <string name="brightness_with_dim_activity">Hamparan layar perangkat lunak</string>
+    <string name="brightness_with_dim_activity_descr">Redupkan kecerahan dengan mengurangi transparansi warna latar jendela (centang bila ubah kecerahan tidak berhasil)</string>
+    <string name="settings_category_notification">Notifikasi</string>
+    <string name="settings_notifications_enabled">Aktifkan notifikasi</string>
+    <string name="settings_notifications_enabled_description">Aktifkan notifikasi saat ada entri baru</string>
+    <string name="settings_notifications_ringtone">Nada dering</string>
+    <string name="settings_notifications_ringtone_none">Nol</string>
+    <string name="settings_notifications_vibrate">Getar</string>
+    <string name="settings_notifications_vibrate_description">Nyalakan getaran pada entri baru</string>
+    <string name="settings_notifications_light">Terang</string>
+    <string name="settings_notifications_light_description">Aktifkan lampu notifikasi saat ada entri baru</string>
+    <string name="page_up_down_90_pct">Gulung halaman 90%</string>
+    <string name="page_up_down_90_pct_descr">Pertahankan beberapa baris dari halaman sebelumnya - kalau tidak dicentang, seluruh halaman akan digulung</string>
+    <string name="settings_remember_last_entry">Ingat artikel terakhir</string>
+    <string name="settings_remeber_last_entry_description">Saat nyala buka artikel terakhir dilihat, kalau tidak senarai entri belum dibaca</string>
+    <string name="auto_unstart_at_bottom">Hapus bintang otomatis saat selesai membaca</string>
+    <string name="auto_unstart_at_bottom_descr">Hapus otomatis artikel dari Favorit kalau sampai di artikel paling bawah</string>
+    <string name="settings_category_advanced">Tingkat lanjut</string>
+    <string name="settings_category_advanced_summary">Fitur tambahan (seperti cadangan, saringan dan lain-lain)</string>
+    <string name="settings_autobackup_enabled">Aktifkan pencadangan otomatis</string>
+    <string name="settings_autobackup_enabled_descr">Simpan berkala umpan Anda dan senarai artikel favorit ke dalam file .opml</string>
+    <string name="settings_category_content_presentation">Presentasi konten</string>
+    <string name="settings_display_text_color">Kecerahan teks</string>
+    <string name="settings_visible_feeds">Umpan nyata</string>
+    <string name="settings_widget_background">Latar</string>
+    <string name="settings_widget_background_description">Warna dan transparansi pada latar widget</string>
+    <string name="all_feeds">Semua umpan (termasuk masa depan)</string>
+    <string name="downloadImage">Mengunduh gambar</string>
+    <string name="loadFullText">Memuat teks lengkap</string>
+    <string name="deleteOldEntries">Menghapus artikel lama</string>
+    <string name="deleting_ghost_entries">Menghapus berkas lama</string>
+    <string name="AllImages">Semua gambar</string>
+    <string name="article_images_downloading">Mengunduh gambar artikel</string>
+    <string name="mobilizeAll">Di-Mobilize</string>
+    <string name="RefreshFeeds">Memperbarui umpan</string>
+    <string name="deleteImages">Hapus gambar:</string>
+    <string name="deleteFullTexts">Hapus teks lengkap:</string>
+    <string name="applyOperations">Laksanakan operasi</string>
+    <string name="extractContent">Mengekstraksi konten</string>
+    <string name="improveHtmlContent">Menyempurnakan konten HTML</string>
+    <string name="parseXml">Mengurai XML</string>
+    <string name="setupConnection">Pasang koneksi</string>
+    <string name="settings_tap_zones_dialogtitle">sekadar info, tidak dapat diubah</string>
+    <string name="downloadNext">", Berikut "</string>
+    <string name="downloadAll">", Semua"</string>
+    <string name="loadingLink">Memuat tautan</string>
+    <string name="loadLink">Baca sekarang</string>
+    <string name="loadLinkLater">Baca nanti</string>
+    <string name="loadLinkLaterStarred">Baca nanti di favorit</string>
+    <string name="addFeed">Tambah umpan</string>
+    <string name="externalLinks">Tanpa umpan</string>
+    <string name="markAllAsRead">Tandai semua sudah dibaca</string>
+    <string name="pageUp">halaman naik / usap ke bawah untuk (hapus)bintang</string>
+    <string name="pageDown">halaman turun</string>
+    <string name="fullScreenToggle">Dwiarah layar penuh</string>
+    <string name="auto_refresh_feed">Otomatis segarkan umpan</string>
+    <string name="actionBarToggle">Dwiarah Bilah Aksi</string>
+    <string name="standard">Standar</string>
+    <string name="fontsize_entrylist">Ukuran huruf pada senarai artikel</string>
+    <string name="question_delete_entry">Hapus artikel ini?</string>
+    <string name="share_all_text">Bagikan seluruh teks</string>
+    <string name="group">Grup</string>
+    <string name="auto_image_load">Otomatis muat gambar</string>
+    <string name="show_progress_info">Info teknis detail kemajuan</string>
+    <string name="show_progress_info_descr">Tampilkan info detail tentang operasi mutakhir</string>
+    <string name="vibrate_on_article_list_entry_swype">Getar ketika diusap</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Pada entri senarai artikel dan jendela teks artikel sewaktu beri bintang</string>
+    <string name="entry_marked_unfavourite">Artikel dihapus dari Favorit</string>
+    <string name="entry_marked_favourite">Artikel ditambahkan ke Favorit</string>
+    <string name="new_feed_was_added">Umpan baru ditambah</string>
+    <string name="entry_marked_unread">Artikel diberi tanda belum dibaca</string>
+    <string name="lock_orientation">Orientasi lansekap</string>
+    <string name="markAsStarred">Tandai dengan bintang</string>
+    <string name="markedAsStarred">Artikel diberi tanda bintang: </string>
+    <string name="deleteAllEntries">Hapus semua artikel terlihat nonbintang?</string>
+    <string name="question">Pertanyaan</string>
+    <string name="reload_full_text_with_tags">Edit Tampilan Konten</string>
+    <string name="filter_hint">Aksi saring akan dimulai bila sedikitnya satu syarat (aturan) terpenuhi. \'Terima\' mengalahkan \'Tolak\'</string>
+    <string name="keyword">kata(kata) kunci</string>
+    <string name="loadTypeWeb"><b>Tautan web</b> <font color="gray">(muat semua tautan dari halaman sebagai artikel berbeda)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(umpan atau tautan situs atau kata kunci)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Pencarian halaman web DuckDuckGo</b> <font color="gray">(temukan dan muat satu artikel)</font></string>
+    <string name="loadTypeOneWebPage"><b>Satu halaman</b><font color="gray"> (bagi konten satu halaman web jadi banyak artikel pakai nama kelas tagar HTML)</font></string>
+    <string name="loadType">Tipe muatan:</string>
+    <string name="global_filter">Saringan global&#8230;</string>
+    <string name="global_filter_descr">Filter diterapkan untuk setiap umpan - kosongkan teks filter (dan teks regex) agar nonaktif</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">kalau tidak terapkan pada konten</string>
+    <string name="rule_text">Teks aturan</string>
+    <string name="global_marks_as_star_filter_rule_descr">satu aturan per baris</string>
+    <string name="customKeepTime">Kustom waktu simpan artikel</string>
+    <string name="menu_toggle_theme">Ganti tema</string>
+    <string name="turnOn">Hidupkan</string>
+    <string name="brightness">Kecerahan</string>
+    <string name="brightness_change">Ubah kecerahan</string>
+    <string name="criticalErrorOccured">Sebuah galat kritis dialami aplikasi baginda. Silakan kirim teks ini ke pengembang</string>
+    <string name="criticalErrorSending">Mengirim galat kritis…</string>
+    <string name="copyToClipboard">Ke papan klip</string>
+    <string name="sendEmail">Kirim surel</string>
+    <string name="toastAppCrashed">Aplikasi ini gagal tak terduga: (Silakan surel pengembang)</string>
+    <string name="exportingToFile">Ekspor ke berkas</string>
+    <string name="importingFromFile">Impor dari berkas</string>
+    <string name="autobackup_interval">Interval pencadangan otomatis</string>
+    <string name="autobackup_interval_descr">Frekuensi pembuatan berkas cadangan umpan dan artikel</string>
+    <string name="create_auto_backup">Buat cadangan otomatis</string>
+    <string name="auto_backup_opml_file_created">Berkas cadangan .opml otomatis dibuat:</string>
+    <string name="use_standard_file_manager">Pakai manager berkas standar</string>
+    <string name="use_standard_file_manager_descr">kalau tidak pilih berkas .opml untuk diimpor  -  hanya yang di luar folder feedex (lewat dialog internal)</string>
+    <string name="settings">Setelan</string>
+    <string name="entry_go_prev">Artikel sebelumnya</string>
+    <string name="entry_go_next">Artikel berikutnya</string>
+    <string name="colorSlotSaveLongTapHint">Tip: simpan warna sekarang dengan satu sentuhan panjang pada salah satu sel</string>
+    <string name="colorSlotSaved">Warna disimpan pada sel</string>
+    <string name="text">Teks</string>
+    <string name="background1">Latar</string>
+    <string name="auto_refresh_requires_charging">Hanya ketika pengisian daya</string>
+    <string name="global_class_list_to_remove_from_article_text">Hapus aturan teks</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">nama kelas per baris</string>
+    <string name="hide">Sembunyikan</string>
+    <string name="show">Tampilkan</string>
+    <string name="setFullTextRoot">Pilih sebagai pangkal teks lengkap</string>
+    <string name="fullTextRoot">Pangkal teks lengkap</string>
+    <string name="fullTextReloadStarted">Pemuatan teks lengkap dimulai</string>
+    <string name="brightness_update_from_system_period_min">Waktu pembaruan kecerahan</string>
+    <string name="brightness_update_from_system_period_min_descr">(dalam menit) Setelah periode waktu tersebut kecerahan (dengan usapan) akan dikembalikan dari level sistem sekarang (0 - mati)</string>
+    <string name="menu_add_feed_shortcut">Buat pintasan pada Layar Awal</string>
+    <string name="new_feed_shortcut_added">Pintasan baru telah dibuat pada Layar Awal</string>
+    <string name="new_feed_shortcut_add_failed">Peluncur Anda tidak dapat membuat pintasan</string>
+    <string name="custom_data_folder">Alur berkas eksternal kustom</string>
+    <string name="custom_data_folder_descr">(kosong - pakai bawaan) alur untuk folder feedex penyimpan gambar dan cadangan hasil unduhan</string>
+    <string name="entry_text_title_link">Tautan judul</string>
+    <string name="entry_text_title_link_description">izinkan membuka halaman web di peramban dengan menyentuh judul</string>
+    <string name="delete_read_articles">Hapus artikel selesai dibaca</string>
+    <string name="delete_read_articles_descr">tanpa menimbang waktu simpan artikel</string>
+    <string name="data_folder">Folder data</string>
+    <string name="data_folder_descr">Tempat menyimpan artikel dan gambar unduhan</string>
+    <string name="internalMemory">Memori internal (Tembolok)</string>
+    <string name="externalMemory">Memori eksternal</string>
+    <string name="show_html">Tampilkan HTML</string>
+    <string name="image_white_background">Latar gambar putih</string>
+    <string name="settings_add_google_news_dialog">Tambah dialog Google Berita</string>
+    <string name="settings_add_google_news_dialog_descr">Lepas centang untuk melewati dialog pilihan tipe umpan saat menambah umpan</string>
+    <string name="reload_fulltext_after_tag_editing">Muat ulang teks setelah mengedit tagar</string>
+    <string name="reload_fulltext_after_tag_editing_descr">bila tidak dicentang, text lengkap tidak akan dimuat ulang setelah mengedit setiap tagar full teks (tampil|sembunyi|akar), sehingga Anda dapat lebih mudah mengajukan perubahan ganda easier (dalam hal ini Anda perlu memuat ulang teks lengkap setelah editan Anda selesai)</string>
+    <string name="article_menu_show_by_tap">Tampilkan menu artikel dengan sentuh</string>
+    <string name="article_list_loading">Memuat senarai artikel</string>
+    <string name="article_opening">Membuka artikel</string>
+    <string name="web_page_loading">Memuat halaman</string>
+    <string name="article_menu_show_by_tap_descr">Saat Bilah Aksi tersembunyi - kalau tidak Anda akan menemukan menu itu hanya pada Bilah Aksi</string>
+    <string name="menu_go_back">Kembali</string>
+    <string name="menu_go_top">Gulir ke atas</string>
+    <string name="menu_close">Tutup</string>
+    <string name="reading_file_list">Senarai berkas Bacaan</string>
+    <string name="add_entry_shortcut">Tambah pintasan artikel</string>
+    <string name="new_entry_shortcut_added">Pintasan artikel baru sudah dibuat pada Layar Depan</string>
+    <string name="menu_reload_with_tables_toggle">Berikut tabel</string>
+    <string name="menu_display_options">Opsi tampilan</string>
+    <string name="menu_reload">Muat ulang</string>
+    <string name="article_tap_enabled">Aksi sentuh diaktifkan</string>
+    <string name="article_tap_enabled_summary">di Zona Sentuh dan di area nontautan (untuk tampilan menu)</string>
+    <string name="menu_calculate_image_sizes">Kalkulasi ukuran gambar</string>
+    <string name="setting_calculate_image_sizes">Ukuran gambar di penyimpanan</string>
+    <string name="setting_calculate_image_sizes_descr">Kalkulasi dan tampilkan besar jumlah gambar pada penyimpanan menurut artikel, umpan, grup, dll.
+(angka diperbarui sewaktu penyegaran)</string>
+    <string name="settings_category_theme">Tema</string>
+    <string name="settings_category_header">Tajuk halaman</string>
+    <string name="tasks_to_download">Memuat</string>
+    <string name="settings_current_setting">Pengaturan saat ini</string>
+    <string name="unable_to_load_article_icon">Tak dapat memuat ikon artikel</string>
+    <string name="settings_delete_old_interval">Interval hapus artikel lama</string>
+    <string name="settings_delete_old_interval_descr">Kapan menghapus artikel lama dan kalkulasi besar gambar milik grup dan umpan pada sdcard</string>
+    <string name="menu_delete_old">Hapus artikel lama</string>
+    <string name="settings_category_delete_old">Hapus yang lama-lama</string>
+    <string name="tool_bar_color">Warna bilah alat</string>
+    <string name="tool_bar_color_desc">Warna ini juga dipakai untuk tombol teks artikel dan untuk bilah status</string>
+    <string name="one_webpage_hint">Saran: pada tipe pemuatan seperti ini, konten halaman web dibagi menjadi artikel-artikel berdasarkan nama kelas elemen HTML dari setelan umpan. Anda juga harus memasang nama-nama kelas untuk judul artikel, tanggal dan URL gambar. Untuk mengetahui nama-nama kelas yang dibutuhkan Anda harus memuat halaman itu (Baca sekarang) dan beralih ke Tayangan Edit Konten sehingga Anda bisa menemukan dan menyalin nama-nama kelas untuk elemen-elemen yang dibutuhkan.</string>
+    <string name="one_webpage_article_classname_label">Akar elemen artikel</string>
+    <string name="one_webpage_edittext_classname_hint">Nama kelas</string>
+    <string name="one_webpage_url_classname_label">URL unik artikel</string>
+    <string name="one_webpage_text_classname_label">Teks</string>
+    <string name="one_webpage_author_classname_label">Penulis</string>
+    <string name="one_webpage_image_url_classname_label">URL gambar</string>
+    <string name="one_webpage_date_classname_label">Tanggal (bisa beberapa, pisah dg. spasi)</string>
+    <string name="copyClassNameToClipboard">Salin nama kelas</string>
+    <string name="text_was_copied_to_clipboard">Teks disalin ke papan klip</string>
+    <string name="next_page_classname">Nama kelas halaman berikut (untuk pemuatan rekursif)</string>
+    <string name="articleCountLoaded">artikel dimuat</string>
+    <string name="next_page_max_count_classname">Maks jumlah halaman diproses</string>
+    <string name="menu_copy_feed">Duplikasi umpan ini</string>
+    <string name="feed_copied">Umpan diduplikasi</string>
+    <string name="menu_show_entry_text">Teks artikel</string>
+    <string name="read_more">Baca lagi…</string>
+    <string name="cant_open_image">Tidak bisa membuka gambar</string>
+    <string name="parsing_one_web_page">Mengurai halaman</string>
+    <string name="end_editing">Selesai mengedit</string>
+    <string name="open_article">Buka artikel</string>
+    <string name="search_in_browser">Cari di peramban</string>
+    <string name="search_in_yandex">Cari via Yandex</string>
+    <string name="search_in_google">Cari via Google</string>
+    <string name="long_operation">Operasi panjang</string>
+    <string name="reading_article">Membaca sebuah artikel</string>
+    <string name="reading_notification">Notifikasi membaca artikel</string>
+    <string name="reading_notification_descr">Notifikasi bar status persisten untuk mencegah aplikasi dimatikan oleh sistem - untuk mempercepat starter aplikasi setelah lama tertunda</string>
+    <string name="feed_list_loading">Memuat senarai umpan</string>
+    <string name="article_text_show_battery">Tampilkan level baterai</string>
+    <string name="settings_category_header_descr">Untuk layar senarai artikel dan teks artikel</string>
+    <string name="article_text_buttons_layout">Tata letak tombol</string>
+    <string name="article_text_buttons_layout_descr">Orientasi dan visibilitas tombol-tombol pada akhir sebuah artikel</string>
+    <string name="article_reading_notification_hint">Tahan aplikasi di memori ketika sedang membaca sebuah artikel</string>
+    <string name="auto_set_as_read">Setel otomatis artikel sudah dibaca ketika judul terlihat di senarai</string>
+    <string name="removeText">Hapus teks</string>
+    <plurals name="number_of_new_entries">
+        <item quantity="other">%d artikel-artikel baru.</item>
+    </plurals>
+</resources>

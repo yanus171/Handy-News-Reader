@@ -4,21 +4,48 @@
     <style name="Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <!-- customize the color palette -->
-        <item name="colorPrimary">@color/light_theme_color_primary</item>
+        <item name="colorPrimary">@color/light_theme_color_primary_dark</item>
+        <item name="colorAccent">@color/light_theme_color_accent</item>
         <item name="colorPrimaryDark">@color/light_theme_color_primary_dark</item>
-        <item name="colorAccent">@color/light_theme_color_primary</item>
-        <item name="colorReadState">@color/light_read_state</item>
-        <item name="colorPrefBackground">#CCCCCC</item>
+        <item name="colorDrawerBackground">@color/light_theme_drawer_background</item>
+        <!--         <item name="colorReadState">@color/light_read_state</item> -->
+        <item name="colorPrefCategoryBackground">@color/light_theme_prefCategoryBackground</item>
+        <item name="colorPrefItemBackground">@color/light_theme_prefItemBackground</item>
+    </style>
+    <style name="Theme.Light.Pref" parent="Theme.Light">
+        <item name="android:windowBackground">@color/light_theme_prefItemBackground</item>
+<!--        <item name="android:textColor">@color/light_theme_color_unread</item>-->
     </style>
 
     <style name="Theme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
-        <!-- customize the color palette -->
         <item name="colorPrimary">@color/dark_theme_color_primary</item>
+        <item name="colorAccent">@color/dark_theme_color_accent</item>
         <item name="colorPrimaryDark">@color/dark_theme_color_primary_dark</item>
-        <item name="colorAccent">@color/light_theme_color_primary</item>
-        <item name="colorReadState">@color/dark_read_state</item>
-        <item name="colorPrefBackground">#555555</item>
+        <item name="colorDrawerBackground">@color/dark_theme_drawer_background</item>
+        <!--         <item name="colorReadState">@color/dark_read_state</item> -->
+        <item name="colorPrefCategoryBackground">@color/dark_theme_prefCategoryBackground</item>
+        <item name="colorPrefItemBackground">@color/dark_theme_prefItemBackground</item>
+    </style>
+    <style name="Theme.Dark.Pref" parent="Theme.Dark">
+        <item name="android:windowBackground">@color/dark_theme_prefItemBackground</item>
+<!--        <item name="android:textColor">@color/dark_theme_color_unread</item>-->
+    </style>
+
+    <style name="Theme.Black" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorPrimary">@color/black_theme_color_primary</item>
+        <item name="colorAccent">@color/black_theme_color_accent</item>
+        <item name="colorPrimaryDark">@color/black_theme_color_primary_dark</item>
+        <item name="colorDrawerBackground">@color/black_theme_drawer_background</item>
+        <!--         <item name="colorReadState">@color/black_read_state</item> -->
+        <item name="colorPrefCategoryBackground">@color/black_theme_prefCategoryBackground</item>
+        <item name="colorPrefItemBackground">@color/black_theme_prefItemBackground</item>
+    </style>
+
+    <style name="Theme.Black.Pref" parent="Theme.Black">
+        <item name="android:windowBackground">@color/black_theme_prefItemBackground</item>
+<!--        <item name="android:textColor">@color/black_theme_color_unread</item>-->
     </style>
 
     <style name="TapZone" >
@@ -38,6 +65,26 @@
         <item name="android:textSize">10sp</item>
         <item name="android:background">@drawable/round_background</item>
 
+    </style>
+    <style name="FeedAttrEdit" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:hint">@string/one_webpage_edittext_classname_hint</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="singleLine">true</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:inputType">text</item>
+    </style>
+    <style name="FeedAttrLabel" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:hint">@string/one_webpage_edittext_classname_hint</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:visibility">visible</item>
     </style>
 
     <style name="PrefCat" >

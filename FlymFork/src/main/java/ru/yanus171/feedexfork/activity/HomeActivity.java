@@ -36,20 +36,23 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ListView;
+
+import com.google.android.material.appbar.AppBarLayout;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -67,22 +70,35 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
+import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_READ_ARTICLE_COUNT;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
+    private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
+    private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
+    public View mPageUpBtn = null;
+    private int mStatus = 0;
 
     private static String FEED_NUMBER(final String where ) {
         return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
@@ -117,6 +133,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
     private int mCurrentDrawerPos;
+    enum AppBarLayoutState {
+        EXPANDED,
+        COLLAPSED,
+        IDLE
+    };
+
+    private AppBarLayoutState mAppBarLayoutState = AppBarLayoutState.IDLE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,10 +158,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
 
         mTitle = getTitle();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLeftDrawer = findViewById(R.id.left_drawer);
         //mLeftDrawer.setBackgroundColor(ContextCompat.getColor( this, PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background));
@@ -188,7 +207,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         if (PrefUtils.getBoolean(PrefUtils.REFRESH_ON_OPEN_ENABLED, false)) {
             if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
-                FetcherService.StartService(new Intent(HomeActivity.this, FetcherService.class).setAction(FetcherService.ACTION_REFRESH_FEEDS));
+                FetcherService.StartService(new Intent(HomeActivity.this, FetcherService.class).setAction(FetcherService.ACTION_REFRESH_FEEDS), true);
             }
         }
 
@@ -210,7 +229,81 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
+
+        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root));
+        findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
+                if ( !GetIsActionBarEntryListHidden() )
+                    ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
+                if (mEntriesFragment != null)
+                    mEntriesFragment.UpdateFooter();
+            }
+        });
+        findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden());
+            }
+        });
+
+        mPageUpBtn = findViewById( R.id.pageUpBtn );
+        mPageUpBtn.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PageUpDown( -1 );
+            }
+        });
+        findViewById(R.id.pageDownBtn).setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PageUpDown( 1 );
+            }
+        });
+        ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            // State
+
+            @Override
+            public final void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+                if (i == 0) {
+                    mAppBarLayoutState = EXPANDED;
+                } else if (Math.abs(i) >= appBarLayout.getTotalScrollRange()) {
+                    mAppBarLayoutState = COLLAPSED;
+                } else {
+                    mAppBarLayoutState = AppBarLayoutState.IDLE;
+                }
+            }
+
+        });
+
+
+
         timer.End();
+    }
+
+    static public boolean GetIsActionBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN, false);
+    }
+    static public boolean GetIsStatusBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, false);
+    }
+
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
+        setFullScreen( statusBarHidden, actionBarHidden,
+                       STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
+    }
+
+    private void PageUpDown( int downOrUp ) {
+        int appBarHeight = ( mAppBarLayoutState == EXPANDED ) ? mEntriesFragment.getView().findViewById(R.id.appbar).getHeight() : 0;
+        View statusView =  mEntriesFragment.getView().findViewById(R.id.statusLayout);
+        if ( GetIsActionBarEntryListHidden() )
+            appBarHeight = getSupportActionBar().getHeight();
+        final int statusHeight = statusView.isShown() ? statusView.getHeight() : 0;
+        final float coeff = PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9F : 0.98F;
+        mEntriesFragment.mListView.smoothScrollBy((int) (downOrUp * ( mEntriesFragment.mListView.getHeight() - appBarHeight - statusHeight) * coeff), PAGE_SCROLL_DURATION_MSEC * 2 );
+        if ( downOrUp > 0 )
+            ( (AppBarLayout)mRootView.findViewById(R.id.appbar) ).setExpanded( false );
     }
 
     private void CloseDrawer() {
@@ -226,16 +319,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onPause() {
-        synchronized (EntriesCursorAdapter.mMarkAsReadList) {
-            EntriesCursorAdapter.mMarkAsReadList.clear();//SetIsReadMakredList();
-        }
+        EntriesCursorAdapter.mMarkAsReadList.clear();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         Timer timer = new Timer("HomeActivity.onResume");
         final Intent intent = getIntent();
         setIntent( new Intent() );
@@ -258,7 +348,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(lastUri)));
+                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ).setFlags( Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT ));
             }
         }
 
@@ -268,6 +358,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
+        setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+        HideTapZonesText(findViewById(R.id.layout_root));
+        if ( mDrawerLayout != null )
+            mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
         timer.End();
     }
 
@@ -314,10 +408,16 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onClickEditFeeds(View view) {
         startActivity(new Intent(this, EditFeedsListActivity.class));
     }
+    public void onClickOPMLImport(View view) {
+        OPML.OnMenuExportImportClick(this, OPML.ExportImport.Import );
+    }
 
     public void onClickAdd(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.menu_add_feed)
+        if ( !PrefUtils.getBoolean("settings_add_google_news_dialog", true ) )
+            startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
+        else
+            builder.setTitle(R.string.menu_add_feed)
                 .setItems(new CharSequence[]{getString(R.string.add_custom_feed), getString(R.string.google_news_title)}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
@@ -326,8 +426,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                             startActivity(new Intent(HomeActivity.this, AddGoogleNewsActivity.class));
                         }
                     }
-                });
-        builder.show();
+                }).show();
     }
 
     public void onClickSettings(View view) {
@@ -353,20 +452,21 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        OPML.OnActivityResult(this, requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Timer.Start( LOADER_ID, "HomeActivity.onCreateLoader" );
-        final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean( SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER( "1=1" ) : "0";
+        final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
         CursorLoader cursorLoader =
                 new CursorLoader(this,
                         FeedColumns.GROUPED_FEEDS_CONTENT_URI,
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
-                                FeedColumns.IS_GROUP, FeedColumns.ICON, FeedColumns.LAST_UPDATE,
+                                FeedColumns.IS_GROUP, FeedColumns.ICON_URL, FeedColumns.LAST_UPDATE,
                                 FeedColumns.ERROR, EXPR_NUMBER( EntryColumns.WHERE_UNREAD ), EXPR_FEED_ALL_NUMBER, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
-                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS},
+                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL + Constants.DB_OR +
                                 FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
                                 " FROM " + FeedColumns.TABLE_NAME +
@@ -374,6 +474,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                         null,
                         null);
         cursorLoader.setUpdateThrottle(Constants.UPDATE_THROTTLE_DELAY);
+        mStatus = Status().Start( R.string.feed_list_loading, true );
         return cursorLoader;
     }
 
@@ -414,6 +515,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             });
 
         timer.End();
+        Status().End( mStatus );
     }
 
     private String GetSecondLastSegment( final Uri uri) {
@@ -474,7 +576,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mEntriesFragment.setData(newUri,
                 showFeedInfo,
                 false,
-                mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position));
+                mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position),
+                                 mDrawerAdapter != null ? mDrawerAdapter.getOptions(position) : new JSONObject() );
 
         //mDrawerList.setSelection( position );
         mDrawerList.setItemChecked(position, true);
@@ -513,19 +616,19 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             switch (mCurrentDrawerPos) {
                 case 0:
                     getSupportActionBar().setTitle(R.string.unread_entries);
-                    SetActionbarIndicator( R.mipmap.ic_launcher);
+                    SetActionbarIndicator( R.drawable.cup_new_unread);
                     break;
                 case 1:
                     getSupportActionBar().setTitle(R.string.all_entries);
-                    SetActionbarIndicator( R.drawable.cup_empty );
+                    SetActionbarIndicator( R.drawable.cup_new_pot );
                     break;
                 case 2:
                     getSupportActionBar().setTitle(R.string.favorites);
-                    SetActionbarIndicator( R.drawable.cup_with_star);
+                    SetActionbarIndicator( R.drawable.cup_new_star);
                     break;
                 case 3:
                     getSupportActionBar().setTitle(R.string.externalLinks);
-                    SetActionbarIndicator( R.drawable.load_later );
+                    SetActionbarIndicator( R.drawable.cup_new_load_later );
                     break;
                 default:
                     getSupportActionBar().setTitle(mTitle);
@@ -536,8 +639,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     getSupportActionBar().setHomeAsUpIndicator( image );
                     break;
             }
+            if ( mEntriesFragment.getView() != null )
+                ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
         }
-
         PrefUtils.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 
         // Put the good menu
@@ -555,11 +659,17 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
-            // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT ).putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
-        }
+        mImageFileVoc.init1();
+        mHTMLFileVoc.init1();
+        OPML.OnRequestPermissionResult(this, requestCode, grantResults);
+
+        //        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
+//            // If request is cancelled, the result arrays are empty.
+//            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+//                 new File(OPML.GetAutoBackupOPMLFileName()).exists() )
+//                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
+//                                                 .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
+//        }
     }
 
     @Override
@@ -570,5 +680,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if ( hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+            setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
     }
 }

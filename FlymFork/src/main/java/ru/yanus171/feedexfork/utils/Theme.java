@@ -2,10 +2,12 @@ package ru.yanus171.feedexfork.utils;
 
 import java.util.HashMap;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
+
+import androidx.core.content.ContextCompat;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -19,6 +21,7 @@ public class Theme {
 	static final String BUTTON_BACKGROUND_RES_ID = "ButtonBackgroundResID";
 	static final String DARK = "Dark";
 	static final String LIGHT = "Light";
+	static final String BLACK = "Black";
 	public static final String TEXT_COLOR_BACKGROUND = "textColor_background";
 	public static final String TEXT_COLOR = "textColor";
 	public static final String TEXT_COLOR_READ = "textColorRead";
@@ -28,14 +31,18 @@ public class Theme {
 	public static final String LINK_COLOR_BACKGROUND = LINK_COLOR + BACKGROUND;
 	public static final String QUOTE_BACKGROUND_COLOR = "quote_background_color";
 	public static final String QUOTE_LEFT_COLOR = "quote_left_color";
-	public static final String BUTTON_COLOR = "button_color";
+	//public static final String BUTTON_COLOR = "button_color";
 	public static final String SUBTITLE_COLOR = "subtitle_color";
 	public static final String SUBTITLE_BORDER_COLOR = "subtitle_border_color";
 	//public static final String ENTRY_LIST_BACKGROUND = "entry_list_background";
-	public static final String STYLE_THEME = "style_theme";
+	static final String STYLE_THEME = "style_theme";
+	static final String PREF_STYLE_THEME = "pref_style_theme";
+	public static final String NEW_ARTICLE_INDICATOR_RES_ID = "NEW_ARTICLE_INDICATOR";
+	public static final String STARRED_ARTICLE_INDICATOR_RES_ID = "STARRED_ARTICLE_INDICATOR";
+	private static final String TOOL_BAR_COLOR = "toolBarColor";
 	private static HashMap<String, HashMap<String, String>> ThemeList = null;
 	static final String THEME_CUSTOM = "Custom";
-	public static String mTheme = DARK;
+	private static String mTheme = DARK;
 
 	// -------------------------------------------------------------------
 	public static boolean IsCustom() {
@@ -50,48 +57,57 @@ public class Theme {
 		if (ThemeList == null) {
 			ThemeList = new HashMap<>();
 
-			{
-				HashMap<String, String> theme = new HashMap<String, String>();
-				theme.put(TEXT_COLOR, "#555555");
-				theme.put(TEXT_COLOR_BACKGROUND, "#f6f6f6");
+			{   // Light theme
+				HashMap<String, String> theme = new HashMap<>();
+				theme.put(TEXT_COLOR, GetResourceColor(R.color.light_theme_color_unread));
+				theme.put(TEXT_COLOR_BACKGROUND, GetResourceColor(R.color.light_theme_background));
+				theme.put(TEXT_COLOR_READ, GetResourceColor(R.color.light_theme_color_read));
 				theme.put(MENU_FONT_COLOR, "#000000");
-				theme.put(MENU_BACKGROUND_COLOR, "#FFFFFF");
+				theme.put(MENU_BACKGROUND_COLOR, "#CCCCCC");
 				theme.put(QUOTE_BACKGROUND_COLOR, "#e6e6e6");
-				theme.put(QUOTE_LEFT_COLOR, "#a6a6a6");
-				theme.put(BUTTON_COLOR, "#52A7DF");
+				theme.put(QUOTE_LEFT_COLOR, "#FFA500");
 				theme.put(SUBTITLE_COLOR, "#666666");
 				theme.put(SUBTITLE_BORDER_COLOR, "#dddddd");
-
-                //theme.put(ENTRY_LIST_BACKGROUND, "#ffeeeeee");
 				theme.put(STYLE_THEME, String.valueOf( R.style.Theme_Light) );
-
-
-//				theme.put("themeDialog", String.valueOf( R.style.styleLightDialog) );
+				theme.put(PREF_STYLE_THEME, String.valueOf( R.style.Theme_Light_Pref) );
+				theme.put(TOOL_BAR_COLOR, GetResourceColor( R.color.light_theme_color_primary));
+				theme.put(NEW_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_new_article_light) );
+				theme.put(STARRED_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_star_light) );
 				ThemeList.put(LIGHT, theme);
 			}	
 
-			{
-				HashMap<String, String> theme = new HashMap<String, String>();
-				theme.put(TEXT_COLOR, "#FFFFFF");
-				theme.put(TEXT_COLOR_BACKGROUND, "#181b1f");
+			{   // Dark theme
+				HashMap<String, String> theme = new HashMap<>();
+				theme.put(TEXT_COLOR, GetResourceColor( R.color.dark_theme_color_unread));
+				theme.put(TEXT_COLOR_BACKGROUND, GetResourceColor(R.color.dark_theme_background));
+				theme.put(TEXT_COLOR_READ, GetResourceColor( R.color.dark_theme_color_read));
 				theme.put(MENU_FONT_COLOR, "#FFFFFF");
-				theme.put(MENU_BACKGROUND_COLOR, "#000000");
-				theme.put(QUOTE_BACKGROUND_COLOR, "#383b3f");
-				theme.put(QUOTE_LEFT_COLOR, "#686b6f");
-				theme.put(BUTTON_COLOR, "#1A5A81");
+				theme.put(MENU_BACKGROUND_COLOR, "#222222");
+				theme.put(QUOTE_BACKGROUND_COLOR, "#000000");
+				theme.put(QUOTE_LEFT_COLOR, "#FFA500");
 				theme.put(SUBTITLE_COLOR, "#8c8c8c");
 				theme.put(SUBTITLE_BORDER_COLOR, "#303030");
-				//theme.put(ENTRY_LIST_BACKGROUND, "#ff202020");
 				theme.put(STYLE_THEME, String.valueOf( R.style.Theme_Dark) );
-
-
-//				theme.put("themeDialog", String.valueOf( R.style.styleDarkDialog) );
+				theme.put(PREF_STYLE_THEME, String.valueOf( R.style.Theme_Dark_Pref) );
+				theme.put(TOOL_BAR_COLOR, GetResourceColor(R.color.dark_theme_color_primary));
+				theme.put(NEW_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_new_article_dark) );
+				theme.put(STARRED_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_star_dark) );
 				ThemeList.put(DARK, theme);
 			}
-			
+
+			{   // Black theme
+				HashMap<String, String> theme = (HashMap<String, String>) ThemeList.get(DARK).clone(); // clone from dark theme, so we need not repeat equal settings
+				theme.put(TEXT_COLOR, GetResourceColor(R.color.black_theme_color_unread));
+				theme.put(TEXT_COLOR_BACKGROUND, GetResourceColor( R.color.black_theme_background));
+				theme.put(TEXT_COLOR_READ, GetResourceColor(R.color.black_theme_color_read));
+				theme.put(STYLE_THEME, String.valueOf( R.style.Theme_Black) );
+				theme.put(TOOL_BAR_COLOR, GetResourceColor(R.color.black_theme_color_primary));
+				theme.put(PREF_STYLE_THEME, String.valueOf( R.style.Theme_Black_Pref) );
+				ThemeList.put(BLACK, theme);
+			}
+			// for all themes
 			for ( HashMap<String, String> theme: ThemeList.values() ) {
 				theme.put("notificationBackgroundColor", theme.get(MENU_BACKGROUND_COLOR) );
-				theme.put(TEXT_COLOR_READ, MainApplication.getContext().getString( R.string.default_read_color ));
 				theme.put(LINK_COLOR, MainApplication.getContext().getString( R.string.default_link_color ) );
 				theme.put(LINK_COLOR_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
 				theme.put(TEXT_COLOR_READ_BACKGROUND, theme.get( TEXT_COLOR_BACKGROUND ) );
@@ -101,6 +117,9 @@ public class Theme {
 
 	}
 
+	private static String GetResourceColor( int resID ) {
+		return "#"+Integer.toHexString(ContextCompat.getColor(MainApplication.getContext(), resID )).substring(2);
+	}
 	private static String GetTheme() { return PrefUtils.getString( THEME, DARK ); }
 	public static String GetTextColor() {
 		//if ( IsCustom() )
@@ -109,9 +128,10 @@ public class Theme {
 		//	return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
 	}
 
-	public static boolean IsLight() {
-		return GetTheme().equals( LIGHT );
+	public static String GetBackgroundColor() {
+		return Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
 	}
+
 
 //	private static String getTextColorDarkTheme() {
 //
@@ -139,6 +159,20 @@ public class Theme {
 	//-------------------------------------------------------------------
 	public static int GetMenuFontColor() {
 		return GetColorInt (MENU_FONT_COLOR, R.color.light_theme_color_primary);
+	}
+	//-------------------------------------------------------------------
+	public static int GetToolBarColorInt() {
+		return Theme.GetColorInt(TOOL_BAR_COLOR, R.string.default_toolbar_color );
+	}
+	//-------------------------------------------------------------------
+	public static String GetToolBarColor() {
+		return Theme.GetColor(TOOL_BAR_COLOR, R.string.default_toolbar_color );
+	}
+	//-------------------------------------------------------------------
+	@SuppressLint("DefaultLocale")
+	public static String GetToolBarColorRGBA() {
+		final int color = GetToolBarColorInt();
+		return String.format( "%d, %d, %d, %d", Color.red( color ), Color.green( color ), Color.blue( color ), Color.alpha( color ) );
 	}
 	//-------------------------------------------------------------------
 	public static int GetMenuBackgroundColor() {
@@ -219,9 +253,7 @@ public class Theme {
 	}
 
 	public static AlertDialog.Builder CreateDialog(Context context) {
-		if ( Build.VERSION.SDK_INT >= 11 )
-			return new AlertDialog.Builder(context, GetThemeDialog());
-		else
-			return new AlertDialog.Builder(context);
+		return new AlertDialog.Builder(context, GetThemeDialog());
 	}
+
 }

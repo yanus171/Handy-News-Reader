@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="articleWebSearch"
+        android:shortcutShortLabel="@string/menu_add_feed"
+        android:icon="@drawable/cup_new_add"
+        tools:targetApi="n_mr1">
+        <intent android:action="android.intent.action.WEB_SEARCH"
+            android:targetPackage="ru.yanus171.feedexfork"
+            android:targetClass="ru.yanus171.feedexfork.activity.EditFeedActivity"/>
+    </shortcut>
+</shortcuts>

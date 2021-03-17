@@ -25,6 +25,8 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.view.ColorPreference;
 
+import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
+
 //***********************************************************************************
 public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 	private static final String cKey = "ColorSlot";
@@ -97,10 +99,10 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 
 		AddColorTable(layout);
 
-		mlabelRed = new TextView(Context);
-		mlabelGreen = new TextView(Context);
-		mlabelBlue = new TextView(Context);
-		mlabelTransparency = new TextView(Context);
+		mlabelRed = CreateTextView(Context);
+		mlabelGreen = CreateTextView(Context);
+		mlabelBlue = CreateTextView(Context);
+		mlabelTransparency = CreateTextView(Context);
 		msbRed = new SeekBar(Context);
 		msbGreen = new SeekBar(Context);
 		msbBlue = new SeekBar(Context);
@@ -133,8 +135,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 
 	// -------------------------------------------------------------------------
 	public static TextView CreateDialogColorInMenu(ViewGroup layout, String sampleStringShort) {
-		TextView result = new TextView(layout.getContext());
-		result.setTypeface(Typeface.DEFAULT_BOLD);
+		TextView result = CreateTextView( layout.getContext() );
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
 		result.setSingleLine();
         result.setText(sampleStringShort);
@@ -146,8 +147,7 @@ public class ColorDialog implements SeekBar.OnSeekBarChangeListener {
 
 	// -------------------------------------------------------------------------
 	public static TextView CreateDialogColorInDialog(ViewGroup layout, boolean isText, boolean isBackground, String sampleStringLong) {
-		TextView result = new TextView(layout.getContext());
-		result.setTypeface(Typeface.DEFAULT);
+		TextView result = CreateTextView(layout.getContext());
 		result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 		int px = UiUtils.dpToPixel( 10 );
 		result.setPadding(px, px, px, px);

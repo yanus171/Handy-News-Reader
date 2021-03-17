@@ -35,6 +35,7 @@ import java.util.Map;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.SendErrorActivity;
+import ru.yanus171.feedexfork.service.FetcherService;
 
 //****************************************************************************
 public class DebugApp {
@@ -186,7 +187,9 @@ public class DebugApp {
 
 		PrefUtils.putStringCommit( "crashText", st.toString() );
 
-		Log.e("HandyNewsLog", st.toString());
+		Dog.e("HandyNewsLog", st.toString());
+
+		throwable.printStackTrace();
 
 		try {
 			CreateFileUri("", "crash.txt", st.toString());
@@ -225,7 +228,7 @@ public class DebugApp {
 					.setText(st.toString());
 			Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
 			context.startActivity(
-					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)));
+					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
 		}
 		//if (mOldHandler != null) {
 			// mOldHandler.uncaughtException(thread, throwable);
@@ -348,15 +351,10 @@ public class DebugApp {
 
 	// ------------------------------------------------------------------------
 	public static void AddErrorToLog(String text, Exception e) {
-		AddErrorToLog(text, e, true);
-	}
-	// ------------------------------------------------------------------------
-	private static void AddErrorToLog(String text, Exception e, boolean printStackTrace) {
 		ErrorLog.append("----------------------\n");
 		ErrorLog.append(GetErrorInfo(text, e));
-		if ( printStackTrace )
-			( e == null ? new Exception() : e ).printStackTrace();
-
+		( e == null ? new Exception() : e ).printStackTrace();
+		FetcherService.Status().SetError( text, "", "", e );
 	}
 
 	// ------------------------------------------------------------------------
@@ -372,7 +370,7 @@ public class DebugApp {
 	}
 
 	 //--------------------------------------------------------------------------------
-	private static Uri CreateFileUri(String dir, String fileName, String text) {
+	public static Uri CreateFileUri(String dir, String fileName, String text) {
 
 		Uri result = null;
 		fileName = fileName.replace(",", "_");

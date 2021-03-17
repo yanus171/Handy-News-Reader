@@ -28,10 +28,11 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
+import android.os.Build;
 import android.text.Html;
 
-import okhttp3.OkHttpClient;
-import okhttp3.OkUrlFactory;
+import androidx.annotation.RequiresApi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,7 +43,9 @@ import java.io.InputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -51,6 +54,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.view.EntryView;
+
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 
 public class NetworkUtils {
 
@@ -69,30 +74,28 @@ public class NetworkUtils {
 
     public static String getDownloadedOrDistantImageUrl(String entryLink, String imgUrl) {
         File dlImgFile = new File(NetworkUtils.getDownloadedImagePath(entryLink, imgUrl));
-        if (dlImgFile.exists()) {
-            return Uri.fromFile(dlImgFile).toString();
-        } else {
-            return null;//imgUrl;
-        }
+        return Uri.fromFile(dlImgFile).toString();
     }
 
     public static String getDownloadedImagePath(String entryLink, String imgUrl) {
         return getDownloadedImagePath(entryLink, "", imgUrl);
     }
 
-    public static String getImageEntryCode( String entryLink ) {
-        return StringUtils.getMd5( entryLink );
-    }
 
     private static String getDownloadedImagePath( String entryLink, String prefix, String imgUrl ) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;
         String fileExtension = lastSegment.contains(".") ? lastSegment.substring(lastSegment.lastIndexOf(".")) : "";
+        fileExtension = fileExtension.replace( ".", "" );
+        if ( fileExtension.isEmpty() && imgUrl.contains("/svg/") )
+            fileExtension = "svg";
         if ( fileExtension.contains( "?" ) )
             fileExtension = fileExtension.replace( fileExtension.substring(fileExtension.lastIndexOf("?") + 1), "" );
+        fileExtension = fileExtension.replace( ";", "" );
+        fileExtension = fileExtension.replace( "&", "" );
+        fileExtension = fileExtension.replace( "?", "" );
 
-        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + getImageEntryCode( entryLink ) + ID_SEPARATOR +
-               StringUtils.getMd5(imgUrl
-                       .replace(" ", HtmlUtils.URL_SPACE) ) + fileExtension.replace("?", "");
+        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + FileUtils.INSTANCE.getLinkHash( entryLink ) + ID_SEPARATOR +
+               FileUtils.INSTANCE.getLinkHash( imgUrl ) + "." + fileExtension;
     }
 
     private static String getTempDownloadedImagePath(String entryLink, String imgUrl) {
@@ -100,25 +103,25 @@ public class NetworkUtils {
         //return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
     }
 
-    public static void downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit ) throws IOException {
+    public static boolean downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit, boolean notify ) throws IOException {
+        boolean result = false;
         if ( FetcherService.isCancelRefresh() )
-            return;
+            return result;
         String tempImgPath = getTempDownloadedImagePath(entryUrl, imgUrl);
         String finalImgPath = getDownloadedImagePath(entryUrl, imgUrl);
 
 
         if (!new File(tempImgPath).exists() && !new File(finalImgPath).exists()) {
             boolean abort = false;
-            boolean success = false;
-            HttpURLConnection imgURLConnection = null;
+            Connection imgURLConnection = null;
             try {
                 //IMAGE_FOLDER_FILE.mkdir(); // create images dir
 
                 // Compute the real URL (without "&eacute;", ...)
                 String realUrl = Html.fromHtml(imgUrl).toString();
-                imgURLConnection = setupConnection(realUrl);
+                imgURLConnection = new Connection( realUrl);
 
-                int size = imgURLConnection.getContentLength();
+                long size = imgURLConnection.getContentLength();
                 int maxImageDownloadSize = PrefUtils.getImageMaxDownloadSizeInKb() * 1024;
                 if ( !isSizeLimit || size <= maxImageDownloadSize ) {
 
@@ -130,7 +133,7 @@ public class NetworkUtils {
                             final int cStep = 1024 * 10;
                             byte[] buffer = new byte[2048];
                             int bufferLength;
-                            FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
+                            //FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
                             while (!FetcherService.isCancelRefresh() && ( bufferLength = inputStream.read(buffer) ) > 0) {
                                 if (isSizeLimit && size > maxImageDownloadSize) {
                                     abort = true;
@@ -141,10 +144,10 @@ public class NetworkUtils {
                                 progressBytes += bufferLength;
                                 if (progressBytes >= cStep) {
                                     progressBytes = 0;
-                                    FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
+                                    //FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
                                 }
                             }
-                            success = true;
+                            result = true;
                             FetcherService.Status().AddBytes(bytesRecieved);
 
                         } finally {
@@ -155,9 +158,10 @@ public class NetworkUtils {
                         fileOutput.close();
                     }
 
-                    if ( !abort )
+                    if ( !abort ) {
                         new File(tempImgPath).renameTo(new File(finalImgPath));
-                    else
+                        mImageFileVoc.addFile(finalImgPath );
+                    } else
                         new File(tempImgPath).delete();
                 }
             } catch (IOException e) {
@@ -169,10 +173,10 @@ public class NetworkUtils {
                 }
             }
 
-            if ( success && !abort )
+            if ( result && !abort && notify && entryId > 0 )
                 EntryView.NotifyToUpdate( entryId, entryUrl );
         }
-        //if ( updateGUI )
+        return result;
     }
 
     private static String getProgressText(int bytesRecieved) {
@@ -224,11 +228,18 @@ public class NetworkUtils {
 
     public static String getBaseUrl(String link) {
         String baseUrl = link;
-        int index = link.lastIndexOf('/'); // this also covers https://
-        if (index > -1) {
-            baseUrl = link.substring(0, index + 1);
-        }
-
+//        Pattern p = Pattern.compile("(http?.://[^/]+)");
+//        Matcher m = p.matcher(baseUrl);
+//        if (m.find())
+//            baseUrl = m.group(1);  // The matched substring
+//        else {
+//            if ( link.endsWith( "/" ) )
+//                link = link.substring(0, link.length() - 1 );
+//            int index = link.lastIndexOf('/'); // this also covers https://
+//            if (index > -1) {
+//                baseUrl = link.substring(0, index + 1);
+//            }
+//        }
         return baseUrl;
     }
 
@@ -237,7 +248,8 @@ public class NetworkUtils {
         result = result.replaceAll( "http.+?//", "" );
         result = result.replaceAll( "http.+?/", "" );
         if ( result.endsWith( "/" ) )
-            result = result.substring(0, result.length() );
+            result = result.substring(0, result.length() - 1 );
+
         int index = result.lastIndexOf('/'); // this also covers https://
         if (index > -1) {
             result = result.substring(0, index + 1);
@@ -264,57 +276,56 @@ public class NetworkUtils {
     }
 
     public static void retrieveFavicon(Context context, URL url, String id) {
-        boolean success = false;
-
+        final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
-        Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON}, null, null, null  ); try {
-            if (!cursor.moveToFirst() || cursor.getBlob(cursor.getColumnIndex( FeedData.FeedColumns.ICON )) != null )
+        Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {
+            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && mImageFileVoc.isExists(GetImageFile(imageUrl, imageUrl ).getPath() ) ) )
                 return;
         } finally {
             cursor.close();
         }
-        HttpURLConnection iconURLConnection = null;
-
         try {
-            iconURLConnection = setupConnection(new URL(url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON));
-
-            byte[] iconBytes = getBytes(iconURLConnection.getInputStream());
-            if (iconBytes != null && iconBytes.length > 0) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
-                if (bitmap != null) {
-                    if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
-                        ContentValues values = new ContentValues();
-                        values.put(FeedData.FeedColumns.ICON, iconBytes);
-                        context.getContentResolver().update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
-                        success = true;
-                    }
-                    bitmap.recycle();
-                }
-            }
-        } catch (Throwable ignored) {
-        } finally {
-            if (iconURLConnection != null) {
-                iconURLConnection.disconnect();
-            }
-        }
-
-        if (!success) {
-            // no icon found or error
+            downloadImage( -1, imageUrl, imageUrl, true, false );
             ContentValues values = new ContentValues();
-            values.putNull(FeedData.FeedColumns.ICON);
-            context.getContentResolver().update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
+            values.put(FeedData.FeedColumns.ICON_URL, imageUrl);
+            cr.update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static HttpURLConnection setupConnection(String url) throws IOException {
-        return setupConnection(new URL(url));
+    public static HttpURLConnection setupConnection1(String url) throws IOException {
+        return setupConnection1(new URL(url));
     }
 
-    public static HttpURLConnection setupConnection(URL url) throws IOException {
-        HttpURLConnection connection;
+    public static Bitmap downloadImage(String url) {
+        Bitmap bitmap = null;
+        try {
+            Connection connection = new Connection( url ); try {
+
+                byte[] iconBytes = getBytes(connection.getInputStream());
+                if (iconBytes != null && iconBytes.length > 0) {
+                    bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
+                    if (bitmap != null) {
+                        if (bitmap.getWidth() != 0 && bitmap.getHeight() != 0) {
+
+                        }
+                    }
+                }
+            } finally {
+                connection.disconnect();
+            }
+        } catch (Exception e) {
+            DebugApp.AddErrorToLog(null, e);
+        }
+        return bitmap;
+    }
+
+    public static HttpURLConnection setupConnection1(URL url) throws IOException {
         FetcherService.Status().ChangeProgress(R.string.setupConnection);
 
-        connection = new OkUrlFactory(new OkHttpClient()).open(url);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();//; new OkUrlFactory(new OkHttpClient()).open(url);
+
 
         connection.setDoInput(true);
         connection.setDoOutput(false);
@@ -362,4 +373,74 @@ public class NetworkUtils {
             return mPattern.matcher(filename).find();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String formatXML(final String unformattedXML) {
+        final int length = unformattedXML.length();
+        final int indentSpace = 3;
+        final StringBuilder newString = new StringBuilder(length + length / 10);
+        final char space = ' ';
+        int i = 0;
+        int indentCount = 0;
+        char currentChar = unformattedXML.charAt(i++);
+        char previousChar = currentChar;
+        boolean nodeStarted = true;
+        newString.append(currentChar);
+        for (; i < length - 1;) {
+            currentChar = unformattedXML.charAt(i++);
+
+            final String TAG = "<br>";
+            if ( i < unformattedXML.length() - TAG.length() && unformattedXML.substring( i, i + TAG.length() ).equals( TAG ) ) {
+                newString.append( TAG );
+                i += TAG.length();
+                continue;
+            }
+
+            if(((int) currentChar < 32 && currentChar != 13 ) && !nodeStarted) {
+                //continue;
+            }
+
+            switch (currentChar) {
+                case '<':
+                    if ('>' == previousChar && '/' != unformattedXML.charAt(i - 1) && '/' != unformattedXML.charAt(i) &&
+                            '!' != unformattedXML.charAt(i)) {
+                        indentCount++;
+                    }
+                    newString.append(System.lineSeparator());
+                    for (int j = indentCount * indentSpace; j > 0; j--) {
+                        newString.append(space);
+                    }
+                    newString.append(currentChar);
+                    nodeStarted = true;
+                    break;
+                case '>':
+                    newString.append(currentChar);
+                    nodeStarted = false;
+                    break;
+                case '/':
+                    if ('<' == previousChar || '>' == unformattedXML.charAt(i)) {
+                        indentCount--;
+                    }
+                    newString.append(currentChar);
+                    break;
+                default:
+                    newString.append(currentChar);
+            }
+            previousChar = currentChar;
+        }
+        newString.append(unformattedXML.charAt(length - 1));
+        return newString.toString();
+        //System.out.println(newString.toString());
+    }
+
+    public static Uri GetImageFileUri( String entryUrl, String imageUrl ) {
+        return Uri.fromFile( GetImageFile( entryUrl, imageUrl ) );
+    }
+
+    public static File GetImageFile( String entryUrl, String imageUrl ) {
+        final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryUrl, imageUrl);
+        return new File(imgFilePath );
+    }
 }
+
+;

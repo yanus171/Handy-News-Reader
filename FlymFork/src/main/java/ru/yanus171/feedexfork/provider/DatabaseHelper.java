@@ -63,7 +63,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 27;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -81,12 +81,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(createTable(FilterColumns.TABLE_NAME, FilterColumns.COLUMNS));
         database.execSQL(createTable(EntryColumns.TABLE_NAME, EntryColumns.COLUMNS));
         database.execSQL(createTable(TaskColumns.TABLE_NAME, TaskColumns.COLUMNS));
-
-        // Check if we need to import the backup
-        if (new File(OPML.GetAutoBackupOPMLFileName()).exists()) {
-            FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
-                    .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
-        }
     }
 
     private String createTable(String tableName, String[][] columns) {
@@ -105,6 +99,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
             }
             return stringBuilder.append(");").toString();
         }
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.setVersion(oldVersion);
     }
 
     @Override
@@ -156,7 +155,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
             executeCatchedSQL(database, ALTER_TABLE + FeedColumns.TABLE_NAME + ADD + FeedColumns.OPTIONS + ' ' + FeedData.TYPE_TEXT);
 
 
-
         if (oldVersion < 18)
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_NEW + ' ' + FeedData.TYPE_BOOLEAN);
 
@@ -165,6 +163,25 @@ class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 20)
             executeCatchedSQL(database, "CREATE INDEX idx_entries_feed_id ON " + EntryColumns.TABLE_NAME + " (" + EntryColumns.FEED_ID + ")");
 
+        if (oldVersion < 21)
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_WAS_AUTO_UNSTAR + ' ' + FeedData.TYPE_BOOLEAN);
+
+        if (oldVersion < 22)
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_WITH_TABLES + ' ' + FeedData.TYPE_BOOLEAN);
+
+        if (oldVersion < 23) {
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IMAGES_SIZE + ' ' + FeedData.TYPE_INT);
+            executeCatchedSQL(database, ALTER_TABLE + FeedColumns.TABLE_NAME + ADD + FeedColumns.IMAGES_SIZE + ' ' + FeedData.TYPE_INT);
+        }
+
+        if (oldVersion < 24)
+            executeCatchedSQL(database, ALTER_TABLE + FeedColumns.TABLE_NAME + ADD + FeedColumns.ICON_URL + ' ' + FeedData.TYPE_TEXT);
+
+        if (oldVersion < 25)
+            executeCatchedSQL(database, ALTER_TABLE + FilterColumns.TABLE_NAME + ADD + FilterColumns.IS_REMOVE_TEXT + ' ' + FeedData.TYPE_BOOLEAN);
+
+        if (oldVersion < 27)
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.CATEGORIES + ' ' + FeedData.TYPE_TEXT);
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
         try {

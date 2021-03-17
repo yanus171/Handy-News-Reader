@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import ru.yanus171.feedexfork.MainApplication;
 
 import static ru.yanus171.feedexfork.utils.Theme.DARK;
+import static ru.yanus171.feedexfork.utils.Theme.LIGHT;
+import static ru.yanus171.feedexfork.utils.Theme.BLACK;
+
 
 public class PrefUtils {
 
@@ -49,6 +52,7 @@ public class PrefUtils {
     public static final String REFRESH_ONLY_SELECTED = "refresh.only_selected";
     public static final String REFRESH_ON_OPEN_ENABLED = "refreshonopen.enabled";
     public static final String REFRESH_WIFI_ONLY = "refreshwifionly.enabled";
+    public static final String DELETE_OLD_INTERVAL = "delete_old_interval";
 
     public static final String AUTO_BACKUP_INTERVAL = "autobackup.interval";
     public static final String AUTO_BACKUP_ENABLED = "autobackup.enabled";
@@ -66,17 +70,22 @@ public class PrefUtils {
     public static final String DISPLAY_OLDEST_FIRST = "display_oldest_first";
     public static final String DISPLAY_ENTRIES_FULLSCREEN = "display_entries_fullscreen";
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
+    public static final String SHOW_ARTICLE_URL = "settings_show_article_url";
+    public static final String SHOW_ARTICLE_CATEGORY = "settings_show_article_category";
     //public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
-    private static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
+    public static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
     private static final String MAX_IMAGE_DOWNLOAD_SIZE = "settings_max_image_download_size_kb";
     private static final String MAX_SINGLE_REFRESH_TRAFFIC = "settings_max_single_refresh_traffic_mb";
     public static final String ENTRY_MAGRINS = "entry_margins";
     public static final String ENTRY_TEXT_ALIGN_JUSTIFY = "entry_text_align_justify";
     public static final String LANGUAGE = "language";
     public static final String DATA_FOLDER = "data_folder";
+    public static final String READING_NOTIFICATION = "reading_notification";
 
-
-    public static final String CONTENT_EXTRACT_RULES = "content_extract_rules";
+    public static final String CONTENT_TEXT_ROOT_EXTRACT_RULES = "content_extract_rules";
+    public static final String CATEGORY_EXTRACT_RULES = "category_extract_rules";
+    public static final String MAIN_IMAGE_EXTRACT_RULES = "main_image_extract_rules";
+    public static final String DATE_EXTRACT_RULES = "date_extract_rules";
     public static final String LOAD_COMMENTS = "load_comments";
     public static final String REMEBER_LAST_ENTRY = "remember_last_entry";
     public static final String TAP_ZONES_VISIBLE = "settings_tap_zones_visible";
@@ -85,6 +94,8 @@ public class PrefUtils {
     public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";
 
     public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
+
+    public static boolean CALCULATE_IMAGES_SIZE() {return getBoolean("calculate_images_size", false );}
 
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
@@ -97,6 +108,7 @@ public class PrefUtils {
     public static final String VOLUME_BUTTONS_ACTION_SWITCH_ENTRY = "SwithEntry";
     public static final String VOLUME_BUTTONS_ACTION_PAGE_UP_DOWN = "PageUpDown";
 
+    public static final String ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL = "Horizontal";
 
     public static final String KEEP_TIME = "keeptime";
 
@@ -105,11 +117,23 @@ public class PrefUtils {
 
     public static final String SHOW_READ_ARTICLE_COUNT = "show_read_article_count";
 
+    public static final int BASE_TEXT_FONT_SIZE = 18;
+
     public static int getFontSize() {
-        return Integer.parseInt(PrefUtils.getString("fontsize", "0"));
+        return Integer.parseInt(PrefUtils.getString("fontsize", "12"));
     }
     public static int getFontSizeEntryList() {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
+    }
+
+    public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
+    public static Boolean isImageWhiteBackground() {
+        return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
+    }
+
+    public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
+    public static Boolean isArticleTapEnabled() {
+        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true );
     }
 
     public static int getFontSizeFooterClock() {
@@ -155,6 +179,12 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static void toggleBoolean(String key, boolean defaultValue) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(key, !pref.getBoolean(key, defaultValue ));
+        editor.apply();
+    }
     public static int getInt(String key, int defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.getInt(key, defValue);
@@ -255,7 +285,10 @@ public class PrefUtils {
     @SuppressLint("ApplySharedPref")
     public static void ToogleTheme(Intent intent ) {
         final String theme = PrefUtils.getString( PrefUtils.THEME, DARK );
-        PrefUtils.putString( PrefUtils.THEME, theme.equals(Theme.LIGHT) ? DARK : Theme.LIGHT);
+//        PrefUtils.putString( PrefUtils.THEME, theme.equals(Theme.LIGHT) ? DARK : Theme.LIGHT);
+        if (theme.equals(LIGHT)) PrefUtils.putString( PrefUtils.THEME, DARK);
+        if (theme.equals(DARK)) PrefUtils.putString( PrefUtils.THEME, BLACK);
+        if (theme.equals(BLACK)) PrefUtils.putString( PrefUtils.THEME, LIGHT);
         Context context = MainApplication.getContext();
         PreferenceManager.getDefaultSharedPreferences(context).edit().commit(); // to be sure all prefs are written
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -266,6 +299,8 @@ public class PrefUtils {
     }
 
     public static int GetTapZoneSize() {
+        //if ( !isArticleTapEnabled() )
+        //    return 0;
         return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
     }
     // ------------------------------------------------------------------------------------

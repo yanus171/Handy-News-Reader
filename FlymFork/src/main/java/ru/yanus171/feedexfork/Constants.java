@@ -44,6 +44,7 @@ public final class Constants {
     public static final String DB_ARG = "=?";
     public static final String DB_AND = " AND ";
     public static final String DB_OR = " OR ";
+    public static String DB_SUM( String fieldName ) { return " SUM(" + fieldName + ") "; }
 
     public static final String HTTP_SCHEME = "http://";
     public static final String HTTPS_SCHEME = "https://";
@@ -73,11 +74,14 @@ public final class Constants {
 
     public static final String FROM_AUTO_REFRESH = "from_auto_refresh";
     public static final String FROM_AUTO_BACKUP = "from_auto_backup";
+    public static final String FROM_DELETE_OLD = "from_delete_old";
+    public static final String FROM_RELOAD_ALL_TEXT = "reload_all_texts";
     public static final String FROM_IMPORT = "from_import";
+    public static final String SET_VISIBLE_ITEMS_AS_OLD = "set_visible_items_as_old";
+    public static final String URL_LIST = "url_list";
     //public static final String OPEN_ACTIVITY = "open_activity";
     public static final String URL_TO_LOAD = "url_to_load";
     public static final String TITLE_TO_LOAD = "title_to_load";
-    public static final String EXTRA_DELETE_OLD = "delete_old";
 
 
     public static final String MIMETYPE_TEXT_PLAIN = "text/plain";
@@ -89,6 +93,7 @@ public final class Constants {
 
     public static final MatrixCursor EMPTY_CURSOR = new MatrixCursor(new String[]{BaseColumns._ID});
 
+    public static final int NOTIFICATION_ID_READING_SERVICE = -4;
     public static final int NOTIFICATION_ID_REFRESH_SERVICE = -3;
     public static final int NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED = -1;
     public static final int NOTIFICATION_ID_NEW_ITEMS_COUNT = -2;
@@ -97,4 +102,6 @@ public final class Constants {
     public static final int VIBRATE_DURATION = 25;
 
     public static final String EXTRA_FILENAME = "FileName";
+    public static final String EXTRA_URI = "Uri";
+    public static final String CALCULATE_IMAGE_SIZES = "CalculateImageSizes";
 }

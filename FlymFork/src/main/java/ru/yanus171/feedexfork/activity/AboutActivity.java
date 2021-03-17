@@ -39,7 +39,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.about_flym);
+        toolbar.setTitle(R.string.about_handy_news_reader);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -51,10 +51,10 @@ public class AboutActivity extends BaseActivity {
         } catch (NameNotFoundException unused) {
             title = getString( R.string.app_name );
         }
-        TextView titleView = findViewById(R.id.about_title);
+        TextView titleView = SetupTextView( R.id.about_title);
         titleView.setText(Html.fromHtml(title));
 
-        TextView contentView = findViewById(R.id.about_content);
+        TextView contentView = SetupTextView(R.id.about_content);
         //String html = getString(R.string.about_us_content);
         //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
         //    html = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);

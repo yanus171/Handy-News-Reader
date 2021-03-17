@@ -32,25 +32,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -58,6 +52,7 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.SparseArray;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,12 +62,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -83,12 +94,15 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
+import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -97,31 +111,47 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
+import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
+import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
+import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
+import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
+import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
+import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
+import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
-public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>, EntryView.EntryViewManager {
+public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+    EntryView.EntryViewManager {
 
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
     private static final String STATE_ENTRIES_IDS = "STATE_ENTRIES_IDS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
     private static final String STATE_LOCK_LAND_ORIENTATION = "STATE_LOCK_LAND_ORIENTATION";
+
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsReadPos, mIsNewPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -129,36 +159,50 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private long mInitialEntryId = -1;
     private Entry[] mEntriesIds = new Entry[1];
 
-    private boolean mFavorite, mIsFullTextShown = true;
+    private boolean mFavorite, mIsWithTables, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
-    private BaseEntryPagerAdapter mEntryPagerAdapter;
+    public BaseEntryPagerAdapter mEntryPagerAdapter;
 
-    private View mStarFrame;
-    private ProgressBar mProgressBar;
-    private TextView mLabelClock;
-
+    private View mStarFrame = null;
     private StatusText mStatusText = null;
 
     private boolean mLockLandOrientation = false;
 
     public boolean mMarkAsUnreadOnFinish = false;
     private boolean mRetrieveFullText = false;
+    public boolean mIsFinishing = false;
+    private View mBtnEndEditing = null;
+    private FeedFilters mFilters = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-
-        if (IsExternalLink( getActivity().getIntent().getData() )) //getBooleanExtra(NO_DB_EXTRA, false ) )
+        setHasOptionsMenu( true );
+        if ( IsExternalLink( getActivity().getIntent().getData() ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter();
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
 
+        if ( savedInstanceState != null ) {
+            mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS, -1);
+            mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
+            //outState.putLongArray(STATE_ENTRIES_IDS, mEntriesIds);
+            mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID, -1);
+        }
+
         super.onCreate(savedInstanceState);
+    }
+
+    private boolean IsCreateViewPager( Uri uri ) {
+        return PrefUtils.getBoolean( "change_articles_by_swipe", false ) &&
+                !IsExternalLink( uri );
     }
 
     private boolean IsExternalLink( Uri uri ) {
         return uri == null || uri.toString().startsWith( "http" );
+    }
+    private BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
     }
 
     //@Override
@@ -166,51 +210,55 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_entry, container, true);
+        getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
+        View rootView = getBaseActivity().mRootView;
         TapZonePreviewPreference.SetupZoneSizes( rootView );
 
         mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                       (TextView)rootView.findViewById( R.id.errorText ),
-                                      FetcherService.Status()/*,
-                                      this*/);
+                                      (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
+                                      (TextView) rootView.findViewById( R.id.progressText),
+                                      FetcherService.Status());
         rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen( EntryActivity.GetIsStatusBarHidden(), !EntryActivity.GetIsActionBarHidden() );
+                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
             }
         });
-
-        mProgressBar = rootView.findViewById(R.id.progressBar);
-        mProgressBar.setProgress( 0 );
-
-        mLabelClock = rootView.findViewById(R.id.textClock);
-        mLabelClock.setText("");
-
         rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen(!EntryActivity.GetIsStatusBarHidden(), EntryActivity.GetIsActionBarHidden());
+                activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+            }
+        });
+
+        mBtnEndEditing = rootView.findViewById(R.id.btnEndEditing);
+        mBtnEndEditing.setVisibility( View.GONE );
+        mBtnEndEditing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReloadFullText();
+                Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
             }
         });
 
         mEntryPager = rootView.findViewById(R.id.pager);
         //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
-        mEntryPager.setAdapter(mEntryPagerAdapter);
-
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        //    mEntryPager.setNestedScrollingEnabled( true );
         if (savedInstanceState != null) {
             mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
             //mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID);
             //mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS);
-            mEntryPager.getAdapter().notifyDataSetChanged();
-            mEntryPager.setCurrentItem(mCurrentPagerPos);
             mLastPagerPos = mCurrentPagerPos;
         }
 
         if ( mEntryPagerAdapter instanceof EntryPagerAdapter )
             mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
                 @Override
                 public void onPageScrolled(int i, float v, int i2) {
                 }
@@ -225,8 +273,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     CancelStarNotification( getCurrentEntryID() );
 
-                    refreshUI(( ( EntryPagerAdapter )mEntryPagerAdapter ).getCursor(i));
                     mLastPagerPos = i;
+                    refreshUI( mEntryPagerAdapter.getCursor(i) );
+
+                    EntryView view = mEntryPagerAdapter.GetEntryView( i );
+                    if ( view != null ) {
+                        if ( view.mLoadTitleOnly )
+                            getLoaderManager().restartLoader(i, null, EntryFragment.this);
+                        view.mLoadTitleOnly = false;
+                    }
 
                 }
 
@@ -239,7 +294,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
+                if ( isArticleTapEnabled() )
+                    mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
+                else {
+                    PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED, true);
+                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView);
+                    Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
+                }
             }
         });
 
@@ -271,15 +332,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         //disableSwipe();
 
 
-        rootView.findViewById(R.id.layoutBottom).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
-        mLockLandOrientation = PrefUtils.getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
+        mLockLandOrientation = getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
 
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
         mStarFrame = rootView.findViewById(R.id.frameStar);
         final ImageView frameStarImage  = rootView.findViewById(R.id.frameStarImage);
-        final boolean prefVibrate = PrefUtils.getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
+        final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
         rootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
             private int initialy = 0;
             private boolean mWasVibrate = false;
@@ -308,7 +369,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     if ( w >= MIN_HEIGHT )
                         mWasSwipe = true;
 
-                    frameStarImage.setImageResource( ( w >= MAX_HEIGHT ) == mFavorite ? R.drawable.star_empty_gray : R.drawable.star_yellow );
+                    frameStarImage.setImageResource( ( w >= MAX_HEIGHT ) == mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow );
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_UP) {
                     Dog.v( "onTouch ACTION_UP " );
@@ -327,7 +388,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         });
         SetStarFrameWidth(0);
-
+        UpdateFooter();
         SetOrientation();
 
         return rootView;
@@ -348,11 +409,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void PageUp() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1, mStatusText);
     }
 
     public void PageDown() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1, mStatusText);
     }
 
 
@@ -377,6 +438,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onSaveInstanceState(outState);
     }
 
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -394,31 +457,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onDestroy() {
         FetcherService.Status().deleteObserver(mStatusText);
+        ArticleTextExtractor.mLastLoadedAllDoc = "";
         super.onDestroy();
     }
     @Override
     public void onResume() {
+        mIsFinishing = false;
         super.onResume();
         mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
-        if ( GeneralPrefsFragment.mSetupChanged ) {
-            GeneralPrefsFragment.mSetupChanged = false;
-            mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
-
-
+        if ( mSetupChanged ) {
+            mSetupChanged = false;
+            mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
-
-        final boolean tapZonesVisible = PrefUtils.getBoolean( PrefUtils.TAP_ZONES_VISIBLE, true );
-        View rootView = getView().getRootView();
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
-
+        HideTapZonesText(getView().getRootView());
+        refreshUI( null );
     }
+
 
     @Override
     public void onPause() {
@@ -459,6 +514,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             // Needs bounds, or else it won't show up (doesn't know how big to be)
             //drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             drawable.setBounds(0, 0, DpToPx( 30 ), DpToPx( 30 ) );
+            //drawable.setBounds(-DpToPx( 30 ), 0, 0, 0 );
             ImageSpan imageSpan = new ImageSpan(drawable);
             builder.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             item.setTitle(builder);
@@ -475,41 +531,37 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.entry, menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            menu.setGroupDividerEnabled( true );
+        for ( int i = 0; i < menu.size(); i++ )
+            updateMenuWithIcon( menu.getItem( i ) );
 
-        //int color = ContextCompat.getColor(getContext(), R.color.common_google_signin_btn_text_dark);
-        //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_favorite));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_mark_as_unfavorite));
-        updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_without_mobilizer));
-        //updateMenuWithIcon(menu.findItem(R.id.menu_reload_full_text_with_tags));
-        updateMenuWithIcon(menu.findItem(R.id.menu_load_all_images));
-        updateMenuWithIcon(menu.findItem(R.id.menu_share_all_text));
-        updateMenuWithIcon(menu.findItem(R.id.menu_open_link));
-        updateMenuWithIcon(menu.findItem(R.id.menu_cancel_refresh));
-        updateMenuWithIcon(menu.findItem(R.id.menu_setting));
-
-        //EntryActivity activity = (EntryActivity) getActivity();
-        menu.findItem(R.id.menu_star).setShowAsAction( EntryActivity.GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
+        menu.findItem(R.id.menu_star).setShowAsAction( GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
 
         {
             MenuItem item = menu.findItem(R.id.menu_star);
             if (mFavorite)
-                item.setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
+                item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
             else
-                item.setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
+                item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
             updateMenuWithIcon(item);
         }
-        //menu.findItem(R.id.menu_mark_as_favorite).setVisible( !mFavorite );
-        //menu.findItem(R.id.menu_mark_as_unfavorite).setVisible(mFavorite);
-
-        menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
-
-//        if (mFavorite)
-//            menu.findItem(R.id.menu_mark_as_favorite ).setTitle(R.string.menu_unstar).setIcon(R.drawable.rating_important);
-//        else
-//            menu.findItem(R.id.menu_mark_as_unfavorite).setTitle(R.string.menu_star).setIcon(R.drawable.rating_not_important);
-
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu (Menu menu) {
+        menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
+        menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
+        menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
+        menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+        menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
+        menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
+        menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(PrefUtils.isArticleTapEnabled());
+
+        EntryView view = GetSelectedEntryView();
+        menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
     }
 
     @Override
@@ -518,6 +570,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             Activity activity = getActivity();
 
             switch (item.getItemId()) {
+
+                case R.id.menu_close: {
+                    onClose();
+                    break;
+                }
+
                 case R.id.menu_star: {
 
                     SetIsFavourite( !mFavorite );
@@ -540,13 +598,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_toggle_theme: {
                     mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos();
-                    PrefUtils.ToogleTheme(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
+                    PrefUtils.ToogleTheme(GetActionIntent( Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
                     return true;
                 }
 
                 case R.id.menu_full_screen: {
                     EntryActivity activity1 = (EntryActivity) getActivity();
-                    activity1.setFullScreen( true, true );
+                    activity1.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden() );
+                    item.setChecked( GetIsStatusBarHidden() );
+                    break;
+                }
+                case R.id.menu_actionbar_visible: {
+                    EntryActivity activity1 = (EntryActivity) getActivity();
+                    activity1.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+                    item.setChecked( !GetIsActionBarHidden() );
                     break;
                 }
 
@@ -557,7 +622,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     ClipData clip = ClipData.newPlainText("Copied Text 1", link);
                     clipboard.setPrimaryClip(clip);
 
-                    UiUtils.toast( getActivity(), R.string.copied_clipboard);
+                    UiUtils.toast( getActivity(), R.string.link_was_copied_to_clipboard);
                     break;
                 }
                 case R.id.menu_mark_as_unread: {
@@ -574,48 +639,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     UiUtils.toast( getActivity(), R.string.entry_marked_unread );
                     break;
                 }
-                /*case R.id.menu_mark_as_favorite: {
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update(uri, FeedData.getFavoriteContentValues(true), null, null);
-                        }
-                    }.start();
-                    UiUtils.toast( getActivity(), R.string.entry_marked_favourite );
-                    break;
-                }
-                case R.id.menu_mark_as_unfavorite: {
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update(uri, FeedData.getFavoriteContentValues(false), null, null);
-                        }
-                    }.start();
-
-                    UiUtils.toast( getActivity(), R.string.entry_marked_unfavourite );
-
-                    CloseEntry();
-
-                    break;
-                }*/
-                case R.id.menu_font_bold: {
-                    PrefUtils.putBoolean(PrefUtils.ENTRY_FONT_BOLD,
-                            !PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false));
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
-                    break;
-                }
                 case R.id.menu_load_all_images: {
                     FetcherService.mMaxImageDownloadCount = 0;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                    GetSelectedEntryView().UpdateImages( true );
+                    break;
+                }
+                case R.id.menu_go_back: {
+                    GetSelectedEntryView().GoBack();
+                    break;
+                }
+                case R.id.menu_go_top: {
+                    GetSelectedEntryView().GoTop();
                     break;
                 }
                 case R.id.menu_share_all_text: {
                     if ( mCurrentPagerPos != -1 ) {
-                        Spanned spanned = Html.fromHtml(mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).mData);
+                        Spanned spanned = Html.fromHtml(mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData());
                         char[] chars = new char[spanned.length()];
                         TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
                         String plainText = new String(chars);
@@ -642,26 +681,35 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
 
-                case R.id.menu_reload_full_text: {
+                case R.id.menu_reload_full_text:
+                case R.id.menu_reload_full_text_toolbar: {
 
                     ReloadFullText();
                     break;
                 }
-
                 case R.id.menu_reload_full_text_without_mobilizer: {
 
-                    int status = FetcherService.Status().Start("Reload fulltext"); try {
-                        DeleteMobilized();
-                        LoadFullText( ArticleTextExtractor.MobilizeType.No );
+                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
+                    } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+
+                case R.id.menu_reload_with_tables_toggle: {
+                    int status = FetcherService.Status().Start("Reload with|out tables", true); try {
+                        SetIsWithTables( !mIsWithTables );
+                        item.setChecked( mIsWithTables );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
 
                 case R.id.menu_reload_full_text_with_tags: {
 
-                    int status = FetcherService.Status().Start("Reload fulltext"); try {
-                        DeleteMobilized();
-                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags );
+                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                        GetSelectedEntryView().mIsEditingMode = true;
+                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true );
+
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -672,20 +720,121 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     SetOrientation();
                     break;
                 }
+                case R.id.menu_image_white_background: {
+                    PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
+                    item.setChecked( PrefUtils.isImageWhiteBackground() );
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    break;
+                }
+                case R.id.menu_font_bold: {
+                    PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
+                    item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    break;
+                }
+                case R.id.menu_show_progress_info: {
+                    PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
+                    item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
+                    break;
+                }
+                case R.id.menu_menu_by_tap_enabled: {
+                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false);
+                    item.setChecked( isArticleTapEnabled() );
+                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView );
+                    if ( !isArticleTapEnabled() )
+                        Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+                    break;
+                }
+
+                case R.id.menu_show_html: {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData() + "</root>";
+                        String htmlFormatted = NetworkUtils.formatXML( html );
+                        DebugApp.CreateFileUri("", "html.html", html);
+                        MessageBox.Show(htmlFormatted);
+                    }
+                    break;
+                }
+                case R.id.menu_add_feed: {
+                    startActivity( new Intent( Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI ).putExtra(EXTRA_WEB_SEARCH, true) );
+                    break;
+                }
+
+                case R.id.menu_add_entry_shortcut: {
+                    if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
+                        //Adding shortcut for MainActivity on Home screen
+                        Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                        if (cursor != null) {
+                            final String name = cursor.getString(mTitlePos);
+                            final long entryID = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
+                            //final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                            final Uri uri = Uri.parse( cursor.getString(mLinkPos) );
+                            final String iconUrl = cursor.getString(cursor.getColumnIndex( EntryColumns.IMAGE_URL ));
+
+                            new WaitDialog(getActivity(), R.string.downloadImage, new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
+                                    if ( bitmap == null )
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText( getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show();
+                                            }
+                                        });
+                                    final IconCompat icon = (bitmap == null) ?
+                                        IconCompat.createWithResource( getContext(), R.mipmap.ic_launcher ) :
+                                        IconCompat.createWithBitmap(bitmap);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), String.valueOf(entryID))
+                                                    .setIcon(icon)
+                                                    .setShortLabel(name)
+                                                    .setIntent(new Intent(getContext(), EntryActivity.class).setAction(Intent.ACTION_VIEW).setData(uri))
+                                                    .build();
+
+                                            ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                                            if (Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)
+                                                Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            }).execute();
+                        }
+                    } else
+                        Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
+                    break;
+                }
+
             }
         }
 
         return true;
     }
 
+
     private void ReloadFullText() {
-        int status = FetcherService.Status().Start("Reload fulltext");
+        int status = FetcherService.Status().Start("Reload fulltext", true);
+        GetSelectedEntryView().mIsEditingMode = false;
         try {
-            DeleteMobilized();
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true );
         } finally { FetcherService.Status().End( status ); }
     }
 
+    private void SetIsWithTables(final boolean withTables) {
+        if ( mIsWithTables == withTables )
+            return;
+        mIsWithTables = withTables;
+        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+        ContentValues values = new ContentValues();
+        values.put(EntryColumns.IS_WITH_TABLES, mIsWithTables? 1 : 0);
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        cr.update(uri, values, null, null);
+        getActivity().invalidateOptionsMenu();
+    }
     private void SetIsFavourite(final boolean favorite) {
         if ( mFavorite == favorite )
             return;
@@ -698,21 +847,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 values.put(EntryColumns.IS_FAVORITE, mFavorite ? 1 : 0);
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
-
-                /*// Update the cursor
-                Cursor updatedCursor = cr.query(uri, null, null, null, null);
-                updatedCursor.moveToFirst();
-                mEntryPagerAdapter.onsetUpdatedCursor(mCurrentPagerPos, updatedCursor);*/
-
             }
         }.start();
         getActivity().invalidateOptionsMenu();
         Toast.makeText( getContext(), mFavorite ? R.string.entry_marked_favourite : R.string.entry_marked_unfavourite, Toast.LENGTH_LONG ).show();
     }
 
-    private void DeleteMobilized() {
-        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
-    }
+//    private void DeleteMobilized() {
+//        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
+//    }
 
     private void CloseEntry() {
         PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
@@ -728,7 +871,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return -1;
     }
 
-    String getCurrentEntryLink() {
+    private String getCurrentEntryLink() {
         Entry entry = GetEntry( mCurrentPagerPos );
         if ( entry != null )
             return entry.mLink;
@@ -736,88 +879,111 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return "";
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void setData(final Uri uri) {
-        Timer timer = new Timer( "EntryFr.setData" );
-        Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
-
         mCurrentPagerPos = -1;
-
-        //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
-
         mBaseUri = null;
-        if ( !IsExternalLink( uri ) ) {
-            mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
-            Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
-            try {
-                mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
-            } catch (Exception unused) {
-                mInitialEntryId = -1;
-            }
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Timer timer = new Timer( "EntryFr.setData" );
+                Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
 
 
-            String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
+                //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
 
-            // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-            Cursor entriesCursor = MainApplication.getContext().getContentResolver().query(mBaseUri, EntryColumns.PROJECTION_ID,
-                    null, null, EntryColumns.DATE + entriesOrder);
-
-            if (entriesCursor != null && entriesCursor.getCount() > 0) {
-                synchronized ( this ) {
-                    mEntriesIds = new Entry[entriesCursor.getCount()];
-                }
-                int i = 0;
-                while (entriesCursor.moveToNext()) {
-                    SetEntryID( i, entriesCursor.getLong(0), entriesCursor.getString(1) );
-                    if (GetEntry( i ).mID == mInitialEntryId) {
-                        mCurrentPagerPos = i; // To immediately display the good entry
-                        mLastPagerPos = i;
-                        CancelStarNotification(getCurrentEntryID());
+                if ( !IsExternalLink( uri ) ) {
+                    mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
+                    Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
+                    try {
+                        mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
+                    } catch (Exception unused) {
+                        mInitialEntryId = -1;
                     }
-                    i++;
-                }
 
-                entriesCursor.close();
-            }
-            if ( mBaseUri != null && mBaseUri.getPathSegments().size() > 1 ) {
-                Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
-                if ( mBaseUri.getPathSegments().get(1).equals( FetcherService.GetExtrenalLinkFeedID() ) ) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Dog.v( "EntryFragment.setData() update time to current" );
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            ContentValues values = new ContentValues();
-                            values.put(EntryColumns.DATE, (new Date()).getTime());
-                            cr.update(uri, values, null, null);
+
+                    String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
+
+                    final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
+                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
+
+                    if (entriesCursor != null && entriesCursor.getCount() > 0) {
+                        synchronized ( this ) {
+                            mEntriesIds = new Entry[entriesCursor.getCount()];
                         }
-                    }).start();
+                        int i = 0;
+                        while (entriesCursor.moveToNext()) {
+                            SetEntryID( i, entriesCursor.getLong(0), entriesCursor.getString(1) );
+                            if (GetEntry( i ).mID == mInitialEntryId) {
+                                mCurrentPagerPos = i; // To immediately display the good entry
+                                mLastPagerPos = i;
+                                CancelStarNotification(getCurrentEntryID());
+                            }
+                            i++;
+                        }
+
+                        entriesCursor.close();
+                    }
+                    if ( IsFeedUri( mBaseUri ) ) {
+                        Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
+                        final String feedId = mBaseUri.getPathSegments().get(1);
+                        if (feedId.equals(FetcherService.GetExtrenalLinkFeedID())) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Dog.v("EntryFragment.setData() update time to current");
+                                    ContentValues values = new ContentValues();
+                                    values.put(EntryColumns.DATE, (new Date()).getTime());
+                                    cr.update(uri, values, null, null);
+                                }
+                            }).start();
+                        }
+                        mFilters = new FeedFilters(feedId);
+                    }
+                } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
+                    mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
+                    mCurrentPagerPos = 0;
+                }
+                timer.End();
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void result) {
+                mEntryPager.setAdapter(mEntryPagerAdapter);
+                if (mCurrentPagerPos != -1) {
+                    mEntryPager.setCurrentItem(mCurrentPagerPos);
                 }
             }
-        } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
-            mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
-            mCurrentPagerPos = 0;
-        }
-
-
-        mEntryPagerAdapter.notifyDataSetChanged();
-        if (mCurrentPagerPos != -1) {
-            mEntryPager.setCurrentItem(mCurrentPagerPos);
-        }
-
-        timer.End();
+        }.execute();
     }
 
+    private boolean IsFeedUri( Uri uri ) {
+        boolean result = false;
+        if ( uri != null && uri.getPathSegments().size() > 1 )
+            try {
+                Long.parseLong(uri.getPathSegments().get(1));
+                result = true;
+            } catch ( NumberFormatException ignored ) { }
+        return result;
+    }
     private void refreshUI(Cursor entryCursor) {
-		try {
+        EntryView view = GetSelectedEntryView();
+        if ( view != null )
+            mBtnEndEditing.setVisibility( view.mIsEditingMode ? View.VISIBLE : View.GONE );
+        mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
+        try {
 			if (entryCursor != null ) {
 				//String feedTitle = entryCursor.isNull(mFeedNamePos) ? entryCursor.getString(mFeedUrlPos) : entryCursor.getString(mFeedNamePos);
 				EntryActivity activity = (EntryActivity) getActivity();
 				activity.setTitle("");//activity.setTitle(feedTitle);
 
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
-				//mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
+                mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
+                //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
 
-				activity.invalidateOptionsMenu();
+                activity.invalidateOptionsMenu();
 
 				final long currentEntryID = getCurrentEntryID();
 				mStatusText.SetEntryID( String.valueOf( currentEntryID ) );
@@ -832,7 +998,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             // If the service is not started, start it here to avoid an infinite loading
                             if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
                                 FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
-                                        .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
+                                        .setAction(FetcherService.ACTION_MOBILIZE_FEEDS), true);
                         }
                     }
                     Thread SetID( long id ) {
@@ -895,32 +1061,19 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }*/
 
     public void UpdateFooter() {
-        EntryView entryView = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem());
+        EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
+        int webViewHeight = 0;
+        int contentHeight = 0;
         if (entryView != null) {
-            if ( PrefUtils.getBoolean( "article_text_footer_show_progress", true ) ) {
-                mProgressBar.setVisibility( View.VISIBLE );
-                int webViewHeight = entryView.getMeasuredHeight();
-                int contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
-                mProgressBar.setMax(contentHeight - webViewHeight);
-                mProgressBar.setProgress(entryView.getScrollY());
-                String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
-                if (Build.VERSION.SDK_INT >= 21 )
-                    mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor( color )));
-                mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
-            } else {
-                mProgressBar.setVisibility( View.GONE );
-            }
+            webViewHeight = entryView.getMeasuredHeight();
+            contentHeight = (int) Math.floor(entryView.getContentHeight() * entryView.getScale());
         }
-
-        if ( PrefUtils.getBoolean( "article_text_footer_show_clock", true ) ) {
-            mLabelClock.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
-            mLabelClock.setText( new SimpleDateFormat("HH:mm").format(new Date()) );
-            mLabelClock.setTextColor(Theme.GetColorInt( "article_text_footer_clock_color", R.string.default_article_text_footer_color) );
-            mLabelClock.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
-            mLabelClock.setText( "" );
-        }
+        getBaseActivity().UpdateHeader(contentHeight - webViewHeight,
+                                       entryView == null ? 0 : entryView.getScrollY(),
+                                       GetIsStatusBarHidden(),
+                                       GetIsActionBarHidden() );
     }
+
 
     @Override
     public void onClickOriginalText() {
@@ -928,7 +1081,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                 mIsFullTextShown = false;
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
             }
         });
     }
@@ -938,22 +1091,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         final BaseActivity activity = (BaseActivity) getActivity();
 
         Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-        final boolean alreadyMobilized = !cursor.isNull(mMobilizedHtmlPos);
+        final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(cursor.getString( mLinkPos ), cursor );
 
         if (alreadyMobilized) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     mIsFullTextShown = true;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                 }
             });
         } else /*--if (!isRefreshing())*/ {
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, false );
         }
     }
 
-    private void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize ) {
+    private void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize, final boolean isForceReload ) {
         final BaseActivity activity = (BaseActivity) getActivity();
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -966,20 +1119,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             new Thread() {
                 @Override
                 public void run() {
-                    int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText)); try {
-                        FetcherService.mobilizeEntry(getContext().getContentResolver(), getCurrentEntryID(), mobilize, FetcherService.AutoDownloadEntryImages.Yes, true, true);
+                    int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText), true); try {
+                        FetcherService.mobilizeEntry(getCurrentEntryID(),
+                                                     mFilters,
+                                                     mobilize,
+                                                     FetcherService.AutoDownloadEntryImages.Yes,
+                                                     true,
+                                                     true,
+                                                     isForceReload,
+                                                     true );
                     } finally { FetcherService.Status().End( status ); }
                 }
             }.start();
-
-
-
-            /*activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    refreshSwipeProgress();
-                }
-            });*/
         } else {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -993,6 +1144,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onReloadFullText() {
         ReloadFullText();
+    }
+
+    @Override
+    public void onClose() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if ( getActivity() != null )
+                    getActivity().onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -1056,11 +1218,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void removeClass(String className) {
         final String oldPref = PrefUtils.getString( PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, "" );
         if ( !PrefUtils.GetRemoveClassList().contains( className ) ) {
-            PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
-            DeleteMobilized();
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-            Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+            PrefUtils.putStringCommit(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, oldPref + "\n" + className);
         }
+        ActionAfterRulesEditing();
+    }
+
+    private void ActionAfterRulesEditing() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                GetSelectedEntryView().UpdateTags();
+            }
+        });
     }
 
     public void returnClass(String classNameList) {
@@ -1071,38 +1240,122 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 needRefresh = true;
                 list.remove( className );
             }
-        if ( !needRefresh )
-            return;
-        PrefUtils.putString(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
-        DeleteMobilized();
-        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-        Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+        if ( needRefresh )
+            PrefUtils.putStringCommit(PrefUtils.GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, TextUtils.join( "\n", list ) );
+        ActionAfterRulesEditing();
     }
 
     @Override
     public void openTagMenu(final String className, final String baseUrl, final String paramValue ) {
+        ScrollView scroll = new ScrollView(getContext() );
+        final LinearLayout parent = new LinearLayout(getContext() );
+        parent.setOrientation(LinearLayout.VERTICAL);
+        parent.setGravity(Gravity.CENTER);
+        UiUtils.AddText( parent, null, getString( R.string.open_tag_menu_hint ) ).setTextColor( Theme.GetColorInt( TEXT_COLOR_READ, R.string.default_read_color ));
+        final RadioGroup groupUrl = new RadioGroup(getContext() );
+        //groupUrl.setGravity( Gravity.CENTER );
+        parent.addView(groupUrl);
+        int id = 0;
+        String keyUrl = baseUrl.replaceAll( "http.+?//", "" ).replaceAll( "www.", "" );
+        if ( !keyUrl.endsWith( "/" ) )
+            keyUrl = keyUrl + "/";//.substring( 0, keyUrl.length() - 1 );
+        while( keyUrl.contains( "/" ) ) {
+            keyUrl = keyUrl.substring( 0, keyUrl.lastIndexOf( "/" ) );
+            id++;
+            RadioButton btn = new RadioButton(getContext());
+            btn.setText( keyUrl );
+            btn.setTag( keyUrl );
+            btn.setId( id );
+            groupUrl.addView( btn );
+            btn.setChecked( true );
+        }
+
+        scroll.addView(parent);
+        scroll.setPadding( 0, 0, 0, 20 );
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext() );
-        builder.setTitle(baseUrl + ":class=" + className)
-            .setItems(new CharSequence[]{getString(R.string.setFullTextRoot),
-                                         getString(paramValue.equals( "hide" ) ? R.string.hide : R.string.show )},
-                    new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    if (which == 0)
-                        setFullTextRoot(baseUrl, className);
-                    else if ( paramValue.equals( "hide" ) )
-                        removeClass( className );
-                    else if ( paramValue.equals( "show" ) )
-                        returnClass( className );
-                }
-            });
-        builder.show();
+        builder.setView( scroll );
+        builder.setTitle( getString( R.string.open_tag_menu_dialog_title ) + className );
 
+        final AlertDialog dialog = builder.show();
+        AddActionButton(parent, R.string.setFullTextRoot, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFullTextRoot(GetSelectedUrlPart(groupUrl), className);
+                dialog.dismiss();
+            }
+        });
+        AddActionButton(parent, paramValue.equals("hide") ? R.string.hide : R.string.show, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ( paramValue.equals( "hide" ) )
+                    removeClass( className );
+                else if ( paramValue.equals( "show" ) )
+                    returnClass( className );
+                dialog.dismiss();
+            }
+        });
+        AddActionButton(parent, R.string.set_category, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setCategory(GetSelectedUrlPart(groupUrl), className);
+                dialog.dismiss();
+            }
+        });
 
+        AddActionButton(parent, R.string.set_date, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDate(GetSelectedUrlPart(groupUrl), className);
+                dialog.dismiss();
+            }
+        });
 
+        AddActionButton(parent, R.string.copyClassNameToClipboard, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyToClipboard(className);
+                dialog.dismiss();
+            }
+        });
+
+        AddActionButton(parent, android.R.string.cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
+    private String GetSelectedUrlPart(RadioGroup groupUrl) {
+        return (String) groupUrl.findViewById(groupUrl.getCheckedRadioButtonId() ).getTag();
+    }
+
+    private void AddActionButton(LinearLayout parent, int captionID, View.OnClickListener listener) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                               LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(20, 20, 20, 20);
+        lp.gravity = Gravity.CENTER;
+        TextView view = UiUtils.AddText(parent, lp, getString(captionID));
+        view.setBackgroundResource( R.drawable.btn_background );
+        view.setOnClickListener( listener );
+    }
+
+    private void copyToClipboard(String text) {
+        ((android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE)).setText(text);
+        Toast.makeText(getActivity(), getActivity().getString( R.string.text_was_copied_to_clipboard ) + ": " + text, Toast.LENGTH_LONG).show();
+    }
     private void setFullTextRoot(String baseUrl, String className) {
-        ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString( PrefUtils.CONTENT_EXTRACT_RULES, R.string.full_text_root_default ),
+        setClassObject(baseUrl, className, CONTENT_TEXT_ROOT_EXTRACT_RULES, getString(R.string.full_text_root_default ) );
+    }
+    private void setCategory(String baseUrl, String className) {
+        setClassObject(baseUrl, className, CATEGORY_EXTRACT_RULES, "" );
+    }
+    private void setDate(String baseUrl, String className) {
+        setClassObject(baseUrl, className, DATE_EXTRACT_RULES, "" );
+    }
+    private void setClassObject(String baseUrl, String className, String prefKey, String defaultPrefValue) {
+        ArrayList<String> ruleList = HtmlUtils.Split( PrefUtils.getString(prefKey, defaultPrefValue ),
                 Pattern.compile( "\\n|\\s" ) );
         int index = -1;
         for( int i = 0; i < ruleList.size(); i++ ) {
@@ -1118,11 +1371,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( index != -1 )
             ruleList.remove(index );
         ruleList.add( 0, newRule );
-        PrefUtils.putString(PrefUtils.CONTENT_EXTRACT_RULES, TextUtils.join( "\n", ruleList ) );
-        DeleteMobilized();
-        LoadFullText( ArticleTextExtractor.MobilizeType.Yes );
-        Toast.makeText( getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG ).show();
+        PrefUtils.putStringCommit(prefKey, TextUtils.join("\n", ruleList ) );
+        ActionAfterRulesEditing();
     }
+
 
     @Override
     public void downloadImage(final String url) {
@@ -1130,10 +1382,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public void run() {
                 FetcherService.mCancelRefresh = false;
-                int status = FetcherService.Status().Start( getString(R.string.downloadImage) ); try {
-                    NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false);
+                int status = FetcherService.Status().Start( getString(R.string.downloadImage), true ); try {
+                    NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
                 } catch (IOException e) {
-                    //FetcherService.Status().End( status );
                     e.printStackTrace();
                 } finally {
                     FetcherService.Status().End( status );
@@ -1141,7 +1392,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             }
         }).start();
-        //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
     }
 
     @Override
@@ -1149,13 +1399,24 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true);
+            FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
+            GetSelectedEntryView().UpdateImages( true );
             }
         });
 
     }
 
+    @Override
+    public void downloadAllImages() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                FetcherService.mMaxImageDownloadCount = 0;
+                GetSelectedEntryView().UpdateImages( true );
+            }
+        });
+
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -1167,6 +1428,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if ( mIsFinishing )
+            return;
         Timer.End( loader.getId() );
         if (cursor != null) { // can be null if we do a setData(null) before
             try {
@@ -1179,27 +1442,34 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mMobilizedHtmlPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
                         mLinkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
+                        mIsWithTablePos= cursor.getColumnIndex(EntryColumns.IS_WITH_TABLES);
                         mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
                         mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
+                        mIsWasAutoUnStarPos = cursor.getColumnIndex(EntryColumns.IS_WAS_AUTO_UNSTAR);
                         mEnclosurePos = cursor.getColumnIndex(EntryColumns.ENCLOSURE);
                         mFeedIDPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
                         mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
                         mScrollPosPos = cursor.getColumnIndex(EntryColumns.SCROLL_POS);
                         mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
                         mFeedUrlPos = cursor.getColumnIndex(FeedColumns.URL);
-                        mFeedIconPos = cursor.getColumnIndex(FeedColumns.ICON);
+                        mFeedIconUrlPos = cursor.getColumnIndex(FeedColumns.ICON_URL);
                         mRetrieveFullTextPos = cursor.getColumnIndex(FeedColumns.RETRIEVE_FULLTEXT);
                     }
 
                     int position = loader.getId();
                     if (position != -1) {
                         FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-                        mEntryPagerAdapter.displayEntry(position, cursor, false);
+                        mEntryPagerAdapter.displayEntry(position, cursor, false, false);
                         mRetrieveFullText = cursor.getInt(mRetrieveFullTextPos) == 1;
-                        EntryActivity activity = (EntryActivity) getActivity();
-                        if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
-                            activity.setFullScreen(true, true);
-
+                        //if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
+                        //    activity.setFullScreen(true, true);
+                        if ( position == mCurrentPagerPos ) {
+                            EntryView view = mEntryPagerAdapter.GetEntryView( position );
+                            if ( view.mLoadTitleOnly ) {
+                                view.mLoadTitleOnly = false;
+                                getLoaderManager().restartLoader(position, null, EntryFragment.this);
+                            }
+                        }
                     }
                 }
             } catch ( IllegalStateException e ) {
@@ -1222,9 +1492,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }*/
 
     public abstract class BaseEntryPagerAdapter extends PagerAdapter {
-        abstract void onResume();
-        abstract void onPause();
-        public abstract EntryView GetEntryView( int pagerPos );
+        final SparseArray<EntryView> mEntryViews = new SparseArray<>();
 
         Cursor getCursor(int pagerPos) {
             EntryView view = GetEntryView( pagerPos );
@@ -1244,15 +1512,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NotNull View view, Object object) {
             return view == object;
         }
 
-        void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate) {
+        void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
             Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
 
             EntryView view = GetEntryView( pagerPos );
             if (view != null ) {
+                view.StatusStartPageLoading();
+                if ( invalidateCache  )
+                    view.InvalidateContentCache();
                 if (newCursor == null) {
                     newCursor = (Cursor) view.getTag(); // get the old one
                 }
@@ -1260,78 +1531,82 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 if (newCursor != null && newCursor.moveToFirst()  ) {
                     view.setTag(newCursor);
 
-                    String contentText;
-                    String author = "";
-                    long timestamp = 0;
-                    String link =  newCursor.getString(mLinkPos);
-                    String title = "";
-                    String feedID = "";
-                    String enclosure = "";
-                    double scrollPart = 0;
-                    try {
-                        feedID = newCursor.getString(mFeedIDPos);
-                        if (!feedID.equals(GetExtrenalLinkFeedID()) &&
-                            ( !FileUtils.INSTANCE.isMobilized( link, newCursor ) || (forceUpdate && !mIsFullTextShown)) ) {
-                            mIsFullTextShown = false;
-                            contentText = newCursor.getString(mAbstractPos);
-                        } else {
-                            mIsFullTextShown = true;
-                            contentText = FileUtils.INSTANCE.loadMobilizedHTML( link, newCursor );
-                        }
-                        if (contentText == null) {
-                            contentText = "";
-                        }
-
-                        author = newCursor.getString(mAuthorPos);
-                        timestamp = newCursor.getLong(mDatePos);
-                        title = newCursor.getString(mTitlePos);
-                        enclosure = newCursor.getString(mEnclosurePos);
-                        if ( !newCursor.isNull(mScrollPosPos) )
-                            scrollPart = newCursor.getDouble( mScrollPosPos);
-
-                    } catch ( IllegalStateException e ) {
-                        e.printStackTrace();
-                        contentText = "Context too large";
-                    }
-
+                    if ( mSetupChanged )
+                        view.InvalidateContentCache();
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
-                    view.setHtml(GetEntry( pagerPos ).mID,
-                                feedID,
-                                title,
-                                link,
-                                contentText,
-                                enclosure,
-                                author,
-                                timestamp,
-                                mIsFullTextShown,
-                                (EntryActivity) getActivity());
+                    mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
+                                                      newCursor,
+                                                      mFilters,
+                                                      mIsFullTextShown,
+                                                      forceUpdate,
+                                                      (EntryActivity) getActivity() );
 
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
 
-                        //if (PrefUtils.getLong(PrefUtils.LAST_ENTRY_ID, 0) == mEntriesIds[pagerPos]) {
-                        //int dy = mScrollPosPos;
-                        //if (dy > view.getScrollY())
-                        if ( view.mScrollPartY == 0 )
-                            view.mScrollPartY = scrollPart;
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
-                        //Dog.v( "displayEntry view.mScrollY = " + view.mScrollY );
-                        //}
-
 
                     }
-
                     UpdateFooter();
-
                 }
             }
         }
 
-    };
+        void onResume() {
+            for (int i = 0; i < mEntryViews.size(); i++) {
+                mEntryViews.valueAt(i).onResume();
+            }
+        }
+
+        void onPause() {
+            for (int i = 0; i < mEntryViews.size(); i++) {
+                mEntryViews.valueAt(i).onPause();
+            }
+        }
+
+        EntryView GetEntryView(int pagerPos) {
+            return mEntryViews.get(pagerPos);
+        }
+        public EntryView GetEntryView( Entry entry ) {
+            for(int i = 0; i < mEntryViews.size(); i++) {
+                EntryView view = mEntryViews.get(mEntryViews.keyAt(i));
+                if ( view.mEntryId == entry.mID )
+                    return view;
+            }
+            return null;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, final int position, @NotNull Object object) {
+            Dog.d( "EntryPagerAdapter.destroyItem " + position );
+            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
+            getLoaderManager().destroyLoader(position);
+            container.removeView((View) object);
+            mEntryViews.delete(position);
+        }
+
+
+
+        @NotNull
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
+            final EntryView view = CreateEntryView();
+            mEntryViews.put(position, view);
+            container.addView(view);
+            view.mLoadTitleOnly = true;
+            Entry entry = GetEntry( position );
+            if ( entry != null ) {
+                FetcherService.addActiveEntryID(entry.mID);
+                getLoaderManager().restartLoader(position, null, EntryFragment.this);
+            }
+            return view;
+        }
+    }
 
     public class EntryPagerAdapter extends BaseEntryPagerAdapter {
 
-        private final SparseArray<EntryView> mEntryViews = new SparseArray<>();
 
         EntryPagerAdapter() { }
 
@@ -1340,29 +1615,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             synchronized ( this ) {
                 return mEntriesIds != null ? mEntriesIds.length : 0;
             }
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, final int position, Object object) {
-            Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
-            getLoaderManager().destroyLoader(position);
-            container.removeView((View) object);
-            EntryView.mImageDownloadObservable.deleteObserver(mEntryViews.get(position));
-            GetEntryView( position ).SaveScrollPos();
-            mEntryViews.delete(position);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            FetcherService.addActiveEntryID( GetEntry( position ).mID );
-            final EntryView view = CreateEntryView();
-            mEntryViews.put(position, view);
-            container.addView(view);
-            getLoaderManager().restartLoader(position, null, EntryFragment.this);
-
-            return view;
         }
 
 
@@ -1377,32 +1629,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }
 
-        @Override
-        void onResume() {
-            if (mEntriesIds != null) {
-                EntryView view = mEntryViews.get(mCurrentPagerPos);
-                if (view != null) {
-                    view.onResume();
-                }
-            }
-        }
-
-        @Override
-        void onPause() {
-            for (int i = 0; i < mEntryViews.size(); i++) {
-                mEntryViews.valueAt(i).onPause();
-            }
-        }
-
-        @Override
-        public EntryView GetEntryView( int pagerPos ) {
-            return mEntryViews.get(pagerPos);
-        }
     }
 
     public class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
-        EntryView mEntryView = null;
-
         SingleEntryPagerAdapter() {
 
         }
@@ -1412,45 +1641,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return 1;
         }
 
-        @Override
-        public EntryView GetEntryView(int pagerPos) {
-            return mEntryView;
-        }
 
-        @Override
-        public void destroyItem(ViewGroup container, final int position, Object object) {
-            Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
-            getLoaderManager().destroyLoader(position);
-            container.removeView((View) object);
-            EntryView.mImageDownloadObservable.deleteObserver(mEntryView);
-            mEntryView.SaveScrollPos();
-        }
-
+        @NotNull
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            final EntryView view = CreateEntryView();
-            container.addView(view);
-            Entry entry = GetEntry( position );
-            if ( entry != null ) {
-                FetcherService.addActiveEntryID(entry.mID);
-                getLoaderManager().restartLoader(position, null, EntryFragment.this);
-            }
-            mEntryView = view;
+            final EntryView view = (EntryView) super.instantiateItem(container, position);
+            view.mLoadTitleOnly = false;
             return view;
-        }
-
-
-        @Override
-        void onResume() {
-            if ( mEntryView != null )
-                mEntryView.onResume();
-        }
-
-        @Override
-        void onPause() {
-            mEntryView.onPause();
         }
     }
 
@@ -1469,10 +1666,28 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     return;
                 if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
                     return;
-                if ( view.IsScrollAtBottom() )
+                if ( view.mWasAutoUnStar )
+                    return;
+                if ( !view.mContentWasLoaded )
+                    return;
+                if ( view.IsScrollAtBottom() ) {
+                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                    view.mWasAutoUnStar = true;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            ContentValues values = new ContentValues();
+                            values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, 1);
+                            ContentResolver cr = MainApplication.getContext().getContentResolver();
+                            cr.update(uri, values, null, null);
+                        }
+                    }.start();
+
                     SetIsFavourite(false);
+                }
             }
         };
+        view.StatusStartPageLoading();
         return view;
     }
 
@@ -1489,5 +1704,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return null;
         }
     }
+
+    private EntryView GetSelectedEntryView()  {
+        return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
+    }
+
 }
 

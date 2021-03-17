@@ -39,6 +39,7 @@
 <h3>Where you can find us:</h3>
 
 <ul>
+	<li><a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html" target="_blank">FAQ</a>,</li>
 	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">source code at <i>GitHub</i></a>,</li>
 	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
