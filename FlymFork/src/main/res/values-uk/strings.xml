@@ -161,6 +161,7 @@
     <string name="menu_star">В обране</string>
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
+    <string name="menu_mark_all_as_unread">Позначити всі як непрочитані</string>
     <string name="menu_full_screen">Весь екран</string>
     <string name="menu_actionbar_visible">Смуга подій</string>
     <string name="menu_font_bold">Жирний шрифт</string>
@@ -346,7 +347,10 @@
     <string name="actionBarToggle">Прмк. панелі дій</string>
     <string name="standard">Стандартно</string>
     <string name="fontsize_entrylist">Розмір шрифту у списку статей</string>
+    <string name="confirmation">Підтвердження</string>
     <string name="question_delete_entry">Вилучити статтю?</string>
+    <string name="question_mark_upper_as_read">Позначити статті вгорі як прочитані?</string>
+    <string name="question_mark_all_as_unread">Позначити всі статті як непрочитані?</string>
     <string name="share_all_text">Поділитися текстом</string>
     <string name="group">Група</string>
     <string name="auto_image_load">Завантажувати зображення автоматично</string>
@@ -557,6 +561,7 @@
     <string name="unstarAllArtcilesComfirm2">Всі видимі обрані статті будуть вилучені з обраного. Добре подумали?</string>
     <string name="tap_actions_were_enabled">Дії дотиком увімкнено</string>
     <string name="tap_actions_were_disabled">Дії дотиком були вимкнуті! Натисніть верхній правий кут щоб увімкнути</string>
+    <string name="list_was_scrolled_to_top">Прокрутити на початок</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
