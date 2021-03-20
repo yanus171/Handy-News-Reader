@@ -17,7 +17,7 @@ class FileVoc(val mFolder: File ) {
 
     }
     private fun getKey( fileName: String ): String {
-        return fileName.replace( mFolder.absolutePath + "/", "" )
+        return fileName.replace( mFolder.absolutePath + "/", "" ).replace( "file://", "" )
     }
     fun addFile(fileName: String ) {
         init1()
