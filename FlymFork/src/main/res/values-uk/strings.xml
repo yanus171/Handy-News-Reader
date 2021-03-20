@@ -162,6 +162,7 @@
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
     <string name="menu_mark_all_as_unread">Позначити всі як непрочитані</string>
+    <string name="menu_mark_upper_as_read">Позначити вгорі як прочитані</string>
     <string name="menu_full_screen">Весь екран</string>
     <string name="menu_actionbar_visible">Смуга подій</string>
     <string name="menu_font_bold">Жирний шрифт</string>
@@ -562,6 +563,7 @@
     <string name="tap_actions_were_enabled">Дії дотиком увімкнено</string>
     <string name="tap_actions_were_disabled">Дії дотиком були вимкнуті! Натисніть верхній правий кут щоб увімкнути</string>
     <string name="list_was_scrolled_to_top">Прокрутити на початок</string>
+    <string name="list_was_scrolled_to_bottom">Прокрутити до самого низу</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
