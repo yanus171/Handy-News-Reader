@@ -30,7 +30,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
     protected View onCreateDialogView () {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_entry, null, false);
-        SetupZoneSizes(view);
+        SetupZoneSizes(view, true);
         view.findViewById( R.id.btnEndEditing ).setVisibility( View.GONE );
         view.findViewById( R.id.progressText ).setVisibility( View.GONE );
         view.findViewById( R.id.progressBarLoader ).setVisibility( View.GONE );
@@ -46,23 +46,24 @@ public final class TapZonePreviewPreference extends DialogPreference {
         b.setVisibility(View.GONE);
     }
 
-    public static void SetupZoneSizes(View parentView) {
+    public static void SetupZoneSizes(View parentView, boolean preview) {
         final int size = GetTapZoneSize();
-        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT);
-        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT);
-        SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size);
-        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSlider, size);
-        SetupZone(parentView, size, R.id.entryPrevBtn, size);
-        SetupZone(parentView, size, R.id.entryNextBtn, size);
-        SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size);
-        SetupZone(parentView, size, R.id.toggleFullscreenBtn, size);
-        HideTapZonesText(parentView.getRootView());
+        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT, preview);
+        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT, preview);
+        SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size, preview);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSlider, size, preview);
+        SetupZone(parentView, size, R.id.entryPrevBtn, size, preview);
+        SetupZone(parentView, size, R.id.entryNextBtn, size, preview);
+        SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size, preview);
+        SetupZone(parentView, size, R.id.toggleFullscreenBtn, size, preview);
+        if ( !preview )
+            HideTapZonesText(parentView.getRootView());
     }
 
-    private static void SetupZone(View parentView, int size, int viewID, int matchParent) {
+    private static void SetupZone(View parentView, int size, int viewID, int matchParent, boolean preview) {
         View view = parentView.findViewById( viewID );
         if ( view != null ) {
-            if (isArticleTapEnabled() || viewID == R.id.entryNextBtn ) {
+            if (preview || isArticleTapEnabled() || viewID == R.id.entryNextBtn ) {
                 view.setVisibility(View.VISIBLE);
                 SetSize(parentView, viewID, matchParent, size);
             } else

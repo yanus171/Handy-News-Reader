@@ -116,6 +116,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
@@ -553,7 +554,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            if ( mainImgUrl != null ) {
+            if ( mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
                 final int dim = UiUtils.dpToPixel(70);
                 //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
                 //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);

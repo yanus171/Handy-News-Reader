@@ -204,12 +204,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 Timer.End(ENTRIES_LOADER_ID);
                 Timer timer = new Timer("EntriesListFragment.onCreateLoader");
 
-                mEntriesCursorAdapter.swapCursor(data);
-                if (mNeedSetSelection) {
-                    mNeedSetSelection = false;
-                    mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
-                }
-                RestoreListScrollPosition();
+                    mEntriesCursorAdapter.swapCursor(data);
+                    if (mNeedSetSelection) {
+                        mNeedSetSelection = false;
+                        mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
+                    }
+                    RestoreListScrollPosition();
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
                 Status().End(mStatus);

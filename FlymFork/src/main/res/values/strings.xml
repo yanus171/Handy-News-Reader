@@ -356,8 +356,8 @@
     <string name="addFeed">Add a feed</string>
     <string name="externalLinks">Without a feed</string>
     <string name="markAllAsRead">Mark all as read</string>
-    <string name="pageUp">page up or\nswipe down to (un)star</string>
-    <string name="pageDown">page down</string>
+    <string name="pageUp">page up (long tap - to top)or\nswipe down to (un)star</string>
+    <string name="pageDown">page down (long tap - to bottom)</string>
     <string name="fullScreenToggle">toggle full screen</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
     <string name="actionBarToggle">toggle Action Bar</string>
@@ -578,6 +578,8 @@
     <string name="unstarAllArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
     <string name="tap_actions_were_enabled">Tap actions were enabled</string>
     <string name="tap_actions_were_disabled">Tap actions were disabled! Tap top right to enable</string>
+    <string name="list_was_scrolled_to_top">Scrolled to the top</string>
+    <string name="list_was_scrolled_to_bottom">Scrolled to the bottom</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

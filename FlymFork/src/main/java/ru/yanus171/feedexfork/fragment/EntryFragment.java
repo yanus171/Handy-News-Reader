@@ -174,6 +174,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public boolean mIsFinishing = false;
     private View mBtnEndEditing = null;
     private FeedFilters mFilters = null;
+    private static EntryView mLeakEntryView = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -212,7 +213,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
-        TapZonePreviewPreference.SetupZoneSizes( rootView );
+        TapZonePreviewPreference.SetupZoneSizes( rootView, false );
 
         mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                       (TextView)rootView.findViewById( R.id.errorText ),
@@ -298,7 +299,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
                 else {
                     PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED, true);
-                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView);
+                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
                     Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
                 }
             }
@@ -740,7 +741,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_menu_by_tap_enabled: {
                     PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false);
                     item.setChecked( isArticleTapEnabled() );
-                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView );
+                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView, false );
                     if ( !isArticleTapEnabled() )
                         Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
                     break;
@@ -1654,6 +1655,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @NonNull
     private EntryView CreateEntryView() {
         final EntryView view = new EntryView(getActivity());
+        if ( mLeakEntryView == null )
+            mLeakEntryView  = view;
         view.setListener(EntryFragment.this);
         view.setTag(null);
 
