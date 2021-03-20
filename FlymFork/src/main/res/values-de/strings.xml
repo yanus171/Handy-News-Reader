@@ -163,6 +163,7 @@
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
+    <string name="menu_mark_all_as_unread">Alles als ungelesen markieren</string>
     <string name="menu_full_screen">Vollbild</string>
     <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
@@ -349,7 +350,9 @@
     <string name="actionBarToggle">Aktionsleiste umschalten</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Schriftgröße in der Artikelliste</string>
+    <string name="confirmation">Bestätigung</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
+    <string name="question_mark_all_as_unread">Alle Artikel als ungelesen markieren?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
     <string name="auto_image_load">Bilder automatisch laden</string>
@@ -560,6 +563,8 @@
     <string name="unstarAllArtcilesComfirm2">Möchten Sie wirklich alle sichtbaren favorisierten Artikel aus den Favoriten entfernen?</string>
     <string name="tap_actions_were_enabled">Tipp-Aktionen wurden aktiviert</string>
     <string name="tap_actions_were_disabled">Tipp-Aktionen wurden deaktiviert! Oben-rechts antippen, um sie wieder zu aktivieren</string>
+    <string name="list_was_scrolled_to_top">Listenanfang erreicht</string>
+    <string name="list_was_scrolled_to_bottom">Listenende erreicht</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
