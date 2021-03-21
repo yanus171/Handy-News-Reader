@@ -192,7 +192,7 @@ public class StatusText implements Observer {
                     if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
-                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle, R.drawable.ic_sync, OPERATION_NOTIFICATION_CHANNEL_ID));
+                        Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle, R.drawable.ic_sync, OPERATION_NOTIFICATION_CHANNEL_ID, null));
                         mLastNotificationUpdateTime = ( new Date() ).getTime();
                     }
                     if ( !mNotificationTitle.isEmpty() )
@@ -349,7 +349,7 @@ public class StatusText implements Observer {
 
 
 
-    static public Notification GetNotification(final String text, final String title, int iconResID, String channelID  ) {
+    static public Notification GetNotification(final String text, final String title, int iconResID, String channelID, PendingIntent cancelPI ) {
         final Context context = MainApplication.getContext();
         final PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), 0 );
 
@@ -364,6 +364,8 @@ public class StatusText implements Observer {
                     .setLargeIcon( BitmapFactory.decodeResource(context.getResources(), iconResID))
                     .setStyle( bigTextStyle )
                     .setContentIntent( pIntent );
+            if ( cancelPI != null )
+                builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, context.getString( android.R.string.cancel ), cancelPI );
             return builder.build();
         } else {
             NotificationCompat.BigTextStyle bigTextStyle =

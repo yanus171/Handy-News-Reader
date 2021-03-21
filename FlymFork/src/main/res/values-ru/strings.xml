@@ -497,7 +497,7 @@
     <string name="settings_category_header_descr">Для экранов чтения статьи, а также списка статей</string>
     <string name="article_text_buttons_layout">Расположение кнопок</string>
     <string name="article_text_buttons_layout_descr">Ориентация и видимость кнопок в конце статьи</string>
-    <string name="article_reading_notification_hint">Чтобы оставлять приложение в памяти во время чтения статьи</string>
+    <string name="article_reading_notification_hint">Чтобы оставлять приложение в памяти для быстрого холодного старта</string>
     <string name="auto_set_as_read">Автоматически устанавливать статью, как прочитанную, когда ее название было видно в списке</string>
     <string name="removeText">Удалить текст</string>
     <string name="set_category">Установить как категорию</string>

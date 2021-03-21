@@ -350,12 +350,12 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
             synchronized (mCancelRefresh) {
                 mCancelRefresh = false;
             }
@@ -380,7 +380,7 @@ public class FetcherService extends IntentService {
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
             int status = Status().Start( R.string.reloading_all_texts, false ); try {
-                startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+                startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
                 synchronized (mCancelRefresh) {
                     mCancelRefresh = false;
                 }
@@ -608,7 +608,7 @@ public class FetcherService extends IntentService {
     }
 
     private void LongOper( String title, Runnable oper ) {
-        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
         Status().SetNotificationTitle( title );
         PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
         synchronized (mCancelRefresh) {

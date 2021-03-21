@@ -515,7 +515,7 @@
     <string name="settings_category_header_descr">For the article text and the article list screens. </string>
     <string name="article_text_buttons_layout">Button layout</string>
     <string name="article_text_buttons_layout_descr">Orientation and visibility of the buttons at the end of an article</string>
-    <string name="article_reading_notification_hint">To keep app in memory while reading an article</string>
+    <string name="article_reading_notification_hint">To keep app in memory to speed up cold start</string>
     <string name="auto_set_as_read">Auto set the article as read once its title has been visible on the list</string>
     <string name="removeText">Remove text</string>
     <string name="set_category">Set as category</string>
