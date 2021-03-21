@@ -151,7 +151,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -1440,7 +1440,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
                         mDatePos = cursor.getColumnIndex(EntryColumns.DATE);
                         mAbstractPos = cursor.getColumnIndex(EntryColumns.ABSTRACT);
-                        mMobilizedHtmlPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
                         mLinkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
                         mIsWithTablePos= cursor.getColumnIndex(EntryColumns.IS_WITH_TABLES);

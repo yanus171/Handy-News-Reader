@@ -49,6 +49,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
