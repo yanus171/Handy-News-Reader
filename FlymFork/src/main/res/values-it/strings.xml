@@ -162,6 +162,7 @@
     <string name="menu_unstar">Rimuovi dai preferiti</string>
     <string name="menu_share">Condividi</string>
     <string name="menu_mark_all_as_unread">Segna tutte come da leggere</string>
+    <string name="menu_mark_upper_as_read">Segna in alto come letto</string>
     <string name="menu_full_screen">Schermo Intero</string>
     <string name="menu_actionbar_visible">Barra delle azioni</string>
     <string name="menu_font_bold">Grassetto</string>
@@ -347,7 +348,10 @@
     <string name="actionBarToggle">Attiva la barra delle azioni</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Dimensione font nella lista degli articoli</string>
+    <string name="confirmation">Conferma</string>
     <string name="question_delete_entry">Elimina questo articolo?</string>
+    <string name="question_mark_upper_as_read">Segnare gli articoli in alto come letti?</string>
+    <string name="question_mark_all_as_unread">Segnare tutti gli articoli come non letti?</string>
     <string name="share_all_text">Condividi tutto il testo</string>
     <string name="group">Gruppo</string>
     <string name="auto_image_load">Caricamento automatico immagini</string>
@@ -558,6 +562,8 @@
     <string name="unstarAllArtcilesComfirm2">Tutti gli articoli preferiti visibili non saranno preferiti. Sei Veramente sicuro?</string>
     <string name="tap_actions_were_enabled">Le azioni tocco erano abilitate</string>
     <string name="tap_actions_were_disabled">Le azioni del tocco sono state disabilitate! Tocca in alto a destra per abilitarle</string>
+    <string name="list_was_scrolled_to_top">Scorri in alto</string>
+    <string name="list_was_scrolled_to_bottom">Scorri in basso</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
