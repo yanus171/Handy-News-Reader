@@ -379,7 +379,7 @@
     <string name="loadTypeWebPageSearch"><b>Webseitensuche</b> <font color="gray">(DuckDuckGo - einen Artikel finden und laden)</font></string>
     <string name="loadTypeOneWebPage"><b>Webseite auftrennen</b> <font color="gray">(Inhalt der Webseite mithilfe von Klassennamen der HTML-Tags in mehrere Artikel aufteilen)</font></string>
     <string name="loadType">Art des Ladens:</string>
-    <string name="global_filter">Automatisch als Favorit markieren&#8230;</string>
+    <string name="global_filter">Automatisch als Favorit kennzeichnen &#8230;</string>
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">Wenn deaktiviert, auf Inhalt anwenden</string>
     <string name="rule_text">Schlüsselwort(e)/Regeln</string>
