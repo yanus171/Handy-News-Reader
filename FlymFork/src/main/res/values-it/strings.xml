@@ -161,6 +161,7 @@
     <string name="menu_star">Aggiungi ai preferiti</string>
     <string name="menu_unstar">Rimuovi dai preferiti</string>
     <string name="menu_share">Condividi</string>
+    <string name="menu_mark_all_as_unread">Segna tutte come da leggere</string>
     <string name="menu_full_screen">Schermo Intero</string>
     <string name="menu_actionbar_visible">Barra delle azioni</string>
     <string name="menu_font_bold">Grassetto</string>
