@@ -16,15 +16,15 @@ class ReadingService : Service() {
         TODO("Return the communication channel to the service.")
     }
 
-    private fun createCancelPI(): PendingIntent? {
+    private fun createCancelReadingServicePI(): PendingIntent {
         val intent = Intent(this, BroadcastActionReciever::class.java)
         intent.action = Action
-        intent.putExtra("StopReadingService", true )
-        return PendingIntent.getBroadcast(this, 0, intent, 0)
+        intent.putExtra("StopReadingService", true)
+        return PendingIntent.getBroadcast(this, StatusText.GetPendingIntentRequestCode(), intent, 0)
     }
     override fun onStart(intent: Intent?, startId: Int) {
         super.onStart(intent, startId)
-        val nf = StatusText.GetNotification(getString(R.string.article_reading_notification_hint), "", R.drawable.transparent, READING_NOTIFICATION_CHANNEL_ID, createCancelPI())
+        val nf = StatusText.GetNotification(getString(R.string.article_reading_notification_hint), "", R.drawable.transparent, READING_NOTIFICATION_CHANNEL_ID, createCancelReadingServicePI())
         startForeground(NOTIFICATION_ID_READING_SERVICE, nf)
     }
 

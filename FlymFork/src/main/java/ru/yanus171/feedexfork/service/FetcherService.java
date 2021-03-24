@@ -168,8 +168,10 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
+import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
+import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
 public class FetcherService extends IntentService {
 
@@ -355,63 +357,57 @@ public class FetcherService extends IntentService {
             stopForeground(true);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-            synchronized (mCancelRefresh) {
-                mCancelRefresh = false;
-            }
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-            SetNotifyEnabled( false );
-            try {
-                long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
-                long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
-                deleteOldEntries(keepDateBorderTime);
-                deleteGhost();
-                if (PrefUtils.CALCULATE_IMAGES_SIZE())
-                    CalculateImageSizes();
-                if (Build.VERSION.SDK_INT >= 21)
-                    PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
-            } finally {
-                SetNotifyEnabled( true );
-                notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
-                PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
-                stopForeground(true);
-            }
-            return;
-        } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-            int status = Status().Start( R.string.reloading_all_texts, false ); try {
-                startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-                synchronized (mCancelRefresh) {
-                    mCancelRefresh = false;
-                }
+            LongOper(R.string.menu_delete_old, new Runnable() {
+                @Override
+                public void run() {
                 SetNotifyEnabled( false );
                 try {
-                    Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, null, null, null);
-                    ContentValues[] values = new ContentValues[cursor.getCount()];
-                    while (cursor.moveToNext()) {
-                        final long entryId = cursor.getLong(0);
-                        final String link = cursor.getString(1);
-                        FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
-                        values[cursor.getPosition()] = new ContentValues();
-                        values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
-                    }
-                    cursor.close();
-                    getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+                    long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
+                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                    deleteOldEntries(keepDateBorderTime);
+                    deleteGhost();
+                    if (PrefUtils.CALCULATE_IMAGES_SIZE())
+                        CalculateImageSizes();
+                    if (Build.VERSION.SDK_INT >= 21)
+                        PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
                 } finally {
                     SetNotifyEnabled( true );
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
                 }
-            } finally {
-                Status().End( status );
-            }
-            ExecutorService executor = CreateExecutorService( GetThreadCount() );
-            try {
-                mobilizeAllEntries(executor);
-                downloadAllImages(executor);
-            } finally {
-                executor.shutdown();
-            }
-            stopForeground(true);
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
+                }
+            });
+            return;
+        } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
+            LongOper(R.string.reloading_all_texts, new Runnable() {
+                @Override
+                public void run() {
+                    SetNotifyEnabled(false);
+                    try {
+                        Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, null, null, null);
+                        ContentValues[] values = new ContentValues[cursor.getCount()];
+                        while (cursor.moveToNext()) {
+                            final long entryId = cursor.getLong(0);
+                            final String link = cursor.getString(1);
+                            FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
+                            values[cursor.getPosition()] = new ContentValues();
+                            values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
+                        }
+                        cursor.close();
+                        getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+                    } finally {
+                        SetNotifyEnabled(true);
+                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                    }
+
+                    ExecutorService executor = CreateExecutorService(GetThreadCount());
+                    try {
+                        mobilizeAllEntries(executor);
+                        downloadAllImages(executor);
+                    } finally {
+                        executor.shutdown();
+                    }
+                }
+            });
             return;
         }
 
@@ -447,9 +443,6 @@ public class FetcherService extends IntentService {
                     } finally { executor.shutdown(); }
                 }
             } );
-
-        //} else if (ACTION_DOWNLOAD_IMAGES.equals(intent.getAction())) {
-        //    downloadAllImages();
         } else { // == Constants.ACTION_REFRESH_FEEDS
             LongOper(R.string.RefreshFeeds, new Runnable() {
                 @Override
@@ -608,8 +601,8 @@ public class FetcherService extends IntentService {
     }
 
     private void LongOper( String title, Runnable oper ) {
-        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-        Status().SetNotificationTitle( title );
+        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, createCancelPI()));
+        Status().SetNotificationTitle( title, createCancelPI() );
         PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
         synchronized (mCancelRefresh) {
             mCancelRefresh = false;
@@ -621,7 +614,7 @@ public class FetcherService extends IntentService {
             //Toast.makeText( this, getString( R.string.error ) + ": " + e.getMessage(), Toast.LENGTH_LONG ).show();
             DebugApp.SendException( e, this );
         } finally {
-            Status().SetNotificationTitle( "" );
+            Status().SetNotificationTitle( "", null );
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
             stopForeground(true);
             synchronized (mCancelRefresh) {
@@ -1952,5 +1945,11 @@ public class FetcherService extends IntentService {
             Status().End( status );
         }
 
+    }
+    private PendingIntent createCancelPI() {
+        Intent intent = new Intent(this, BroadcastActionReciever.class);
+        intent.setAction( Action );
+        intent.putExtra("FetchingServiceStart", true );
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
     }
 }
