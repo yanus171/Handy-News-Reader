@@ -564,6 +564,8 @@
     <string name="tap_actions_were_disabled">Le azioni del tocco sono state disabilitate! Tocca in alto a destra per abilitarle</string>
     <string name="list_was_scrolled_to_top">Scorri in alto</string>
     <string name="list_was_scrolled_to_bottom">Scorri in basso</string>
+    <string name="articleWasUnstarred">Un articolo non era preferito</string>
+    <string name="articleNotFound">Un articolo non è stato trovato :(</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
