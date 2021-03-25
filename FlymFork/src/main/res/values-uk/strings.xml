@@ -564,6 +564,7 @@
     <string name="tap_actions_were_disabled">Дії дотиком були вимкнуті! Натисніть верхній правий кут щоб увімкнути</string>
     <string name="list_was_scrolled_to_top">Прокрутити на початок</string>
     <string name="list_was_scrolled_to_bottom">Прокрутити до самого низу</string>
+    <string name="articleNotFound">Стаття не знайдена :(</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
