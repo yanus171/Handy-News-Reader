@@ -121,7 +121,6 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
@@ -132,11 +131,11 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
 
+import static android.content.Intent.EXTRA_TEXT;
 import static android.provider.BaseColumns._ID;
 import static java.lang.Thread.MIN_PRIORITY;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
@@ -144,28 +143,26 @@ import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
+import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.STATE_CURRENT_URI;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
@@ -462,16 +459,16 @@ public class FetcherService extends IntentService {
                             newCount = (feedId == null ?
                                     refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
                                     refreshFeed( executor, feedId, keepDateBorderTime));
-
+                            EntryUrlVoc.INSTANCE.reinit( false );
                         } finally {
                             if (mMarkAsStarredFoundList.size() > 5) {
                                 ArrayList<String> list = new ArrayList<>();
                                 for (MarkItem item : mMarkAsStarredFoundList)
                                     list.add(item.mCaption);
-                                ShowNotification(TextUtils.join(", ", list),
-                                        R.string.markedAsStarred,
-                                        new Intent(FetcherService.this, HomeActivity.class),
-                                        Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
+                                ShowEventNotification(TextUtils.join(", ", list),
+                                                      R.string.markedAsStarred,
+                                                      new Intent(FetcherService.this, HomeActivity.class),
+                                                      Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
                             } else if (mMarkAsStarredFoundList.size() > 0)
                                 for (MarkItem item : mMarkAsStarredFoundList) {
                                     Uri entryUri = GetEntryUri(item.mLink);
@@ -484,10 +481,10 @@ public class FetcherService extends IntentService {
 
                                     }
 
-                                    ShowNotification(item.mCaption,
-                                            R.string.markedAsStarred,
-                                            GetActionIntent( Intent.ACTION_VIEW, entryUri),
-                                            ID);
+                                    ShowEventNotification(item.mCaption,
+                                                          R.string.markedAsStarred,
+                                                          GetActionIntent( Intent.ACTION_VIEW, entryUri),
+                                                          ID, createCancelStarPI( item.mLink, ID ));
                                 }
                             if ( isFromAutoRefresh ) {
                                 SetNotifyEnabled( true );
@@ -496,10 +493,11 @@ public class FetcherService extends IntentService {
                         }
 
                         if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true) && newCount > 0)
-                            ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
-                                    R.string.flym_feeds,
-                                    new Intent(FetcherService.this, HomeActivity.class),
-                                    Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                            ShowEventNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
+                                                  R.string.flym_feeds,
+                                                  new Intent(FetcherService.this, HomeActivity.class),
+                                                  Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT,
+                                                  null);
                         else if (Constants.NOTIF_MGR != null)
                             Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
@@ -525,7 +523,7 @@ public class FetcherService extends IntentService {
         cursor.close();
         deleteGhostHtmlFiles( mapEntryLinkHash );
         deleteGhostImages( mapEntryLinkHash );
-        EntryUrlVoc.INSTANCE.reinit();
+        EntryUrlVoc.INSTANCE.reinit( true );
         Status().End( status );
     }
 
@@ -946,6 +944,14 @@ public class FetcherService extends IntentService {
                 .putExtra(Constants.TITLE_TO_LOAD, title)
                 .putExtra( EXTRA_STAR, star ), false );
     }
+    public PendingIntent createCancelStarPI( String link, int notificationID ) {
+        Intent intent = new Intent(this, BroadcastActionReciever.class);
+        intent.setAction( Action );
+        intent.putExtra("UnstarArticle", true );
+        intent.putExtra( EXTRA_TEXT, link );
+        intent.putExtra( EXTRA_ID, notificationID );
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
+    }
 
     public enum ForceReload {Yes, No}
 //    public static void OpenLink( Uri entryUri ) {
@@ -1285,7 +1291,7 @@ public class FetcherService extends IntentService {
                     cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
                 }
             }
-            EntryUrlVoc.INSTANCE.reinit();
+            EntryUrlVoc.INSTANCE.reinit( true );
         } finally {
             Status().ChangeProgress( "" );
             Status().End(status);
@@ -1388,11 +1394,11 @@ public class FetcherService extends IntentService {
     }
 
 
-    private void ShowNotification(String text, int captionID, Intent intent, int ID){
+    private void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getContext()) //
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //
                 .setSmallIcon(R.mipmap.ic_launcher) //
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher)) //
@@ -1401,32 +1407,29 @@ public class FetcherService extends IntentService {
                 .setAutoCancel(true) //
                 .setContentTitle(getString(captionID)) //
                 .setLights(0xffffffff, 0, 0);
-        if (Build.VERSION.SDK_INT >= 26 )
-            notifBuilder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
-
-        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false)) {
-            notifBuilder.setVibrate(new long[]{0, 1000});
+        if (Build.VERSION.SDK_INT >= 26 ) {
+            builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
+            if ( cancelPI != null )
+                builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, getContext().getString(android.R.string.cancel), cancelPI);
         }
+        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false))
+            builder.setVibrate(new long[]{0, 1000});
 
         String ringtone = PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, null);
-        if (ringtone != null && ringtone.length() > 0) {
-            notifBuilder.setSound(Uri.parse(ringtone));
-        }
+        if (ringtone != null && ringtone.length() > 0)
+            builder.setSound(Uri.parse(ringtone));
 
-        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_LIGHT, false)) {
-            notifBuilder.setLights(0xffffffff, 300, 1000);
-        }
+        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_LIGHT, false))
+            builder.setLights(0xffffffff, 300, 1000);
 
         Notification nf;
         if (Build.VERSION.SDK_INT < 16)
-            nf = notifBuilder.setContentText(text).build();
+            nf = builder.setContentText(text).build();
         else
-            nf = new NotificationCompat.BigTextStyle(notifBuilder.setContentText(text)).bigText(text).build();
+            nf = new NotificationCompat.BigTextStyle(builder.setContentText(text)).bigText(text).build();
 
-        if (Constants.NOTIF_MGR != null) {
+        if (Constants.NOTIF_MGR != null)
             Constants.NOTIF_MGR.notify(ID, nf);
-        }
-
     }
 
     //private Uri getEntryUri(String entryLink) {
@@ -1698,7 +1701,7 @@ public class FetcherService extends IntentService {
                 }
                 Status().ChangeProgress( "" );
                 cr.delete(entriesUri, condition, null);
-                EntryUrlVoc.INSTANCE.reinit();
+                EntryUrlVoc.INSTANCE.reinit( true );
             } finally {
                 Status().End(status);
             }

@@ -12,25 +12,25 @@ object EntryUrlVoc {
     private val mVoc = HashMap<String, Long>()
 
     private fun getKey(url: String ): String {
-        return url.replace( "https", "" ).replace( "http", "" );
+        return url.replace( "https", "" ).replace( "http", "" )
     }
     fun set(url: String, uri: Uri) {
         set( url, uri.lastPathSegment.toLong() )
     }
     fun set(url: String, id: Long ) {
-        init1()
+        initInThread()
         synchronized( mVoc) {
             mVoc[getKey( url )] = id
         }
     }
-    public fun remove(url: String ) {
-        init1()
+    fun remove(url: String ) {
+        initInThread()
         synchronized(mVoc) {
             mVoc.remove(getKey( url ))
         }
     }
-    public fun get(url: String ): Long? {
-        init1()
+    fun get(url: String ): Long? {
+        initInThread()
         synchronized(mVoc) {
             return (if ( mVoc.containsKey( getKey( url )) )
                 mVoc[getKey( url )]
@@ -39,35 +39,42 @@ object EntryUrlVoc {
         }
     }
 
-    public fun init1(){
+    fun initInThread(){
         synchronized( mVoc ) {
             if ( mIsInitialized )
                 return
         }
         Thread() {
-            synchronized(mVoc) {
-                val status = FetcherService.Status().Start("Reading articles url", true)
-                mVoc.clear()
-                val cursor = MainApplication.getContext().contentResolver.query(
-                            EntryColumns.CONTENT_URI, arrayOf(BaseColumns._ID, EntryColumns.LINK),
-                            null,
-                            null,
-                            null)
-                if ( cursor != null ) {
-                    while (cursor.moveToNext())
-                        mVoc[getKey( cursor.getString(1) )] = cursor.getLong(0)
-                    cursor.close()
-                }
-                FetcherService.Status().End(status)
-                mIsInitialized = true;
-            }
+            init_()
         }.start()
     }
 
-    fun reinit() {
+    private fun init_() {
+        synchronized(mVoc) {
+            val status = FetcherService.Status().Start("Reading articles url", true)
+            mVoc.clear()
+            val cursor = MainApplication.getContext().contentResolver.query(
+                    EntryColumns.CONTENT_URI, arrayOf(BaseColumns._ID, EntryColumns.LINK),
+                    null,
+                    null,
+                    null)
+            if (cursor != null) {
+                while (cursor.moveToNext())
+                    mVoc[getKey(cursor.getString(1))] = cursor.getLong(0)
+                cursor.close()
+            }
+            FetcherService.Status().End(status)
+            mIsInitialized = true
+        }
+    }
+
+    fun reinit( inThread: Boolean ) {
         synchronized( mVoc ) {
             mIsInitialized = false
         }
-        init1()
+        if ( inThread )
+            initInThread()
+        else
+            init_()
     }
 }

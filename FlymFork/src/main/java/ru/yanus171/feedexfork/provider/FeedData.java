@@ -127,6 +127,11 @@ public class FeedData {
         values.putNull(EntryColumns.IS_READ);
         return values;
     }
+    public static ContentValues getUnstarContentValues() {
+        ContentValues values = new ContentValues();
+        values.putNull(EntryColumns.IS_FAVORITE);
+        return values;
+    }
 
     public static ContentValues getFavoriteContentValues( boolean favorite ) {
         ContentValues values = new ContentValues();

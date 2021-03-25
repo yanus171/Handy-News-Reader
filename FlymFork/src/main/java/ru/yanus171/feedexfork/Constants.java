@@ -103,5 +103,6 @@ public final class Constants {
 
   public static final String EXTRA_FILENAME = "FileName";
   public static final String EXTRA_URI = "Uri";
+  public static final String EXTRA_ID = "ID";
   public static final String CALCULATE_IMAGE_SIZES = "CalculateImageSizes";
 }

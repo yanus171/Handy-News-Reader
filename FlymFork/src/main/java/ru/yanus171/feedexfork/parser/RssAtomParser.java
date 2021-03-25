@@ -75,6 +75,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
@@ -514,7 +515,6 @@ public class RssAtomParser extends DefaultHandler {
                             }
 
                             values.put(EntryColumns.LINK, entryLinkString);
-
                             if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) ) {
                                 synchronized ( FetcherService.mMarkAsStarredFoundList ) {
                                     FetcherService.mMarkAsStarredFoundList.add(new MarkItem(mId, improvedTitle, entryLinkString));
