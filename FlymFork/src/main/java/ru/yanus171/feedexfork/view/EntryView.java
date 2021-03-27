@@ -769,7 +769,7 @@ public class EntryView extends WebView implements Handler.Callback {
                         final Pattern REGEX = java.util.regex.Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace( "url", urlWithoutRegexSymbols ), java.util.regex.Pattern.CASE_INSENSITIVE);
                         Matcher matcher = REGEX.matcher(mData);
                         final String title = matcher.find() ? Jsoup.parse( matcher.group( 1 ) ).text() : url;
-                        builder.setTitle( url.equals( title ) ? "" : title );
+                        builder.setTitle( url.equals( title )  ? "" : title );
                         builder.show();
                     }
                 } catch (ActivityNotFoundException e) {
