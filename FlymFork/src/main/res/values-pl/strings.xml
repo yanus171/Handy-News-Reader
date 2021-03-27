@@ -570,6 +570,8 @@ GENERAL]]></string>
     <string name="tap_actions_were_disabled">Akcje tapnięcia zostały wyłączone! Tapnij na górze po prawej by włączyć</string>
     <string name="list_was_scrolled_to_top">Przewinięto na górę</string>
     <string name="list_was_scrolled_to_bottom">Przewinięto na dół</string>
+    <string name="articleWasUnstarred">Artykuł został odznaczony gwiazdką</string>
+    <string name="articleNotFound">Artykuł nie został znaleziony :(</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
