@@ -117,6 +117,8 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static ru.yanus171.feedexfork.Constants.MILLS_IN_DAY;
+import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
@@ -1672,7 +1674,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     return;
                 if ( !view.mContentWasLoaded )
                     return;
-                if ( view.IsScrollAtBottom() ) {
+                if ( view.IsScrollAtBottom() && new Date().getTime() - view.mLastSetHTMLTime > MILLS_IN_SECOND * 10 ) {
                     final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
                     view.mWasAutoUnStar = true;
                     new Thread() {
@@ -1684,7 +1686,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             cr.update(uri, values, null, null);
                         }
                     }.start();
-
                     SetIsFavourite(false);
                 }
             }
