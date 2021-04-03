@@ -69,6 +69,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -99,6 +100,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1460,11 +1462,30 @@ public class FetcherService extends IntentService {
             Status().AddBytes(n);
             outputStream.write(byteBuffer, 0, n);
         }
-        String content = outputStream.toString(encoding.name()).replace(" & ", " &amp; ");
+        String content = outputStream.toString(encoding.name());
+        content = CleanRSS(content);
+
+        return content;
+    }
+
+    private static String ToString (Reader reader ) throws
+        IOException {
+
+        Scanner scanner = new Scanner(reader).useDelimiter("\\A");
+        String content = scanner.hasNext() ? scanner.next() : "";
+        Status().AddBytes(content.length());
+        content = CleanRSS(content);
+        return content;
+    }
+
+    @NotNull
+    private static String CleanRSS(String content) {
+        content = content.replace(" & ", " &amp; ");
         content = content.replaceAll( "<[a-z]+?:", "<" );
         content = content.replaceAll( "</[a-z]+?:", "</" );
         content = content.replace( "&mdash;", "-" );
-
+        content = content.replace((char) 0x1F, ' ');
+        content = content.replace((char) 0x02, ' ');
         return content;
     }
 
@@ -1672,7 +1693,7 @@ public class FetcherService extends IntentService {
         private static void parseXml (Reader reader,
                 ContentHandler contentHandler) throws IOException, SAXException {
             Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(reader, contentHandler);
+            Xml.parse(ToString( reader ), contentHandler);
             Status().ChangeProgress("");
             Status().AddBytes(contentHandler.toString().length());
         }
