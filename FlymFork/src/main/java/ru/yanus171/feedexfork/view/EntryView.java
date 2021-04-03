@@ -97,6 +97,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -141,6 +143,7 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.widget.FontSelectPreference.DefaultFontFamily;
 import static ru.yanus171.feedexfork.widget.FontSelectPreference.GetTypeFaceLocalUrl;
@@ -171,6 +174,8 @@ public class EntryView extends WebView implements Handler.Callback {
     private long mLastTimeScrolled = 0;
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
+    public long mLastSetHTMLTime = 0;
+
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
         final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
@@ -386,6 +391,7 @@ public class EntryView extends WebView implements Handler.Callback {
                            boolean forceUpdate,
                            EntryActivity activity) {
         Timer timer = new Timer("EntryView.setHtml");
+        mLastSetHTMLTime = new Date().getTime();
 
         mEntryId = entryId;
         mEntryLink = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.LINK));
@@ -674,6 +680,10 @@ public class EntryView extends WebView implements Handler.Callback {
                                 this.text = getContext().getString(textID);
                                 this.icon = icon;
                             }
+                            private Item(String text, Integer icon) {
+                                this.text = text;
+                                this.icon = icon;
+                            }
 
                             @Override
                             public String toString() {
@@ -683,6 +693,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
 
                         final Item[] items = {
+                                new Item(url, 0),
                                 new Item(R.string.loadLink, R.drawable.cup_new_load_now),
                                 new Item(R.string.loadLinkLater, R.drawable.cup_new_load_later),
                                 new Item(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star),
@@ -691,6 +702,7 @@ public class EntryView extends WebView implements Handler.Callback {
                         };
 
                         final Item[] itemsNoRead = {
+                            new Item(url, 0),
                             new Item(R.string.open_link, android.R.drawable.ic_menu_send),
                             new Item(R.string.menu_share, android.R.drawable.ic_menu_share)
                         };
@@ -707,42 +719,57 @@ public class EntryView extends WebView implements Handler.Callback {
                                 //Use super class to create the View
                                 View v = super.getView(position, convertView, parent);
                                 TextView tv = SetupTextView( v, android.R.id.text1);
-
-                                //Put the image on the TextView
-                                int dp50 = (int) (50 * getResources().getDisplayMetrics().density + 0.5f);
-                                Drawable dr = getResources().getDrawable(items[position].icon);
-                                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-                                Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
-                                d.setBounds(0, 0, dp50, dp50);
-                                tv.setCompoundDrawables(d, null, null, null);
-
-                                //Add margin between image and text (support various screen densities)
-                                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-                                tv.setCompoundDrawablePadding(dp5);
-
+                                if ( items[position].icon > 0 ) {
+                                    //Put the image on the TextView
+                                    int dp50 = (int) (50 * getResources().getDisplayMetrics().density + 0.5f);
+                                    Drawable dr = getResources().getDrawable(items[position].icon);
+                                    Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+                                    Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
+                                    d.setBounds(0, 0, dp50, dp50);
+                                    tv.setCompoundDrawables(d, null, null, null);
+                                    //Add margin between image and text (support various screen densities)
+                                    int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
+                                    tv.setCompoundDrawablePadding(dp5);
+                                } else {
+                                    tv = SetupSmallTextView(v, android.R.id.text1);
+                                    tv.setCompoundDrawables( null, null, null, null );
+                                }
                                 return v;
                             }
                         }, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
-                                final Intent intent;
-                                if (item == 0)
-                                    intent = new Intent(getContext(), EntryActivity.class).setData(Uri.parse(url));
-                                else if (item == 1)
-                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url));
-                                else if (item == 2)
-                                    intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true );
-                                else if (item == 3)
-                                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                else
-                                    intent = Intent.createChooser(
-                                        new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
-                                            .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share) );
+                                if (item > 0) {
+                                    Intent intent = null;
+                                    if (item == 1)
+                                        intent = new Intent(getContext(), EntryActivity.class).setData(Uri.parse(url));
+                                    else if (item == 2)
+                                        intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url));
+                                    else if (item == 3)
+                                        intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
+                                    else if (item == 4)
+                                        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                    else
+                                        intent = Intent.createChooser(
+                                            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
+                                                .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share));
 
-                                getContext().startActivity(intent);
+                                    getContext().startActivity(intent);
+                                }
                             }
                         });
 
-                        builder.setTitle( url );
+                        final String urlWithoutRegexSymbols =
+                            url.replace( "/", "." ).
+                                replace( ":", "." ).
+                                replace( "?", "." ).
+                                replace( "+", "." ).
+                                replace( "&", "&amp;" ).
+                                replace( "*", "." ).
+                                replace( ",", "." );
+                        final Pattern REGEX = java.util.regex.Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace( "url", urlWithoutRegexSymbols ), java.util.regex.Pattern.CASE_INSENSITIVE);
+                        Matcher matcher = REGEX.matcher(mData);
+                        final String title = matcher.find() ? Jsoup.parse( matcher.group( 1 ) ).text() : url;
+                        builder.setTitle( url.equals( title )  ? "" : title );
                         builder.show();
                     }
                 } catch (ActivityNotFoundException e) {
@@ -1180,10 +1207,12 @@ public class EntryView extends WebView implements Handler.Callback {
                     ContentValues values = new ContentValues();
                     values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    SetNotifyEnabled( false );
-                    //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
-                    cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
-                    SetNotifyEnabled( true );
+                    SetNotifyEnabled(false ); try {
+                        //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;
+                        cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
+                    } finally {
+                        SetNotifyEnabled( true );
+                    }
                     //Dog.v("EntryView", String.format("EntryView.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();

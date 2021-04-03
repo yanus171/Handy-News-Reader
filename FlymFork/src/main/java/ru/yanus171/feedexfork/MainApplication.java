@@ -93,7 +93,7 @@ public class MainApplication extends Application {
 
         mImageFileVoc.init1();
         mHTMLFileVoc.init1();
-        EntryUrlVoc.INSTANCE.init1();
+        EntryUrlVoc.INSTANCE.initInThread();
     }
 
 

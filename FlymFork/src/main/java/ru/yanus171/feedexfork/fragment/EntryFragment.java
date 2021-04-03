@@ -117,6 +117,8 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static ru.yanus171.feedexfork.Constants.MILLS_IN_DAY;
+import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
@@ -151,7 +153,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
 
 
-    private int mTitlePos = -1, mDatePos, mMobilizedHtmlPos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -174,6 +176,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public boolean mIsFinishing = false;
     private View mBtnEndEditing = null;
     private FeedFilters mFilters = null;
+    private static EntryView mLeakEntryView = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -212,7 +215,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
-        TapZonePreviewPreference.SetupZoneSizes( rootView );
+        TapZonePreviewPreference.SetupZoneSizes( rootView, false );
 
         mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                       (TextView)rootView.findViewById( R.id.errorText ),
@@ -298,7 +301,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
                 else {
                     PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED, true);
-                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView);
+                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
                     Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
                 }
             }
@@ -740,7 +743,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_menu_by_tap_enabled: {
                     PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED, false);
                     item.setChecked( isArticleTapEnabled() );
-                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView );
+                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView, false );
                     if ( !isArticleTapEnabled() )
                         Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
                     break;
@@ -1439,7 +1442,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
                         mDatePos = cursor.getColumnIndex(EntryColumns.DATE);
                         mAbstractPos = cursor.getColumnIndex(EntryColumns.ABSTRACT);
-                        mMobilizedHtmlPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
                         mLinkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
                         mIsWithTablePos= cursor.getColumnIndex(EntryColumns.IS_WITH_TABLES);
@@ -1654,6 +1656,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @NonNull
     private EntryView CreateEntryView() {
         final EntryView view = new EntryView(getActivity());
+        if ( mLeakEntryView == null )
+            mLeakEntryView  = view;
         view.setListener(EntryFragment.this);
         view.setTag(null);
 
@@ -1670,7 +1674,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     return;
                 if ( !view.mContentWasLoaded )
                     return;
-                if ( view.IsScrollAtBottom() ) {
+                if ( view.IsScrollAtBottom() && new Date().getTime() - view.mLastSetHTMLTime > MILLS_IN_SECOND * 10 ) {
                     final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
                     view.mWasAutoUnStar = true;
                     new Thread() {
@@ -1682,7 +1686,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             cr.update(uri, values, null, null);
                         }
                     }.start();
-
                     SetIsFavourite(false);
                 }
             }

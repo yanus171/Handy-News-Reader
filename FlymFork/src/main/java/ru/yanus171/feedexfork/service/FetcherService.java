@@ -69,6 +69,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -99,6 +100,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -121,7 +123,6 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
@@ -132,11 +133,11 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.StorageItem;
 
+import static android.content.Intent.EXTRA_TEXT;
 import static android.provider.BaseColumns._ID;
 import static java.lang.Thread.MIN_PRIORITY;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
@@ -144,30 +145,32 @@ import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
+import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.STATE_CURRENT_URI;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
+import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
+import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
 public class FetcherService extends IntentService {
 
@@ -348,61 +351,62 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
-            synchronized (mCancelRefresh) {
-                mCancelRefresh = false;
-            }
-            long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
-            long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-            deleteOldEntries(keepDateBorderTime);
-            deleteGhost();
-            if ( PrefUtils.CALCULATE_IMAGES_SIZE() )
-                CalculateImageSizes();
-            if ( Build.VERSION.SDK_INT >= 21 )
-                PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis() );
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
-            stopForeground(true);
-            return;
-        } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-            int status = Status().Start( R.string.reloading_all_texts, false ); try {
-                startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
-                synchronized (mCancelRefresh) {
-                    mCancelRefresh = false;
-                }
-                SetNotifyEnabled( false ); try {
-                    Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, null, null, null);
-                    ContentValues[] values = new ContentValues[cursor.getCount()];
-                    while (cursor.moveToNext()) {
-                        final long entryId = cursor.getLong(0);
-                        final String link = cursor.getString(1);
-                        FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
-                        values[cursor.getPosition()] = new ContentValues();
-                        values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
-                    }
-                    cursor.close();
-                    getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+            LongOper(R.string.menu_delete_old, new Runnable() {
+                @Override
+                public void run() {
+                SetNotifyEnabled( false );
+                try {
+                    long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
+                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                    deleteOldEntries(keepDateBorderTime);
+                    deleteGhost();
+                    if (PrefUtils.CALCULATE_IMAGES_SIZE())
+                        CalculateImageSizes();
+                    if (Build.VERSION.SDK_INT >= 21)
+                        PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
                 } finally {
                     SetNotifyEnabled( true );
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
                 }
-            } finally {
-                Status().End( status );
-            }
-            ExecutorService executor = CreateExecutorService( GetThreadCount() );
-            try {
-                mobilizeAllEntries(executor);
-                downloadAllImages(executor);
-            } finally {
-                executor.shutdown();
-            }
-            stopForeground(true);
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
+                }
+            });
+            return;
+        } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
+            LongOper(R.string.reloading_all_texts, new Runnable() {
+                @Override
+                public void run() {
+                    SetNotifyEnabled(false);
+                    try {
+                        Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, null, null, null);
+                        ContentValues[] values = new ContentValues[cursor.getCount()];
+                        while (cursor.moveToNext()) {
+                            final long entryId = cursor.getLong(0);
+                            final String link = cursor.getString(1);
+                            FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
+                            values[cursor.getPosition()] = new ContentValues();
+                            values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
+                        }
+                        cursor.close();
+                        getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+                    } finally {
+                        SetNotifyEnabled(true);
+                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                    }
+
+                    ExecutorService executor = CreateExecutorService(GetThreadCount());
+                    try {
+                        mobilizeAllEntries(executor);
+                        downloadAllImages(executor);
+                    } finally {
+                        executor.shutdown();
+                    }
+                }
+            });
             return;
         }
 
@@ -438,9 +442,6 @@ public class FetcherService extends IntentService {
                     } finally { executor.shutdown(); }
                 }
             } );
-
-        //} else if (ACTION_DOWNLOAD_IMAGES.equals(intent.getAction())) {
-        //    downloadAllImages();
         } else { // == Constants.ACTION_REFRESH_FEEDS
             LongOper(R.string.RefreshFeeds, new Runnable() {
                 @Override
@@ -460,16 +461,16 @@ public class FetcherService extends IntentService {
                             newCount = (feedId == null ?
                                     refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
                                     refreshFeed( executor, feedId, keepDateBorderTime));
-
+                            EntryUrlVoc.INSTANCE.reinit( false );
                         } finally {
                             if (mMarkAsStarredFoundList.size() > 5) {
                                 ArrayList<String> list = new ArrayList<>();
                                 for (MarkItem item : mMarkAsStarredFoundList)
                                     list.add(item.mCaption);
-                                ShowNotification(TextUtils.join(", ", list),
-                                        R.string.markedAsStarred,
-                                        new Intent(FetcherService.this, HomeActivity.class),
-                                        Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
+                                ShowEventNotification(TextUtils.join(", ", list),
+                                                      R.string.markedAsStarred,
+                                                      new Intent(FetcherService.this, HomeActivity.class),
+                                                      Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
                             } else if (mMarkAsStarredFoundList.size() > 0)
                                 for (MarkItem item : mMarkAsStarredFoundList) {
                                     Uri entryUri = GetEntryUri(item.mLink);
@@ -482,22 +483,23 @@ public class FetcherService extends IntentService {
 
                                     }
 
-                                    ShowNotification(item.mCaption,
-                                            R.string.markedAsStarred,
-                                            GetActionIntent( Intent.ACTION_VIEW, entryUri),
-                                            ID);
+                                    ShowEventNotification(item.mCaption,
+                                                          R.string.markedAsStarred,
+                                                          GetActionIntent( Intent.ACTION_VIEW, entryUri),
+                                                          ID, createCancelStarPI( item.mLink, ID ));
                                 }
                             if ( isFromAutoRefresh ) {
                                 SetNotifyEnabled( true );
-                                FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
+                                notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
                             }
                         }
 
                         if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true) && newCount > 0)
-                            ShowNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
-                                    R.string.flym_feeds,
-                                    new Intent(FetcherService.this, HomeActivity.class),
-                                    Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                            ShowEventNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
+                                                  R.string.flym_feeds,
+                                                  new Intent(FetcherService.this, HomeActivity.class),
+                                                  Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT,
+                                                  null);
                         else if (Constants.NOTIF_MGR != null)
                             Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
@@ -523,7 +525,7 @@ public class FetcherService extends IntentService {
         cursor.close();
         deleteGhostHtmlFiles( mapEntryLinkHash );
         deleteGhostImages( mapEntryLinkHash );
-        EntryUrlVoc.INSTANCE.reinit();
+        EntryUrlVoc.INSTANCE.reinit( true );
         Status().End( status );
     }
 
@@ -599,8 +601,8 @@ public class FetcherService extends IntentService {
     }
 
     private void LongOper( String title, Runnable oper ) {
-        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID));
-        Status().SetNotificationTitle( title );
+        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, createCancelPI()));
+        Status().SetNotificationTitle( title, createCancelPI() );
         PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
         synchronized (mCancelRefresh) {
             mCancelRefresh = false;
@@ -612,7 +614,7 @@ public class FetcherService extends IntentService {
             //Toast.makeText( this, getString( R.string.error ) + ": " + e.getMessage(), Toast.LENGTH_LONG ).show();
             DebugApp.SendException( e, this );
         } finally {
-            Status().SetNotificationTitle( "" );
+            Status().SetNotificationTitle( "", null );
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
             stopForeground(true);
             synchronized (mCancelRefresh) {
@@ -943,6 +945,14 @@ public class FetcherService extends IntentService {
                 .putExtra(Constants.URL_TO_LOAD, url)
                 .putExtra(Constants.TITLE_TO_LOAD, title)
                 .putExtra( EXTRA_STAR, star ), false );
+    }
+    public PendingIntent createCancelStarPI( String link, int notificationID ) {
+        Intent intent = new Intent(this, BroadcastActionReciever.class);
+        intent.setAction( Action );
+        intent.putExtra("UnstarArticle", true );
+        intent.putExtra( EXTRA_TEXT, link );
+        intent.putExtra( EXTRA_ID, notificationID );
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
     }
 
     public enum ForceReload {Yes, No}
@@ -1283,7 +1293,7 @@ public class FetcherService extends IntentService {
                     cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
                 }
             }
-            EntryUrlVoc.INSTANCE.reinit();
+            EntryUrlVoc.INSTANCE.reinit( true );
         } finally {
             Status().ChangeProgress( "" );
             Status().End(status);
@@ -1386,11 +1396,11 @@ public class FetcherService extends IntentService {
     }
 
 
-    private void ShowNotification(String text, int captionID, Intent intent, int ID){
+    private void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getContext()) //
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //
                 .setSmallIcon(R.mipmap.ic_launcher) //
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher)) //
@@ -1399,32 +1409,29 @@ public class FetcherService extends IntentService {
                 .setAutoCancel(true) //
                 .setContentTitle(getString(captionID)) //
                 .setLights(0xffffffff, 0, 0);
-        if (Build.VERSION.SDK_INT >= 26 )
-            notifBuilder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
-
-        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false)) {
-            notifBuilder.setVibrate(new long[]{0, 1000});
+        if (Build.VERSION.SDK_INT >= 26 ) {
+            builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
+            if ( cancelPI != null )
+                builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, getContext().getString(android.R.string.cancel), cancelPI);
         }
+        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false))
+            builder.setVibrate(new long[]{0, 1000});
 
         String ringtone = PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, null);
-        if (ringtone != null && ringtone.length() > 0) {
-            notifBuilder.setSound(Uri.parse(ringtone));
-        }
+        if (ringtone != null && ringtone.length() > 0)
+            builder.setSound(Uri.parse(ringtone));
 
-        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_LIGHT, false)) {
-            notifBuilder.setLights(0xffffffff, 300, 1000);
-        }
+        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_LIGHT, false))
+            builder.setLights(0xffffffff, 300, 1000);
 
         Notification nf;
         if (Build.VERSION.SDK_INT < 16)
-            nf = notifBuilder.setContentText(text).build();
+            nf = builder.setContentText(text).build();
         else
-            nf = new NotificationCompat.BigTextStyle(notifBuilder.setContentText(text)).bigText(text).build();
+            nf = new NotificationCompat.BigTextStyle(builder.setContentText(text)).bigText(text).build();
 
-        if (Constants.NOTIF_MGR != null) {
+        if (Constants.NOTIF_MGR != null)
             Constants.NOTIF_MGR.notify(ID, nf);
-        }
-
     }
 
     //private Uri getEntryUri(String entryLink) {
@@ -1455,11 +1462,30 @@ public class FetcherService extends IntentService {
             Status().AddBytes(n);
             outputStream.write(byteBuffer, 0, n);
         }
-        String content = outputStream.toString(encoding.name()).replace(" & ", " &amp; ");
+        String content = outputStream.toString(encoding.name());
+        content = CleanRSS(content);
+
+        return content;
+    }
+
+    private static String ToString (Reader reader ) throws
+        IOException {
+
+        Scanner scanner = new Scanner(reader).useDelimiter("\\A");
+        String content = scanner.hasNext() ? scanner.next() : "";
+        Status().AddBytes(content.length());
+        content = CleanRSS(content);
+        return content;
+    }
+
+    @NotNull
+    private static String CleanRSS(String content) {
+        content = content.replace(" & ", " &amp; ");
         content = content.replaceAll( "<[a-z]+?:", "<" );
         content = content.replaceAll( "</[a-z]+?:", "</" );
         content = content.replace( "&mdash;", "-" );
-
+        content = content.replace((char) 0x1F, ' ');
+        content = content.replace((char) 0x02, ' ');
         return content;
     }
 
@@ -1667,7 +1693,7 @@ public class FetcherService extends IntentService {
         private static void parseXml (Reader reader,
                 ContentHandler contentHandler) throws IOException, SAXException {
             Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(reader, contentHandler);
+            Xml.parse(ToString( reader ), contentHandler);
             Status().ChangeProgress("");
             Status().AddBytes(contentHandler.toString().length());
         }
@@ -1696,7 +1722,7 @@ public class FetcherService extends IntentService {
                 }
                 Status().ChangeProgress( "" );
                 cr.delete(entriesUri, condition, null);
-                EntryUrlVoc.INSTANCE.reinit();
+                EntryUrlVoc.INSTANCE.reinit( true );
             } finally {
                 Status().End(status);
             }
@@ -1710,7 +1736,7 @@ public class FetcherService extends IntentService {
             final ContentResolver cr = getContext().getContentResolver();
             final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null );
             if ( cursor != null  ){
-                FeedDataContentProvider.SetNotifyEnabled( false ); try {
+                SetNotifyEnabled( false ); try {
                     while (cursor.moveToNext()) {
 
                         Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
@@ -1719,8 +1745,8 @@ public class FetcherService extends IntentService {
                         getContext().getContentResolver().update(EntryColumns.CONTENT_URI(cursor.getString(0)), values, null, null);
                     }
                 } finally {
-                    FeedDataContentProvider.SetNotifyEnabled( true );
-                    FeedDataContentProvider.notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
+                    SetNotifyEnabled( true );
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
                 }
                 cursor.close();
             }
@@ -1943,5 +1969,11 @@ public class FetcherService extends IntentService {
             Status().End( status );
         }
 
+    }
+    private PendingIntent createCancelPI() {
+        Intent intent = new Intent(this, BroadcastActionReciever.class);
+        intent.setAction( Action );
+        intent.putExtra("FetchingServiceStart", true );
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
     }
 }

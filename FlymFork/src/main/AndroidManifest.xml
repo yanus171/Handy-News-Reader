@@ -43,6 +43,12 @@
 
         <service android:name=".service.FetcherService" />
 
+        <receiver android:name=".service.BroadcastActionReciever">
+            <intent-filter>
+                <action android:name="ru.yanus171.feedexfork.service.BROADCAST_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name=".provider.FeedDataContentProvider"
             android:authorities="ru.yanus171.feedexfork.provider.FeedData"

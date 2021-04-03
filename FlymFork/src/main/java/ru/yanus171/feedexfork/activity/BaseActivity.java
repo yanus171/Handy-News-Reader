@@ -19,6 +19,7 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -50,6 +51,7 @@ import java.util.Locale;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.service.ReadingService;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -58,6 +60,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.READING_NOTIFICATION;
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 
@@ -71,6 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private int mLastMax = 0;
     private int mLastProgress = 0;
     public ProgressBar mProgressBarRefresh = null;
+    private static int mActivityCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +82,27 @@ public abstract class BaseActivity extends AppCompatActivity {
         UiUtils.setTheme(this);
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
+        StartReadingServiceIfNeeded();
     }
 
+    @Override
+    public void onDestroy() {
+        mActivityCount--;
+        if ( mActivityCount == 0 )
+            stopService( new Intent(this, ReadingService.class) );
+        super.onDestroy();
+    }
+
+    private void StartReadingServiceIfNeeded() {
+        if ( ( mActivityCount == 0 || !isServiceRunning( ReadingService.class ) ) && PrefUtils.getBoolean(READING_NOTIFICATION, false ) ){
+            Intent serviceIntent = new Intent(this, ReadingService.class);
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+                startForegroundService( serviceIntent );
+            else
+                startService( serviceIntent );
+        }
+        mActivityCount++;
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -273,5 +296,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 SetupFont( parent.getChildAt(i));
         } else if ( view instanceof TextView )
             UiUtils.SetTypeFace( (TextView) view);
+    }
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

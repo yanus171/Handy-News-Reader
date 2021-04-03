@@ -49,6 +49,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
@@ -89,7 +90,7 @@ public class DrawerAdapter extends BaseAdapter {
     private final Context mContext;
     private Cursor mFeedsCursor;
     private int mAllUnreadNumber, mFavoritesUnreadNumber, mFavoritesReadNumber, mAllNumber, mExternalUnreadNumber, mExternalReadNumber;
-    private int mAllImagesSize, mAllUnreadImagesSize, mFavoritiesImagesSize, mExternalImagesSize;
+    private long mAllImagesSize, mAllUnreadImagesSize, mFavoritiesImagesSize, mExternalImagesSize;
     private int mTextTaskCount, mImageTaskCount;
 
     public DrawerAdapter(Context context, Cursor feedCursor) {
@@ -258,7 +259,7 @@ public class DrawerAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static private void SetImageSizeText(ViewHolder holder, int size) {
+    static private void SetImageSizeText(ViewHolder holder, long size) {
         if ( PrefUtils.CALCULATE_IMAGES_SIZE() && size != 0 ) {
             holder.imageSizeTxt.setVisibility( View.VISIBLE );
             holder.imageSizeTxt.setText(GetImageSizeText(size));
@@ -266,7 +267,7 @@ public class DrawerAdapter extends BaseAdapter {
             holder.imageSizeTxt.setVisibility( View.GONE );
     }
 
-    static private String GetImageSizeText(int imageSize) {
+    static private String GetImageSizeText(long imageSize) {
         final int MEGABYTE = 1024 * 1024;
         return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > MEGABYTE ?
             EntriesCursorAdapter.GetImageSizeText( imageSize ).replace( ",", "." ) : "";
@@ -369,10 +370,10 @@ public class DrawerAdapter extends BaseAdapter {
                 mAllNumber = numbers.getInt(3);
                 mExternalUnreadNumber = numbers.getInt(4);
                 mExternalReadNumber = numbers.getInt(5);
-                mAllImagesSize = numbers.getInt(6);
-                mAllUnreadImagesSize = numbers.getInt(7);
-                mFavoritiesImagesSize = numbers.getInt(8);
-                mExternalImagesSize = numbers.getInt(9);
+                mAllImagesSize = numbers.getLong(6);
+                mAllUnreadImagesSize = numbers.getLong(7);
+                mFavoritiesImagesSize = numbers.getLong(8);
+                mExternalImagesSize = numbers.getLong(9);
             }
             numbers.close();
         }

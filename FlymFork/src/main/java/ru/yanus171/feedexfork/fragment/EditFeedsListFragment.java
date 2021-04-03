@@ -151,7 +151,7 @@ public class EditFeedsListFragment extends ListFragment {
                             public void run() {
                                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                                 cr.delete(feedUri, null, null);
-                                EntryUrlVoc.INSTANCE.reinit();
+                                EntryUrlVoc.INSTANCE.reinit( true );
                             }
                         }.start();
                         if ( activity instanceof EditFeedActivity )

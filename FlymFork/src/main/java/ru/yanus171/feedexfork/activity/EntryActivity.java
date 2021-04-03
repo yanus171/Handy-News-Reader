@@ -77,7 +77,6 @@ public class EntryActivity extends BaseActivity implements Observer {
     public boolean mHasSelection = false;
     private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
-    private static int mActivityCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,23 +137,13 @@ public class EntryActivity extends BaseActivity implements Observer {
             setFullScreen(true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
          else
             setFullScreen(false, false, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
-        
-        if ( mActivityCount == 0 && PrefUtils.getBoolean( READING_NOTIFICATION, false ) ){
-            Intent serviceIntent = new Intent(this, ReadingService.class);
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
-                startForegroundService( serviceIntent );
-            else
-                startService( serviceIntent );
-        }
-        mActivityCount++;
     }
+
+
 
     @Override
     public void onDestroy() {
         mEntryFragment = null;
-        mActivityCount--;
-        if ( mActivityCount == 0 )
-            stopService( new Intent(this, ReadingService.class) );
         super.onDestroy();
     }
 

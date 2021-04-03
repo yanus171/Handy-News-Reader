@@ -148,17 +148,17 @@ object FileUtils {
     private fun saveHTMLToFile(link: String, html: String): Uri? {
         var result: Uri? = null
         val out: OutputStreamWriter
-            val file = LinkToFile( link )
-            try {
-                out = OutputStreamWriter( FileOutputStream(file.absolutePath))
-                out.use { out ->
-                    out.write(html)
-                }
-                mHTMLFileVoc.addFile( file.name )
-                result = Uri.parse("file://" + file.absolutePath)
-            } catch (e: Exception) {
-                AddErrorToLog(null, e)
+        val file = LinkToFile( link )
+        try {
+            out = OutputStreamWriter( FileOutputStream(file.absolutePath))
+            out.use { out ->
+                out.write(html)
             }
+            mHTMLFileVoc.addFile( file.name )
+            result = Uri.parse("file://" + file.absolutePath)
+        } catch (e: Exception) {
+            AddErrorToLog(null, e)
+        }
 
         return result
     }
@@ -200,27 +200,18 @@ object FileUtils {
     }
 
     fun isMobilized (link: String?, cursor: Cursor?, colMob: Int, colID: Int ): Boolean {
-        if ( link != null && ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) ) {
+        return if ( link != null && ( cursor == null || cursor.isNull( colMob ) || cursor.getString( colMob ) == "0" ) ) {
             val file = LinkToFile( link )
             val mobValue = if ( mHTMLFileVoc.isExists( file.name ) ) {
                 "${file.length()}"
             } else {
                 EMPTY_MOBILIZED_VALUE
             }
-
-            if ( cursor != null ) {
-                //UpdateMob(mobValue, cursor.getLong(colID)).start()
-                val cr = MainApplication.getContext().contentResolver
-                val values = ContentValues()
-                values.put(MOBILIZED_HTML, mobValue )
-                cr.update(FeedData.EntryColumns.CONTENT_URI( cursor.getLong(colID) ), values, null, null)
-            }
-
-            return mobValue != EMPTY_MOBILIZED_VALUE
+            mobValue != EMPTY_MOBILIZED_VALUE
         } else if ( cursor != null )
-            return !cursor.isNull( colMob ) && cursor.getString( colMob ) != EMPTY_MOBILIZED_VALUE
+            !cursor.isNull( colMob ) && cursor.getString( colMob ) != EMPTY_MOBILIZED_VALUE
         else
-            return false
+            false
     }
 
     fun isMobilized (link: String?, cursor: Cursor ): Boolean {

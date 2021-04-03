@@ -36,11 +36,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -69,6 +71,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.service.ReadingService;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -230,7 +233,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
 
 
-        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root));
+        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root), false);
         findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -249,18 +252,41 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         });
 
         mPageUpBtn = findViewById( R.id.pageUpBtn );
+
         mPageUpBtn.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PageUpDown( -1 );
             }
         });
+        mPageUpBtn.setOnLongClickListener(new TextView.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if ( mEntriesFragment.mListView.getCount() == 0 )
+                    return false;
+                mEntriesFragment.mListView.setSelection( 0 );
+                Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT ).show();
+                return true;
+            }
+        });
+
         findViewById(R.id.pageDownBtn).setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PageUpDown( 1 );
             }
         });
+        findViewById(R.id.pageDownBtn).setOnLongClickListener(new TextView.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if ( mEntriesFragment.mListView.getCount() == 0 )
+                    return false;
+                mEntriesFragment.mListView.setSelection( mEntriesFragment.mListView.getCount() - 1 );
+                Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
+                return true;
+            }
+        });
+
         ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             // State
 
@@ -276,9 +302,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
 
         });
-
-
-
         timer.End();
     }
 
@@ -396,7 +419,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
     }
 
