@@ -395,7 +395,7 @@
     <string name="importingFromFile">Імпорт з файлу</string>
     <string name="autobackup_interval">Інтервал резервного копіювання</string>
     <string name="autobackup_interval_descr">Як часто буде створюватись файл резервної копії стрічок та статей</string>
-    <string name="create_auto_backup">Створити резервну копію</string>
+    <string name="create_auto_backup">Створити резервну копію зараз</string>
     <string name="auto_backup_opml_file_created">Створено резервну копію:</string>
     <string name="use_standard_file_manager">Стандартний файловий менеджер</string>
     <string name="use_standard_file_manager_descr">інакше виберіть .opml файл для імпортування за допомогою вбудованного діалогу з теки додатку на картці пам’яті</string>
