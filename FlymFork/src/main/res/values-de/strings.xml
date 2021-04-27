@@ -29,50 +29,46 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lizenz und Informationen</big></b><br/>
-    Dieses Programm ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version, weitergeben und/oder ändern. Siehe http://www.gnu.org/licenses<br/>
-    <br/>
-    Diese App basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. Folgende Funktionen wurden inzwischen hinzugefügt:<br/>
-    <br/>
-    • Erweiterung durch Feedgruppen<br/>
-    • versteckte Tasten zum Blättern bei Vollbild<br/>
-    • Anzahl herunterzuladender Bilder pro Feed einstellbar<br/>
-    • Möglichkeit zum Abbrechen des Aktualisierungsvorganges<br/>
-    • und vieles mehr<br/>
-    <br/>
-    <b><big>Wo Sie uns finden können</big></b>
-    <br/>
-    • Auf unserer <b><a href="https://handynewsreader.blogspot.com/">Homepage</a></b> finden Sie Neuigkeiten und Informationen<br/>
-    • Sie können diese App bei <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b> herunterladen<br/>
-    • Sie können diese App bei <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b> herunterladen<br/>
-    • Es gibt auch einen Thread im <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">Forum der Entwicklercommunity XDA</a></b><br/>
-    • Den Quellcode finden Sie bei <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
-    <br/>
-    <b><big>Unsere Unterstützung</big></b>
-    <br/>
-    Wenn Sie einen Fehler in dieser App finden, bitte<br/>
-    • öffnen Sie einen Problemfall auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">E-Mail an den Entwickler</a></b><br/>
-    <br/>
-    <b><big>Ihre Unterstützung</big></b>
-    <br/>
-    Wenn Sie eine Idee für neue Funktionen haben, bitte<br/>
-    • öffnen Sie ein Thema auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">E-Mail an den Entwickler</a></b><br/>
-    <br/>
-    <b>Bitte bewerten Sie diese App bei <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>, wenn Sie sie nützlich finden.</b><br/>
-    <br/>
-    <b><big>Übersetzungen</big></b>
-    <br/>
-    Sie können bei der Übersetzung dieser App in Ihre Sprache auf der Plattform <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> helfen.<br/>
-    Wenn Sie Ihre Sprache nicht finden, senden Sie bitte eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">E-Mail an den Entwickler</a></b>.<br/>
-    <br/>
-    <b><big>Danksagungen</big></b>
-    <br/>
-    <b>Entwickler:</b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Lizenz und Informationen</h2>
+    <p>Dieses Programm ist Free/Libre Open-Source Software: Sie können sie nach den, von der Free Software Foundation veröffentlichten Bedingungen der GNU General Public License in der Version 3 oder (auf Wunsch) jeder späteren Version dieser Lizenz weiterverbreiten oder verändern. Siehe <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
+    <p>Diese App is basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. In diesem Fork wurden folgende Funktionen ergänzt:</p>
+    
+	• Erweiterung von Feed-Gruppen<br/>
+    • unsichtbare Tasten zum Blättern im Vollbildmodus<br/>
+    • einstellbare Zahl der in einem Feed zu ladenden Bilder<br/>
+    • Möglichkeit die Aktualisierung abzubrechen<br/>
+    • und vieles mehr
+
+    <h2>Sie finden uns:</h2>
+
+    • auf unserer <b><a href=\"https://handynewsreader.blogspot.com\">Website</a></b> (Neuigkeiten und Infos)<br/>
+    • im <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play Store</a><br/>
+    • auf <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/>
+    • im <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA Forum</a><br/>
+    • auf <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a>
+
+    <h2>Unser Support</h2>
+    <p>Wenn Sie über ein Problem in der App stolpern, können Sie:</p>
+    • nachsehen, ob dieses Problem in unseren <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a> bereits angesprochen wurde<br/>
+    • ein Ticket auf der <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a> öffnen<br/>
+    • eine <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">E-Mail an den Entwickler</a> senden<br/>
+	
+    <h2>Ihr Support</h2>
+    <p>Wenn Sie eine Idee für eine neue Funktion haben, können Sie:</p>
+    • ein Ticket auf der <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a> eröffnen<br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">dem Entwickler eine E-Mail schreiben</a> 
+
+	<p>Wenn Sie diese App praktisch finden, bewerten Sie sie bitte auf <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></p>
+    Sie können auch <a href=\"https://github.com/yanus171/Handy-News-Reader\">spenden</a> </b> (Link am Ende der Beschreibung)
+ 
+    <h2>Übersetzungen</h2>
+	<p>Sie können auf <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> bei der Übersetzung in Ihre Sprache helfen. Wenn Ihre Sprache noch nicht aufgenommen ist, senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">E-Mail an den Entwickler</a></b></p>
+
+    <h2>Danksagungen</h2>
+    <h3>Entwickler:</h3>
     ***developerList***
-    <br/>
-    <b>Übersetzer:</b><br/>
+    <br/><br/>
+	<h3>Übersetzer:</h3>
     ***translatorList***
     <br/>
     ]]></string>
@@ -568,7 +564,7 @@
     <string name="list_was_scrolled_to_top">Listenanfang erreicht</string>
     <string name="list_was_scrolled_to_bottom">Listenende erreicht</string>
     <string name="articleWasUnstarred">Kennzeichnung eines Artikels wurde entfernt</string>
-    <string name="articleNotFound">Ein Artikel wurde nicht gefunden 🙁</string>
+    <string name="articleNotFound">Es wurde kein Artikel gefunden 🙁</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
