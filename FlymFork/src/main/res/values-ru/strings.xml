@@ -165,6 +165,7 @@
     <string name="menu_unstar">Убрать из избранного</string>
     <string name="menu_share">Поделиться</string>
     <string name="menu_mark_all_as_unread">Отметить все как непрочитанные</string>
+    <string name="menu_mark_upper_as_read">Отметить выше как прочитанное</string>
     <string name="menu_full_screen">Полный экран</string>
     <string name="menu_actionbar_visible">Панель действий</string>
     <string name="menu_font_bold">Жирный шрифт</string>
@@ -352,6 +353,7 @@
     <string name="fontsize_entrylist">Размер текста в списке статей</string>
     <string name="confirmation">ОК</string>
     <string name="question_delete_entry">Удалить статью?</string>
+    <string name="question_mark_upper_as_read">Отметить статьи выше как прочитанные?</string>
     <string name="question_mark_all_as_unread">Отметить все статьи как непрочитанные?</string>
     <string name="share_all_text">Поделиться текстом</string>
     <string name="group">Группа</string>
