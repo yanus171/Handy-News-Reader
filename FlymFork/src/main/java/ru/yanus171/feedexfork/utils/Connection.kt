@@ -45,7 +45,7 @@ class Connection(url: String) {
     init {
         if (IsOkHttp()) {
             var request = Request.Builder()
-                    .url(url)
+                    .url(url.trim())
                     .build()
             var call = OkHttpClient().newCall(request)
             try {
@@ -63,7 +63,7 @@ class Connection(url: String) {
             }
 
         } else
-            mConnection = NetworkUtils.setupConnection1(url)
+            mConnection = NetworkUtils.setupConnection1(url.trim())
 
     }
 

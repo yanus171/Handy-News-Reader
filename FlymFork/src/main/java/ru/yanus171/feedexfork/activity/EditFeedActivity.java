@@ -109,6 +109,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kotlin.text.Regex;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter;
@@ -1285,6 +1286,7 @@ class GetWebSearchDuckDuckGoResultsLoader extends BaseLoader<ArrayList<HashMap<S
                         final String title = el.getElementsByClass( "result__title" ).text();
                         String url = el.getElementsByClass( "result__title" ).first().getElementsByTag( "a" ).first().attr( "href" );
                         url = URLDecoder.decode( url.substring( url.indexOf( "http" ) ) );
+                        url = url.replaceAll("&rut=[^\"]+", "" );
                         final String descr = el.getElementsByClass( "result__snippet" ).text();
                         String icon = el.getElementsByClass( "result__icon__img" ).first().attr( "src" );
                         if ( !icon.startsWith( "https:" ) )

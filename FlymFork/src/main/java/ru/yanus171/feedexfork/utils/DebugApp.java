@@ -389,7 +389,7 @@ public class DebugApp {
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
 			try {
-				out.writeObject(text);
+				out.writeChars(text);
 			} finally {
 				out.close();
 			}
