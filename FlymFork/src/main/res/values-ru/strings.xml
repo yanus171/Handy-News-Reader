@@ -569,6 +569,8 @@
     <string name="list_was_scrolled_to_bottom">Прокручено в конец страницы</string>
     <string name="articleWasUnstarred">Статья не помечена как избранная</string>
     <string name="articleNotFound">Статья не найдена :(</string>
+    <string name="atricle_list_size_progressbar_maxsize">"Максимальный размер текста "</string>
+    <string name="atricle_list_size_progressbar_maxsize_descr">В кБ для горизонтального индикатора</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
