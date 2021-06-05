@@ -180,7 +180,7 @@
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="atricle_list_size_progressbar_maxsize"
             android:inputType="number"
-            android:defaultValue="0"
+            android:defaultValue="50"
             android:title="@string/atricle_list_size_progressbar_maxsize"
             android:summary="@string/atricle_list_size_progressbar_maxsize_descr"/>
 
@@ -612,6 +612,11 @@
             android:defaultValue="true"
             android:title="@string/settings_show_circle_progress"
             android:summary="@string/settings_show_circle_progress_summary"/>
+        <CheckBoxPreference
+            android:key="setting_edit_feed_force_portrait_orientation"
+            android:defaultValue="false"
+            android:title="@string/setting_edit_feed_force_portrait_orientation"
+            android:summary="@string/setting_edit_feed_force_portrait_orientation_summary"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

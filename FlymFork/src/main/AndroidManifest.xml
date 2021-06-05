@@ -166,7 +166,7 @@
         </activity>
         <activity
             android:name=".activity.EditFeedActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@style/Theme.Dark"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>

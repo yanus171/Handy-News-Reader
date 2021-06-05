@@ -56,6 +56,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -645,6 +646,9 @@ public class EditFeedActivity extends BaseActivity implements LoaderManager.Load
         //findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
         if ( intent.hasExtra( SearchManager.QUERY ) )
             Validate();
+
+        if ( PrefUtils.getBoolean( "setting_edit_feed_force_portrait_orientation", false ) )
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
     }
 
     @Override

@@ -606,7 +606,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
 
         {
-            final int max = PrefUtils.getIntFromText( "atricle_list_size_progressbar_maxsize", 0 ) * KBYTE;
+            final int max = PrefUtils.getIntFromText( "atricle_list_size_progressbar_maxsize", 50 ) * KBYTE;
             if ( max > 0 ) {
                 holder.textSizeProgressBar.setMin( 0 );
                 holder.textSizeProgressBar.setMax( max );

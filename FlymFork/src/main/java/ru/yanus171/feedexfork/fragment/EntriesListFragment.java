@@ -1123,7 +1123,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void update(Observable observable, Object o) {
         //if ( !mShowTextInEntryList )
         //    return;
-        if ( o instanceof Entry ) {
+        if ( o instanceof Entry && mEntriesCursorAdapter != null ) {
             final Entry entry = (Entry) o;
             final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
             if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {

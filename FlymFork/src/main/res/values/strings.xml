@@ -583,7 +583,9 @@
     <string name="articleWasUnstarred">An article has been unstarred</string>
     <string name="articleNotFound">An article has not been found :(</string>
     <string name="atricle_list_size_progressbar_maxsize">"Text Size Max "</string>
-    <string name="atricle_list_size_progressbar_maxsize_descr">In KB for horizontal indicator</string>
+    <string name="atricle_list_size_progressbar_maxsize_descr">In KB for horizontal indicator (0 to turn off)</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Edit Feed portrait orientation</string>
+    <string name="setting_edit_feed_force_portrait_orientation_summary">Force portatait screen orientation in Edit Feed window - check if your phone has narrow screen</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
