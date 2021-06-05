@@ -567,6 +567,7 @@
     <string name="articleNotFound">Es wurde kein Artikel gefunden 🙁</string>
     <string name="atricle_list_size_progressbar_maxsize">"Max. Textgröße "</string>
     <string name="atricle_list_size_progressbar_maxsize_descr">In KB für horizontale Anzeige</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Feed im Hochformat bearbeiten</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
