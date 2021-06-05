@@ -28,7 +28,6 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.UrlQuerySanitizer;
 import android.os.Build;
 import android.text.Html;
 
@@ -43,9 +42,7 @@ import java.io.InputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -294,8 +291,8 @@ public class NetworkUtils {
         }
     }
 
-    public static HttpURLConnection setupConnection1(String url) throws IOException {
-        return setupConnection1(new URL(url));
+    public static HttpURLConnection setupConnection(String url) throws IOException {
+        return setupConnection(new URL(url));
     }
 
     public static Bitmap downloadImage(String url) {
@@ -321,7 +318,7 @@ public class NetworkUtils {
         return bitmap;
     }
 
-    public static HttpURLConnection setupConnection1(URL url) throws IOException {
+    public static HttpURLConnection setupConnection(URL url) throws IOException {
         FetcherService.Status().ChangeProgress(R.string.setupConnection);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();//; new OkUrlFactory(new OkHttpClient()).open(url);

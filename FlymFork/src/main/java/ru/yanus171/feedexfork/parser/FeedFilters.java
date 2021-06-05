@@ -117,7 +117,7 @@ public class FeedFilters {
                     isFiltered = true;
                     //break;
                 }
-            } else if (isMatch) {
+            } else if ( isMatch ) {
                 isFiltered = true;
                 //break; // no break, there might be an accept rule later
             }

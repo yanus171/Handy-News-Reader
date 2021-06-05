@@ -35,6 +35,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -266,6 +267,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 public void onPageScrolled(int i, float v, int i2) {
                 }
 
+                @SuppressLint("DefaultLocale")
                 @Override
                 public void onPageSelected(int i) {
                     mCurrentPagerPos = i;
@@ -285,7 +287,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             getLoaderManager().restartLoader(i, null, EntryFragment.this);
                         view.mLoadTitleOnly = false;
                     }
-
+                    final String text = String.format( "+%d", mEntryPagerAdapter.getCount() - mLastPagerPos - 1 );
+                    Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
+                    TextView textView = new TextView(getContext());
+                    textView.setText( text );
+                    textView.setPadding( 10, 10, 10, 10 );
+                    textView.setBackgroundResource( R.drawable.toast_background );
+                    toast.setView( textView );
+                    toast.show();
                 }
 
                 @Override

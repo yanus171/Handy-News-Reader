@@ -177,6 +177,12 @@
             android:summary="@string/vibrate_on_article_list_entry_swype_summary"
             android:title="@string/vibrate_on_article_list_entry_swype"/>
 
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="atricle_list_size_progressbar_maxsize"
+            android:inputType="number"
+            android:defaultValue="0"
+            android:title="@string/atricle_list_size_progressbar_maxsize"
+            android:summary="@string/atricle_list_size_progressbar_maxsize_descr"/>
 
     </PreferenceScreen>
 

@@ -8,8 +8,6 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 
 import org.jsoup.Jsoup
-import org.w3c.dom.Document
-import ru.yanus171.feedexfork.service.FetcherService
 
 class Connection(url: String) {
     private var mConnection: HttpURLConnection? = null
@@ -63,7 +61,7 @@ class Connection(url: String) {
             }
 
         } else
-            mConnection = NetworkUtils.setupConnection1(url.trim())
+            mConnection = NetworkUtils.setupConnection(url.trim())
 
     }
 

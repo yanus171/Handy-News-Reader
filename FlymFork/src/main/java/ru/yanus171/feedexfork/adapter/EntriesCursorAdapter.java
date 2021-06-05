@@ -72,6 +72,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
@@ -232,7 +233,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.readMore = SetupTextView(view, R.id.textSourceReadMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
             holder.categoriesTextView = SetupSmallTextView(view, R.id.textCategories);
-
+            holder.textSizeProgressBar = view.findViewById(R.id.progressBar);
             view.setTag(R.id.holder, holder);
 
             final View.OnClickListener openArticle = new View.OnClickListener() {
@@ -592,15 +593,27 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos, mIdPos );
 
-        String sizeText = " " + GetTextSizeText( cursor.getInt( mTextLenPos) );
+        final long textSize = cursor.isNull( mTextLenPos ) ? FileUtils.INSTANCE.LinkToFile( cursor.getString( mUrlPos ) ).length() : cursor.getInt( mTextLenPos );
+        String textSizeText = " " + GetTextSizeText( textSize );
         if (mShowFeedInfo && mFeedNamePos > -1) {
             if (feedName != null) {
-                holder.dateTextView.setText(Html.fromHtml("<font color='#247ab0'>" + feedName + "</font>" + Constants.COMMA_SPACE + StringUtils.getDateTimeString(cursor.getLong(mDatePos))) + sizeText);
+                holder.dateTextView.setText(Html.fromHtml("<font color='#247ab0'>" + feedName + "</font>" + Constants.COMMA_SPACE + StringUtils.getDateTimeString(cursor.getLong(mDatePos))) + textSizeText);
             } else {
-                holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
+                holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + textSizeText);
             }
         } else {
-            holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + sizeText);
+            holder.dateTextView.setText(StringUtils.getDateTimeString(cursor.getLong(mDatePos)) + textSizeText);
+        }
+
+        {
+            final int max = PrefUtils.getIntFromText( "atricle_list_size_progressbar_maxsize", 0 ) * KBYTE;
+            if ( max > 0 ) {
+                holder.textSizeProgressBar.setMin( 0 );
+                holder.textSizeProgressBar.setMax( max );
+                holder.textSizeProgressBar.setProgress( (int)textSize );
+                holder.textSizeProgressBar.setVisibility(View.VISIBLE );
+            } else
+                holder.textSizeProgressBar.setVisibility(View.GONE );
         }
 
         final int imageSize = cursor.getInt( mImageSizePos );
@@ -858,14 +871,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
+    public static final int KBYTE = 1024;
+
     static String GetImageSizeText(long imageSize) {
-        final double MEGABYTE = 1024.0 * 1024.0;
-        return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > 1024 * 100 ?
+        final double MEGABYTE = KBYTE * KBYTE;
+        return PrefUtils.CALCULATE_IMAGES_SIZE() && imageSize > KBYTE * 100 ?
             String.format( "%.1f\u00A0%s", imageSize / MEGABYTE, MainApplication.getContext().getString( R.string.megabytes ) ).replace( ",", "." ) : "";
     }
 
-    static private String GetTextSizeText(int imageSize) {
-        final int KBYTE = 1024;
+    static private String GetTextSizeText(long imageSize) {
         return imageSize > KBYTE ? String.format( "%d\u00A0%s", imageSize / KBYTE, MainApplication.getContext().getString( R.string.kilobytes ) ) : "";
     }
 
@@ -1071,6 +1085,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     HashMap<Long, Boolean> mMapFavourite = new HashMap<>();
 
     private static class ViewHolder {
+        ProgressBar textSizeProgressBar;
         ImageView collapsedBtn;
         TextView titleTextView;
         TextView urlTextView;
