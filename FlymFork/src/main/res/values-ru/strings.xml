@@ -571,6 +571,7 @@
     <string name="articleNotFound">Статья не найдена :(</string>
     <string name="atricle_list_size_progressbar_maxsize">"Максимальный размер текста "</string>
     <string name="atricle_list_size_progressbar_maxsize_descr">В кБ для горизонтального индикатора</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Редактировать портретную ориентацию канала</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Принудительная портретная ориентация экрана в окне редактирования настроек канала - проверьте, не узкий ли у вашего телефона экран</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
