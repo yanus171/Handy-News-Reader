@@ -569,6 +569,7 @@
     <string name="atricle_list_size_progressbar_maxsize">"Максимальний розмір тексту "</string>
     <string name="atricle_list_size_progressbar_maxsize_descr">В кБ для горизонтального індикатора (0, щоб вимкнути)</string>
     <string name="setting_edit_feed_force_portrait_orientation">Редагувати портретну орієнтацію стрічки</string>
+    <string name="setting_edit_feed_force_portrait_orientation_summary">Примусова вертикальна орієнтація екрану у вікні редагування стрічок - перевірте, чи Ваш телефон має вузький екран</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
