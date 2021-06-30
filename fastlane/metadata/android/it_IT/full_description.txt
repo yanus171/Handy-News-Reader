@@ -1,0 +1,39 @@
+<i>"Rimanere in contatto con tutti i tuoi interessi non è mai stato così semplice".</i>
+
+<b><i>Handy News Reader</i>: software gratuito senza pubblicità, con licenza <i>GNU GPL</i>.</b>
+
+<ul>
+	<li><b>crea la tua rivista!</b></li>
+	<li><b>gli articoli che ti interessano arriveranno dirtti nelle tue mani</b></li>
+	<li><b>goditi la lettura</b></li>
+</ul>
+
+... <b>libero da distrazioni e mantenendo aggiornati i tuoi interessi</b>. Concentrati su ciò che è essenziale...
+
+<i>Handy NR</i> è un lettore <i>RSS</i> offline ricco di funzionalità, che <b>rispetta il tuo tempo e la tua pace interiore</b>, evitando le distrazioni che si presentano comunemente utilizzando i dispositivi mobili.
+
+<ul>
+<b><u>Caratteristiche</u>:</b>
+	<li><b><u>articoli completi</u></b>: senza bisogno di usare un browser esterno per leggerne il contenuto,</li>
+	<li><b><u>Lettura comoda</u></b>: è possibile cambiare articolo tramite swipe o utilizzando i pulsanti per il volume, <i>Aree di Tocco</i>, ricorda la posizione di lettura <u>per ogni articolo</u>,</li>
+	<li><b>notifiche per gli articoli importanti</b>: non ti perderai più nulla di ciò che ritieni particolarmente importante,</li>
+	<li><b><i>"Leggi Dopo"</i></b>: Puoi scorrere rapidamente tra gli articoli <b>marcando (con una stella) quelli che vuoi leggere più tardi</b> o conservare,</li>
+	<li><b><i>"Rimuovi alla fine della Lettura"</i></b>: una volta finita la lettura di un articolo, questo può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggi Dopo'</i>),</li>
+	<li><b>Lettura Offline</b>: una volta aggiornato, l'articolo completo sarà disponibile anche senza connessione Internet,</li>
+	<li><b>usa meno dati</b>: vai online solo per recuperare nuovi articoli, non per caricare la loro versione completa; gestisci cosa deve essere scaricato e in quale maniera,</li>
+	<li><b>supporto per i gesti</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
+	<li><b>facile da usare</b>: prenditi cura dei tuoi occhi con un tema scuro, regola dimensione, colore e luminosità del testo per soddisfare le tue esigenze personali,</li>
+	<li><b>idee interessanti</b>: le intestazioni degli articoli senza hyperlink non interferiranno più con le tue dita ;) ; scorrere le pagine degli articoli per il 90% della loro altezza può rendere la lettura meno confusa = più comoda,</li>
+	<li><b>altamente personalizzabile</b>: dalla dimensione delle <i>Zone di tocco'</i> al colore e alla sottolineatura degli hyperlink - ci sono un insieme di dettagli che puoi adattare esattamente al tuo gusto e alle tue esigenze,</li>
+	<li><b>funzionalità avanzate</b>: backup automatico (esporta/importa da/in un file <i>.opml</i>), ottenere contenuti da siti web non-<i>RSS</i>, </li>
+	<li><b>altre funzionalità interessanti</b> "in negozio" - visita il nostro sito per saperne di più :) !,</li>
+	<li><b><u>importante</u>:</b> questa app NON sincronizza con lettori di notizie online (es. <i>Feedly</i>),</li>
+	<li><b>feedback e suggerimenti sono benvenuti;</b></li>
+</ul>
+
+<ul>
+<b>Dove puoi trovarci:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">codice sorgente su <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">homepage</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">traduzioni</a>;</li>
+</ul>

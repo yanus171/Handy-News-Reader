@@ -1,0 +1,39 @@
+<i>"Nie war es so einfach, alle meine Interessen zu verfolgen."</i>
+
+<b><i>Handy News Reader</i>: werbefrei / freie Software lizenziert nach <i>GNU GPL</i>.</b>
+
+<ul>
+	<li><b>gestalten Sie Ihr Traum-Magazin!</b></li>
+	<li><b>interessante Artikel direkt in Ihre Hände</b></li>
+	<li><b>genießen Sie endlich das Lesen</b></li>
+</ul>
+
+...genießen Sie Ihr Leben <b>ohne Ablenkung und bleiben Sie gleichzeitig auf dem Laufenden mit Ihren Interessen</b>. Konzentrieren Sie sich auf das Wesentliche...
+
+Lernen Sie <i>Handy NR</i> kennen - eine offline-orientierte <i>RSS</i>-Leseapp mit vielen Funktionen, die <b>Rücksicht auf Ihre Zeit und Ihre innere Ruhe nimmt</b>: sie vermeidet die Reizüberflutung, die heutzutage so verbreitet ist, wenn man an Mobilgeräte denkt.
+
+<ul>
+<b><u>Funktionen</u>:</b>
+	<li><b><u>vollständige Artikel</u></b>: kein externer Browser nötig, um den kompletten Text lesen zu können,</li>
+	<li><b><u>bequemes</u> Lesen</b>: Artikelwechsel mit den Lautstärketasten oder durch Wischen, <i>Tipp-Zonen</i>, speichern der aktuellen Leseposition <u>pro Artikel</u>,</li>
+	<li><b>Benachrichtigung bei wichtigen Artikeln</b>: Sie werden nichts mehr verpassen, was Ihnen wichtig ist,</li>
+	<li><b><i>"Später lesen"</i></b>: Sie können schnell durch die Artikel blättern und dabei <b>diejenigen als Favorit markieren, welche Sie später in Ihrer Freizeit lesen</b> oder einfach nur aufheben möchten,</li>
+	<li><b><i>"Automatisch aus den Favoriten entfernen"</i></b> - wenn ein Favorit gelesen wurde, kann er automatisch aus den <i>'Favoriten'</i> (=<i>'Später lesen'</i>) entfernt werden,</li>
+	<li><b>bereit, offline zu gehen</b> - tauchen Sie ohne Ablenkung ein: einmal aktualisiert, muss nichts zusätzlich geladen werden - es funktioniert wirklich ohne Internet :),</li>
+	<li><b>sparen Sie Datenvolumen</b>: gehen Sie nur für neue Artikel online - Sie kontrollieren, was und in welchem Umfang geladen werden soll,</li>
+	<li><b>Gestensteuerung</b>: z.B. wischen Sie von oben nach unten, um Artikel zu den <i>Favoriten</i> hinzuzufügen oder daraus zu entfernen; wischen Sie am linken Displayrand, um die Helligkeit einzustellen,</li>
+	<li><b>benutzerfreundlich</b>: dunkles und helles Design, Textgröße, Farbe und Helligkeit ganz nach Ihren Bedürfnissen einstellbar,</li>
+	<li><b>nette Ideen</b>: keine verlinkten Artikel-Überschriften; Artikelseiten nur mit 90% der Anzeigehöhe weiterblättern, damit die letzten gelesenen Zeilen noch sichtbar bleiben,</li>
+	<li><b>sehr anpassbar</b>: von <i>Tipp-Zonen</i>-Größe bis Link-Farbe/Unterstreichung können sehr viele Details auf Ihre Bedürfnisse zugeschnitten werden,</li>
+	<li><b>erweiterte Funktionen</b>: Automatisches Backup (Export/Import im <i>OPML</i>-Format), Unterstützung von Nicht-<i>RSS</i>-Webseiten, </li>
+	<li><b>noch mehr interessante Funktionen</b> "auf Lager" - besuche unsere Webseite :) !,</li>
+	<li><b><u>wichtig</u>:</b> diese App synchronisiert NICHT mit Online-News-Feed-Reader (z.B. <i>Feedly</i>),</li>
+	<li><b>Feedback und Vorschläge sind willkommen;</b></li>
+</ul>
+
+<ul>
+<b>Hier können Sie uns finden:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">Quellcode bei <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">Homepage</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">Übersetzungen</a>;</li>
+</ul>

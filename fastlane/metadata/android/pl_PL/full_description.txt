@@ -1,0 +1,39 @@
+<i>"Pozostawanie w kontakcie z wszystkimi Moimi Zainteresowaniami nigdy nie było tak łatwe.".</i>
+
+<b><i>Handy News Reader</i>: wolne (od reklam) oprogramowanie na licencji <i>GNU GPL</i>.</b>
+
+<ul>
+	<li><b>stwórz Swoje Wymarzone Czasopismo!</b></li>
+	<li><b>interesujące artykuły prosto w Twoje ręce</b></li>
+	<li><b>nareszcie ciesz się lekturą</b></li>
+</ul>
+
+...ciesz się życiem <b>będąc wolnym od rozpraszaczy - oraz na bieżąco z Twoimi zainteresowaniami</b> jednocześnie. Skoncentruj się na Esencji...
+
+Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytnik <i>RSS</i> który <b>szanuje Twój Czas, jak i Pokój Wewnętrzny</b>: unika przełączania uwagi oraz rozpraszaczy tak powszechnych, gdy pomyśleć o urządzeniach mobilnych.
+
+<ul>
+<b><u>Funkcje</u>:</b>
+	<li><b><u>pełne artykuły</u> pod ręką</b>: bez potrzeby angażowania zewnętrznej przeglądarki, by zobaczyć pełny tekst,</li>
+	<li><b><u>wygodna</u> lektura</b>: przełączanie artykułów przyciskami głośności lub przeciągnięciem, <i>Strefy Aktywne</i>, zapamiętywanie pozycji czytania <u>każdego artykułu z osobna</u>,</li>
+	<li><b>powiadomienia o ważnych artykułach</b>: nigdy więcej nie przegapisz niczego ważnego,</li>
+	<li><b><i>"Przeczytaj Później"</i></b>: Możesz szybko przewertować artykuły - <b>oznaczając wybrane do przeczytania później</b> w wolnym czasie - lub by po prostu zachować,</li>
+	<li><b><i>"Usuń po przeczytaniu"</i></b> - gdy skończysz czytać jeden z wcześniej wybranych artykułów - zostanie on automatycznie usunięty z zestawu <i>'Ulubionych'</i> (=<i>'Przeczytaj Później'</i>),</li>
+	<li><b>gotowy do pracy off-line</b> - zanurz się interesującej lekturze bez rozpraszaczy: po aktualizacji nie ma potrzeby dodatkowego ładowania czegokolwiek - naprawdę obejdzie się bez Internetu :),</li>
+	<li><b>oszczędzaj transfer</b>: przejdź on-line tylko po nowe artykuły - nie by każdorazowo ładować ich pełną wersję; kontroluj co powinno być pobierane - i do jakiego stopnia,</li>
+	<li><b>wspierający gesty</b>: np. przesuń z góry w dół by dodać/usunąć artykuł z <i>Ulubionych</i>, przesuń wzdłuż lewej krawędzi ekranu by dostosować jasność,</li>
+	<li><b>przyjazny dla użytkownika</b>: dbaj o wzrok z ciemnym motywem, dostosuj rozmiar tekstu, kolor i jasność do Własnych potrzeb,</li>
+	<li><b>błyskotliwe pomysły</b>: niezlinkowane tytuły artykułów nie nawiną się więcej pod palce ;) ; przewijanie strony o 90% może ułatwić lekturę, czyniąc ją bardziej komfortową,</li>
+	<li><b>wysoce konfigurowalny</b>: od rozmiaru <i>Stref Aktywnych</i> po kolor i podkreślanie hiperłączy - jest sporo detali, które możesz dostosować dokładnie wedle Własnego gustu i potrzeb,</li>
+	<li><b>funkcje zaawansowane</b>: automatyczna kopia zapasowa (eksport/import do/z pliku w formacie <i>.opml</i>), dostarczanie treści z nie-<i>RSS</i>'owych stron, </li>
+	<li><b>więcej interesujących funkcji</b> "za pasem" - odwiedź naszą stronę by dowiedzieć się więcej :) !,</li>
+	<li><b><u>ważne</u>:</b> ta aplikacja NIE synchronizuje się z czytnikami kanałów online (np. <i>Feedly</i>),</li>
+	<li><b>wrażenia i sugestie mile widziane;</b></li>
+</ul>
+
+<ul>
+<b>Gdzie możesz nas znaleźć:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">kod źródłowy na <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">strona domowa</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">tłumaczenia</a>;</li>
+</ul>

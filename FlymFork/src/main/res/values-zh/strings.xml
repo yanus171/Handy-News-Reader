@@ -162,6 +162,8 @@
     <string name="menu_star">加星标</string>
     <string name="menu_unstar">取消星标</string>
     <string name="menu_share">分享</string>
+    <string name="menu_mark_all_as_unread">标记全部为未读</string>
+    <string name="menu_mark_upper_as_read">标记这条上面的条目未读</string>
     <string name="menu_full_screen">全屏</string>
     <string name="menu_actionbar_visible">操作栏</string>
     <string name="menu_font_bold">粗体</string>
@@ -347,7 +349,10 @@
     <string name="actionBarToggle">切换操作栏</string>
     <string name="standard">标准</string>
     <string name="fontsize_entrylist">文章列表的字体大小</string>
+    <string name="confirmation">确认</string>
     <string name="question_delete_entry">删除这篇文章？</string>
+    <string name="question_mark_upper_as_read">标记上面的文章为已读？</string>
+    <string name="question_mark_all_as_unread">标记所有文章为未读？</string>
     <string name="share_all_text">分享全文</string>
     <string name="group">组</string>
     <string name="auto_image_load">自动加载图像</string>
@@ -556,6 +561,16 @@
     <string name="menu_unstar_articles">取消文章星标</string>
     <string name="unstarAllArtcilesComfirm">取消所有可见的标星文章的星号。您确定吗？</string>
     <string name="unstarAllArtcilesComfirm2">所有可见的标星文章的星号都将被取消。你真的确定吗?</string>
+    <string name="tap_actions_were_enabled">点击操作已启用</string>
+    <string name="tap_actions_were_disabled">点击操作已禁用！点击右上角启用</string>
+    <string name="list_was_scrolled_to_top">滚动到顶部</string>
+    <string name="list_was_scrolled_to_bottom">滚动到底部</string>
+    <string name="articleWasUnstarred">已移除了一篇文章的星标</string>
+    <string name="articleNotFound">找不到一篇文章 :(</string>
+    <string name="atricle_list_size_progressbar_maxsize">"最大文本大小 "</string>
+    <string name="atricle_list_size_progressbar_maxsize_descr">以 KB 显示水平指示器 (0表示关闭)</string>
+    <string name="setting_edit_feed_force_portrait_orientation">编辑新闻源竖屏方向</string>
+    <string name="setting_edit_feed_force_portrait_orientation_summary">在编辑Feed窗口中强制使用竖屏方向 - 检查您的手机是否有窄屏</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>

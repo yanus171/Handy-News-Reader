@@ -166,6 +166,8 @@ GENERAL]]></string>
     <string name="menu_star">Oznacz jako Ulubione</string>
     <string name="menu_unstar">Usuń z Ulubionych</string>
     <string name="menu_share">Udostępnij</string>
+    <string name="menu_mark_all_as_unread">Oznacz wszystkie jako nieprzeczytane</string>
+    <string name="menu_mark_upper_as_read">Oznacz powyższe jako przeczytane</string>
     <string name="menu_full_screen">Pełny ekran</string>
     <string name="menu_actionbar_visible">Pasek Akcji</string>
     <string name="menu_font_bold">Pogrub czcionkę</string>
@@ -352,7 +354,10 @@ GENERAL]]></string>
     <string name="actionBarToggle">przełącznik Paska Akcji</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Rozmiar tekstu na liście artykułów</string>
+    <string name="confirmation">Potwierdzenie</string>
     <string name="question_delete_entry">Usunąć artykuł?</string>
+    <string name="question_mark_upper_as_read">Czy oznaczyć powyższe jako przeczytane?</string>
+    <string name="question_mark_all_as_unread">Czy oznaczyć wszystkie artykuły jako nieczytane?</string>
     <string name="share_all_text">Udostępnij cały tekst</string>
     <string name="group">Dodaj do grupy</string>
     <string name="auto_image_load">Automatycznie wczytuj obrazki</string>
@@ -561,6 +566,16 @@ GENERAL]]></string>
     <string name="menu_unstar_articles">Odznacz gwiazdkę z artykułów</string>
     <string name="unstarAllArtcilesComfirm">ODZNACZ GWIAZDKĄ WSZYSTKIE widoczne OZNACZONE GWIAZDKĄ artykuły. Na pewno?</string>
     <string name="unstarAllArtcilesComfirm2">Wszystkie widoczne artykuły oznaczone gwiazdką zostaną odznaczone. NA PEWNO?</string>
+    <string name="tap_actions_were_enabled">Akcje tapnięcia zostały aktywowane</string>
+    <string name="tap_actions_were_disabled">Akcje tapnięcia zostały wyłączone! Tapnij na górze po prawej by włączyć</string>
+    <string name="list_was_scrolled_to_top">Przewinięto na górę</string>
+    <string name="list_was_scrolled_to_bottom">Przewinięto na dół</string>
+    <string name="articleWasUnstarred">Artykuł został odznaczony gwiazdką</string>
+    <string name="articleNotFound">Artykuł nie został znaleziony :(</string>
+    <string name="atricle_list_size_progressbar_maxsize">"Maks. rozmiar tekstu"</string>
+    <string name="atricle_list_size_progressbar_maxsize_descr">W kB dla poziomego wskaźnika (0 by wyłączyć)</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Pionowa orientacja Edycji Kanału</string>
+    <string name="setting_edit_feed_force_portrait_orientation_summary">Wymusza pionową orientację ekranu w oknie Edycji Kanału - zaznacz, jeśli Twój telefon ma wąski ekran</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>

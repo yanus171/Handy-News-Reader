@@ -29,8 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[<b><big>Άδεια και πληροφορίες</big></b><br/>
-    Αυτό το πρόγραμμα είναι έργο ελεύθερου λογισμικού: μπορεί να διανεμηθεί ή/και να τροποποιηθεί με τους όρους της  GNU General Public License όπως δημοσιοποιήθηκαν από το Free Software Foundation, στην τρίτη ή νεότερη έκδοσή της. Δείτε http://www.gnu.org/licenses<br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Άδεια και πληροφορίες</h2>
+    <p>Αυτό το πρόγραμμα είναι έργο ελεύθερου λογισμικού: μπορεί να διανεμηθεί ή/και να τροποποιηθεί με τους όρους της  GNU General Public License όπως δημοσιοποιήθηκαν από το Free Software Foundation, στην τρίτη ή νεότερη έκδοσή της. Δείτε http://www.gnu.org/licenses<br/>
     <br/>
     Αυτή τη εφαρογή βασίζεται στο \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Έχουν προστεθεί επιπλέον χαρακτηριστικά όπως:<br/>
     <br/>
@@ -87,7 +87,7 @@
     <string name="menu_refresh">Ανανέωση</string>
     <string name="flym_feeds">Ροές Handy News Reader</string>
     <string name="error">Σφάλμα</string>
-    <string name="network_error">Είστε εκτός δικτύου.</string>
+    <string name="network_error">Είστε εκτός δικτύου</string>
     <string name="loading">Φόρτωση…</string>
     <string name="no_result">Χωρίς αποτελέσματα</string>
     <string name="drawer_open">Άνοιγμα συρταριού πλοήγησης</string>
@@ -99,18 +99,18 @@
     <string name="no_filters">Χωρίς φίλτρα</string>
     <string name="context_menu_delete">Διαγραφή</string>
     <string name="edit_feed_title">Επεξεργασία Ροής</string>
-    <string name="new_feed_title">Νέα Ροή</string>
+    <string name="new_feed_title">Νέα ροή ή άρθρο</string>
     <string name="context_menu_edit">Επεξεργασία</string>
     <string name="menu_add_group">Προσθήκη ομάδας</string>
     <string name="menu_import_export">Εξαγωγή και εισαγωγή</string>
     <string name="menu_import">Εισαγωγή από αρχείο OPML</string>
     <string name="menu_export">Εξαγωγή σε αρχείο OPML</string>
     <string name="storage_request_explanation">Για να μπορέσετε να εισάγετε ή να εξάγετε τις Ροές σας από/σε αρχείο, πρέπει να επιτρέψετε την πρόσβαση της εφαρμογής στη μνήμη της συσκευής σας.</string>
-    <string name="error_feed_error">Δεν είναι διαθέσιμη η ιστοσελίδα απ\' όπου προέρχεται η Ροή.</string>
+    <string name="error_feed_error">Η ιστοσελίδα ροής δεν είναι διαθέσιμη</string>
     <string name="error_feed_process">Αυτή τη Ροή δεν μπορείτε να την επεξεργαστείτε.</string>
-    <string name="error_feed_url_exists">Αυτή η διεύθυνση ήδη υπάρχει.</string>
-    <string name="error_feed_import">Το αρχείο που επιλέξατε δεν μπορεί να εισαχθεί.</string>
-    <string name="error_feed_export">Η εξαγωγή απέτυχε. Ελέγξτε αν έχει προσαρτηθεί εγγράψιμη SD κάρτα.</string>
+    <string name="error_feed_url_exists">Αυτή η διεύθυνση ήδη υπάρχει</string>
+    <string name="error_feed_import">Το επιλεγμένο αρχείο δεν μπορεί να εισαχθεί</string>
+    <string name="error_feed_export">Η εξαγωγή απέτυχε. Σιγουρευτείτε ότι έχετε προσαρτήσει μία εγγράψιμη SD κάρτα</string>
     <string name="error_external_storage_not_available">Η εξωτερική θέση αποθήκευσης (π.χ. κάρτα SD) δεν είναι διαθέσιμη.</string>
     <string name="feed_url">Διεύθυνση URL</string>
     <string name="optional">(προαιρετικό)</string>
@@ -135,14 +135,14 @@
     <string name="question_delete_filter">Θέλετε πραγματικά να διαγράψετε αυτό το φίλτρο;</string>
     <string name="add_group_title">Επιλογή ονόματος ομάδας</string>
     <string name="edit_group_title">Επεξεργασία ονόματος ομάδας</string>
-    <string name="message_exported_to">Εξαγωγή στο %s.</string>
+    <string name="message_exported_to">Εξαγωγή στο %s</string>
     <string name="to_group_title">Ενέργεια μετακίνησης Ροής</string>
     <string name="to_group_message">Θέλετε να τοποθετήσετε αυτή τη ροή μέσα ή έξω από αυτή την ομάδα;</string>
     <string name="to_group_above">Έξω από την ομάδα</string>
     <string name="to_group_into">Μέσα στην ομάδα</string>
     <string name="add_custom_feed">Προσθήκη της δικής σας Ροής ή αναζήτηση μίας</string>
     <string name="google_news_title">Θέματα Ειδήσεων Google</string>
-    <string name="google_news_indicator">Διαλέξτε ένα ή περισσότερα θέματα για να προσθέσετε. Κάποια μπορεί να μη παρέχονται από τη Google στη γλώσσα σας.</string>
+    <string name="google_news_indicator">Διαλέξτε ένα ή περισσότερα θέματα για προσθήκη. Κάποια μπορεί να μη παρέχονται από τη Google στη γλώσσα σας</string>
     <string name="google_news_top_stories">Κορυφαία νέα</string>
     <string name="google_news_world">Κόσμος</string>
     <string name="google_news_business">Επιχειρήσεις</string>
@@ -177,8 +177,8 @@
     <string name="menu_reload_full_text_without_mobilizer">Φόρτωση όλου του κειμένου χωρίς το θέμα για φορητές συσκευές</string>
     <string name="share_favorites_title">Handy News Reader: Καταχωρήσεις με αστέρι</string>
     <string name="link_was_copied_to_clipboard">Ο σύνδεσμος αντιγράφηκε</string>
-    <string name="get_full_text">Φόρτωση όλου του άρθρου.</string>
-    <string name="show_text_in_entry_list">Εμφάνιση αρχικού κειμένου στη λίστα των άρθρων.</string>
+    <string name="get_full_text">Φόρτωση πλήρους άρθρου</string>
+    <string name="show_text_in_entry_list">Εμφάνιση αρχικού κειμένου στη λίστα των άρθρων</string>
     <string name="original_text">Εμφάνιση αρχικού κειμένου</string>
     <string name="see_enclosure">Φόρτωση συνημμένου</string>
     <string name="see_link">Προβολή στον φυλλομετρητή - Browser</string>
@@ -226,7 +226,7 @@
     <string name="max_single_refresh_traffic_mb_descr">Η ανανέωση θα σταματάει αν η ταχύτητα του δικτύου φτάσει τη μέγιστη τιμή (σε MB) και δεν είστε σε σύνδεση Wi-Fi</string>
     <string name="settings_load_comments">Φόρτωση σχολίων</string>
     <string name="settings_load_comments_description">Σε άρθρα πλήρες κείμενο</string>
-    <string name="settings_category_article_list">Άρθρα λίστα</string>
+    <string name="settings_category_article_list">Λίστα άρθρων</string>
     <string name="settings_category_article_list_summary">Εμφάνιση των άρθρων\' λίστα</string>
     <string name="settings_font_size">Μέγεθος γραμματοσειράς</string>
     <string name="show_article_icon">Να φαίνεται το εικονίδιο του άρθρου</string>
@@ -319,7 +319,7 @@
     <string name="article_images_downloading">Κατέβασμα εικόνων των άρθρων</string>
     <string name="mobilizeAll">Θέμα φορητών συσκευών</string>
     <string name="RefreshFeeds">Ανανέωση Ροών</string>
-    <string name="deleteImages">Διαγραφή εικόνων</string>
+    <string name="deleteImages">Διαγραφή εικόνων:</string>
     <string name="deleteFullTexts">Πλήρης διαγραφή κειμένων:</string>
     <string name="applyOperations">Εφαρμογή αλλαγών</string>
     <string name="extractContent">Εξαγωγή περιεχομένου</string>
@@ -342,7 +342,7 @@
     <string name="markAllAsRead">Σημείωση όλων ως αναγνωσμένα</string>
     <string name="pageUp">προηγούμενη σελίδα</string>
     <string name="pageDown">επόμενη σελίδα</string>
-    <string name="fullScreenToggle">Ενεργοποίηση/Απενεργοποίηση πλήρους οθόνης</string>
+    <string name="fullScreenToggle">ενεργοποίηση/απενεργοποίηση πλήρους οθόνης</string>
     <string name="auto_refresh_feed">Αυτόματη ανανέωση Ροών</string>
     <string name="actionBarToggle">Εναλλαγή γραμμής ενεργειών</string>
     <string name="standard">Πρότυπο</string>
@@ -362,7 +362,7 @@
     <string name="lock_orientation">Οριζόντιος προσανατολισμός</string>
     <string name="markAsStarred">Σημείωση με αστέρι</string>
     <string name="markedAsStarred">Το άρθρο σημειώθηκε με αστέρι: </string>
-    <string name="deleteAllEntries">Διαγραφή όλων των άρθρων χωρίς αστέρι</string>
+    <string name="deleteAllEntries">Διαγραφή όλων των άρθρων χωρίς αστέρι;</string>
     <string name="question">Ερώτηση</string>
     <string name="reload_full_text_with_tags">Επαναφόρτωση με ετικέτες</string>
     <string name="filter_hint">Η δράση ενός φίλτρου θα ξεκινήσει εάν ικανοποιηθεί τουλάχιστον μία προϋπόθεση (κανόνας). \'Αποδοχή\' υπερισχύει \'Απόρριψη\'</string>
@@ -381,7 +381,7 @@
     <string name="menu_toggle_theme">Αλλαγή θέματος</string>
     <string name="turnOn">Ενεργοποίηση</string>
     <string name="brightness">Φωτεινότητα</string>
-    <string name="brightness_change">Αλλαγή φωτεινότητας</string>
+    <string name="brightness_change">αλλαγή φωτεινότητας</string>
     <string name="criticalErrorOccured">Ένα σημαντικό σφάλμα συνέβη στην εφαρμογή. Παρακαλώ στείλτε αυτό το κείμενο στον προγραμματιστή</string>
     <string name="criticalErrorSending">Αποστολή σημαντικού σφάλματος…</string>
     <string name="copyToClipboard">Στο πρόχειρο</string>
@@ -424,7 +424,7 @@
     <string name="delete_read_articles_descr">ανεξάρτητα από το χρόνο που κρατιούνται τα άρθρα</string>
     <string name="data_folder">Φάκελος δεδομένων</string>
     <string name="data_folder_descr">Που θα αποθηκεύονται τα κείμενα και οι εικόνες των κατεβασμένων άρθρων</string>
-    <string name="internalMemory">Προσωρινή μνήμη (Cache)</string>
+    <string name="internalMemory">Εσωτερική μνήμη (Cache)</string>
     <string name="externalMemory">Εξωτερική μνήμη</string>
     <string name="show_html">Να ναι ορατή η ηλεκτρονική διεύθυνση</string>
     <string name="image_white_background">Λευκή εικόνα φόντου</string>
@@ -435,7 +435,7 @@
     <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
     <string name="article_list_loading">Φόρτωση λίστας άρθρων</string>
     <string name="article_opening">Άνοιγμα άρθρου</string>
-    <string name="web_page_loading">Φόρτωση σελίδας...</string>
+    <string name="web_page_loading">Φόρτωση σελίδας</string>
     <string name="article_menu_show_by_tap_descr">Όταν η μπάρα ενεργειών είναι κρυμένη- αλλιώς θα τη βρείτε μόνο στο μενού ενεργειών</string>
     <string name="menu_go_back">Επιστροφή</string>
     <string name="menu_go_top">Κύλιση στην αρχή</string>
@@ -541,8 +541,13 @@
     <string name="megabytes">ΜΒ</string>
     <string name="create_start_auto_refersh">Έναρξη αυτόματης ανανέωσης</string>
     <string name="settings_thread_count">Μέτρηση νήματος</string>
+    <string name="menu_reload_all_texts">Επαναφόρτωση όλων των κειμένων</string>
+    <string name="reloading_all_texts">Επαναφόρτωση όλων των κειμένων</string>
+    <string name="menu_visible_articles_action">Ορατά άρθρα</string>
+    <string name="tap_actions_were_enabled">Οι ενέργειες αφής ενεργοποιήθηκαν</string>
+    <string name="tap_actions_were_disabled">Οι ενέργειες του χτυπήματος απενεργοποιήθηκαν! Πατήστε πάνω δεξιά για ενεργοποίηση</string>
     <plurals name="number_of_new_entries">
-        <item quantity="one">Ένα νέο άρθρο.</item>
-        <item quantity="other">%d νέα άρθρα.</item>
+        <item quantity="one">Ένα νέο άρθρο</item>
+        <item quantity="other">%d νέα άρθρα</item>
     </plurals>
 </resources>

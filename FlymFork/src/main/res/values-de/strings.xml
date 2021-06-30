@@ -29,50 +29,46 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lizenz und Informationen</big></b><br/>
-    Dieses Programm ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version, weitergeben und/oder ändern. Siehe http://www.gnu.org/licenses<br/>
-    <br/>
-    Diese App basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. Folgende Funktionen wurden inzwischen hinzugefügt:<br/>
-    <br/>
-    • Erweiterung durch Feedgruppen<br/>
-    • versteckte Tasten zum Blättern bei Vollbild<br/>
-    • Anzahl herunterzuladender Bilder pro Feed einstellbar<br/>
-    • Möglichkeit zum Abbrechen des Aktualisierungsvorganges<br/>
-    • und vieles mehr<br/>
-    <br/>
-    <b><big>Wo Sie uns finden können</big></b>
-    <br/>
-    • Auf unserer <b><a href="https://handynewsreader.blogspot.com/">Homepage</a></b> finden Sie Neuigkeiten und Informationen<br/>
-    • Sie können diese App bei <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b> herunterladen<br/>
-    • Sie können diese App bei <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b> herunterladen<br/>
-    • Es gibt auch einen Thread im <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">Forum der Entwicklercommunity XDA</a></b><br/>
-    • Den Quellcode finden Sie bei <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
-    <br/>
-    <b><big>Unsere Unterstützung</big></b>
-    <br/>
-    Wenn Sie einen Fehler in dieser App finden, bitte<br/>
-    • öffnen Sie einen Problemfall auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">E-Mail an den Entwickler</a></b><br/>
-    <br/>
-    <b><big>Ihre Unterstützung</big></b>
-    <br/>
-    Wenn Sie eine Idee für neue Funktionen haben, bitte<br/>
-    • öffnen Sie ein Thema auf der <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a></b> oder<br/>
-    • senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">E-Mail an den Entwickler</a></b><br/>
-    <br/>
-    <b>Bitte bewerten Sie diese App bei <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>, wenn Sie sie nützlich finden.</b><br/>
-    <br/>
-    <b><big>Übersetzungen</big></b>
-    <br/>
-    Sie können bei der Übersetzung dieser App in Ihre Sprache auf der Plattform <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> helfen.<br/>
-    Wenn Sie Ihre Sprache nicht finden, senden Sie bitte eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">E-Mail an den Entwickler</a></b>.<br/>
-    <br/>
-    <b><big>Danksagungen</big></b>
-    <br/>
-    <b>Entwickler:</b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Lizenz und Informationen</h2>
+    <p>Dieses Programm ist Free/Libre Open-Source Software: Sie können sie nach den, von der Free Software Foundation veröffentlichten Bedingungen der GNU General Public License in der Version 3 oder (auf Wunsch) jeder späteren Version dieser Lizenz weiterverbreiten oder verändern. Siehe <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
+    <p>Diese App is basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. In diesem Fork wurden folgende Funktionen ergänzt:</p>
+    
+	• Erweiterung von Feed-Gruppen<br/>
+    • unsichtbare Tasten zum Blättern im Vollbildmodus<br/>
+    • einstellbare Zahl der in einem Feed zu ladenden Bilder<br/>
+    • Möglichkeit die Aktualisierung abzubrechen<br/>
+    • und vieles mehr
+
+    <h2>Sie finden uns:</h2>
+
+    • auf unserer <b><a href=\"https://handynewsreader.blogspot.com\">Website</a></b> (Neuigkeiten und Infos)<br/>
+    • im <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play Store</a><br/>
+    • auf <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/>
+    • im <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA Forum</a><br/>
+    • auf <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a>
+
+    <h2>Unser Support</h2>
+    <p>Wenn Sie über ein Problem in der App stolpern, können Sie:</p>
+    • nachsehen, ob dieses Problem in unseren <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a> bereits angesprochen wurde<br/>
+    • ein Ticket auf der <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a> öffnen<br/>
+    • eine <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">E-Mail an den Entwickler</a> senden<br/>
+	
+    <h2>Ihr Support</h2>
+    <p>Wenn Sie eine Idee für eine neue Funktion haben, können Sie:</p>
+    • ein Ticket auf der <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub-Issues-Seite</a> eröffnen<br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">dem Entwickler eine E-Mail schreiben</a> 
+
+	<p>Wenn Sie diese App praktisch finden, bewerten Sie sie bitte auf <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></p>
+    Sie können auch <a href=\"https://github.com/yanus171/Handy-News-Reader\">spenden</a> </b> (Link am Ende der Beschreibung)
+ 
+    <h2>Übersetzungen</h2>
+	<p>Sie können auf <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> bei der Übersetzung in Ihre Sprache helfen. Wenn Ihre Sprache noch nicht aufgenommen ist, senden Sie eine <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">E-Mail an den Entwickler</a></b></p>
+
+    <h2>Danksagungen</h2>
+    <h3>Entwickler:</h3>
     ***developerList***
-    <br/>
-    <b>Übersetzer:</b><br/>
+    <br/><br/>
+	<h3>Übersetzer:</h3>
     ***translatorList***
     <br/>
     ]]></string>
@@ -106,7 +102,7 @@
     <string name="menu_import_export">Ex- und Importieren</string>
     <string name="menu_import">OPML-Datei importieren</string>
     <string name="menu_export">OPML-Datei exportieren</string>
-    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
+    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung für den Speicherzugriff.</string>
     <string name="error_feed_error">Zugriff auf Feed-Adresse nicht möglich.</string>
     <string name="error_feed_process">Der Feed kann nicht verarbeitet werden.</string>
     <string name="error_feed_url_exists">Diese Adresse existiert bereits.</string>
@@ -130,7 +126,7 @@
     <string name="reject">ABLEHNEN</string>
     <string name="feed_search">Feed-Suche</string>
     <string name="web_page_search_duckduckgo">Webseitensuche (DuckDuckGo)</string>
-    <string name="select_file">Datei auswählen (SD-Stammverzeichnis)</string>
+    <string name="select_file">Datei auswählen (Feedex-Ordner)</string>
     <string name="question_delete_feed">Möchten Sie diesen Feed wirklich löschen?</string>
     <string name="question_delete_group">Möchten Sie diese Gruppe mit allen Feeds wirklich löschen?</string>
     <string name="question_delete_filter">Möchten Sie diesen Filter wirklich löschen?</string>
@@ -163,6 +159,8 @@
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
+    <string name="menu_mark_all_as_unread">Alles als ungelesen kennzeichnen</string>
+    <string name="menu_mark_upper_as_read">Alle oberhalb als gelesen kennzeichnen</string>
     <string name="menu_full_screen">Vollbild</string>
     <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
@@ -174,7 +172,7 @@
     <string name="menu_mark_as_favorite">Als Favorit markieren</string>
     <string name="menu_mark_as_unfavorite">Favorit-Markierung entfernen</string>
     <string name="menu_mark_as_unread">Als ungelesen markieren</string>
-    <string name="menu_reload_full_text">Gesamten Text neu laden</string>
+    <string name="menu_reload_full_text">Gesamten Text</string>
     <string name="menu_reload_full_text_without_mobilizer">Ohne Mobilizer neu laden</string>
     <string name="share_favorites_title">Handy News Reader: Favoriten</string>
     <string name="link_was_copied_to_clipboard">Link kopiert</string>
@@ -222,7 +220,7 @@
     <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
     <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
     <string name="settings_max_image_download_size_kb">Maximale Bildgröße (kB)</string>
-    <string name="settings_max_image_download_size_kb_summary">Größere Bilder nicht automatisch laden\n</string>
+    <string name="settings_max_image_download_size_kb_summary">Größere Bilder werden nicht automatisch geladen</string>
     <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
     <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
     <string name="settings_load_comments">Kommentare laden</string>
@@ -247,8 +245,8 @@
     <string name="show_read_article_count_descr">In der Feed-Liste die Anzahl der gelesenen Artikel anzeigen</string>
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
     <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
-    <string name="textColorRead">Textfarbe (gelesen)</string>
-    <string name="textColorRead_descr">Gelesene Artikel - Text- und Hintergrundfarbe</string>
+    <string name="textColorRead">Textfarbe gelesener Artikel</string>
+    <string name="textColorRead_descr">Text- und Hintergrundfarbe gelesener Artikel in der Artikelliste</string>
     <string name="settings_color_text_read_sample_short">Text</string>
     <string name="settings_color_text_read_sample_long">Gelesene Artikel</string>
     <string name="settings_category_article_text">Artikelinhalt</string>
@@ -262,20 +260,20 @@
     <string name="entry_text_align_justify">Blocksatz</string>
     <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
     <string name="linkColor">Farbe der Links</string>
-    <string name="linkColor_descr">Farbe der weiterführenden Links</string>
+    <string name="linkColor_descr">Text- und Hintergrundfarbe der weiterführenden Links</string>
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Farbe der Links</string>
     <string name="underline_links">Links unterstreichen</string>
     <string name="article_text_show_clock">Uhrzeit anzeigen</string>
-    <string name="article_text_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit in der oberen rechten Ecke angezeigt</string>
+    <string name="article_text_show_clock_description">Wenn aktiviert, wird im Vollbildmodus die aktuelle Zeit angezeigt</string>
     <string name="settings_informations_size">Textgröße der zusätzlichen Informationen</string>
-    <string name="article_text_information_color">Farbe und Hintergrund der Informationen</string>
-    <string name="article_text_information_color_descr">Farbe und Hintergrund der zusätzlichen Informationen in der Kopfzeile</string>
+    <string name="article_text_information_color">Text- und Hintergrundfarbe der Informationen</string>
+    <string name="article_text_information_color_descr">Text- und Hintergrundfarbe der zusätzlichen Informationen in der Kopfzeile</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">Lese-Fortschrittsbalken anzeigen</string>
-    <string name="article_text_progress_height">Höhe des Fortschrittsbalkens</string>
-    <string name="article_text_progress_color">Farbe des Fortschrittsbalkens</string>
+    <string name="article_text_show_progress">Lese-Fortschrittsleiste anzeigen</string>
+    <string name="article_text_progress_height">Höhe der Fortschrittsleiste</string>
+    <string name="article_text_progress_color">Farbe der Fortschrittsleiste</string>
     <string name="settings_category_operation">Bedienung</string>
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
@@ -349,7 +347,10 @@
     <string name="actionBarToggle">Aktionsleiste umschalten</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Schriftgröße in der Artikelliste</string>
+    <string name="confirmation">Bestätigung</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
+    <string name="question_mark_upper_as_read">Alle oberen Artikel als gelesen kennzeichnen?</string>
+    <string name="question_mark_all_as_unread">Alle Artikel als ungelesen kennzeichnen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
     <string name="auto_image_load">Bilder automatisch laden</string>
@@ -374,7 +375,7 @@
     <string name="loadTypeWebPageSearch"><b>Webseitensuche</b> <font color="gray">(DuckDuckGo - einen Artikel finden und laden)</font></string>
     <string name="loadTypeOneWebPage"><b>Webseite auftrennen</b> <font color="gray">(Inhalt der Webseite mithilfe von Klassennamen der HTML-Tags in mehrere Artikel aufteilen)</font></string>
     <string name="loadType">Art des Ladens:</string>
-    <string name="global_filter">Automatisch als Favorit markieren&#8230;</string>
+    <string name="global_filter">Automatisch als Favorit kennzeichnen &#8230;</string>
     <string name="global_filter_descr">Regel(n) zum automatischen Markieren als Favorit. Wird auf alle Feeds angewendet.</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">Wenn deaktiviert, auf Inhalt anwenden</string>
     <string name="rule_text">Schlüsselwort(e)/Regeln</string>
@@ -392,7 +393,7 @@
     <string name="exportingToFile">In Datei exportieren&#8230;</string>
     <string name="importingFromFile">Aus Datei importieren&#8230;</string>
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
-    <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird\n</string>
+    <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird</string>
     <string name="create_auto_backup">Backup ausführen</string>
     <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
@@ -405,8 +406,8 @@
     <string name="text">Schrift</string>
     <string name="background1">Hintergrund</string>
     <string name="auto_refresh_requires_charging">Nur beim Laden</string>
-    <string name="global_class_list_to_remove_from_article_text">Textregeln entfernen</string>
-    <string name="global_class_list_to_remove_from_article_text_summary">Klassenname pro Zeile</string>
+    <string name="global_class_list_to_remove_from_article_text">Text entfernen</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">Diese Regeln gelten für alle Seiten. Ein Klassenname pro Zeile</string>
     <string name="global_date_class_list_summary">Klassenname pro Zeile. Die Elemente dieser Klassen werden beim Laden von WebPage-Links als Datum des Artikels betrachtet</string>
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
@@ -421,7 +422,7 @@
     <string name="custom_data_folder">Benutzerdefinierter Pfad für externe Dateien</string>
     <string name="custom_data_folder_descr">(leer lassen, um Standard zu verwenden) Pfad für Feedex-Ordner, um heruntergeladene Bilder und Sicherungen zu speichern</string>
     <string name="entry_text_title_link">Titel verknüpfen</string>
-    <string name="entry_text_title_link_description">Ermöglicht das Öffnen von Webseiten im Browser durch Antippen der Überschrift</string>
+    <string name="entry_text_title_link_description">Ermöglicht das Öffnen des Artikels im Browser durch Antippen der Überschrift</string>
     <string name="delete_read_articles">Gelesene Artikel löschen</string>
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
@@ -463,7 +464,7 @@
     <string name="menu_delete_old">Alte Artikel löschen</string>
     <string name="settings_category_delete_old">Alte löschen</string>
     <string name="tool_bar_color">Farbe der Werkzeugleiste</string>
-    <string name="tool_bar_color_desc">diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
+    <string name="tool_bar_color_desc">Diese Farbe wird auch für die Artikeltext-Schaltflächen und für die Statusleiste verwendet</string>
     <string name="one_webpage_hint">Hinweis: Bei dieser Art des Ladens wird der Webseiteninhalt nach Klassennamen der HTML-Elemente in Artikel unterteilt. Sie sollten die Klassennamen für Artikelüberschrift, Datum und Bild-URL festlegen. Um die benötigten Klassennamen zu finden, laden Sie die Seite (Jetzt lesen) und wählen im Menüpunkt \"Neu laden&#8230;\" den Unterpunkt \"Artikelansicht bearbeiten\". Hiermit werden die Klassennamen der HTML-Elemente angezeigt und Sie können die benötigten Elemente kopieren.</string>
     <string name="one_webpage_article_classname_label">Root-Artikel-Element</string>
     <string name="one_webpage_edittext_classname_hint">Klassenname</string>
@@ -510,7 +511,7 @@
     <string name="open_tag_menu_dialog_title">"Regel für die Klasse festlegen "</string>
     <string name="show_article_category">"Artikelkategorie anzeigen"</string>
     <string name="article_text_information">Zusätzliche Informationen in der Kopfzeile</string>
-    <string name="article_text_progress">Lese-Fortschrittsbalken in der Kopfzeile</string>
+    <string name="article_text_progress">Lese-Fortschrittsleiste in der Kopfzeile</string>
     <string name="global_removeText_filter_rule_descr">Regex (ein Ausdruck pro Zeile) auf jeden Artikelinhalt angewendet</string>
     <string name="parsing_web_page_links">WebPage-Links analysieren</string>
     <string name="global_date_class_list">Liste der Datumsklassen</string>
@@ -518,7 +519,7 @@
     <string name="set_date">Als Datum festlegen</string>
     <string name="clearingWebViewChache">WebView-Zwischenspeicher leeren</string>
     <string name="article_text_show_date">Datum anzeigen</string>
-    <string name="article_text_show_date_description">Der Tag des Monats und ein Wochentag</string>
+    <string name="article_text_show_date_description">Wenn aktiviert, werden im Vollbildmodus der aktuelle Tag des Monats und der Wochentag angezeigt</string>
     <string name="remove_existing_feeds_question">Vorhandene Feeds vor dem Importieren entfernen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
@@ -530,7 +531,7 @@
     <string name="fontTextSample">Text</string>
     <string name="fontFamily">Schriftart</string>
     <string name="fontFamilySummary">Schriftfamilie fast aller Texte in der App. Ergänzung eigener Schriftarten als ttf-Dateien in Ordner: </string>
-    <string name="settings_font_rules">Schriftart</string>
+    <string name="settings_font_rules">Benutzerdefinierte Schriftart</string>
     <string name="settings_font_rules_description">Benutzerdefinierte Schriften für verschiedene Klassen in Artikeltexten nach Webseiten-Domäne festlegen</string>
     <string name="bold">Fett</string>
     <string name="font_rules_dialog_title">site_url:class=Schriftdateiname=Schriftgröße=Zeichenabstand=Schriftstärke</string>
@@ -550,7 +551,7 @@
     <string name="settings_thread_count_description">(1-100) Die Zahl der simultan durchgeführten Operationen während der Artikelaktualisierung. Je kleiner der Wert ist, desto kleiner ist die CPU- und Speicherauslastung bei der Aktualisierung. Je größer, desto schneller ist sie. Der optimale Wert hängt von der Zahl der CPU-Cores des Gerätes ab.</string>
     <string name="main_font_css_text_title">Text im CSS-Stil der Hauptschriftart</string>
     <string name="main_font_css_text_title_description">zum Einstellen der Schriftstärke, des Buchstabenabstands usw. für das Artikeltextfenster</string>
-    <string name="btn_reload_full_text">Text vollständig neu laden</string>
+    <string name="btn_reload_full_text">Gesamten Artikel neu laden</string>
     <string name="article_text_information_summary">Dieser Text ist nur sichtbar, wenn die Statusleiste ausgeblendet ist</string>
     <string name="menu_reload_all_texts">Alle Texte neu laden</string>
     <string name="reloading_all_texts">Alle Texte werden neu geladen</string>
@@ -558,8 +559,18 @@
     <string name="menu_unstar_articles">Artikel aus Favoriten entfernen</string>
     <string name="unstarAllArtcilesComfirm">Möchten Sie wirklich ALLE sichtbaren FAVORITEN entfernen?</string>
     <string name="unstarAllArtcilesComfirm2">Möchten Sie wirklich alle sichtbaren favorisierten Artikel aus den Favoriten entfernen?</string>
+    <string name="tap_actions_were_enabled">Tipp-Aktionen wurden aktiviert</string>
+    <string name="tap_actions_were_disabled">Tipp-Aktionen wurden deaktiviert! Oben-rechts antippen, um sie wieder zu aktivieren</string>
+    <string name="list_was_scrolled_to_top">Listenanfang erreicht</string>
+    <string name="list_was_scrolled_to_bottom">Listenende erreicht</string>
+    <string name="articleWasUnstarred">Kennzeichnung eines Artikels wurde entfernt</string>
+    <string name="articleNotFound">Es wurde kein Artikel gefunden 🙁</string>
+    <string name="atricle_list_size_progressbar_maxsize">"Max. Textgröße "</string>
+    <string name="atricle_list_size_progressbar_maxsize_descr">In KB für horizontale Anzeige</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Feed-Bearbeitung im Hochformat</string>
+    <string name="setting_edit_feed_force_portrait_orientation_summary">Auf dem Feed-Bearbeitungsbildschirm Ausrichtung im Hochformat erzwingen - prüfen Sie, ob das Gerät ein schmales Display hat</string>
     <plurals name="number_of_new_entries">
-        <item quantity="one">Ein neuer Artikel.</item>
-        <item quantity="other">%d neue Artikel.</item>
+        <item quantity="one">Ein neuer Artikel</item>
+        <item quantity="other">%d neue Artikel</item>
     </plurals>
 </resources>

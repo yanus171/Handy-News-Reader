@@ -29,7 +29,7 @@
     </string-array>
     <string-array name="settings_volume_buttons_action">
         <item>Bawaan</item>
-        <item>Beralih ke artikel berikut | sebelum</item>
+        <item>Buka artikel selanjutnya | sebelumnya</item>
         <item>Halaman naik | turun</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
@@ -40,7 +40,7 @@
     <string-array name="themeList">
         <item>Terang</item>
         <item>Gelap</item>
-        <item>Black</item>
+        <item>Hitam</item>
     </string-array>
     <string-array name="buttons_layout_captions">
         <item>Horizontal</item>
