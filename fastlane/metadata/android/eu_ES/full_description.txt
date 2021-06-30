@@ -1,0 +1,39 @@
+<i>"Nire interes guztietan egunean jartzea ez da inoiz hain erraza izan".</i>
+
+<b><i>Berri irakurle trebea</i>: iragarkirik ez, doan, software librea <i>GNU GPL</i> lizentziapean.</b>
+
+<ul>
+	<li><b>Egin zure ametsetako aldizkaria!</b></li>
+	<li><b>artikulu interesgarriak zuzen zure eskuetara</b></li>
+	<li><b>gozatu irakurketa behingoz</b></li>
+</ul>
+
+...gozatu zure bizitza <b>distrakziorik gabe, eta zure interesen inguruan egunean zaudela</b> aldi berean. Jarri arreta mamian...
+
+Hona <i>Berri irakurle trebea</i>, ezaugarrietan aberatsa den eta lineaz kanpo erabiltzeko pentsatuta dagoen <i>RSS</i> irakurle bat, <b>zure denbora eta bakea aintzat duena</b>: gaur egun mugikorretan ohikoa den ez bezala arreta deitzea eta distraitzea eragozten du.
+
+<ul>
+<b><u>Ezaugarriak</u>:</b>
+	<li><b><u>artikulu osoak</u> eskura</b>: ez dago kanpo nabigatzaile baten beharrik testu osoa irakurtzeko,</li>
+	<li><b>irakurketa <u>erosoa</u></b>: aldatu artikuluak bolumen botoiekin edo pasatu hatza, <i>sakatze zonak</i>, irakurketaren posizioa gogoratzen du <u>artikuluko</u>,</li>
+	<li><b>artikulu garrantzitsuetarako jakinarazpenak</b>: Ez duzu garrantzitsutzat jotzen duzun ezer galduko,</li>
+	<li><b><i>"Irakurri geroago"</i></b>: Azkar gainbegiratu ditzakezu artikuluak, <b>eta izar batekin markatu aukeratutakoak gero irakurtzeko</b>denbora duzunean, edo besterik gabe gordetzeko,</li>
+	<li><b><i>"Kendu amaitutakoan"</i></b>, behin artikuluarekin amaitu duzula, automatikoki kendu daiteke <i>'gogokoetatik'</i> (=<i>'Irakurri geroago'</i>) nahiez gero,</li>
+	<li><b>lineaz kanpo erabiltzeko prest</b>, murgildu irakuketan distrakziorik gabe: behin eguneratuta ez dago ezer gehiago deskargatzeko beharrik, internet gabe ibiliko da :),</li>
+	<li><b>aurreztu banda zabalera</b>: konektatu soilik artikulu beriak eskuratzeko, ez bere bertsio osoa eskuratzeko artikulu bakoitzeko, kontrolatu zer deskargatzen den, eta zein neurritan,</li>
+	<li><b>keinuekin erabilgarria</b>: e.g. pasatu hatza gora artikulua <i>gogoko</i>etara gehitzeko edo gogokoetatik kentzeko, pasatu hatza pantailaren ezkerreko ertzetik distira doitzeko,</li>
+	<li><b>erabilterraza</b>: zaindu zure begiak azal ilun batekin, doitu testuaren tamaina, kolorea eta distira zure beharretara,</li>
+	<li><b>ideia onak</b>: estekatu gabeko artikuluen goiburuak ez dira tartean jarriko gehiago ;) ; orriak altueraren %90 korritzean irakurketa erosoago bihurtzen du, ez nahasgarria,</li>
+	<li><b>oso pertsonalizagarria</b>: <i>Sanatze zonen</i> tamaina, esteken kolore eta azpimarratzea... zehetasun ugari zehazki zuk nahi bezala doitu ditzakezu,</li>
+	<li><b>ezaugarri aurrerauak</b>: babes-kopia automatikoa (<i>.opml</i> formatuko fitxategira/tik inportatu esortatzea), <i>RSS</i> ez darabilten webguneen edukia, </li>
+	<li><b>ezaugarri interesgarri gehiago</b> "dendan", bisitatu gure webgunea gehiago jakiteko :) !,</li>
+	<li><b><u>garrantzitsua</u>:</b> aplikazioa hau EZ da sinkronizatzen lineako berri jarioen irakurleekin (adib. <i>Feedly</i>),</li>
+	<li><b>iruzkinak eta ideiak ongi etorriak dira;</b></li>
+</ul>
+
+<ul>
+<b>Non aurkitu gaitzakezu:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">iturburu-kodea<i>GitHub</i> biltegian</a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">hasiera orria</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">itzulpenak</a>;</li>
+</ul>
