@@ -1,0 +1,1 @@
+Lettore offline di feed RSS, ricco di funzionalità.
