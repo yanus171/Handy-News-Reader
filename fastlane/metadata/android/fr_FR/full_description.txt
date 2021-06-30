@@ -1,0 +1,39 @@
+<i>"Rester en contact avec tous Mes Intérêts n'a jamais été aussi facile".</i>
+
+<b><i>Handy News Reader</i> : sans publicité/logiciel libre sous licence <i>GNU GPL</i> .</b>
+
+<ul>
+	<li><b>concevez le Magazine de Vos Rêves !</b></li>
+	<li><b>articles intéressants directement dans Vos mains</b></li>
+	<li><b>et enfin profitez de la lecture</b></li>
+</ul>
+
+...profitez de Votre Vie à la fois <b>sans distraction - et à jour sur Vos intérêts</b>. Allez à l'Essentiel...
+
+Découvrez <i>Handy NR</i> - un lecteur <i>RSS</i> hors-ligne aux nombreuses fonctionnalités, qui <b>respecte Votre Temps autant que Votre Tranquillité</b> : il évite de changer d\'attention et les distractions qui sont si familières aujourd\'hui sur les appareils mobiles.
+
+<ul>
+<b><u>Fonctionnalités</u>:</b>
+	<li><b><u>articles complets</u> à portée de main</b>: pas besoin d\'utiliser un navigateur web externe pour accéder au texte intégral.</li>
+	<li><b>lecture <u>pratique</u></b>: changement d\'article par boutons de volume ou balayage, <i>Zones d\'appui</i>, rappel de la position de lecture <u>pour chaque article</u>,</li>
+	<li><b>notification d\'articles importants</b>: Vous ne manquerez plus rien que Vous trouvez particulièrement important,</li>
+	<li><b><i>"A lire plus tard"</i></b>: Vous pouvez rapidement faire défiler les articles - <b>en marquant (par étoile) ceux à lire plus tard</b> dans Votre temps libre - ou simplement à conserver,</li>
+	<li><b><i>"Supprimer une fois terminé"</i></b> - une fois que Vous avez terminé un article - il peut être automatiquement supprimé des <i>'Favoris'</i> (=<i>'A lire plus tard'</i>),</li>
+	<li><b>prêt à passer hors ligne</b> - plongez dans une lecture intéressante sans distractions : une fois mis à jour, il n'y a pas besoin de chargement supplémentaire - ça marchera vraiment sans Internet :),</li>
+	<li><b>économisez la bande passante</b>: ne vous connectez que pour les nouveaux articles - pas pour charger leur version complète à chaque fois ; contrôlez ce qui doit être téléchargé - et à quel degré,</li>
+	<li><b>adapté aux mouvements sur l\'écran</b>: par ex. glisser vers le haut pour ajouter/supprimer un article aux <i>Favoris</i>, glisser le long du bord gauche de l\'écran pour ajuster la luminosité du texte,</li>
+	<li><b>ergonomique</b>: prenez soin de Vos yeux avec un thème sombre, ajustez la taille du texte, la couleur et la luminosité pour répondre à Vos besoins,</li>
+	<li><b>idées habiles</b>: les en-têtes d\'article non liés par un lien hypertexte n'interféreront plus avec Vos doigts ;) ; faire défiler les pages des articles de 90 % de leur hauteur peut rendre la lecture moins confuse = plus confortable,</li>
+	<li><b>hautement personnalisable</b>: de la taille des <i>Zones d\'appui</i> à la couleur des hyperliens et du soulignement - un tas de détails que Vous pouvez adapter exactement à Vos Propres goûts et besoins</li>
+	<li><b>fonctionnalités avancées</b> : sauvegarde automatique (export/import vers/depuis un format <i>.opml</i>), apport de contenu de sites non-<i>RSS</i>,</li>
+	<li><b>plus de fonctionnalités intéressantes</b> "en magasin" - visitez notre site web pour en savoir plus :) !,</li>
+	<li><b><u>important</u>:</b> cette application ne se synchronise PAS avec les lecteurs de flux d\'actualités en ligne (i.e. <i>Feedly</i>),</li>
+	<li><b>commentaires et suggestions sont les bienvenus ;</b></li>
+</ul>
+
+<ul>
+<b>Où nous trouver :</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">code source sur <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">page d\'accueil</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">traductions</a>;</li>
+</ul>
