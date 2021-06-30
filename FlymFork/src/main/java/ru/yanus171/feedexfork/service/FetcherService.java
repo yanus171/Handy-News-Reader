@@ -1450,7 +1450,7 @@ public class FetcherService extends IntentService {
     //}
 
 
-    private static String ToString (InputStream inputStream, Xml.Encoding encoding ) throws
+    public static String ToString (InputStream inputStream, Xml.Encoding encoding ) throws
     IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         //InputStream inputStream = connection.getInputStream();
@@ -1486,6 +1486,7 @@ public class FetcherService extends IntentService {
         content = content.replace( "&mdash;", "-" );
         content = content.replace((char) 0x1F, ' ');
         content = content.replace((char) 0x02, ' ');
+        content = content.replace(String.valueOf((char)0x00), "");
         return content;
     }
 

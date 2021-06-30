@@ -138,9 +138,13 @@ public class FeedFilters {
         String result = text;
         for (Rule r : mFilters)
             if ( r.isRemoveText && applyType == r.mApplyType) {
-                if (r.isRegex)
-                    result = result.replaceAll( r.filterText, "" );
-                else
+                if (r.isRegex) {
+                    try {
+                        result = result.replaceAll(r.filterText, "");
+                    } catch ( PatternSyntaxException e ) {
+                        DebugApp.AddErrorToLog( r.filterText, e );
+                    }
+                } else
                     result = result.replace( r.filterText, "" );
             }
         return result;

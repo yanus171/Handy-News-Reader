@@ -96,6 +96,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 
+import static android.util.Xml.Encoding.UTF_8;
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
@@ -181,7 +182,7 @@ public class OPML {
             if ( isRemoveExistingFeeds )
                 MainApplication.getContext().getContentResolver().delete(FeedData.FeedColumns.CONTENT_URI, _ID + "<> " + FetcherService.GetExtrenalLinkFeedID(), null );
             final OPMLParser parser = new OPMLParser();
-            Xml.parse(new InputStreamReader(input), parser);
+            Xml.parse(FetcherService.ToString(input, UTF_8), parser);
             //parser.mEditor.commit();
         } finally {
             SetAutoBackupEnabled(true);
