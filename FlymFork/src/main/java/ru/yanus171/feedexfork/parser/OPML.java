@@ -393,7 +393,7 @@ public class OPML {
                 writer.write(FILTER_IS_REGEX);
                 writer.write(GetBoolText( cur, 1));
                 writer.write(FILTER_IS_APPLIED_TO_TITLE);
-                writer.write(GetBoolText( cur, 2) );
+                writer.write(cur.getString( 2 ));
                 writer.write(FILTER_IS_ACCEPT_RULE);
                 writer.write(GetBoolText( cur, 3) );
                 writer.write(FILTER_IS_MARK_AS_STARRED);
