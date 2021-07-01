@@ -125,7 +125,7 @@
     <string name="filter_delete_title">Удалить фильтр</string>
     <string name="filter_edit_title">Редактировать фильтр</string>
     <string name="filter_is_regex">это регулярное выражение</string>
-    <string name="filter_apply_to_title">Применить к заголовкам или адресам</string>
+    <string name="filter_apply_to_title">Применить к заголовкам</string>
     <string name="filter_apply_to_content">Применить к содержанию</string>
     <string name="accept">Загружать только</string>
     <string name="reject">Не загружать</string>
