@@ -44,6 +44,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.text.Html;
@@ -60,6 +61,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -333,16 +335,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         rootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
         rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
-
-        rootView.findViewById(R.id.pageUpBtn).setOnClickListener(new TextView.OnClickListener() {
+        rootView.findViewById(R.id.pageDownBtn).setOnLongClickListener( new TextView.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
-                PageUp();
+            public boolean onLongClick(View v) {
+                final EntryView view = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
+                view.ScrollTo( (int) view.GetContentHeight() - view.getHeight() );
+                Toast.makeText( v.getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
+                return true;
             }
         });
-
-        //disableSwipe();
-
 
         rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
@@ -359,6 +360,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             private boolean mWasSwipe = false;
             private final int MAX_HEIGHT = UiUtils.mmToPixel( 12 );
             private final int MIN_HEIGHT = UiUtils.mmToPixel( 1 );
+            private long downTime = 0;
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -368,6 +370,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     initialy = (int) event.getY();
                     mWasVibrate = false;
                     mWasSwipe = false;
+                    downTime = SystemClock.elapsedRealtime();
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_MOVE) {
                     Dog.v( "onTouch ACTION_MOVE " + ( event.getY() - initialy ) );
@@ -386,7 +389,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 } else if ( event.getAction() == MotionEvent.ACTION_UP) {
                     Dog.v( "onTouch ACTION_UP " );
                     if ( !mWasSwipe ) {
-                        PageUp();
+                        if ( SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() )
+                            PageUp();
+                        else {
+                            mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).ScrollTo( 0 );
+                            Toast.makeText( view.getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT ).show();
+                        }
                     } else if ( event.getY() - initialy >= MAX_HEIGHT ) {
                         SetIsFavourite(!mFavorite);
                     }

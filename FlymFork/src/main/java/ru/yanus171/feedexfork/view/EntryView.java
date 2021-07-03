@@ -1178,13 +1178,15 @@ public class EntryView extends WebView implements Handler.Callback {
         return getContentHeight() != 0 ? getScrollY() / GetContentHeight() : 0;
     }
 
-    public void PageChange(int delta, StatusText statusText) {
-        ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(),
-                (int) (getScrollY() + delta * (getHeight() - statusText.GetHeight()) *
-                        (PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
+    public void ScrollTo(int y) {
+        ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(), y);
         anim.setDuration(PAGE_SCROLL_DURATION_MSEC);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
+    }
+    public void PageChange(int delta, StatusText statusText) {
+        ScrollTo((int) (getScrollY() + delta * (getHeight() - statusText.GetHeight()) *
+                                                       (PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
     }
 
     @Override
