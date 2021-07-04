@@ -35,7 +35,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -120,7 +119,6 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static ru.yanus171.feedexfork.Constants.MILLS_IN_DAY;
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
@@ -355,57 +353,68 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         final ImageView frameStarImage  = rootView.findViewById(R.id.frameStarImage);
         final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
         rootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
-            private int initialy = 0;
+            private int initialY = 0;
             private boolean mWasVibrate = false;
             private boolean mWasSwipe = false;
             private final int MAX_HEIGHT = UiUtils.mmToPixel( 12 );
             private final int MIN_HEIGHT = UiUtils.mmToPixel( 1 );
             private long downTime = 0;
+            private boolean wasUp = false;
+
             @SuppressLint("ClickableViewAccessibility")
             @Override
-            public boolean onTouch(View view, MotionEvent event) {
+            public boolean onTouch(final View view, MotionEvent event) {
                 if ( event.getAction() == MotionEvent.ACTION_DOWN) {
                     Dog.v( "onTouch ACTION_DOWN " );
-                    //initialx = (int) event.getX();
-                    initialy = (int) event.getY();
+                    initialY = (int) event.getY();
                     mWasVibrate = false;
                     mWasSwipe = false;
                     downTime = SystemClock.elapsedRealtime();
+                    wasUp = false;
+                    UiUtils.RunOnGuiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!wasUp && !mWasSwipe) {
+                                mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem()).ScrollTo(0);
+                                Toast.makeText(MainApplication.getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, ViewConfiguration.getLongPressTimeout() );
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_MOVE) {
-                    Dog.v( "onTouch ACTION_MOVE " + ( event.getY() - initialy ) );
-                    int w = Math.max( 0, (int) (event.getY() - initialy) );
-                    SetStarFrameWidth( Math.min( w, MAX_HEIGHT ) );
-                    if ( prefVibrate && w >= MAX_HEIGHT && !mWasVibrate ) {
+                    Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
+                    int w = Math.max(0, (int) (event.getY() - initialY));
+                    SetStarFrameWidth(Math.min(w, MAX_HEIGHT));
+                    if (prefVibrate && w >= MAX_HEIGHT && !mWasVibrate) {
                         mWasVibrate = true;
                         vibrator.vibrate(VIBRATE_DURATION);
-                    } else if ( w < MAX_HEIGHT )
+                    } else if (w < MAX_HEIGHT)
                         mWasVibrate = false;
-                    if ( w >= MIN_HEIGHT )
+                    if (w >= MIN_HEIGHT) {
                         mWasSwipe = true;
-
-                    frameStarImage.setImageResource( ( w >= MAX_HEIGHT ) == mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow );
+                        downTime = SystemClock.elapsedRealtime();
+                    }
+                    frameStarImage.setImageResource((w >= MAX_HEIGHT) == mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow);
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_UP) {
                     Dog.v( "onTouch ACTION_UP " );
                     if ( !mWasSwipe ) {
-                        if ( SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() )
+                        if ( !IsLong() )
                             PageUp();
-                        else {
-                            mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).ScrollTo( 0 );
-                            Toast.makeText( view.getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT ).show();
-                        }
-                    } else if ( event.getY() - initialy >= MAX_HEIGHT ) {
+                    } else if ( event.getY() - initialY >= MAX_HEIGHT ) {
                         SetIsFavourite(!mFavorite);
                     }
                     SetStarFrameWidth(0);
+                    wasUp = true;
                     return true;
                 } else
                     SetStarFrameWidth(0);
                 return false;
             }
 
-
+            private boolean IsLong() {
+                return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
+            }
         });
         SetStarFrameWidth(0);
         UpdateFooter();
