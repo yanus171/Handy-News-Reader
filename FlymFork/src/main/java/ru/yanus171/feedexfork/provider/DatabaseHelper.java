@@ -58,12 +58,13 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
+import ru.yanus171.feedexfork.provider.FeedData.TagColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -81,6 +82,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(createTable(FilterColumns.TABLE_NAME, FilterColumns.COLUMNS));
         database.execSQL(createTable(EntryColumns.TABLE_NAME, EntryColumns.COLUMNS));
         database.execSQL(createTable(TaskColumns.TABLE_NAME, TaskColumns.COLUMNS));
+        database.execSQL(createTable(TagColumns.TABLE_NAME, TagColumns.COLUMNS));
     }
 
     private String createTable(String tableName, String[][] columns) {
@@ -182,6 +184,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 27)
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.CATEGORIES + ' ' + FeedData.TYPE_TEXT);
+
+        if (oldVersion < 28)
+            database.execSQL(createTable(TagColumns.TABLE_NAME, TagColumns.COLUMNS));
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
         try {

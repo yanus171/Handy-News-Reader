@@ -392,6 +392,19 @@ public class FeedData {
         }
     }
 
+    public static class TagColumns implements BaseColumns {
+        public static final String TABLE_NAME = "tags";
+        public static final String NAME = "name";
+        public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {NAME, TYPE_TEXT}, {"UNIQUE", "(" + NAME + ") ON CONFLICT IGNORE"}};
+    }
+
+    public static class EntryTagColumns {
+        public static final String TABLE_NAME = "entrytags";
+        public static final String TAG_ID = "tag_ID";
+        public static final String ENTRY_ID = "entry_ID";
+        public static final String[][] COLUMNS = new String[][]{{TAG_ID, TYPE_EXTERNAL_ID}, {ENTRY_ID, TYPE_EXTERNAL_ID}, {"UNIQUE", "(" + TAG_ID + ", " + ENTRY_ID + ") ON CONFLICT IGNORE"}};
+    }
+
     public static class TaskColumns implements BaseColumns {
         public static final String TABLE_NAME = "tasks";
 
