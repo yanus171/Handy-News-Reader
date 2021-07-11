@@ -392,17 +392,32 @@ public class FeedData {
         }
     }
 
-    public static class TagColumns implements BaseColumns {
-        public static final String TABLE_NAME = "tags";
+    public static class LabelColumns implements BaseColumns {
+        public static final String TABLE_NAME = "label";
         public static final String NAME = "name";
-        public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {NAME, TYPE_TEXT}, {"UNIQUE", "(" + NAME + ") ON CONFLICT IGNORE"}};
+        public static final String COLOR = "color";
+        public static final String[][] COLUMNS =
+            new String[][]{
+                {_ID, TYPE_PRIMARY_KEY},
+                {NAME, TYPE_TEXT_UNIQUE},
+                {COLOR, TYPE_TEXT}
+        };
+
+        public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/labels");
+        public static Uri CONTENT_URI(long ID) { return Uri.parse(CONTENT_AUTHORITY + "/labels/" + ID);}
     }
 
-    public static class EntryTagColumns {
-        public static final String TABLE_NAME = "entrytags";
-        public static final String TAG_ID = "tag_ID";
-        public static final String ENTRY_ID = "entry_ID";
-        public static final String[][] COLUMNS = new String[][]{{TAG_ID, TYPE_EXTERNAL_ID}, {ENTRY_ID, TYPE_EXTERNAL_ID}, {"UNIQUE", "(" + TAG_ID + ", " + ENTRY_ID + ") ON CONFLICT IGNORE"}};
+    public static class EntryLabelColumns {
+        public static final String TABLE_NAME = "entrylabel";
+        public static final String LABEL_ID = "label_id";
+        public static final String ENTRY_ID = "entry_id";
+        public static final String[][] COLUMNS = new String[][]{
+            {LABEL_ID, TYPE_EXTERNAL_ID + " REFERENCES " + LabelColumns.TABLE_NAME + "(" + LabelColumns._ID + ") ON DELETE CASCADE"},
+            {ENTRY_ID, TYPE_EXTERNAL_ID + " REFERENCES " + EntryColumns.TABLE_NAME + "(" + EntryColumns._ID + ") ON DELETE CASCADE" },
+            {"UNIQUE", "(" + LABEL_ID + ", " + ENTRY_ID + ") "}};
+
+        public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/entrylabels");
+        public static Uri CONTENT_URI(long ID) { return Uri.parse(CONTENT_AUTHORITY + "/entrylabels/" + ID);}
     }
 
     public static class TaskColumns implements BaseColumns {

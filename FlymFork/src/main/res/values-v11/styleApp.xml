@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="styleApp" parent="@android:style/Theme.Holo.NoActionBar"/>
+    <style name="styleLight" parent="@android:style/Theme.Holo.Light"/>
+    <style name="styleDark" parent="@android:style/Theme.Holo"/>
+    <style name="styleDarkDialog" parent="@android:style/Theme.Holo.Dialog"/>
+    <style name="styleLightDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+    	<item name="android:windowNoTitle">false</item>
+    </style>    
+</resources>

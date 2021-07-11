@@ -107,6 +107,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
@@ -233,6 +234,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.readMore = SetupTextView(view, R.id.textSourceReadMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
             holder.categoriesTextView = SetupSmallTextView(view, R.id.textCategories);
+            holder.labelTextView = SetupSmallTextView(view, R.id.textLabel);
             holder.textSizeProgressBar = view.findViewById(R.id.progressBar);
             view.setTag(R.id.holder, holder);
 
@@ -332,7 +334,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                     final Item[] items = {
                                         new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
                                         new Item(R.string.menu_mark_upper_as_read, 0),
-                                        new Item(R.string.menu_mark_all_as_unread, 0)
+                                        new Item(R.string.menu_mark_all_as_unread, 0),
+                                        new Item(R.string.menu_edit_labels, 0)
                                     };
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder( context );
@@ -372,6 +375,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                 ShowMarkUpperAsReadDialog( context, getItemPosition(holder.entryID) );
                                             else if (item == 2)
                                                 ShowMarkAllAsUnReadDialog( context  );
+                                            else if (item == 3)
+                                                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
                                         }
                                     });
 
@@ -651,9 +656,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final String categories = cursor.isNull(mCategoriesPos) ? "" : cursor.getString(mCategoriesPos);
             if (!categories.isEmpty()) {
                 holder.categoriesTextView.setVisibility(View.VISIBLE);
-                holder.categoriesTextView.setText(CategoriesToOutput(categories));
+                holder.categoriesTextView.setText(CategoriesToOutput(categories) );
             }
         }
+
+        holder.labelTextView.setVisibility( LabelVoc.INSTANCE.get( holder.entryID ).isEmpty() ? View.GONE : View.VISIBLE );
+        holder.labelTextView.setText( Html.fromHtml(LabelVoc.INSTANCE.getStringList( holder.entryID )) );
+        holder.labelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
+            }
+        });
 
         holder.contentImgView1.setVisibility( View.GONE );
         holder.contentImgView2.setVisibility( View.GONE );
@@ -835,6 +849,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         } );
     }
 
+
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
         //final String s = text.toString();
 //        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
@@ -899,6 +914,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.textTextView.setEnabled(!holder.isRead);
         holder.authorTextView.setEnabled(!holder.isRead);
         holder.categoriesTextView.setEnabled(!holder.isRead);
+        holder.labelTextView.setEnabled(!holder.isRead);
         holder.urlTextView.setEnabled(!holder.isRead);
 //        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         {
@@ -917,6 +933,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.imageSizeTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
             holder.categoriesTextView.setTextColor(color );
+            holder.labelTextView.setTextColor(color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
             //holder.readMore.setTextColor( color );
@@ -1090,6 +1107,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView urlTextView;
         TextView textTextView;
         TextView categoriesTextView;
+        TextView labelTextView;
         TextView dateTextView;
         TextView authorTextView;
         TextView imageSizeTextView;

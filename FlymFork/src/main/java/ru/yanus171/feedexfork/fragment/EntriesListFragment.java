@@ -89,7 +89,6 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -130,6 +129,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
 
     public static Uri mCurrentUri = null;
+    private static final String EMPTY_WHERE_SQL = "(1 = 1)";
+    private static String mWhereSQL = EMPTY_WHERE_SQL;
+
     private Uri mOriginalUri;
     private boolean mOriginalUriShownEntryText = false;
     private boolean mShowFeedInfo = false;
@@ -181,7 +183,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, null, null, EntryColumns.DATE + entriesOrder);
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, mWhereSQL, null, EntryColumns.DATE + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
                 mStatus = Status().Start(R.string.article_list_loading, true);
@@ -611,6 +613,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }*/
 
+    private static String mOriginalWhereSQL;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -646,20 +649,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText))
+                if (!TextUtils.isEmpty(newText)) {
+                    mWhereSQL = EMPTY_WHERE_SQL;
                     setData(EntryColumns.SEARCH_URI(newText), true, true, false, mOptions);
+                }
                 return false;
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+
             @Override
             public boolean onClose() {
+                mWhereSQL = mOriginalWhereSQL;
                 setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
                 getActivity().invalidateOptionsMenu();
                 return false;
             }
         });
-
 
         UpdateActions();
 
@@ -1134,5 +1140,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         } else if ( o instanceof EntriesCursorAdapter.ListViewTopPos) {
             mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
         }
+    }
+
+    public static void ResetWhereSQL() {
+        mOriginalWhereSQL = EMPTY_WHERE_SQL;
+        mWhereSQL = EMPTY_WHERE_SQL;
+    }
+    public static void AppendWhereSQL(String value) {
+        mWhereSQL += value;
+        mOriginalWhereSQL = mWhereSQL;
     }
 }

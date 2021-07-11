@@ -36,7 +36,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,7 +70,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.service.ReadingService;
+import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -84,10 +83,13 @@ import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -556,9 +558,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     private void selectDrawerItem(int position) {
         Timer timer = new Timer( "HomeActivity.selectDrawerItem" );
-
         mCurrentDrawerPos = position;
-
+        EntriesListFragment.ResetWhereSQL();
         Uri newUri;
         boolean showFeedInfo = true;
 
@@ -572,23 +573,35 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             case 2:
                 newUri = EntryColumns.FAVORITES_CONTENT_URI;
                 break;
-            case 3:
+            case EXTERNAL_ENTRY_POS:
                 newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );
                 showFeedInfo = false;
                 break;
+            case LABEL_GROUP_POS:
+                newUri = EntryColumns.CONTENT_URI;
+                EntriesListFragment.AppendWhereSQL( DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")" );
+                showFeedInfo = true;
+                break;
             default:
-                long feedOrGroupId = mDrawerAdapter.getItemId(position);
-                if (feedOrGroupId != -1) {
-                    if (mDrawerAdapter.isItemAGroup(position)) {
-                        //newUri = EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId);
-                        newUri = mEntriesFragment.mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId) : EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId);
-                    } else {
-                        //newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId);
-                        newUri = mEntriesFragment.mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId) : EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId);
-                        showFeedInfo = false;
-                    }
-                } else
-                    newUri = EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+                if ( mDrawerAdapter.isLabelPos( position, mDrawerAdapter.getLabelList() )) {
+                    newUri = EntryColumns.CONTENT_URI;
+                    Label label = mDrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 );
+                    EntriesListFragment.AppendWhereSQL( DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " + EntryLabelColumns.LABEL_ID + " = " + label.mID + ")" );
+                    showFeedInfo = true;
+                } else {
+                    long feedOrGroupId = mDrawerAdapter.getItemId(position);
+                    if (feedOrGroupId != -1) {
+                        if (mDrawerAdapter.isItemAGroup(position)) {
+                            //newUri = EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId);
+                            newUri = mEntriesFragment.mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId) : EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId);
+                        } else {
+                            //newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId);
+                            newUri = mEntriesFragment.mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId) : EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId);
+                            showFeedInfo = false;
+                        }
+                    } else
+                        newUri = EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+                }
                 mTitle = mDrawerAdapter.getItemName(position);
 
                 break;
@@ -600,7 +613,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 showFeedInfo,
                 false,
                 mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position),
-                                 mDrawerAdapter != null ? mDrawerAdapter.getOptions(position) : new JSONObject() );
+                                 mDrawerAdapter != null ? mDrawerAdapter.getOptions(position) : new JSONObject());
 
         //mDrawerList.setSelection( position );
         mDrawerList.setItemChecked(position, true);

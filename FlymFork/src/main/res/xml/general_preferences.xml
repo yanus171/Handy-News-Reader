@@ -590,7 +590,6 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-
     <PreferenceScreen
         android:layout="@layout/preference_items"
         android:layout_width="wrap_content"
@@ -601,6 +600,15 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_advanced"/>
+
+        <PreferenceScreen
+            android:layout="@layout/preference_items"
+            android:summary=""
+            android:title="@string/setting_tag_list" >
+            <intent
+                android:targetClass="ru.yanus171.feedexfork.activity.TagListActivity"
+                android:targetPackage="ru.yanus171.feedexfork"/>
+        </PreferenceScreen>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

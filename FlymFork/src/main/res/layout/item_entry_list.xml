@@ -257,6 +257,18 @@
         android:text="#tag1, #tag2, #tag3"
         android:textColor="@color/dark_theme_color_unread"
         android:textIsSelectable="false" />
+    <TextView
+        android:id="@+id/textLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:alpha="0.7"
+        android:drawablePadding="3dp"
+        android:singleLine="false"
+        android:text="#label1, #label2, #label"
+        android:textColor="@color/dark_theme_color_unread"
+        android:textIsSelectable="false" />
     <ImageView
         android:id="@+id/image1"
         android:layout_width="match_parent"
