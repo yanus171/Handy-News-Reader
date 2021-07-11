@@ -156,6 +156,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.LabelListActivity"
+            android:label="@string/tag_list"
+            android:theme="@style/Theme.AppCompat"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".activity.GeneralPrefsActivity"
             android:label="@string/menu_settings"
             android:launchMode="singleTask" />

@@ -52,18 +52,17 @@ import android.os.Handler;
 
 import java.io.File;
 
-import ru.yanus171.feedexfork.Constants;
-import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
-import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 31;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -81,6 +80,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(createTable(FilterColumns.TABLE_NAME, FilterColumns.COLUMNS));
         database.execSQL(createTable(EntryColumns.TABLE_NAME, EntryColumns.COLUMNS));
         database.execSQL(createTable(TaskColumns.TABLE_NAME, TaskColumns.COLUMNS));
+        database.execSQL(createTable(LabelColumns.TABLE_NAME, LabelColumns.COLUMNS));
     }
 
     private String createTable(String tableName, String[][] columns) {
@@ -98,6 +98,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 stringBuilder.append(columns[n][0]).append(' ').append(columns[n][1]);
             }
             return stringBuilder.append(");").toString();
+        }
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            db.execSQL("PRAGMA foreign_keys=ON;");
         }
     }
 
@@ -182,6 +190,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 27)
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.CATEGORIES + ' ' + FeedData.TYPE_TEXT);
+
+        if (oldVersion < 29)
+            database.execSQL(createTable(LabelColumns.TABLE_NAME, LabelColumns.COLUMNS));
+
+        if (oldVersion < 31)
+            database.execSQL(createTable(EntryLabelColumns.TABLE_NAME, EntryLabelColumns.COLUMNS));
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
         try {

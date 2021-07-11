@@ -35,23 +35,25 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.utils.Label;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.getContext;
-import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 
@@ -72,7 +74,11 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_OPTIONS = 12;
     private static final int POS_IMAGESIZE = 13;
 
-    public static final int FIRST_ENTRY_POS = 4;
+    public static final int EXTERNAL_ENTRY_POS = 3;
+    public static final int LABEL_GROUP_POS = 4;
+    private static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
+
+    public static final int FIRST_ENTRY_POS() { return LABEL_GROUP_POS + (PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) ? LabelVoc.INSTANCE.getList().size() : 0) + 1; }
 
     private static final int NORMAL_TEXT_COLOR = Color.parseColor("#EEEEEE");
     private static final int GROUP_TEXT_COLOR = Color.parseColor("#BBBBBB");
@@ -144,7 +150,9 @@ public class DrawerAdapter extends BaseAdapter {
         holder.imageSizeTxt.setVisibility( View.GONE );
         holder.tasksTxt.setVisibility( View.GONE );
 
-        if (position == 0 || position == 1 || position == 2 || position == 3 ) {
+        ArrayList<Label> labelList = getLabelList();
+
+        if (position == 0 || position == 1 || position == 2 || position == EXTERNAL_ENTRY_POS ) {
             switch (position) {
                 case 0:
                     holder.titleTxt.setText(R.string.unread_entries);
@@ -159,16 +167,16 @@ public class DrawerAdapter extends BaseAdapter {
                     if (mAllNumber != 0)
                         holder.unreadTxt.setText(String.valueOf(mAllNumber));
                     holder.unreadTxt.setText(String.valueOf(mAllNumber));
-                    holder.readTxt.setText( "" );
+                    holder.readTxt.setText("");
                     SetImageSizeText(holder, mAllImagesSize);
                     String taskInfo = "";
-                    if ( mTextTaskCount != 0 )
-                        taskInfo += String.format( " T:%d", mTextTaskCount );
-                    if ( mImageTaskCount != 0 )
-                        taskInfo += String.format( " I:%d", mImageTaskCount );
-                    if ( !taskInfo.isEmpty() ) {
-                        holder.tasksTxt.setVisibility( View.VISIBLE );
-                        holder.tasksTxt.setText( getContext().getString( R.string.tasks_to_download ) + ": " + taskInfo);
+                    if (mTextTaskCount != 0)
+                        taskInfo += String.format(" T:%d", mTextTaskCount);
+                    if (mImageTaskCount != 0)
+                        taskInfo += String.format(" I:%d", mImageTaskCount);
+                    if (!taskInfo.isEmpty()) {
+                        holder.tasksTxt.setVisibility(View.VISIBLE);
+                        holder.tasksTxt.setText(getContext().getString(R.string.tasks_to_download) + ": " + taskInfo);
                     }
                     break;
                 case 2:
@@ -180,7 +188,7 @@ public class DrawerAdapter extends BaseAdapter {
                         holder.readTxt.setText(String.valueOf(mFavoritesReadNumber));
                     SetImageSizeText(holder, mFavoritiesImagesSize);
                     break;
-                case 3:
+                case EXTERNAL_ENTRY_POS:
                     holder.titleTxt.setText(R.string.externalLinks);
                     holder.iconView.setImageResource(R.drawable.cup_new_load_later);
                     if (mExternalUnreadNumber != 0)
@@ -190,8 +198,26 @@ public class DrawerAdapter extends BaseAdapter {
                     SetImageSizeText(holder, mExternalImagesSize);
                     break;
             }
-        }
-        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS)) {
+        } else if ( position == LABEL_GROUP_POS ) {
+            holder.iconView.setImageResource(isGroupExpanded(position) ? R.drawable.ic_group_expanded_gray : R.drawable.ic_group_collapsed_gray);
+            holder.iconView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PrefUtils.putBoolean( PREF_IS_LABEL_GROUP_EXPANDED, !isGroupExpanded(LABEL_GROUP_POS) );
+                    notifyDataSetChanged();
+                }
+            });
+            holder.titleTxt.setText( R.string.labels_group_title);
+            holder.titleTxt.setTextColor(GROUP_TEXT_COLOR);
+            holder.titleTxt.setAllCaps(true);
+            holder.separator.setVisibility(View.VISIBLE);
+        } else if ( isLabelPos(position, labelList) ) {
+            holder.titleTxt.setText(labelList.get(getLabelPosition(position)).mName );
+            holder.iconView.setImageResource(R.drawable.cup_empty);
+            holder.unreadTxt.setText("");
+            holder.readTxt.setText("");
+            //SetImageSizeText(holder, mExternalImagesSize);
+         } else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
             holder.titleTxt.setText((mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME)));
 
             if (mFeedsCursor.getInt(POS_IS_GROUP) == 1) {
@@ -259,6 +285,15 @@ public class DrawerAdapter extends BaseAdapter {
         return convertView;
     }
 
+    @NotNull
+    public ArrayList<Label> getLabelList() {
+        return isGroupExpanded(LABEL_GROUP_POS) ? LabelVoc.INSTANCE.getList() : new ArrayList<Label>();
+    }
+
+    public boolean isLabelPos(int position, ArrayList<Label> labelList) {
+        return position > LABEL_GROUP_POS && position <= LABEL_GROUP_POS + labelList.size();
+    }
+
     static private void SetImageSizeText(ViewHolder holder, long size) {
         if ( PrefUtils.CALCULATE_IMAGES_SIZE() && size != 0 ) {
             holder.imageSizeTxt.setVisibility( View.VISIBLE );
@@ -276,7 +311,7 @@ public class DrawerAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         if (mFeedsCursor != null) {
-            return mFeedsCursor.getCount() + FIRST_ENTRY_POS;
+            return mFeedsCursor.getCount() + FIRST_ENTRY_POS();
         }
         return 0;
     }
@@ -288,7 +323,7 @@ public class DrawerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS)) {
+        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
             return mFeedsCursor.getLong(POS_ID);
         }
 
@@ -303,31 +338,36 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     public Bitmap getItemIcon(int position) {
-        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS))
+        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()))
             return UiUtils.getFaviconBitmap( mFeedsCursor.getString( POS_ICON_URL ) );
         return null;
     }
 
     public String getItemName(int position) {
-        if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS)) {
+        if ( isLabelPos( position, getLabelList() ) )
+            return getLabelList().get( getLabelPosition( position ) ).mName;
+        else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()))
             return mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME);
-        }
 
         return null;
     }
 
+    private int getLabelPosition(int position) {
+        return position - LABEL_GROUP_POS - 1;
+    }
+
     public boolean isItemAGroup(int position) {
-        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) && mFeedsCursor.getInt(POS_IS_GROUP) == 1;
+        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) && mFeedsCursor.getInt(POS_IS_GROUP) == 1;
 
     }
 
     public boolean isShowTextInEntryList(int position) {
-        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) && mFeedsCursor.getInt(POS_IS_SHOW_TEXT_IN_ENTRY_LIST) == 1;
+        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) && mFeedsCursor.getInt(POS_IS_SHOW_TEXT_IN_ENTRY_LIST) == 1;
     }
 
     public JSONObject getOptions(int position) {
         try {
-            return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) ? new JSONObject( mFeedsCursor.getString(POS_OPTIONS) ) : new JSONObject();
+            return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) ? new JSONObject( mFeedsCursor.getString(POS_OPTIONS) ) : new JSONObject();
         } catch (Exception e) {
             e.printStackTrace();
             return new JSONObject();
@@ -335,12 +375,15 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     private boolean isGroupExpanded(int position) {
-        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) && mFeedsCursor.getInt(POS_IS_GROUP_EXPANDED) == 1;
+        if ( position == LABEL_GROUP_POS )
+            return PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false );
+        else
+            return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) && mFeedsCursor.getInt(POS_IS_GROUP_EXPANDED) == 1;
 
     }
 
     private boolean isAutoRefresh(int position) {
-        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS) && mFeedsCursor.getInt(POS_IS_AUTO_RESRESH) == 1;
+        return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) && mFeedsCursor.getInt(POS_IS_AUTO_RESRESH) == 1;
 
     }
 

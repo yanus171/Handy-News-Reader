@@ -35,6 +35,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.FileVoc;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -49,6 +50,7 @@ public class MainApplication extends Application {
 
     public static FileVoc mImageFileVoc = null;
     public static FileVoc mHTMLFileVoc = null;
+    public static LabelVoc mLabelVoc = null;
 
     public static final String OPERATION_NOTIFICATION_CHANNEL_ID = "operation_channel";
     public static final String READING_NOTIFICATION_CHANNEL_ID = "reading_channel";
@@ -60,6 +62,7 @@ public class MainApplication extends Application {
         Status();
         mImageFileVoc = new FileVoc(FileUtils.INSTANCE.GetImagesFolder() );
         mHTMLFileVoc = new FileVoc(FileUtils.INSTANCE.GetHTMLFolder() );
+        LabelVoc.INSTANCE.initInThread();
         BaseActivity.InitLocale( mContext );
 
         Thread.setDefaultUncaughtExceptionHandler(new DebugApp().new UncaughtExceptionHandler(this));

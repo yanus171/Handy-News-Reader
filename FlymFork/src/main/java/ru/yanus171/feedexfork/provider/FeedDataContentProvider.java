@@ -75,6 +75,8 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
+import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 
@@ -117,6 +119,10 @@ public class FeedDataContentProvider extends ContentProvider {
     private static final int URI_UNREAD_ENTRY_FOR_GROUP = 26;
     private static final int URI_GROUPS_AND_ROOT_FEEDS = 27;
     public static final int URI_FAVORITES_UNREAD = 28;
+    private static final int URI_LABELS = 29;
+    private static final int URI_LABEL = 30;
+    private static final int URI_ENTRIES_LABELS = 31;
+    private static final int URI_ENTRY_LABELS = 32;
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -150,9 +156,14 @@ public class FeedDataContentProvider extends ContentProvider {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "unread_favorites", URI_FAVORITES_UNREAD);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites/#", URI_FAVORITES_ENTRY);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks", URI_TASKS);
-        URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks/#", URI_TASK);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "labels/#", URI_LABEL);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "labels", URI_LABELS);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels/#", URI_ENTRY_LABELS);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels", URI_ENTRIES_LABELS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*", URI_SEARCH);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*/#", URI_SEARCH_ENTRY);
+
+
     }
 
     private static final String[] MAX_PRIORITY = new String[]{"MAX(" + FeedColumns.PRIORITY + ")"};
@@ -405,10 +416,27 @@ public class FeedDataContentProvider extends ContentProvider {
                 queryBuilder.setTables(FeedData.TASKS_WITH_FEED_INFO);
                 break;
             }
-
             case URI_TASK: {
                 queryBuilder.setTables(TaskColumns.TABLE_NAME);
                 queryBuilder.appendWhere(new StringBuilder(_ID).append('=').append(uri.getPathSegments().get(1)));
+                break;
+            }
+            case URI_LABELS: {
+                queryBuilder.setTables(LabelColumns.TABLE_NAME);
+                break;
+            }
+            case URI_LABEL: {
+                queryBuilder.setTables(LabelColumns.TABLE_NAME);
+                queryBuilder.appendWhere(new StringBuilder(_ID).append('=').append(uri.getPathSegments().get(1)));
+                break;
+            }
+            case URI_ENTRIES_LABELS: {
+                queryBuilder.setTables(EntryLabelColumns.TABLE_NAME);
+                break;
+            }
+            case URI_ENTRY_LABELS: {
+                queryBuilder.setTables(LabelColumns.TABLE_NAME);
+                queryBuilder.appendWhere(new StringBuilder(EntryLabelColumns.ENTRY_ID).append('=').append(uri.getPathSegments().get(1)));
                 break;
             }
             default:
@@ -487,6 +515,15 @@ public class FeedDataContentProvider extends ContentProvider {
                 newId = database.insert(TaskColumns.TABLE_NAME, null, values);
                 break;
             }
+            case URI_LABELS: {
+                newId = database.insert(LabelColumns.TABLE_NAME, null, values);
+                break;
+            }
+            case URI_ENTRIES_LABELS: {
+                newId = database.insert(EntryLabelColumns.TABLE_NAME, null, values);
+                break;
+            }
+
             default:
                 throw new IllegalArgumentException("Illegal insert. Match code=" + matchCode + "; uri=" + uri);
         }
@@ -600,6 +637,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_ENTRIES_FOR_FEED: {
                 table = EntryColumns.TABLE_NAME;
                 where.append(EntryColumns.FEED_ID).append('=').append(uri.getPathSegments().get(1));
+                //TODO also remove tasks
                 break;
             }
             case URI_ENTRIES_FOR_GROUP: {
@@ -646,6 +684,11 @@ public class FeedDataContentProvider extends ContentProvider {
             }
             case URI_TASK: {
                 table = TaskColumns.TABLE_NAME;
+                where.append(_ID).append('=').append(uri.getPathSegments().get(1));
+                break;
+            }
+            case URI_LABEL: {
+                table = LabelColumns.TABLE_NAME;
                 where.append(_ID).append('=').append(uri.getPathSegments().get(1));
                 break;
             }
@@ -810,13 +853,6 @@ public class FeedDataContentProvider extends ContentProvider {
 
                 break;
             }
-            case URI_UNREAD_ENTRIES_FOR_FEED: {
-                table = EntryColumns.TABLE_NAME;
-                where.append(EntryColumns.FEED_ID).append('=').append(uri.getPathSegments().get(1));
-                    //TODO also remove tasks
-
-                break;
-            }
             case URI_UNREAD_ENTRIES: {
                 table = EntryColumns.TABLE_NAME;
                 where.append(EntryColumns.WHERE_UNREAD);
@@ -877,6 +913,24 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_TASK: {
                 table = TaskColumns.TABLE_NAME;
                 where.append(_ID).append('=').append(uri.getPathSegments().get(1));
+                break;
+            }
+            case URI_LABELS: {
+                table = LabelColumns.TABLE_NAME;
+                break;
+            }
+            case URI_LABEL: {
+                table = LabelColumns.TABLE_NAME;
+                where.append(_ID).append('=').append(uri.getPathSegments().get(1));
+                break;
+            }
+            case URI_ENTRIES_LABELS: {
+                table = EntryLabelColumns.TABLE_NAME;
+                break;
+            }
+            case URI_ENTRY_LABELS: {
+                table = EntryLabelColumns.TABLE_NAME;
+                where.append(EntryLabelColumns.ENTRY_ID).append('=').append(uri.getPathSegments().get(1));
                 break;
             }
             default:

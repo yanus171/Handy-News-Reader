@@ -96,6 +96,7 @@
     <string name="menu_add_feed">Article Web Search</string>
     <string name="no_feeds">No feeds</string>
     <string name="no_filters">No rules</string>
+    <string name="context_menu_add">Add</string>
     <string name="context_menu_delete">Delete</string>
     <string name="edit_feed_title">Edit a feed</string>
     <string name="new_feed_title">New feed or article</string>
@@ -586,6 +587,14 @@
     <string name="atricle_list_size_progressbar_maxsize_descr">In kB for horizontal indicator (0 to turn off)</string>
     <string name="setting_edit_feed_force_portrait_orientation">Edit Feed portrait orientation</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Force portrait screen orientation in Edit Feed window - check if your phone has narrow screen</string>
+    <string name="name">Name</string>
+    <string name="remove_tag_confirmation">"Remove tag? "</string>
+    <string name="setting_tag_list">Tag list</string>
+    <string name="tag_list">Tag list</string>
+    <string name="menu_edit_labels">Labels</string>
+    <string name="manage_labels">Manage labels</string>
+    <string name="article_labels_setup_title">Label setup</string>
+    <string name="labels_group_title">Labels</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
