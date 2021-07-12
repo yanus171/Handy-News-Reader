@@ -595,6 +595,8 @@
     <string name="manage_labels">Manage labels</string>
     <string name="article_labels_setup_title">Label setup</string>
     <string name="labels_group_title">Labels</string>
+    <string name="color">Color</string>
+    <string name="label_color_dialog_title">Label color</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

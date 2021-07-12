@@ -188,10 +188,46 @@
                                 android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
                         </LinearLayout>
-
+                        <TextView
+                            android:id="@+id/textLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:alpha="0.7"
+                            android:drawablePadding="3dp"
+                            android:singleLine="false"
+                            android:text="#label1, #label2, #label"
+                            android:textColor="@color/dark_theme_color_unread"
+                            android:textIsSelectable="false" />
                     </LinearLayout>
 
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/textUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="0dp"
+                    android:alpha="0.7"
+                    android:drawablePadding="3dp"
+                    android:singleLine="false"
+                    android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
+                    android:textColor="@color/dark_theme_color_unread"
+                    android:textIsSelectable="false" />
+                <TextView
+                    android:id="@+id/textCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:alpha="0.7"
+                    android:drawablePadding="3dp"
+                    android:singleLine="false"
+                    android:text="#tag1, #tag2, #tag3"
+                    android:textColor="@color/dark_theme_color_unread"
+                    android:textIsSelectable="false" />
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -204,40 +240,9 @@
                     android:max="100"
                     android:paddingTop="4dp"
                     android:progress="33"
+                    android:paddingLeft="5dp"
                     android:progressBackgroundTint="#00000000"
                     android:progressTint="#FF777777" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/textUrl"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="0dp"
-                            android:alpha="0.7"
-                            android:drawablePadding="3dp"
-                            android:singleLine="false"
-                            android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
-                            android:textColor="@color/dark_theme_color_unread"
-                            android:textIsSelectable="false" />
-
-                    </LinearLayout>
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:alpha="0"
-                        android:scaleType="center"
-                        android:src="#ffffff" />
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -245,30 +250,7 @@
 
         </FrameLayout>
     </FrameLayout>
-    <TextView
-        android:id="@+id/textCategories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:alpha="0.7"
-        android:drawablePadding="3dp"
-        android:singleLine="false"
-        android:text="#tag1, #tag2, #tag3"
-        android:textColor="@color/dark_theme_color_unread"
-        android:textIsSelectable="false" />
-    <TextView
-        android:id="@+id/textLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:alpha="0.7"
-        android:drawablePadding="3dp"
-        android:singleLine="false"
-        android:text="#label1, #label2, #label"
-        android:textColor="@color/dark_theme_color_unread"
-        android:textIsSelectable="false" />
+
     <ImageView
         android:id="@+id/image1"
         android:layout_width="match_parent"

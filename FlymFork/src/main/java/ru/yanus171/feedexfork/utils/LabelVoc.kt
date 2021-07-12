@@ -4,30 +4,23 @@ import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.net.Uri
+import android.database.Cursor
+import android.graphics.Color
 import android.provider.BaseColumns
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.CheckBox
-import org.jsoup.Jsoup
-import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
-import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.activity.LabelListActivity
-import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity
-import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
+import ru.yanus171.feedexfork.utils.UiUtils.SetTypeFace
 import java.util.*
-import java.util.regex.Pattern
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
@@ -40,9 +33,14 @@ public class Label(id: Long, name: String, var mColor: String?) {
 
     init {
         if (mColor.isNullOrEmpty())
-            mColor = Theme.GetBackgroundColor()
+            mColor = Theme.GetTextColor()
     }
 
+    constructor ( cursor: Cursor) : this( cursor.getLong( 0 ), cursor.getString( 1 ), cursor.getString( 2 ) )
+
+    fun colorInt(): Int {
+        return Color.parseColor( mColor )
+    }
 }
 
 object LabelVoc {
@@ -95,10 +93,12 @@ object LabelVoc {
     fun addLabel(name: String) {
         initInThread()
         synchronized(mVoc) {
-            val id = (mVoc.keys.maxOrNull() ?: 0) + 1
+            val id = getNextID()
             mVoc[id] = Label(id, name, "")
         }
     }
+
+    fun getNextID() = (mVoc.keys.maxOrNull() ?: 0) + 1
     fun getList(): ArrayList<Label> {
         initInThread()
         synchronized(mVoc) {
@@ -106,10 +106,11 @@ object LabelVoc {
         }
     }
 
-    fun editLabel(id: Long, name: String) {
+    fun editLabel( label: Label ) {
         initInThread()
         synchronized(mVoc) {
-            mVoc[id]!!.mName = name
+            mVoc[label.mID] = label
+
         }
     }
     fun deleteLabel(id: Long) {
@@ -123,18 +124,6 @@ object LabelVoc {
         initInThread()
         synchronized(mVoc) {
             mEntryVoc[entryID] = labels
-        }
-    }
-
-    fun getStringList(entryID: Long): String {
-        initInThread()
-        var result = ""
-        synchronized(mVoc) {
-            for ( id in get( entryID ) ) {
-                val label = mVoc[id]
-                result += "<font style=\"background-color: ${label?.mColor}\"> ${label?.mName} </font>"
-            }
-            return result
         }
     }
 
@@ -166,7 +155,7 @@ object LabelVoc {
     }
 
     fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter ) {
-        val builder = AlertDialog.Builder(context);
+        val builder = AlertDialog.Builder(context)
         val checkedLabels = get(entryID)
         val array = mVoc.values.toTypedArray()
         var block = false
@@ -177,8 +166,10 @@ object LabelVoc {
                 val cb = root.findViewById<CheckBox>(R.id.text_name)
                 val label = array[position]
                 cb.text = label.mName
+                SetTypeFace( cb )
                 block = true
                 cb.isChecked = checkedLabels.contains(label.mID)
+                cb.setTextColor( label.colorInt() )
                 block = false
                 cb.tag = label.mID
                 cb.setOnCheckedChangeListener { btn, isChecked ->
@@ -218,6 +209,19 @@ object LabelVoc {
         .setTitle( R.string.article_labels_setup_title )
         builder.show()
     }
+    fun getStringList(entryID: Long): String {
+        initInThread()
+        var result = ""
+        synchronized(mVoc) {
+            for ( id in get( entryID ) ) {
+                val label = mVoc[id]
+                //result += "<b style=\"text-color: ${label?.mColor}\"> ${label?.mName} </b>"
+                result += "<b><font color=\"${label?.mColor}\"> ${label?.mName} </font></b>"
+            }
+            return result
+        }
+    }
+
 
 
 }

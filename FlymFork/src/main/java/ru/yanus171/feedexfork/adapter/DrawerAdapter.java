@@ -212,7 +212,9 @@ public class DrawerAdapter extends BaseAdapter {
             holder.titleTxt.setAllCaps(true);
             holder.separator.setVisibility(View.VISIBLE);
         } else if ( isLabelPos(position, labelList) ) {
-            holder.titleTxt.setText(labelList.get(getLabelPosition(position)).mName );
+            Label label = labelList.get(getLabelPosition(position));
+            holder.titleTxt.setText( label.mName );
+            holder.titleTxt.setTextColor( label.colorInt() );
             holder.iconView.setImageResource(R.drawable.cup_empty);
             holder.unreadTxt.setText("");
             holder.readTxt.setText("");

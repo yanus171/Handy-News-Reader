@@ -3,6 +3,7 @@ package ru.yanus171.feedexfork.activity
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -13,7 +14,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
-import ru.yanus171.feedexfork.utils.LabelVoc
+import ru.yanus171.feedexfork.utils.*
+import ru.yanus171.feedexfork.view.ColorPreference
 import java.util.*
 
 
@@ -34,14 +36,15 @@ class LabelListActivity : AppCompatActivity(), Observer {
                 CreateCursor(),
                 false) {
             override fun bindView(view: View?, context: Context?, cursor: Cursor?) {
-                val tag = EntryTag(cursor!!)
+                val label = Label(cursor!!)
                 val nameTextView = view!!.findViewById<TextView>(R.id.text_name)
-                nameTextView.text = tag.mName
+                nameTextView.text = label.mName
+                nameTextView.setTextColor( label.colorInt() )
             }
 
-            override fun getItem(position: Int): EntryTag {
+            override fun getItem(position: Int): Label {
                 cursor.moveToPosition(position)
-                return EntryTag(cursor)
+                return Label(cursor)
             }
         };
 //        mListView.setOnItemClickListener { parent, view, position, id ->
@@ -59,7 +62,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val info = item!!.menuInfo as AdapterContextMenuInfo
-        val tag = mListView.adapter.getItem(info.position) as EntryTag
+        val tag = mListView.adapter.getItem(info.position) as Label
         when (item.itemId) {
             MENU_EDIT -> createTagAddEditDialog(tag).create().show()
             MENU_REMOVE -> createTagRemoveDialog(tag).create().show()
@@ -68,32 +71,47 @@ class LabelListActivity : AppCompatActivity(), Observer {
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private fun createTagAddEditDialog(tag_: EntryTag?): AlertDialog.Builder {
-        var tag = tag_
+    private fun createTagAddEditDialog(label_: Label?): AlertDialog.Builder {
+        var label = label_
         val builder = AlertDialog.Builder(this)
-                .setTitle(if (tag_ == null) R.string.context_menu_add else R.string.context_menu_edit )
+                .setTitle(if (label_ == null) R.string.context_menu_add else R.string.context_menu_edit)
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val root = inflater.inflate(R.layout.label_edit_layout, null, false) as ViewGroup
 
-        if ( tag == null )
-            tag = EntryTag( null )
+        if ( label == null )
+            label = Label(LabelVoc.getNextID(), "", "")
         val editName = root.findViewById<EditText>(R.id.edit_name)
-        editName.setText( tag.mName )
+        editName.setText(label.mName)
+
+        val colorView = root.findViewById<TextView>(R.id.color_view)
+        updateColorView(colorView, label)
+
+        colorView.setOnClickListener {
+            val colorDialog = ColorDialog(this,
+                    ColorTB.Create( label.colorInt(), Color.TRANSPARENT), false, true, false,
+                    getString(R.string.label_color_dialog_title), "text", "")
+            colorDialog.CreateBuilder().setPositiveButton(android.R.string.ok) { dialog, _ ->
+                label.mColor = ColorPreference.ToHex( colorDialog.mColor.Text, false )
+                updateColorView(colorView, label)
+                dialog.dismiss()
+            }.show()
+        }
 
         builder.setView(root)
         builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
             dialog.dismiss()
-            tag.mName = editName.text.toString()
+            label.mName = editName.text.toString()
             val values = ContentValues()
-            values.put( LabelColumns.NAME, tag.mName )
-            if ( tag_ == null ) {
-                LabelVoc.addLabel( tag.mName )
+            values.put(LabelColumns.NAME, label.mName)
+            values.put(LabelColumns.COLOR, label.mColor)
+            if ( label_ == null ) {
+                LabelVoc.addLabel(label.mName)
                 contentResolver.insert(LabelColumns.CONTENT_URI, values)
             } else {
-                LabelVoc.editLabel( tag.mID, tag.mName )
-                contentResolver.update( LabelColumns.CONTENT_URI( tag.mID ), values, null, null )
+                LabelVoc.editLabel(label)
+                contentResolver.update(LabelColumns.CONTENT_URI(label.mID), values, null, null)
             }
-            RefreshAdapter()
+            refreshAdapter()
 
         }
         builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -103,18 +121,22 @@ class LabelListActivity : AppCompatActivity(), Observer {
         return builder
     }
 
-    private fun RefreshAdapter() {
-        (mListView.adapter as ResourceCursorAdapter).changeCursor(CreateCursor());
+    private fun updateColorView(colorView: TextView, label: Label) {
+        colorView.setBackgroundColor( label.colorInt() )
     }
 
-    private fun createTagRemoveDialog(tag: EntryTag): AlertDialog.Builder {
+    private fun refreshAdapter() {
+        (mListView.adapter as ResourceCursorAdapter).changeCursor(CreateCursor())
+    }
+
+    private fun createTagRemoveDialog(label: Label): AlertDialog.Builder {
         return AlertDialog.Builder(this)
-               .setTitle(tag.mName)
+               .setTitle(label.mName)
                .setMessage(R.string.remove_tag_confirmation)
                .setPositiveButton(android.R.string.ok){ dialog, _ ->
-                   LabelVoc.deleteLabel( tag.mID )
-                   contentResolver.delete( LabelColumns.CONTENT_URI(tag.mID), null, null )
-                   RefreshAdapter()
+                   LabelVoc.deleteLabel(label.mID)
+                   contentResolver.delete(LabelColumns.CONTENT_URI(label.mID), null, null)
+                   refreshAdapter()
                     dialog.dismiss()
                }
                .setNegativeButton(android.R.string.cancel, null)
@@ -122,8 +144,8 @@ class LabelListActivity : AppCompatActivity(), Observer {
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         if (v == mListView) {
-            menu.add(Menu.NONE, Companion.MENU_EDIT, Menu.NONE, R.string.context_menu_edit)
-            menu.add(Menu.NONE, Companion.MENU_REMOVE, Menu.NONE, R.string.context_menu_delete)
+            menu.add(Menu.NONE, MENU_EDIT, Menu.NONE, R.string.context_menu_edit)
+            menu.add(Menu.NONE, MENU_REMOVE, Menu.NONE, R.string.context_menu_delete)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,7 +160,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
         when (item.itemId) {
             R.id.menu_add -> createTagAddEditDialog(null).create().show()
         }
-        return true;
+        return true
     }
     override fun onDestroy() {
         //Global.GetWebLoadAccountList().mObservable.deleteObserver(this)
@@ -146,9 +168,10 @@ class LabelListActivity : AppCompatActivity(), Observer {
     }
 
     companion object {
-        private const val MENU_EDIT = 102;
+        private const val MENU_EDIT = 102
+
         //private const val MENU_ADD = 103;
-        private const val MENU_REMOVE = 104;
+        private const val MENU_REMOVE = 104
     }
 
     override fun update(p0: Observable?, p1: Any?) {
@@ -156,8 +179,3 @@ class LabelListActivity : AppCompatActivity(), Observer {
     }
 }
 
-class EntryTag( val cursor: Cursor? ) {
-    val mID: Long = cursor?.getLong( 0 ) ?: 0
-    var mName: String = cursor?.getString( 1 ) ?: ""
-    val mColor: String = cursor?.getString( 2 ) ?: ""
-}

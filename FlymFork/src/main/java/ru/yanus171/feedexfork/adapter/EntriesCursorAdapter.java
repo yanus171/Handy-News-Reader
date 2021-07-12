@@ -264,9 +264,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 }
             });
 
-            holder.urlTextView.setOnClickListener( openArticle );
-            holder.dateTextView.setOnClickListener( openArticle );
-
             holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -514,6 +511,17 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
+        final View.OnClickListener manageLabels = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
+            }
+        };
+
+        holder.urlTextView.setOnClickListener( manageLabels );
+        holder.dateTextView.setOnClickListener( manageLabels );
+
+
         if ( mMapRead.containsKey(holder.entryID) )
             holder.isRead = mMapRead.get( holder.entryID );
         else
@@ -659,15 +667,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.categoriesTextView.setText(CategoriesToOutput(categories) );
             }
         }
+        //view.findViewById(R.id.text2Layout).setOnClickListener(manageLabels);
 
         holder.labelTextView.setVisibility( LabelVoc.INSTANCE.get( holder.entryID ).isEmpty() ? View.GONE : View.VISIBLE );
         holder.labelTextView.setText( Html.fromHtml(LabelVoc.INSTANCE.getStringList( holder.entryID )) );
-        holder.labelTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
-            }
-        });
+        holder.labelTextView.setOnClickListener(manageLabels);
 
         holder.contentImgView1.setVisibility( View.GONE );
         holder.contentImgView2.setVisibility( View.GONE );
@@ -909,14 +913,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private void UpdateReadView(ViewHolder holder, View parentView) {
         if ( holder.isTextShown() )
             holder.isRead = false;
-        holder.titleTextView.setEnabled(!holder.isRead);
-        holder.dateTextView.setEnabled(!holder.isRead);
-        holder.textTextView.setEnabled(!holder.isRead);
-        holder.authorTextView.setEnabled(!holder.isRead);
-        holder.categoriesTextView.setEnabled(!holder.isRead);
-        holder.labelTextView.setEnabled(!holder.isRead);
-        holder.urlTextView.setEnabled(!holder.isRead);
-//        holder.readImgView.setVisibility( PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown() ? View.VISIBLE : View.GONE );
         {
             boolean v = PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown();
             holder.readImgView.setVisibility( v ? View.VISIBLE : View.GONE );
