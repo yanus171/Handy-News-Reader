@@ -589,8 +589,8 @@
     <string name="setting_edit_feed_force_portrait_orientation_summary">Force portrait screen orientation in Edit Feed window - check if your phone has narrow screen</string>
     <string name="name">Name</string>
     <string name="remove_tag_confirmation">"Remove tag? "</string>
-    <string name="setting_tag_list">Tag list</string>
-    <string name="tag_list">Tag list</string>
+    <string name="setting_tag_list">Label List</string>
+    <string name="tag_list">Label list</string>
     <string name="menu_edit_labels">Labels</string>
     <string name="manage_labels">Manage labels</string>
     <string name="article_labels_setup_title">Label setup</string>

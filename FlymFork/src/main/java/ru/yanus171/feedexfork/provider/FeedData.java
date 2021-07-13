@@ -340,10 +340,6 @@ public class FeedData {
                 {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN},
                 {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT} };
 
-        public static Uri UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
-            return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/unread_entries");
-        }
-
         public static Uri ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/entries");
         }
@@ -352,16 +348,8 @@ public class FeedData {
             return Uri.parse(CONTENT_AUTHORITY + "/groups/" + groupId + "/entries");
         }
 
-        public static Uri UNREAD_ENTRIES_FOR_GROUP_CONTENT_URI(long groupId) {
-            return Uri.parse(CONTENT_AUTHORITY + "/groups/" + groupId + "/unread_entries");
-        }
-
         public static Uri ENTRIES_FOR_GROUP_CONTENT_URI(long groupId) {
             return Uri.parse(CONTENT_AUTHORITY + "/groups/" + groupId + "/entries");
-        }
-
-        public static Uri UNREAD_ENTRIES_CONTENT_URI(String entryId) {
-            return Uri.parse(CONTENT_AUTHORITY + "/unread_entries/" + entryId);
         }
 
         public static Uri CONTENT_URI(String entryId) {
@@ -385,7 +373,6 @@ public class FeedData {
         public static final Uri UNREAD_ENTRIES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/unread_entries");
 
         public static final Uri FAVORITES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/favorites");
-        public static final Uri FAVORITES_UNREAD_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/unread_favorites");
 
         public static boolean isSearchUri(Uri uri) {
             return uri != null && uri.toString().startsWith(CONTENT_AUTHORITY + "/entries/search/");

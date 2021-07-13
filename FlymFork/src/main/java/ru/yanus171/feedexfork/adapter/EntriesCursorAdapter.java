@@ -638,7 +638,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.authorTextView.setText( cursor.getString( mAuthorPos ) );
         UpdateReadView( holder, view );
 
-        final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) || feedId.equals( FetcherService.GetExtrenalLinkFeedID() );
+        final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) ;
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
 

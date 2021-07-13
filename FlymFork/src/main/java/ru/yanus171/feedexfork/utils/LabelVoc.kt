@@ -33,13 +33,13 @@ public class Label(id: Long, name: String, var mColor: String?) {
 
     init {
         if (mColor.isNullOrEmpty())
-            mColor = Theme.GetTextColor()
+            mColor = Theme.GetColor(Theme.TEXT_COLOR_READ, R.string.default_read_color)
     }
 
-    constructor ( cursor: Cursor) : this( cursor.getLong( 0 ), cursor.getString( 1 ), cursor.getString( 2 ) )
+    constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
 
     fun colorInt(): Int {
-        return Color.parseColor( mColor )
+        return Color.parseColor(mColor)
     }
 }
 
@@ -76,7 +76,7 @@ object LabelVoc {
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
                         val entryId = cursor.getLong(0)
-                        if ( !mEntryVoc.containsKey( entryId ) )
+                        if ( !mEntryVoc.containsKey(entryId) )
                             mEntryVoc[entryId] = HashSet<Long>()
                         mEntryVoc[entryId]!!.add(cursor.getLong(1))
                     }
@@ -102,11 +102,11 @@ object LabelVoc {
     fun getList(): ArrayList<Label> {
         initInThread()
         synchronized(mVoc) {
-            return ArrayList( mVoc.values )
+            return ArrayList(mVoc.values)
         }
     }
 
-    fun editLabel( label: Label ) {
+    fun editLabel(label: Label) {
         initInThread()
         synchronized(mVoc) {
             mVoc[label.mID] = label
@@ -116,8 +116,8 @@ object LabelVoc {
     fun deleteLabel(id: Long) {
         initInThread()
         synchronized(mVoc) {
-            mVoc.remove( id )
-            mEntryVoc.remove( id )
+            mVoc.remove(id)
+            mEntryVoc.remove(id)
         }
     }
     fun setEntry(entryID: Long, labels: HashSet<Long>) {
@@ -154,7 +154,7 @@ object LabelVoc {
             init_()
     }
 
-    fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter ) {
+    fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter) {
         val builder = AlertDialog.Builder(context)
         val checkedLabels = get(entryID)
         val array = mVoc.values.toTypedArray()
@@ -166,10 +166,10 @@ object LabelVoc {
                 val cb = root.findViewById<CheckBox>(R.id.text_name)
                 val label = array[position]
                 cb.text = label.mName
-                SetTypeFace( cb )
+                SetTypeFace(cb)
                 block = true
                 cb.isChecked = checkedLabels.contains(label.mID)
-                cb.setTextColor( label.colorInt() )
+                cb.setTextColor(label.colorInt())
                 block = false
                 cb.tag = label.mID
                 cb.setOnCheckedChangeListener { btn, isChecked ->
@@ -184,36 +184,36 @@ object LabelVoc {
             }
         }, null)
         .setPositiveButton(android.R.string.ok) { dialog, _ ->
-            setEntry(entryID, checkedLabels )
+            setEntry(entryID, checkedLabels)
             Thread {
-                FeedDataContentProvider.SetNotifyEnabled( false )
-                context.contentResolver.delete( EntryLabelColumns.CONTENT_URI( entryID ), null, null )
+                FeedDataContentProvider.SetNotifyEnabled(false)
+                context.contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
                 for( labelID in checkedLabels ) {
                     val values = ContentValues()
-                    values.put( EntryLabelColumns.ENTRY_ID, entryID)
-                    values.put( EntryLabelColumns.LABEL_ID, labelID)
-                    context.contentResolver.insert( EntryLabelColumns.CONTENT_URI, values )
+                    values.put(EntryLabelColumns.ENTRY_ID, entryID)
+                    values.put(EntryLabelColumns.LABEL_ID, labelID)
+                    context.contentResolver.insert(EntryLabelColumns.CONTENT_URI, values)
                 }
-                FeedDataContentProvider.SetNotifyEnabled( true )
+                FeedDataContentProvider.SetNotifyEnabled(true)
             }.start()
             adapterToNotify.notifyDataSetChanged()
             dialog.dismiss()
         }
         .setNeutralButton(R.string.manage_labels) { _, _ ->
             val intent = Intent(context, LabelListActivity::class.java)
-            context.startActivity( intent )
+            context.startActivity(intent)
         }
-        .setNegativeButton(android.R.string.cancel ) { dialog, _ ->
+        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
             dialog.dismiss()
         }
-        .setTitle( R.string.article_labels_setup_title )
+        .setTitle(R.string.article_labels_setup_title)
         builder.show()
     }
     fun getStringList(entryID: Long): String {
         initInThread()
         var result = ""
         synchronized(mVoc) {
-            for ( id in get( entryID ) ) {
+            for ( id in get(entryID) ) {
                 val label = mVoc[id]
                 //result += "<b style=\"text-color: ${label?.mColor}\"> ${label?.mName} </b>"
                 result += "<b><font color=\"${label?.mColor}\"> ${label?.mName} </font></b>"

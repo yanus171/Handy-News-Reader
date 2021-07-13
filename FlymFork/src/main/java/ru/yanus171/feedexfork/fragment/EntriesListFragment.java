@@ -183,7 +183,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, mWhereSQL, null, EntryColumns.DATE + entriesOrder);
+                final String where = mWhereSQL + (mShowUnRead ? " AND " + EntryColumns.WHERE_UNREAD : "");
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, EntryColumns.DATE + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
                 mStatus = Status().Start(R.string.article_list_loading, true);
@@ -273,12 +274,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         if ( mCurrentUri != null ) {
             int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
-            item.setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
+            item.setVisible( uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
             mMenu.findItem(R.id.menu_show_entry_text).setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_FAVORITES &&
-                    uriMatch != FeedDataContentProvider.URI_FAVORITES_UNREAD );
+                    uriMatch != FeedDataContentProvider.URI_FAVORITES );
         }
 
         boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri );
@@ -882,21 +881,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_toogle_toogle_unread_all: {
                 int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
                 mShowUnRead = !mShowUnRead;
-                if ( uriMatch == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ||
-                     uriMatch == FeedDataContentProvider.URI_UNREAD_ENTRIES_FOR_FEED ) {
-                    long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
-                    Uri uri = mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_FEED_CONTENT_URI(feedID) : EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID);
-                    setData( uri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
-                } else if ( uriMatch == FeedDataContentProvider.URI_ENTRIES_FOR_GROUP ||
-                            uriMatch == FeedDataContentProvider.URI_UNREAD_ENTRIES_FOR_GROUP ) {
-                    long groupID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
-                    Uri uri = mShowUnRead ? EntryColumns.UNREAD_ENTRIES_FOR_GROUP_CONTENT_URI(groupID) : EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(groupID);
-                    setData( uri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
-                } else if ( uriMatch == FeedDataContentProvider.URI_FAVORITES ||
-                    uriMatch == FeedDataContentProvider.URI_FAVORITES_UNREAD ) {
-                    Uri uri = mShowUnRead ? EntryColumns.FAVORITES_UNREAD_CONTENT_URI : EntryColumns.FAVORITES_CONTENT_URI;
-                    setData( uri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
-                }
+                setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 UpdateActions();
                 return true;
             }
@@ -991,8 +976,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private void startRefresh() {
         if ( mCurrentUri != null && !PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
             int uriMatcher = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
-            if ( uriMatcher == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ||
-                 uriMatcher == FeedDataContentProvider.URI_UNREAD_ENTRIES_FOR_FEED ) {
+            if ( uriMatcher == FeedDataContentProvider.URI_ENTRIES_FOR_FEED  ) {
                 FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.FEED_ID, mCurrentUri.getPathSegments().get(1)), true);

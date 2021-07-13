@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import android.widget.AdapterView.AdapterContextMenuInfo
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
     private lateinit var mListView: ListView
     private lateinit var mMenu: Menu
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_label_list)
@@ -39,14 +41,19 @@ class LabelListActivity : AppCompatActivity(), Observer {
                 val label = Label(cursor!!)
                 val nameTextView = view!!.findViewById<TextView>(R.id.text_name)
                 nameTextView.text = label.mName
-                nameTextView.setTextColor( label.colorInt() )
+                nameTextView.setTextColor(label.colorInt())
             }
 
             override fun getItem(position: Int): Label {
                 cursor.moveToPosition(position)
                 return Label(cursor)
             }
-        };
+        }
+
+        mListView.onItemClickListener  = AdapterView.OnItemClickListener {
+            _, _, pos, _ -> createTagAddEditDialog(mListView.adapter.getItem(pos) as Label).create().show()
+        }
+
 //        mListView.setOnItemClickListener { parent, view, position, id ->
 //            WebLoadRefreshService.startActionRefresh(mListView.getItemAtPosition(position) as WebLoadAccount, true)
 //        }
@@ -61,7 +68,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item!!.menuInfo as AdapterContextMenuInfo
+        val info = item.menuInfo as AdapterContextMenuInfo
         val tag = mListView.adapter.getItem(info.position) as Label
         when (item.itemId) {
             MENU_EDIT -> createTagAddEditDialog(tag).create().show()
@@ -88,10 +95,10 @@ class LabelListActivity : AppCompatActivity(), Observer {
 
         colorView.setOnClickListener {
             val colorDialog = ColorDialog(this,
-                    ColorTB.Create( label.colorInt(), Color.TRANSPARENT), false, true, false,
+                    ColorTB.Create(label.colorInt(), Color.TRANSPARENT), false, true, false,
                     getString(R.string.label_color_dialog_title), "text", "")
             colorDialog.CreateBuilder().setPositiveButton(android.R.string.ok) { dialog, _ ->
-                label.mColor = ColorPreference.ToHex( colorDialog.mColor.Text, false )
+                label.mColor = ColorPreference.ToHex(colorDialog.mColor.Text, false)
                 updateColorView(colorView, label)
                 dialog.dismiss()
             }.show()
@@ -122,7 +129,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
     }
 
     private fun updateColorView(colorView: TextView, label: Label) {
-        colorView.setBackgroundColor( label.colorInt() )
+        colorView.setBackgroundColor(label.colorInt())
     }
 
     private fun refreshAdapter() {
@@ -161,10 +168,6 @@ class LabelListActivity : AppCompatActivity(), Observer {
             R.id.menu_add -> createTagAddEditDialog(null).create().show()
         }
         return true
-    }
-    override fun onDestroy() {
-        //Global.GetWebLoadAccountList().mObservable.deleteObserver(this)
-        super.onDestroy()
     }
 
     companion object {
