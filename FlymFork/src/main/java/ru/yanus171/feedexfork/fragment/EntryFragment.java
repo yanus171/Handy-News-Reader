@@ -98,6 +98,7 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
+import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -108,6 +109,7 @@ import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -124,6 +126,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mWhereSQL;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
@@ -673,6 +676,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     GetSelectedEntryView().UpdateImages( true );
                     break;
                 }
+                case R.id.menu_labels: {
+                    LabelVoc.INSTANCE.showDialog(getContext(), getCurrentEntryID(), null );
+                    break;
+                }
                 case R.id.menu_go_back: {
                     GetSelectedEntryView().GoBack();
                     break;
@@ -936,7 +943,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     final ContentResolver cr = MainApplication.getContext().getContentResolver();
                     // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, null, null, EntryColumns.DATE + entriesOrder);
+                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, mWhereSQL, null, EntryColumns.DATE + entriesOrder);
 
                     if (entriesCursor != null && entriesCursor.getCount() > 0) {
                         synchronized ( this ) {

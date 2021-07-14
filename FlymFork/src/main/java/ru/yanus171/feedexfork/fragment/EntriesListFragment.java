@@ -130,7 +130,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public static Uri mCurrentUri = null;
     private static final String EMPTY_WHERE_SQL = "(1 = 1)";
-    private static String mWhereSQL = EMPTY_WHERE_SQL;
+    static String mWhereSQL = EMPTY_WHERE_SQL;
 
     private Uri mOriginalUri;
     private boolean mOriginalUriShownEntryText = false;

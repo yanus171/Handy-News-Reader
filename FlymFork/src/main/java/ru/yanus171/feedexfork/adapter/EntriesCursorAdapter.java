@@ -332,7 +332,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                         new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
                                         new Item(R.string.menu_mark_upper_as_read, 0),
                                         new Item(R.string.menu_mark_all_as_unread, 0),
-                                        new Item(R.string.menu_edit_labels, 0)
+                                        new Item(R.string.menu_edit_labels, R.drawable.tag_white)
                                     };
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder( context );
@@ -350,7 +350,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                                             if ( items[position].icon > 0 ) {
                                                 //Put the image on the TextView
-                                                int dp50 = (int) (50 * context.getResources().getDisplayMetrics().density + 0.5f);
+                                                int dp50 = (int) (40 * context.getResources().getDisplayMetrics().density + 0.5f);
                                                 Drawable dr = context.getResources().getDrawable(items[position].icon);
                                                 Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
                                                 Drawable d = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
@@ -520,6 +520,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         holder.urlTextView.setOnClickListener( manageLabels );
         holder.dateTextView.setOnClickListener( manageLabels );
+        holder.authorTextView.setOnClickListener( manageLabels );
 
 
         if ( mMapRead.containsKey(holder.entryID) )

@@ -597,6 +597,7 @@
     <string name="labels_group_title">Labels</string>
     <string name="color">Color</string>
     <string name="label_color_dialog_title">Label color</string>
+    <string name="menu_labels">Labels</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

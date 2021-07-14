@@ -215,7 +215,7 @@ public class DrawerAdapter extends BaseAdapter {
             Label label = labelList.get(getLabelPosition(position));
             holder.titleTxt.setText( label.mName );
             holder.titleTxt.setTextColor( label.colorInt() );
-            holder.iconView.setImageResource(R.drawable.cup_empty);
+            holder.iconView.setImageResource(R.drawable.tag_brown);
             holder.unreadTxt.setText("");
             holder.readTxt.setText("");
             //SetImageSizeText(holder, mExternalImagesSize);
@@ -346,7 +346,9 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     public String getItemName(int position) {
-        if ( isLabelPos( position, getLabelList() ) )
+        if ( position == LABEL_GROUP_POS )
+            return getContext().getString( R.string.labels_group_title );
+        else if ( isLabelPos( position, getLabelList() ) )
             return getLabelList().get( getLabelPosition( position ) ).mName;
         else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()))
             return mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME);

@@ -18,6 +18,10 @@
         android:icon="@drawable/ic_check_box"
         android:title="@string/menu_mark_as_unread" />
     <item
+        android:id="@+id/menu_labels"
+        android:icon="@drawable/tag_white"
+        android:title="@string/menu_labels" />
+    <item
         android:id="@+id/menu_add_feed"
         android:icon="@drawable/ic_add_circle_outline"
         android:title="@string/menu_add_feed" />

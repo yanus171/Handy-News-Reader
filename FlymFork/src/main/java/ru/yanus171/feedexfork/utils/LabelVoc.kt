@@ -15,8 +15,10 @@ import android.widget.CheckBox
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.LabelListActivity
+import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.UiUtils.SetTypeFace
@@ -154,7 +156,7 @@ object LabelVoc {
             init_()
     }
 
-    fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter) {
+    fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter?) {
         val builder = AlertDialog.Builder(context)
         val checkedLabels = get(entryID)
         val array = mVoc.values.toTypedArray()
@@ -195,8 +197,15 @@ object LabelVoc {
                     context.contentResolver.insert(EntryLabelColumns.CONTENT_URI, values)
                 }
                 FeedDataContentProvider.SetNotifyEnabled(true)
+                run {
+                    val values = ContentValues()
+                    values.put(FeedData.EntryColumns._ID, entryID)
+                    values.put(FeedData.EntryColumns.IS_FAVORITE, if (checkedLabels.isNotEmpty()) 1 else 0)
+                    context.contentResolver.update(FeedData.EntryColumns.CONTENT_URI(entryID), values, if (checkedLabels.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null )
+                }
+
             }.start()
-            adapterToNotify.notifyDataSetChanged()
+            adapterToNotify?.notifyDataSetChanged()
             dialog.dismiss()
         }
         .setNeutralButton(R.string.manage_labels) { _, _ ->

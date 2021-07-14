@@ -116,7 +116,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     FeedColumns.TABLE_NAME + " AS t1"+ " WHERE " +
                     FeedColumns.GROUP_ID +  " = " + FeedColumns.TABLE_NAME + "." + FeedColumns._ID  + ") " + " )";
         else
-        return "0";
+            return "0";
 
     }
     private String EXPR_NUMBER (final String where ) {
@@ -579,6 +579,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 break;
             case LABEL_GROUP_POS:
                 newUri = EntryColumns.CONTENT_URI;
+                mTitle = getString( R.string.labels_group_title );
                 EntriesListFragment.AppendWhereSQL( DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")" );
                 showFeedInfo = true;
                 break;
