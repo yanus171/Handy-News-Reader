@@ -99,6 +99,7 @@
     <string name="menu_add_feed">Веб поиск статьи</string>
     <string name="no_feeds">Нет лент</string>
     <string name="no_filters">Нет фильтров</string>
+    <string name="context_menu_add">Добавить</string>
     <string name="context_menu_delete">Удалить</string>
     <string name="edit_feed_title">Редактировать ленту</string>
     <string name="new_feed_title">Новая лента</string>
@@ -573,6 +574,17 @@
     <string name="atricle_list_size_progressbar_maxsize_descr">В кБ для горизонтального индикатора</string>
     <string name="setting_edit_feed_force_portrait_orientation">Редактировать портретную ориентацию канала</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Принудительная портретная ориентация экрана в окне редактирования настроек канала - проверьте, не узкий ли у вашего телефона экран</string>
+    <string name="name">Название</string>
+    <string name="remove_tag_confirmation">"Удалить тег? "</string>
+    <string name="setting_tag_list">Список ярлыков</string>
+    <string name="tag_list">Список ярлыков</string>
+    <string name="menu_edit_labels">Ярлыки</string>
+    <string name="manage_labels">Управление ярлыками</string>
+    <string name="article_labels_setup_title">Настройка ярлыка</string>
+    <string name="labels_group_title">Ярлыки</string>
+    <string name="color">Цвет</string>
+    <string name="label_color_dialog_title">Цвет ярлыка</string>
+    <string name="menu_labels">Ярлыки</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
