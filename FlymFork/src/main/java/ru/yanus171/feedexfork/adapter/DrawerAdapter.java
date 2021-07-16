@@ -45,6 +45,7 @@ import java.util.Map;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -52,7 +53,12 @@ import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
+import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.Constants.DB_SUM;
+import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
@@ -157,15 +163,13 @@ public class DrawerAdapter extends BaseAdapter {
                 case 0:
                     holder.titleTxt.setText(R.string.unread_entries);
                     holder.iconView.setImageResource(R.drawable.cup_new_unread);
-                    if (mAllUnreadNumber != 0)
-                        holder.unreadTxt.setText(String.valueOf(mAllUnreadNumber));
+                    SetCount(mAllUnreadNumber, holder.unreadTxt);
                     SetImageSizeText(holder, mAllUnreadImagesSize);
                     break;
                 case 1:
                     holder.titleTxt.setText(R.string.all_entries);
                     holder.iconView.setImageResource(R.drawable.cup_new_pot);
-                    if (mAllNumber != 0)
-                        holder.unreadTxt.setText(String.valueOf(mAllNumber));
+                    SetCount(mAllNumber, holder.unreadTxt);
                     holder.unreadTxt.setText(String.valueOf(mAllNumber));
                     holder.readTxt.setText("");
                     SetImageSizeText(holder, mAllImagesSize);
@@ -182,19 +186,15 @@ public class DrawerAdapter extends BaseAdapter {
                 case 2:
                     holder.titleTxt.setText(R.string.favorites);
                     holder.iconView.setImageResource(R.drawable.cup_new_star);
-                    if (mFavoritesUnreadNumber != 0)
-                        holder.unreadTxt.setText(String.valueOf(mFavoritesUnreadNumber));
-                    if (mFavoritesReadNumber != 0)
-                        holder.readTxt.setText(String.valueOf(mFavoritesReadNumber));
+                    SetCount(mFavoritesUnreadNumber, holder.unreadTxt);
+                    SetCount(mFavoritesReadNumber, holder.readTxt);
                     SetImageSizeText(holder, mFavoritiesImagesSize);
                     break;
                 case EXTERNAL_ENTRY_POS:
                     holder.titleTxt.setText(R.string.externalLinks);
                     holder.iconView.setImageResource(R.drawable.cup_new_load_later);
-                    if (mExternalUnreadNumber != 0)
-                        holder.unreadTxt.setText(String.valueOf(mExternalUnreadNumber));
-                    if (mExternalReadNumber != 0)
-                        holder.readTxt.setText(String.valueOf(mExternalReadNumber));
+                    SetCount(mExternalUnreadNumber, holder.unreadTxt);
+                    SetCount(mExternalReadNumber, holder.readTxt);
                     SetImageSizeText(holder, mExternalImagesSize);
                     break;
             }
@@ -216,9 +216,9 @@ public class DrawerAdapter extends BaseAdapter {
             holder.titleTxt.setText( label.mName );
             holder.titleTxt.setTextColor( label.colorInt() );
             holder.iconView.setImageResource(R.drawable.tag_brown);
-            holder.unreadTxt.setText("");
-            holder.readTxt.setText("");
-            //SetImageSizeText(holder, mExternalImagesSize);
+            SetCount(label.mEntriesUnreadCount, holder.unreadTxt);
+            SetCount(label.mEntriesReadCount, holder.readTxt);
+            SetImageSizeText(holder, label.mEntriesImagesSize);
          } else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
             holder.titleTxt.setText((mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME)));
 
@@ -274,9 +274,7 @@ public class DrawerAdapter extends BaseAdapter {
                 holder.autoRefreshIcon.setVisibility( isAutoRefresh( position )  ? View.VISIBLE : View.GONE );
             }
             int unread = mFeedsCursor.getInt(POS_UNREAD);
-            if (unread != 0) {
-                holder.unreadTxt.setText(String.valueOf(unread));
-            }
+            SetCount(unread, holder.unreadTxt);
             int read = mFeedsCursor.getInt(POS_ALL) - mFeedsCursor.getInt(POS_UNREAD);
             if ( read > 0 )
                 holder.readTxt.setText( String.valueOf(read) );
@@ -285,6 +283,11 @@ public class DrawerAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    private void SetCount(int mAllUnreadNumber, TextView unreadTxt) {
+        if (mAllUnreadNumber != 0)
+            unreadTxt.setText(String.valueOf(mAllUnreadNumber));
     }
 
     @NotNull
@@ -391,6 +394,10 @@ public class DrawerAdapter extends BaseAdapter {
 
     }
 
+    public static interface OnLabelReturnedFromCursor {
+        void run(Label label, Cursor cur);
+    }
+
     private void updateNumbers() {
         ContentResolver cr = mContext.getContentResolver();
         mAllUnreadNumber = mFavoritesUnreadNumber = mFavoritesReadNumber = mAllNumber = mExternalReadNumber = mExternalUnreadNumber = 0;
@@ -428,20 +435,69 @@ public class DrawerAdapter extends BaseAdapter {
 
         timer = new Timer("updateTaskNumbers()");
 
-        mTextTaskCount = 0;
-        mImageTaskCount = 0;
-        Cursor tasks = cr.query(FeedData.TaskColumns.CONTENT_URI,
-                                new String[]{FeedData.TaskColumns.TEXT_COUNT, FeedData.TaskColumns.IMAGE_COUNT},
-                                null, null, null);
-        if (tasks != null) {
-            if (tasks.moveToFirst()) {
-                mTextTaskCount = tasks.getInt(0);
-                mImageTaskCount = tasks.getInt(1);
+        {
+            mTextTaskCount = 0;
+            mImageTaskCount = 0;
+            Cursor cur = cr.query(FeedData.TaskColumns.CONTENT_URI,
+                                    new String[]{FeedData.TaskColumns.TEXT_COUNT, FeedData.TaskColumns.IMAGE_COUNT},
+                                    null, null, null);
+            if (cur != null) {
+                if (cur.moveToFirst()) {
+                    mTextTaskCount = cur.getInt(0);
+                    mImageTaskCount = cur.getInt(1);
+                }
+                cur.close();
             }
-            tasks.close();
         }
+
+
+        for ( Label label: LabelVoc.INSTANCE.getList() ) {
+            label.mEntriesUnreadCount = 0;
+            label.mEntriesReadCount = 0;
+            label.mEntriesImagesSize = 0;
+            LabelVoc.INSTANCE.set( label );
+        }
+
+
+        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, new OnLabelReturnedFromCursor() {
+            @Override
+            public void run(Label label, Cursor cur) {
+                label.mEntriesUnreadCount = cur.getInt(1);
+            }
+        });
+
+        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, new OnLabelReturnedFromCursor() {
+            @Override
+            public void run(Label label, Cursor cur) {
+                label.mEntriesReadCount = cur.getInt(1);
+            }
+        });
+
+        SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, new OnLabelReturnedFromCursor() {
+            @Override
+            public void run(Label label, Cursor cur) {
+                label.mEntriesImagesSize = cur.getInt(1);
+            }
+        });
+
         timer.End();
     }
+
+    private void SetLabelsNumber(String columnSQLFunc, String whereSQL, OnLabelReturnedFromCursor run ) {
+        ContentResolver cr = mContext.getContentResolver();
+        Cursor cur = cr.query(EntryLabelColumns.WITH_ENTRIES_URI,
+                              new String[]{EntryLabelColumns.LABEL_ID, columnSQLFunc},
+                              whereSQL, null, null);
+        if (cur != null) {
+            while (cur.moveToNext()) {
+                Label label = LabelVoc.INSTANCE.get(cur.getLong(0));
+                run.run( label, cur );
+                LabelVoc.INSTANCE.set(label);
+            }
+            cur.close();
+        }
+    }
+
     private static class ViewHolder {
         ImageView iconView;
         TextView titleTxt;

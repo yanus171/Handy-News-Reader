@@ -35,6 +35,7 @@ public final class Constants {
   public static final String GROUP_ID = "groupid";
 
   public static final String DB_COUNT = "COUNT(*)";
+  public static final String DB_COUNT(String fieldName) { return "COUNT(" + fieldName + ")"; }
   public static final String DB_IS_TRUE = "=1";
   public static final String DB_IS_FALSE = "=0";
   public static final String DB_IS_NULL = " IS NULL";
@@ -44,6 +45,7 @@ public final class Constants {
   public static final String DB_ARG = "=?";
   public static final String DB_AND = " AND ";
   public static final String DB_OR = " OR ";
+  public static final String EMPTY_WHERE_SQL = "(1 = 1)";
   public static String DB_SUM( String fieldName ) { return " SUM(" + fieldName + ") "; }
 
   public static final String HTTP_SCHEME = "http://";

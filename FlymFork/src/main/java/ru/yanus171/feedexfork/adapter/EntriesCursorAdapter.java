@@ -103,7 +103,6 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -670,7 +669,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         //view.findViewById(R.id.text2Layout).setOnClickListener(manageLabels);
 
-        holder.labelTextView.setVisibility( LabelVoc.INSTANCE.get( holder.entryID ).isEmpty() ? View.GONE : View.VISIBLE );
+        holder.labelTextView.setVisibility( LabelVoc.INSTANCE.getLabelIDs(holder.entryID ).isEmpty() ? View.GONE : View.VISIBLE );
         holder.labelTextView.setText( Html.fromHtml(LabelVoc.INSTANCE.getStringList( holder.entryID )) );
         holder.labelTextView.setOnClickListener(manageLabels);
 

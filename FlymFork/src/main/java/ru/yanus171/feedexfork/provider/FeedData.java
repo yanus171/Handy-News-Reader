@@ -78,6 +78,16 @@ public class FeedData {
             " LEFT JOIN " +
             "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.PRIORITY + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
             "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
+    public static final String ENTRY_LABELS_WITH_ENTRIES(String where) {
+        return
+            "( SELECT * FROM " +
+            EntryLabelColumns.TABLE_NAME + " AS el" +
+            " LEFT JOIN " +
+            "( SELECT " + EntryColumns._ID + ", " + IMAGES_SIZE + ", " + EntryColumns.IS_READ + ", " + EntryColumns.IMAGES_SIZE + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + where + ") AS e " +
+            " ON (el." + EntryLabelColumns.ENTRY_ID + " = e." + EntryColumns._ID + ") " +
+            " WHERE e." + EntryColumns._ID + DB_IS_NOT_NULL +
+            ") AS f1 GROUP BY " + EntryLabelColumns.LABEL_ID;
+    }
     public static final String ENTRIES_TABLE_WITH_FEED_INFO = EntryColumns.TABLE_NAME + " JOIN (SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.RETRIEVE_FULLTEXT + ", " + FeedColumns.NAME + ", " + FeedColumns.URL + ", " +
             FeedColumns.ICON_URL + ", " + FeedColumns.IS_IMAGE_AUTO_LOAD + ", " + FeedColumns.OPTIONS + ", " + FeedColumns.GROUP_ID + " FROM " + FeedColumns.TABLE_NAME + ") AS f ON (" + EntryColumns.TABLE_NAME + '.' + FEED_ID + " = f.joined_feed_id)";
     public static final String TASKS_WITH_FEED_INFO = TaskColumns.TABLE_NAME  + " LEFT JOIN (SELECT " + EntryColumns._ID + " AS entry_id, " + EntryColumns.LINK + " FROM " + EntryColumns.TABLE_NAME + ") AS f " +
@@ -405,6 +415,11 @@ public class FeedData {
 
         public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/entrylabels");
         public static Uri CONTENT_URI(long ID) { return Uri.parse(CONTENT_AUTHORITY + "/entrylabels/" + ID);}
+
+        public static final Uri WITH_ENTRIES_URI = Uri.parse(CONTENT_AUTHORITY + "/entrylabels/with_entries");
+
+        public static final String UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + ")";
+
     }
 
     public static class TaskColumns implements BaseColumns {

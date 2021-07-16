@@ -98,6 +98,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
@@ -129,7 +130,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
 
     public static Uri mCurrentUri = null;
-    private static final String EMPTY_WHERE_SQL = "(1 = 1)";
     static String mWhereSQL = EMPTY_WHERE_SQL;
 
     private Uri mOriginalUri;

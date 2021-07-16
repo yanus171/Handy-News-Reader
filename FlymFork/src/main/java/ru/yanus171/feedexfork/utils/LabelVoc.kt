@@ -27,6 +27,16 @@ import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 public class Label(id: Long, name: String, var mColor: String?) {
+
+    @JvmField
+    var mEntriesReadCount: Int = 0
+
+    @JvmField
+    var mEntriesUnreadCount: Int = 0
+
+    @JvmField
+    var mEntriesImagesSize: Long = 0
+
     @kotlin.jvm.JvmField
     var mID = id
 
@@ -129,7 +139,21 @@ object LabelVoc {
         }
     }
 
-    fun get(entryID: Long): HashSet<Long> {
+    fun get(labelID: Long): Label? {
+        initInThread()
+        synchronized(mVoc) {
+            return mVoc.get(labelID)
+        }
+    }
+
+    fun set(label: Label) {
+        initInThread()
+        synchronized(mVoc) {
+            mVoc[label.mID] = label
+        }
+    }
+
+    fun getLabelIDs(entryID: Long): HashSet<Long> {
         initInThread()
         synchronized(mVoc) {
             return mEntryVoc.get(entryID) ?: HashSet<Long>()
@@ -158,7 +182,7 @@ object LabelVoc {
 
     fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter?) {
         val builder = AlertDialog.Builder(context)
-        val checkedLabels = get(entryID)
+        val checkedLabels = getLabelIDs(entryID)
         val array = mVoc.values.toTypedArray()
         var block = false
         builder.setAdapter(object : ArrayAdapter<Label>(context, R.layout.label_item_select, R.id.text_name, array) {
@@ -222,7 +246,7 @@ object LabelVoc {
         initInThread()
         var result = ""
         synchronized(mVoc) {
-            for ( id in get(entryID) ) {
+            for ( id in getLabelIDs(entryID) ) {
                 val label = mVoc[id]
                 //result += "<b style=\"text-color: ${label?.mColor}\"> ${label?.mName} </b>"
                 result += "<b><font color=\"${label?.mColor}\"> ${label?.mName} </font></b>"

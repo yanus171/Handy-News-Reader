@@ -81,6 +81,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 
 import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.provider.FeedData.ENTRY_LABELS_WITH_ENTRIES;
 
 public class FeedDataContentProvider extends ContentProvider {
 
@@ -117,6 +118,7 @@ public class FeedDataContentProvider extends ContentProvider {
     private static final int URI_LABEL = 30;
     private static final int URI_ENTRIES_LABELS = 31;
     private static final int URI_ENTRY_LABELS = 32;
+    private static final int URI_ENTRIES_LABELS_WITH_ENTRIES = 33;
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -147,6 +149,7 @@ public class FeedDataContentProvider extends ContentProvider {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "labels", URI_LABELS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels/#", URI_ENTRY_LABELS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels", URI_ENTRIES_LABELS);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels/with_entries", URI_ENTRIES_LABELS_WITH_ENTRIES);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*", URI_SEARCH);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*/#", URI_SEARCH_ENTRY);
     }
@@ -395,6 +398,12 @@ public class FeedDataContentProvider extends ContentProvider {
                 queryBuilder.setTables(LabelColumns.TABLE_NAME);
                 queryBuilder.appendWhere(new StringBuilder(EntryLabelColumns.ENTRY_ID).append('=').append(uri.getPathSegments().get(1)));
                 break;
+            }
+            case URI_ENTRIES_LABELS_WITH_ENTRIES: {
+                queryBuilder.setTables(ENTRY_LABELS_WITH_ENTRIES( selection ) );
+                SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
+                return queryBuilder.query(database, projection, null, null, null, null, sortOrder);
+
             }
             default:
                 throw new IllegalArgumentException("Illegal query. Match code=" + matchCode + "; uri=" + uri);

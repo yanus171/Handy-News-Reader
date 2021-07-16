@@ -59,7 +59,7 @@ import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 
-class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
     private static final int DATABASE_VERSION = 31;
