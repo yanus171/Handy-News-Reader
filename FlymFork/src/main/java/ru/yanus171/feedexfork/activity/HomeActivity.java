@@ -85,6 +85,7 @@ import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COL
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
@@ -559,7 +560,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private void selectDrawerItem(int position) {
         Timer timer = new Timer( "HomeActivity.selectDrawerItem" );
         mCurrentDrawerPos = position;
-        EntriesListFragment.ResetWhereSQL();
         Uri newUri;
         boolean showFeedInfo = true;
 
@@ -580,14 +580,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             case LABEL_GROUP_POS:
                 newUri = EntryColumns.CONTENT_URI;
                 mTitle = getString( R.string.labels_group_title );
-                EntriesListFragment.AppendWhereSQL( DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")" );
+                EntriesListFragment.mLabelID = ALL_LABELS;
                 showFeedInfo = true;
                 break;
             default:
                 if ( mDrawerAdapter.isLabelPos( position, mDrawerAdapter.getLabelList() )) {
                     newUri = EntryColumns.CONTENT_URI;
-                    Label label = mDrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 );
-                    EntriesListFragment.AppendWhereSQL( DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " + EntryLabelColumns.LABEL_ID + " = " + label.mID + ")" );
+                    EntriesListFragment.mLabelID = mDrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID;
                     showFeedInfo = true;
                 } else {
                     long feedOrGroupId = mDrawerAdapter.getItemId(position);

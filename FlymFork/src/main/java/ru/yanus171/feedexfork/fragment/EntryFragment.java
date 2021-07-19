@@ -126,7 +126,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mWhereSQL;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
@@ -944,7 +944,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     final ContentResolver cr = MainApplication.getContext().getContentResolver();
                     // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, mWhereSQL, null, EntryColumns.DATE + entriesOrder);
+                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, GetWhereSQL(), null, EntryColumns.DATE + entriesOrder);
 
                     if (entriesCursor != null && entriesCursor.getCount() > 0) {
                         synchronized ( this ) {

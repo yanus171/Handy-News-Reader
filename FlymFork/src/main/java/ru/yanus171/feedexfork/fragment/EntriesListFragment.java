@@ -69,6 +69,7 @@ import androidx.loader.content.Loader;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,6 +100,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
@@ -129,9 +131,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     //private static final int NEW_ENTRIES_NUMBER_LOADER_ID = 2;
     private static final int FILTERS_LOADER_ID = 3;
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
+    public static final long ALL_LABELS = 0L;
+    private static final long NO_LABEL = -1L;
 
     public static Uri mCurrentUri = null;
-    static String mWhereSQL = EMPTY_WHERE_SQL;
 
     private Uri mOriginalUri;
     private boolean mOriginalUriShownEntryText = false;
@@ -141,13 +144,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
-    public boolean mShowUnRead = false;
+    public static boolean mShowUnRead = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
     private FeedFilters mFilters = null;
     private boolean mIsResumed = false;
+    static private boolean mIsSearch = false;
+    public static Long mLabelID = NO_LABEL;
 
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
@@ -184,7 +189,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
-                final String where = mWhereSQL + (mShowUnRead ? " AND " + EntryColumns.WHERE_UNREAD : "");
+                final String where = GetWhereSQL();
                 CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, EntryColumns.DATE + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
@@ -234,6 +239,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
 
     };
+
+    @NotNull
+    public static String GetWhereSQL() {
+        String labelSQL = "";
+        if ( mLabelID == ALL_LABELS )
+            labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + FeedData.EntryLabelColumns.ENTRY_ID + " FROM " + FeedData.EntryLabelColumns.TABLE_NAME + ")";
+        else if ( mLabelID != NO_LABEL )
+            labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + FeedData.EntryLabelColumns.ENTRY_ID + " FROM " + FeedData.EntryLabelColumns.TABLE_NAME + " WHERE " + FeedData.EntryLabelColumns.LABEL_ID + " = " + mLabelID + ")";
+        final String unreadSQL = mShowUnRead ? " AND " + EntryColumns.WHERE_UNREAD : "";
+        return EMPTY_WHERE_SQL + (mIsSearch ? "" : (labelSQL + unreadSQL));
+    }
 
     private void RestoreListScrollPosition() {
         if ( mLastVisibleTopEntryID != -1 ) {
@@ -613,8 +629,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }*/
 
-    private static String mOriginalWhereSQL;
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         mMenu = menu;
@@ -650,7 +664,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!TextUtils.isEmpty(newText)) {
-                    mWhereSQL = EMPTY_WHERE_SQL;
+                    mIsSearch = true;
                     setData(EntryColumns.SEARCH_URI(newText), true, true, false, mOptions);
                 }
                 return false;
@@ -660,7 +674,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             @Override
             public boolean onClose() {
-                mWhereSQL = mOriginalWhereSQL;
+                mIsSearch = false;
                 setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
                 getActivity().invalidateOptionsMenu();
                 return false;
@@ -1141,12 +1155,4 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }
 
-    public static void ResetWhereSQL() {
-        mOriginalWhereSQL = EMPTY_WHERE_SQL;
-        mWhereSQL = EMPTY_WHERE_SQL;
-    }
-    public static void AppendWhereSQL(String value) {
-        mWhereSQL += value;
-        mOriginalWhereSQL = mWhereSQL;
-    }
 }
