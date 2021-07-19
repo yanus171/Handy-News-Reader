@@ -110,6 +110,19 @@
                         android:id="@+id/menu_create_backup"
                         android:icon="@drawable/ic_file_download"
                         android:title="@string/create_backup"/>
+                    <item
+                        android:id="@+id/menu_full_screen"
+                        android:checkable="true"
+                        android:icon="@drawable/ic_fullscreen"
+                        android:title="@string/menu_full_screen"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/menu_actionbar_visible"
+                        android:checkable="true"
+                        android:icon="@drawable/ic_web_asset"
+                        android:title="@string/menu_actionbar_visible"
+                        app:showAsAction="never" />
+
                 </menu>
             </item>
         </menu>

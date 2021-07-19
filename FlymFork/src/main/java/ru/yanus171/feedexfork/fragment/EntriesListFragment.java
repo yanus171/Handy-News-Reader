@@ -80,6 +80,7 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
+import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
@@ -678,6 +679,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
         menu.findItem( R.id.menu_show_entry_text ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
+        menu.findItem( R.id.menu_full_screen ).setChecked(HomeActivity.GetIsStatusBarEntryListHidden() );
+        menu.findItem( R.id.menu_actionbar_visible ).setChecked(!HomeActivity.GetIsActionBarEntryListHidden() );
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -879,11 +882,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {
-                int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
+                //int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
                 mShowUnRead = !mShowUnRead;
                 setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 UpdateActions();
                 return true;
+            }
+            case R.id.menu_full_screen: {
+                HomeActivity activity1 = (HomeActivity) getActivity();
+                activity1.setFullScreen(!HomeActivity.GetIsStatusBarEntryListHidden(), HomeActivity.GetIsActionBarEntryListHidden() );
+                item.setChecked( HomeActivity.GetIsStatusBarEntryListHidden() );
+                break;
+            }
+            case R.id.menu_actionbar_visible: {
+                HomeActivity activity1 = (HomeActivity) getActivity();
+                activity1.setFullScreen( HomeActivity.GetIsStatusBarEntryListHidden(), !HomeActivity.GetIsActionBarEntryListHidden() );
+                item.setChecked( !HomeActivity.GetIsActionBarEntryListHidden() );
+                break;
             }
             case R.id.menu_copy_feed: {
                 if ( IsFeedUri( mCurrentUri) ) {

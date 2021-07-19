@@ -587,6 +587,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
