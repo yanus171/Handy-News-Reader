@@ -119,7 +119,7 @@
         android:title="@string/reload_full_text_with_tags" />
     <item
         android:id="@+id/menu_labels"
-        android:icon="@drawable/tag_white"
+        android:icon="@drawable/label_white"
         android:title="@string/menu_labels" />
     <item
         android:id="@+id/menu_reload"

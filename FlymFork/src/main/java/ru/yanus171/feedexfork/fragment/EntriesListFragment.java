@@ -81,7 +81,6 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
@@ -859,10 +858,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     IconCompat image = null;
                     if ( mLabelID == ALL_LABELS ) {
                         name = getContext().getString( R.string.labels_group_title );
-                        image = IconCompat.createWithResource(getContext(), R.drawable.tag_brown);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
                     } else if ( mLabelID != NO_LABEL ) {
                         name = LabelVoc.INSTANCE.get(mLabelID).mName;
-                        image = IconCompat.createWithResource(getContext(), R.drawable.tag_brown);
+                        image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
                     } else if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.all_entries);
                         image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_pot);

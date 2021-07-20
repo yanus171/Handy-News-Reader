@@ -331,7 +331,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                         new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
                                         new Item(R.string.menu_mark_upper_as_read, 0),
                                         new Item(R.string.menu_mark_all_as_unread, 0),
-                                        new Item(R.string.menu_edit_labels, R.drawable.tag_white)
+                                        new Item(R.string.menu_edit_labels, R.drawable.label_white)
                                     };
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder( context );

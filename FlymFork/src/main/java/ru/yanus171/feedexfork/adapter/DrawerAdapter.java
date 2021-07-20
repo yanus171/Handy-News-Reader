@@ -215,7 +215,7 @@ public class DrawerAdapter extends BaseAdapter {
             Label label = labelList.get(getLabelPosition(position));
             holder.titleTxt.setText( label.mName );
             holder.titleTxt.setTextColor( label.colorInt() );
-            holder.iconView.setImageResource(R.drawable.tag_brown);
+            holder.iconView.setImageResource(R.drawable.label_brown);
             SetCount(label.mEntriesUnreadCount, holder.unreadTxt);
             SetCount(label.mEntriesReadCount, holder.readTxt);
             SetImageSizeText(holder, label.mEntriesImagesSize);
