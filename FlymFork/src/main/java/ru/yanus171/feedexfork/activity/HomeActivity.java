@@ -86,6 +86,9 @@ import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXP
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.NO_LABEL;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mLabelID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
@@ -357,20 +360,24 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         setIntent( new Intent() );
 
         if ( intent.getData() != null ) {
+            mLabelID = intent.getLongExtra( LABEL_ID_EXTRA, NO_LABEL );
             if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
                 selectDrawerItem( 2 );
             else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
                 selectDrawerItem( 0 );
-            else if ( intent.getData().equals( CONTENT_URI ) )
+            else if ( mLabelID == NO_LABEL && intent.getData().equals( CONTENT_URI ) )
                 selectDrawerItem( 1 );
             else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
                 selectDrawerItem( 3 );
             else {
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
+                else if ( mLabelID != NO_LABEL )
+                    selectDrawerItem(DrawerAdapter.getLabelPositionByID(mLabelID));
                 else
                     selectDrawerItem(mDrawerAdapter.getItemPosition(GetFeedID(intent.getData())));
             }
+
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
@@ -525,7 +532,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
 
         if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
-            mCurrentDrawerPos = mDrawerAdapter.getItemPosition( GetFeedID( mNewFeedUri ) );
+            if ( mLabelID == ALL_LABELS ) {
+                mCurrentDrawerPos = LABEL_GROUP_POS;
+            } else if (mLabelID != NO_LABEL ) {
+                mCurrentDrawerPos = DrawerAdapter.getLabelPositionByID(mLabelID);
+            } else {
+                mCurrentDrawerPos = mDrawerAdapter.getItemPosition(GetFeedID(mNewFeedUri));
+            }
             needSelect = true;
             mDrawerList.smoothScrollToPosition( mCurrentDrawerPos );
             CloseDrawer();
@@ -561,6 +574,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Timer timer = new Timer( "HomeActivity.selectDrawerItem" );
         mCurrentDrawerPos = position;
         Uri newUri;
+        EntriesListFragment.mLabelID = NO_LABEL;
         boolean showFeedInfo = true;
 
         switch (position) {
@@ -584,9 +598,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 showFeedInfo = true;
                 break;
             default:
-                if ( mDrawerAdapter.isLabelPos( position, mDrawerAdapter.getLabelList() )) {
+                if ( DrawerAdapter.isLabelPos( position, DrawerAdapter.getLabelList() )) {
                     newUri = EntryColumns.CONTENT_URI;
-                    EntriesListFragment.mLabelID = mDrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID;
+                    EntriesListFragment.mLabelID = DrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID;
                     showFeedInfo = true;
                 } else {
                     long feedOrGroupId = mDrawerAdapter.getItemId(position);

@@ -93,6 +93,7 @@ import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -131,8 +132,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     //private static final int NEW_ENTRIES_NUMBER_LOADER_ID = 2;
     private static final int FILTERS_LOADER_ID = 3;
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
-    public static final long ALL_LABELS = 0L;
-    private static final long NO_LABEL = -1L;
+    public static final long ALL_LABELS = -2L;
+    public static final long NO_LABEL = -1L;
+    public static final String LABEL_ID_EXTRA = "LABEL_ID";
 
     public static Uri mCurrentUri = null;
 
@@ -855,7 +857,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
                     String name = "";
                     IconCompat image = null;
-                    if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
+                    if ( mLabelID == ALL_LABELS ) {
+                        name = getContext().getString( R.string.labels_group_title );
+                        image = IconCompat.createWithResource(getContext(), R.drawable.tag_brown);
+                    } else if ( mLabelID != NO_LABEL ) {
+                        name = LabelVoc.INSTANCE.get(mLabelID).mName;
+                        image = IconCompat.createWithResource(getContext(), R.drawable.tag_brown);
+                    } else if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.all_entries);
                         image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_pot);
                     } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
@@ -883,10 +891,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         cursor.close();
                     }
 
-                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString())
+                    Intent intent = new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri );
+                    if ( mLabelID != NO_LABEL )
+                        intent.putExtra( LABEL_ID_EXTRA, mLabelID );
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + mLabelID  )
                             .setIcon(image)
                             .setShortLabel(name)
-                            .setIntent(new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri ))
+                            .setIntent( intent )
+                            .setLongLived()
                             .build();
                     ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
                     if ( Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O )

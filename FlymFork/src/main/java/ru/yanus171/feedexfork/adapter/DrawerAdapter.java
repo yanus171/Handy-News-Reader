@@ -291,11 +291,11 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     @NotNull
-    public ArrayList<Label> getLabelList() {
-        return isGroupExpanded(LABEL_GROUP_POS) ? LabelVoc.INSTANCE.getList() : new ArrayList<Label>();
+    static public ArrayList<Label> getLabelList() {
+        return PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) ? LabelVoc.INSTANCE.getList() : new ArrayList<Label>();
     }
 
-    public boolean isLabelPos(int position, ArrayList<Label> labelList) {
+    static public boolean isLabelPos(int position, ArrayList<Label> labelList) {
         return position > LABEL_GROUP_POS && position <= LABEL_GROUP_POS + labelList.size();
     }
 
@@ -339,6 +339,13 @@ public class DrawerAdapter extends BaseAdapter {
         for( int i = 0; i < getCount(); i++ )
             if ( getItemId( i ) == feedID )
                 return i;
+        return -1;
+    }
+    static public int getLabelPositionByID( long labelID ) {
+        ArrayList<Label> list = LabelVoc.INSTANCE.getList();
+        for( int i = 0; i < list.size(); i++ )
+            if ( list.get(i).mID == labelID )
+                return LABEL_GROUP_POS + i + 1;
         return -1;
     }
 
