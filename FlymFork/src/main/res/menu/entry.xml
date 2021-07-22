@@ -22,10 +22,6 @@
         android:icon="@drawable/ic_add_circle_outline"
         android:title="@string/menu_add_feed" />
     <item
-        android:id="@+id/menu_go_top"
-        android:icon="@drawable/ic_vertical_align_top"
-        android:title="@string/menu_go_top" />
-    <item
         android:id="@+id/menu_go_back"
         android:icon="@drawable/ic_arrow_back"
         android:title="@string/menu_go_back" />
@@ -114,10 +110,6 @@
         </menu>
     </item>
     <item
-        android:id="@+id/menu_reload_full_text_with_tags"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/reload_full_text_with_tags" />
-    <item
         android:id="@+id/menu_labels"
         android:icon="@drawable/label_white"
         android:title="@string/menu_labels" />
@@ -127,6 +119,20 @@
         android:title="@string/menu_reload"
         app:showAsAction="never">
         <menu>
+            <item
+                android:id="@+id/menu_edit_article_url"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/menu_edit_article_url" />
+            <item
+                android:id="@+id/menu_reload_full_text_with_tags"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/reload_full_text_with_tags" />
+            <item
+                android:id="@+id/menu_cancel_refresh"
+                android:icon="@drawable/ic_action_cancel"
+                android:orderInCategory="0"
+                android:title="@string/menu_cancel_refresh"
+                android:visible="true" />
             <item
                 android:id="@+id/menu_reload_full_text_without_mobilizer"
                 android:icon="@drawable/ic_sync_problem"
@@ -146,12 +152,6 @@
                 android:title="@string/menu_reload_full_text" />
         </menu>
     </item>
-    <item
-        android:id="@+id/menu_cancel_refresh"
-        android:icon="@drawable/ic_action_cancel"
-        android:orderInCategory="0"
-        android:title="@string/menu_cancel_refresh"
-        android:visible="true" />
     <item
         android:id="@+id/menu_setting"
         android:icon="@drawable/ic_settings"

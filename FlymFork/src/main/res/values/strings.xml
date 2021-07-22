@@ -598,6 +598,9 @@
     <string name="color">Color</string>
     <string name="label_color_dialog_title">Label color</string>
     <string name="menu_labels">Labels</string>
+    <string name="menu_edit_article_url">Edit article url</string>
+    <string name="edit_article_url_title">Edit article url</string>
+    <string name="edit_article_url_title_message">You can use patter for current date {…} in url, for example http://test.org/{yyyy-MM-dd} The date format rules are described in https://developer.android.com/reference/java/text/SimpleDateFormat </string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

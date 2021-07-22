@@ -94,6 +94,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -106,8 +107,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kotlin.text.Regex;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -780,6 +783,16 @@ public class FetcherService extends IntentService {
         if (entryCursor.moveToFirst()) {
             int linkPos = entryCursor.getColumnIndex(LINK);
             String link = entryCursor.getString(linkPos);
+            String linkToLoad = link;
+            {
+                Pattern rx = Pattern.compile("\\{(.+)\\}");
+                final Matcher matcher = rx.matcher(link);
+
+                if (matcher.find()) {
+                    Calendar date = Calendar.getInstance();
+                    linkToLoad = linkToLoad.replaceAll(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                }
+            }
 
             if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
@@ -798,7 +811,7 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    connection = new Connection( link );
+                    connection = new Connection( linkToLoad );
 
                     String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);

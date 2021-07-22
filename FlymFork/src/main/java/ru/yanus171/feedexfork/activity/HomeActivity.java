@@ -372,9 +372,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             else {
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
-                else if ( mLabelID != NO_LABEL )
+                else if ( mLabelID != NO_LABEL ) {
+                    PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
+                    mDrawerAdapter.notifyDataSetChanged();
                     selectDrawerItem(DrawerAdapter.getLabelPositionByID(mLabelID));
-                else
+                } else
                     selectDrawerItem(mDrawerAdapter.getItemPosition(GetFeedID(intent.getData())));
             }
 
