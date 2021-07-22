@@ -583,6 +583,9 @@
     <string name="color">颜色</string>
     <string name="label_color_dialog_title">标签颜色</string>
     <string name="menu_labels">标签</string>
+    <string name="menu_edit_article_url">编辑文章网址</string>
+    <string name="edit_article_url_title">编辑文章网址</string>
+    <string name="edit_article_url_title_message">你可以在 url 中使用当前日期格式 {…}，如 http://test.org/{yyyy-MM-dd}。日期格式描述详见 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
