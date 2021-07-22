@@ -585,6 +585,8 @@
     <string name="color">Цвет</string>
     <string name="label_color_dialog_title">Цвет ярлыка</string>
     <string name="menu_labels">Ярлыки</string>
+    <string name="menu_edit_article_url">Изменить ссылку на статью</string>
+    <string name="edit_article_url_title">Изменение ссылки на статью</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
