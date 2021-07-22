@@ -587,6 +587,8 @@
     <string name="menu_labels">Ярлыки</string>
     <string name="menu_edit_article_url">Изменить ссылку на статью</string>
     <string name="edit_article_url_title">Изменение ссылки на статью</string>
+    <string name="edit_article_url_title_message">Вы можете использовать шаблон для текущей даты {…} в URL, например http://test.org/{yyyy-MM-dd}. Правила формата даты описаны на странице
+https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
