@@ -96,8 +96,8 @@ public class FontSelectPreference extends Preference {
 			} catch (Exception ignored) {
 				try {
 					result = Typeface.createFromFile(FileUtils.INSTANCE.getFontsFolder() + "/" + fileName );
-				} catch (Exception e) {
-					DebugApp.AddErrorToLog(null, e );
+				} catch (Exception ignored_) {
+					//DebugApp.AddErrorToLog(null, e );
 				}
 			}
 		}

@@ -163,7 +163,7 @@ object OneWebPageParser {
             return result;
         val list = elArticle.getElementsByClass(dateClassName)
         if ( list.isNotEmpty() )
-            for (item in list.first().allElements)
+            for (item in list.first()!!.allElements)
                 if (item.hasText()) {
                     try {
                         result = RssAtomParser.parseDate(item.ownText(), 0 ).time
@@ -180,9 +180,9 @@ object OneWebPageParser {
             return result;
         val list = elArticle.getElementsByClass(urlClassName)
         if (!list.isEmpty()) {
-            val listA = list.first().getElementsByTag(tag)
+            val listA = list.first()!!.getElementsByTag(tag)
             if (!listA.isEmpty()) {
-                result = listA.first().attr(attrName)
+                result = listA.first()!!.attr(attrName)
                 if ( result.startsWith("//") )
                     result = "http:$result"
                 else if (!result.startsWith("http")  )
@@ -197,7 +197,7 @@ object OneWebPageParser {
         var result = ""
         if (className.isNotEmpty()) {
             val list = elArticle.getElementsByClass(className)
-            if (!list.isEmpty()) result = list.first().text()
+            if (!list.isEmpty()) result = list.first()!!.text()
         }
         return result
     }
@@ -215,7 +215,7 @@ object OneWebPageParser {
             val list = elArticle.getElementsByClass(className)
             if (!list.isEmpty()) {
                 RemoveHiddenElements( list.first() )
-                result = list.first().html()
+                result = list.first()!!.html()
             }
         }
         return result

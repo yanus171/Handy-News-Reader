@@ -50,7 +50,9 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
+import android.text.util.Linkify;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,6 +64,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +110,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -378,7 +382,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         @Override
                         public void run() {
                             if (!wasUp && !mWasSwipe) {
-                                mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem()).ScrollTo(0);
+                                GetSelectedEntryView().GoTop();
                                 Toast.makeText(MainApplication.getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -685,10 +689,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     GetSelectedEntryView().GoBack();
                     break;
                 }
-                case R.id.menu_go_top: {
-                    GetSelectedEntryView().GoTop();
-                    break;
-                }
                 case R.id.menu_share_all_text: {
                     if ( mCurrentPagerPos != -1 ) {
                         Spanned spanned = Html.fromHtml(mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData());
@@ -748,6 +748,48 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true );
 
                     } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+
+                case R.id.menu_edit_article_url: {
+                    final EditText editText = new EditText(getContext());
+                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                    String link = cursor.getString(mLinkPos);
+                    editText.setText( link );
+                    final AlertDialog d = new AlertDialog.Builder( getContext() )
+                        .setView( editText )
+                        .setTitle( R.string.edit_article_url_title )
+                        .setIcon( R.drawable.ic_edit )
+                        .setMessage( Html.fromHtml( getContext().getString( R.string.edit_article_url_title_message ) ) )
+                        .setNegativeButton( android.R.string.cancel, null )
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                                new Thread() {
+                                    @Override
+                                    public void run() {
+                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                        ContentValues values = new ContentValues();
+                                        final String newLink = editText.getText().toString();
+                                        values.put( EntryColumns.LINK, newLink );
+                                        cr.update(uri, values, null, null);
+                                        EntryUrlVoc.INSTANCE.set(newLink, getCurrentEntryID());
+                                        UiUtils.RunOnGuiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
+                                            }
+                                        });
+                                    }
+                                }.start();
+                            }
+                        }).create();
+                    final TextView tv = d.findViewById(android.R.id.message);//.setMovementMethod(LinkMovementMethod.getInstance());
+                    tv.setAutoLinkMask(Linkify.ALL);
+                    tv.setTextIsSelectable(true);
+                    d.show();
                     break;
                 }
 

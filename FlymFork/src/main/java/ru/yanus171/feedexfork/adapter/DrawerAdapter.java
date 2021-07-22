@@ -82,7 +82,7 @@ public class DrawerAdapter extends BaseAdapter {
 
     public static final int EXTERNAL_ENTRY_POS = 3;
     public static final int LABEL_GROUP_POS = 4;
-    private static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
+    public static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
 
     public static final int FIRST_ENTRY_POS() { return LABEL_GROUP_POS + (PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) ? LabelVoc.INSTANCE.getList().size() : 0) + 1; }
 

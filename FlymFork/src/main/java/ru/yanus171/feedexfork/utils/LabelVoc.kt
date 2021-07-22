@@ -232,13 +232,12 @@ object LabelVoc {
             adapterToNotify?.notifyDataSetChanged()
             dialog.dismiss()
         }
-        .setNeutralButton(R.string.manage_labels) { _, _ ->
+        .setNeutralButton(R.string.manage_labels) { dialog, _ ->
             val intent = Intent(context, LabelListActivity::class.java)
+            dialog.dismiss()
             context.startActivity(intent)
         }
-        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-            dialog.dismiss()
-        }
+        .setNegativeButton(android.R.string.cancel, null)
         .setTitle(R.string.article_labels_setup_title)
         builder.show()
     }

@@ -53,6 +53,7 @@
  */
 package ru.yanus171.feedexfork.parser
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.database.Cursor
 import android.text.TextUtils
@@ -82,6 +83,7 @@ import java.util.regex.Pattern
 
 object HTMLParser {
     private val TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}"
+    @SuppressLint("SimpleDateFormat")
     @JvmStatic
     fun Parse( executor: ExecutorService, feedID: String, feedUrlparam: String, jsonOptions: JSONObject, recursionCount: Int): Int {
         //var feedUrl = feedUrl
@@ -94,12 +96,13 @@ object HTMLParser {
         val newEntries: Int
         Status().ChangeProgress("Loading main page")
         val cal = Calendar.getInstance()
-        val isTomorrow = feedUrlparam.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
-        var feedUrl: String
-        run {
+        var feedUrl = feedUrlparam
+
+        val isTomorrow = feedUrl.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
+        if ( isTomorrow )  {
             val date: Calendar = Calendar.getInstance()
             date.add(Calendar.DATE, 1)
-            feedUrl = feedUrlparam.replace(TOMORROW_YYYY_MM_DD, if (isTomorrow) SimpleDateFormat("yyyy-MM-dd").format(Date(date.getTimeInMillis())) else "")
+            feedUrl = feedUrl.replace(TOMORROW_YYYY_MM_DD, SimpleDateFormat("yyyy-MM-dd").format(Date(date.timeInMillis)))
         }
         /* check and optionally find favicon */
         try {
