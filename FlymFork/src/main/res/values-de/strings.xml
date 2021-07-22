@@ -583,6 +583,7 @@
     <string name="menu_labels">Kategorien</string>
     <string name="menu_edit_article_url">URL des Artikels bearbeiten</string>
     <string name="edit_article_url_title_message">Sie können Muster für das aktuelle Datum {…} in der URL verwenden, z. B. http://test.org/{yyyy-MM-dd} Die Regeln für das Datumsformat sind unter https://developer.android.com/reference/java/text/SimpleDateFormat beschrieben </string>
+    <string name="menu_edit_article_title">Titel bearbeiten</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
