@@ -786,10 +786,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                 }.start();
                             }
                         }).create();
+                    d.show();
                     final TextView tv = d.findViewById(android.R.id.message);//.setMovementMethod(LinkMovementMethod.getInstance());
                     tv.setAutoLinkMask(Linkify.ALL);
                     tv.setTextIsSelectable(true);
-                    d.show();
                     break;
                 }
 

@@ -152,6 +152,7 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
+import static ru.yanus171.feedexfork.Constants.UTF8;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
@@ -783,16 +784,16 @@ public class FetcherService extends IntentService {
         if (entryCursor.moveToFirst()) {
             int linkPos = entryCursor.getColumnIndex(LINK);
             String link = entryCursor.getString(linkPos);
-//            String linkToLoad = link;
-//            {
-//                Pattern rx = Pattern.compile("\\{(.+)\\}");
-//                final Matcher matcher = rx.matcher(link);
-//
-//                if (matcher.find()) {
-//                    Calendar date = Calendar.getInstance();
-//                    linkToLoad = linkToLoad.replaceAll(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
-//                }
-//            }
+            String linkToLoad = link;
+            {
+                Pattern rx = Pattern.compile("\\{(.+)\\}");
+                final Matcher matcher = rx.matcher(link);
+
+                if (matcher.find()) {
+                    Calendar date = Calendar.getInstance();
+                    linkToLoad = linkToLoad.replaceAll(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                }
+            }
 
             if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
@@ -811,7 +812,7 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    connection = new Connection( link );
+                    connection = new Connection( linkToLoad );
 
                     String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);
