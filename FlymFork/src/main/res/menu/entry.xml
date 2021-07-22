@@ -124,6 +124,10 @@
                 android:icon="@drawable/ic_edit"
                 android:title="@string/menu_edit_article_url" />
             <item
+                android:id="@+id/menu_edit_article_title"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/menu_edit_article_title" />
+            <item
                 android:id="@+id/menu_reload_full_text_with_tags"
                 android:icon="@drawable/ic_edit"
                 android:title="@string/reload_full_text_with_tags" />

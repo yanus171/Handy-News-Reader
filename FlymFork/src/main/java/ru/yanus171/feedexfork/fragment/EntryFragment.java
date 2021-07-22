@@ -758,7 +758,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     editText.setText( link );
                     final AlertDialog d = new AlertDialog.Builder( getContext() )
                         .setView( editText )
-                        .setTitle( R.string.edit_article_url_title )
+                        .setTitle( R.string.menu_edit_article_url )
                         .setIcon( R.drawable.ic_edit )
                         .setMessage( Html.fromHtml( getContext().getString( R.string.edit_article_url_title_message ) ) )
                         .setNegativeButton( android.R.string.cancel, null )
@@ -790,6 +790,45 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     final TextView tv = d.findViewById(android.R.id.message);//.setMovementMethod(LinkMovementMethod.getInstance());
                     tv.setAutoLinkMask(Linkify.ALL);
                     tv.setTextIsSelectable(true);
+                    break;
+                }
+
+                case R.id.menu_edit_article_title: {
+                    final EditText editText = new EditText(getContext());
+                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                    String title = cursor.getString(mTitlePos);
+                    editText.setText( title );
+                    final AlertDialog d = new AlertDialog.Builder( getContext() )
+                        .setView( editText )
+                        .setTitle( R.string.menu_edit_article_title )
+                        .setIcon( R.drawable.ic_edit )
+                        .setNegativeButton( android.R.string.cancel, null )
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                                new Thread() {
+                                    @Override
+                                    public void run() {
+                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                        ContentValues values = new ContentValues();
+                                        final String newTitle = editText.getText().toString();
+                                        values.put( EntryColumns.TITLE, newTitle );
+                                        cr.update(uri, values, null, null);
+                                        UiUtils.RunOnGuiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
+                                                GetSelectedEntryView().InvalidateContentCache();
+                                                //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                                            }
+                                        });
+                                    }
+                                }.start();
+                            }
+                        }).create();
+                    d.show();
                     break;
                 }
 
