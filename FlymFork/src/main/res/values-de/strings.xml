@@ -581,6 +581,8 @@
     <string name="color">Farbe</string>
     <string name="label_color_dialog_title">Farbe der Kategorie</string>
     <string name="menu_labels">Kategorien</string>
+    <string name="menu_edit_article_url">URL des Artikels bearbeiten</string>
+    <string name="edit_article_url_title">URL des Artikels bearbeiten</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
