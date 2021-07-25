@@ -71,6 +71,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Label;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -183,7 +184,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mDrawerList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (id > 0) {
+                if ( position == DrawerAdapter.LABEL_GROUP_POS ) {
+                    startActivity(new Intent(getApplicationContext(), LabelListActivity.class ));
+                    return true;
+                } else if ( DrawerAdapter.isLabelPos( position, LabelVoc.INSTANCE.getList() ) ) {
+
+                } else if (id > 0) {
                     startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
                     return true;
                 }

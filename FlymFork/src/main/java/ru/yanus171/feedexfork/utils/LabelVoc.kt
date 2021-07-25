@@ -21,12 +21,16 @@ import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
+import ru.yanus171.feedexfork.utils.LabelVoc.getNextOrder
 import ru.yanus171.feedexfork.utils.UiUtils.SetTypeFace
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-public class Label(id: Long, name: String, var mColor: String?) {
+public class Label(id: Long, name: String, var mColor: String) {
+
+    @JvmField
+    var mOrder: Int = 0
 
     @JvmField
     var mEntriesReadCount: Int = 0
@@ -46,6 +50,7 @@ public class Label(id: Long, name: String, var mColor: String?) {
     init {
         if (mColor.isNullOrEmpty())
             mColor = Theme.GetColor(Theme.TEXT_COLOR_READ, R.string.default_read_color)
+        mOrder = getNextOrder()
     }
 
     constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
@@ -62,6 +67,8 @@ object LabelVoc {
 
     private fun init_() {
         synchronized(mVoc) {
+            if ( mIsInitialized )
+                return
             val status = FetcherService.Status().Start("Reading labels", true)
             mVoc.clear()
             run {
@@ -102,15 +109,21 @@ object LabelVoc {
     }
 
 
-    fun addLabel(name: String) {
+    fun addLabel(name: String, id: Long, color: String) {
         initInThread()
         synchronized(mVoc) {
-            val id = getNextID()
-            mVoc[id] = Label(id, name, "")
+            mVoc[id] = Label(id, name, color)
         }
     }
 
     fun getNextID() = (mVoc.keys.maxOrNull() ?: 0) + 1
+    fun getNextOrder(): Int {
+        var result = 0
+        for( item in mVoc.values )
+            if ( item.mOrder > result )
+                result = item.mOrder
+        return result + 1
+    }
     fun getList(): ArrayList<Label> {
         initInThread()
         synchronized(mVoc) {
@@ -140,8 +153,8 @@ object LabelVoc {
     }
 
     fun get(labelID: Long): Label? {
-        initInThread()
         synchronized(mVoc) {
+            init_()
             return mVoc.get(labelID)
         }
     }
@@ -159,6 +172,18 @@ object LabelVoc {
             return mEntryVoc.get(entryID) ?: HashSet<Long>()
         }
     }
+
+    fun getLabelEntriesID(labelID: Long): Set<Long> {
+        initInThread()
+        synchronized(mVoc) {
+            val result = HashSet<Long>()
+            for ( entryID in mEntryVoc.keys )
+                if ( mEntryVoc[entryID]!!.contains( labelID ) )
+                    result += entryID
+            return result
+        }
+    }
+
 
     fun initInThread(){
         synchronized(mVoc) {

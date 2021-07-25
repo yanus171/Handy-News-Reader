@@ -111,9 +111,10 @@ class LabelListActivity : AppCompatActivity(), Observer {
             val values = ContentValues()
             values.put(LabelColumns.NAME, label.mName)
             values.put(LabelColumns.COLOR, label.mColor)
+            values.put(LabelColumns.ORDER, LabelVoc.getNextID())
             if ( label_ == null ) {
-                LabelVoc.addLabel(label.mName)
-                contentResolver.insert(LabelColumns.CONTENT_URI, values)
+                val id = contentResolver.insert(LabelColumns.CONTENT_URI, values).lastPathSegment.toLong()
+                LabelVoc.addLabel(label.mName, id, label.mColor)
             } else {
                 LabelVoc.editLabel(label)
                 contentResolver.update(LabelColumns.CONTENT_URI(label.mID), values, null, null)

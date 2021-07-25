@@ -296,7 +296,7 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     static public boolean isLabelPos(int position, ArrayList<Label> labelList) {
-        return position > LABEL_GROUP_POS && position <= LABEL_GROUP_POS + labelList.size();
+        return position > LABEL_GROUP_POS && position < FIRST_ENTRY_POS();
     }
 
     static private void SetImageSizeText(ViewHolder holder, long size) {
@@ -469,21 +469,21 @@ public class DrawerAdapter extends BaseAdapter {
         SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, new OnLabelReturnedFromCursor() {
             @Override
             public void run(Label label, Cursor cur) {
-                label.mEntriesUnreadCount = cur.getInt(1);
+                label.mEntriesUnreadCount = cur.isNull( 1 ) ? 0 : cur.getInt(1);
             }
         });
 
         SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, new OnLabelReturnedFromCursor() {
             @Override
             public void run(Label label, Cursor cur) {
-                label.mEntriesReadCount = cur.getInt(1);
+                label.mEntriesReadCount = cur.isNull( 1 ) ? 0 : cur.getInt(1);
             }
         });
 
         SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, new OnLabelReturnedFromCursor() {
             @Override
             public void run(Label label, Cursor cur) {
-                label.mEntriesImagesSize = cur.getInt(1);
+                label.mEntriesImagesSize = cur.isNull( 1 ) ? 0 : cur.getInt(1);
             }
         });
 

@@ -61,6 +61,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Xml;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -77,10 +78,10 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
@@ -89,9 +90,15 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
+import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
+import ru.yanus171.feedexfork.utils.FileVoc;
+import ru.yanus171.feedexfork.utils.Label;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
@@ -120,6 +127,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
 import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
@@ -140,8 +149,8 @@ public class OPML {
     private static final String OUTLINE_TITLE = "\t<outline title='";
     private static final String OUTLINE_XMLURL = "' type='rss' xmlUrl='";
     private static final String OUTLINE_RETRIEVE_FULLTEXT = "' retrieveFullText='";
-    //private static final String OUTLINE_INLINE_CLOSING = "'/>\n";
-    private static final String OUTLINE_NORMAL_CLOSING = "'>\n";
+    private static final String CLOSING = "'/>\n";
+    private static final String CLOSING_TEMP = "'>\n";
     private static final String OUTLINE_END = "\t</outline>\n";
 
     private static final String FILTER_TEXT = "\t\t<filter text='";
@@ -149,20 +158,29 @@ public class OPML {
     private static final String FILTER_IS_APPLIED_TO_TITLE = "' isAppliedToTitle='";
     private static final String FILTER_IS_ACCEPT_RULE = "' isAcceptRule='";
     private static final String FILTER_IS_MARK_AS_STARRED = "' isMarkAsStarred='";
-    private static final String FILTER_CLOSING = "'/>\n";
+    private static final String FILTER_IS_REMOVE_TEXT = "' isRemoveText='";
+
+    private static final String LABEL_NAME = "<label name='";
+    private static final String LABEL_COLOR = "' color='";
+    private static final String LABEL_CLOSING = "</label>\n";
+
+    private static final String LABEL_ENTRY_ID = "<entry entry_id='";
 
     private static final String TAG_ENTRY = "entry";
 
+    private static final String TAG_LABEL = "label";
+
+    private static final String TAG_LABEL_ENTRY = "entry";
+
     private static final String TAG_START = "\t\t<%s %s='";
     private static final String ATTR_VALUE = "' %s='";
-    private static final String TAG_CLOSING = "'/>\n";
 
     private static final String TAG_PREF = "pref";
     private static final String ATTR_PREF_CLASSNAME = "classname";
     private static final String ATTR_PREF_VALUE = "value";
     private static final String ATTR_PREF_KEY = "key";
 
-    private static final String CLOSING = "</body>\n</opml>\n";
+    private static final String END_CLOSING = "</body>\n</opml>\n";
 
     //private static final OPMLParser mParser = new OPMLParser();
     private static Boolean mAutoBackupEnabled = true;
@@ -179,14 +197,31 @@ public class OPML {
     private static void importFromFile(InputStream input, boolean isRemoveExistingFeeds) throws IOException, SAXException {
         SetAutoBackupEnabled(false); // Do not write the auto backup file while reading it...
         try {
-            if ( isRemoveExistingFeeds )
-                MainApplication.getContext().getContentResolver().delete(FeedData.FeedColumns.CONTENT_URI, _ID + "<> " + FetcherService.GetExtrenalLinkFeedID(), null );
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+
+            if ( isRemoveExistingFeeds ) {
+                cr.delete(FeedData.FeedColumns.CONTENT_URI, _ID + "<> " + FetcherService.GetExtrenalLinkFeedID(), null);
+                cr.delete(LabelColumns.CONTENT_URI, null, null);
+            }
+            EntryUrlVoc.INSTANCE.reinit( false );
+            LabelVoc.INSTANCE.reinit( false );
+
             final OPMLParser parser = new OPMLParser();
             Xml.parse(FetcherService.ToString(input, UTF_8), parser);
-            //parser.mEditor.commit();
+
+            EntryUrlVoc.INSTANCE.reinit( false );
+            LabelVoc.INSTANCE.reinit( false );
+            notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+            //MainApplication.mHTMLFileVoc.init1();
         } finally {
             SetAutoBackupEnabled(true);
         }
+        UiUtils.RunOnGuiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText( MainApplication.getContext(), R.string.import_completed, Toast.LENGTH_LONG ).show();
+            }
+        });
     }
 
     private static void SetAutoBackupEnabled(boolean b) {
@@ -232,7 +267,7 @@ public class OPML {
                     writer.write( OUTLINE_TITLE);
                     writer.write( cursorGroupsAndRoot.isNull(2) ? "" : TextUtils.htmlEncode(cursorGroupsAndRoot.getString(2)));
                     WriteLongValue(writer, cursorGroupsAndRoot, PRIORITY, 11);
-                    writer.write( OUTLINE_NORMAL_CLOSING);
+                    writer.write( CLOSING_TEMP);
                     Cursor cursorFeeds = context.getContentResolver()
                             .query(FEEDS_FOR_GROUPS_CONTENT_URI(cursorGroupsAndRoot.getString(0)), FEEDS_PROJECTION, null, null, null);
                     while (cursorFeeds.moveToNext()) {
@@ -244,12 +279,32 @@ public class OPML {
                 } else
                     ExportFeed(writer, cursorGroupsAndRoot, isBackup);
             }
-            writer.write( CLOSING );
+
+            if ( isBackup )
+                for ( Label label: LabelVoc.INSTANCE.getList() )
+                    Export( writer, label );
 
             cursorGroupsAndRoot.close();
+            writer.write( END_CLOSING );
         } finally {
             writer.close();
         }
+    }
+
+    private static void Export(Writer writer, Label label) throws IOException {
+        writer.write(LABEL_NAME);
+        writer.write(TextUtils.htmlEncode(label.mName));
+        writer.write(LABEL_COLOR);
+        writer.write(label.getMColor());
+        writer.write(CLOSING_TEMP);
+        for ( Long entryID: LabelVoc.INSTANCE.getLabelEntriesID( label.mID ) ) {
+            writer.write("\t");
+            writer.write(LABEL_ENTRY_ID);
+            writer.write(String.valueOf(entryID));
+            writer.write(CLOSING);
+        }
+
+        writer.write(LABEL_CLOSING);
     }
 
     private static String GetLong( final Cursor cursor, final int col ) {
@@ -271,7 +326,7 @@ public class OPML {
     private static void ExportFeed(Writer writer, Cursor cursor, boolean isBackup) throws IOException {
         final String feedID = cursor.getString(0);
         writer.write( "\t");
-        writer.write( OUTLINE_TITLE);
+        writer.write( OUTLINE_TITLE );
         writer.write(GetEncoded( cursor ,2) );
         writer.write(OUTLINE_XMLURL);
         writer.write(GetEncoded( cursor, 3));
@@ -287,7 +342,7 @@ public class OPML {
             WriteLongValue(writer, cursor, PRIORITY, 11);
             WriteLongValue(writer, cursor, FETCH_MODE, 12);
         }
-        writer.write(OUTLINE_NORMAL_CLOSING);
+        writer.write(CLOSING_TEMP);
 
         if ( isBackup ) {
             ExportFilters(writer, feedID);
@@ -344,7 +399,8 @@ public class OPML {
                 WriteText(writer, cur, EntryColumns.FETCH_DATE, 8);
                 WriteEncodedText(writer, cur, EntryColumns.IMAGE_URL, 9);
                 WriteBoolValue(writer, cur, EntryColumns.IS_FAVORITE, 10);
-//                if ( !saveAbstract && cur.getInt(10) == 1 ) {
+                WriteLongValue(writer, cur, EntryColumns._ID, 11);
+                //                if ( !saveAbstract && cur.getInt(10) == 1 ) {
 //                    //writer.write(String.format(ATTR_VALUE, EntryColumns.MOBILIZED_HTML));
 //                    long entryID  = cur.getLong(11 );
 //                    final String text = GetMobilizedText( entryID );
@@ -353,7 +409,7 @@ public class OPML {
                 WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
                 WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
                 WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
-                writer.write(TAG_CLOSING);
+                writer.write(CLOSING);
             }
             writer.write("\t");
         }
@@ -398,7 +454,9 @@ public class OPML {
                 writer.write(GetBoolText( cur, 3) );
                 writer.write(FILTER_IS_MARK_AS_STARRED);
                 writer.write(GetBoolText( cur, 4) );
-                writer.write(FILTER_CLOSING);
+                writer.write(FILTER_IS_REMOVE_TEXT);
+                writer.write(GetBoolText( cur, 5) );
+                writer.write(CLOSING);
             }
             writer.write("\t");
         }
@@ -461,6 +519,9 @@ public class OPML {
         private boolean mProbablyValidElement = false;
         private String mGroupId = null;
         private String mFeedId = null;
+        private Long mLabelID = null;
+        private HashMap<Long, Long> mEntryFileIDToIDVoc = new HashMap<Long, Long>();
+        private Integer mLabelOrder = 0;
 
         @SuppressLint("CommitPrefEdits")
         OPMLParser() {
@@ -469,6 +530,7 @@ public class OPML {
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
             if (!mBodyTagEntered) {
                 if (TAG_BODY.equals(localName)) {
                     mBodyTagEntered = true;
@@ -480,8 +542,6 @@ public class OPML {
                 if(title == null) {
                     title = attributes.getValue("", ATTRIBUTE_TEXT);
                 }
-
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
 
                 if (url == null) { // No url => this is a group
                     if (title != null) {
@@ -550,32 +610,44 @@ public class OPML {
                     values.put(FilterColumns.IS_MARK_STARRED, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_MARK_AS_STARRED)));
                     values.put(FilterColumns.IS_REMOVE_TEXT, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REMOVE_TEXT)));
 
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(mFeedId), values);
                 }
-            } else if (TAG_ENTRY.equals(localName)) {
-                if (mFeedEntered && mFeedId != null) {
-                    ContentValues values = new ContentValues();
-                    values.put(EntryColumns.IS_NEW, GetBool( attributes, EntryColumns.IS_NEW));
-                    values.put(EntryColumns.IS_READ, GetBool( attributes, EntryColumns.IS_READ));
-                    values.put(EntryColumns.IS_FAVORITE, GetBool( attributes, EntryColumns.IS_FAVORITE));
-                    values.put(EntryColumns.ABSTRACT, GetText( attributes, EntryColumns.ABSTRACT));
-                    final String link = GetText( attributes, EntryColumns.LINK );
-                    final String mobHtml = GetText( attributes, EntryColumns.MOBILIZED_HTML);
-                    FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
-                    values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
-                    values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
-                    values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));
-                    values.put(EntryColumns.SCROLL_POS, GetText( attributes, EntryColumns.SCROLL_POS ));
-                    values.put(EntryColumns.AUTHOR, GetText( attributes, EntryColumns.AUTHOR) );
-                    values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
-                    values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
-                    values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
-                    values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
+            } else if (TAG_ENTRY.equals(localName) && mFeedEntered && mFeedId != null) {
+                ContentValues values = new ContentValues();
+                values.put(EntryColumns.IS_NEW, GetBool( attributes, EntryColumns.IS_NEW));
+                values.put(EntryColumns.IS_READ, GetBool( attributes, EntryColumns.IS_READ));
+                values.put(EntryColumns.IS_FAVORITE, GetBool( attributes, EntryColumns.IS_FAVORITE));
+                values.put(EntryColumns.ABSTRACT, GetText( attributes, EntryColumns.ABSTRACT));
+                final String link = GetText( attributes, EntryColumns.LINK );
+                final String mobHtml = GetText( attributes, EntryColumns.MOBILIZED_HTML);
+                FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
+                values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
+                values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
+                values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));
+                values.put(EntryColumns.SCROLL_POS, GetText( attributes, EntryColumns.SCROLL_POS ));
+                values.put(EntryColumns.AUTHOR, GetText( attributes, EntryColumns.AUTHOR) );
+                values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
+                values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
+                values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
+                values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
 
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( mFeedId ), values);
-                }
+                final Long id = Long.valueOf(cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(mFeedId ), values).getLastPathSegment());
+                if ( attributes.getIndex(_ID) != -1 )
+                    mEntryFileIDToIDVoc.put(Long.valueOf(GetText(attributes, _ID)), id);
+            } else if (TAG_LABEL.equals(localName)) {
+                mLabelOrder++;
+                ContentValues values = new ContentValues();
+                values.put(LabelColumns.NAME, GetText( attributes, LabelColumns.NAME));
+                values.put(LabelColumns.COLOR, GetText( attributes, LabelColumns.COLOR));
+                values.put(LabelColumns.ORDER, mLabelOrder);
+                Uri newUri = cr.insert(LabelColumns.CONTENT_URI, values);
+                mLabelID = newUri.getPathSegments().size() == 2 ? Long.valueOf( newUri.getLastPathSegment() ) : null;
+                LabelVoc.INSTANCE.addLabel( values.getAsString(LabelColumns.NAME), mLabelID, values.getAsString(LabelColumns.COLOR) );
+            } else if (TAG_LABEL_ENTRY.equals(localName) && mLabelID != null ) {
+                ContentValues values = new ContentValues();
+                values.put(EntryLabelColumns.ENTRY_ID, mEntryFileIDToIDVoc.get(Long.parseLong(GetText(attributes, EntryLabelColumns.ENTRY_ID))));
+                values.put(EntryLabelColumns.LABEL_ID, mLabelID);
+                cr.insert(EntryLabelColumns.CONTENT_URI, values);
             } else if (TAG_PREF.equals(localName)) {
                 final String className = attributes.getValue( ATTR_PREF_CLASSNAME );
                 final String value = attributes.getValue( ATTR_PREF_VALUE);
@@ -605,6 +677,8 @@ public class OPML {
                 } else {
                     mGroupId = null;
                 }
+            } else if (TAG_LABEL.equals(localName)) {
+                mLabelID = null;
             }
         }
 

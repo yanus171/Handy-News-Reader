@@ -393,11 +393,13 @@ public class FeedData {
         public static final String TABLE_NAME = "label";
         public static final String NAME = "name";
         public static final String COLOR = "color";
+        public static final String ORDER = "order_";
         public static final String[][] COLUMNS =
             new String[][]{
                 {_ID, TYPE_PRIMARY_KEY},
-                {NAME, TYPE_TEXT_UNIQUE},
-                {COLOR, TYPE_TEXT}
+                {NAME, TYPE_TEXT},
+                {COLOR, TYPE_TEXT},
+                {ORDER, TYPE_INT}
         };
 
         public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/labels");

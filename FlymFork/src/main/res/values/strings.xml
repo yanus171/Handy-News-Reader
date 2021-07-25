@@ -601,6 +601,7 @@
     <string name="menu_edit_article_url">Edit url</string>
     <string name="edit_article_url_title_message">You can use patter for current date {…} in url, for example http://test.org/{yyyy-MM-dd} The date format rules are described in https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Edit title</string>
+    <string name="import_completed">Import is completed</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
