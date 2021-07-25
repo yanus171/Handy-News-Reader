@@ -572,8 +572,6 @@
     <string name="setting_edit_feed_force_portrait_orientation">Modifica orientamento verticale feed</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forza l\'orientamento dello schermo verticale nella finestra Modifica Feed - controlla se il telefono ha lo schermo piccolo</string>
     <string name="name">Nome</string>
-    <string name="remove_label_confirmation">"Vuoi rimuovere l'etichetta? "</string>
-    <string name="setting_label_list">Elenco Etichette</string>
     <string name="tag_list">Elenco etichette</string>
     <string name="menu_edit_labels">Etichette</string>
     <string name="manage_labels">Gestisci etichette</string>

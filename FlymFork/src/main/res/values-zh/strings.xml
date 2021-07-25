@@ -573,8 +573,6 @@
     <string name="setting_edit_feed_force_portrait_orientation">编辑新闻源竖屏方向</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">在编辑Feed窗口中强制使用竖屏方向 - 检查您的手机是否有窄屏</string>
     <string name="name">名称</string>
-    <string name="remove_label_confirmation">"移除标签？ "</string>
-    <string name="setting_label_list">标签列表</string>
     <string name="tag_list">标记列表</string>
     <string name="menu_edit_labels">标签</string>
     <string name="manage_labels">管理标签</string>
