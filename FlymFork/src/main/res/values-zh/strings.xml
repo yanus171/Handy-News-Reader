@@ -97,6 +97,7 @@
     <string name="menu_add_feed">文章网页搜索</string>
     <string name="no_feeds">未找到订阅源</string>
     <string name="no_filters">无规则</string>
+    <string name="context_menu_add">添加</string>
     <string name="context_menu_delete">删除</string>
     <string name="edit_feed_title">编辑订阅源</string>
     <string name="new_feed_title">新订阅源或文章</string>
@@ -571,6 +572,20 @@
     <string name="atricle_list_size_progressbar_maxsize_descr">以 KB 显示水平指示器 (0表示关闭)</string>
     <string name="setting_edit_feed_force_portrait_orientation">编辑新闻源竖屏方向</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">在编辑Feed窗口中强制使用竖屏方向 - 检查您的手机是否有窄屏</string>
+    <string name="name">名称</string>
+    <string name="remove_tag_confirmation">"移除标签？ "</string>
+    <string name="setting_tag_list">标签列表</string>
+    <string name="tag_list">标记列表</string>
+    <string name="menu_edit_labels">标签</string>
+    <string name="manage_labels">管理标签</string>
+    <string name="article_labels_setup_title">标签设置</string>
+    <string name="labels_group_title">标签</string>
+    <string name="color">颜色</string>
+    <string name="label_color_dialog_title">标签颜色</string>
+    <string name="menu_labels">标签</string>
+    <string name="menu_edit_article_url">编辑文章网址</string>
+    <string name="edit_article_url_title_message">你可以在 url 中使用当前日期格式 {…}，如 http://test.org/{yyyy-MM-dd}。日期格式描述详见 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
+    <string name="menu_edit_article_title">编辑标题</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
