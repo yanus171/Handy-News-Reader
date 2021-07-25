@@ -575,6 +575,8 @@
     <string name="setting_edit_feed_force_portrait_orientation">Портретная ориентацию окна редактирования</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Принудительная портретная ориентация экрана в окне настроек канала - отметьте галку, если у Вас узкий экран телефона</string>
     <string name="name">Название</string>
+    <string name="remove_label_confirmation">"Удалить ярлык? "</string>
+    <string name="setting_label_list">Список ярлыков</string>
     <string name="tag_list">Список меток</string>
     <string name="menu_edit_labels">Метки</string>
     <string name="manage_labels">Управление метками</string>
@@ -587,6 +589,7 @@
     <string name="edit_article_url_title_message">Вы можете использовать шаблон для текущей даты {…} в URL, например http://test.org/{yyyy-MM-dd}. Правила формата даты описаны на странице
 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Переименовать</string>
+    <string name="import_completed">Импорт завершен</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
