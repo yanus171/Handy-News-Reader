@@ -588,6 +588,9 @@ GENERAL]]></string>
     <string name="color">Kolor</string>
     <string name="label_color_dialog_title">Kolor etykiety</string>
     <string name="menu_labels">Etykiety</string>
+    <string name="menu_edit_article_url">Edytuj URL</string>
+    <string name="edit_article_url_title_message">Możesz użyć wzoru dla aktualnej daty {…} w URL, np. http://test.org/{yyyy-MM-dd} . Reguły formatu daty są opisane tu: https://developer.android.com/reference/java/text/SimpleDateFormat</string>
+    <string name="menu_edit_article_title">Edytuj tytuł</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
