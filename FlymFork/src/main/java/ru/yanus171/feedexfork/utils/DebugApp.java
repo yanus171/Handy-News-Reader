@@ -226,7 +226,12 @@ public class DebugApp {
 			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, st.toString());
 			((ClipboardManager) context.getSystemService(android.content.Context.CLIPBOARD_SERVICE))
 					.setText(st.toString());
-			Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
+			UiUtils.RunOnGuiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
+				}
+			});
 			context.startActivity(
 					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
 		}
