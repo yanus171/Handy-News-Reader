@@ -578,8 +578,8 @@ GENERAL]]></string>
     <string name="setting_edit_feed_force_portrait_orientation">Pionowa orientacja Edycji Kanału</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Wymusza pionową orientację ekranu w oknie Edycji Kanału - zaznacz, jeśli Twój telefon ma wąski ekran</string>
     <string name="name">Nazwa</string>
-    <string name="remove_tag_confirmation">"Usunąć tag? "</string>
-    <string name="setting_tag_list">Lista etykiet</string>
+    <string name="remove_label_confirmation">"Usunąć tag? "</string>
+    <string name="setting_label_list">Lista etykiet</string>
     <string name="tag_list">Lista etykiet</string>
     <string name="menu_edit_labels">Etykiety</string>
     <string name="manage_labels">Zarządzaj etykietami</string>

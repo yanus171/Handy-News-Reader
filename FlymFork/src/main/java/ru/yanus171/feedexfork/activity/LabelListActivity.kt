@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import android.widget.AdapterView.AdapterContextMenuInfo
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -140,7 +139,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
     private fun createTagRemoveDialog(label: Label): AlertDialog.Builder {
         return AlertDialog.Builder(this)
                .setTitle(label.mName)
-               .setMessage(R.string.remove_tag_confirmation)
+               .setMessage(R.string.remove_label_confirmation)
                .setPositiveButton(android.R.string.ok){ dialog, _ ->
                    LabelVoc.deleteLabel(label.mID)
                    contentResolver.delete(LabelColumns.CONTENT_URI(label.mID), null, null)

@@ -604,7 +604,7 @@
         <PreferenceScreen
             android:layout="@layout/preference_items"
             android:summary=""
-            android:title="@string/setting_tag_list" >
+            android:title="@string/setting_label_list" >
             <intent
                 android:targetClass="ru.yanus171.feedexfork.activity.TagListActivity"
                 android:targetPackage="ru.yanus171.feedexfork"/>
