@@ -110,7 +110,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import kotlin.text.Regex;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -152,7 +151,6 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
-import static ru.yanus171.feedexfork.Constants.UTF8;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
@@ -784,14 +782,14 @@ public class FetcherService extends IntentService {
         if (entryCursor.moveToFirst()) {
             int linkPos = entryCursor.getColumnIndex(LINK);
             String link = entryCursor.getString(linkPos);
-            String linkToLoad = link;
+            String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
             {
                 Pattern rx = Pattern.compile("\\{(.+)\\}");
-                final Matcher matcher = rx.matcher(link);
+                final Matcher matcher = rx.matcher(linkToLoad);
 
                 if (matcher.find()) {
                     Calendar date = Calendar.getInstance();
-                    linkToLoad = linkToLoad.replaceAll(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                    linkToLoad = linkToLoad.replace(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
                 }
             }
 

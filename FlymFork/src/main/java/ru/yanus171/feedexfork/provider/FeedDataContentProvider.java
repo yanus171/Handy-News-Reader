@@ -147,6 +147,7 @@ public class FeedDataContentProvider extends ContentProvider {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites", URI_FAVORITES);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites/#", URI_FAVORITES_ENTRY);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks", URI_TASKS);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks/#", URI_TASK);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "labels/#", URI_LABEL);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "labels", URI_LABELS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels/#", URI_ENTRY_LABELS);

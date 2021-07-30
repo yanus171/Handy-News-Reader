@@ -95,15 +95,11 @@ object HTMLParser {
         val urlNextPageClassName = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) else ""
         val newEntries: Int
         Status().ChangeProgress("Loading main page")
-        val cal = Calendar.getInstance()
         var feedUrl = feedUrlparam
 
+        val cal = Calendar.getInstance()
         val isTomorrow = feedUrl.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
-        if ( isTomorrow )  {
-            val date: Calendar = Calendar.getInstance()
-            date.add(Calendar.DATE, 1)
-            feedUrl = feedUrl.replace(TOMORROW_YYYY_MM_DD, SimpleDateFormat("yyyy-MM-dd").format(Date(date.timeInMillis)))
-        }
+        feedUrl = replaceTomorrow(feedUrl)
         /* check and optionally find favicon */
         try {
             NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
@@ -198,7 +194,7 @@ object HTMLParser {
                                     if ( cursor.moveToFirst() ) {
                                         val title = cursor.getString(0)
                                         val author = cursor.getString(1)
-                                        val categoryList = TextUtils.split(cursor.getString(2), CATEGORY_LIST_SEP);
+                                        val categoryList = TextUtils.split(if (cursor.isNull(2)) "" else cursor.getString(2), CATEGORY_LIST_SEP);
                                         if (filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList)) {
                                             synchronized(mMarkAsStarredFoundList) {
                                                 mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl))
@@ -258,5 +254,17 @@ object HTMLParser {
             newEntries
         else
             Parse( executor, feedID, urlNextPage, jsonOptions, recursionCount + 1 )
+    }
+
+    fun replaceTomorrow(feedUrl: String): String {
+        val cal = Calendar.getInstance()
+        var feedUrl1 = feedUrl
+        if (feedUrl1.contains(TOMORROW_YYYY_MM_DD)) {
+            val date: Calendar = Calendar.getInstance()
+            if ( cal[Calendar.HOUR_OF_DAY] >= 16 )
+                date.add(Calendar.DATE, 1)
+            feedUrl1 = feedUrl1.replace(TOMORROW_YYYY_MM_DD, SimpleDateFormat("yyyy-MM-dd").format(Date(date.timeInMillis)))
+        }
+        return feedUrl1
     }
 }
