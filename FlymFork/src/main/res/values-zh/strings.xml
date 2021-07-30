@@ -573,6 +573,8 @@
     <string name="setting_edit_feed_force_portrait_orientation">编辑新闻源竖屏方向</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">在编辑Feed窗口中强制使用竖屏方向 - 检查您的手机是否有窄屏</string>
     <string name="name">名称</string>
+    <string name="remove_label_confirmation">"删除标签？ "</string>
+    <string name="setting_label_list">标签列表</string>
     <string name="tag_list">标记列表</string>
     <string name="menu_edit_labels">标签</string>
     <string name="manage_labels">管理标签</string>
@@ -584,6 +586,7 @@
     <string name="menu_edit_article_url">编辑文章网址</string>
     <string name="edit_article_url_title_message">你可以在 url 中使用当前日期格式 {…}，如 http://test.org/{yyyy-MM-dd}。日期格式描述详见 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">编辑标题</string>
+    <string name="import_completed">导入完毕</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
