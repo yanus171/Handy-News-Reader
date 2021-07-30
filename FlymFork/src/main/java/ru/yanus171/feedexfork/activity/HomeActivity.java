@@ -70,7 +70,6 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -87,18 +86,16 @@ import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXP
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.NO_LABEL;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.NO_LABEL;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mLabelID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
@@ -715,6 +712,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mImageFileVoc.init1();
         mHTMLFileVoc.init1();
         OPML.OnRequestPermissionResult(this, requestCode, grantResults);
