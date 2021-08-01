@@ -61,6 +61,7 @@ public class ArticleTextExtractor {
     public static final String HANDY_NEWS_READER_CATEGORY_CLASS = "Handy_News_Reader_tag";
     public static final String HANDY_NEWS_READER_DATE_CLASS = "Handy_News_Reader_date";
     public static final String HANDY_NEWS_READER_MAIN_IMAGE_CLASS = "Handy_News_Reader_main_image";
+    public static final String HANDY_NEWS_READER_COMMENTS_CLASS = "Handy_News_Reader_comments";
     public static final String P_HR = "</p><hr>";
     public static final String EMPTY_TAG = "EMPTY_TAG";
 
@@ -186,18 +187,23 @@ public class ArticleTextExtractor {
 
 
         if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false) ) {
-            Element comments = doc.getElementById("comments");
-            if (comments != null) {
-                Elements li = comments.getElementsByTag("li");
-                for (Element entry : li) {
-                    entry.tagName("p");
+
+            Element commentsElement = getCommentsElementFromPref(doc, url);
+            if ( commentsElement == null )
+                commentsElement = doc.getElementById( "comments" );
+            if (commentsElement != null ) {
+                for (Element item : commentsElement.children()) {
+                    Elements li = item.getElementsByTag("li");
+                    for (Element entry : li) {
+                        entry.tagName("p");
+                    }
+                    Elements ul = item.getElementsByTag("ul");
+                    for (Element entry : ul) {
+                        entry.tagName("p");
+                    }
+                    RemoveHiddenElements(item);
+                    ret += item;
                 }
-                Elements ul = comments.getElementsByTag("ul");
-                for (Element entry : ul) {
-                    entry.tagName("p");
-                }
-                RemoveHiddenElements(comments);
-                ret += comments;
             }
         }
 
@@ -358,6 +364,9 @@ public class ArticleTextExtractor {
     }
     private static Element getMainImageElementFromPref(Element doc, final String url) {
         return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.MAIN_IMAGE_EXTRACT_RULES, ""), HANDY_NEWS_READER_MAIN_IMAGE_CLASS, true);
+    }
+    private static Element getCommentsElementFromPref(Element doc, final String url) {
+        return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.COMMENTS_EXTRACT_RULES, ""), HANDY_NEWS_READER_COMMENTS_CLASS, true);
     }
     public static Element getDateElementFromPref(Element doc, final String url) {
         return getElementWithClassNameFromPref(doc, url, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""), HANDY_NEWS_READER_DATE_CLASS, true);

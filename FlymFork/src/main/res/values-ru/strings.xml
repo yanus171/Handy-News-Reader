@@ -579,7 +579,7 @@
     <string name="setting_label_list">Список ярлыков</string>
     <string name="tag_list">Список меток</string>
     <string name="menu_edit_labels">Метки</string>
-    <string name="manage_labels">Управление метками</string>
+    <string name="manage_labels">Настроить</string>
     <string name="article_labels_setup_title">Настройка метки</string>
     <string name="labels_group_title">Метки</string>
     <string name="color">Цвет</string>

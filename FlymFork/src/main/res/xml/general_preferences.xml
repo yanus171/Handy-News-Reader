@@ -697,6 +697,13 @@
             android:dialogTitle="@string/font_rules_dialog_title"
             android:title="@string/settings_font_rules"
             android:summary="@string/settings_font_rules_description"/>
+        <EditTextPreference
+            android:key="comments_extract_rules"
+            android:inputType="text|textMultiLine"
+            android:defaultValue=""
+            android:dialogTitle="site_url:class=XXX\n"
+            android:title="@string/settings_comments_extract_rules"
+            android:summary="@string/settings_comments_extract_rules_description"/>
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_other"/>

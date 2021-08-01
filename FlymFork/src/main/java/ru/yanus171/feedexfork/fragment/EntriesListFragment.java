@@ -276,10 +276,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mMenu == null )
             return;
 
-        if (EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri)) {
-            mMenu.findItem(R.id.menu_refresh).setVisible(false);
+        if (EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri))
             mMenu.findItem(R.id.menu_share_starred).setVisible(true);
-        }
 
         MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
         if (mShowUnRead) {
@@ -298,7 +296,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     uriMatch != FeedDataContentProvider.URI_FAVORITES );
         }
 
-        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri );
+        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && mLabelID == NO_LABEL;
         if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
             String feedID = mCurrentUri.getPathSegments().get(1);
             isCanRefresh = !feedID.equals(FetcherService.GetExtrenalLinkFeedID());
@@ -306,8 +304,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         boolean isRefresh = PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false );
         mMenu.findItem(R.id.menu_cancel_refresh).setVisible( isRefresh );
         mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
-
-
+        
         if ( getBaseActivity().mProgressBarRefresh != null ) {
             if (isRefresh)
                 getBaseActivity().mProgressBarRefresh.setVisibility(View.VISIBLE);
@@ -782,7 +779,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                     new Thread() {
                                         @Override
                                         public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE);
+                                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
                                             // reset feed
                                             if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
                                                 final String feedID = mCurrentUri.getPathSegments().get( 1 );

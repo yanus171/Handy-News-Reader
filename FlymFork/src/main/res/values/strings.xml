@@ -592,7 +592,7 @@
     <string name="setting_label_list">Label List</string>
     <string name="tag_list">Label list</string>
     <string name="menu_edit_labels">Labels</string>
-    <string name="manage_labels">Manage labels</string>
+    <string name="manage_labels">Setup</string>
     <string name="article_labels_setup_title">Label setup</string>
     <string name="labels_group_title">Labels</string>
     <string name="color">Color</string>
@@ -602,6 +602,8 @@
     <string name="edit_article_url_title_message">You can use pattern for the current date {…} in URL, e.g., http://test.org/{yyyy-MM-dd} . The date format rules are described here: https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Edit title</string>
     <string name="import_completed">Import is completed</string>
+    <string name="settings_comments_extract_rules">Comments</string>
+    <string name="settings_comments_extract_rules_description">Rules for finding article comments sections</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

@@ -70,7 +70,7 @@ public class HtmlUtils {
     private static final Pattern ADS_PATTERN = Pattern.compile("<div class=('|\")mf-viral('|\")><table border=('|\")0('|\")>.*", Pattern.CASE_INSENSITIVE);
     //private static final Pattern LAZY_LOADING_PATTERN = Pattern.compile("\\s+src=[^>]+\\s+original[-]*src=(\"|')", Pattern.CASE_INSENSITIVE);
     private static final Pattern LAZY_LOADING_PATTERN2 = Pattern.compile("src=\"[^\"]+?lazy[^\"]+\"", Pattern.CASE_INSENSITIVE);
-    private static final Pattern DATA_SRC_PATTERN = Pattern.compile("data-src=\"([^\"]+)\"", Pattern.CASE_INSENSITIVE);
+    //private static final Pattern DATA_SRC_PATTERN = Pattern.compile("data-src=\"([^\"]+)\"", Pattern.CASE_INSENSITIVE);
     private static final Pattern EMPTY_IMAGE_PATTERN = Pattern.compile("<img\\s+(height=['\"]1['\"]\\s+width=['\"]1['\"]|width=['\"]1['\"]\\s+height=['\"]1['\"])\\s+[^>]*src=\\s*['\"]([^'\"]+)['\"][^>]*>", Pattern.CASE_INSENSITIVE);
     private static final Pattern NON_HTTP_IMAGE_PATTERN = Pattern.compile("\\s+(href|src)=(\"|')//", Pattern.CASE_INSENSITIVE);
     private static final Pattern BAD_IMAGE_PATTERN = Pattern.compile("<img\\s+[^>]*src=\\s*['\"]([^'\"]+)\\.img['\"][^>]*>", Pattern.CASE_INSENSITIVE);
@@ -97,8 +97,9 @@ public class HtmlUtils {
         // remove lazy loading images stuff
         //content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$1");
         content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
-        content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
+        //content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
         //content = ReplaceImagesWithDataOriginal(content, "<span[^>]+class..lazy-image-placeholder[^>]+src=\"([^\"]+)\"[^>]+>");
+        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-src=\"([^\"]+)\"[^>]+>");
         content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+)\\s.+x\"+[^>]+></a>" );
         content = ReplaceImagesWithALink(content);
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"[^>]+>");

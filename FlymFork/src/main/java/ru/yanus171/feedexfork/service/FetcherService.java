@@ -154,6 +154,7 @@ import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
@@ -384,7 +385,7 @@ public class FetcherService extends IntentService {
                 public void run() {
                     SetNotifyEnabled(false);
                     try {
-                        Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, null, null, null);
+                        Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, GetWhereSQL(), null, null);
                         ContentValues[] values = new ContentValues[cursor.getCount()];
                         while (cursor.moveToNext()) {
                             final long entryId = cursor.getLong(0);
@@ -793,7 +794,7 @@ public class FetcherService extends IntentService {
                 }
             }
 
-            if ( isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor ) ) { // If we didn't already mobilized it
+            if ( isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor )) ) { // If we didn't already mobilized it
                 int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
                 final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
                 Connection connection = null;
@@ -851,7 +852,7 @@ public class FetcherService extends IntentService {
                         } else {
                             try {
                                 dateText = doc.getElementsByTag("time").first().attr( "datetime" );
-                            } catch ( Exception e ) {
+                            } catch ( Exception ignored) {
 
                             }
                         }
@@ -939,6 +940,10 @@ public class FetcherService extends IntentService {
         }
         entryCursor.close();
         return success;
+    }
+
+    private static boolean isLinkToLoad( String link ) {
+        return !link.endsWith( "mp3" ) && !link.endsWith( "pdf" ) && !link.endsWith( "avi" ) && !link.endsWith( "mpeg" );
     }
 
 
