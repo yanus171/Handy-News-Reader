@@ -592,6 +592,8 @@ GENERAL]]></string>
     <string name="edit_article_url_title_message">Możesz użyć wzoru dla aktualnej daty {…} w URL, np. http://test.org/{yyyy-MM-dd} . Reguły formatu daty są opisane tu: https://developer.android.com/reference/java/text/SimpleDateFormat</string>
     <string name="menu_edit_article_title">Edytuj tytuł</string>
     <string name="import_completed">Import zakończony</string>
+    <string name="settings_comments_extract_rules">Komentarze</string>
+    <string name="settings_comments_extract_rules_description">Reguły rozpoznawania sekcji komentarzy w artykule</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
