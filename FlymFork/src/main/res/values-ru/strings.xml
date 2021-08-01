@@ -590,6 +590,8 @@
 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Переименовать</string>
     <string name="import_completed">Импорт завершен</string>
+    <string name="settings_comments_extract_rules">Комментарии</string>
+    <string name="settings_comments_extract_rules_description">Правила поиска разделов комментариев к статье</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
