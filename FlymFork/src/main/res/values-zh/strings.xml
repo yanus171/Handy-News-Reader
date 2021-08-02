@@ -587,6 +587,8 @@
     <string name="edit_article_url_title_message">你可以在 url 中使用当前日期格式 {…}，如 http://test.org/{yyyy-MM-dd}。日期格式描述详见 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">编辑标题</string>
     <string name="import_completed">导入完毕</string>
+    <string name="settings_comments_extract_rules">评论</string>
+    <string name="settings_comments_extract_rules_description">查找文章评论部分的规则</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
