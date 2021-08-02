@@ -586,7 +586,7 @@
     <string name="menu_edit_article_title">Titel bearbeiten</string>
     <string name="import_completed">Importvorgang abgeschlossen</string>
     <string name="settings_comments_extract_rules">Kommentare</string>
-    <string name="settings_comments_extract_rules_description">Regeln für das Auffinden von Artikel in Kommentarbereichen</string>
+    <string name="settings_comments_extract_rules_description">Regeln, um Kommentarbereiche von Artikeln aufzufinden</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
