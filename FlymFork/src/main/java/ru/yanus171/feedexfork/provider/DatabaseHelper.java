@@ -62,7 +62,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 36;
+    private static final int DATABASE_VERSION = 40;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -197,9 +197,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 31)
             database.execSQL(createTable(EntryLabelColumns.TABLE_NAME, EntryLabelColumns.COLUMNS));
 
-        if (oldVersion < 36)
+        if (oldVersion < 38)
             executeCatchedSQL(database, ALTER_TABLE + LabelColumns.TABLE_NAME + ADD + LabelColumns.ORDER + ' ' + FeedData.TYPE_INT);
 
+        if (oldVersion < 40)
+            executeCatchedSQL(database, "UPDATE " + LabelColumns.TABLE_NAME + " SET " + LabelColumns.ORDER + '=' + LabelColumns._ID);
         //executeCatchedSQL(database, ALTER_TABLE + LabelColumns.TABLE_NAME + " RENAME COLUMN \"order\" TO order_");
 
     }

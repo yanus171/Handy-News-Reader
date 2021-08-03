@@ -16,12 +16,14 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.view.ColorPreference
+import ru.yanus171.feedexfork.view.DragNDropListView
+import ru.yanus171.feedexfork.view.DragNDropListener
 import java.util.*
 
 
 class LabelListActivity : AppCompatActivity(), Observer {
 
-    private lateinit var mListView: ListView
+    private lateinit var mListView: DragNDropListView
     private lateinit var mMenu: Menu
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -34,7 +36,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
         mListView.adapter = object: ResourceCursorAdapter(
                 this,
                 R.layout.label_item,
-                CreateCursor(),
+                createCursor(),
                 false) {
             override fun bindView(view: View?, context: Context?, cursor: Cursor?) {
                 val label = Label(cursor!!)
@@ -49,21 +51,42 @@ class LabelListActivity : AppCompatActivity(), Observer {
             }
         }
 
-        mListView.onItemClickListener  = AdapterView.OnItemClickListener {
-            _, _, pos, _ -> createTagAddEditDialog(mListView.adapter.getItem(pos) as Label).create().show()
+        mListView.onItemClickListener  = AdapterView.OnItemClickListener { _, _, pos, _ -> createTagAddEditDialog(mListView.adapter.getItem(pos) as Label).create().show()
         }
 
-//        mListView.setOnItemClickListener { parent, view, position, id ->
-//            WebLoadRefreshService.startActionRefresh(mListView.getItemAtPosition(position) as WebLoadAccount, true)
-//        }
+        mListView.setDragNDropListener(object : DragNDropListener {
+            override fun onStopDrag(itemView: View) {}
+            override fun onStartDrag(itemView: View) {}
+
+            override fun onDrop(flatPosFrom: Int, flatPosTo: Int) {
+                val labelFrom: Label = LabelVoc.get( mListView.getItemIdAtPosition(flatPosFrom) )!!
+                val labelTo: Label = LabelVoc.get( mListView.getItemIdAtPosition(flatPosTo) )!!
+                val orderFrom = labelTo.mOrder
+                val orderTo = labelFrom.mOrder
+                setLabelOrder(labelFrom, orderFrom)
+                setLabelOrder(labelTo, orderTo)
+                refreshAdapter()
+            }
+
+            private fun setLabelOrder(label: Label, order: Int) {
+                label.mOrder = order
+                LabelVoc.set(label)
+                val values = ContentValues()
+                values.put(LabelColumns.ORDER, label.mOrder)
+                contentResolver.update(LabelColumns.CONTENT_URI(label.mID), values, null, null)
+            }
+
+            override fun onDrag(x: Int, y: Int, listView: ListView) {}
+        })
     }
 
-    private fun CreateCursor() = contentResolver.query(
+    private fun createCursor() = contentResolver.query(
             LabelColumns.CONTENT_URI,
             arrayOf(LabelColumns._ID, LabelColumns.NAME, LabelColumns.COLOR),
             null,
             null,
-            LabelColumns._ID)
+            LabelColumns.ORDER)
+
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -133,7 +156,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
     }
 
     private fun refreshAdapter() {
-        (mListView.adapter as ResourceCursorAdapter).changeCursor(CreateCursor())
+        (mListView.adapter as ResourceCursorAdapter).changeCursor(createCursor())
     }
 
     private fun createTagRemoveDialog(label: Label): AlertDialog.Builder {

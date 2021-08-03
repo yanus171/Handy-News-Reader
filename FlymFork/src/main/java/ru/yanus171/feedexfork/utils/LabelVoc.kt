@@ -1,6 +1,7 @@
 package ru.yanus171.feedexfork.utils
 
 import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -16,9 +17,7 @@ import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.LabelListActivity
 import ru.yanus171.feedexfork.provider.FeedData
-import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns
-import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
-import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
+import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.LabelVoc.getNextOrder
@@ -76,7 +75,7 @@ object LabelVoc {
                         LabelColumns.CONTENT_URI, arrayOf(BaseColumns._ID, LabelColumns.NAME, LabelColumns.COLOR),
                         null,
                         null,
-                        null)
+                        LabelColumns.ORDER)
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
                         mVoc[cursor.getLong(0)] = Label(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
@@ -124,10 +123,11 @@ object LabelVoc {
                 result = item.mOrder
         return result + 1
     }
+
     fun getList(): ArrayList<Label> {
         initInThread()
         synchronized(mVoc) {
-            return ArrayList(mVoc.values)
+            return ArrayList(mVoc.values.sortedBy{ it.mOrder })
         }
     }
 
@@ -178,7 +178,7 @@ object LabelVoc {
         synchronized(mVoc) {
             val result = HashSet<Long>()
             for ( entryID in mEntryVoc.keys )
-                if ( mEntryVoc[entryID]!!.contains( labelID ) )
+                if ( mEntryVoc[entryID]!!.contains(labelID) )
                     result += entryID
             return result
         }
@@ -208,7 +208,7 @@ object LabelVoc {
     fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter?) {
         val builder = AlertDialog.Builder(context)
         val checkedLabels = getLabelIDs(entryID)
-        val array = mVoc.values.toTypedArray()
+        val array = getList().toTypedArray()
         var block = false
         builder.setAdapter(object : ArrayAdapter<Label>(context, R.layout.label_item_select, R.id.text_name, array) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -250,7 +250,7 @@ object LabelVoc {
                     val values = ContentValues()
                     values.put(FeedData.EntryColumns._ID, entryID)
                     values.put(FeedData.EntryColumns.IS_FAVORITE, if (checkedLabels.isNotEmpty()) 1 else 0)
-                    context.contentResolver.update(FeedData.EntryColumns.CONTENT_URI(entryID), values, if (checkedLabels.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null )
+                    context.contentResolver.update(FeedData.EntryColumns.CONTENT_URI(entryID), values, if (checkedLabels.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null)
                 }
 
             }.start()
@@ -278,7 +278,12 @@ object LabelVoc {
             return result
         }
     }
-
+    fun removeLabels(entryID: Long) {
+        if ( getLabelIDs( entryID ).isEmpty() )
+            return
+        setEntry(entryID, java.util.HashSet())
+        MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
+    }
 
 
 }

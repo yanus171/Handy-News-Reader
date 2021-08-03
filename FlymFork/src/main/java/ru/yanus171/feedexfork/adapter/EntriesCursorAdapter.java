@@ -669,8 +669,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         //view.findViewById(R.id.text2Layout).setOnClickListener(manageLabels);
 
-        holder.labelTextView.setVisibility( LabelVoc.INSTANCE.getLabelIDs(holder.entryID ).isEmpty() ? View.GONE : View.VISIBLE );
-        holder.labelTextView.setText( Html.fromHtml(LabelVoc.INSTANCE.getStringList( holder.entryID )) );
+        UpdateLabelText(holder);
         holder.labelTextView.setOnClickListener(manageLabels);
 
         holder.contentImgView1.setVisibility( View.GONE );
@@ -721,6 +720,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
+    }
+
+    private void UpdateLabelText(ViewHolder holder) {
+        boolean visible = holder.isFavorite && !LabelVoc.INSTANCE.getLabelIDs(holder.entryID ).isEmpty();
+        holder.labelTextView.setVisibility( visible ? View.VISIBLE : View.GONE );
+        if ( visible )
+            holder.labelTextView.setText(Html.fromHtml(LabelVoc.INSTANCE.getStringList(holder.entryID )) );
     }
 
     private Spanned getBoldText(String html) {
@@ -992,6 +998,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
             UpdateStarImgView(holder);
+            UpdateLabelText(holder);
             SetIsFavorite( holder.entryID, holder.isFavorite, true );
         }
     }
@@ -1009,8 +1016,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.update(entryUri, values, null, null);
-                    if (!isFavorite)
-                        CancelStarNotification(Long.parseLong(entryUri.getLastPathSegment()));
+                    if (!isFavorite) {
+                        CancelStarNotification( entryId );
+                        LabelVoc.INSTANCE.removeLabels( entryId );
+                    }
                 } finally {
                     if ( isSilent )
                         SetNotifyEnabled( true );

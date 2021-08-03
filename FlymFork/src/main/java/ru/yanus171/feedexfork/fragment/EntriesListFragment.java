@@ -304,7 +304,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         boolean isRefresh = PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false );
         mMenu.findItem(R.id.menu_cancel_refresh).setVisible( isRefresh );
         mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
-        
+
         if ( getBaseActivity().mProgressBarRefresh != null ) {
             if (isRefresh)
                 getBaseActivity().mProgressBarRefresh.setVisibility(View.VISIBLE);

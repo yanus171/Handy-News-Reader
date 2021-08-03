@@ -132,6 +132,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -1760,7 +1761,9 @@ public class FetcherService extends IntentService {
                         Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
                         ContentValues values = new ContentValues();
                         values.putNull(EntryColumns.IS_FAVORITE);
-                        getContext().getContentResolver().update(EntryColumns.CONTENT_URI(cursor.getString(0)), values, null, null);
+                        final long entryID = cursor.getLong(0);
+                        cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null);
+                        LabelVoc.INSTANCE.removeLabels(entryID);
                     }
                 } finally {
                     SetNotifyEnabled( true );

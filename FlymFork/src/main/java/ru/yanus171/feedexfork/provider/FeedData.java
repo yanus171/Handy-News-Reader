@@ -417,6 +417,7 @@ public class FeedData {
 
         public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/entrylabels");
         public static Uri CONTENT_URI(long ID) { return Uri.parse(CONTENT_AUTHORITY + "/entrylabels/" + ID);}
+        public static Uri CONTENT_URI(String ID) { return Uri.parse(CONTENT_AUTHORITY + "/entrylabels/" + ID);}
 
         public static final Uri WITH_ENTRIES_URI = Uri.parse(CONTENT_AUTHORITY + "/entrylabels/with_entries");
 

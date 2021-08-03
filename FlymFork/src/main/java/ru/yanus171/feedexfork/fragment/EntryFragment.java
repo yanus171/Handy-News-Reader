@@ -91,6 +91,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -113,6 +114,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -957,7 +959,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( mFavorite == favorite )
             return;
         mFavorite = favorite;
-        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+        final long entryID = getCurrentEntryID();
+        final Uri uri = ContentUris.withAppendedId(mBaseUri, entryID);
         new Thread() {
             @Override
             public void run() {
@@ -965,11 +968,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 values.put(EntryColumns.IS_FAVORITE, mFavorite ? 1 : 0);
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
+                if ( !mFavorite )
+                    LabelVoc.INSTANCE.removeLabels( entryID );
             }
         }.start();
         getActivity().invalidateOptionsMenu();
         Toast.makeText( getContext(), mFavorite ? R.string.entry_marked_favourite : R.string.entry_marked_unfavourite, Toast.LENGTH_LONG ).show();
     }
+
 
 //    private void DeleteMobilized() {
 //        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
