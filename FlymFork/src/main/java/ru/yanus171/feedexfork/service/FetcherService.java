@@ -791,7 +791,7 @@ public class FetcherService extends IntentService {
 
                 if (matcher.find()) {
                     Calendar date = Calendar.getInstance();
-                    linkToLoad = linkToLoad.replace(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                    linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
                 }
             }
 
