@@ -81,6 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(createTable(EntryColumns.TABLE_NAME, EntryColumns.COLUMNS));
         database.execSQL(createTable(TaskColumns.TABLE_NAME, TaskColumns.COLUMNS));
         database.execSQL(createTable(LabelColumns.TABLE_NAME, LabelColumns.COLUMNS));
+        database.execSQL(createTable(EntryLabelColumns.TABLE_NAME, EntryLabelColumns.COLUMNS));
     }
 
     private String createTable(String tableName, String[][] columns) {
@@ -199,10 +200,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 38)
             executeCatchedSQL(database, ALTER_TABLE + LabelColumns.TABLE_NAME + ADD + LabelColumns.ORDER + ' ' + FeedData.TYPE_INT);
-
         if (oldVersion < 40)
             executeCatchedSQL(database, "UPDATE " + LabelColumns.TABLE_NAME + " SET " + LabelColumns.ORDER + '=' + LabelColumns._ID);
-        //executeCatchedSQL(database, ALTER_TABLE + LabelColumns.TABLE_NAME + " RENAME COLUMN \"order\" TO order_");
 
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
