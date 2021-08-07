@@ -128,6 +128,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
+import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
@@ -713,7 +714,7 @@ public class EntryView extends WebView implements Handler.Callback {
                                 getContext(),
                                 android.R.layout.select_dialog_item,
                                 android.R.id.text1,
-                                url.endsWith(".pdf") ? itemsNoRead : items) {
+                                !isLinkToLoad( url ) ? itemsNoRead : items) {
                             @NonNull
                             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                                 //Use super class to create the View

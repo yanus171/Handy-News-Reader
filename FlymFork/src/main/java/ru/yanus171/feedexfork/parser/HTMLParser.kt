@@ -95,11 +95,10 @@ object HTMLParser {
         val urlNextPageClassName = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) else ""
         val newEntries: Int
         Status().ChangeProgress("Loading main page")
-        var feedUrl = feedUrlparam
 
         val cal = Calendar.getInstance()
-        val isTomorrow = feedUrl.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
-        feedUrl = replaceTomorrow(feedUrl)
+        val isTomorrow = feedUrlparam.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
+        val feedUrl = replaceTomorrow(feedUrlparam)
         /* check and optionally find favicon */
         try {
             NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
@@ -119,13 +118,13 @@ object HTMLParser {
             return 0;
 
         val cr = MainApplication.getContext().contentResolver
-        val entryUri = GetEntryUri( feedUrl )
+        val entryUri = GetEntryUri( feedUrlparam )
         if ( entryUri != null ) {
             cr.delete(entryUri, null, null);
-            EntryUrlVoc.remove( feedUrl )
+            EntryUrlVoc.remove( feedUrlparam )
         }
         val filters = FeedFilters(feedID)
-        val uriMainEntry = LoadLink(feedID, feedUrl, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false).first
+        val uriMainEntry = LoadLink(feedID, feedUrlparam, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false).first
         run {
             val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
             if (cursor.moveToFirst()) {
@@ -166,7 +165,7 @@ object HTMLParser {
                     }
                 }
                 Dog.v("link after = " + link)
-                if (link.endsWith(".pdf") || link.endsWith(".epub") || link.endsWith(".doc") || link.endsWith(".docx")) continue
+                if (!isLinkToLoad( link )) continue
                 if (filters.isEntryFiltered(el.text(), "", link, "", null) )
                     continue
                 val newItem = Item(link, el.text())

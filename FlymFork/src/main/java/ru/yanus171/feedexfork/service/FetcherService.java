@@ -943,8 +943,15 @@ public class FetcherService extends IntentService {
         return success;
     }
 
-    private static boolean isLinkToLoad( String link ) {
-        return !link.endsWith( "mp3" ) && !link.endsWith( "pdf" ) && !link.endsWith( "avi" ) && !link.endsWith( "mpeg" );
+    public static boolean isLinkToLoad( String link ) {
+        return  !link.endsWith( "mp3" ) &&
+                !link.endsWith( "pdf" ) &&
+                !link.endsWith( "avi" ) &&
+                !link.endsWith( "mpeg" ) &&
+                !link.endsWith( "doc" ) &&
+                !link.endsWith( "docx" ) &&
+                !link.endsWith( "jpeg" ) &&
+                !link.endsWith( "png" );
     }
 
 
