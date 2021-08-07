@@ -895,17 +895,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                 @Override
                                 public void run() {
 
-                                    final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
-                                    if ( bitmap == null )
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText( getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show();
-                                            }
-                                        });
-                                    final IconCompat icon = (bitmap == null) ?
-                                        IconCompat.createWithResource( getContext(), R.mipmap.ic_launcher ) :
-                                        IconCompat.createWithBitmap(bitmap);
+                                    final IconCompat icon = LoadIcon(iconUrl);
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -933,6 +923,21 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         return true;
+    }
+
+    @NotNull
+    public static IconCompat LoadIcon(String iconUrl) {
+        final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
+        if ( bitmap == null )
+            UiUtils.RunOnGuiThread( new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show();
+                }
+            });
+        return (bitmap == null) ?
+            IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
+            IconCompat.createWithBitmap(bitmap);
     }
 
 

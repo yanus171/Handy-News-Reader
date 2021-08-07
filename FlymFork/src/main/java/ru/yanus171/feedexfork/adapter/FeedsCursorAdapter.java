@@ -60,7 +60,6 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
 
         TextView textView = SetupTextView( view, android.R.id.text1);
 
-        final long feedId = cursor.getLong(mIdPos);
         Bitmap bitmap = getScaledBitmap( getFaviconBitmap( cursor.getString( mIconUrlPos ) ), 32 );
 
         if (bitmap != null) {

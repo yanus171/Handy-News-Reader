@@ -70,6 +70,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -79,6 +80,7 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
 import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
@@ -379,8 +381,17 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
                     mDrawerAdapter.notifyDataSetChanged();
                     selectDrawerItem(DrawerAdapter.getLabelPositionByID(mLabelID));
-                } else
-                    selectDrawerItem(mDrawerAdapter.getItemPosition(GetFeedID(intent.getData())));
+                } else {
+                    long feedID = 0;
+                    if ( intent.hasExtra( EXTRA_LINK ) ) {
+                        Cursor cur = getContentResolver().query( FeedColumns.CONTENT_URI, new String[]{ FeedColumns._ID }, FeedColumns.URL + " = '" + intent.getStringExtra( EXTRA_LINK ) +"'", null, null );
+                        if ( cur.moveToNext() )
+                            feedID = cur.getLong( 0 );
+                        cur.close();
+                    } else
+                        feedID = GetFeedID(intent.getData());
+                    selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
+                }
             }
 
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {

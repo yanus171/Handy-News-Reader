@@ -52,6 +52,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.net.URL;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,12 +98,14 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
@@ -853,6 +856,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
                     String name = "";
                     IconCompat image = null;
+                    String feedUrl = "";
+                    String iconUrl = "";
                     if ( mLabelID == ALL_LABELS ) {
                         name = getContext().getString( R.string.labels_group_title );
                         image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
@@ -874,31 +879,52 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else {
                         long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
                         Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),
-                                new String[]{FeedData.FeedColumns.NAME, FeedColumns.ICON_URL},
+                                new String[]{FeedData.FeedColumns.NAME, FeedColumns.ICON_URL },
                                 null, null, null);
                         if (cursor.moveToFirst()) {
                             name = cursor.getString(0);
+                            if (!cursor.isNull(2) )
+                                feedUrl = cursor.getString( 2 );
                             if (!cursor.isNull(1) ) {
-                                final Bitmap bitmap = UiUtils.getFaviconBitmap(cursor.getString(1) );
-                                if ( bitmap != null )
-                                    image = IconCompat.createWithBitmap(bitmap);
+                                iconUrl = cursor.getString(1);
+//                                final Bitmap bitmap = UiUtils.getFaviconBitmap(feedID, feedUrl, cursor.getString(1) );
+//                                if ( bitmap != null )
+//                                    image = IconCompat.createWithBitmap(bitmap);
                             }
                         }
                         cursor.close();
                     }
 
-                    Intent intent = new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri );
+                    final Intent intent = new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData(mCurrentUri );
+                    if ( !feedUrl.isEmpty() )
+                        intent.putExtra( Constants.EXTRA_LINK, feedUrl );
                     if ( mLabelID != NO_LABEL )
                         intent.putExtra( LABEL_ID_EXTRA, mLabelID );
-                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + mLabelID  )
-                            .setIcon(image)
-                            .setShortLabel(name)
-                            .setIntent( intent )
-                            .setLongLived()
-                            .build();
-                    ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
-                    if ( Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O )
-                        Toast.makeText( getContext(), R.string.new_feed_shortcut_added, Toast.LENGTH_LONG ).show();
+                    final String finalIconUrl = iconUrl;
+                    final String finalName = name;
+                    new WaitDialog(getActivity(), R.string.downloadImage, new Runnable() {
+                        @Override
+                        public void run() {
+                            final IconCompat icon = LoadIcon(finalIconUrl);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + mLabelID)
+                                        .setIcon(icon)
+                                        .setShortLabel(finalName)
+                                        .setIntent(intent)
+                                        .setLongLived()
+                                        .build();
+                                    ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
+                                    if(Build.VERSION.SDK_INT<android.os.Build.VERSION_CODES.O)
+                                        Toast.makeText(
+
+                                    getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }).execute();
                 } else
                     Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
                 return true;
