@@ -26,10 +26,7 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-public class Label(id: Long, name: String, var mColor: String) {
-
-    @JvmField
-    var mOrder: Int = 0
+public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {
 
     @JvmField
     var mEntriesReadCount: Int = 0
@@ -49,10 +46,9 @@ public class Label(id: Long, name: String, var mColor: String) {
     init {
         if (mColor.isNullOrEmpty())
             mColor = Theme.GetColor(Theme.TEXT_COLOR_READ, R.string.default_read_color)
-        mOrder = getNextOrder()
     }
 
-    constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
+    constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3))
 
     fun colorInt(): Int {
         return Color.parseColor(mColor)
@@ -72,13 +68,13 @@ object LabelVoc {
             mVoc.clear()
             run {
                 val cursor = MainApplication.getContext().contentResolver.query(
-                        LabelColumns.CONTENT_URI, arrayOf(BaseColumns._ID, LabelColumns.NAME, LabelColumns.COLOR),
+                        LabelColumns.CONTENT_URI, arrayOf(BaseColumns._ID, LabelColumns.NAME, LabelColumns.COLOR, LabelColumns.ORDER),
                         null,
                         null,
                         LabelColumns.ORDER)
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
-                        mVoc[cursor.getLong(0)] = Label(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
+                        mVoc[cursor.getLong(0)] = Label(cursor)
                     }
                     cursor.close()
                 }
@@ -111,7 +107,7 @@ object LabelVoc {
     fun addLabel(name: String, id: Long, color: String) {
         initInThread()
         synchronized(mVoc) {
-            mVoc[id] = Label(id, name, color)
+            mVoc[id] = Label(id, name, color, getNextOrder())
         }
     }
 

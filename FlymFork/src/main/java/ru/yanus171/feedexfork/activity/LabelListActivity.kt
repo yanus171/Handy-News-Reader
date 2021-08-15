@@ -51,7 +51,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
             }
         }
 
-        mListView.onItemClickListener  = AdapterView.OnItemClickListener { _, _, pos, _ -> createTagAddEditDialog(mListView.adapter.getItem(pos) as Label).create().show()
+        mListView.onItemClickListener  = AdapterView.OnItemClickListener { _, _, pos, _ -> createLabelAddEditDialog(mListView.adapter.getItem(pos) as Label).create().show()
         }
 
         mListView.setDragNDropListener(object : DragNDropListener {
@@ -59,13 +59,19 @@ class LabelListActivity : AppCompatActivity(), Observer {
             override fun onStartDrag(itemView: View) {}
 
             override fun onDrop(flatPosFrom: Int, flatPosTo: Int) {
-                val labelFrom: Label = LabelVoc.get( mListView.getItemIdAtPosition(flatPosFrom) )!!
-                val labelTo: Label = LabelVoc.get( mListView.getItemIdAtPosition(flatPosTo) )!!
-                val orderFrom = labelTo.mOrder
-                val orderTo = labelFrom.mOrder
-                setLabelOrder(labelFrom, orderFrom)
-                setLabelOrder(labelTo, orderTo)
+                if ( flatPosFrom < flatPosTo )
+                    for ( i in flatPosFrom until flatPosTo)
+                        swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i+1] )
+                else
+                    for ( i in flatPosFrom downTo (flatPosTo + 1)  )
+                        swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i-1] )
                 refreshAdapter()
+            }
+
+            private fun swapLabelsOrder( label1: Label, label2: Label ) {
+                val order1 = label1.mOrder
+                setLabelOrder(label1, label2.mOrder)
+                setLabelOrder(label2, order1)
             }
 
             private fun setLabelOrder(label: Label, order: Int) {
@@ -82,7 +88,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
 
     private fun createCursor() = contentResolver.query(
             LabelColumns.CONTENT_URI,
-            arrayOf(LabelColumns._ID, LabelColumns.NAME, LabelColumns.COLOR),
+            arrayOf(LabelColumns._ID, LabelColumns.NAME, LabelColumns.COLOR, LabelColumns.ORDER),
             null,
             null,
             LabelColumns.ORDER)
@@ -91,16 +97,16 @@ class LabelListActivity : AppCompatActivity(), Observer {
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val info = item.menuInfo as AdapterContextMenuInfo
-        val tag = mListView.adapter.getItem(info.position) as Label
+        val label = mListView.adapter.getItem(info.position) as Label
         when (item.itemId) {
-            MENU_EDIT -> createTagAddEditDialog(tag).create().show()
-            MENU_REMOVE -> createTagRemoveDialog(tag).create().show()
+            MENU_EDIT -> createLabelAddEditDialog(label).create().show()
+            MENU_REMOVE -> createLabelRemoveDialog(label).create().show()
         }
         return super.onContextItemSelected(item)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private fun createTagAddEditDialog(label_: Label?): AlertDialog.Builder {
+    private fun createLabelAddEditDialog(label_: Label?): AlertDialog.Builder {
         var label = label_
         val builder = AlertDialog.Builder(this)
                 .setTitle(if (label_ == null) R.string.context_menu_add else R.string.context_menu_edit)
@@ -108,7 +114,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
         val root = inflater.inflate(R.layout.label_edit_layout, null, false) as ViewGroup
 
         if ( label == null )
-            label = Label(LabelVoc.getNextID(), "", "")
+            label = Label(LabelVoc.getNextID(), "", "", LabelVoc.getNextOrder())
         val editName = root.findViewById<EditText>(R.id.edit_name)
         editName.setText(label.mName)
 
@@ -133,7 +139,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
             val values = ContentValues()
             values.put(LabelColumns.NAME, label.mName)
             values.put(LabelColumns.COLOR, label.mColor)
-            values.put(LabelColumns.ORDER, LabelVoc.getNextID())
+            values.put(LabelColumns.ORDER, label.mOrder)
             if ( label_ == null ) {
                 val id = contentResolver.insert(LabelColumns.CONTENT_URI, values).lastPathSegment.toLong()
                 LabelVoc.addLabel(label.mName, id, label.mColor)
@@ -159,7 +165,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
         (mListView.adapter as ResourceCursorAdapter).changeCursor(createCursor())
     }
 
-    private fun createTagRemoveDialog(label: Label): AlertDialog.Builder {
+    private fun createLabelRemoveDialog(label: Label): AlertDialog.Builder {
         return AlertDialog.Builder(this)
                .setTitle(label.mName)
                .setMessage(R.string.remove_label_confirmation)
@@ -188,7 +194,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_add -> createTagAddEditDialog(null).create().show()
+            R.id.menu_add -> createLabelAddEditDialog(null).create().show()
         }
         return true
     }
