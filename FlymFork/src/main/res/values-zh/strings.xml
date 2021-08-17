@@ -589,6 +589,10 @@
     <string name="import_completed">导入完毕</string>
     <string name="settings_comments_extract_rules">评论</string>
     <string name="settings_comments_extract_rules_description">查找文章评论部分的规则</string>
+    <string name="filter_by_labels">按标签过滤</string>
+    <string name="all">全部</string>
+    <string name="all_labels">全部标签</string>
+    <string name="filter_label_title">过滤器</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
