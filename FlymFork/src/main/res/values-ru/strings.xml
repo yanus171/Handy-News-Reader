@@ -592,6 +592,10 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="import_completed">Импорт завершен</string>
     <string name="settings_comments_extract_rules">Комментарии</string>
     <string name="settings_comments_extract_rules_description">Правила поиска разделов комментариев к статье</string>
+    <string name="filter_by_labels">Фильтр по меткам</string>
+    <string name="all">Все</string>
+    <string name="all_labels">Все метки</string>
+    <string name="filter_label_title">Фильтр</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
