@@ -32,20 +32,15 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/menu_share_starred"
-                android:icon="@drawable/ic_share"
+                android:id="@+id/menu_show_entry_text"
+                android:icon="@drawable/ic_receipt"
                 android:visible="false"
-                android:title="@string/context_menu_share_starred"/>
+                android:title="@string/menu_show_entry_text" />
             <item
                 android:id="@+id/menu_toggle_theme"
                 android:icon="@drawable/ic_style"
                 android:visible="true"
                 android:title="@string/menu_toggle_theme"/>
-            <item
-                android:id="@+id/menu_show_entry_text"
-                android:icon="@drawable/ic_receipt"
-                android:visible="false"
-                android:title="@string/menu_show_entry_text" />
             <item
                 android:id="@+id/menu_delete_old"
                 android:icon="@drawable/ic_delete"
@@ -69,6 +64,9 @@
                 android:title="@string/menu_visible_articles_action">
                 <menu>
                     <item
+                        android:id="@+id/menu_filter_by_labels"
+                        android:title="@string/filter_by_labels" />
+                    <item
                         android:id="@+id/menu_mark_all_as_read"
                         android:icon="@drawable/ic_done_all"
                         android:title="@string/markAllAsRead"/>
@@ -82,6 +80,11 @@
                     <item
                         android:id="@+id/menu_unstarr_articles"
                         android:title="@string/menu_unstar_articles"/>
+                    <item
+                        android:id="@+id/menu_share_starred"
+                        android:icon="@drawable/ic_share"
+                        android:visible="false"
+                        android:title="@string/context_menu_share_starred"/>
                 </menu>
             </item>
             <item

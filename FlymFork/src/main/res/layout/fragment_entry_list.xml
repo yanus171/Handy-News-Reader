@@ -70,7 +70,13 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+                    <TextView
+                        android:id="@+id/filter_by_labels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="filter_labels"
+                        android:gravity="center"
+                        tools:ignore="HardcodedText" />
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">

@@ -604,6 +604,10 @@
     <string name="import_completed">Import is completed</string>
     <string name="settings_comments_extract_rules">Comments</string>
     <string name="settings_comments_extract_rules_description">Rules for finding article comments sections</string>
+    <string name="filter_by_labels">Filter by labels</string>
+    <string name="all">All</string>
+    <string name="all_labels">All labels</string>
+    <string name="filter_label_title">Filter</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

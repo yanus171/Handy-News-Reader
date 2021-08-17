@@ -372,7 +372,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                             else if (item == 2)
                                                 ShowMarkAllAsUnReadDialog( context  );
                                             else if (item == 3)
-                                                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
+                                                LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
                                         }
                                     });
 
@@ -513,7 +513,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final View.OnClickListener manageLabels = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
+                LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
             }
         };
 

@@ -684,7 +684,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_labels: {
-                    LabelVoc.INSTANCE.showDialog(getContext(), getCurrentEntryID(), null );
+                    LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), getCurrentEntryID(), null );
                     break;
                 }
                 case R.id.menu_go_back: {
