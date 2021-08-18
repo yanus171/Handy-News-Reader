@@ -138,6 +138,10 @@
                 android:title="@string/menu_cancel_refresh"
                 android:visible="true" />
             <item
+                android:id="@+id/menu_edit_feed"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/menu_edit_feed" />
+            <item
                 android:id="@+id/menu_reload_full_text_without_mobilizer"
                 android:icon="@drawable/ic_sync_problem"
                 android:title="@string/menu_reload_full_text_without_mobilizer" />

@@ -50,7 +50,6 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -91,7 +90,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -102,7 +100,6 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
-import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -114,7 +111,6 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
-import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -879,6 +875,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     startActivity( new Intent( Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI ).putExtra(EXTRA_WEB_SEARCH, true) );
                     break;
                 }
+                case R.id.menu_edit_feed: {
+                    final String feedId = getCurrentFeedID();
+                    if (!feedId.isEmpty() && !feedId.equals(FetcherService.GetExtrenalLinkFeedID()))
+                        startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedId)));
+                    break;
+                }
 
                 case R.id.menu_add_entry_shortcut: {
                     if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
@@ -929,12 +931,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public static IconCompat LoadIcon(String iconUrl) {
         final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
         if ( bitmap == null )
-            UiUtils.RunOnGuiThread( new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show();
-                }
-            });
+            UiUtils.RunOnGuiThread(() -> Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show());
         return (bitmap == null) ?
             IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
             IconCompat.createWithBitmap(bitmap);
@@ -998,6 +995,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return entry.mID;
         else
             return -1;
+    }
+    public String getCurrentFeedID() {
+        Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+        if (cursor != null)
+            return cursor.getString(mFeedIDPos);
+        else
+            return "";
     }
 
     private String getCurrentEntryLink() {
