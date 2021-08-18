@@ -593,6 +593,7 @@
     <string name="all">全部</string>
     <string name="all_labels">全部标签</string>
     <string name="filter_label_title">过滤器</string>
+    <string name="menu_edit_feed">编辑订阅源</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
