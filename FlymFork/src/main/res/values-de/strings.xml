@@ -591,6 +591,7 @@
     <string name="all">Alle</string>
     <string name="all_labels">Alle Kategorien</string>
     <string name="filter_label_title">Filter</string>
+    <string name="menu_edit_feed">Feed bearbeiten</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
