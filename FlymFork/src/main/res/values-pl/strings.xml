@@ -598,6 +598,7 @@ GENERAL]]></string>
     <string name="all">Wszystko</string>
     <string name="all_labels">Wszystkie etykiety</string>
     <string name="filter_label_title">Filtr</string>
+    <string name="menu_edit_feed">Edytuj kanał</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
