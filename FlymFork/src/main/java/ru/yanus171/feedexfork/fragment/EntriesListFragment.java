@@ -915,8 +915,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         intent.putExtra(LABEL_ID_EXTRA, GetSingleLabelID());
                     final String finalIconUrl = iconUrl;
                     final String finalName = name;
+                    final IconCompat finalImage = image;
                     new WaitDialog(getActivity(), R.string.downloadImage, () -> {
-                        final IconCompat icon = LoadIcon(finalIconUrl);
+                        final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl) : finalImage;
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1225,7 +1226,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
         }
     }
-    
+
     public void ClearSingleLabel() {
         mIsSingleLabel = false;
         mLabelsID.clear();
