@@ -592,6 +592,7 @@
     <string name="all">Всі</string>
     <string name="all_labels">Всі мітки</string>
     <string name="filter_label_title">Фільтр</string>
+    <string name="menu_edit_feed">Редагувати стрічку</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
