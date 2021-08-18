@@ -126,7 +126,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     //private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST = "STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST";
-    private static final String STATE_SHOW_UNREAD = "STATE_SHOW_UNREAD";
+    private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
     private static final String STATE_LAST_VISIBLE_ENTRY_ID = "STATE_LAST_VISIBLE_ENTRY_ID";
     private static final String STATE_LAST_VISIBLE_OFFSET = "STATE_LAST_VISIBLE_OFFSET";
     private static final String STATE_LABEL_FILTER_LIST = "STATE_LABEL_FILTER_LIST";
@@ -150,7 +150,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
-    public static boolean mShowUnRead = false;
+    public static boolean mShowUnReadOnly = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
@@ -260,7 +260,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     " WHERE " + EntryLabelColumns.LABEL_ID + " = " + item + "))" );
             labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
         }
-        final String unreadSQL = mShowUnRead ? " AND " + EntryColumns.WHERE_UNREAD : "";
+        final String unreadSQL = mShowUnReadOnly ? " AND " + EntryColumns.WHERE_UNREAD : "";
         return EMPTY_WHERE_SQL + (mIsSearch ? "" : (labelSQL + unreadSQL));
     }
 
@@ -288,11 +288,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mMenu == null )
             return;
 
-        if (EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri))
-            mMenu.findItem(R.id.menu_share_starred).setVisible(true);
+        mMenu.findItem(R.id.menu_share_starred).setVisible(true);
 
         MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
-        if (mShowUnRead) {
+        if (mShowUnReadOnly) {
             item.setTitle(R.string.all_entries);
             item.setIcon(R.drawable.ic_check_box_outline_blank);
         } else {
@@ -345,19 +344,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
             mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
-            mShowUnRead = savedInstanceState.getBoolean(STATE_SHOW_UNREAD, PrefUtils.getBoolean( STATE_SHOW_UNREAD, false ));
+            mShowUnReadOnly = savedInstanceState.getBoolean(STATE_SHOW_UNREAD_ONLY, PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false ));
             try {
                 mOptions = savedInstanceState.containsKey( STATE_OPTIONS ) ? new JSONObject( savedInstanceState.getString( STATE_OPTIONS ) ) : new JSONObject();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Dog.v( String.format( "EntriesListFragment.onCreate mShowUnRead = %b", mShowUnRead ) );
+            Dog.v( String.format("EntriesListFragment.onCreate mShowUnRead = %b", mShowUnReadOnly) );
 
             //if ( mShowTextInEntryList )
             //    mNeedSetSelection = true;
-            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
+            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly);
         } else
-            mShowUnRead = PrefUtils.getBoolean( STATE_SHOW_UNREAD, false );
+            mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
 
         timer.End();
     }
@@ -600,7 +599,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void onStop() {
         PrefUtils.unregisterOnPrefChangeListener(mPrefListener);
 
-        PrefUtils.putBoolean( STATE_SHOW_UNREAD, mShowUnRead );
+        PrefUtils.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
         PrefUtils.putLong( STATE_LAST_VISIBLE_ENTRY_ID, mLastVisibleTopEntryID );
         PrefUtils.putInt( STATE_LAST_VISIBLE_OFFSET, mLastListViewTopOffset );
 
@@ -627,7 +626,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         outState.putBoolean(STATE_SHOW_FEED_INFO, mShowFeedInfo);
         outState.putBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
         //outState.putLong(STATE_LIST_DISPLAY_DATE, mListDisplayDate);
-        outState.putBoolean( STATE_SHOW_UNREAD, mShowUnRead);
+        outState.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
         if ( mOptions != null )
             outState.putString( STATE_OPTIONS, mOptions.toString() );
         super.onSaveInstanceState(outState);
@@ -717,19 +716,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_share_starred: {
                 if (mEntriesCursorAdapter != null) {
                     StringBuilder starredList = new StringBuilder();
-                    Cursor cursor = mEntriesCursorAdapter.getCursor();
+                    final boolean temp = mShowUnReadOnly;
+                    mShowUnReadOnly = false;
+                    Cursor cursor = getContext().getContentResolver().query( mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
+                                                                             EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC) );
+                    mShowUnReadOnly = temp;
                     if (cursor != null && !cursor.isClosed()) {
                         int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
                         int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
-                        if (cursor.moveToFirst()) {
+                        if (cursor.moveToFirst())
                             do {
                                 starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
                             } while (cursor.moveToNext());
-                        }
                         startActivity(Intent.createChooser(
                                 new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_favorites_title))
                                         .putExtra(Intent.EXTRA_TEXT, starredList.toString()).setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
                         ));
+                        cursor.close();
                     }
                 }
                 return true;
@@ -942,7 +945,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_toogle_toogle_unread_all: {
                 //int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
-                mShowUnRead = !mShowUnRead;
+                mShowUnReadOnly = !mShowUnReadOnly;
                 setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 UpdateActions();
                 return true;
@@ -1126,7 +1129,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         }.start();
 
-        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
+        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly);
         SetListViewAdapter();
         //if ( mListView instanceof ListView )
             mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
