@@ -572,6 +572,8 @@
     <string name="setting_edit_feed_force_portrait_orientation">Modifica orientamento verticale feed</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forza l\'orientamento dello schermo verticale nella finestra Modifica Feed - controlla se il telefono ha lo schermo piccolo</string>
     <string name="name">Nome</string>
+    <string name="remove_label_confirmation">"Rimuovere l'etichetta? "</string>
+    <string name="setting_label_list">Elenco Etichette</string>
     <string name="tag_list">Elenco etichette</string>
     <string name="menu_edit_labels">Etichette</string>
     <string name="manage_labels">Gestisci etichette</string>
@@ -580,6 +582,16 @@
     <string name="color">Colore</string>
     <string name="label_color_dialog_title">Colore etichetta</string>
     <string name="menu_labels">Etichette</string>
+    <string name="menu_edit_article_url">Modifica l\'URL</string>
+    <string name="menu_edit_article_title">Modifica titolo</string>
+    <string name="import_completed">Importazione completata</string>
+    <string name="settings_comments_extract_rules">Commenti</string>
+    <string name="settings_comments_extract_rules_description">Regole per trovare le sezioni commenti articolo</string>
+    <string name="filter_by_labels">Filtra per etichette</string>
+    <string name="all">Tutti</string>
+    <string name="all_labels">Tutte le etichette</string>
+    <string name="filter_label_title">Filtro</string>
+    <string name="menu_edit_feed">Modifica feed</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
