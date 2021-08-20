@@ -583,6 +583,7 @@
     <string name="label_color_dialog_title">Colore etichetta</string>
     <string name="menu_labels">Etichette</string>
     <string name="menu_edit_article_url">Modifica l\'URL</string>
+    <string name="edit_article_url_title_message">Puoi usare il modello per la data corrente {…} in URL, ad es. http://test.org/{yyyy-MM-dd} . Le regole del formato data sono descritte qui: https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Modifica titolo</string>
     <string name="import_completed">Importazione completata</string>
     <string name="settings_comments_extract_rules">Commenti</string>
