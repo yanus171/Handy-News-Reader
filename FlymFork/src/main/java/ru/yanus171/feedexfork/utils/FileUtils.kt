@@ -67,7 +67,7 @@ object FileUtils {
         return result
     }
 
-    public fun GetDefaultStoragePath() = Environment.getExternalStorageDirectory()
+    fun GetDefaultStoragePath() = MainApplication.getContext().cacheDir
 
     private fun MakeDirs(result: File) {
         if ( !result.exists() && !result.mkdirs())
@@ -220,7 +220,7 @@ object FileUtils {
 
     fun deleteMobilized(uri: Uri ) {
         val cr = MainApplication.getContext().contentResolver
-        val cursor = cr.query(uri, arrayOf(_ID, LINK), null, null, null)
+        val cursor = cr.query(uri, arrayOf(_ID, LINK), null, null, null)!!
         if ( cursor.moveToFirst() )
             deleteMobilized(cursor.getString(1), FeedData.EntryColumns.CONTENT_URI( cursor.getString(0) ))
         cursor.close()
@@ -241,7 +241,8 @@ object FileUtils {
     public fun createStorageList(): ArrayList<StorageItem> {
         val list = ArrayList<StorageItem>()
         list += StorageItem( MainApplication.getContext().cacheDir, R.string.internalMemory )
-        list += StorageItem( Environment.getExternalStorageDirectory(), R.string.externalMemory )
+        if ( Build.VERSION.SDK_INT <= 28 )
+            list += StorageItem( Environment.getExternalStorageDirectory(), R.string.externalMemory )
         if (Build.VERSION.SDK_INT >= 19)
             for (item in MainApplication.getContext().getExternalFilesDirs(null)) {
                 try {

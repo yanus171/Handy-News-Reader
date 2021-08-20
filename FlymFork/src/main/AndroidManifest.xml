@@ -27,7 +27,7 @@
         <service
             android:name=".service.ReadingService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
         <!-- <service -->
         <!-- android:name=".service.AutoRefreshService" -->
         <!-- android:exported="true" -->
@@ -123,7 +123,7 @@
             android:launchMode="standard"
             android:parentActivityName=".activity.HomeActivity"
             android:theme="@style/Theme.Dark">
-            <intent-filter>
+            <intent-filter android:scheme="http">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -150,9 +150,7 @@
                 android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>

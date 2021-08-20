@@ -126,7 +126,7 @@ object HTMLParser {
         val filters = FeedFilters(feedID)
         val uriMainEntry = LoadLink(feedID, feedUrlparam, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false).first
         run {
-            val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)
+            val cursor: Cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)!!
             if (cursor.moveToFirst()) {
                 val values = ContentValues()
                 values.put(FeedColumns.NAME, cursor.getString(0))

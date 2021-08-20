@@ -76,6 +76,7 @@
                         android:layout_height="wrap_content"
                         android:text="filter_labels"
                         android:gravity="center"
+                        android:visibility="gone"
                         tools:ignore="HardcodedText" />
                     <FrameLayout
                         android:layout_width="match_parent"

@@ -196,7 +196,7 @@
             android:title="@string/settings_category_article_text"/>
 
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-            android:defaultValue="12"
+            android:defaultValue="0"
             android:entries="@array/settings_font_sizes"
             android:entryValues="@array/settings_font_size_values"
             android:inputType="number"

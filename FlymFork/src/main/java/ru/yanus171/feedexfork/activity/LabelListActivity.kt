@@ -60,7 +60,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
 
             override fun onDrop(flatPosFrom: Int, flatPosTo: Int) {
                 if ( flatPosFrom < flatPosTo )
-                    for ( i in flatPosFrom until flatPosTo)
+                    for ( i in flatPosFrom .. (flatPosTo - 1) )
                         swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i+1] )
                 else
                     for ( i in flatPosFrom downTo (flatPosTo + 1)  )
@@ -141,7 +141,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
             values.put(LabelColumns.COLOR, label.mColor)
             values.put(LabelColumns.ORDER, label.mOrder)
             if ( label_ == null ) {
-                val id = contentResolver.insert(LabelColumns.CONTENT_URI, values).lastPathSegment.toLong()
+                val id = contentResolver.insert(LabelColumns.CONTENT_URI, values)!!.lastPathSegment!!.toLong()
                 LabelVoc.addLabel(label.mName, id, label.mColor)
             } else {
                 LabelVoc.editLabel(label)

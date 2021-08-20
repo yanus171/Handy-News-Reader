@@ -122,7 +122,7 @@ object OneWebPageParser {
                                 synchronized(FetcherService.mMarkAsStarredFoundList) { FetcherService.mMarkAsStarredFoundList.add(MarkItem(feedID, author, entryUrl)) }
                                 values.put(EntryColumns.IS_FAVORITE, 1)
                             }
-                            entryID = cr.insert(feedEntriesUri, values ).lastPathSegment.toLong()
+                            entryID = cr.insert(feedEntriesUri, values )!!.lastPathSegment!!.toLong()
                             newCount++
                         }
                         EntryUrlVoc.set( entryUrl, entryID )

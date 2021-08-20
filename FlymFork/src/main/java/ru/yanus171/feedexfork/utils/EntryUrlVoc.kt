@@ -15,7 +15,7 @@ object EntryUrlVoc {
         return url.replace( "https", "" ).replace( "http", "" )
     }
     fun set(url: String, uri: Uri) {
-        set( url, uri.lastPathSegment.toLong() )
+        set( url, uri.lastPathSegment!!.toLong() )
     }
     fun set(url: String, id: Long ) {
         initInThread()
