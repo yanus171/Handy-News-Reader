@@ -137,7 +137,7 @@
     <string name="edit_group_title">Modificare Nome del Gruppo</string>
     <string name="message_exported_to">Esportato su %s.</string>
     <string name="to_group_title">Spostamento Feed</string>
-    <string name="to_group_message">Puoi sia spostare il feed dentro il gruppo sia prima del gruppo. Cosa vuoi fare?</string>
+    <string name="to_group_message">Would You like to put this feed inside or outside this group?</string>
     <string name="to_group_above">Fuori dal Gruppo</string>
     <string name="to_group_into">Dentro il Gruppo</string>
     <string name="add_custom_feed">Aggiungi Feed o Cercane Uno</string>
