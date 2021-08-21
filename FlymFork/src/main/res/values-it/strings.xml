@@ -217,7 +217,7 @@
     <string name="settings_refresh_on_open">Aggiorna Feed all\'Avvio dell\'App</string>
     <string name="settings_refresh_on_open_description">Aggiorna tutti i feed all\'apertura dell\'applicazione</string>
     <string name="settings_refresh_wifi_only">Aggiorna solo in Wi-Fi</string>
-    <string name="settings_refresh_wifi_only_description">L\'aggiornamento automatico viene eseguito solo quando si è connessi ad una rete WiFi</string>
+    <string name="settings_refresh_wifi_only_description">Automatic refresh will only be done if Wi-Fi connection is available</string>
     <string name="settings_keep_time">Tempo di Archiviazione</string>
     <string name="settings_preload_image_mode">Scarica le immagini in anticipo</string>
     <string name="settings_max_image_download_count">Numero Massimo di Immagini da Scaricare</string>
