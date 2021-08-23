@@ -15,7 +15,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 31
         versionCode 239
-        versionName '0.16.6'
+        versionName '0.16.7'
     }
     lintOptions {
         checkReleaseBuilds false

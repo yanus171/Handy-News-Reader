@@ -563,6 +563,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
         Timer timer = new Timer("EntryView.init");
 
+            getSettings().setAllowFileAccess(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             setTextDirection(TEXT_DIRECTION_LOCALE);
         // For scrolling
