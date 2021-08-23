@@ -242,7 +242,8 @@
                     android:progress="33"
                     android:paddingLeft="5dp"
                     android:progressBackgroundTint="#00000000"
-                    android:progressTint="#FF777777" />
+                    android:progressTint="#FF777777"
+                    tools:targetApi="lollipop" />
 
             </LinearLayout>
 

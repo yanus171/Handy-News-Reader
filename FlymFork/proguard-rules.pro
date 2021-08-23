@@ -6,8 +6,8 @@
     *; #@android.webkit.JavascriptInterface <methods>;
 }
 
-# for the search
--keep class android.support.v7.widget.SearchView { *; }
+## for the search
+#-keep class android.support.v7.widget.SearchView { *; }
 #
 ## for OkHttp
 ##-dontwarn okio.**
@@ -15,8 +15,8 @@
 #
 #-keepattributes Signature
 #-keepattributes Annotation
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
+#-keep class okhttp3.** { *; }
+#-keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
 -dontwarn okio.**
 #

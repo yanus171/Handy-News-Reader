@@ -24,7 +24,8 @@
         android:paddingTop="0dp"
         android:progress="33"
         android:progressBackgroundTint="#00000000"
-        android:progressTint="#FF777777" />
+        android:progressTint="#FF777777"
+        tools:targetApi="lollipop" />
 
     <TextView
         android:id="@+id/textBattery"
