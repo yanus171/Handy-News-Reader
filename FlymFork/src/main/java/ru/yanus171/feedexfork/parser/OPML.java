@@ -708,19 +708,9 @@ public class OPML {
         //builder.setMessage( FileUtils.INSTANCE.getFolder().getPath() );
 
         try {
-            final String[] fileNames = FileUtils.INSTANCE.getFolder().list(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return new File(dir, filename).isFile();
-                }
-            });
-            builder.setItems(fileNames, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, final int which) {
-                    AskQuestionForImport(activity, FileUtils.INSTANCE.getFolder().toString() + File.separator
-                                               + fileNames[which], false );
-                }
-            });
+            final String[] fileNames = FileUtils.INSTANCE.getFolder().list((dir, filename) -> new File(dir, filename).isFile());
+            builder.setItems(fileNames,
+                             (dialog, which) -> AskQuestionForImport(activity, FileUtils.INSTANCE.getFolder().toString() + File.separator + fileNames[which], false ));
             builder.show();
         } catch (Exception unused) {
             UiUtils.showMessage(activity, R.string.error_feed_import);
@@ -766,10 +756,7 @@ public class OPML {
             if (PrefUtils.getBoolean("use_standard_file_manager", false)) {
                 // First, try to use a file app
                 try {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-
-                    intent.setType("*/*");
-                    activity.startActivityForResult(intent, REQUEST_PICK_OPML_FILE);
+                    FileUtils.INSTANCE.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
                 } catch (Exception unused) { // Else use a custom file selector
                     unused.printStackTrace();
                     displayCustomFilePicker( activity );

@@ -415,7 +415,6 @@ public class FontSelectPreference extends Preference {
 
 					pref.mSpinApp.setAdapter(pref.mAdapter);
 					pref.mSpinApp.setSelection( pref.mAdapter.getCount() - 2 );
-					pref.mAdapter.notifyDataSetChanged();
 				}
 			}
 		}
