@@ -253,7 +253,7 @@ object FileUtils {
         if (Build.VERSION.SDK_INT >= 19)
             for (item in MainApplication.getContext().getExternalFilesDirs(null)) {
                 try {
-                    if (!item.path.startsWith(Environment.getExternalStorageDirectory().path))
+                    if (item != null && !item.path.startsWith(Environment.getExternalStorageDirectory().path))
                         list += StorageItem(item, R.string.externalMemory)
                 } catch (e: IllegalStateException) {
                     e.printStackTrace();
