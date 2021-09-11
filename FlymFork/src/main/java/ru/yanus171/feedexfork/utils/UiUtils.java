@@ -98,7 +98,7 @@ public class UiUtils {
 
     public static void SetTypeFace(TextView textView) {
         if ( mCachedTypeFace == null )
-            mCachedTypeFace = FontSelectPreference.GetTypeFace("fontFamily" );
+            mCachedTypeFace = FontSelectPreference.GetTypeFace(FontSelectPreference.KEY );
         textView.setTypeface( mCachedTypeFace );
     }
 

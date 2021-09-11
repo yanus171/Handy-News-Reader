@@ -94,6 +94,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -144,7 +145,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
 
     public static final String STATE_TEXTSHOWN_ENTRY_ID = "STATE_TEXTSHOWN_ENTRY_ID";
-    private HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
+    private final HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
@@ -999,12 +1000,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.isFavorite = !holder.isFavorite;
             UpdateStarImgView(holder);
             UpdateLabelText(holder);
-            SetIsFavorite( holder.entryID, holder.isFavorite, true );
+            SetIsFavorite( view, holder.entryID, holder.isFavorite, true );
         }
     }
-    private void SetIsFavorite(final long entryId, final boolean isFavorite, final boolean isSilent ) {
+    private void SetIsFavorite( View parentView, final long entryId, final boolean isFavorite, final boolean isSilent ) {
         final Uri entryUri = EntryUri( entryId );
         mMapFavourite.put( entryId, isFavorite );
+        final HashSet<Long> oldLabels = LabelVoc.INSTANCE.getLabelIDs(entryId);
         new Thread() {
             @Override
             public void run() {
@@ -1026,6 +1028,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 }
             }
         }.start();
+        if ( !isFavorite ) {
+            Snackbar snackbar = Snackbar.make( parentView.getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+                .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
+                .setAction(R.string.undo, v -> {
+                    SetIsFavorite( parentView, entryId, true, false);
+                    LabelVoc.INSTANCE.setEntry( entryId, oldLabels );
+                    mMapFavourite.put( entryId, isFavorite );
+                    MainApplication.getContext().getContentResolver().notifyChange(mUri, null);
+                });
+            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            snackbar.show();
+        }
     }
 
     @Override

@@ -1,29 +1,21 @@
 package ru.yanus171.feedexfork.widget;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.TreeSet;
 
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.Preference;
+import android.preference.PreferenceFragment;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -33,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ImageView.ScaleType;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,12 +34,12 @@ import android.widget.TextView;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -61,19 +52,23 @@ public class FontSelectPreference extends Preference {
 	static public final String DefaultFontFamily = "Default";
 	private static final String FontsDir = "fonts";
 	private static final int cImageDim = 40;
+	public static final String ADD_CUSTOM = "AddCustom";
+	static final int cAddFontFileResultCode = 1;
+	public static final String KEY = "fontFamily";
 
 	private Spinner mSpinApp;
-	private AppListAdapter mAdapter;
+	private FontListAdapter mAdapter;
 	private static FontList mFontList = null;
 	private ImageView mImage = null;
 
 	private static class FontInfo {
 		String mFontName;
-		Typeface mTypeface;
+		Typeface mTypeface = Typeface.DEFAULT;
 
 		FontInfo( String name ) {
 			mFontName = name;
-			mTypeface = FontSelectPreference.GetTypeFaceByName( name );
+			if ( name != ADD_CUSTOM )
+				mTypeface = FontSelectPreference.GetTypeFaceByName( name );
 		}
 		// --------------------------------------------------------------
 		@Override
@@ -138,19 +133,19 @@ public class FontSelectPreference extends Preference {
 	// ------------------------------------------------------------------
 	public FontSelectPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		CreateFontList( getContext());
+		CreateFontList();
 	}
 
 	// ------------------------------------------------------------------
     public FontSelectPreference(Context context) {
 		super(context);
-		CreateFontList( getContext());
+		CreateFontList();
 	}
 
 	// --------------------------------------------------------------
+	@SuppressLint("MissingSuperCall")
 	@Override
 	protected View onCreateView(ViewGroup parent) {
-
 		LinearLayout vLayout = new LinearLayout(getContext());
 		vLayout.setOrientation(LinearLayout.VERTICAL);
 		vLayout.setPadding(15, 10, 15, 10);
@@ -161,12 +156,15 @@ public class FontSelectPreference extends Preference {
 		vLayout.addView(title);
 
 		mSpinApp = new Spinner(getContext());
-		mAdapter = new AppListAdapter(mSpinApp);
+		mAdapter = new FontListAdapter(mSpinApp);
 		mSpinApp.setAdapter(mAdapter);
-		mSpinApp.setSelection(GetSpinnerItemPosByName(getPersistedString( DefaultFontFamily ) ));
+		mSpinApp.setSelection(GetSpinnerItemPosByName(getPersistedString(DefaultFontFamily)));
 		mSpinApp.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				persistString(GetCurrentFontName());
+				if ( pos == mAdapter.getCount() - 1 )
+					FileUtils.INSTANCE.startFilePickerIntent(GeneralPrefsActivity.mActivity, "*/*", cAddFontFileResultCode);
+				else
+					persistString(GetCurrentFontName());
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {
@@ -178,7 +176,7 @@ public class FontSelectPreference extends Preference {
 
 		if ((getSummary() != null) && (getSummary().length() > 0)) {
 			TextView summary = new TextView(getContext());
-			summary.setText(getSummary() + " " + FileUtils.INSTANCE.getFontsFolder().getPath() );
+			summary.setText(getSummary() + " " + FileUtils.INSTANCE.getFontsFolder().getPath());
 			vLayout.addView(summary);
 		}
 
@@ -210,11 +208,11 @@ public class FontSelectPreference extends Preference {
 	}
 
 	// **************************************************************
-	private class AppListAdapter extends BaseAdapter implements SpinnerAdapter {
+	private class FontListAdapter extends BaseAdapter implements SpinnerAdapter {
 		Spinner mSpinner;
 
 		// --------------------------------------------------------------
-        AppListAdapter(Spinner spinner) {
+        FontListAdapter(Spinner spinner) {
 			mSpinner = spinner;
 			if (mFontList == null) {
 				mFontList = new FontList();
@@ -235,28 +233,34 @@ public class FontSelectPreference extends Preference {
 
 			//hLayout.setBackgroundColor(Theme.GetMenuBackgroundColor());
 
-			TextView textView = new TextView(getContext());
-			textView.setText(Html.fromHtml( getItem(position).mFontName.replace( ".ttf", "" ) + " (<b>" + getContext().getString(R.string.bold) + "</b>)" ) );
-			textView.setTextColor(Theme.GetMenuFontColor());
-			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 			final int PAD = UiUtils.dpToPixel(5);
+			TextView textView = new TextView(getContext());
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 			textView.setPadding(PAD, PAD, 0, PAD);
-			textView.setSingleLine();
 			textView.setGravity(Gravity.CENTER_VERTICAL);
-			textView.setTypeface( getItem(position).mTypeface );
+			if ( position == getCount() - 1 ) {
+				textView.setText( R.string.addCustomFont );
+			} else {
+				textView.setText(Html.fromHtml(getItem(position).mFontName.replace(".ttf", "") + " (<b>" + getContext().getString(R.string.bold) + "</b>)"));
+				textView.setTextColor(Theme.GetMenuFontColor());
+				textView.setSingleLine();
+				textView.setTypeface(getItem(position).mTypeface);
+				if (position > 0) {
+					TextView small = AddSmallText(vLayout, null, Gravity.LEFT, null, getItem(position).mFontName);
+					small.setTypeface(Typeface.DEFAULT);
+					small.setPadding(PAD, 0, 0, PAD);
+					small.setTextColor(Theme.GetMenuFontColor());
+					small.setLinksClickable(false);
+					small.setTextIsSelectable(false);
+					//small.setEnabled( false );
+				}
+
+			}
 			hLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
 			vLayout.addView(hLayout);
-			if ( position > 0 ){
-				TextView small = AddSmallText(vLayout, null, Gravity.LEFT, null, getItem(position).mFontName);
-				small.setTypeface(Typeface.DEFAULT);
-				small.setPadding(PAD, 0, 0, PAD);
-				small.setTextColor(Theme.GetMenuFontColor());
-				small.setLinksClickable( false );
-				small.setTextIsSelectable(false);
-				//small.setEnabled( false );
-			}
-			TextView div = new TextView( getContext() );
-			div.setBackgroundResource( android.R.drawable.divider_horizontal_dark );
+
+			TextView div = new TextView(getContext());
+			div.setBackgroundResource(android.R.drawable.divider_horizontal_dark);
 			vLayout.addView(div, MATCH_PARENT, WRAP_CONTENT);
 
 //			vLayout.setBackgroundResource(android.R.drawable.dialog_frame);
@@ -347,10 +351,10 @@ public class FontSelectPreference extends Preference {
 	}
 
 	// -------------------------------------------------------------------------------------
-	static void CreateFontList(Context context) {
+	static void CreateFontList() {
+		Context context = MainApplication.getContext();
 		//if (mFontList == null) {
 			mFontList = new FontList();
-			mFontList.clear();
 			String[] list1 = {};
 			try {
 				list1 = context.getAssets().list(FontsDir);
@@ -362,11 +366,8 @@ public class FontSelectPreference extends Preference {
 
 			try {
 				File dir = FileUtils.INSTANCE.getFontsFolder();
-				File[] files = dir.listFiles(new FilenameFilter() {
-					@Override
-					public boolean accept(File dir, String name) {
-						return true;//name.endsWith(".ttf");
-					}
+				File[] files = dir.listFiles((dir1, name) -> {
+					return true;//name.endsWith(".ttf");
 				});
 				for (File item : files)
 					list.add( item.getName() );
@@ -376,6 +377,7 @@ public class FontSelectPreference extends Preference {
 			AddItem(DefaultFontFamily);
 			for ( String item: list )
 				AddItem( item );
+			AddItem( ADD_CUSTOM );
 
 			int index = 0;
 			for (FontInfo item : mFontList) {
@@ -383,5 +385,39 @@ public class FontSelectPreference extends Preference {
 				index++;
 			}
 		//}
+	}
+	public static void onActivityResult(PreferenceFragment fragment, int requestCode, Intent data) {
+		if (requestCode == cAddFontFileResultCode) {
+			if ((data != null) && (data.getData() != null)) {
+
+				String fileName;
+				if ( Build.VERSION.SDK_INT >= 28 )
+					fileName = FileUtils.INSTANCE.getFileName(data.getData());
+				else {
+					final String[] list = TextUtils.split(FileUtils.INSTANCE.getFontsFolder() + data.getData().getLastPathSegment(), "/");
+					fileName = list[list.length - 1];
+					if (!fileName.endsWith(".ttf"))
+						fileName = fileName + ".ttf";
+				}
+
+				String destFileName = FileUtils.INSTANCE.getFontsFolder() + "/" + fileName;
+				final boolean result;
+				if (Build.VERSION.SDK_INT >= 28)
+					result = FileUtils.INSTANCE.copyFile(data.getData(), destFileName);
+				else
+					result = FileUtils.INSTANCE.copyFile(FileUtils.INSTANCE.getPathFromUri(data.getData()), destFileName);
+
+				if (result) {
+					final String value = FontsDir + "/" + fileName;
+					PrefUtils.putString( KEY, value);
+					FontSelectPreference pref = (( FontSelectPreference )fragment.findPreference( KEY) );
+					pref.CreateFontList();
+
+					pref.mSpinApp.setAdapter(pref.mAdapter);
+					pref.mSpinApp.setSelection( pref.mAdapter.getCount() - 2 );
+					pref.mAdapter.notifyDataSetChanged();
+				}
+			}
+		}
 	}
 }

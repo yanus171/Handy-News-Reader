@@ -44,10 +44,14 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
 import ru.yanus171.feedexfork.R;
@@ -55,11 +59,13 @@ import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.widget.FontSelectPreference;
 
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 public class GeneralPrefsActivity extends BaseActivity {
 
+    public static Activity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +78,19 @@ public class GeneralPrefsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable( new ColorDrawable(GetToolBarColorInt() ) );
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    // -------------------------------------------------------------------------
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mActivity = this;
+    }
+    // -------------------------------------------------------------------------
+    @Override
+    public void onPause() {
+        super.onPause();
+        mActivity = null;
     }
 
     @Override
@@ -93,4 +112,11 @@ public class GeneralPrefsActivity extends BaseActivity {
 
     }
 
+    // ----------------------------------------------------------------
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        setResult(resultCode);
+        FontSelectPreference.onActivityResult((PreferenceFragment) getFragmentManager().findFragmentById( R.id.entry_fragment), requestCode, data);
+    }
 }

@@ -75,6 +75,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -85,11 +86,14 @@ import androidx.loader.content.Loader;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -407,7 +411,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         if ( !IsLong() )
                             PageUp();
                     } else if ( event.getY() - initialY >= MAX_HEIGHT ) {
-                        SetIsFavourite(!mFavorite);
+                        SetIsFavorite( !mFavorite, true );
                     }
                     SetStarFrameWidth(0);
                     wasUp = true;
@@ -421,6 +425,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
             }
         });
+
         SetStarFrameWidth(0);
         UpdateFooter();
         SetOrientation();
@@ -613,7 +618,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_star: {
 
-                    SetIsFavourite( !mFavorite );
+                    SetIsFavorite( !mFavorite, true );
                     break;
                 }
                 case R.id.menu_share: {
@@ -957,11 +962,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         cr.update(uri, values, null, null);
         getActivity().invalidateOptionsMenu();
     }
-    private void SetIsFavourite(final boolean favorite) {
+    private void SetIsFavorite(final boolean favorite, boolean showToast) {
         if ( mFavorite == favorite )
             return;
         mFavorite = favorite;
         final long entryID = getCurrentEntryID();
+        final HashSet<Long> oldLabels = LabelVoc.INSTANCE.getLabelIDs(entryID);
         final Uri uri = ContentUris.withAppendedId(mBaseUri, entryID);
         new Thread() {
             @Override
@@ -975,7 +981,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }.start();
         getActivity().invalidateOptionsMenu();
-        Toast.makeText( getContext(), mFavorite ? R.string.entry_marked_favourite : R.string.entry_marked_unfavourite, Toast.LENGTH_LONG ).show();
+        if ( mFavorite ) {
+            if ( showToast )
+                Toast.makeText(getContext(), R.string.entry_marked_favourite, Toast.LENGTH_LONG).show();
+        } else {
+            Snackbar snackbar = Snackbar.make(getView().getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+                .setActionTextColor(ContextCompat.getColor(getView().getContext(), R.color.light_theme_color_primary))
+                .setAction(R.string.undo, v -> {
+                    SetIsFavorite( true, false );
+                    LabelVoc.INSTANCE.setEntry( entryID, oldLabels );
+                    mFavorite = true;
+                });
+            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            snackbar.show();
+        }
     }
 
 
@@ -1816,7 +1835,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             cr.update(uri, values, null, null);
                         }
                     }.start();
-                    SetIsFavourite(false);
+                    SetIsFavorite(false, true );
                 }
             }
         };

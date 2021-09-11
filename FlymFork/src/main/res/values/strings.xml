@@ -193,6 +193,7 @@
     <string name="tip_sentence">Tip: swipe right to mark as read, swipe left to add to Favorites</string>
     <string name="undo">Undo</string>
     <string name="marked_as_read">Marked as read</string>
+    <string name="removed_from_favorites">Removed from favorites</string>
     <string name="image_count">Image count</string>
 
     <!-- WIDGET -->
@@ -609,6 +610,9 @@
     <string name="all_labels">All labels</string>
     <string name="filter_label_title">Filter</string>
     <string name="menu_edit_feed">Edit feed</string>
+    <string name="addCustomFont">Add custom font</string>
+    <string name="fileCopied">File %s copied</string>
+    <string name="unableToCopyFile">Unable to copy file %s</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

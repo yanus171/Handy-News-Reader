@@ -40,11 +40,7 @@ class StorageItem (val mPath: File, private val mCaptionID: Int  ) {
 
 class StorageSelectPreference(context: Context?, attrs: AttributeSet?) : AutoSummaryEditPreference(context, attrs) {
 
-
-
-
     override fun onClick() {
-
         val layout = LinearLayout(context)
         layout.orientation = LinearLayout.VERTICAL
         layout.gravity = Gravity.CENTER

@@ -143,6 +143,15 @@ object LabelVoc {
         synchronized(mVoc) {
             mEntryVoc[entryID] = labels
         }
+        FeedDataContentProvider.SetNotifyEnabled(false)
+        MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
+        for (labelID in labels) {
+            val values = ContentValues()
+            values.put(EntryLabelColumns.ENTRY_ID, entryID)
+            values.put(EntryLabelColumns.LABEL_ID, labelID)
+            MainApplication.getContext().contentResolver.insert(EntryLabelColumns.CONTENT_URI, values)
+        }
+        FeedDataContentProvider.SetNotifyEnabled(true)
     }
 
     fun get(labelID: Long): Label? {
@@ -201,15 +210,6 @@ object LabelVoc {
     fun showDialogToSetArticleLabels( context: Context, entryID: Long, adapterToNotify: BaseAdapter? ) {
         showDialog(context, R.string.article_labels_setup_title, false, getLabelIDs(entryID), adapterToNotify) {
             setEntry(entryID, it)
-            FeedDataContentProvider.SetNotifyEnabled(false)
-            context.contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
-            for (labelID in it) {
-                val values = ContentValues()
-                values.put(EntryLabelColumns.ENTRY_ID, entryID)
-                values.put(EntryLabelColumns.LABEL_ID, labelID)
-                context.contentResolver.insert(EntryLabelColumns.CONTENT_URI, values)
-            }
-            FeedDataContentProvider.SetNotifyEnabled(true)
             run {
                 val values = ContentValues()
                 values.put(EntryColumns._ID, entryID)
