@@ -429,7 +429,7 @@
     <string name="delete_read_articles_descr">незалежно від часу зберігання статей</string>
     <string name="data_folder">Тека даних</string>
     <string name="data_folder_descr">Місце для збереження завантажених текстів та зображень статей</string>
-    <string name="internalMemory">Внутрішня пам\'ять (Кеш)</string>
+    <string name="internalMemoryCache">Внутрішня пам\'ять (Кеш)</string>
     <string name="externalMemory">Зовнішня пам’ять</string>
     <string name="show_html">Показати html</string>
     <string name="image_white_background">Білий фон зображень</string>

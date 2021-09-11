@@ -445,7 +445,8 @@
     <string name="delete_read_articles_descr">regardless of the articles keep time</string>
     <string name="data_folder">Data folder</string>
     <string name="data_folder_descr">Where to store downloaded articles text and images</string>
-    <string name="internalMemory">Internal memory (Cache)</string>
+    <string name="internalMemoryCache">Internal memory (Cache)</string>
+    <string name="internalMemoryData">Internal memory (Data)</string>
     <string name="externalMemory">External memory</string>
     <string name="show_html">Show HTML</string>
     <string name="image_white_background">Image white background</string>
@@ -549,7 +550,7 @@
     <string name="defaultFontFamily">System Default</string>
     <string name="fontTextSample">Text</string>
     <string name="fontFamily">Font</string>
-    <string name="fontFamilySummary">Font family of almost all texts in app. You can add custom font ttf files in folder: </string>
+    <string name="fontFamilySummary">Font family of almost all texts in app. You can add custom font ttf files by select the bottom item in font list </string>
     <string name="settings_font_rules">Custom Font</string>
     <string name="settings_font_rules_description">To set custom fonts for separate classes in article texts per domain. Leave class name empty to apply font to whole text. Format: site_url:class=Font file name=CSS text (e.g., font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="bold">Bold</string>
@@ -610,7 +611,7 @@
     <string name="all_labels">All labels</string>
     <string name="filter_label_title">Filter</string>
     <string name="menu_edit_feed">Edit feed</string>
-    <string name="addCustomFont">Add custom font</string>
+    <string name="addCustomFont">Add custom font …</string>
     <string name="fileCopied">File %s copied</string>
     <string name="unableToCopyFile">Unable to copy file %s</string>
 

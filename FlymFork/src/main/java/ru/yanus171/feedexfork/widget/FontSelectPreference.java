@@ -176,7 +176,7 @@ public class FontSelectPreference extends Preference {
 
 		if ((getSummary() != null) && (getSummary().length() > 0)) {
 			TextView summary = new TextView(getContext());
-			summary.setText(getSummary() + " " + FileUtils.INSTANCE.getFontsFolder().getPath());
+			summary.setText(getSummary());
 			vLayout.addView(summary);
 		}
 

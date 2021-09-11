@@ -430,7 +430,7 @@
     <string name="delete_read_articles_descr">不论文章保留时间</string>
     <string name="data_folder">数据文件夹</string>
     <string name="data_folder_descr">存储已下载文章文本和图像的位置</string>
-    <string name="internalMemory">内部内存 (Cache)</string>
+    <string name="internalMemoryCache">内部内存 (Cache)</string>
     <string name="externalMemory">外部存储</string>
     <string name="show_html">显示 HTML</string>
     <string name="image_white_background">图像白色背景</string>

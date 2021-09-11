@@ -421,7 +421,7 @@
     <string name="delete_read_articles_descr">بِغَض النَظَر عَن فَترَة الإحتِفاظ بالمَقال</string>
     <string name="data_folder">مُجَلّد البَيانات</string>
     <string name="data_folder_descr">مَكانُ تَخْزينِ المَقَالَاتِ اَلَّتِي تَمَّ تَحْميلُها، نَصًّا وَصُوَرًا</string>
-    <string name="internalMemory">الذاكِرَةُ الداخليّة(Cache)</string>
+    <string name="internalMemoryCache">الذاكِرَةُ الداخليّة(Cache)</string>
     <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
     <string name="show_html">عَرْضُ الـ HTML</string>
     <string name="image_white_background">طَبَقَةٌ بَيْضَاءَ تَحْتَ الصُّورِ</string>

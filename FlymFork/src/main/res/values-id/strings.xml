@@ -427,7 +427,7 @@ maksimum per umpan<br/>
     <string name="delete_read_articles_descr">tanpa menimbang waktu simpan artikel</string>
     <string name="data_folder">Folder data</string>
     <string name="data_folder_descr">Tempat menyimpan artikel dan gambar unduhan</string>
-    <string name="internalMemory">Memori internal (Tembolok)</string>
+    <string name="internalMemoryCache">Memori internal (Tembolok)</string>
     <string name="externalMemory">Memori eksternal</string>
     <string name="show_html">Tampilkan HTML</string>
     <string name="image_white_background">Latar gambar putih</string>

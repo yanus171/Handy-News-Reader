@@ -74,7 +74,7 @@ object FileUtils {
         return result
     }
 
-    fun GetDefaultStoragePath() = MainApplication.getContext().cacheDir
+    fun GetDefaultStoragePath() = MainApplication.getContext().filesDir
 
     private fun MakeDirs(result: File) {
         if ( !result.exists() && !result.mkdirs())
@@ -247,7 +247,8 @@ object FileUtils {
 
     public fun createStorageList(): ArrayList<StorageItem> {
         val list = ArrayList<StorageItem>()
-        list += StorageItem(MainApplication.getContext().cacheDir, R.string.internalMemory)
+        list += StorageItem(MainApplication.getContext().cacheDir, R.string.internalMemoryCache)
+        list += StorageItem(MainApplication.getContext().filesDir, R.string.internalMemoryData)
         if ( Build.VERSION.SDK_INT <= 28 )
             list += StorageItem(Environment.getExternalStorageDirectory(), R.string.externalMemory)
         if (Build.VERSION.SDK_INT >= 19)

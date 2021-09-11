@@ -424,7 +424,7 @@
     <string name="delete_read_articles_descr">ανεξάρτητα από το χρόνο που κρατιούνται τα άρθρα</string>
     <string name="data_folder">Φάκελος δεδομένων</string>
     <string name="data_folder_descr">Που θα αποθηκεύονται τα κείμενα και οι εικόνες των κατεβασμένων άρθρων</string>
-    <string name="internalMemory">Εσωτερική μνήμη (Cache)</string>
+    <string name="internalMemoryCache">Εσωτερική μνήμη (Cache)</string>
     <string name="externalMemory">Εξωτερική μνήμη</string>
     <string name="show_html">Να ναι ορατή η ηλεκτρονική διεύθυνση</string>
     <string name="image_white_background">Λευκή εικόνα φόντου</string>
