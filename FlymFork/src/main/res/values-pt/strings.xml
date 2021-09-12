@@ -424,7 +424,6 @@
     <string name="delete_read_articles_descr">independente do tempo de manutenção dos artigos</string>
     <string name="data_folder">Pasta de dados</string>
     <string name="data_folder_descr">Onde armazenar textos e imagens dos artigos baixados</string>
-    <string name="internalMemory">Memória interna (Cache)</string>
     <string name="externalMemory">Memória externa</string>
     <string name="show_html">Mostrar html</string>
     <string name="image_white_background">Fundo branco da imagem</string>
