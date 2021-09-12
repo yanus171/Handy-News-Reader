@@ -428,7 +428,6 @@
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
     <string name="data_folder_descr">Speicher, wohin Artikeltexte und Grafiken heruntergeladen werden sollen</string>
-    <string name="internalMemory">Interner Speicher (Zwischenspeicher)</string>
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Bilder mit weißem Hintergrund</string>
