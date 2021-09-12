@@ -893,8 +893,8 @@ public class FetcherService extends IntentService {
                                 } catch ( ParseException e ) {
                                     Status().SetError( format, String.valueOf( feedId ), String.valueOf( entryId ), e );
                                 }
-                            } else
-                                date = parseDate( dateText, 0 );
+                            }// else
+                            //    date = parseDate( dateText, 0 );
                             if ( date != null )
                                 values.put(EntryColumns.DATE, date.getTime());
                         }
