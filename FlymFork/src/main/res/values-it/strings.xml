@@ -429,7 +429,6 @@
     <string name="delete_read_articles_descr">indipendentemente dagli articoli mantienilo</string>
     <string name="data_folder">Cartella dati</string>
     <string name="data_folder_descr">Dove memorizzare i testi e le immagini degli articoli scaricati</string>
-    <string name="internalMemory">Memoria interna (Cache)</string>
     <string name="externalMemory">Memoria esterna</string>
     <string name="show_html">Mostra HTML</string>
     <string name="image_white_background">Immagine di sfondo bianco</string>
