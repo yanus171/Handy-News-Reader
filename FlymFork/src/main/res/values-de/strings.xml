@@ -190,6 +190,7 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
+    <string name="removed_from_favorites">Aus Favoriten entfernt</string>
     <string name="image_count">Anzahl Bilder</string>
     <!-- WIDGET -->
     <string name="red">Rot</string>
@@ -428,6 +429,8 @@
     <string name="delete_read_articles_descr">unabhängig von der Aufbewahrungszeit der Artikel</string>
     <string name="data_folder">Datenordner</string>
     <string name="data_folder_descr">Speicher, wohin Artikeltexte und Grafiken heruntergeladen werden sollen</string>
+    <string name="internalMemoryCache">Interner Speicher (Zwischenspeicher)</string>
+    <string name="internalMemoryData">Interner Speicher (Daten)</string>
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Bilder mit weißem Hintergrund</string>
@@ -591,6 +594,8 @@
     <string name="all_labels">Alle Kategorien</string>
     <string name="filter_label_title">Filter</string>
     <string name="menu_edit_feed">Feed bearbeiten</string>
+    <string name="addCustomFont">Benutzerdefinierte Schriftart hinzufügen …</string>
+    <string name="fileCopied">Datei %s kopiert</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
