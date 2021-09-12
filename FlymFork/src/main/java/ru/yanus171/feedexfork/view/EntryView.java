@@ -92,8 +92,10 @@ import org.jsoup.nodes.Element;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Stack;
@@ -113,6 +115,7 @@ import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -126,6 +129,7 @@ import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
@@ -746,16 +750,24 @@ public class EntryView extends WebView implements Handler.Callback {
                                         intent = new Intent(getContext(), EntryActivity.class).setData(Uri.parse(url));
                                     else if (item == 2)
                                         intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url));
-                                    else if (item == 3)
-                                        intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
-                                    else if (item == 4)
+                                    else if (item == 3) {
+                                        LabelVoc.INSTANCE.showDialog(getContext(), R.string.article_labels_setup_title, false, new HashSet<Long>(), null, (checkedLabels) -> {
+                                            Intent intent_ = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
+                                            ArrayList<String> list = new ArrayList<>();
+                                            for( long labelID: checkedLabels )
+                                                list.add( String.valueOf( labelID ) );
+                                            intent_.putStringArrayListExtra( EXTRA_LABEL_ID_LIST, list );
+                                            getContext().startActivity(intent_);
+                                            return null;
+                                        });
+                                    } else if (item == 4)
                                         intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                                     else
                                         intent = Intent.createChooser(
                                             new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
                                                 .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share));
-
-                                    getContext().startActivity(intent);
+                                    if ( intent != null )
+                                        getContext().startActivity(intent);
                                 }
                             }
                         });

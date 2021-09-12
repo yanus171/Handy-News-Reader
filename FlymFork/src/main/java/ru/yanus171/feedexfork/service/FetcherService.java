@@ -182,6 +182,7 @@ public class FetcherService extends IntentService {
     public static final String ACTION_MOBILIZE_FEEDS = FeedData.PACKAGE_NAME + ".MOBILIZE_FEEDS";
     private static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
     public static final String EXTRA_STAR = "STAR";
+    public static final String EXTRA_LABEL_ID_LIST = "LABEL_ID_LIST";
 
     private static final int THREAD_NUMBER = 10;
     private static final int MAX_TASK_ATTEMPT = 3;
@@ -430,7 +431,7 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
-                        LoadLink(GetExtrenalLinkFeedID(),
+                        Pair<Uri,Boolean> result = LoadLink(GetExtrenalLinkFeedID(),
                                  intent.getStringExtra(Constants.URL_TO_LOAD),
                                  intent.getStringExtra(Constants.TITLE_TO_LOAD),
                                  null,
@@ -441,7 +442,12 @@ public class FetcherService extends IntentService {
                                  AutoDownloadEntryImages.Yes,
                                  false,
                                  true);
-
+                        if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
+                            HashSet<Long> labels = new HashSet<>();
+                            for ( String item: intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) )
+                                labels.add( Long.parseLong( item ) );
+                            LabelVoc.INSTANCE.setEntry(Long.parseLong(result.first.getLastPathSegment() ), labels );
+                        }
                         downloadAllImages(executor);
                     } finally { executor.shutdown(); }
                 }
@@ -964,11 +970,12 @@ public class FetcherService extends IntentService {
     public static Intent GetIntent( String extra ) {
         return new Intent(getContext(), FetcherService.class).putExtra(extra, true );
     }
-    public static void StartServiceLoadExternalLink(String url, String title, boolean star) {
+    public static void StartServiceLoadExternalLink(String url, String title, boolean star, ArrayList<String> labelIDs) {
         FetcherService.StartService( new Intent(getContext(), FetcherService.class )
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
                 .putExtra(Constants.TITLE_TO_LOAD, title)
+                .putExtra(EXTRA_LABEL_ID_LIST, labelIDs)
                 .putExtra( EXTRA_STAR, star ), false );
     }
     public PendingIntent createCancelStarPI( String link, int notificationID ) {
