@@ -195,6 +195,7 @@
     <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
     <string name="undo">Отменить</string>
     <string name="marked_as_read">Отмечено как прочитанное</string>
+    <string name="removed_from_favorites">Удалено из избранного</string>
     <string name="image_count">Количество изображений</string>
     <!-- WIDGET -->
     <string name="red">Красный</string>
@@ -432,6 +433,8 @@
     <string name="delete_read_articles_descr">Независимо от настроек времени хранения статей</string>
     <string name="data_folder">Папка данных</string>
     <string name="data_folder_descr">Где хранить загруженные полные тексты статей и изображения</string>
+    <string name="internalMemoryCache">Внутренняя память (кэш)</string>
+    <string name="internalMemoryData">Внутренняя память (данные)</string>
     <string name="externalMemory">Внешний накопитель</string>
     <string name="show_html">Показать HTML</string>
     <string name="image_white_background">Изображения на белом фоне</string>
@@ -596,6 +599,9 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="all_labels">Все метки</string>
     <string name="filter_label_title">Фильтр</string>
     <string name="menu_edit_feed">Редактировать ленту</string>
+    <string name="addCustomFont">Добавить свой шрифт …</string>
+    <string name="fileCopied">Файл %s скопирован</string>
+    <string name="unableToCopyFile">Невозможно скопировать файл %s</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
