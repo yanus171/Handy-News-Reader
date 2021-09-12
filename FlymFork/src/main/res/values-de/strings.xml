@@ -596,6 +596,7 @@
     <string name="menu_edit_feed">Feed bearbeiten</string>
     <string name="addCustomFont">Benutzerdefinierte Schriftart hinzufügen …</string>
     <string name="fileCopied">Datei %s kopiert</string>
+    <string name="unableToCopyFile">Kopieren der Datei %s nicht möglich</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
