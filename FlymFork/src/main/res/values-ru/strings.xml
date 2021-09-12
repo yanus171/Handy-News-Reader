@@ -432,7 +432,6 @@
     <string name="delete_read_articles_descr">Независимо от настроек времени хранения статей</string>
     <string name="data_folder">Папка данных</string>
     <string name="data_folder_descr">Где хранить загруженные полные тексты статей и изображения</string>
-    <string name="internalMemory">Внутренняя память (кэш)</string>
     <string name="externalMemory">Внешний накопитель</string>
     <string name="show_html">Показать HTML</string>
     <string name="image_white_background">Изображения на белом фоне</string>
