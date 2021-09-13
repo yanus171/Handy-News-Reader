@@ -192,6 +192,7 @@
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
     <string name="undo">Скасувати</string>
     <string name="marked_as_read">Позначити як прочитане</string>
+    <string name="removed_from_favorites">Вилучено з вибраного</string>
     <string name="image_count">Кількість зображень</string>
     <!-- WIDGET -->
     <string name="red">Червоний</string>
