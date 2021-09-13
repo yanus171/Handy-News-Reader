@@ -192,7 +192,7 @@
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
     <string name="undo">Скасувати</string>
     <string name="marked_as_read">Позначити як прочитане</string>
-    <string name="removed_from_favorites">Вилучено з вибраного</string>
+    <string name="removed_from_favorites">Вилучено з обраного</string>
     <string name="image_count">Кількість зображень</string>
     <!-- WIDGET -->
     <string name="red">Червоний</string>
@@ -430,6 +430,8 @@
     <string name="delete_read_articles_descr">незалежно від часу зберігання статей</string>
     <string name="data_folder">Тека даних</string>
     <string name="data_folder_descr">Місце для збереження завантажених текстів та зображень статей</string>
+    <string name="internalMemoryCache">Внутрішня пам\'ять (Кеш)</string>
+    <string name="internalMemoryData">Внутрішня пам\'ять (Дані)</string>
     <string name="externalMemory">Зовнішня пам’ять</string>
     <string name="show_html">Показати html</string>
     <string name="image_white_background">Білий фон зображень</string>
@@ -593,6 +595,9 @@
     <string name="all_labels">Всі мітки</string>
     <string name="filter_label_title">Фільтр</string>
     <string name="menu_edit_feed">Редагувати стрічку</string>
+    <string name="addCustomFont">Додати користувацький шрифт …</string>
+    <string name="fileCopied">Файл %s скопійовано</string>
+    <string name="unableToCopyFile">Неможливо скопіювати файл %s</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
