@@ -238,12 +238,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.textSizeProgressBar = view.findViewById(R.id.progressBar);
             view.setTag(R.id.holder, holder);
 
-            final View.OnClickListener openArticle = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), "");
-                }
-            };
+            //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
 
             holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
             holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
@@ -511,13 +506,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        final View.OnClickListener manageLabels = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
-            }
-        };
-
+        final View.OnClickListener manageLabels = PrefUtils.getBoolean( "label_setup_by_tap_on_date", false ) ?
+            view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
+            null;
         holder.urlTextView.setOnClickListener( manageLabels );
         holder.dateTextView.setOnClickListener( manageLabels );
         holder.authorTextView.setOnClickListener( manageLabels );

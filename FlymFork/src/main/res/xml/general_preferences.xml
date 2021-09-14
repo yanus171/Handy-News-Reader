@@ -410,6 +410,12 @@
                 android:title="@string/brightness_update_from_system_period_min"
                 android:summary="@string/brightness_update_from_system_period_min_descr"/>
 
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="label_setup_by_tap_on_date"
+                android:summary="@string/label_setup_by_tap_on_date_descr"
+                android:title="@string/label_setup_by_tap_on_date"/>
+
         </PreferenceCategory>
     </PreferenceScreen>
 

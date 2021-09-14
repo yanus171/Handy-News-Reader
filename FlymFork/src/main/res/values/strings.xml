@@ -614,6 +614,8 @@
     <string name="addCustomFont">Add custom font …</string>
     <string name="fileCopied">File %s copied</string>
     <string name="unableToCopyFile">Unable to copy file %s</string>
+    <string name="label_setup_by_tap_on_date">Label setup by tap on date</string>
+    <string name="label_setup_by_tap_on_date_descr">Author & url in the article list</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
