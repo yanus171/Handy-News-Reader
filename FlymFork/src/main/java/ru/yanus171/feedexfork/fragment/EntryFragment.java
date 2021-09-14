@@ -279,6 +279,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void onPageSelected(int i) {
+                    final boolean isForward = mCurrentPagerPos < i;
                     mCurrentPagerPos = i;
                     mEntryPagerAdapter.onPause(); // pause all webviews
                     mEntryPagerAdapter.onResume(); // resume the current webview
@@ -296,7 +297,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             getLoaderManager().restartLoader(i, null, EntryFragment.this);
                         view.mLoadTitleOnly = false;
                     }
-                    final String text = String.format( "+%d", mEntryPagerAdapter.getCount() - mLastPagerPos - 1 );
+                    final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                     Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
                     TextView textView = new TextView(getContext());
                     textView.setText( text );
