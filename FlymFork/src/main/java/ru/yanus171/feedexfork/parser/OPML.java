@@ -75,7 +75,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
@@ -89,14 +88,12 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
-import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
-import ru.yanus171.feedexfork.utils.FileVoc;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -720,29 +717,21 @@ public class OPML {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
             || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 
-            new WaitDialog(activity, R.string.exportingToFile, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final String dateTimeStr = new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date(System.currentTimeMillis() ) );
-                        final String filename =  FileUtils.INSTANCE.getFolder() +  "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
+            new WaitDialog(activity, R.string.exportingToFile, () -> {
+                try {
+                    final String dateTimeStr = new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date(System.currentTimeMillis() ) );
+                    final String name = "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
+                    final String fileName =  FileUtils.INSTANCE.getFolder() +  name;
 
-                        OPML.exportToFile( filename, isBackup );
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), filename));
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                UiUtils.showMessage(activity, R.string.error_feed_export);
-                            }
-                        });
-                    }
+                    OPML.exportToFile( fileName, isBackup );
+                    final File destFile = new File( Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
+                    FileUtils.INSTANCE.copy( new File( fileName ), destFile  );
+                    activity.runOnUiThread(() -> {
+                        UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), destFile.getAbsolutePath() ));
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    activity.runOnUiThread(() -> UiUtils.showMessage(activity, R.string.error_feed_export));
                 }
             }).execute();
         } else {
