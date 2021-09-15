@@ -602,6 +602,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="addCustomFont">Добавить свой шрифт …</string>
     <string name="fileCopied">Файл %s скопирован</string>
     <string name="unableToCopyFile">Невозможно скопировать файл %s</string>
+    <string name="label_setup_by_tap_on_date">Настройка ярлыка нажатием на дату</string>
+    <string name="label_setup_by_tap_on_date_descr">Автор и URL в списке статей</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
