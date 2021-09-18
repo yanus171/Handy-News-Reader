@@ -190,6 +190,7 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
+    <string name="removed_from_favorites">Aus Favoriten entfernt</string>
     <string name="image_count">Anzahl Bilder</string>
     <!-- WIDGET -->
     <string name="red">Rot</string>
@@ -429,6 +430,7 @@
     <string name="data_folder">Datenordner</string>
     <string name="data_folder_descr">Speicher, wohin Artikeltexte und Grafiken heruntergeladen werden sollen</string>
     <string name="internalMemoryCache">Interner Speicher (Zwischenspeicher)</string>
+    <string name="internalMemoryData">Interner Speicher (Daten)</string>
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Bilder mit weißem Hintergrund</string>
@@ -585,6 +587,18 @@
     <string name="edit_article_url_title_message">Sie können Muster für das aktuelle Datum {…} in der URL verwenden, z. B. http://test.org/{yyyy-MM-dd} Die Regeln für das Datumsformat sind unter https://developer.android.com/reference/java/text/SimpleDateFormat beschrieben </string>
     <string name="menu_edit_article_title">Titel bearbeiten</string>
     <string name="import_completed">Importvorgang abgeschlossen</string>
+    <string name="settings_comments_extract_rules">Kommentare</string>
+    <string name="settings_comments_extract_rules_description">Regeln, um Kommentarbereiche von Artikeln aufzufinden</string>
+    <string name="filter_by_labels">Nach Kategorien filtern</string>
+    <string name="all">Alle</string>
+    <string name="all_labels">Alle Kategorien</string>
+    <string name="filter_label_title">Filter</string>
+    <string name="menu_edit_feed">Feed bearbeiten</string>
+    <string name="addCustomFont">Benutzerdefinierte Schriftart hinzufügen …</string>
+    <string name="fileCopied">Datei „%s” kopiert</string>
+    <string name="unableToCopyFile">Kopieren der Datei „%s” fehlgeschlagen</string>
+    <string name="label_setup_by_tap_on_date">Einrichtung der Kategorien durch Tippen auf das Datum</string>
+    <string name="label_setup_by_tap_on_date_descr">Autor und URL in der Artikelliste</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>

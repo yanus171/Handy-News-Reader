@@ -193,6 +193,7 @@
     <string name="tip_sentence">提示：右滑以标记为已读，左滑以添加到收藏夹</string>
     <string name="undo">撤销</string>
     <string name="marked_as_read">标记为已读</string>
+    <string name="removed_from_favorites">已从收藏夹移除</string>
     <string name="image_count">图像数</string>
     <!-- WIDGET -->
     <string name="red">红色</string>
@@ -430,7 +431,8 @@
     <string name="delete_read_articles_descr">不论文章保留时间</string>
     <string name="data_folder">数据文件夹</string>
     <string name="data_folder_descr">存储已下载文章文本和图像的位置</string>
-    <string name="internalMemoryCache">内部内存 (Cache)</string>
+    <string name="internalMemoryCache">内部内存 (缓存)</string>
+    <string name="internalMemoryData">内部内存 (数据)</string>
     <string name="externalMemory">外部存储</string>
     <string name="show_html">显示 HTML</string>
     <string name="image_white_background">图像白色背景</string>
@@ -587,6 +589,18 @@
     <string name="edit_article_url_title_message">你可以在 url 中使用当前日期格式 {…}，如 http://test.org/{yyyy-MM-dd}。日期格式描述详见 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">编辑标题</string>
     <string name="import_completed">导入完毕</string>
+    <string name="settings_comments_extract_rules">评论</string>
+    <string name="settings_comments_extract_rules_description">查找文章评论部分的规则</string>
+    <string name="filter_by_labels">按标签过滤</string>
+    <string name="all">全部</string>
+    <string name="all_labels">全部标签</string>
+    <string name="filter_label_title">过滤器</string>
+    <string name="menu_edit_feed">编辑订阅源</string>
+    <string name="addCustomFont">添加自定义字体 …</string>
+    <string name="fileCopied">文件 %s 已复制</string>
+    <string name="unableToCopyFile">无法复制文件 %s</string>
+    <string name="label_setup_by_tap_on_date">轻按日期设置标签</string>
+    <string name="label_setup_by_tap_on_date_descr">文章列表中的作者和 url</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>

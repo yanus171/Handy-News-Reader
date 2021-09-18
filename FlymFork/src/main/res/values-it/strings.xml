@@ -137,7 +137,7 @@
     <string name="edit_group_title">Modificare Nome del Gruppo</string>
     <string name="message_exported_to">Esportato su %s.</string>
     <string name="to_group_title">Spostamento Feed</string>
-    <string name="to_group_message">Puoi sia spostare il feed dentro il gruppo sia prima del gruppo. Cosa vuoi fare?</string>
+    <string name="to_group_message">Would You like to put this feed inside or outside this group?</string>
     <string name="to_group_above">Fuori dal Gruppo</string>
     <string name="to_group_into">Dentro il Gruppo</string>
     <string name="add_custom_feed">Aggiungi Feed o Cercane Uno</string>
@@ -217,7 +217,7 @@
     <string name="settings_refresh_on_open">Aggiorna Feed all\'Avvio dell\'App</string>
     <string name="settings_refresh_on_open_description">Aggiorna tutti i feed all\'apertura dell\'applicazione</string>
     <string name="settings_refresh_wifi_only">Aggiorna solo in Wi-Fi</string>
-    <string name="settings_refresh_wifi_only_description">L\'aggiornamento automatico viene eseguito solo quando si è connessi ad una rete WiFi</string>
+    <string name="settings_refresh_wifi_only_description">Automatic refresh will only be done if Wi-Fi connection is available</string>
     <string name="settings_keep_time">Tempo di Archiviazione</string>
     <string name="settings_preload_image_mode">Scarica le immagini in anticipo</string>
     <string name="settings_max_image_download_count">Numero Massimo di Immagini da Scaricare</string>
@@ -572,6 +572,8 @@
     <string name="setting_edit_feed_force_portrait_orientation">Modifica orientamento verticale feed</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forza l\'orientamento dello schermo verticale nella finestra Modifica Feed - controlla se il telefono ha lo schermo piccolo</string>
     <string name="name">Nome</string>
+    <string name="remove_label_confirmation">"Rimuovere l'etichetta? "</string>
+    <string name="setting_label_list">Elenco Etichette</string>
     <string name="tag_list">Elenco etichette</string>
     <string name="menu_edit_labels">Etichette</string>
     <string name="manage_labels">Gestisci etichette</string>
@@ -580,6 +582,17 @@
     <string name="color">Colore</string>
     <string name="label_color_dialog_title">Colore etichetta</string>
     <string name="menu_labels">Etichette</string>
+    <string name="menu_edit_article_url">Modifica l\'URL</string>
+    <string name="edit_article_url_title_message">Puoi usare il modello per la data corrente {…} in URL, ad es. http://test.org/{yyyy-MM-dd} . Le regole del formato data sono descritte qui: https://developer.android.com/reference/java/text/SimpleDateFormat </string>
+    <string name="menu_edit_article_title">Modifica titolo</string>
+    <string name="import_completed">Importazione completata</string>
+    <string name="settings_comments_extract_rules">Commenti</string>
+    <string name="settings_comments_extract_rules_description">Regole per trovare le sezioni commenti articolo</string>
+    <string name="filter_by_labels">Filtra per etichette</string>
+    <string name="all">Tutti</string>
+    <string name="all_labels">Tutte le etichette</string>
+    <string name="filter_label_title">Filtro</string>
+    <string name="menu_edit_feed">Modifica feed</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
