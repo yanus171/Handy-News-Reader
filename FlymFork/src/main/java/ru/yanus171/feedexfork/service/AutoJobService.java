@@ -50,6 +50,7 @@ import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Build;
 
@@ -201,10 +202,14 @@ public class AutoJobService extends JobService {
                 ExecuteAutoBackup();
             else if (jobParameters.getJobId() == DELETE_OLD_JOB_ID)
                 ExecuteDeleteOld();
-            else if (jobParameters.getJobId() == AUTO_REFRESH_JOB_ID)
+            else if (isSyncActive() && jobParameters.getJobId() == AUTO_REFRESH_JOB_ID)
                 FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
         }
         return false;
+    }
+
+    private boolean isSyncActive() {
+        return ContentResolver.getMasterSyncAutomatically();
     }
 
     private static void ExecuteAutoBackup() {

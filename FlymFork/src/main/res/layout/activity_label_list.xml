@@ -9,7 +9,7 @@
     tools:context=".activity.LabelListActivity"
     android:orientation="vertical">
 
-    <ListView
+    <ru.yanus171.feedexfork.view.DragNDropListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

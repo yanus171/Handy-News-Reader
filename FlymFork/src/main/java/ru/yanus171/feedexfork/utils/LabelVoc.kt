@@ -9,28 +9,21 @@ import android.graphics.Color
 import android.provider.BaseColumns
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.CheckBox
+import android.widget.*
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.LabelListActivity
+import ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS
 import ru.yanus171.feedexfork.provider.FeedData
-import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns
-import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
-import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
+import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
-import ru.yanus171.feedexfork.utils.LabelVoc.getNextOrder
-import ru.yanus171.feedexfork.utils.UiUtils.SetTypeFace
+import ru.yanus171.feedexfork.utils.UiUtils.*
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-public class Label(id: Long, name: String, var mColor: String) {
-
-    @JvmField
-    var mOrder: Int = 0
+public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {
 
     @JvmField
     var mEntriesReadCount: Int = 0
@@ -50,10 +43,9 @@ public class Label(id: Long, name: String, var mColor: String) {
     init {
         if (mColor.isNullOrEmpty())
             mColor = Theme.GetColor(Theme.TEXT_COLOR_READ, R.string.default_read_color)
-        mOrder = getNextOrder()
     }
 
-    constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
+    constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3))
 
     fun colorInt(): Int {
         return Color.parseColor(mColor)
@@ -73,13 +65,13 @@ object LabelVoc {
             mVoc.clear()
             run {
                 val cursor = MainApplication.getContext().contentResolver.query(
-                        LabelColumns.CONTENT_URI, arrayOf(BaseColumns._ID, LabelColumns.NAME, LabelColumns.COLOR),
+                        LabelColumns.CONTENT_URI, arrayOf(BaseColumns._ID, LabelColumns.NAME, LabelColumns.COLOR, LabelColumns.ORDER),
                         null,
                         null,
-                        null)
+                        LabelColumns.ORDER)
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
-                        mVoc[cursor.getLong(0)] = Label(cursor.getLong(0), cursor.getString(1), cursor.getString(2))
+                        mVoc[cursor.getLong(0)] = Label(cursor)
                     }
                     cursor.close()
                 }
@@ -112,7 +104,7 @@ object LabelVoc {
     fun addLabel(name: String, id: Long, color: String) {
         initInThread()
         synchronized(mVoc) {
-            mVoc[id] = Label(id, name, color)
+            mVoc[id] = Label(id, name, color, getNextOrder())
         }
     }
 
@@ -124,10 +116,11 @@ object LabelVoc {
                 result = item.mOrder
         return result + 1
     }
+
     fun getList(): ArrayList<Label> {
         initInThread()
         synchronized(mVoc) {
-            return ArrayList(mVoc.values)
+            return ArrayList(mVoc.values.sortedBy{ it.mOrder })
         }
     }
 
@@ -150,6 +143,15 @@ object LabelVoc {
         synchronized(mVoc) {
             mEntryVoc[entryID] = labels
         }
+        FeedDataContentProvider.SetNotifyEnabled(false)
+        MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
+        for (labelID in labels) {
+            val values = ContentValues()
+            values.put(EntryLabelColumns.ENTRY_ID, entryID)
+            values.put(EntryLabelColumns.LABEL_ID, labelID)
+            MainApplication.getContext().contentResolver.insert(EntryLabelColumns.CONTENT_URI, values)
+        }
+        FeedDataContentProvider.SetNotifyEnabled(true)
     }
 
     fun get(labelID: Long): Label? {
@@ -178,7 +180,7 @@ object LabelVoc {
         synchronized(mVoc) {
             val result = HashSet<Long>()
             for ( entryID in mEntryVoc.keys )
-                if ( mEntryVoc[entryID]!!.contains( labelID ) )
+                if ( mEntryVoc[entryID]!!.contains(labelID) )
                     result += entryID
             return result
         }
@@ -205,22 +207,55 @@ object LabelVoc {
             init_()
     }
 
-    fun showDialog(context: Context, entryID: Long, adapterToNotify: BaseAdapter?) {
+    fun showDialogToSetArticleLabels( context: Context, entryID: Long, adapterToNotify: BaseAdapter? ) {
+        showDialog(context, R.string.article_labels_setup_title, false, getLabelIDs(entryID), adapterToNotify) {
+            setEntry(entryID, it)
+            run {
+                val values = ContentValues()
+                values.put(EntryColumns._ID, entryID)
+                values.put(EntryColumns.IS_FAVORITE, if (it.isNotEmpty()) 1 else 0)
+                context.contentResolver.update(EntryColumns.CONTENT_URI(entryID), values, if (it.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null)
+            }
+        }
+    }
+
+    fun showDialog(context: Context, titleID: Int, isAll: Boolean, checkedLabels_: HashSet<Long>, adapterToNotify: BaseAdapter?, action: (HashSet<Long>) -> Unit) {
         val builder = AlertDialog.Builder(context)
-        val checkedLabels = getLabelIDs(entryID)
-        val array = mVoc.values.toTypedArray()
+        val checkedLabels = checkedLabels_
+        val array = getList().toTypedArray()
         var block = false
-        builder.setAdapter(object : ArrayAdapter<Label>(context, R.layout.label_item_select, R.id.text_name, array) {
+
+        var cbAll: CheckBox? = null
+        if ( isAll ) {
+            val viewTitle = LinearLayout(context)
+            viewTitle.orientation = LinearLayout.VERTICAL
+            run {
+                val label = TextView(context)
+                label.setPadding(dpToPixel( 25 ),dpToPixel( 10 ),0,dpToPixel( 10 ));
+                viewTitle.addView(label)
+                SetFont(label, 1F)
+                label.text = context.getString( titleID )
+            }
+            cbAll = CheckBox(context)
+            viewTitle.addView(cbAll)
+            SetFont( cbAll, 1F )
+            cbAll.text = context.getString(R.string.all)
+            builder.setCustomTitle( viewTitle )
+        } else
+            builder.setTitle( titleID )
+
+        val adapter = object : ArrayAdapter<Label>(context, R.layout.label_item_select, R.id.text_name, array) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 //Use super class to create the View
                 val root = super.getView(position, convertView, parent)
                 val cb = root.findViewById<CheckBox>(R.id.text_name)
                 val label = array[position]
                 cb.text = label.mName
-                SetTypeFace(cb)
+                SetFont(cb, 1F)
                 block = true
-                cb.isChecked = checkedLabels.contains(label.mID)
+                cb.isChecked = cbAll?.isChecked == true || checkedLabels.contains(label.mID)
                 cb.setTextColor(label.colorInt())
+                cb.isEnabled = (cbAll == null || !cbAll.isChecked)
                 block = false
                 cb.tag = label.mID
                 cb.setOnCheckedChangeListener { btn, isChecked ->
@@ -233,26 +268,21 @@ object LabelVoc {
                 }
                 return root
             }
-        }, null)
-        .setPositiveButton(android.R.string.ok) { dialog, _ ->
-            setEntry(entryID, checkedLabels)
-            Thread {
-                FeedDataContentProvider.SetNotifyEnabled(false)
-                context.contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
-                for( labelID in checkedLabels ) {
-                    val values = ContentValues()
-                    values.put(EntryLabelColumns.ENTRY_ID, entryID)
-                    values.put(EntryLabelColumns.LABEL_ID, labelID)
-                    context.contentResolver.insert(EntryLabelColumns.CONTENT_URI, values)
-                }
-                FeedDataContentProvider.SetNotifyEnabled(true)
-                run {
-                    val values = ContentValues()
-                    values.put(FeedData.EntryColumns._ID, entryID)
-                    values.put(FeedData.EntryColumns.IS_FAVORITE, if (checkedLabels.isNotEmpty()) 1 else 0)
-                    context.contentResolver.update(FeedData.EntryColumns.CONTENT_URI(entryID), values, if (checkedLabels.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null )
-                }
+        }
 
+        cbAll?.setOnCheckedChangeListener { _, _ -> adapter.notifyDataSetChanged() }
+        cbAll?.isChecked = checkedLabels.contains( ALL_LABELS )
+
+        builder
+        .setAdapter(adapter, null)
+        .setPositiveButton(android.R.string.ok) { dialog, _ ->
+            if (cbAll?.isChecked == true) {
+                checkedLabels.clear()
+                checkedLabels += ALL_LABELS
+            } else
+                checkedLabels -= ALL_LABELS
+            Thread {
+                action( checkedLabels )
             }.start()
             adapterToNotify?.notifyDataSetChanged()
             dialog.dismiss()
@@ -263,14 +293,20 @@ object LabelVoc {
             context.startActivity(intent)
         }
         .setNegativeButton(android.R.string.cancel, null)
-        .setTitle(R.string.article_labels_setup_title)
+
         builder.show()
     }
     fun getStringList(entryID: Long): String {
         initInThread()
+        return getStringList( getLabelIDs(entryID) )
+    }
+    fun getStringList(labelIDs: Set<Long>): String {
+        initInThread()
         var result = ""
         synchronized(mVoc) {
-            for ( id in getLabelIDs(entryID) ) {
+            if ( labelIDs.contains( ALL_LABELS ) )
+                return MainApplication.getContext().getString( R.string.all_labels )
+            for ( id in labelIDs ) {
                 val label = mVoc[id]
                 //result += "<b style=\"text-color: ${label?.mColor}\"> ${label?.mName} </b>"
                 result += "<b><font color=\"${label?.mColor}\"> ${label?.mName} </font></b>"
@@ -278,7 +314,12 @@ object LabelVoc {
             return result
         }
     }
-
+    fun removeLabels(entryID: Long) {
+        if ( getLabelIDs( entryID ).isEmpty() )
+            return
+        setEntry(entryID, java.util.HashSet())
+        MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
+    }
 
 
 }

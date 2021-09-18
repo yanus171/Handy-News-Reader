@@ -132,6 +132,7 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -181,6 +182,7 @@ public class FetcherService extends IntentService {
     public static final String ACTION_MOBILIZE_FEEDS = FeedData.PACKAGE_NAME + ".MOBILIZE_FEEDS";
     private static final String ACTION_LOAD_LINK = FeedData.PACKAGE_NAME + ".LOAD_LINK";
     public static final String EXTRA_STAR = "STAR";
+    public static final String EXTRA_LABEL_ID_LIST = "LABEL_ID_LIST";
 
     private static final int THREAD_NUMBER = 10;
     private static final int MAX_TASK_ATTEMPT = 3;
@@ -429,7 +431,7 @@ public class FetcherService extends IntentService {
                 @Override
                 public void run() {
                     ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
-                        LoadLink(GetExtrenalLinkFeedID(),
+                        Pair<Uri,Boolean> result = LoadLink(GetExtrenalLinkFeedID(),
                                  intent.getStringExtra(Constants.URL_TO_LOAD),
                                  intent.getStringExtra(Constants.TITLE_TO_LOAD),
                                  null,
@@ -440,7 +442,12 @@ public class FetcherService extends IntentService {
                                  AutoDownloadEntryImages.Yes,
                                  false,
                                  true);
-
+                        if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
+                            HashSet<Long> labels = new HashSet<>();
+                            for ( String item: intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) )
+                                labels.add( Long.parseLong( item ) );
+                            LabelVoc.INSTANCE.setEntry(Long.parseLong(result.first.getLastPathSegment() ), labels );
+                        }
                         downloadAllImages(executor);
                     } finally { executor.shutdown(); }
                 }
@@ -790,7 +797,7 @@ public class FetcherService extends IntentService {
 
                 if (matcher.find()) {
                     Calendar date = Calendar.getInstance();
-                    linkToLoad = linkToLoad.replace(rx.pattern(), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                    linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
                 }
             }
 
@@ -886,8 +893,8 @@ public class FetcherService extends IntentService {
                                 } catch ( ParseException e ) {
                                     Status().SetError( format, String.valueOf( feedId ), String.valueOf( entryId ), e );
                                 }
-                            } else
-                                date = parseDate( dateText, 0 );
+                            }// else
+                            //    date = parseDate( dateText, 0 );
                             if ( date != null )
                                 values.put(EntryColumns.DATE, date.getTime());
                         }
@@ -942,8 +949,15 @@ public class FetcherService extends IntentService {
         return success;
     }
 
-    private static boolean isLinkToLoad( String link ) {
-        return !link.endsWith( "mp3" ) && !link.endsWith( "pdf" ) && !link.endsWith( "avi" ) && !link.endsWith( "mpeg" );
+    public static boolean isLinkToLoad( String link ) {
+        return  !link.endsWith( "mp3" ) &&
+                !link.endsWith( "pdf" ) &&
+                !link.endsWith( "avi" ) &&
+                !link.endsWith( "mpeg" ) &&
+                !link.endsWith( "doc" ) &&
+                !link.endsWith( "docx" ) &&
+                !link.endsWith( "jpeg" ) &&
+                !link.endsWith( "png" );
     }
 
 
@@ -956,11 +970,12 @@ public class FetcherService extends IntentService {
     public static Intent GetIntent( String extra ) {
         return new Intent(getContext(), FetcherService.class).putExtra(extra, true );
     }
-    public static void StartServiceLoadExternalLink(String url, String title, boolean star) {
+    public static void StartServiceLoadExternalLink(String url, String title, boolean star, ArrayList<String> labelIDs) {
         FetcherService.StartService( new Intent(getContext(), FetcherService.class )
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
                 .putExtra(Constants.TITLE_TO_LOAD, title)
+                .putExtra(EXTRA_LABEL_ID_LIST, labelIDs)
                 .putExtra( EXTRA_STAR, star ), false );
     }
     public PendingIntent createCancelStarPI( String link, int notificationID ) {
@@ -1760,7 +1775,9 @@ public class FetcherService extends IntentService {
                         Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
                         ContentValues values = new ContentValues();
                         values.putNull(EntryColumns.IS_FAVORITE);
-                        getContext().getContentResolver().update(EntryColumns.CONTENT_URI(cursor.getString(0)), values, null, null);
+                        final long entryID = cursor.getLong(0);
+                        cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null);
+                        LabelVoc.INSTANCE.removeLabels(entryID);
                     }
                 } finally {
                     SetNotifyEnabled( true );

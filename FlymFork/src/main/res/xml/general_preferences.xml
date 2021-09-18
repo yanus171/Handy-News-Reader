@@ -196,7 +196,7 @@
             android:title="@string/settings_category_article_text"/>
 
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-            android:defaultValue="12"
+            android:defaultValue="0"
             android:entries="@array/settings_font_sizes"
             android:entryValues="@array/settings_font_size_values"
             android:inputType="number"
@@ -409,6 +409,12 @@
                 android:defaultValue="10"
                 android:title="@string/brightness_update_from_system_period_min"
                 android:summary="@string/brightness_update_from_system_period_min_descr"/>
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="label_setup_by_tap_on_date"
+                android:summary="@string/label_setup_by_tap_on_date_descr"
+                android:title="@string/label_setup_by_tap_on_date"/>
 
         </PreferenceCategory>
     </PreferenceScreen>

@@ -50,7 +50,6 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -76,6 +75,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -86,11 +86,14 @@ import androidx.loader.content.Loader;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -101,7 +104,6 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
-import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -277,6 +279,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void onPageSelected(int i) {
+                    final boolean isForward = mCurrentPagerPos < i;
                     mCurrentPagerPos = i;
                     mEntryPagerAdapter.onPause(); // pause all webviews
                     mEntryPagerAdapter.onResume(); // resume the current webview
@@ -294,7 +297,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             getLoaderManager().restartLoader(i, null, EntryFragment.this);
                         view.mLoadTitleOnly = false;
                     }
-                    final String text = String.format( "+%d", mEntryPagerAdapter.getCount() - mLastPagerPos - 1 );
+                    final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                     Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
                     TextView textView = new TextView(getContext());
                     textView.setText( text );
@@ -409,7 +412,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         if ( !IsLong() )
                             PageUp();
                     } else if ( event.getY() - initialY >= MAX_HEIGHT ) {
-                        SetIsFavourite(!mFavorite);
+                        SetIsFavorite( !mFavorite, true );
                     }
                     SetStarFrameWidth(0);
                     wasUp = true;
@@ -423,6 +426,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
             }
         });
+
         SetStarFrameWidth(0);
         UpdateFooter();
         SetOrientation();
@@ -615,7 +619,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_star: {
 
-                    SetIsFavourite( !mFavorite );
+                    SetIsFavorite( !mFavorite, true );
                     break;
                 }
                 case R.id.menu_share: {
@@ -682,7 +686,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_labels: {
-                    LabelVoc.INSTANCE.showDialog(getContext(), getCurrentEntryID(), null );
+                    LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), getCurrentEntryID(), null );
                     break;
                 }
                 case R.id.menu_go_back: {
@@ -877,6 +881,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     startActivity( new Intent( Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI ).putExtra(EXTRA_WEB_SEARCH, true) );
                     break;
                 }
+                case R.id.menu_edit_feed: {
+                    final String feedId = getCurrentFeedID();
+                    if (!feedId.isEmpty() && !feedId.equals(FetcherService.GetExtrenalLinkFeedID()))
+                        startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedId)));
+                    break;
+                }
 
                 case R.id.menu_add_entry_shortcut: {
                     if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
@@ -893,17 +903,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                 @Override
                                 public void run() {
 
-                                    final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
-                                    if ( bitmap == null )
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText( getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show();
-                                            }
-                                        });
-                                    final IconCompat icon = (bitmap == null) ?
-                                        IconCompat.createWithResource( getContext(), R.mipmap.ic_launcher ) :
-                                        IconCompat.createWithBitmap(bitmap);
+                                    final IconCompat icon = LoadIcon(iconUrl);
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -933,6 +933,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return true;
     }
 
+    @NotNull
+    public static IconCompat LoadIcon(String iconUrl) {
+        final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
+        if ( bitmap == null )
+            UiUtils.RunOnGuiThread(() -> Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show());
+        return (bitmap == null) ?
+            IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
+            IconCompat.createWithBitmap(bitmap);
+    }
+
 
     private void ReloadFullText() {
         int status = FetcherService.Status().Start("Reload fulltext", true);
@@ -953,11 +963,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         cr.update(uri, values, null, null);
         getActivity().invalidateOptionsMenu();
     }
-    private void SetIsFavourite(final boolean favorite) {
+    private void SetIsFavorite(final boolean favorite, boolean showToast) {
         if ( mFavorite == favorite )
             return;
         mFavorite = favorite;
-        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+        final long entryID = getCurrentEntryID();
+        final HashSet<Long> oldLabels = LabelVoc.INSTANCE.getLabelIDs(entryID);
+        final Uri uri = ContentUris.withAppendedId(mBaseUri, entryID);
         new Thread() {
             @Override
             public void run() {
@@ -965,11 +977,27 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 values.put(EntryColumns.IS_FAVORITE, mFavorite ? 1 : 0);
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
+                if ( !mFavorite )
+                    LabelVoc.INSTANCE.removeLabels( entryID );
             }
         }.start();
         getActivity().invalidateOptionsMenu();
-        Toast.makeText( getContext(), mFavorite ? R.string.entry_marked_favourite : R.string.entry_marked_unfavourite, Toast.LENGTH_LONG ).show();
+        if ( mFavorite ) {
+            if ( showToast )
+                Toast.makeText(getContext(), R.string.entry_marked_favourite, Toast.LENGTH_LONG).show();
+        } else {
+            Snackbar snackbar = Snackbar.make(getView().getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+                .setActionTextColor(ContextCompat.getColor(getView().getContext(), R.color.light_theme_color_primary))
+                .setAction(R.string.undo, v -> {
+                    SetIsFavorite( true, false );
+                    LabelVoc.INSTANCE.setEntry( entryID, oldLabels );
+                    mFavorite = true;
+                });
+            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            snackbar.show();
+        }
     }
+
 
 //    private void DeleteMobilized() {
 //        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
@@ -987,6 +1015,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return entry.mID;
         else
             return -1;
+    }
+    public String getCurrentFeedID() {
+        Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+        if (cursor != null)
+            return cursor.getString(mFeedIDPos);
+        else
+            return "";
     }
 
     private String getCurrentEntryLink() {
@@ -1801,7 +1836,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             cr.update(uri, values, null, null);
                         }
                     }.start();
-                    SetIsFavourite(false);
+                    SetIsFavorite(false, true );
                 }
             }
         };

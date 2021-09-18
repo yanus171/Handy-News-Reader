@@ -425,6 +425,7 @@
     <string name="delete_read_articles_descr">quel que soit le temps de conservation des articles</string>
     <string name="data_folder">Dossier de données</string>
     <string name="data_folder_descr">Où stocker les textes et les images des articles téléchargés</string>
+    <string name="internalMemoryCache">Mémoire interne (Cache)</string>
     <string name="externalMemory">Mémoire externe</string>
     <string name="show_html">Afficher le html</string>
     <string name="image_white_background">Arrière-plan blanc de l\'image</string>

@@ -94,6 +94,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -144,7 +145,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
 
     public static final String STATE_TEXTSHOWN_ENTRY_ID = "STATE_TEXTSHOWN_ENTRY_ID";
-    private HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
+    private final HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
@@ -237,12 +238,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.textSizeProgressBar = view.findViewById(R.id.progressBar);
             view.setTag(R.id.holder, holder);
 
-            final View.OnClickListener openArticle = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), "");
-                }
-            };
+            //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
 
             holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
             holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
@@ -372,7 +368,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                             else if (item == 2)
                                                 ShowMarkAllAsUnReadDialog( context  );
                                             else if (item == 3)
-                                                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
+                                                LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
                                         }
                                     });
 
@@ -510,13 +506,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        final View.OnClickListener manageLabels = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LabelVoc.INSTANCE.showDialog( context, holder.entryID, EntriesCursorAdapter.this );
-            }
-        };
-
+        final View.OnClickListener manageLabels = PrefUtils.getBoolean( "label_setup_by_tap_on_date", false ) ?
+            view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
+            null;
         holder.urlTextView.setOnClickListener( manageLabels );
         holder.dateTextView.setOnClickListener( manageLabels );
         holder.authorTextView.setOnClickListener( manageLabels );
@@ -669,8 +661,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         //view.findViewById(R.id.text2Layout).setOnClickListener(manageLabels);
 
-        holder.labelTextView.setVisibility( LabelVoc.INSTANCE.getLabelIDs(holder.entryID ).isEmpty() ? View.GONE : View.VISIBLE );
-        holder.labelTextView.setText( Html.fromHtml(LabelVoc.INSTANCE.getStringList( holder.entryID )) );
+        UpdateLabelText(holder);
         holder.labelTextView.setOnClickListener(manageLabels);
 
         holder.contentImgView1.setVisibility( View.GONE );
@@ -721,6 +712,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
+    }
+
+    private void UpdateLabelText(ViewHolder holder) {
+        boolean visible = holder.isFavorite && !LabelVoc.INSTANCE.getLabelIDs(holder.entryID ).isEmpty();
+        holder.labelTextView.setVisibility( visible ? View.VISIBLE : View.GONE );
+        if ( visible )
+            holder.labelTextView.setText(Html.fromHtml(LabelVoc.INSTANCE.getStringList(holder.entryID )) );
     }
 
     private Spanned getBoldText(String html) {
@@ -992,12 +990,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
             UpdateStarImgView(holder);
-            SetIsFavorite( holder.entryID, holder.isFavorite, true );
+            UpdateLabelText(holder);
+            SetIsFavorite( view, holder.entryID, holder.isFavorite, true );
         }
     }
-    private void SetIsFavorite(final long entryId, final boolean isFavorite, final boolean isSilent ) {
+    private void SetIsFavorite( View parentView, final long entryId, final boolean isFavorite, final boolean isSilent ) {
         final Uri entryUri = EntryUri( entryId );
         mMapFavourite.put( entryId, isFavorite );
+        final HashSet<Long> oldLabels = LabelVoc.INSTANCE.getLabelIDs(entryId);
         new Thread() {
             @Override
             public void run() {
@@ -1009,14 +1009,28 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.update(entryUri, values, null, null);
-                    if (!isFavorite)
-                        CancelStarNotification(Long.parseLong(entryUri.getLastPathSegment()));
+                    if (!isFavorite) {
+                        CancelStarNotification( entryId );
+                        LabelVoc.INSTANCE.removeLabels( entryId );
+                    }
                 } finally {
                     if ( isSilent )
                         SetNotifyEnabled( true );
                 }
             }
         }.start();
+        if ( !isFavorite ) {
+            Snackbar snackbar = Snackbar.make( parentView.getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+                .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
+                .setAction(R.string.undo, v -> {
+                    SetIsFavorite( parentView, entryId, true, false);
+                    LabelVoc.INSTANCE.setEntry( entryId, oldLabels );
+                    mMapFavourite.put( entryId, isFavorite );
+                    MainApplication.getContext().getContentResolver().notifyChange(mUri, null);
+                });
+            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            snackbar.show();
+        }
     }
 
     @Override

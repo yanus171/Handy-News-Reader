@@ -37,6 +37,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -45,6 +47,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.widget.FontSelectPreference;
 
@@ -95,7 +98,7 @@ public class UiUtils {
 
     public static void SetTypeFace(TextView textView) {
         if ( mCachedTypeFace == null )
-            mCachedTypeFace = FontSelectPreference.GetTypeFace("fontFamily" );
+            mCachedTypeFace = FontSelectPreference.GetTypeFace(FontSelectPreference.KEY );
         textView.setTypeface( mCachedTypeFace );
     }
 
@@ -116,19 +119,15 @@ public class UiUtils {
         snackbar.show();
     }
 
-    static public Bitmap getFaviconBitmap( /*Long feedID,*/ String iconUrl ) {
-        //Bitmap bitmap = UiUtils.FAVICON_CACHE.get(iconUrl);
-        //if (bitmap == null && iconUrl != null ) {
+    static public Bitmap getFaviconBitmap( String iconUrl ){
         Bitmap bitmap = null;
         if ( iconUrl != null )
             try {
                 InputStream imageStream = getContext().getContentResolver().openInputStream( GetImageFileUri( iconUrl, iconUrl ));
                 bitmap = BitmapFactory.decodeStream(imageStream);
-                //UiUtils.FAVICON_CACHE.put(iconUrl, bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        //}
         return bitmap;
     }
 

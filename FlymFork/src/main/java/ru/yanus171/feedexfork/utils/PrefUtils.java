@@ -121,7 +121,7 @@ public class PrefUtils {
     public static final int BASE_TEXT_FONT_SIZE = 18;
 
     public static int getFontSize() {
-        return Integer.parseInt(PrefUtils.getString("fontsize", "12"));
+        return Integer.parseInt(PrefUtils.getString("fontsize", "0"));
     }
     public static int getFontSizeEntryList() {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));

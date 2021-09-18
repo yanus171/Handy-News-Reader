@@ -31,11 +31,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -74,6 +74,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -88,6 +89,7 @@ import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -97,12 +99,14 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
@@ -122,9 +126,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     //private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST = "STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST";
-    private static final String STATE_SHOW_UNREAD = "STATE_SHOW_UNREAD";
+    private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
     private static final String STATE_LAST_VISIBLE_ENTRY_ID = "STATE_LAST_VISIBLE_ENTRY_ID";
     private static final String STATE_LAST_VISIBLE_OFFSET = "STATE_LAST_VISIBLE_OFFSET";
+    private static final String STATE_LABEL_FILTER_LIST = "STATE_LABEL_FILTER_LIST";
 
 
     private static final int ENTRIES_LOADER_ID = 1;
@@ -132,7 +137,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final int FILTERS_LOADER_ID = 3;
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
     public static final long ALL_LABELS = -2L;
-    public static final long NO_LABEL = -1L;
+    private static final long NO_LABEL = -1L;
     public static final String LABEL_ID_EXTRA = "LABEL_ID";
 
     public static Uri mCurrentUri = null;
@@ -145,15 +150,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private Cursor mJustMarkedAsReadEntries;
     private FloatingActionButton mFab;
     public ListView mListView;
-    public static boolean mShowUnRead = false;
+    public static boolean mShowUnReadOnly = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
     private Menu mMenu = null;
+    private TextView mTextViewFilterLabels = null;
     private FeedFilters mFilters = null;
     private boolean mIsResumed = false;
     static private boolean mIsSearch = false;
-    public static Long mLabelID = NO_LABEL;
+    private static HashSet<Long> mLabelsID = new HashSet<Long>();
+    public boolean mIsSingleLabel = false;
 
     //private long mListDisplayDate = new Date().getTime();
     //boolean mBottomIsReached = false;
@@ -244,11 +251,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @NotNull
     public static String GetWhereSQL() {
         String labelSQL = "";
-        if ( mLabelID == ALL_LABELS )
-            labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + FeedData.EntryLabelColumns.ENTRY_ID + " FROM " + FeedData.EntryLabelColumns.TABLE_NAME + ")";
-        else if ( mLabelID != NO_LABEL )
-            labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + FeedData.EntryLabelColumns.ENTRY_ID + " FROM " + FeedData.EntryLabelColumns.TABLE_NAME + " WHERE " + FeedData.EntryLabelColumns.LABEL_ID + " = " + mLabelID + ")";
-        final String unreadSQL = mShowUnRead ? " AND " + EntryColumns.WHERE_UNREAD : "";
+        if ( mLabelsID.contains( ALL_LABELS ) )
+            labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
+        else if ( !mLabelsID.isEmpty() ) {
+            ArrayList<String> listCondition = new ArrayList<>();
+            for( Long item: mLabelsID )
+                listCondition.add( "(" + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
+                    " WHERE " + EntryLabelColumns.LABEL_ID + " = " + item + "))" );
+            labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
+        }
+        final String unreadSQL = mShowUnReadOnly ? " AND " + EntryColumns.WHERE_UNREAD : "";
         return EMPTY_WHERE_SQL + (mIsSearch ? "" : (labelSQL + unreadSQL));
     }
 
@@ -276,11 +288,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mMenu == null )
             return;
 
-        if (EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri))
-            mMenu.findItem(R.id.menu_share_starred).setVisible(true);
+        mMenu.findItem(R.id.menu_share_starred).setVisible(true);
 
         MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
-        if (mShowUnRead) {
+        if (mShowUnReadOnly) {
             item.setTitle(R.string.all_entries);
             item.setIcon(R.drawable.ic_check_box_outline_blank);
         } else {
@@ -296,7 +307,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     uriMatch != FeedDataContentProvider.URI_FAVORITES );
         }
 
-        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && mLabelID == NO_LABEL;
+        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
         if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
             String feedID = mCurrentUri.getPathSegments().get(1);
             isCanRefresh = !feedID.equals(FetcherService.GetExtrenalLinkFeedID());
@@ -304,13 +315,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         boolean isRefresh = PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false );
         mMenu.findItem(R.id.menu_cancel_refresh).setVisible( isRefresh );
         mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
-        
+        mMenu.findItem(R.id.menu_filter_by_labels).setVisible( !mIsSingleLabel );
+
         if ( getBaseActivity().mProgressBarRefresh != null ) {
             if (isRefresh)
                 getBaseActivity().mProgressBarRefresh.setVisibility(View.VISIBLE);
             else
                 getBaseActivity().mProgressBarRefresh.setVisibility(View.GONE);
         }
+
+        mTextViewFilterLabels.setVisibility((mIsSingleLabel || mIsSearch || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
+        mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
     }
 
     @Override
@@ -329,19 +344,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
             mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
-            mShowUnRead = savedInstanceState.getBoolean(STATE_SHOW_UNREAD, PrefUtils.getBoolean( STATE_SHOW_UNREAD, false ));
+            mShowUnReadOnly = savedInstanceState.getBoolean(STATE_SHOW_UNREAD_ONLY, PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false ));
             try {
                 mOptions = savedInstanceState.containsKey( STATE_OPTIONS ) ? new JSONObject( savedInstanceState.getString( STATE_OPTIONS ) ) : new JSONObject();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Dog.v( String.format( "EntriesListFragment.onCreate mShowUnRead = %b", mShowUnRead ) );
+            Dog.v( String.format("EntriesListFragment.onCreate mShowUnRead = %b", mShowUnReadOnly) );
 
             //if ( mShowTextInEntryList )
             //    mNeedSetSelection = true;
-            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
+            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly);
         } else
-            mShowUnRead = PrefUtils.getBoolean( STATE_SHOW_UNREAD, false );
+            mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
 
         timer.End();
     }
@@ -401,7 +416,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry_list, container, true);
         View rootView = getBaseActivity().mRootView;
-
+        mTextViewFilterLabels = rootView.findViewById(R.id.filter_by_labels);
+        mTextViewFilterLabels.setBackgroundColor(Theme.GetColorInt(Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) );
+        mTextViewFilterLabels.setOnClickListener(view -> FilterByLabels());
         mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                    (TextView)rootView.findViewById( R.id.errorText ),
                                    (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
@@ -582,7 +599,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void onStop() {
         PrefUtils.unregisterOnPrefChangeListener(mPrefListener);
 
-        PrefUtils.putBoolean( STATE_SHOW_UNREAD, mShowUnRead );
+        PrefUtils.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
         PrefUtils.putLong( STATE_LAST_VISIBLE_ENTRY_ID, mLastVisibleTopEntryID );
         PrefUtils.putInt( STATE_LAST_VISIBLE_OFFSET, mLastListViewTopOffset );
 
@@ -609,7 +626,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         outState.putBoolean(STATE_SHOW_FEED_INFO, mShowFeedInfo);
         outState.putBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
         //outState.putLong(STATE_LIST_DISPLAY_DATE, mListDisplayDate);
-        outState.putBoolean( STATE_SHOW_UNREAD, mShowUnRead);
+        outState.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
         if ( mOptions != null )
             outState.putString( STATE_OPTIONS, mOptions.toString() );
         super.onSaveInstanceState(outState);
@@ -662,7 +679,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!TextUtils.isEmpty(newText)) {
-                    mIsSearch = true;
                     setData(EntryColumns.SEARCH_URI(newText), true, true, false, mOptions);
                 }
                 return false;
@@ -672,7 +688,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             @Override
             public boolean onClose() {
-                mIsSearch = false;
                 setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
                 getActivity().invalidateOptionsMenu();
                 return false;
@@ -701,19 +716,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_share_starred: {
                 if (mEntriesCursorAdapter != null) {
                     StringBuilder starredList = new StringBuilder();
-                    Cursor cursor = mEntriesCursorAdapter.getCursor();
+                    final boolean temp = mShowUnReadOnly;
+                    mShowUnReadOnly = false;
+                    Cursor cursor = getContext().getContentResolver().query( mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
+                                                                             EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC) );
+                    mShowUnReadOnly = temp;
                     if (cursor != null && !cursor.isClosed()) {
                         int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
                         int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
-                        if (cursor.moveToFirst()) {
+                        if (cursor.moveToFirst())
                             do {
                                 starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
                             } while (cursor.moveToNext());
-                        }
                         startActivity(Intent.createChooser(
                                 new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_favorites_title))
                                         .putExtra(Intent.EXTRA_TEXT, starredList.toString()).setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
                         ));
+                        cursor.close();
                     }
                 }
                 return true;
@@ -853,11 +872,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
                     String name = "";
                     IconCompat image = null;
-                    if ( mLabelID == ALL_LABELS ) {
+                    String feedUrl = "";
+                    String iconUrl = "";
+                    if ( IsAllLabels() ) {
                         name = getContext().getString( R.string.labels_group_title );
                         image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
-                    } else if ( mLabelID != NO_LABEL ) {
-                        name = LabelVoc.INSTANCE.get(mLabelID).mName;
+                    } else if ( mIsSingleLabel ) {
+                        name = LabelVoc.INSTANCE.get(GetSingleLabelID()).mName;
                         image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
                     } else if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.all_entries);
@@ -874,38 +895,57 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else {
                         long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
                         Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),
-                                new String[]{FeedData.FeedColumns.NAME, FeedColumns.ICON_URL},
+                                new String[]{FeedData.FeedColumns.NAME, FeedColumns.ICON_URL },
                                 null, null, null);
                         if (cursor.moveToFirst()) {
                             name = cursor.getString(0);
+                            if (!cursor.isNull(2) )
+                                feedUrl = cursor.getString( 2 );
                             if (!cursor.isNull(1) ) {
-                                final Bitmap bitmap = UiUtils.getFaviconBitmap(cursor.getString(1) );
-                                if ( bitmap != null )
-                                    image = IconCompat.createWithBitmap(bitmap);
+                                iconUrl = cursor.getString(1);
+//                                final Bitmap bitmap = UiUtils.getFaviconBitmap(feedID, feedUrl, cursor.getString(1) );
+//                                if ( bitmap != null )
+//                                    image = IconCompat.createWithBitmap(bitmap);
                             }
                         }
                         cursor.close();
                     }
 
-                    Intent intent = new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData( mCurrentUri );
-                    if ( mLabelID != NO_LABEL )
-                        intent.putExtra( LABEL_ID_EXTRA, mLabelID );
-                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + mLabelID  )
-                            .setIcon(image)
-                            .setShortLabel(name)
-                            .setIntent( intent )
-                            .setLongLived()
-                            .build();
-                    ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
-                    if ( Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O )
-                        Toast.makeText( getContext(), R.string.new_feed_shortcut_added, Toast.LENGTH_LONG ).show();
+                    final Intent intent = new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData(mCurrentUri );
+                    if ( !feedUrl.isEmpty() )
+                        intent.putExtra( Constants.EXTRA_LINK, feedUrl );
+                    if ( mIsSingleLabel )
+                        intent.putExtra(LABEL_ID_EXTRA, GetSingleLabelID());
+                    final String finalIconUrl = iconUrl;
+                    final String finalName = name;
+                    final IconCompat finalImage = image;
+                    new WaitDialog(getActivity(), R.string.downloadImage, () -> {
+                        final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl) : finalImage;
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
+                                    .setIcon(icon)
+                                    .setShortLabel(finalName)
+                                    .setIntent(intent)
+                                    .setLongLived()
+                                    .build();
+                                ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
+                                if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
+                                    Toast.makeText(
+
+                                getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }).execute();
                 } else
                     Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {
                 //int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
-                mShowUnRead = !mShowUnRead;
+                mShowUnReadOnly = !mShowUnReadOnly;
                 setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 UpdateActions();
                 return true;
@@ -920,6 +960,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 HomeActivity activity1 = (HomeActivity) getActivity();
                 activity1.setFullScreen( HomeActivity.GetIsStatusBarEntryListHidden(), !HomeActivity.GetIsActionBarEntryListHidden() );
                 item.setChecked( !HomeActivity.GetIsActionBarEntryListHidden() );
+                break;
+            }
+            case R.id.menu_filter_by_labels: {
+                FilterByLabels();
                 break;
             }
             case R.id.menu_copy_feed: {
@@ -950,6 +994,21 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void FilterByLabels() {
+        LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
+            mLabelsID = checkedLabels;
+            ArrayList<String> list = new ArrayList<>();
+            for ( Long item: mLabelsID )
+                list.add( String.valueOf( item ) );
+            PrefUtils.putString( STATE_LABEL_FILTER_LIST + mCurrentUri, TextUtils.join( ",", list ) );
+            UiUtils.RunOnGuiThread(() -> {
+                restartLoaders();
+                UpdateActions();
+            } );
+            return null;
+        } );
     }
 
 
@@ -1034,6 +1093,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
     public void setData(Uri uri, boolean showFeedInfo, boolean isSearchUri, boolean showTextInEntryList, JSONObject options) {
+        mIsSearch = isSearchUri;
         mOptions = options;
         if ( getActivity() == null ) // during configuration changes
             return;
@@ -1049,6 +1109,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mOriginalUriShownEntryText = showTextInEntryList;
         }
 
+        String labelFilterState = PrefUtils.getString( STATE_LABEL_FILTER_LIST + mCurrentUri, "" );
+        if ( !labelFilterState.isEmpty() ) {
+            mLabelsID.clear();
+            for (String item : TextUtils.split(labelFilterState, "," ))
+                mLabelsID.add(Long.parseLong(item));
+        }
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
         final ArrayList<String> listCopy;
@@ -1063,7 +1129,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         }.start();
 
-        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnRead);
+        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly);
         SetListViewAdapter();
         //if ( mListView instanceof ListView )
             mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
@@ -1073,6 +1139,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         //refreshUI();
         UpdateFooter();
+        UpdateActions();
         mStatusText.SetFeedID( mCurrentUri );
         timer.End();
     }
@@ -1163,4 +1230,22 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }
 
+    public void ClearSingleLabel() {
+        mIsSingleLabel = false;
+        mLabelsID.clear();
+    }
+    public void SetSingleLabel( Long id ) {
+        mIsSingleLabel = id != NO_LABEL;
+        mLabelsID.clear();
+        if ( id != NO_LABEL )
+            mLabelsID.add( id );
+    }
+
+    public boolean IsAllLabels() {
+        return mIsSingleLabel && mLabelsID.contains( ALL_LABELS );
+    }
+
+    public Long GetSingleLabelID() {
+        return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
+    }
 }

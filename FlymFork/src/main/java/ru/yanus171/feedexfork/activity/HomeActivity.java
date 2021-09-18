@@ -79,6 +79,7 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
 import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
@@ -87,8 +88,6 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.NO_LABEL;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mLabelID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
@@ -363,24 +362,35 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         setIntent( new Intent() );
 
         if ( intent.getData() != null ) {
-            mLabelID = intent.getLongExtra( LABEL_ID_EXTRA, NO_LABEL );
+            mEntriesFragment.ClearSingleLabel();
+            if ( intent.hasExtra(LABEL_ID_EXTRA) )
+                mEntriesFragment.SetSingleLabel( intent.getLongExtra( LABEL_ID_EXTRA, 0 ) );
             if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
                 selectDrawerItem( 2 );
             else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
                 selectDrawerItem( 0 );
-            else if ( mLabelID == NO_LABEL && intent.getData().equals( CONTENT_URI ) )
+            else if ( !mEntriesFragment.mIsSingleLabel && intent.getData().equals(CONTENT_URI ) )
                 selectDrawerItem( 1 );
             else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
                 selectDrawerItem( 3 );
             else {
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
-                else if ( mLabelID != NO_LABEL ) {
+                else if ( mEntriesFragment.mIsSingleLabel ) {
                     PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
                     mDrawerAdapter.notifyDataSetChanged();
-                    selectDrawerItem(DrawerAdapter.getLabelPositionByID(mLabelID));
-                } else
-                    selectDrawerItem(mDrawerAdapter.getItemPosition(GetFeedID(intent.getData())));
+                    selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
+                } else {
+                    long feedID = 0;
+                    if ( intent.hasExtra( EXTRA_LINK ) ) {
+                        Cursor cur = getContentResolver().query( FeedColumns.CONTENT_URI, new String[]{ FeedColumns._ID }, FeedColumns.URL + " = '" + intent.getStringExtra( EXTRA_LINK ) +"'", null, null );
+                        if ( cur.moveToNext() )
+                            feedID = cur.getLong( 0 );
+                        cur.close();
+                    } else
+                        feedID = GetFeedID(intent.getData());
+                    selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
+                }
             }
 
         } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
@@ -537,10 +547,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
 
         if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
-            if ( mLabelID == ALL_LABELS ) {
+            if ( mEntriesFragment.IsAllLabels() ) {
                 mCurrentDrawerPos = LABEL_GROUP_POS;
-            } else if (mLabelID != NO_LABEL ) {
-                mCurrentDrawerPos = DrawerAdapter.getLabelPositionByID(mLabelID);
+            } else if ( mEntriesFragment.mIsSingleLabel ) {
+                mCurrentDrawerPos = DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID());
             } else {
                 mCurrentDrawerPos = mDrawerAdapter.getItemPosition(GetFeedID(mNewFeedUri));
             }
@@ -579,7 +589,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Timer timer = new Timer( "HomeActivity.selectDrawerItem" );
         mCurrentDrawerPos = position;
         Uri newUri;
-        EntriesListFragment.mLabelID = NO_LABEL;
+        mEntriesFragment.ClearSingleLabel();
         boolean showFeedInfo = true;
 
         switch (position) {
@@ -599,13 +609,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             case LABEL_GROUP_POS:
                 newUri = EntryColumns.CONTENT_URI;
                 mTitle = getString( R.string.labels_group_title );
-                EntriesListFragment.mLabelID = ALL_LABELS;
+                mEntriesFragment.SetSingleLabel( ALL_LABELS );
                 showFeedInfo = true;
                 break;
             default:
                 if ( DrawerAdapter.isLabelPos( position, DrawerAdapter.getLabelList() )) {
                     newUri = EntryColumns.CONTENT_URI;
-                    EntriesListFragment.mLabelID = DrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID;
+                    mEntriesFragment.SetSingleLabel( DrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID );
                     showFeedInfo = true;
                 } else {
                     long feedOrGroupId = mDrawerAdapter.getItemId(position);
@@ -640,12 +650,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         if (PrefUtils.getBoolean(PrefUtils.FIRST_OPEN, true)) {
             PrefUtils.putBoolean(PrefUtils.FIRST_OPEN, false);
             if (mDrawerLayout != null) {
-                mDrawerLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDrawerLayout.openDrawer(mLeftDrawer);
-                    }
-                }, 500);
+                mDrawerLayout.postDelayed(() -> mDrawerLayout.openDrawer(mLeftDrawer), 500);
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

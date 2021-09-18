@@ -99,10 +99,10 @@ public class HtmlUtils {
         content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
         //content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
         //content = ReplaceImagesWithDataOriginal(content, "<span[^>]+class..lazy-image-placeholder[^>]+src=\"([^\"]+)\"[^>]+>");
-        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-src=\"([^\"]+)\"[^>]+>");
+        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-src=\"([^\"]+)\"([^>]+)?>");
         content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+)\\s.+x\"+[^>]+></a>" );
         content = ReplaceImagesWithALink(content);
-        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"[^>]+>");
+        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"([^>]+)?>");
 
         // clean by JSoup
         final Whitelist whiteList =

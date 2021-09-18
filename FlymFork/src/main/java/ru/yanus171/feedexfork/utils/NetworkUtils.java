@@ -272,11 +272,11 @@ public class NetworkUtils {
         return result;
     }
 
-    public static void retrieveFavicon(Context context, URL url, String id) {
+    public static void retrieveFavicon(Context context, URL url, String feedID) {
         final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
-        Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( id ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {
-            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && mImageFileVoc.isExists(GetImageFile(imageUrl, imageUrl ).getPath() ) ) )
+        Cursor cursor  = cr.query(FeedData.FeedColumns.CONTENT_URI( feedID ), new String[] {FeedData.FeedColumns.ICON_URL}, null, null, null  ); try {
+            if (!cursor.moveToFirst() || ( !cursor.isNull( 0 ) && mImageFileVoc.isExists(GetImageFile(imageUrl, imageUrl).getPath() ) ) )
                 return;
         } finally {
             cursor.close();
@@ -285,7 +285,7 @@ public class NetworkUtils {
             downloadImage( -1, imageUrl, imageUrl, true, false );
             ContentValues values = new ContentValues();
             values.put(FeedData.FeedColumns.ICON_URL, imageUrl);
-            cr.update(FeedData.FeedColumns.CONTENT_URI(id), values, null, null);
+            cr.update(FeedData.FeedColumns.CONTENT_URI(feedID), values, null, null);
         } catch (IOException e) {
             e.printStackTrace();
         }

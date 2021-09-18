@@ -12,4 +12,5 @@
     support:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
     support:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     tools:showIn="@layout/view_home"
-    support:layout_scrollFlags="scroll|enterAlways" />
+    support:layout_scrollFlags="scroll|enterAlways"
+    tools:targetApi="lollipop" />
