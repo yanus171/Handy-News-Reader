@@ -211,28 +211,28 @@ public class HtmlUtils {
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
                     final File file = new File( imgFilePath );
-                    final boolean isImageToLoad = maxImageDownloadCount == 0 || isDownLoadImages && ( index <= maxImageDownloadCount );
+                    final boolean isImageToAdd = maxImageDownloadCount == 0 || ( index <= maxImageDownloadCount );
                     final String imgFileTag =
                         GetLinkStartTag(imgFilePath) +
                         imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
                         LINK_TAG_END;
                     if ( isShowImages ) {
                         final boolean isFileExists = mImageFileVoc.isExists( file.getPath() );
-                        if ( !isFileExists && isImageToLoad )
+                        if ( !isFileExists && isImageToAdd )
                             imagesToDl.add(srcUrl);
                         String btnLoadNext = "";
                         if ( index == maxImageDownloadCount + 1 ) {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
                             btnLoadNext += getButtonHtml("downloadAllImages()", getString(R.string.downloadAll), "download_all");
                         }
-                        final boolean isSmallForExternalList = file.length() < 1024 * 7;
+                        final boolean isSmallForExternalList = false;// = file.length() < 1024 * 7;
                         if ( externalImageList != null && externalImageList.size() <= maxImageDownloadCount &&
                             ( !isSmallForExternalList || !isFileExists ) ) {
                             externalImageList.add(Uri.fromFile(file));
                             content = content.replace(imgWebTag, "");
                         } else if ( externalImageList != null && isSmallForExternalList )
                             content = content.replace(imgWebTag, "");
-                        else if ( isImageToLoad || isFileExists )
+                        else if ( isImageToAdd || isFileExists )
                             content = content.replace(imgWebTag, imgFileTag + btnLoadNext);
                         else if ( !isFileExists ) {
                             String htmlButtons = getDownloadImageHtml(srcUrl) + "<br/>";
@@ -245,14 +245,8 @@ public class HtmlUtils {
                 content = content.replaceAll("height=\"\\d+\"", "");
 
                 // Download the images if needed
-                if (!imagesToDl.isEmpty() && entryId != -1 ) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl);
-                        }
-                    }).start();
-                }
+                if ( isDownLoadImages && !imagesToDl.isEmpty() && entryId != -1 )
+                    new Thread(() -> FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl)).start();
             }
             timer.End();
         } catch ( Exception e ) {

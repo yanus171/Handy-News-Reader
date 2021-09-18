@@ -133,6 +133,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
@@ -180,6 +181,7 @@ public class EntryView extends WebView implements Handler.Callback {
     private String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
     public long mLastSetHTMLTime = 0;
+    private ArrayList<String> mImagesToDl = new ArrayList<>();
 
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
@@ -470,8 +472,10 @@ public class EntryView extends WebView implements Handler.Callback {
             @Override
             public void run() {
                 final String dataWithLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
-                final String data = HtmlUtils.replaceImageURLs( dataWithLinks, mEntryId, mEntryLink, true );
+                final ArrayList<String> imagesToDl = new ArrayList<>();
+                final String data = HtmlUtils.replaceImageURLs( dataWithLinks, "", mEntryId, mEntryLink, false, imagesToDl, null, mMaxImageDownloadCount );
                 synchronized (EntryView.this) {
+                    mImagesToDl = imagesToDl;
                     mData = data;
                     mDataWithWebLinks = dataWithLinks;
                 }
@@ -828,6 +832,7 @@ public class EntryView extends WebView implements Handler.Callback {
                             }, 5000 );
                         } else
                             ScrollToY();
+                        DownLoadImages();
                         EndStatus();
                     } else
                         view.postDelayed(new Runnable() {
@@ -887,6 +892,30 @@ public class EntryView extends WebView implements Handler.Callback {
 
 
         timer.End();
+    }
+
+    private void DownLoadImages() {
+        final ArrayList<String> imagesToDl = GetImageListCopy();
+        if ( !imagesToDl.isEmpty() )
+            new Thread(() -> {
+                FetcherService.downloadEntryImages("", mEntryId, mEntryLink, imagesToDl);
+                ClearImageList();
+            }).start();
+    }
+
+    private void ClearImageList() {
+        synchronized ( EntryView.this ) {
+            mImagesToDl.clear();
+        }
+    }
+
+    @NotNull
+    private ArrayList<String> GetImageListCopy() {
+        final ArrayList<String> imagesToDl;
+        synchronized ( EntryView.this ) {
+            imagesToDl = (ArrayList<String>) mImagesToDl.clone();
+        }
+        return imagesToDl;
     }
 
     public static void OpenImage( String url, Context context ) throws IOException {
@@ -1007,19 +1036,10 @@ public class EntryView extends WebView implements Handler.Callback {
         loadDataWithBaseURL(BASE_URL, data, TEXT_HTML, Constants.UTF8, null);
     }
 
-    private final Runnable EndStatusRunnable = new Runnable() {
-        @Override
-        public void run() {
-            EndStatus();
-        }
-    };
     public void StatusStartPageLoading() {
         synchronized (EntryView.this) {
-            if (mStatus == 0) {
+            if (mStatus == 0)
                 mStatus = FetcherService.Status().Start(R.string.web_page_loading, true);
-                //UiUtils.RemoveFromGuiThread( EndStatusRunnable );
-                //UiUtils.RunOnGuiThread( EndStatusRunnable, 5000 );
-            }
         }
     }
     private boolean IsStatusStartPageLoading() {
