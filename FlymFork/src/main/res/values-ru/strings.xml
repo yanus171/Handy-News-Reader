@@ -581,7 +581,7 @@
     <string name="setting_label_list">Список ярлыков</string>
     <string name="tag_list">Список меток</string>
     <string name="menu_edit_labels">Метки</string>
-    <string name="manage_labels">Управление метками</string>
+    <string name="manage_labels">Настроить</string>
     <string name="article_labels_setup_title">Настройка метки</string>
     <string name="labels_group_title">Метки</string>
     <string name="color">Цвет</string>
@@ -602,8 +602,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="addCustomFont">Добавить свой шрифт …</string>
     <string name="fileCopied">Файл %s скопирован</string>
     <string name="unableToCopyFile">Невозможно скопировать файл %s</string>
-    <string name="label_setup_by_tap_on_date">Настройка ярлыка нажатием на дату</string>
-    <string name="label_setup_by_tap_on_date_descr">Автор и URL в списке статей</string>
+    <string name="label_setup_by_tap_on_date">Настройка ярлыков нажатием</string>
+    <string name="label_setup_by_tap_on_date_descr">На дату, автора и адреса в списке статей</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
