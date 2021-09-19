@@ -232,19 +232,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
                                       (TextView) rootView.findViewById( R.id.progressText),
                                       FetcherService.Status());
-        rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
-            }
+        rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener( view -> {
+            EntryActivity activity = (EntryActivity) getActivity();
+            activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
         });
-        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
-            }
+        rootView.findViewById(R.id.toggleFullscreenBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+            ReloadFullText();
+            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
+            return true;
+        });
+        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(v -> {
+            EntryActivity activity = (EntryActivity) getActivity();
+            activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+        });
+        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+            DownloadAllImages();
+            Toast.makeText(getContext(), R.string.downloadAllImagesStarted, Toast.LENGTH_LONG).show();
+            return true;
         });
 
         mBtnEndEditing = rootView.findViewById(R.id.btnEndEditing);
@@ -325,6 +329,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
             }
         });
+        rootView.findViewById(R.id.entryNextBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+            OpenLabelSetup();
+            return true;
+        });
+
 
         rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -332,6 +341,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, false );
             }
         });
+        rootView.findViewById(R.id.entryPrevBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+            if ( FetcherService.isCancelRefresh() )
+                return true;
+            FetcherService.cancelRefresh();
+            Toast.makeText(getContext(), R.string.operationCanceled, Toast.LENGTH_LONG).show();
+            return true;
+        });
+
 
         TextView.OnClickListener listener = new TextView.OnClickListener() {
             @Override
@@ -432,6 +449,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         SetOrientation();
 
         return rootView;
+    }
+
+    private void OpenLabelSetup() {
+        LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), getCurrentEntryID(), null);
     }
 
     private void SetStarFrameWidth(int w) {
@@ -681,12 +702,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_load_all_images: {
-                    FetcherService.mMaxImageDownloadCount = 0;
-                    GetSelectedEntryView().UpdateImages( true );
+                    DownloadAllImages();
                     break;
                 }
                 case R.id.menu_labels: {
-                    LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), getCurrentEntryID(), null );
+                    OpenLabelSetup();
                     break;
                 }
                 case R.id.menu_go_back: {
@@ -1564,11 +1584,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                FetcherService.mMaxImageDownloadCount = 0;
-                GetSelectedEntryView().UpdateImages( true );
+                DownloadAllImages();
             }
         });
 
+    }
+
+    private void DownloadAllImages() {
+        FetcherService.mMaxImageDownloadCount = 0;
+        GetSelectedEntryView().UpdateImages(true);
     }
 
     @Override

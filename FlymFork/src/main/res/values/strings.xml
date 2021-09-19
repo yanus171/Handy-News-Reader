@@ -360,9 +360,9 @@
     <string name="markAllAsRead">Mark all as read</string>
     <string name="pageUp">page up (long tap - to top)or\nswipe down to (un)star</string>
     <string name="pageDown">page down (long tap - to bottom)</string>
-    <string name="fullScreenToggle">toggle full screen</string>
+    <string name="fullScreenToggle">toggle full screen | all images)</string>
     <string name="auto_refresh_feed">Auto refresh feed</string>
-    <string name="actionBarToggle">toggle Action Bar</string>
+    <string name="actionBarToggle">toggle Action Bar | reload text)</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Font size in article list</string>
     <string name="confirmation">Confirmation</string>
@@ -417,8 +417,8 @@
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
     <string name="settings">Settings</string>
-    <string name="entry_go_prev">Previous article</string>
-    <string name="entry_go_next">Next article</string>
+    <string name="entry_go_prev">Previous article | cancel</string>
+    <string name="entry_go_next">Next article | labels</string>
     <string name="colorSlotSaveLongTapHint">Tip: to save the current color make a long tap on one of the cells</string>
     <string name="colorSlotSaved">Color was saved to the cell</string>
     <string name="text">Text</string>
@@ -616,6 +616,8 @@
     <string name="unableToCopyFile">Unable to copy file %s</string>
     <string name="label_setup_by_tap_on_date">Label setup by tap on date</string>
     <string name="label_setup_by_tap_on_date_descr">Author and url in the article list</string>
+    <string name="downloadAllImagesStarted">All images download started</string>
+    <string name="operationCanceled">An operation has been cancelled</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
