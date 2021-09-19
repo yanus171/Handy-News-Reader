@@ -411,7 +411,6 @@
     <string name="delete_read_articles_descr">mezuak mantentzeko denbora dena dela</string>
     <string name="data_folder">Datuen karpeta</string>
     <string name="data_folder_descr">Non gorde deskargatutako artikuluen testu eta irudiak</string>
-    <string name="internalMemoryCache">Barne memoria (Cachea)</string>
     <string name="externalMemory">Kanpo memoria</string>
     <string name="show_html">Erakutsi html-a</string>
     <string name="image_white_background">Irudiaren atzealde zuria</string>
