@@ -348,7 +348,7 @@
     <string name="markAllAsRead">Отметить все как прочитанные</string>
     <string name="pageUp">Страница вверх / Свайп для отметки избранной</string>
     <string name="pageDown">Страница вниз</string>
-    <string name="fullScreenToggle">переключить полноэкранный режим | все изображения)</string>
+    <string name="fullScreenToggle">переключить полноэкранный режим</string>
     <string name="auto_refresh_feed">Обновлять автоматически</string>
     <string name="actionBarToggle">Панели действий</string>
     <string name="standard">Стандартно</string>
