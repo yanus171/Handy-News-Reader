@@ -193,10 +193,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.CATEGORIES + ' ' + FeedData.TYPE_TEXT);
 
         if (oldVersion < 29)
-            database.execSQL(createTable(LabelColumns.TABLE_NAME, LabelColumns.COLUMNS));
+            executeCatchedSQL(database, createTable(LabelColumns.TABLE_NAME, LabelColumns.COLUMNS));
 
         if (oldVersion < 31)
-            database.execSQL(createTable(EntryLabelColumns.TABLE_NAME, EntryLabelColumns.COLUMNS));
+            executeCatchedSQL(database, createTable(EntryLabelColumns.TABLE_NAME, EntryLabelColumns.COLUMNS));
 
         if (oldVersion < 38)
             executeCatchedSQL(database, ALTER_TABLE + LabelColumns.TABLE_NAME + ADD + LabelColumns.ORDER + ' ' + FeedData.TYPE_INT);

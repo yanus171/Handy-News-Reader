@@ -72,7 +72,7 @@ public class MainApplication extends Application {
 
         try {
             ProviderInstaller.installIfNeeded(mContext);
-            Toast.makeText( mContext,  "ProviderInstaller.installIfNeeded", Toast.LENGTH_LONG  ).show();
+            //Toast.makeText( mContext,  "ProviderInstaller.installIfNeeded", Toast.LENGTH_LONG  ).show();
         } catch (GooglePlayServicesRepairableException e) {
             //Toast.makeText( mContext,  "GooglePlayServicesRepairableException", Toast.LENGTH_LONG  ).show();
             GoogleApiAvailability.getInstance().showErrorNotification(mContext, e.getConnectionStatusCode());
