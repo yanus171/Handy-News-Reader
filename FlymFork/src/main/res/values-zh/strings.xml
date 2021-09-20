@@ -601,6 +601,7 @@
     <string name="unableToCopyFile">无法复制文件 %s</string>
     <string name="label_setup_by_tap_on_date">轻按日期设置标签</string>
     <string name="label_setup_by_tap_on_date_descr">文章列表中的作者和 url</string>
+    <string name="downloadAllImagesStarted">图片下载已全部开始</string>
     <string name="operationCanceled">操作已取消</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
