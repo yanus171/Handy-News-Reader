@@ -599,7 +599,7 @@
     <string name="unableToCopyFile">Kopieren der Datei „%s” fehlgeschlagen</string>
     <string name="label_setup_by_tap_on_date">Einrichtung der Kategorien durch Tippen auf das Datum</string>
     <string name="label_setup_by_tap_on_date_descr">Autor und URL in der Artikelliste</string>
-    <string name="downloadAllImagesStarted">Download aller Bilder gestartet</string>
+    <string name="downloadAllImagesStarted">Herunterladen aller Bilder gestartet</string>
     <string name="operationCanceled">Ein Vorgang wurde abgebrochen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
