@@ -14,8 +14,8 @@ android {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 241
-        versionName '0.16.9'
+        versionCode 242
+        versionName '0.16.10'
     }
     lintOptions {
         checkReleaseBuilds false
@@ -76,8 +76,19 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "dim"
+
     productFlavors {
+        fdroid {
+            dimension 'dim'
+        }
+
+        google {
+            dimension 'dim'
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -95,8 +106,8 @@ dependencies {
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:+'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.10+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.google.android.gms:play-services-safetynet:+"
+    googleImplementation "com.google.android.gms:play-services-safetynet:+"
 }
 repositories {
     mavenCentral()
- }
+}

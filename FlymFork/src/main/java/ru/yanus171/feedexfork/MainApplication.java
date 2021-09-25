@@ -26,12 +26,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.StrictMode;
-import android.widget.Toast;
-
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.security.ProviderInstaller;
 
 import java.lang.reflect.Method;
 
@@ -70,15 +64,7 @@ public class MainApplication extends Application {
         mImageFileVoc = new FileVoc(FileUtils.INSTANCE.GetImagesFolder() );
         mHTMLFileVoc = new FileVoc(FileUtils.INSTANCE.GetHTMLFolder() );
 
-        try {
-            ProviderInstaller.installIfNeeded(mContext);
-            //Toast.makeText( mContext,  "ProviderInstaller.installIfNeeded", Toast.LENGTH_LONG  ).show();
-        } catch (GooglePlayServicesRepairableException e) {
-            //Toast.makeText( mContext,  "GooglePlayServicesRepairableException", Toast.LENGTH_LONG  ).show();
-            GoogleApiAvailability.getInstance().showErrorNotification(mContext, e.getConnectionStatusCode());
-        } catch (GooglePlayServicesNotAvailableException e) {
-            //Toast.makeText( mContext,  "GooglePlayServicesNotAvailableException", Toast.LENGTH_LONG  ).show();
-        }
+        GoogleCheck.INSTANCE.check();
 
         LabelVoc.INSTANCE.initInThread();
         BaseActivity.InitLocale( mContext );
@@ -116,6 +102,8 @@ public class MainApplication extends Application {
         mHTMLFileVoc.init1();
         EntryUrlVoc.INSTANCE.initInThread();
     }
+
+
 
 
     @Override
