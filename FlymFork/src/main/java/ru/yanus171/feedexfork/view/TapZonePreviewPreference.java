@@ -76,7 +76,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
         UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, isArticleTapEnabled() && !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible || isArticleTapEnabled() && !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
