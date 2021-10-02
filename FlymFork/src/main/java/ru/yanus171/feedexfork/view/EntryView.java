@@ -83,6 +83,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -890,7 +892,7 @@ public class EntryView extends WebView implements Handler.Callback {
             }
         });
 
-
+        setNestedScrollingEnabled( true );
         timer.End();
     }
 
@@ -1221,6 +1223,8 @@ public class EntryView extends WebView implements Handler.Callback {
     public void PageChange(int delta, StatusText statusText) {
         ScrollTo((int) (getScrollY() + delta * (getHeight() - statusText.GetHeight()) *
                                                        (PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
+        //if ( delta > 0 )
+        //    ( (AppBarLayout) findViewById(R.id.appbar) ).setExpanded(false );
     }
 
     @Override

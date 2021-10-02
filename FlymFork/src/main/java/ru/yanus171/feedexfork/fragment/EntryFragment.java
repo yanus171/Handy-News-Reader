@@ -79,6 +79,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -1770,7 +1771,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             Dog.d( "EntryPagerAdapter.instantiateItem" + position );
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
-            container.addView(view);
+
+            NestedScrollView sv = new NestedScrollView( getContext() );
+            sv.addView( view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+            sv.setFillViewport( true );
+            container.addView(sv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            container.addView(view);
+
             view.mLoadTitleOnly = true;
             Entry entry = GetEntry( position );
             if ( entry != null ) {
