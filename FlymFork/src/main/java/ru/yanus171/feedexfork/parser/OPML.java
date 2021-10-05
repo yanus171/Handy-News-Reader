@@ -742,7 +742,7 @@ public class OPML {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
             || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 
-            if (PrefUtils.getBoolean("use_standard_file_manager", false)) {
+            if (PrefUtils.getBoolean("use_standard_file_manager", true)) {
                 // First, try to use a file app
                 try {
                     FileUtils.INSTANCE.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
@@ -830,8 +830,8 @@ public class OPML {
 
     private static void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
         FetcherService.StartService( FetcherService.GetIntent(Constants.FROM_IMPORT )
-                                        .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
-                                        .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ), false);
+                                     .putExtra( isFileNameUri ? Constants.EXTRA_URI : Constants.EXTRA_FILENAME, fileName )
+                                     .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ), false);
     }
     public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
         Cursor cursor = MainApplication.getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );

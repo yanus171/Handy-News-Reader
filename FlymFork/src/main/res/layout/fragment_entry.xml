@@ -17,20 +17,20 @@
         <!--            android:orientation="vertical">-->
 
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways">
+<!--        <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--            android:id="@+id/coordinator_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:layout_scrollFlags="scroll|enterAlways">-->
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <com.google.android.material.appbar.AppBarLayout-->
+<!--                android:id="@+id/appBar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
                 <include layout="@layout/view_toolbar" />
 
-            </com.google.android.material.appbar.AppBarLayout>
+<!--            </com.google.android.material.appbar.AppBarLayout>-->
             <include layout="@layout/colontitul" />
 
 
@@ -39,10 +39,10 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fillViewport="true">
+<!--                <androidx.core.widget.NestedScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:fillViewport="true">-->
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager"
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                </androidx.core.widget.NestedScrollView>
+<!--                </androidx.core.widget.NestedScrollView>-->
 
                 <include layout="@layout/brightness_slider_layout" />
 
@@ -138,7 +138,7 @@
 
             </RelativeLayout>
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+<!--        </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
 
         <FrameLayout

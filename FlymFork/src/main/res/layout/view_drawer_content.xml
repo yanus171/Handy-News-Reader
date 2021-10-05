@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickOPMLImport"
-            android:src="@drawable/ic_opml_import" />
+            android:src="@drawable/ic_import_from_backup" />
 
         <ImageButton
             style="?android:attr/buttonBarButtonStyle"

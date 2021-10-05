@@ -1772,11 +1772,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             final EntryView view = CreateEntryView();
             mEntryViews.put(position, view);
 
-            NestedScrollView sv = new NestedScrollView( getContext() );
-            sv.addView( view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
-            sv.setFillViewport( true );
-            container.addView(sv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//            container.addView(view);
+//            NestedScrollView sv = new NestedScrollView( getContext() );
+//            sv.addView( view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+//            sv.setFillViewport( true );
+//            container.addView(sv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            container.addView(view);
 
             view.mLoadTitleOnly = true;
             Entry entry = GetEntry( position );
