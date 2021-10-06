@@ -57,6 +57,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -703,11 +704,11 @@ public class OPML {
 
         builder.setTitle(activity.getString( R.string.select_file ) );
         //builder.setMessage( FileUtils.INSTANCE.getFolder().getPath() );
-
+        File path = FileUtils.INSTANCE.getPublicDir();
         try {
-            final String[] fileNames = FileUtils.INSTANCE.getFolder().list((dir, filename) -> new File(dir, filename).isFile());
+            final String[] fileNames = path.list((dir, filename) -> new File(dir, filename).isFile());
             builder.setItems(fileNames,
-                             (dialog, which) -> AskQuestionForImport(activity, FileUtils.INSTANCE.getFolder().toString() + File.separator + fileNames[which], false ));
+                             (dialog, which) -> AskQuestionForImport(activity, path.toString() + File.separator + fileNames[which], false ));
             builder.show();
         } catch (Exception unused) {
             UiUtils.showMessage(activity, R.string.error_feed_import);
@@ -724,7 +725,7 @@ public class OPML {
                     final String fileName =  FileUtils.INSTANCE.getFolder() +  name;
 
                     OPML.exportToFile( fileName, isBackup );
-                    final File destFile = new File( Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
+                    final File destFile = new File(FileUtils.INSTANCE.getPublicDir(), name);
                     FileUtils.INSTANCE.copy( new File( fileName ), destFile  );
                     activity.runOnUiThread(() -> {
                         UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), destFile.getAbsolutePath() ));
@@ -742,13 +743,12 @@ public class OPML {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
             || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 
-            if (PrefUtils.getBoolean("use_standard_file_manager", true)) {
+            if (Build.VERSION.SDK_INT > 28 || PrefUtils.getBoolean("use_standard_file_manager", false)) {
                 // First, try to use a file app
                 try {
                     FileUtils.INSTANCE.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
                 } catch (Exception unused) { // Else use a custom file selector
                     unused.printStackTrace();
-                    displayCustomFilePicker( activity );
                 }
             } else
                 displayCustomFilePicker( activity );
@@ -820,11 +820,8 @@ public class OPML {
     }
     public static void OnActivityResult( Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_OPML_FILE) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK)
                 AskQuestionForImport(activity, data.getData().toString(), true );
-            } else {
-                displayCustomFilePicker( activity );
-            }
         }
     }
 

@@ -138,7 +138,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
-import ru.yanus171.feedexfork.view.StorageItem;
 
 import static android.content.Intent.EXTRA_TEXT;
 import static android.provider.BaseColumns._ID;
@@ -159,7 +158,6 @@ import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
-import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
@@ -172,7 +170,6 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
-import static ru.yanus171.feedexfork.utils.FileUtils.APP_SUBDIR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
@@ -311,10 +308,12 @@ public class FetcherService extends IntentService {
                     OPML.exportToFile( sourceFileName, true );
                     //final ArrayList<String> resultList = new ArrayList<>();
                     //resultList.add( sourceFileName );
-                    for (StorageItem destDir: FileUtils.INSTANCE.createStorageList() ) {
-                        File destFile = new File(destDir.getMPath().getAbsolutePath() + "/" + APP_SUBDIR, AUTO_BACKUP_OPML_FILENAME);
+                    String lastFile = "";
+                    for (String destDir: FileUtils.INSTANCE.getStorageListWithPublic() ) {
+                        File destFile = new File(destDir, AUTO_BACKUP_OPML_FILENAME);
                         if ( !destFile.getAbsolutePath().equals(sourceFileName) ) {
                             try {
+                                lastFile = destFile.getPath();
                                 FileUtils.INSTANCE.copy(new File(sourceFileName), destFile);
                                 //resultList.add( destFile.getAbsolutePath() );
                             } catch ( Exception e ) {
@@ -323,12 +322,9 @@ public class FetcherService extends IntentService {
                         }
                     }
                     PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
-                    UiUtils.RunOnGuiThread(  new Runnable() {
-                        @Override
-                        public void run() {
-                            for ( int i =0; i < 2; i++ )
-                                Toast.makeText( getContext(), getString(R.string.auto_backup_opml_file_created) + "\n" + sourceFileName, Toast.LENGTH_LONG ).show();
-                        }
+                    final String finalLastFile = lastFile;
+                    UiUtils.RunOnGuiThread(() -> {
+                        Toast.makeText(getContext(), getString(R.string.auto_backup_opml_file_created) + "\n" + finalLastFile, Toast.LENGTH_LONG ).show();
                     });
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

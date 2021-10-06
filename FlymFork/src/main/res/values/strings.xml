@@ -129,7 +129,7 @@
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
     <string name="web_page_search_duckduckgo">Search the Web (DuckDuckGo)</string>
-    <string name="select_file">Select a file (from feedex folder from storage additional setting)</string>
+    <string name="select_file">Select a file (from Downloads folder)</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
     <string name="question_delete_filter">Do you really want to delete this filter?</string>
@@ -415,7 +415,7 @@
     <string name="create_auto_backup">Run auto backup now</string>
     <string name="auto_backup_opml_file_created">Auto backup .opml file created:</string>
     <string name="use_standard_file_manager">Use a standard file manager</string>
-    <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog)</string>
+    <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog). Disabled in Android 10+</string>
     <string name="settings">Settings</string>
     <string name="entry_go_prev">Previous article | cancel</string>
     <string name="entry_go_next">Next article | labels</string>

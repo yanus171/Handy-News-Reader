@@ -51,7 +51,7 @@ class StorageSelectPreference(context: Context?, attrs: AttributeSet?) : AutoSum
         val scrollLayout = RadioGroup(context)
         scroll.addView(scrollLayout, WRAP_CONTENT, WRAP_CONTENT)
         scrollLayout.orientation = LinearLayout.VERTICAL
-        val storageList = FileUtils.createStorageList()
+        val storageList = FileUtils.getStorageList()
         var rbList = emptyArray<RadioButton>()
         val value = PrefUtils.getString( key, GetDefaultStoragePath().absolutePath )
         for (item in storageList) {

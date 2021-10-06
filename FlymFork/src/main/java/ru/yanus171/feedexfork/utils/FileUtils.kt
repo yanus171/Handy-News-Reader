@@ -245,7 +245,19 @@ object FileUtils {
         MainApplication.getContext().contentResolver.update(entryUri, values, null, null)
     }
 
-    public fun createStorageList(): ArrayList<StorageItem> {
+    public fun getStorageListWithPublic(): ArrayList<String> {
+        val result = ArrayList<String>()
+        for( item in getStorageList() )
+            result.add(item.mPath.toString())
+        result.add(getPublicDir().toString())
+        return result
+    }
+
+    public fun getPublicDir(): File {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    }
+
+    public fun getStorageList(): ArrayList<StorageItem> {
         val list = ArrayList<StorageItem>()
         list += StorageItem(MainApplication.getContext().cacheDir, R.string.internalMemoryCache)
         list += StorageItem(MainApplication.getContext().filesDir, R.string.internalMemoryData)

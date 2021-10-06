@@ -101,6 +101,9 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         preference = findPreference(PrefUtils.REFRESH_INTERVAL);
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
 
+        if ( Build.VERSION.SDK_INT > 28 )
+            findPreference("use_standard_file_manager").setEnabled( false );
+
         Preference.OnPreferenceChangeListener onRestartPreferenceChangeListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
