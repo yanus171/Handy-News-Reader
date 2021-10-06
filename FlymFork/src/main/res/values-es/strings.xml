@@ -372,7 +372,6 @@
     <string name="delete_read_articles">Eliminar artículos leídos</string>
     <string name="data_folder">Carpeta de datos</string>
     <string name="data_folder_descr">Dónde guardar textos e imágenes de artículos descargados</string>
-    <string name="internalMemoryCache">Memoria interna (Cache)</string>
     <string name="externalMemory">Memoria externa</string>
     <string name="show_html">Mostrar HTML</string>
     <string name="image_white_background">Fondo blanco de la imagen</string>

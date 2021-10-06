@@ -435,7 +435,6 @@ GENERAL]]></string>
     <string name="delete_read_articles_descr">niezależnie od czasu przechowywania artykułów</string>
     <string name="data_folder">Folder danych</string>
     <string name="data_folder_descr">Gdzie przechowywać tekst i obrazki pobranych artykułów</string>
-    <string name="internalMemoryCache">Pamięć wewnętrzna (Cache)</string>
     <string name="externalMemory">Pamięć zewnętrzna</string>
     <string name="show_html">Pokaż HTML</string>
     <string name="image_white_background">Białe tło obrazków</string>
