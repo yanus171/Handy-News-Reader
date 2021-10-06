@@ -252,6 +252,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     mEntriesFragment.UpdateFooter();
             }
         });
+        findViewById(R.id.toggleFullscreenBtn).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mEntriesFragment.FilterByLabels();
+                return true;
+            }
+        });
         findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

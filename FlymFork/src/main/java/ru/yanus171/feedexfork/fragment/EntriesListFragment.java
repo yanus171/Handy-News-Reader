@@ -996,7 +996,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return super.onOptionsItemSelected(item);
     }
 
-    private void FilterByLabels() {
+    public void FilterByLabels() {
         LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
             mLabelsID = checkedLabels;
             ArrayList<String> list = new ArrayList<>();
