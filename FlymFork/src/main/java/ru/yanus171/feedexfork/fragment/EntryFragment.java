@@ -307,7 +307,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     TextView textView = new TextView(getContext());
                     textView.setText( text );
                     textView.setPadding( 10, 10, 10, 10 );
-                    textView.setBackgroundResource( R.drawable.toast_background );
+                    if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+                        textView.setBackgroundResource( R.drawable.toast_background );
                     toast.setView( textView );
                     toast.show();
                 }

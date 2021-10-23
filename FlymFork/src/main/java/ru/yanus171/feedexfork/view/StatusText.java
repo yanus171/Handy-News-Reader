@@ -327,8 +327,7 @@ public class StatusText implements Observer {
                     synchronized (mList) {
                         if ( mList.isEmpty() ) {
                             mBytesRecievedLast = 0;
-                            mErrorText = "";
-                            NotifyObservers( "", "", "", "", false, "" );
+                            NotifyObservers( "", mErrorText, mErrorFeedID, mErrorEntryID, false, "" );
                         }
                     }
                     }
