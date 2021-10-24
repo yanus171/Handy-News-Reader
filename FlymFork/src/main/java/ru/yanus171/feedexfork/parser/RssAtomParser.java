@@ -494,7 +494,6 @@ public class RssAtomParser extends DefaultHandler {
                             existenceStringBuilder.append(Constants.DB_AND).append(EntryColumns.GUID).append(Constants.DB_ARG);
                         }
 
-
                         String[] existenceValues = enclosureString != null ? (guidString != null ? new String[]{entryLinkString, enclosureString,
                                 guidString} : new String[]{entryLinkString, enclosureString}) : (guidString != null ? new String[]{entryLinkString,
                                 guidString} : new String[]{entryLinkString});

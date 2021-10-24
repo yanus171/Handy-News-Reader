@@ -133,8 +133,9 @@ public class PrefUtils {
     }
 
     public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
+    public static final String PREF_ARTICLE_TAP_ENABLED_TEMP = "article_tap_enabled_temp";
     public static Boolean isArticleTapEnabled() {
-        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true );
+        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true ) && PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
     }
 
     public static int getFontSizeFooterClock() {
