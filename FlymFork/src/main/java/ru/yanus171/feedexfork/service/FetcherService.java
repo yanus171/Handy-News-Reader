@@ -161,6 +161,7 @@ import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEF
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
@@ -836,7 +837,8 @@ public class FetcherService extends IntentService {
                             }
                         }
                     }
-                    String title = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.TITLE));
+                    final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
+                    String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
                     //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
                     if ( isCorrectTitle ) {
                         Elements titleEls = doc.getElementsByTag("title");
@@ -895,27 +897,24 @@ public class FetcherService extends IntentService {
                                 values.put(EntryColumns.DATE, date.getTime());
                         }
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
-                        if ( title != null )
+                        final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                        if ( entryCursor.isNull(titleCol) || entryCursor.isNull( favCol ) || entryCursor.getInt(favCol) == 0 )
                             values.put(EntryColumns.TITLE, title);
 
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
-                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
-                            //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
+                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
                             HtmlUtils.replaceImageURLs( mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
-                        }
 
                         String mainImgUrl;
-                        if (!imgUrlsToDownload.isEmpty() ) {
+                        if (!imgUrlsToDownload.isEmpty() )
                             mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
-                        } else {
+                        else
                             mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
-                        }
 
-                        if (mainImgUrl != null) {
+                        if (mainImgUrl != null)
                             values.put(EntryColumns.IMAGE_URL, mainImgUrl);
-                        }
 
-                        cr.update( entryUri, values, null, null );//operations.add(ContentProviderOperation.newUpdate(entryUri).withValues(values).build());
+                        cr.update( entryUri, values, null, null );
 
                         success = true;
                         if ( !imgUrlsToDownload.isEmpty() )
