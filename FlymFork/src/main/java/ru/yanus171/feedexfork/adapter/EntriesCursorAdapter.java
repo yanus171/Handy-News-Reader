@@ -1171,7 +1171,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
     public int GetPosByID( long id ) {
         if ( !isEmpty() ) {
-            final int fiID = ((Cursor) getItem(0)).getColumnIndex(EntryColumns._ID);
+            final int fiID = mIdPos;//((Cursor) getItem(0)).getColumnIndex(EntryColumns._ID);
             for (int i = 0; i < getCount(); i++) {
                 Cursor cursor = (Cursor) getItem(i);
                 if (cursor.getLong(fiID) == id)
