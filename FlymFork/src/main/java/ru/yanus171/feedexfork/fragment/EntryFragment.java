@@ -79,7 +79,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -137,19 +136,16 @@ import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
-import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 
@@ -158,7 +154,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
-    private static final String STATE_ENTRIES_IDS = "STATE_ENTRIES_IDS";
+    //private static final String STATE_ENTRIES_IDS = "STATE_ENTRIES_IDS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
     private static final String STATE_LOCK_LAND_ORIENTATION = "STATE_LOCK_LAND_ORIENTATION";
 
@@ -238,7 +234,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             EntryActivity activity = (EntryActivity) getActivity();
             activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
         });
-        rootView.findViewById(R.id.toggleFullscreenBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+        rootView.findViewById(R.id.toggleFullscreenBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
             ReloadFullText();
             Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
             return true;
@@ -247,7 +245,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             EntryActivity activity = (EntryActivity) getActivity();
             activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
         });
-        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
             DownloadAllImages();
             Toast.makeText(getContext(), R.string.downloadAllImagesStarted, Toast.LENGTH_LONG).show();
             return true;
@@ -255,12 +255,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mBtnEndEditing = rootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
-        mBtnEndEditing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ReloadFullText();
-                Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
-            }
+        mBtnEndEditing.setOnClickListener(view -> {
+            ReloadFullText();
+            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
         });
 
         mEntryPager = rootView.findViewById(R.id.pager);
@@ -320,62 +317,44 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             });
 
 
-        rootView.findViewById(R.id.entryNextBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ( isArticleTapEnabled() )
-                    mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
-                else {
-                    PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true);
-                    TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
-                    Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
-                }
+        rootView.findViewById(R.id.entryNextBtn).setOnClickListener(v -> {
+            if ( isArticleTapEnabled() )
+                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
+            else {
+                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true);
+                TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+                Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
             }
         });
-        rootView.findViewById(R.id.entryPrevBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
+        rootView.findViewById(R.id.entryPrevBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
             OpenLabelSetup();
             return true;
         });
 
 
-        rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, false );
-            }
-        });
-        rootView.findViewById(R.id.entryNextBtn).setOnLongClickListener((View.OnLongClickListener) view -> {
-            if ( isArticleTapEnabled() ) {
-                PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false );
-                TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
-                Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
-            } else {
-                if (FetcherService.isCancelRefresh())
-                    return true;
-                FetcherService.cancelRefresh();
-                Toast.makeText(getContext(), R.string.operationCanceled, Toast.LENGTH_LONG).show();
-            }
+        rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(v -> mEntryPager.setCurrentItem(mEntryPager.getCurrentItem() - 1, false ));
+        rootView.findViewById(R.id.entryNextBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false );
+            TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+            Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
             return true;
         });
 
-        TextView.OnClickListener listener = new TextView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //EntryView entryView = (EntryView) mEntryPager.findViewWithTag("EntryView" + mEntryPager.getCurrentItem());
-                PageDown();
-            }
-        };
+        TextView.OnClickListener listener = view -> PageDown();
 
         rootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
         rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
-        rootView.findViewById(R.id.pageDownBtn).setOnLongClickListener( new TextView.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                final EntryView view = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
-                view.ScrollTo( (int) view.GetContentHeight() - view.getHeight() );
-                Toast.makeText( v.getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
+        rootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
+            if ( !isArticleTapEnabled() )
                 return true;
-            }
+            final EntryView view = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
+            view.ScrollTo( (int) view.GetContentHeight() - view.getHeight() );
+            Toast.makeText( v.getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
+            return true;
         });
 
         rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
@@ -1460,53 +1439,33 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         builder.setTitle( getString( R.string.open_tag_menu_dialog_title ) + className );
 
         final AlertDialog dialog = builder.show();
-        AddActionButton(parent, R.string.setFullTextRoot, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFullTextRoot(GetSelectedUrlPart(groupUrl), className);
-                dialog.dismiss();
-            }
+        AddActionButton(parent, R.string.setFullTextRoot, view -> {
+            setFullTextRoot(GetSelectedUrlPart(groupUrl), className);
+            dialog.dismiss();
         });
-        AddActionButton(parent, paramValue.equals("hide") ? R.string.hide : R.string.show, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ( paramValue.equals( "hide" ) )
-                    removeClass( className );
-                else if ( paramValue.equals( "show" ) )
-                    returnClass( className );
-                dialog.dismiss();
-            }
+        AddActionButton(parent, paramValue.equals("hide") ? R.string.hide : R.string.show, view -> {
+            if ( paramValue.equals( "hide" ) )
+                removeClass( className );
+            else if ( paramValue.equals( "show" ) )
+                returnClass( className );
+            dialog.dismiss();
         });
-        AddActionButton(parent, R.string.set_category, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setCategory(GetSelectedUrlPart(groupUrl), className);
-                dialog.dismiss();
-            }
+        AddActionButton(parent, R.string.set_category, view -> {
+            setCategory(GetSelectedUrlPart(groupUrl), className);
+            dialog.dismiss();
         });
 
-        AddActionButton(parent, R.string.set_date, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setDate(GetSelectedUrlPart(groupUrl), className);
-                dialog.dismiss();
-            }
+        AddActionButton(parent, R.string.set_date, view -> {
+            setDate(GetSelectedUrlPart(groupUrl), className);
+            dialog.dismiss();
         });
 
-        AddActionButton(parent, R.string.copyClassNameToClipboard, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copyToClipboard(className);
-                dialog.dismiss();
-            }
+        AddActionButton(parent, R.string.copyClassNameToClipboard, view -> {
+            copyToClipboard(className);
+            dialog.dismiss();
         });
 
-        AddActionButton(parent, android.R.string.cancel, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        AddActionButton(parent, android.R.string.cancel, view -> dialog.dismiss());
     }
 
     private String GetSelectedUrlPart(RadioGroup groupUrl) {
@@ -1560,43 +1519,31 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void downloadImage(final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FetcherService.mCancelRefresh = false;
-                int status = FetcherService.Status().Start( getString(R.string.downloadImage), true ); try {
-                    NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    FetcherService.Status().End( status );
-                }
-
+        new Thread(() -> {
+            FetcherService.mCancelRefresh = false;
+            int status = FetcherService.Status().Start( getString(R.string.downloadImage), true ); try {
+                NetworkUtils.downloadImage(getCurrentEntryID(), getCurrentEntryLink(), url, false, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                FetcherService.Status().End( status );
             }
+
         }).start();
     }
 
     @Override
     public void downloadNextImages() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+        getActivity().runOnUiThread(() -> {
             FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
             GetSelectedEntryView().UpdateImages( true );
-            }
         });
 
     }
 
     @Override
     public void downloadAllImages() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DownloadAllImages();
-            }
-        });
-
+        getActivity().runOnUiThread(() -> DownloadAllImages());
     }
 
     private void DownloadAllImages() {
@@ -1850,33 +1797,30 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         view.setListener(EntryFragment.this);
         view.setTag(null);
 
-        view.mScrollChangeListener = new Runnable(){
-            @Override
-            public void run() {
-                if ( !mFavorite )
-                    return;
-                if ( mRetrieveFullText && !mIsFullTextShown )
-                    return;
-                if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
-                    return;
-                if ( view.mWasAutoUnStar )
-                    return;
-                if ( !view.mContentWasLoaded )
-                    return;
-                if ( view.IsScrollAtBottom() && new Date().getTime() - view.mLastSetHTMLTime > MILLS_IN_SECOND * 5 ) {
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                    view.mWasAutoUnStar = true;
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            ContentValues values = new ContentValues();
-                            values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, 1);
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update(uri, values, null, null);
-                        }
-                    }.start();
-                    SetIsFavorite(false, true );
-                }
+        view.mScrollChangeListener = () -> {
+            if ( !mFavorite )
+                return;
+            if ( mRetrieveFullText && !mIsFullTextShown )
+                return;
+            if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
+                return;
+            if ( view.mWasAutoUnStar )
+                return;
+            if ( !view.mContentWasLoaded )
+                return;
+            if ( view.IsScrollAtBottom() && new Date().getTime() - view.mLastSetHTMLTime > MILLS_IN_SECOND * 5 ) {
+                final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                view.mWasAutoUnStar = true;
+                new Thread() {
+                    @Override
+                    public void run() {
+                        ContentValues values = new ContentValues();
+                        values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, 1);
+                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        cr.update(uri, values, null, null);
+                    }
+                }.start();
+                SetIsFavorite(false, true );
             }
         };
         view.StatusStartPageLoading();
