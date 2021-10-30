@@ -880,7 +880,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData() + "</root>";
                         String htmlFormatted = NetworkUtils.formatXML( html );
-                        DebugApp.CreateFileUri("", "html.html", html);
+                        DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "html.html", html);
                         MessageBox.Show(htmlFormatted);
                     }
                     break;

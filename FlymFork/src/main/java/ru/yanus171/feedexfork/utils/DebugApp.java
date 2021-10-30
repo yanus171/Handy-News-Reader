@@ -20,13 +20,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,7 +40,10 @@ import java.util.Map;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.SendErrorActivity;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
+
+import static androidx.core.content.FileProvider.getUriForFile;
 
 //****************************************************************************
 public class DebugApp {
@@ -192,7 +200,7 @@ public class DebugApp {
 		throwable.printStackTrace();
 
 		try {
-			CreateFileUri("", "crash.txt", st.toString());
+			CreateFileUri(FileUtils.INSTANCE.getFolder().getAbsolutePath(), "crash.txt", st.toString());
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -384,22 +392,17 @@ public class DebugApp {
 		if (fileName.startsWith("/"))
 			file = new File(fileName);
 		else {
-			file = FileUtils.INSTANCE.getFolder();
-			file.mkdirs();
-			file = new File(file, dir);
+			file = new File(dir);
 			file.mkdirs();
 			file = new File(file, fileName);
 		}
-		ObjectOutputStream out;
-		try {
-			out = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
-			try {
-				out.writeChars(text);
-			} finally {
-				out.close();
-			}
-			result = Uri.parse("file://" + file.getAbsolutePath());
-		} catch (Exception e) {
+
+		try (Writer out = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(file.getAbsolutePath()), "UTF-8"))) {
+			out.write(text);
+			result = getUriForFile(MainApplication.getContext(), FeedData.PACKAGE_NAME + ".fileprovider", file );
+		} catch (UnsupportedEncodingException e) {
+			AddErrorToLog(null, e);
+		} catch (IOException e) {
 			AddErrorToLog(null, e);
 		}
 

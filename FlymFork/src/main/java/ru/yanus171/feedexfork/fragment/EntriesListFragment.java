@@ -34,9 +34,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.BaseColumns;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.EventLog;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -92,8 +95,10 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -103,6 +108,7 @@ import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
@@ -718,22 +724,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     StringBuilder starredList = new StringBuilder();
                     final boolean temp = mShowUnReadOnly;
                     mShowUnReadOnly = false;
-                    Cursor cursor = getContext().getContentResolver().query( mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
-                                                                             EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC) );
-                    mShowUnReadOnly = temp;
-                    if (cursor != null && !cursor.isClosed()) {
-                        int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
-                        int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
-                        if (cursor.moveToFirst())
-                            do {
-                                starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
-                            } while (cursor.moveToNext());
-                        startActivity(Intent.createChooser(
-                                new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_favorites_title))
-                                        .putExtra(Intent.EXTRA_TEXT, starredList.toString()).setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
-                        ));
-                        cursor.close();
+                    final HashSet<Long> tempLabelsID = mLabelsID;
+                    for ( Label label: LabelVoc.INSTANCE.getList() ) {
+                        starredList.append( label.mName + ": \n" );
+                        starredList.append( "----------------------------------------\n" );
+                        SetSingleLabel( label.mID );
+                        AddAtriclesLinks(starredList);
                     }
+                    mShowUnReadOnly = temp;
+                    mLabelsID = tempLabelsID;
+                    final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "shared_article_links.txt", starredList.toString()) );
+                    startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
                 }
                 return true;
             }
@@ -994,6 +997,18 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void AddAtriclesLinks(StringBuilder starredList) {
+        Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
+                                                                EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC));
+        if (cursor != null) {
+            int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
+            int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
+            while (cursor.moveToNext())
+                starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
+            cursor.close();
+        }
     }
 
     public void FilterByLabels() {

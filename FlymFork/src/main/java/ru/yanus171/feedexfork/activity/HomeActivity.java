@@ -370,8 +370,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         if ( intent.getData() != null ) {
             mEntriesFragment.ClearSingleLabel();
-            if ( intent.hasExtra(LABEL_ID_EXTRA) )
-                mEntriesFragment.SetSingleLabel( intent.getLongExtra( LABEL_ID_EXTRA, 0 ) );
+            if ( intent.hasExtra(LABEL_ID_EXTRA) ) {
+                mEntriesFragment.SetSingleLabel(intent.getLongExtra(LABEL_ID_EXTRA, 0));
+                PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
+                if ( mDrawerAdapter != null )
+                    mDrawerAdapter.notifyDataSetChanged();
+            }
             if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
                 selectDrawerItem( 2 );
             else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
@@ -384,8 +388,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
                 else if ( mEntriesFragment.mIsSingleLabel ) {
-                    PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
-                    mDrawerAdapter.notifyDataSetChanged();
                     selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
                 } else {
                     long feedID = 0;
