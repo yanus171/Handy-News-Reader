@@ -1,7 +1,6 @@
 package ru.yanus171.feedexfork.view;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.DialogPreference;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -50,8 +48,9 @@ public final class TapZonePreviewPreference extends DialogPreference {
         final int size = GetTapZoneSize();
         SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT, preview);
         SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT, preview);
-        SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size, preview);
-        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSlider, size, preview);
+        //SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size, preview);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderLeft, size, preview);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderRight, size, preview);
         SetupZone(parentView, size, R.id.entryPrevBtn, size, preview);
         SetupZone(parentView, size, R.id.entryNextBtn, size, preview);
         SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size, preview);
@@ -73,7 +72,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
 
     static public void HideTapZonesText( View rootView ) {
         final boolean tapZonesVisible = PrefUtils.getBoolean(PrefUtils.TAP_ZONES_VISIBLE, true );
-        UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
+        //UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
         UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
         UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible || isArticleTapEnabled() && !tapZonesVisible);

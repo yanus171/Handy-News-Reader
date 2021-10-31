@@ -91,7 +91,7 @@
                             android:dividerHeight="5dp"
                             android:footerDividersEnabled="false" />
 
-                        <include layout="@layout/brightness_slider_layout" />
+                        <include layout="@layout/brightness_slider_layout_left" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

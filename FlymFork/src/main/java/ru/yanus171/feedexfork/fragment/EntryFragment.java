@@ -347,7 +347,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         TextView.OnClickListener listener = view -> PageDown();
 
         rootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+        //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
         rootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
             if ( !isArticleTapEnabled() )
                 return true;

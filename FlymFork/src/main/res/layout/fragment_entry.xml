@@ -52,17 +52,18 @@
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 <!--                </androidx.core.widget.NestedScrollView>-->
 
-                <include layout="@layout/brightness_slider_layout" />
+                <include layout="@layout/brightness_slider_layout_left" />
+                <include layout="@layout/brightness_slider_layout_right" />
 
-                <TextView
-                    android:id="@+id/pageDownBtnVert"
-                    style="@style/TapZone"
-                    android:layout_width="10mm"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/pageDown"
-                    tools:ignored="RtlHardcoded"
-                    android:layout_alignParentEnd="true" />
+<!--                <TextView-->
+<!--                    android:id="@+id/pageDownBtnVert"-->
+<!--                    style="@style/TapZone"-->
+<!--                    android:layout_width="10mm"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:text="@string/pageDown"-->
+<!--                    tools:ignored="RtlHardcoded"-->
+<!--                    android:layout_alignParentEnd="true" />-->
 
                 <TextView
                     android:id="@+id/pageUpBtn"

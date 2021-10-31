@@ -5,38 +5,36 @@ package ru.yanus171.feedexfork.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import android.provider.Settings.System.SCREEN_BRIGHTNESS
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.Window
 import android.widget.TextView
-
-import java.util.Date
-
 import ru.yanus171.feedexfork.R
-
-import android.provider.Settings.System.SCREEN_BRIGHTNESS
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
-import java.lang.Math.pow
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 
-class Brightness( private val mActivity: Activity, rootView: View) {
+class Brightness(private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
     private val mInfo: TextView? = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha : Float = 128F
 
     init {
         mInfo?.visibility = View.GONE
-        mCurrentAlpha = PrefUtils.getFloat( PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
-        UiUtils.HideButtonText(rootView, R.id.brightnessSlider, true)
-        SetSize(rootView, R.id.brightnessSlider, (GetTapZoneSize() * 1.5).toInt(), MATCH_PARENT)
+        mCurrentAlpha = PrefUtils.getFloat(PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
+        UiUtils.HideButtonText(rootView, R.id.brightnessSliderLeft, true)
+        UiUtils.HideButtonText(rootView, R.id.brightnessSliderRight, true)
+        SetSize(rootView, R.id.brightnessSliderLeft, (GetTapZoneSize() * 1.5).toInt(), MATCH_PARENT)
+        SetSize(rootView, R.id.brightnessSliderRight, (GetTapZoneSize() * 1.5).toInt(), MATCH_PARENT)
 
-        if (PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false))
-            rootView.findViewById<View>(R.id.brightnessSlider).setOnTouchListener(object : View.OnTouchListener {
+        if (PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false)) {
+            val touchListener = object : View.OnTouchListener {
                 private var paddingX = 0
                 private var paddingY = 0
                 private var initialX = 0
@@ -57,6 +55,8 @@ class Brightness( private val mActivity: Activity, rootView: View) {
                             currentX = event.x.toInt()
                             currentY = event.y.toInt()
                             mInitialAlpha = mCurrentAlpha
+                            //view1.parent.requestDisallowInterceptTouchEvent(false)
+
                             Dog.v("onTouch ACTION_DOWN")
                             return true
                         }
@@ -68,8 +68,10 @@ class Brightness( private val mActivity: Activity, rootView: View) {
                             paddingY = currentY - initialY
 
                             if (abs(paddingY) > abs(paddingX) ) {
+                                //if( abs(paddingY) <= abs(paddingX) )
+                                //    view1.parent.requestDisallowInterceptTouchEvent(true)
                                 val delta : Float = paddingY.toFloat() / mDimFrame.height.toFloat()
-                                val coeff : Float = max(0.1F, ( min( 1F, abs(delta)) ) * 2 )
+                                val coeff : Float = max(0.1F, (min(1F, abs(delta))) * 2)
                                 var currentAlpha : Float = (mInitialAlpha + delta * 255F * coeff.toDouble().pow(3.0)).toFloat()
                                 if (currentAlpha > 255)
                                     currentAlpha = 255F
@@ -80,7 +82,11 @@ class Brightness( private val mActivity: Activity, rootView: View) {
                                 mInfo?.visibility = View.VISIBLE
                                 mInfo?.text = String.format("%s: %.1f %%",
                                         mInfo?.context?.getString(R.string.brightness),
-                                        if ( currentAlpha >= 255F / 100F ) { (255 - currentAlpha) / 255.toFloat() * 100 } else { 100F } )
+                                        if (currentAlpha >= 255F / 100F) {
+                                            (255 - currentAlpha) / 255.toFloat() * 100
+                                        } else {
+                                            100F
+                                        })
                             }
                             return true
                         }
@@ -95,8 +101,11 @@ class Brightness( private val mActivity: Activity, rootView: View) {
                     }
 
                 }
-            })
+            }
 
+            rootView.findViewById<View>(R.id.brightnessSliderLeft)?.setOnTouchListener(touchListener);
+            rootView.findViewById<View>(R.id.brightnessSliderRight)?.setOnTouchListener(touchListener);
+        }
     }
 
     fun OnResume() {

@@ -892,7 +892,7 @@ public class EntryView extends WebView implements Handler.Callback {
             }
         });
 
-        setNestedScrollingEnabled( true );
+        //setNestedScrollingEnabled( true );
         timer.End();
     }
 
