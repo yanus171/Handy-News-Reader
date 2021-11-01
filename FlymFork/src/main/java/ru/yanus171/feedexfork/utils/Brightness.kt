@@ -102,7 +102,6 @@ class Brightness(private val mActivity: Activity, rootView: View) {
 
                 }
             }
-
             rootView.findViewById<View>(R.id.brightnessSliderLeft)?.setOnTouchListener(touchListener);
             rootView.findViewById<View>(R.id.brightnessSliderRight)?.setOnTouchListener(touchListener);
         }

@@ -455,8 +455,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if ( mEntriesCursorAdapter == null || !mIsResumed )
                     return;
+                HomeActivity activity = (HomeActivity) getActivity();
                 if ( GetActivity().mPageUpBtn != null )
-                    GetActivity().mPageUpBtn.setVisibility( firstVisibleItem == 0 ? View.GONE : View.VISIBLE );
+                    GetActivity().mPageUpBtn.setVisibility( firstVisibleItem == 0 || activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
+                if ( GetActivity().mPageUpBtnFS != null )
+                    GetActivity().mPageUpBtnFS.setVisibility( firstVisibleItem == 0 || !activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
                 for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
                     String item = new VisibleReadItem( GetUri( i ).toString(), isAlsoSetAsRead() ).ToString();
                     synchronized ( mWasVisibleList ) {

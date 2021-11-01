@@ -230,26 +230,50 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
                                       (TextView) rootView.findViewById( R.id.progressText),
                                       FetcherService.Status());
-        rootView.findViewById(R.id.toggleFullscreenBtn).setOnClickListener( view -> {
-            EntryActivity activity = (EntryActivity) getActivity();
-            activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+
+    rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
+            if ( isArticleTapEnabled() ) {
+                EntryActivity activity = (EntryActivity) getActivity();
+                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+            } else
+                EnabledTapActions();
         });
-        rootView.findViewById(R.id.toggleFullscreenBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            ReloadFullText();
-            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
+        rootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
+            if ( isArticleTapEnabled() ) {
+                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
+                TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+                Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
+            } else
+                EnabledTapActions();
             return true;
         });
-        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(v -> {
+
+        rootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
             EntryActivity activity = (EntryActivity) getActivity();
             activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
         });
-        rootView.findViewById(R.id.toggleFullScreenStatusBarBtn).setOnLongClickListener(view -> {
+        rootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            OpenLabelSetup();
+            return true;
+        });
+
+        rootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> mEntryPager.setCurrentItem(mEntryPager.getCurrentItem() - 1, true ));
+        rootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
                 return true;
             DownloadAllImages();
             Toast.makeText(getContext(), R.string.downloadAllImagesStarted, Toast.LENGTH_LONG).show();
+            return true;
+        });
+
+        rootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> mEntryPager.setCurrentItem(mEntryPager.getCurrentItem() + 1, true ));
+        rootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            ReloadFullText();
+            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
             return true;
         });
 
@@ -315,34 +339,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 public void onPageScrollStateChanged(int i) {
                 }
             });
-
-
-        rootView.findViewById(R.id.entryNextBtn).setOnClickListener(v -> {
-            if ( isArticleTapEnabled() )
-                mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, false );
-            else {
-                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true);
-                TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
-                Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
-            }
-        });
-        rootView.findViewById(R.id.entryPrevBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            OpenLabelSetup();
-            return true;
-        });
-
-
-        rootView.findViewById(R.id.entryPrevBtn).setOnClickListener(v -> mEntryPager.setCurrentItem(mEntryPager.getCurrentItem() - 1, false ));
-        rootView.findViewById(R.id.entryNextBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false );
-            TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
-            Toast.makeText( MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
-            return true;
-        });
 
         TextView.OnClickListener listener = view -> PageDown();
 
@@ -436,6 +432,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         SetOrientation();
 
         return rootView;
+    }
+
+    private void EnabledTapActions() {
+        PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
+        TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+        Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
     }
 
     private void OpenLabelSetup() {

@@ -51,10 +51,12 @@ public final class TapZonePreviewPreference extends DialogPreference {
         //SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size, preview);
         SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderLeft, size, preview);
         SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderRight, size, preview);
-        SetupZone(parentView, size, R.id.entryPrevBtn, size, preview);
-        SetupZone(parentView, size, R.id.entryNextBtn, size, preview);
-        SetupZone(parentView, size, R.id.toggleFullScreenStatusBarBtn, size, preview);
-        SetupZone(parentView, size, R.id.toggleFullscreenBtn, size, preview);
+        SetupZone(parentView, size, R.id.entryLeftBottomBtn, size, preview);
+        SetupZone(parentView, size, R.id.entryRightBottomBtn, size, preview);
+        SetupZone(parentView, size, R.id.leftTopBtn, size, preview);
+        SetupZone(parentView, size, R.id.rightTopBtn, size, preview);
+        SetupZone(parentView, size, R.id.leftTopBtnFS, size, preview);
+        SetupZone(parentView, size, R.id.rightTopBtnFS, size, preview);
         if ( !preview )
             HideTapZonesText(parentView.getRootView());
     }
@@ -62,7 +64,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
     private static void SetupZone(View parentView, int size, int viewID, int matchParent, boolean preview) {
         View view = parentView.findViewById( viewID );
         if ( view != null ) {
-            if (preview || isArticleTapEnabled() || viewID == R.id.entryNextBtn ) {
+            if (preview || isArticleTapEnabled() || viewID == R.id.rightTopBtn) {
                 view.setVisibility(View.VISIBLE);
                 SetSize(parentView, viewID, matchParent, size);
             } else
@@ -75,10 +77,13 @@ public final class TapZonePreviewPreference extends DialogPreference {
         //UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
         UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
-        UiUtils.HideButtonText(rootView, R.id.entryNextBtn, !tapZonesVisible || isArticleTapEnabled() && !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.entryPrevBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullScreenStatusBarBtn, !tapZonesVisible);
-        UiUtils.HideButtonText(rootView, R.id.toggleFullscreenBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.pageUpBtnFS, true);
+        UiUtils.HideButtonText(rootView, R.id.entryRightBottomBtn, !tapZonesVisible || isArticleTapEnabled() && !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryLeftBottomBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.leftTopBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.rightTopBtn, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.leftTopBtnFS, !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.rightTopBtnFS, !tapZonesVisible);
     }
 
 }
