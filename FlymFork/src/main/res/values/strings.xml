@@ -618,6 +618,7 @@
     <string name="label_setup_by_tap_on_date_descr">Author and url in the article list</string>
     <string name="downloadAllImagesStarted">All images download started</string>
     <string name="operationCanceled">An operation has been cancelled</string>
+    <string name="comments">Comments: </string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
