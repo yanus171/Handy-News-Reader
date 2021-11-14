@@ -405,8 +405,8 @@
     <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
     <string name="settings">Настройки</string>
-    <string name="entry_go_prev">Пред. статья</string>
-    <string name="entry_go_next">След. статья</string>
+    <string name="entry_go_prev">Пред. статья | отмена</string>
+    <string name="entry_go_next">След. статья | метки</string>
     <string name="colorSlotSaveLongTapHint">Совет: Чтобы сохранить текущий цвет, сделайте долгий тап на одну из ячеек</string>
     <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
@@ -606,6 +606,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="label_setup_by_tap_on_date_descr">На дату, автора и адреса в списке статей</string>
     <string name="downloadAllImagesStarted">Загрузка всех изображений началась</string>
     <string name="operationCanceled">Операция отменена</string>
+    <string name="comments">Комментарии: </string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
