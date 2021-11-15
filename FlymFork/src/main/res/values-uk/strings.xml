@@ -602,6 +602,7 @@
     <string name="label_setup_by_tap_on_date_descr">Автор і Url у списку статей</string>
     <string name="downloadAllImagesStarted">Розпочато завантаження всіх зображень</string>
     <string name="operationCanceled">Операцію скасовано</string>
+    <string name="comments">Коментарі: </string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
