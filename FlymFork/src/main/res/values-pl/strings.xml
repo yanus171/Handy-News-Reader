@@ -197,6 +197,7 @@ GENERAL]]></string>
     <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w prawo, przesuń w lewo by dodać do Ulubionych</string>
     <string name="undo">Cofnij</string>
     <string name="marked_as_read">Oznaczono jako przeczytane</string>
+    <string name="removed_from_favorites">Usunięto z Ulubionych</string>
     <string name="image_count">Licznik obrazków</string>
     <!-- WIDGET -->
     <string name="red">Czerwony</string>
@@ -435,6 +436,8 @@ GENERAL]]></string>
     <string name="delete_read_articles_descr">niezależnie od czasu przechowywania artykułów</string>
     <string name="data_folder">Folder danych</string>
     <string name="data_folder_descr">Gdzie przechowywać tekst i obrazki pobranych artykułów</string>
+    <string name="internalMemoryCache">Pamięć wewnętrzna (Cache)</string>
+    <string name="internalMemoryData">Pamięć wewnętrzna (Dane)</string>
     <string name="externalMemory">Pamięć zewnętrzna</string>
     <string name="show_html">Pokaż HTML</string>
     <string name="image_white_background">Białe tło obrazków</string>
@@ -598,6 +601,14 @@ GENERAL]]></string>
     <string name="all_labels">Wszystkie etykiety</string>
     <string name="filter_label_title">Filtr</string>
     <string name="menu_edit_feed">Edytuj kanał</string>
+    <string name="addCustomFont">Dodaj niestandardową czcionkę…</string>
+    <string name="fileCopied">Plik skopiowano w %s</string>
+    <string name="unableToCopyFile">Nie można skopiować pliku %s</string>
+    <string name="label_setup_by_tap_on_date">Konfiguracja etykiet poprzez tapnięcie daty</string>
+    <string name="label_setup_by_tap_on_date_descr">Autor i URL na liście artykułów</string>
+    <string name="downloadAllImagesStarted">Rozpoczęto pobieranie wszystkich obrazków</string>
+    <string name="operationCanceled">Operacja została anulowana</string>
+    <string name="comments">Komentarze: </string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
