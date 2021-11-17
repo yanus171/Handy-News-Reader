@@ -192,6 +192,7 @@
     <string name="tip_sentence">Scorri a destra per segnare come letto, scorri a sinistra per aggiungere ai Preferiti</string>
     <string name="undo">Annulla</string>
     <string name="marked_as_read">Segnato come già letto</string>
+    <string name="removed_from_favorites">Rimosso dai Preferiti</string>
     <string name="image_count">Numero Immagini</string>
     <!-- WIDGET -->
     <string name="red">Rosso</string>
@@ -429,6 +430,8 @@
     <string name="delete_read_articles_descr">indipendentemente dagli articoli mantienilo</string>
     <string name="data_folder">Cartella dati</string>
     <string name="data_folder_descr">Dove memorizzare i testi e le immagini degli articoli scaricati</string>
+    <string name="internalMemoryCache">Memoria interna (Cache)</string>
+    <string name="internalMemoryData">Memoria interna (Dati)</string>
     <string name="externalMemory">Memoria esterna</string>
     <string name="show_html">Mostra HTML</string>
     <string name="image_white_background">Immagine di sfondo bianco</string>
@@ -592,6 +595,14 @@
     <string name="all_labels">Tutte le etichette</string>
     <string name="filter_label_title">Filtro</string>
     <string name="menu_edit_feed">Modifica feed</string>
+    <string name="addCustomFont">Aggiungi font personalizzato…</string>
+    <string name="fileCopied">File %s copiato</string>
+    <string name="unableToCopyFile">Impossibile copiare il file %s</string>
+    <string name="label_setup_by_tap_on_date">Impostazione etichetta toccando la data</string>
+    <string name="label_setup_by_tap_on_date_descr">Autore e URL nell\'elenco degli articoli</string>
+    <string name="downloadAllImagesStarted">Tutte le immagini stanno venendo scaricate</string>
+    <string name="operationCanceled">Un\'operazione è stata annullata</string>
+    <string name="comments">Commenti: </string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
