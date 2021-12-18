@@ -803,6 +803,7 @@ public class EntryView extends WebView implements Handler.Callback {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 StatusStartPageLoading();
+                ScheduleScrollTo(view);
             }
 
             @Override
@@ -818,33 +819,37 @@ public class EntryView extends WebView implements Handler.Callback {
 
             private void ScheduleScrollTo(final WebView view) {
                 Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
-                    double newContentHeight = GetContentHeight();
-                    if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
-                        final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
-                        if ( searchText != null && !searchText.isEmpty() ) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                                findAllAsync(searchText);
-                            else
-                                findAll(searchText);
-                            UiUtils.RunOnGuiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    view.clearMatches();
-                                }
-                            }, 5000 );
-                        } else
-                            ScrollToY();
-                        DownLoadImages();
-                        EndStatus();
-                    } else
-                        view.postDelayed(new Runnable() {
+                double newContentHeight = GetContentHeight();
+                final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
+                final boolean isSearch = searchText != null && !searchText.isEmpty();
+                if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
+                    if ( isSearch ) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                            findAllAsync(searchText);
+                        else
+                            findAll(searchText);
+                        UiUtils.RunOnGuiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ScheduleScrollTo(view);
+                                view.clearMatches();
                             }
-                            // Delay the scrollTo to make it work
-                        }, 150);
-                    mLastContentHeight = newContentHeight;
+                        }, 5000 );
+                    } else
+                        ScrollToY();
+                    DownLoadImages();
+                    EndStatus();
+                } else {
+                    view.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ScheduleScrollTo(view);
+                        }
+                        // Delay the scrollTo to make it work
+                    }, 150);
+                    if ( !isSearch )
+                        ScrollToY();
+                }
+                mLastContentHeight = newContentHeight;
             }
         });
 
