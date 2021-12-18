@@ -193,7 +193,7 @@
     <string name="tip_sentence">Tip: swipe right to mark as read, swipe left to add to Favorites</string>
     <string name="undo">Undo</string>
     <string name="marked_as_read">Marked as read</string>
-    <string name="removed_from_favorites">Removed from favorites</string>
+    <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="image_count">Image count</string>
 
     <!-- WIDGET -->
@@ -615,7 +615,7 @@
     <string name="fileCopied">File %s copied</string>
     <string name="unableToCopyFile">Unable to copy file %s</string>
     <string name="label_setup_by_tap_on_date">Label setup by tap on date</string>
-    <string name="label_setup_by_tap_on_date_descr">Author and url in the article list</string>
+    <string name="label_setup_by_tap_on_date_descr">Author and URL in the article list</string>
     <string name="downloadAllImagesStarted">All images download started</string>
     <string name="operationCanceled">An operation has been cancelled</string>
     <string name="comments">Comments: </string>
