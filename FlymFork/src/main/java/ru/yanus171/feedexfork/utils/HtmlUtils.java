@@ -78,7 +78,6 @@ public class HtmlUtils {
     private static final Pattern END_BR_PATTERN = Pattern.compile("(\\s*<br\\s*[/]*>\\s*)", Pattern.CASE_INSENSITIVE);
     private static final Pattern MULTIPLE_BR_PATTERN = Pattern.compile("(\\s*<br\\s*[/]*>\\s*){3,}", Pattern.CASE_INSENSITIVE);
     private static final Pattern EMPTY_LINK_PATTERN = Pattern.compile("<a\\s+[^>]*></a>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern REF_REPLY_PATTERN = Pattern.compile("<a[^>]+(reply|thread|comment|user)[^>]+(.)*?/a>", Pattern.CASE_INSENSITIVE);
     private static final Pattern IMG_USER_PATTERN = Pattern.compile("<img[^>]+(user)[^>]+(.)*?>", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern HTTP_PATTERN = Pattern.compile("(http.?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[?]|[=]|[:]|[/.]|[~])*");//Pattern.compile("(?<![\\>https?://|href=\"'])(?<http>(https?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[/.]|[~])*)");
@@ -127,11 +126,6 @@ public class HtmlUtils {
             //content = START_BR_PATTERN.matcher(content).replaceAll("");
             //content = END_BR_PATTERN.matcher(content).replaceAll("");
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
-            if (!baseUri.contains("user") && mobType != ArticleTextExtractor.MobilizeType.Tags) {
-                content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
-                //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
-            }
-
             if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
                 // xml
                 content = content.replace("&lt;", "<");

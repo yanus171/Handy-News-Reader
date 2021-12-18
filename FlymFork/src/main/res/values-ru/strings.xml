@@ -510,7 +510,7 @@
     <string name="removeText">Удалить текст</string>
     <string name="set_category">Установить как категорию</string>
     <string name="menu_more_options">Больше опций</string>
-    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все избранные статьи</string>
+    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все неотмеченные статьи</string>
     <string name="filter_apply_to_author">Применить к автору</string>
     <string name="filter_apply_to_category">Применить к категории</string>
     <string name="filter_apply_to_url">Применить к URL</string>

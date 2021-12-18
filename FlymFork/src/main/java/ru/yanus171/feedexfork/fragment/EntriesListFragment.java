@@ -111,6 +111,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
@@ -793,34 +794,32 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_reset_feed_and_delete_all_articles: {
-                //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
-                    new AlertDialog.Builder(getContext()) //
-                            .setIcon(android.R.drawable.ic_dialog_alert) //
-                            .setTitle( R.string.question ) //
-                            .setMessage( R.string.deleteAllEntries ) //
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getContext()) //
+                    .setIcon(android.R.drawable.ic_dialog_alert) //
+                    .setTitle( R.string.question ) //
+                    .setMessage( R.string.deleteAllEntries ) //
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new Thread() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
-                                            // reset feed
-                                            if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
-                                                final String feedID = mCurrentUri.getPathSegments().get( 1 );
-                                                ContentValues values = new ContentValues();
-                                                values.putNull(FeedColumns.LAST_UPDATE);
-                                                values.putNull(FeedColumns.ICON_URL);
-                                                values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                                                final ContentResolver cr = getContext().getContentResolver();
-                                                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
-                                            }
-
-                                        }
-                                    }.start();
+                                public void run() {
+                                    FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
+                                    // reset feed
+                                    if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
+                                        final String feedID = mCurrentUri.getPathSegments().get( 1 );
+                                        ContentValues values = new ContentValues();
+                                        values.putNull(FeedColumns.LAST_UPDATE);
+                                        values.putNull(FeedColumns.ICON_URL);
+                                        values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                                        final ContentResolver cr = getContext().getContentResolver();
+                                        cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                                    }
+                                    UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
                                 }
-                            }).setNegativeButton(android.R.string.no, null).show();
-                //}
+                            }.start();
+                        }
+                    }).setNegativeButton(android.R.string.no, null).show();
                 return true;
             }
             case R.id.menu_mark_all_as_read: {

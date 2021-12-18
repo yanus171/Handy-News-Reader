@@ -1737,9 +1737,7 @@ public class FetcherService extends IntentService {
         public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
             int status = Status().Start("deleteAllFeedEntries", true);
             try {
-
                 final ContentResolver cr = getContext().getContentResolver();
-                final String feedID = entriesUri.getPathSegments().get( 1 );
                 final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
                 if ( cursor != null  ){
                     while ( cursor.moveToNext() ) {
