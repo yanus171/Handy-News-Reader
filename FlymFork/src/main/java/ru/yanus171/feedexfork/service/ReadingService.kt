@@ -20,7 +20,7 @@ class ReadingService : Service() {
         val intent = Intent(this, BroadcastActionReciever::class.java)
         intent.action = Action
         intent.putExtra("StopReadingService", true)
-        return PendingIntent.getBroadcast(this, StatusText.GetPendingIntentRequestCode(), intent, 0)
+        return PendingIntent.getBroadcast(this, StatusText.GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE)
     }
     override fun onStart(intent: Intent?, startId: Int) {
         super.onStart(intent, startId)

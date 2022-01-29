@@ -979,7 +979,7 @@ public class FetcherService extends IntentService {
         intent.putExtra("UnstarArticle", true );
         intent.putExtra( EXTRA_TEXT, link );
         intent.putExtra( EXTRA_ID, notificationID );
-        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     public enum ForceReload {Yes, No}
@@ -2003,6 +2003,6 @@ public class FetcherService extends IntentService {
         Intent intent = new Intent(this, BroadcastActionReciever.class);
         intent.setAction( Action );
         intent.putExtra("FetchingServiceStart", true );
-        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
 }

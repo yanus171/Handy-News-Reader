@@ -47,7 +47,7 @@
 
         <service android:name=".service.FetcherService" />
 
-        <receiver android:name=".service.BroadcastActionReciever">
+        <receiver android:name=".service.BroadcastActionReciever" android:exported="false" >
             <intent-filter>
                 <action android:name="ru.yanus171.feedexfork.service.BROADCAST_ACTION" />
             </intent-filter>
@@ -73,7 +73,8 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.Dark">
+            android:theme="@style/Theme.Dark"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -103,7 +104,8 @@
             android:label="@string/feeds"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.NoDisplay"
+            android:exported="true" >
             <intent-filter
                 android:icon="@drawable/cup_new_load_later"
                 android:label="@string/loadLinkLater">
@@ -126,7 +128,8 @@
             android:launchMode="standard"
             android:parentActivityName=".activity.HomeActivity"
             android:theme="@style/Theme.Dark"
-            tools:targetApi="jelly_bean">
+            tools:targetApi="jelly_bean"
+            android:exported="true" >
             <intent-filter android:scheme="http">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -167,7 +170,7 @@
             android:name=".activity.GeneralPrefsActivity"
             android:label="@string/menu_settings"
             android:launchMode="singleTask" />
-        <activity android:name=".widget.WidgetConfigActivity">
+        <activity android:name=".widget.WidgetConfigActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -176,7 +179,8 @@
             android:name=".activity.EditFeedActivity"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.Dark"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
 
