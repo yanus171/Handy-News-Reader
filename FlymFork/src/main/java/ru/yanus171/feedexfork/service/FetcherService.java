@@ -1425,7 +1425,7 @@ public class FetcherService extends IntentService {
 
     private void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //

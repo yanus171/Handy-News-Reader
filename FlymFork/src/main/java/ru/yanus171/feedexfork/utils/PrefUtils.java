@@ -293,7 +293,7 @@ public class PrefUtils {
         if (theme.equals(BLACK)) PrefUtils.putString( PrefUtils.THEME, LIGHT);
         Context context = MainApplication.getContext();
         PreferenceManager.getDefaultSharedPreferences(context).edit().commit(); // to be sure all prefs are written
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
         //System.exit(0);
