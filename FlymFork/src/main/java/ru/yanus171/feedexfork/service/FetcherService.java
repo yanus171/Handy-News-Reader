@@ -753,6 +753,7 @@ public class FetcherService extends IntentService {
             cursor.close();
         } finally {
             SetNotifyEnabled( true );
+            notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
             Status().End( status );
         }
 
@@ -914,11 +915,16 @@ public class FetcherService extends IntentService {
                         if (mainImgUrl != null)
                             values.put(EntryColumns.IMAGE_URL, mainImgUrl);
 
-                        cr.update( entryUri, values, null, null );
-
+                        if ( filters != null && filters.isEntryFiltered( title, "", link, mobilizedHtml, categoryList.toArray(new String[0]) ) ) {
+                            cr.delete( entryUri, null, null );
+                        } else {
+                            if ( filters != null && filters.isMarkAsStarred( title, "", link, mobilizedHtml, categoryList.toArray(new String[0]) ) )
+                                values.put(EntryColumns.IS_FAVORITE, 1);
+                            cr.update(entryUri, values, null, null);
+                            if ( !imgUrlsToDownload.isEmpty() )
+                                addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
+                        }
                         success = true;
-                        if ( !imgUrlsToDownload.isEmpty() )
-                            addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
