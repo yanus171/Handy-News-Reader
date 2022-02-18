@@ -62,6 +62,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -148,6 +149,7 @@ public class RssAtomParser extends DefaultHandler {
         new SimpleDateFormat("yyyy-MM-dd", Locale.US),
         new SimpleDateFormat("dd.MM.yyyy", Locale.US),
         new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US),
+        new SimpleDateFormat("HH:mm", Locale.US),
         new SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
 
     };
@@ -611,6 +613,13 @@ public class RssAtomParser extends DefaultHandler {
                 Date result = format.parse(dateStr);
                 if ( now == 0 )
                     return result;
+                if (  now - result.getTime() > 1000 * 60 * 60 * 24 * 365 ) {
+                    Calendar today = Calendar.getInstance();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis( result.getTime() );
+                    cal.set( today.get( Calendar.YEAR ), today.get( Calendar.MONTH ), today.get( Calendar.DATE ) );
+                    return new Date( cal.getTimeInMillis() );
+                }
                 if ( Math.abs( result.getTime() -  now ) < dateBorder )
                     return (result.getTime() > now ? new Date(now) : result);
             } catch (ParseException ignored) {

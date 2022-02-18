@@ -80,14 +80,22 @@ object OneWebPageParser {
                     if ( date == 0L )
                         date = now--
 
-                    val entryUrl = getUrl(elArticle, urlClassName, "a", "href", feedBaseUrl)
+                    var entryUrl = getUrl(elArticle, urlClassName, "div", "data-post", feedBaseUrl)
+                    if ( entryUrl.isEmpty() )
+                        entryUrl = getUrl(elArticle, urlClassName, "a", "href", feedBaseUrl)
                     val mainImageUrl = getUrl(elArticle, imageUrlClassName, "img", "src", feedBaseUrl)
                     val textHTML = getValueHTML(textClassName, elArticle)
                     //if ( mainImageUrl.isNotEmpty() )
                     //    textHTML = "<img src='$mainImageUrl'/><p>$textHTML"
                     val isAutoFullTextRoot = ArticleTextExtractor.getFullTextRootElementFromPref(doc, entryUrl) == null
                     val improvedContent = HtmlUtils.improveHtmlContent(textHTML, feedBaseUrl, filters, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
-
+                    val titleList = improvedContent.replace(Regex("<.*?>"), "").split(Regex("[\n|.|:]"))
+                    var title = ""
+                    for ( s in titleList )
+                        if ( s.trim().isNotEmpty() ) {
+                            title = s
+                            break;
+                        }
                     // Try to find if the entry is not filtered and need to be processed
                     if (!filters.isEntryFiltered(author, author, entryUrl, improvedContent, null)) {
                         var isUpdated = false
@@ -103,7 +111,7 @@ object OneWebPageParser {
                         }
                         val values = ContentValues()
                         values.put(EntryColumns.SCROLL_POS, 0)
-                        values.put(EntryColumns.TITLE, "")
+                        values.put(EntryColumns.TITLE, title)
                         values.put(EntryColumns.ABSTRACT, improvedContent)
                         values.put(EntryColumns.IMAGE_URL, mainImageUrl)
                         values.put(EntryColumns.AUTHOR, author)
@@ -162,11 +170,12 @@ object OneWebPageParser {
         if ( dateClassName.isEmpty() )
             return result;
         val list = elArticle.getElementsByClass(dateClassName)
+        val now = Calendar.getInstance().timeInMillis
         if ( list.isNotEmpty() )
             for (item in list.first()!!.allElements)
                 if (item.hasText()) {
                     try {
-                        result = RssAtomParser.parseDate(item.ownText(), 0 ).time
+                        result = RssAtomParser.parseDate(item.text(), now ).time
                         break
                     } catch (ignored: Exception) {
                     }

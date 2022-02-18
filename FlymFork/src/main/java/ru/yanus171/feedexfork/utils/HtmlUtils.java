@@ -102,6 +102,11 @@ public class HtmlUtils {
         content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+)\\s.+x\"+[^>]+></a>" );
         content = ReplaceImagesWithALink(content);
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"([^>]+)?>");
+        //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?a>");
+        //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?'(.+?)'(.|\\n|\\t|\\s)+?a>");
+        //content = ReplaceImagesWithDataOriginal(content, "<i+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?i>");
+        content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
+        content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"(.+?.(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
 
         // clean by JSoup
         final Whitelist whiteList =
