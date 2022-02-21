@@ -92,7 +92,7 @@ public class NetworkUtils {
         fileExtension = fileExtension.replace( "?", "" );
 
         return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + prefix + FileUtils.INSTANCE.getLinkHash( entryLink ) + ID_SEPARATOR +
-               FileUtils.INSTANCE.getLinkHash( imgUrl ) + "." + fileExtension;
+               FileUtils.INSTANCE.getLinkHash( imgUrl ) + (fileExtension.isEmpty()  ? "" : "." + fileExtension);
     }
 
     private static String getTempDownloadedImagePath(String entryLink, String imgUrl) {

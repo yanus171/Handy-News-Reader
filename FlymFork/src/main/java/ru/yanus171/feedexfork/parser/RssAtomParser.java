@@ -618,6 +618,8 @@ public class RssAtomParser extends DefaultHandler {
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis( result.getTime() );
                     cal.set( today.get( Calendar.YEAR ), today.get( Calendar.MONTH ), today.get( Calendar.DATE ) );
+                    if ( cal.after( today ) )
+                        cal.add( Calendar.DATE, -1 );
                     return new Date( cal.getTimeInMillis() );
                 }
                 if ( Math.abs( result.getTime() -  now ) < dateBorder )

@@ -88,14 +88,15 @@ object OneWebPageParser {
                     //if ( mainImageUrl.isNotEmpty() )
                     //    textHTML = "<img src='$mainImageUrl'/><p>$textHTML"
                     val isAutoFullTextRoot = ArticleTextExtractor.getFullTextRootElementFromPref(doc, entryUrl) == null
-                    val improvedContent = HtmlUtils.improveHtmlContent(textHTML, feedBaseUrl, filters, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
+                    var improvedContent = HtmlUtils.improveHtmlContent(textHTML, feedBaseUrl, filters, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
                     val titleList = improvedContent.replace(Regex("<.*?>"), "").split(Regex("[\n|.|:]"))
                     var title = ""
                     for ( s in titleList )
                         if ( s.trim().isNotEmpty() ) {
-                            title = s
+                            title = s.trim()
                             break;
                         }
+                    improvedContent = improvedContent.replace( title, "" )
                     // Try to find if the entry is not filtered and need to be processed
                     if (!filters.isEntryFiltered(author, author, entryUrl, improvedContent, null)) {
                         var isUpdated = false
@@ -137,7 +138,7 @@ object OneWebPageParser {
                         val imagesToDl = ArrayList<String>()
                         if ( mainImageUrl.isNotEmpty() )
                             imagesToDl.add( mainImageUrl )
-                        HtmlUtils.replaceImageURLs(improvedContent, "", -1, entryUrl, true, imagesToDl, null, mMaxImageDownloadCount)
+                        HtmlUtils.replaceImageURLs(improvedContent, "", entryID, entryUrl, true, imagesToDl, null, mMaxImageDownloadCount)
                         FetcherService.addImagesToDownload(entryID.toString(), imagesToDl)
                     }
                 }

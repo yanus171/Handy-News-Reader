@@ -21,6 +21,9 @@ package ru.yanus171.feedexfork.utils;
 
 import androidx.annotation.NonNull;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -28,6 +31,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -37,8 +41,10 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -106,7 +112,7 @@ public class HtmlUtils {
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?'(.+?)'(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<i+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?i>");
         content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
-        content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"(.+?.(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
+        content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
 
         // clean by JSoup
         final Whitelist whiteList =
@@ -200,7 +206,7 @@ public class HtmlUtils {
 
                 final boolean isShowImages = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 //final ArrayList<String> imagesToDl = new ArrayList<>();
-
+                String firstImageUrl = "";
                 matcher = IMG_PATTERN.matcher(content);
                 int index = 0;
                 while ( matcher.find() ) {
@@ -219,6 +225,8 @@ public class HtmlUtils {
                         final boolean isFileExists = mImageFileVoc.isExists( file.getPath() );
                         if ( !isFileExists && isImageToAdd )
                             imagesToDl.add(srcUrl);
+                        if (firstImageUrl.isEmpty() )
+                            firstImageUrl = srcUrl;
                         String btnLoadNext = "";
                         if ( index == maxImageDownloadCount + 1 ) {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
@@ -246,6 +254,21 @@ public class HtmlUtils {
                 // Download the images if needed
                 if ( isDownLoadImages && !imagesToDl.isEmpty() && entryId != -1 )
                     new Thread(() -> FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl)).start();
+
+                if ( entryId != -1 && !firstImageUrl.isEmpty() ) {
+                    new Thread(() -> {
+                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        Uri uri = FeedData.EntryColumns.CONTENT_URI(entryId);
+                        Cursor cur = cr.query(uri, new String[]{_ID}, FeedData.EntryColumns.IMAGE_URL + Constants.DB_IS_NOT_NULL + Constants.DB_AND + FeedData.EntryColumns.IMAGE_URL + "<> ''" , null, null);
+                        if (!cur.moveToFirst()) {
+                            ContentValues values = new ContentValues();
+                            values.put(FeedData.EntryColumns.IMAGE_URL, imagesToDl.get(0));
+                            cr.update(uri, values, null, null);
+                        }
+                        cur.close();
+                    }).start();
+                }
+
             }
             timer.End();
         } catch ( Exception e ) {

@@ -1114,7 +1114,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
             @Override
             protected void onPostExecute(Void result) {
-                mEntryPager.setAdapter(mEntryPagerAdapter);
+                if ( mEntryPager.getAdapter() == null )
+                    mEntryPager.setAdapter(mEntryPagerAdapter);
                 if (mCurrentPagerPos != -1) {
                     mEntryPager.setCurrentItem(mCurrentPagerPos);
                 }
