@@ -152,6 +152,7 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
@@ -1443,7 +1444,10 @@ public class FetcherService extends IntentService {
                 .setContentTitle(getString(captionID)) //
                 .setLights(0xffffffff, 0, 0);
         if (Build.VERSION.SDK_INT >= 26 ) {
-            builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
+            if (ID == Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT)
+                builder.setChannelId(UNREAD_NOTIFICATION_CHANNEL_ID);
+            else
+                builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
             if ( cancelPI != null )
                 builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, getContext().getString(android.R.string.cancel), cancelPI);
         }
