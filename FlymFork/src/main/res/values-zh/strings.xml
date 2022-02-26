@@ -495,6 +495,7 @@
     <string name="search_in_yandex">通过 Yandex 搜索</string>
     <string name="search_in_google">用谷歌（Google）搜索</string>
     <string name="long_operation">长期操作</string>
+    <string name="unread_article">未读文章</string>
     <string name="reading_article">阅读文章</string>
     <string name="reading_notification">文章阅读通知</string>
     <string name="reading_notification_descr">持续状态栏通知以防止应用被系统杀死-在长时间延迟后加速启动应用</string>
