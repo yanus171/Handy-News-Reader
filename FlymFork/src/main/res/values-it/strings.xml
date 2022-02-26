@@ -494,6 +494,7 @@
     <string name="search_in_yandex">Cerca tramite Yandex</string>
     <string name="search_in_google">Cerca tramite Google</string>
     <string name="long_operation">Operazione prolungata</string>
+    <string name="unread_article">Articoli Non Letti</string>
     <string name="reading_article">Lettura di un articolo</string>
     <string name="reading_notification">Notifica lettura articoli</string>
     <string name="reading_notification_descr">Notifica permanente della barra di stato per impedire che l\'app venga fermata dal sistema - per accelerare l\'avvio dell\'app dopo un lungo ritardo</string>
