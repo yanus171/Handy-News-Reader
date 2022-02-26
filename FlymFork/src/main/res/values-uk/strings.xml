@@ -494,6 +494,7 @@
     <string name="search_in_yandex">Пошук через Яндекс</string>
     <string name="search_in_google">Пошук через Гугл</string>
     <string name="long_operation">Довга операція</string>
+    <string name="unread_article">Непрочитані статті</string>
     <string name="reading_article">Читання статті</string>
     <string name="reading_notification">Сповіщення про читання статті</string>
     <string name="reading_notification_descr">Постійне сповіщення в рядку стану для запобігання закриття програми системою - для прискорення запуску після довгого невикористання</string>
