@@ -497,6 +497,7 @@
     <string name="search_in_yandex">Поиск через Яндекс</string>
     <string name="search_in_google">Поиск через Google</string>
     <string name="long_operation">Длительная операция</string>
+    <string name="unread_article">Непрочитанные статьи</string>
     <string name="reading_article">Чтение статьи</string>
     <string name="reading_notification">Постоянное уведомление чтения</string>
     <string name="reading_notification_descr">Постоянное уведомление в строке состояния для предотвращения закрытия приложения системой - для ускорения запуска приложения после работы с другими приложениями</string>
