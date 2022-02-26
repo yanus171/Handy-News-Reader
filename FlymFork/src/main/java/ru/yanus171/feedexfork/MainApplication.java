@@ -55,6 +55,7 @@ public class MainApplication extends Application {
 
     public static final String OPERATION_NOTIFICATION_CHANNEL_ID = "operation_channel";
     public static final String READING_NOTIFICATION_CHANNEL_ID = "reading_channel";
+    public static final String UNREAD_NOTIFICATION_CHANNEL_ID = "unread_channel";
 
     @Override
     public void onCreate() {
@@ -93,6 +94,12 @@ public class MainApplication extends Application {
             {
                 NotificationChannel channel = new NotificationChannel(READING_NOTIFICATION_CHANNEL_ID, context.getString(R.string.reading_article), NotificationManager.IMPORTANCE_LOW);
                 channel.setDescription(context.getString(R.string.reading_article));
+                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+            {
+                NotificationChannel channel = new NotificationChannel(UNREAD_NOTIFICATION_CHANNEL_ID, context.getString(R.string.unread_article), NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription(context.getString(R.string.unread_article));
                 NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
                 notificationManager.createNotificationChannel(channel);
             }
