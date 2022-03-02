@@ -120,6 +120,7 @@ import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
@@ -409,8 +410,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             Dog.v("onTouch ACTION_UP");
-                            if (!mShowEntryText &&
-                                mEntryActivityStartingStatus == 0 &&
+                            if (mEntryActivityStartingStatus == 0 &&
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&
@@ -537,6 +537,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
+        final boolean isTextShown = mShowEntryText || holder.isTextShown();
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
             holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
@@ -544,15 +545,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setText(titleText);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             holder.titleTextView.setTextDirection( isTextRTL( titleText ) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_ANY_RTL );
+        holder.titleTextView.setMaxLines( isTextShown ? 20 : 5 );
 
         holder.urlTextView.setText(cursor.getString(mUrlPos));
 
         String feedName = cursor.getString(mFeedNamePos);
 
-        final boolean isTextShown = mShowEntryText || holder.isTextShown();
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
-        SetFont(holder.titleTextView, isTextShown ? 1.4F : 1 );
+        SetFont(holder.titleTextView, 1 );
         holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             String mainImgUrl = cursor.getString(mMainImgPos);
@@ -687,6 +688,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     content = new EntryContent();
                     content.mID = holder.entryID;
                     content.mHTML = html;
+                    if ( mFilters != null )
+                        content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );;
                     content.mIsMobilized = false;//isMobilized;
                     content.mLink = holder.entryLink;
                     mContentVoc.put( holder.entryID, content );

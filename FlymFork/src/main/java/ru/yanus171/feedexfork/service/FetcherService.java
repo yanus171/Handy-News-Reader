@@ -898,8 +898,10 @@ public class FetcherService extends IntentService {
                                 values.put(EntryColumns.DATE, date.getTime());
                         }
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
+
+
                         final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                        if ( entryCursor.isNull(titleCol) || entryCursor.isNull( favCol ) || entryCursor.getInt(favCol) == 0 )
+                        if ( entryCursor.isNull(titleCol) )
                             values.put(EntryColumns.TITLE, title);
 
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();

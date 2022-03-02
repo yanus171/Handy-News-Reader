@@ -129,6 +129,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
@@ -434,6 +435,8 @@ public class EntryView extends WebView implements Handler.Callback {
                         (!FileUtils.INSTANCE.isMobilized(mEntryLink, newCursor) || (forceUpdate && !isFullTextShown))) {
                     isFullTextShown = false;
                     contentText = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT));
+                    if ( filters != null )
+                        contentText = filters.removeText(contentText, DB_APPLIED_TO_CONTENT );
                 } else {
                     isFullTextShown = true;
                     contentText = FileUtils.INSTANCE.loadMobilizedHTML(mEntryLink, newCursor);

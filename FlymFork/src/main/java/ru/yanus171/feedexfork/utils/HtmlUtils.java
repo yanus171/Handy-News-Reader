@@ -111,9 +111,10 @@ public class HtmlUtils {
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?'(.+?)'(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<i+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?i>");
+
+        content = extractVideos(content);
         content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
         content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
-
         // clean by JSoup
         final Whitelist whiteList =
                 ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
@@ -148,7 +149,7 @@ public class HtmlUtils {
         }
         content = content.replace( "&#39;", "'" );
 
-        if ( filters != null && mobType == ArticleTextExtractor.MobilizeType.Yes )
+        if ( filters != null )
             content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
 
         content = content.replaceAll( "<p>([\\n\\s\\t]*?)</p>", "" );
@@ -256,13 +257,14 @@ public class HtmlUtils {
                     new Thread(() -> FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl)).start();
 
                 if ( entryId != -1 && !firstImageUrl.isEmpty() ) {
+                    String finalFirstImageUrl = firstImageUrl;
                     new Thread(() -> {
                         ContentResolver cr = MainApplication.getContext().getContentResolver();
                         Uri uri = FeedData.EntryColumns.CONTENT_URI(entryId);
                         Cursor cur = cr.query(uri, new String[]{_ID}, FeedData.EntryColumns.IMAGE_URL + Constants.DB_IS_NOT_NULL + Constants.DB_AND + FeedData.EntryColumns.IMAGE_URL + "<> ''" , null, null);
                         if (!cur.moveToFirst()) {
                             ContentValues values = new ContentValues();
-                            values.put(FeedData.EntryColumns.IMAGE_URL, imagesToDl.get(0));
+                            values.put(FeedData.EntryColumns.IMAGE_URL, finalFirstImageUrl);
                             cr.update(uri, values, null, null);
                         }
                         cur.close();
@@ -306,6 +308,23 @@ public class HtmlUtils {
             content = content.replace(match, newText);
         }
         return content;
+    }
+    private static String extractVideos(String content) {
+        final Pattern pattern = Pattern.compile("<video.+?</video>", Pattern.CASE_INSENSITIVE);
+        final Pattern patternSrc = Pattern.compile("src=\"([^\"]+?)\"", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(content);
+        ArrayList<String> list = new ArrayList<>();
+        String result = content;
+        while (matcher.find()) {
+            String video = matcher.group();
+            result = result.replace(video, "");
+            video = video.replace( "<video ", "<video controls muted preload='metadata'" );
+            final Matcher m = patternSrc.matcher( video );
+            if ( m.find() && m.groupCount() >= 1 && !result.contains( m.group(1) ) )
+                list.add( video );
+        }
+        result += TextUtils.join( "\n", list );
+        return result;
     }
 
     private static String getDownloadImageHtml(String match) {
