@@ -53,17 +53,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -90,9 +94,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -100,10 +106,12 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
+import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -112,13 +120,16 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
+import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
@@ -792,7 +803,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             synchronized ( this ) {
                 mIsLoaded = true;
             }
-            EntryView.NotifyToUpdate( mID, mLink );
+            EntryView.NotifyToUpdate( mID, mLink, false );
         }
     }
 
@@ -867,7 +878,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
     }
 
-    private static void SetContentImage(Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
+    private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
         if ( allImages.size() > index ) {
             final Uri uri = allImages.get( index );
             imageView.setVisibility(View.VISIBLE);
@@ -887,6 +898,38 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     }
                 }
             });
+
+//            new AsyncTask<Pair<Uri,ImageView>, Void, Void>() {
+//                private Bitmap uriToBitmap(Uri selectedFileUri) {
+//                    Bitmap image = null;
+//                    try {
+//                        ParcelFileDescriptor parcelFileDescriptor =
+//                            context.getContentResolver().openFileDescriptor(selectedFileUri, "r");
+//                        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+//                        image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+//
+//                        parcelFileDescriptor.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return image;
+//                }
+//                Bitmap mBitmap = null;
+//                ImageView mInageView = null;
+//                @Override
+//                protected Void doInBackground(Pair<Uri, ImageView>... pairs) {
+//                    mBitmap = uriToBitmap( pairs[0].first );
+//                    mInageView = pairs[0].second;
+//                    return null;
+//                }
+//
+//
+//                @Override
+//                protected void onPostExecute(Void result) {
+//                    if ( mBitmap != null )
+//                        mInageView.setImageBitmap( mBitmap );
+//                }
+//            }.execute(new Pair<>(uri, imageView) );
         }
     }
 

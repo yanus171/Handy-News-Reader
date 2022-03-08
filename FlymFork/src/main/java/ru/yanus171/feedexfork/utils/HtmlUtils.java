@@ -85,6 +85,7 @@ public class HtmlUtils {
     private static final Pattern MULTIPLE_BR_PATTERN = Pattern.compile("(\\s*<br\\s*[/]*>\\s*){3,}", Pattern.CASE_INSENSITIVE);
     private static final Pattern EMPTY_LINK_PATTERN = Pattern.compile("<a\\s+[^>]*></a>", Pattern.CASE_INSENSITIVE);
     private static final Pattern IMG_USER_PATTERN = Pattern.compile("<img[^>]+(user)[^>]+(.)*?>", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_VIDEO = Pattern.compile("<video.+?</video>", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern HTTP_PATTERN = Pattern.compile("(http.?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[?]|[=]|[:]|[/.]|[~])*");//Pattern.compile("(?<![\\>https?://|href=\"'])(?<http>(https?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[/.]|[~])*)");
 
@@ -310,9 +311,8 @@ public class HtmlUtils {
         return content;
     }
     private static String extractVideos(String content) {
-        final Pattern pattern = Pattern.compile("<video.+?</video>", Pattern.CASE_INSENSITIVE);
         final Pattern patternSrc = Pattern.compile("src=\"([^\"]+?)\"", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(content);
+        Matcher matcher = PATTERN_VIDEO.matcher(content);
         ArrayList<String> list = new ArrayList<>();
         String result = content;
         while (matcher.find()) {

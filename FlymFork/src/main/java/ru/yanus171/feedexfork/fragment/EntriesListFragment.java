@@ -118,6 +118,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FA
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
@@ -401,6 +402,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false );
         mImageDownloadObservable.addObserver(this);
         mIsResumed = true;
     }
@@ -545,9 +547,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mListView.setAdapter(mEntriesCursorAdapter);
         mNeedSetSelection = true;
     }
-
-
-
 
     private void SetIsRead(final int pos) {
         if ( !mShowTextInEntryList )
@@ -1236,12 +1235,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         //    return;
         if ( o instanceof Entry && mEntriesCursorAdapter != null ) {
             final Entry entry = (Entry) o;
-            final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
-            if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
-                mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
+            if (entry.mRestorePosition ) {
+                final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
+                if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
+                    mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
+                    mEntriesCursorAdapter.notifyDataSetChanged();
+                    RestoreListScrollPosition();
+                }
+            } else
                 mEntriesCursorAdapter.notifyDataSetChanged();
-                RestoreListScrollPosition();
-            }
         } else if ( o instanceof EntriesCursorAdapter.ListViewTopPos) {
             mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
         }

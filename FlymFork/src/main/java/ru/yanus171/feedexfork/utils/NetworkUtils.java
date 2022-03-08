@@ -171,7 +171,7 @@ public class NetworkUtils {
             }
 
             if ( result && !abort && notify && entryId > 0 )
-                EntryView.NotifyToUpdate( entryId, entryUrl );
+                EntryView.NotifyToUpdate( entryId, entryUrl, true );
         }
         return result;
     }

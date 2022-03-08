@@ -66,7 +66,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +81,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import com.google.android.material.appbar.AppBarLayout;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -111,7 +108,6 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -124,8 +120,6 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
@@ -145,7 +139,6 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
-import static ru.yanus171.feedexfork.utils.PrefUtils.BASE_TEXT_FONT_SIZE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
@@ -181,7 +174,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mContentWasLoaded = false;
     private double mLastContentHeight = 0;
     private long mLastTimeScrolled = 0;
-    private String mDataWithWebLinks = "";
+    public String mDataWithWebLinks = "";
     public boolean mIsEditingMode = false;
     public long mLastSetHTMLTime = 0;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
@@ -394,6 +387,7 @@ public class EntryView extends WebView implements Handler.Callback {
         mEntryViewMgr = manager;
     }
 
+    @SuppressLint("Range")
     public boolean setHtml(final long entryId,
                            Cursor newCursor,
                            FeedFilters filters,
@@ -441,10 +435,8 @@ public class EntryView extends WebView implements Handler.Callback {
                     isFullTextShown = true;
                     contentText = FileUtils.INSTANCE.loadMobilizedHTML(mEntryLink, newCursor);
                 }
-                if (contentText == null) {
+                if (contentText == null)
                     contentText = "";
-                }
-
             } catch (IllegalStateException e) {
                 e.printStackTrace();
                 contentText = "Context too large";
@@ -813,6 +805,7 @@ public class EntryView extends WebView implements Handler.Callback {
             public void onPageFinished(WebView view, String url) {
                 if (!mLoadTitleOnly)
                     mContentWasLoaded = true;
+                mActivity.mEntryFragment.DisableTapActionsIfVideo( EntryView.this );
                 //else
                 //    EndStatus();
                 //if ( mActivity.mEntryFragment.getCurrentEntryID() == mEntryId )
@@ -1060,13 +1053,13 @@ public class EntryView extends WebView implements Handler.Callback {
 
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
 
-    public static void NotifyToUpdate(final long entryId, final String entryLink) {
+    public static void NotifyToUpdate(final long entryId, final String entryLink, final boolean restorePosition) {
 
         UiUtils.RunOnGuiThread(new Runnable() {
             @Override
             public void run() {
                 Dog.d( String.format( "NotifyToUpdate( %d )", entryId ) );
-                EntryView.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink) );//ScheduledNotifyObservers(entryId, entryLink);
+                EntryView.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink, restorePosition) );//ScheduledNotifyObservers(entryId, entryLink);
             }
         }, 0 );//NOTIFY_OBSERVERS_DELAY_MS);
     }
@@ -1283,7 +1276,7 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
         EntryView.mLastNotifyObserversScheduled.remove( mId );
         Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
         if (new Date().getTime() - EntryView.mLastNotifyObserversTime.get( mId ) > EntryView.NOTIFY_OBSERVERS_DELAY_MS)
-            EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink) );
+            EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink, false) );
         else
             EntryView.ScheduledNotifyObservers( mId, mLink );
     }

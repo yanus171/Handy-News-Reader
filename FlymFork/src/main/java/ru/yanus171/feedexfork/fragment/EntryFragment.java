@@ -136,6 +136,7 @@ import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
@@ -322,7 +323,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     if ( view != null ) {
                         if ( view.mLoadTitleOnly )
                             getLoaderManager().restartLoader(i, null, EntryFragment.this);
+                        else
+                            DisableTapActionsIfVideo( view );
                         view.mLoadTitleOnly = false;
+
                     }
                     final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                     Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
@@ -1675,7 +1679,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                                       mIsFullTextShown,
                                                       forceUpdate,
                                                       (EntryActivity) getActivity() );
-
                     if (pagerPos == mCurrentPagerPos) {
                         refreshUI(newCursor);
 
@@ -1832,7 +1835,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public void SetEntryID( int position, long entryID, String entryLink )  {
         synchronized ( this ) {
-            mEntriesIds[position] = new Entry( entryID, entryLink );
+            mEntriesIds[position] = new Entry(entryID, entryLink );
         }
     }
     private Entry GetEntry(int position)  {
@@ -1846,6 +1849,25 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
+    }
+
+    public void DisableTapActionsIfVideo( EntryView view ) {
+        if ( view.mLoadTitleOnly )
+            return;
+        final boolean tapActionsEnabled;
+        synchronized ( this ) {
+            tapActionsEnabled = mIsFullTextShown || !PATTERN_VIDEO.matcher(view.mDataWithWebLinks).find();
+        }
+
+        if ( tapActionsEnabled != PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ) ) {
+            PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, tapActionsEnabled );
+            TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+            Toast.makeText(MainApplication.getContext(),
+                           tapActionsEnabled ?
+                               getContext().getString( R.string.tap_actions_were_enabled ) :
+                               getContext().getString( R.string.video_tag_found_in_article )  + ". " + getContext().getString( R.string.tap_actions_were_disabled ),
+                           Toast.LENGTH_LONG ).show();
+        }
     }
 
 }

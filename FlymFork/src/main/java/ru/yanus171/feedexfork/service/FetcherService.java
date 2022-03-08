@@ -1248,7 +1248,7 @@ public class FetcherService extends IntentService {
                 executor.shutdown();
             }
             if ( downloadedCount > 0 )
-                EntryView.NotifyToUpdate( entryId, entryLink );
+                EntryView.NotifyToUpdate( entryId, entryLink, false );
         } catch ( Exception e ) {
             obs.SetError(null, "", String.valueOf(entryId), e);
         } finally {
