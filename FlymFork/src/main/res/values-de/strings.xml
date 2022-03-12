@@ -604,6 +604,8 @@
     <string name="operationCanceled">Ein Vorgang wurde abgebrochen</string>
     <string name="comments">Kommentare: </string>
     <string name="video_tag_found_in_article">Im Artikeltext wurde ein Video-Tag gefunden</string>
+    <string name="disable_tap_actions_when_video">Tippen bei Video deaktivieren</string>
+    <string name="disable_tap_actions_when_video_descr">Tipp-Aktionen im Artikel vorübergehend deaktivieren, wenn der ein Video enthält</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
