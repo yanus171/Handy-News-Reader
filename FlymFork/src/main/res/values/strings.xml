@@ -509,6 +509,7 @@
     <string name="search_in_yandex">Search via Yandex</string>
     <string name="search_in_google">Search via Google</string>
     <string name="long_operation">Long operation</string>
+    <string name="unread_article">Unread Article(s)</string>
     <string name="reading_article">Reading an article</string>
     <string name="reading_notification">Article reading notification</string>
     <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
