@@ -621,6 +621,8 @@
     <string name="operationCanceled">An operation has been cancelled</string>
     <string name="comments">Comments: </string>
     <string name="video_tag_found_in_article">A video tag was found in the article text</string>
+    <string name="disable_tap_actions_when_video">Diable tap action with video</string>
+    <string name="disable_tap_actions_when_video_descr">Temporary disable tap action in the article when it contains a video</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

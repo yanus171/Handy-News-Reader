@@ -346,77 +346,87 @@
         android:title="@string/settings_category_operation">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_operation">
+            android:title="@string/settings_category_operation"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="article_tap_enabled"
-                android:title="@string/article_tap_enabled"
-                android:summary="@string/article_tap_enabled_summary"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="article_tap_enabled"
+            android:title="@string/article_tap_enabled"
+            android:summary="@string/article_tap_enabled_summary"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="tap_zone_size"
-                android:inputType="number"
-                android:defaultValue="7"
-                android:dependency="article_tap_enabled"
-                android:title="@string/tap_zone_size"
-                android:summary="@string/tap_zone_size_descr"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="tap_zone_size"
+            android:inputType="number"
+            android:defaultValue="7"
+            android:dependency="article_tap_enabled"
+            android:title="@string/tap_zone_size"
+            android:summary="@string/tap_zone_size_descr"/>
 
-            <CheckBoxPreference
-                android:key="settings_tap_zones_visible"
-                android:dependency="article_tap_enabled"
-                android:defaultValue="true"
-                android:title="@string/settings_show_tap_zones"
-                android:summary="@string/settings_show_tap_zone_description"/>
+        <CheckBoxPreference
+            android:key="settings_tap_zones_visible"
+            android:dependency="article_tap_enabled"
+            android:defaultValue="true"
+            android:title="@string/settings_show_tap_zones"
+            android:summary="@string/settings_show_tap_zone_description"/>
 
-            <ru.yanus171.feedexfork.view.TapZonePreviewPreference
-                android:key="settings_tap_zones"
-                android:dependency="article_tap_enabled"
-                android:inputType="none"
-                android:dialogLayout="@layout/fragment_entry"
-                android:dialogTitle="@string/settings_tap_zones_dialogtitle"
-                android:title="@string/settings_tapZones"/>
+        <ru.yanus171.feedexfork.view.TapZonePreviewPreference
+            android:key="settings_tap_zones"
+            android:dependency="article_tap_enabled"
+            android:inputType="none"
+            android:dialogLayout="@layout/fragment_entry"
+            android:dialogTitle="@string/settings_tap_zones_dialogtitle"
+            android:title="@string/settings_tapZones"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:defaultValue="Default"
-                android:entries="@array/settings_volume_buttons_action"
-                android:entryValues="@array/settings_volume_buttons_action_values"
-                android:key="volume_buttons_action"
-                android:title="@string/settings_volume_buttons_action"/>
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="page_up_down_90_pct"
-                android:summary="@string/page_up_down_90_pct_descr"
-                android:title="@string/page_up_down_90_pct"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="Default"
+            android:entries="@array/settings_volume_buttons_action"
+            android:entryValues="@array/settings_volume_buttons_action_values"
+            android:key="volume_buttons_action"
+            android:title="@string/settings_volume_buttons_action"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="page_up_down_90_pct"
+            android:summary="@string/page_up_down_90_pct_descr"
+            android:title="@string/page_up_down_90_pct"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="brightness_gesture_enabled"
-                android:summary="@string/brightness_gesture_descr"
-                android:title="@string/brightness_gesture"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="label_setup_by_tap_on_date"
+            android:summary="@string/label_setup_by_tap_on_date_descr"
+            android:title="@string/label_setup_by_tap_on_date"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:dependency="brightness_gesture_enabled"
-                android:key="brightness_with_dim_activity"
-                android:summary="@string/brightness_with_dim_activity_descr"
-                android:title="@string/brightness_with_dim_activity"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="disable_tap_actions_when_video"
+            android:summary="@string/disable_tap_actions_when_video_descr"
+            android:title="@string/disable_tap_actions_when_video"/>
 
-            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                android:key="settings_brightness_read_from_system_period_min"
-                android:dependency="brightness_gesture_enabled"
-                android:inputType="number"
-                android:defaultValue="10"
-                android:title="@string/brightness_update_from_system_period_min"
-                android:summary="@string/brightness_update_from_system_period_min_descr"/>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/brightness"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="label_setup_by_tap_on_date"
-                android:summary="@string/label_setup_by_tap_on_date_descr"
-                android:title="@string/label_setup_by_tap_on_date"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="brightness_gesture_enabled"
+            android:summary="@string/brightness_gesture_descr"
+            android:title="@string/brightness_gesture"/>
 
-        </PreferenceCategory>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="brightness_gesture_enabled"
+            android:key="brightness_with_dim_activity"
+            android:summary="@string/brightness_with_dim_activity_descr"
+            android:title="@string/brightness_with_dim_activity"/>
+
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="settings_brightness_read_from_system_period_min"
+            android:dependency="brightness_gesture_enabled"
+            android:inputType="number"
+            android:defaultValue="10"
+            android:title="@string/brightness_update_from_system_period_min"
+            android:summary="@string/brightness_update_from_system_period_min_descr"/>
+
+
     </PreferenceScreen>
 
     <PreferenceScreen

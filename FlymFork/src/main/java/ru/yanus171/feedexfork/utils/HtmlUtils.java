@@ -86,6 +86,7 @@ public class HtmlUtils {
     private static final Pattern EMPTY_LINK_PATTERN = Pattern.compile("<a\\s+[^>]*></a>", Pattern.CASE_INSENSITIVE);
     private static final Pattern IMG_USER_PATTERN = Pattern.compile("<img[^>]+(user)[^>]+(.)*?>", Pattern.CASE_INSENSITIVE);
     public static final Pattern PATTERN_VIDEO = Pattern.compile("<video.+?</video>", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_IFRAME = Pattern.compile("<iframe(.|\\n|\\s|\\t)+?/iframe>", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern HTTP_PATTERN = Pattern.compile("(http.?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[?]|[=]|[:]|[/.]|[~])*");//Pattern.compile("(?<![\\>https?://|href=\"'])(?<http>(https?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[/.]|[~])*)");
 

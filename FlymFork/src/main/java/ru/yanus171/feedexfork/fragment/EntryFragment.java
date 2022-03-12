@@ -136,6 +136,7 @@ import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
@@ -1862,7 +1863,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return;
         final boolean tapActionsEnabled;
         synchronized ( this ) {
-            tapActionsEnabled = mIsFullTextShown || !PATTERN_VIDEO.matcher(view.mDataWithWebLinks).find();
+            tapActionsEnabled = mIsFullTextShown ||
+                !PrefUtils.getBoolean( "disable_tap_actions_when_video", true ) ||
+                ( !PATTERN_VIDEO.matcher(view.mDataWithWebLinks).find() &&
+                  !PATTERN_IFRAME.matcher(view.mDataWithWebLinks).find() );
         }
 
         if ( tapActionsEnabled != PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ) ) {
