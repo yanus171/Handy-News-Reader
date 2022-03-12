@@ -603,6 +603,7 @@
     <string name="downloadAllImagesStarted">Herunterladen aller Bilder gestartet</string>
     <string name="operationCanceled">Ein Vorgang wurde abgebrochen</string>
     <string name="comments">Kommentare: </string>
+    <string name="video_tag_found_in_article">Im Artikeltext wurde ein Video-Tag gefunden</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
