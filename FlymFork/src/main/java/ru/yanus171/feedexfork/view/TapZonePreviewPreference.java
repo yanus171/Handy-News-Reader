@@ -16,7 +16,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isTapEnabled;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
 public final class TapZonePreviewPreference extends DialogPreference {
@@ -28,7 +28,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
     protected View onCreateDialogView () {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_entry, null, false);
-        SetupZoneSizes(view, true);
+        SetupZoneSizes(view, true, false);
         view.findViewById( R.id.btnEndEditing ).setVisibility( View.GONE );
         view.findViewById( R.id.progressText ).setVisibility( View.GONE );
         view.findViewById( R.id.progressBarLoader ).setVisibility( View.GONE );
@@ -44,27 +44,27 @@ public final class TapZonePreviewPreference extends DialogPreference {
         b.setVisibility(View.GONE);
     }
 
-    public static void SetupZoneSizes(View parentView, boolean preview) {
+    public static void SetupZoneSizes(View parentView, boolean preview, boolean isArticleList) {
         final int size = GetTapZoneSize();
-        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT, preview);
-        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT, preview);
+        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT, preview, isArticleList);
+        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT, preview, isArticleList);
         //SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size, preview);
-        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderLeft, size, preview);
-        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderRight, size, preview);
-        SetupZone(parentView, size, R.id.entryLeftBottomBtn, size, preview);
-        SetupZone(parentView, size, R.id.entryRightBottomBtn, size, preview);
-        SetupZone(parentView, size, R.id.leftTopBtn, size, preview);
-        SetupZone(parentView, size, R.id.rightTopBtn, size, preview);
-        SetupZone(parentView, size, R.id.leftTopBtnFS, size, preview);
-        SetupZone(parentView, size, R.id.rightTopBtnFS, size, preview);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderLeft, size, preview, isArticleList);
+        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderRight, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.entryLeftBottomBtn, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.entryRightBottomBtn, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.leftTopBtn, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.rightTopBtn, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.leftTopBtnFS, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.rightTopBtnFS, size, preview, isArticleList);
         if ( !preview )
             HideTapZonesText(parentView.getRootView());
     }
 
-    private static void SetupZone(View parentView, int size, int viewID, int matchParent, boolean preview) {
+    private static void SetupZone(View parentView, int size, int viewID, int matchParent, boolean preview, boolean isArticleList) {
         View view = parentView.findViewById( viewID );
         if ( view != null ) {
-            if (preview || isArticleTapEnabled() || viewID == R.id.rightTopBtn) {
+            if (preview || isTapEnabled(isArticleList) || viewID == R.id.rightTopBtn) {
                 view.setVisibility(View.VISIBLE);
                 SetSize(parentView, viewID, matchParent, size);
             } else
@@ -78,7 +78,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         UiUtils.HideButtonText(rootView, R.id.pageDownBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtn, true);
         UiUtils.HideButtonText(rootView, R.id.pageUpBtnFS, true);
-        UiUtils.HideButtonText(rootView, R.id.entryRightBottomBtn, !tapZonesVisible || isArticleTapEnabled() && !tapZonesVisible);
+        UiUtils.HideButtonText(rootView, R.id.entryRightBottomBtn, !tapZonesVisible || isTapEnabled(true ) && !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.entryLeftBottomBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.leftTopBtn, !tapZonesVisible);
         UiUtils.HideButtonText(rootView, R.id.rightTopBtn, !tapZonesVisible);

@@ -241,7 +241,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
-        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root), false);
+        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root), false, true);
 
         {
             final View.OnClickListener listener = view -> {

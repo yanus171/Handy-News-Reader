@@ -145,7 +145,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
@@ -205,6 +204,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
+    private boolean isArticleTapEnabled() {
+        return PrefUtils.isTapEnabled(false);
+    }
+    private void SetupZoneSizes() {
+        TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView, false, false );
+    }
+
     private boolean IsCreateViewPager( Uri uri ) {
         return PrefUtils.getBoolean( "change_articles_by_swipe", false ) &&
                 !IsExternalLink( uri );
@@ -224,7 +230,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
-        TapZonePreviewPreference.SetupZoneSizes( rootView, false );
+        SetupZoneSizes();
 
         mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
                                       (TextView)rootView.findViewById( R.id.errorText ),
@@ -242,7 +248,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
             if ( isArticleTapEnabled() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+                SetupZoneSizes();
                 Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
             } else
                 EnabledTapActions();
@@ -440,7 +446,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private void EnabledTapActions() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
-        TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+        SetupZoneSizes();
         Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
     }
 
@@ -614,7 +620,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
-        menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(PrefUtils.isArticleTapEnabled());
+        menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(isArticleTapEnabled());
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
@@ -876,7 +882,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_menu_by_tap_enabled: {
                     PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                     item.setChecked( isArticleTapEnabled() );
-                    TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView, false );
+                    SetupZoneSizes();
                     if ( !isArticleTapEnabled() )
                         Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
                     break;
@@ -1861,7 +1867,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         if ( tapActionsEnabled != PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ) ) {
             PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, tapActionsEnabled );
-            TapZonePreviewPreference.SetupZoneSizes(getBaseActivity().mRootView, false);
+            SetupZoneSizes();
             Toast.makeText(MainApplication.getContext(),
                            tapActionsEnabled ?
                                getContext().getString( R.string.tap_actions_were_enabled ) :

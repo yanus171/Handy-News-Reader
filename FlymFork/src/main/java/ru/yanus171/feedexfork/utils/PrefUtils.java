@@ -132,10 +132,10 @@ public class PrefUtils {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
     }
 
-    public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
+    public static final String PREF_TAP_ENABLED = "article_tap_enabled";
     public static final String PREF_ARTICLE_TAP_ENABLED_TEMP = "article_tap_enabled_temp";
-    public static Boolean isArticleTapEnabled() {
-        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true ) && PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
+    public static Boolean isTapEnabled(boolean isArticleList ) {
+        return PrefUtils.getBoolean(PREF_TAP_ENABLED, true ) && (isArticleList || PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ));
     }
 
     public static int getFontSizeFooterClock() {

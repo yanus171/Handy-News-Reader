@@ -881,7 +881,7 @@ public class EntryView extends WebView implements Handler.Callback {
                             Math.abs(event.getX() - mPressedX) < TOUCH_PRESS_POS_DELTA &&
                             Math.abs(event.getY() - mPressedY) < TOUCH_PRESS_POS_DELTA &&
                             System.currentTimeMillis() - mLastTimeScrolled > 500 &&
-                            PrefUtils.isArticleTapEnabled() &&
+                            PrefUtils.isTapEnabled(false ) &&
                             EntryActivity.GetIsActionBarHidden() &&
                             !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
