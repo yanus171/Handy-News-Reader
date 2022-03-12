@@ -167,7 +167,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mBackgroundColorLight = false;
     private final static int MAX_TEXT_LEN = 2500;
     FeedFilters mFilters = null;
-    public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
+    public static final HashSet<String> mMarkAsReadList = new HashSet<>();
 
     private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos,
         mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos,
@@ -432,7 +432,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
                                 toggleReadState(holder, view);
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
-                                toggleFavoriteState(holder.entryID, view);
+                                toggleFavoriteState(view);
                         } else {
                             Dog.v("onTouch ACTION_CANCEL");
                         }
@@ -524,12 +524,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.dateTextView.setOnClickListener( manageLabels );
         holder.authorTextView.setOnClickListener( manageLabels );
 
-
-        if ( mMapRead.containsKey(holder.entryID) )
-            holder.isRead = mMapRead.get( holder.entryID );
-        else
-            holder.isRead = EntryColumns.IsRead(cursor, mIsReadPos);
-        holder.isRead = holder.isRead || mMarkAsReadList.contains(EntryUri(holder.entryID));
+        holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || EntryColumns.IsRead(cursor, mIsReadPos);
 
         if ( mMapFavourite.containsKey(holder.entryID) )
             holder.isFavorite = mMapFavourite.get( holder.entryID );
@@ -659,7 +654,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.starImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFavoriteState(holder.entryID, view);
+                toggleFavoriteState(view);
             }
         });
 
@@ -723,9 +718,17 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setSingleLine();
             holder.mainImgView.setMaxHeight(  );
         }*/
-        holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
+        final boolean isNew = PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInWasVisibleList(EntryUri(holder.entryID).toString());
+        holder.newImgView.setVisibility( isNew ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
+    }
+
+    private boolean isInMarkAsReadList(String entryUri)  {
+        return mMarkAsReadList.contains(entryUri);
+    }
+    private boolean isInWasVisibleList(String entryUri)  {
+        return mMarkAsReadList.contains(entryUri);
     }
 
     private void UpdateLabelText(ViewHolder holder) {
@@ -1012,7 +1015,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private void SetIsRead(final long entryId, final boolean isRead, final boolean isSilent ) {
         final Uri entryUri = EntryUri( entryId );
-        mMapRead.put( entryId, isRead );
+        if (isRead)
+            mMarkAsReadList.add(entryUri.toString());
+        else
+            mMarkAsReadList.remove(entryUri.toString());
         new Thread() {
             @Override
             public void run() {
@@ -1031,7 +1037,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
 
-    private void toggleFavoriteState(final long id, View view) {
+    private void toggleFavoriteState(View view) {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
@@ -1097,7 +1103,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mIgnoreClearContentVocOnCursorChange = false;
         else {
             mContentVoc.clear();
-            mMapRead.clear();
             mMapFavourite.clear();
         }
         reinit(newCursor);
@@ -1153,7 +1158,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    HashMap<Long, Boolean> mMapRead = new HashMap<>();
     HashMap<Long, Boolean> mMapFavourite = new HashMap<>();
 
     private static class ViewHolder {
@@ -1205,7 +1209,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
                 return i;
         }
-        return getCount();
+        return getCount() - 1;
     }
     public int GetBottomNewPos() {
         for (int i = getCount() - 1; i >= 0; i--) {

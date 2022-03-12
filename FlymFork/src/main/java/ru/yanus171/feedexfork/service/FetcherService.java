@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.service;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -174,6 +175,7 @@ import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
+@SuppressLint("Range")
 public class FetcherService extends IntentService {
 
     public static final String ACTION_REFRESH_FEEDS = FeedData.PACKAGE_NAME + ".REFRESH";
@@ -355,6 +357,11 @@ public class FetcherService extends IntentService {
         } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
             startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
+            stopForeground(true);
+            return;
+        } else if (intent.hasExtra( Constants.SET_ITEMS_AS_READ )) {
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
+            EntriesListFragment.SetItemsAsRead( intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
@@ -772,6 +779,7 @@ public class FetcherService extends IntentService {
 
     public enum AutoDownloadEntryImages {Yes, No}
 
+    @SuppressLint("Range")
     public static boolean mobilizeEntry(final long entryId,
                                         FeedFilters filters,
                                         final ArticleTextExtractor.MobilizeType mobilize,

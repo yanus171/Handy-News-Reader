@@ -204,6 +204,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView mLabelDate = null;
     public View mRootView = null;
 
+    public void UpdateHeaderProgressOnly(int max, int progress) {
+        if ( mProgressBar == null )
+            return;
+        mProgressBar.setMax( max );
+        mLastMax = max;
+        mLastProgress = progress;
+        mProgressBar.setProgress( progress );
+    }
     public void UpdateHeader(int max, int progress, boolean isStatusBarHidden, boolean isToolBarHidden) {
         if ( mRootView == null )
             return;
@@ -235,11 +243,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
         } else
             mProgressBar.setVisibility( View.GONE );
-        if ( isStatusBarHidden ) {
-            isLayoutVisible = SetupHeaderLabel(mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible);
-            isLayoutVisible = SetupHeaderLabel(mLabelBattery, GetBatteryText(), "article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
-            isLayoutVisible = SetupHeaderLabel(mLabelDate, GetDateText(), "article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
-        }
+        isLayoutVisible = SetupHeaderLabel(mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel(mLabelBattery, GetBatteryText(), "article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel(mLabelDate, GetDateText(), "article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
         mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
         {
             final int color = !isToolBarHidden ? Theme.GetToolBarColorInt() :Color.TRANSPARENT;
