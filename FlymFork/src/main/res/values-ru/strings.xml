@@ -609,6 +609,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="operationCanceled">Операция отменена</string>
     <string name="comments">Комментарии: </string>
     <string name="video_tag_found_in_article">В тексте статьи обнаружен тег видео</string>
+    <string name="disable_tap_actions_when_video">Отключить действие касания при просмотре видео</string>
+    <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
