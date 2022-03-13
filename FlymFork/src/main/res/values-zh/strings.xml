@@ -605,6 +605,9 @@
     <string name="downloadAllImagesStarted">图片下载已全部开始</string>
     <string name="operationCanceled">操作已取消</string>
     <string name="comments">评论: </string>
+    <string name="video_tag_found_in_article">在文章内容中发现了一个视频标签</string>
+    <string name="disable_tap_actions_when_video">禁用视频点击动作</string>
+    <string name="disable_tap_actions_when_video_descr">文章中包含视频时暂时禁用点击动作</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
