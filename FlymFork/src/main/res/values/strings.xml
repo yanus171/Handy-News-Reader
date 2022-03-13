@@ -623,6 +623,8 @@
     <string name="video_tag_found_in_article">A video tag was found in the article text</string>
     <string name="disable_tap_actions_when_video">Diable tap action with video</string>
     <string name="disable_tap_actions_when_video_descr">Temporary disable tap action in the article when it contains a video</string>
+    <string name="addFeedTelegramPatternFound">The url seems to be a telegram one. Do you want to auto optimize feed settings for telegram channel?</string>
+    <string name="feedWasAutoConfigured">The feed was automatically configured</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

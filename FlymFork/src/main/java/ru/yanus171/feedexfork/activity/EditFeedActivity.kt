@@ -68,9 +68,6 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.TabHost.OnTabChangeListener
-import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
@@ -78,7 +75,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.R
-import ru.yanus171.feedexfork.activity.EditFeedActivity
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment
@@ -96,6 +92,7 @@ import java.net.URLEncoder
 import java.util.*
 import java.util.regex.Pattern
 
+@Suppress("DEPRECATION")
 class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mKeepTimeValues: Array<String>
     private val mFilterActionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
@@ -122,12 +119,12 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     true
                 }
                 R.id.menu_delete -> {
-                    val filterId = mFiltersCursorAdapter!!.getItemId(mFiltersCursorAdapter!!.selectedFilter)
+                    val filterId = mFiltersCursorAdapter.getItemId(mFiltersCursorAdapter.selectedFilter)
                     AlertDialog.Builder(this@EditFeedActivity) //
                             .setIcon(android.R.drawable.ic_dialog_alert) //
                             .setTitle(R.string.filter_delete_title) //
                             .setMessage(R.string.question_delete_filter) //
-                            .setPositiveButton(android.R.string.yes) { dialog, which ->
+                            .setPositiveButton(android.R.string.yes) { _, _ ->
                                 object : Thread() {
                                     override fun run() {
                                         val cr = contentResolver
@@ -147,8 +144,8 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
         // Called when the user exits the action mode
         override fun onDestroyActionMode(mode: ActionMode) {
-            mFiltersCursorAdapter!!.selectedFilter = -1
-            mFiltersListView!!.invalidateViews()
+            mFiltersCursorAdapter.selectedFilter = -1
+            mFiltersListView.invalidateViews()
         }
     }
     private lateinit var mKeepTimeSpinner: Spinner
@@ -166,8 +163,8 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mIsAutoSetAsRead: CheckBox
     @SuppressLint("Range")
     private fun EditFilter() {
-        val c = mFiltersCursorAdapter!!.cursor
-        if (c.moveToPosition(mFiltersCursorAdapter!!.selectedFilter)) {
+        val c = mFiltersCursorAdapter.cursor
+        if (c.moveToPosition(mFiltersCursorAdapter.selectedFilter)) {
             val dialogView = layoutInflater.inflate(R.layout.dialog_filter_edit, null)
             val filterText = dialogView.findViewById<EditText>(R.id.filterText)
             val regexCheckBox = UiUtils.SetupSmallTextView(dialogView, R.id.regexCheckBox) as CheckBox
@@ -189,7 +186,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             } else {
                 rejectRadio.isChecked = true
             }
-            val filterId = mFiltersCursorAdapter!!.getItemId(mFiltersCursorAdapter!!.selectedFilter)
+            val filterId = mFiltersCursorAdapter.getItemId(mFiltersCursorAdapter.selectedFilter)
             AlertDialog.Builder(this@EditFeedActivity) //
                     .setTitle(R.string.filter_edit_title) //
                     .setView(dialogView) //
@@ -220,11 +217,11 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private fun SetupFilterDialog(dialogView: View, applyType: RadioGroup, removeTextRadio: RadioButton): RadioGroup {
         val actionType = dialogView.findViewById<RadioGroup>(R.id.actionTypeRadioGroup)
-        val applyTitleButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyTitleRadio) as RadioButton
+        //val applyTitleButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyTitleRadio) as RadioButton
         val applyAuthorButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyAuthorRadio) as RadioButton
         val applyCategoryButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyCategoryRadio) as RadioButton
         val applyUrlButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyUrlRadio) as RadioButton
-        val applyContentButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio) as RadioButton
+        //val applyContentButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio) as RadioButton
         actionType.setOnCheckedChangeListener { radioGroup, selectedID ->
             for (i in 0 until applyType.childCount) applyType.getChildAt(i).isEnabled = true
             if (selectedID == removeTextRadio.id) {
@@ -256,6 +253,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mHasGroupCb: CheckBox
     private lateinit var mFiltersCursorAdapter: FiltersCursorAdapter
     private lateinit var mLoadTypeRG: RadioGroup
+
     @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -274,11 +272,11 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         mIsAutoRefreshCb = SetupSmallTextView(R.id.auto_refresh) as CheckBox
         mIsAutoImageLoadCb = SetupSmallTextView(R.id.auto_image_load) as CheckBox
         mIsAutoSetAsRead = SetupSmallTextView(R.id.auto_set_as_read) as CheckBox
-        mIsAutoSetAsRead!!.isChecked = false
+        mIsAutoSetAsRead.isChecked = false
         mFiltersListView = findViewById(android.R.id.list)
         mGroupSpinner = findViewById(R.id.spin_group)
         mKeepTimeCB = SetupSmallTextView(R.id.cbCustomKeepTime) as CheckBox
-        mKeepTimeCB!!.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerKeepTime() }
+        mKeepTimeCB.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerKeepTime() }
         mKeepTimeValues = resources.getStringArray(R.array.settings_keep_time_values)
         mKeepTimeSpinner = findViewById(R.id.spin_keeptime)
         mKeepTimeSpinner.setSelection(4)
@@ -287,18 +285,18 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             break
         }
         mHasGroupCb = SetupSmallTextView(R.id.has_group) as CheckBox
-        mHasGroupCb!!.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerGroup() }
+        mHasGroupCb.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerGroup() }
         mLoadTypeRG = findViewById(R.id.rgLoadType)
         val tabWidget = findViewById<View>(android.R.id.tabs)
-        mIsAutoRefreshCb!!.setOnCheckedChangeListener { compoundButton, b -> mIsAutoImageLoadCb!!.isEnabled = b }
-        mIsAutoRefreshCb!!.isChecked = false
-        mIsAutoRefreshCb!!.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false)) View.VISIBLE else View.GONE
-        mLoadTypeRG.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i -> ShowControls() })
+        mIsAutoRefreshCb.setOnCheckedChangeListener { compoundButton, b -> mIsAutoImageLoadCb.isEnabled = b }
+        mIsAutoRefreshCb.isChecked = false
+        mIsAutoRefreshCb.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false)) View.VISIBLE else View.GONE
+        mLoadTypeRG.setOnCheckedChangeListener({ _, _ -> ShowControls() })
         mTabHost.setup()
         mTabHost.addTab(mTabHost.newTabSpec("feedTab").setIndicator(getString(R.string.tab_feed_title)).setContent(R.id.feed_tab))
         mTabHost.addTab(mTabHost.newTabSpec("filtersTab").setIndicator(getString(R.string.tab_filters_title)).setContent(R.id.filters_tab))
         SetupFont(findViewById(R.id.feed_tab))
-        mTabHost.setOnTabChangedListener(OnTabChangeListener { invalidateOptionsMenu() })
+        mTabHost.setOnTabChangedListener({ invalidateOptionsMenu() })
         if (savedInstanceState != null) {
             mTabHost.setCurrentTab(savedInstanceState.getInt(STATE_CURRENT_TAB))
         }
@@ -313,7 +311,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         mGroupSpinner.setAdapter(adapter)
-        mIsAutoImageLoadCb!!.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true)) View.VISIBLE else View.GONE
+        mIsAutoImageLoadCb.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true)) View.VISIBLE else View.GONE
         PrefUtils.putBoolean(DIALOG_IS_SHOWN, false)
         mNextPageClassName = findViewById(R.id.next_page_classname)
         mNextPageMaxCount = findViewById(R.id.next_page_max_count)
@@ -327,9 +325,9 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         setTitle(R.string.new_feed_title)
         tabWidget.visibility = View.GONE
         if (Intent.ACTION_INSERT == intent.action) {
-            mHasGroupCb!!.isChecked = false
-            mIsAutoImageLoadCb!!.isChecked = true
-            mKeepTimeCB!!.isChecked = false
+            mHasGroupCb.isChecked = false
+            mIsAutoImageLoadCb.isChecked = true
+            mKeepTimeCB.isChecked = false
             mLoadTypeRG.check(PrefUtils.getInt(STATE_LAST_LOAD_TYPE, R.id.rbRss))
         } else if (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action) {
             if (intent.hasExtra(Intent.EXTRA_TEXT)) mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT)) else if (intent.dataString != null) mUrlEditText.setText(intent.dataString)
@@ -342,32 +340,32 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             tabWidget.visibility = View.VISIBLE
             mFiltersCursorAdapter = FiltersCursorAdapter(this, Constants.EMPTY_CURSOR)
             mFiltersListView.setAdapter(mFiltersCursorAdapter)
-            mFiltersListView.setOnItemLongClickListener(OnItemLongClickListener { parent, view, position, id ->
+            mFiltersListView.setOnItemLongClickListener { _, _, position, _ ->
                 startSupportActionMode(mFilterActionModeCallback)
-                mFiltersCursorAdapter!!.selectedFilter = position
+                mFiltersCursorAdapter.selectedFilter = position
                 mFiltersListView.invalidateViews()
                 true
-            })
-            mFiltersListView.setOnItemClickListener(OnItemClickListener { parent, view, position, id ->
-                mFiltersCursorAdapter!!.selectedFilter = position
+            }
+            mFiltersListView.setOnItemClickListener { _, _, position, _ ->
+                mFiltersCursorAdapter.selectedFilter = position
                 mFiltersListView.invalidateViews()
                 EditFilter()
                 //return true;
-            })
-            loaderManager.initLoader(0, null, this)
+            }
+            loaderManager.initLoader(0, Bundle(), this)
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
             if (savedInstanceState == null) {
                 val cursor = contentResolver.query(intent.data!!, FEED_PROJECTION, null, null, null)
                 if (cursor != null && cursor.moveToNext()) {
                     mNameEditText.setText(cursor.getString(0))
                     mUrlEditText.setText(cursor.getString(1))
-                    mRetrieveFulltextCb!!.isChecked = cursor.getInt(2) == 1
-                    mShowTextInEntryListCb!!.isChecked = cursor.getInt(4) == 1
-                    mIsAutoRefreshCb!!.isChecked = cursor.getInt(5) == 1
-                    mIsAutoImageLoadCb!!.isChecked = cursor.isNull(7) || cursor.getInt(7) == 1
+                    mRetrieveFulltextCb.isChecked = cursor.getInt(2) == 1
+                    mShowTextInEntryListCb.isChecked = cursor.getInt(4) == 1
+                    mIsAutoRefreshCb.isChecked = cursor.getInt(5) == 1
+                    mIsAutoImageLoadCb.isChecked = cursor.isNull(7) || cursor.getInt(7) == 1
                     mGroupSpinner.setSelection(-1)
                     //mKeepTimeSpinner.setSelection( -1);
-                    mHasGroupCb!!.isChecked = !cursor.isNull(6)
+                    mHasGroupCb.isChecked = !cursor.isNull(6)
                     UpdateSpinnerGroup()
                     if (!cursor.isNull(6)) for (i in 0 until mGroupSpinner.getCount()) if (mGroupSpinner.getItemIdAtPosition(i) == cursor.getInt(6).toLong()) {
                         mGroupSpinner.setSelection(i)
@@ -383,15 +381,15 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                         val isRss = !jsonOptions.has(FetcherService.IS_RSS) || jsonOptions.getBoolean(FetcherService.IS_RSS)
                         val isOneWebPage = jsonOptions.has(FetcherService.IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(FetcherService.IS_ONE_WEB_PAGE)
                         if (isRss) mLoadTypeRG.check(R.id.rbRss) else if (isOneWebPage) mLoadTypeRG.check(R.id.rbOneWebPage) else mLoadTypeRG.check(R.id.rbWebLinks)
-                        mKeepTimeCB!!.isChecked = jsonOptions.has(FetcherService.CUSTOM_KEEP_TIME)
+                        mKeepTimeCB.isChecked = jsonOptions.has(FetcherService.CUSTOM_KEEP_TIME)
                         UpdateSpinnerKeepTime()
-                        if (mKeepTimeCB!!.isChecked) {
+                        if (mKeepTimeCB.isChecked) {
                             for (i in mKeepTimeValues.indices) if (mKeepTimeValues[i].toDouble() == jsonOptions.getDouble(FetcherService.CUSTOM_KEEP_TIME)) {
                                 mKeepTimeSpinner.setSelection(i)
                                 break
                             }
                         }
-                        if (jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean(AUTO_SET_AS_READ)) mIsAutoSetAsRead!!.isChecked = true
+                        if (jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean(AUTO_SET_AS_READ)) mIsAutoSetAsRead.isChecked = true
                         mNextPageClassName.setText(jsonOptions.getString(FetcherService.NEXT_PAGE_URL_CLASS_NAME))
                         mNextPageMaxCount.setText(jsonOptions.getString(FetcherService.NEXT_PAGE_MAX_COUNT))
                         if (jsonOptions.has(FetcherService.IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(FetcherService.IS_ONE_WEB_PAGE)) {
@@ -416,64 +414,91 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                 cursor?.close()
             }
         }
-        mUrlEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+        mUrlEditText.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handled = true
                 Validate()
             }
             handled
-        })
+        }
         ShowControls()
         //findViewById( R.id.brightnessSlider ).setVisibility( View.GONE );
-        if (intent.hasExtra(SearchManager.QUERY)) Validate() else CheckIfTelegram()
+        if (intent.hasExtra(SearchManager.QUERY))
+            Validate()
+        else if ( IsAdd() )
+            checkIfTelegram()
         if (PrefUtils.getBoolean("setting_edit_feed_force_portrait_orientation", false)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
-    private fun CheckIfTelegram() {}
+    @SuppressLint("SetTextI18n")
+    private fun checkIfTelegram() {
+        val url = mUrlEditText.text.toString()
+        val m = Pattern.compile( "((t.me)|(telegram.im))\\/([^\\/]+)" ).matcher( url )
+        if ( m.find() ) {
+            val name = m.group( 4 )
+            Theme.CreateDialog( this )
+                    .setMessage( R.string.addFeedTelegramPatternFound )
+                    .setNegativeButton( android.R.string.cancel, null )
+                    .setPositiveButton( android.R.string.yes ) { dialog, _ ->
+                        mLoadTypeRG.check( R.id.rbOneWebPage )
+                        mUrlEditText.setText( "https://t.me/s/$name" )
+                        mNameEditText.setText( name )
+                        val BASE = "tgme_widget_message"
+                        mOneWebPageArticleClassName.setText( "${BASE}_wrap" )
+                        mOneWebPageUrlClassName.setText( BASE )
+                        mOneWebPageTextClassName.setText( "${BASE}_bubble" )
+                        mOneWebPageDateClassName.setText( "${BASE}_date" )
+                        mOneWebPageAuthorClassName.setText( "${BASE}_forwarded" )
+
+                        mIsAutoImageLoadCb.isChecked = true
+                        mIsAutoSetAsRead.isChecked = true
+
+                        Toast.makeText( this@EditFeedActivity, R.string.feedWasAutoConfigured, Toast.LENGTH_LONG ).show()
+                        dialog.dismiss()
+            }.create().show()
+        }
+    }
     override fun onResume() {
         super.onResume()
-        if (mLoadTypeRG!!.checkedRadioButtonId == R.id.rbWebPageSearch) mUrlEditText!!.setText(PrefUtils.getString(STATE_WEB_SEARCH_TEXT, ""))
+        if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) mUrlEditText.setText(PrefUtils.getString(STATE_WEB_SEARCH_TEXT, ""))
         if (IsAdd()) {
-            mUrlEditText!!.requestFocus()
+            mUrlEditText.requestFocus()
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
-        if (mUserSelectionDialog != null && mUserSelectionDialog!!.isShowing) mUserSelectionDialog!!.dismiss()
+        if (mUserSelectionDialog?.isShowing == true) mUserSelectionDialog?.dismiss()
         if (PrefUtils.getBoolean(DIALOG_IS_SHOWN, false) &&
-                mLoadTypeRG!!.checkedRadioButtonId == R.id.rbWebPageSearch) {
-            val urlOrSearch = mUrlEditText!!.text.toString().trim { it <= ' ' }
+                mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+            val urlOrSearch = mUrlEditText.text.toString().trim { it <= ' ' }
             val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
-            AddFeedFromUserSelection("", """
-     ${getString(R.string.web_page_search_duckduckgo)}
-     ${loader.mUrl}
-     """.trimIndent(), loader)
+            AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
         }
     }
 
     private fun ShowControls() {
-        val i = mLoadTypeRG!!.checkedRadioButtonId
+        val i = mLoadTypeRG.checkedRadioButtonId
         val isRss = i == R.id.rbRss
         val isOneWebPage = i == R.id.rbOneWebPage
         val isWebLinks = i == R.id.rbWebLinks
         val isWebPageSearch = i == R.id.rbWebPageSearch
         val visibilityEditFeed = if (isWebPageSearch) View.GONE else View.VISIBLE
-        mRetrieveFulltextCb!!.isEnabled = (isRss || isOneWebPage) && !isWebPageSearch
-        mRetrieveFulltextCb!!.visibility = visibilityEditFeed
-        mHasGroupCb!!.visibility = visibilityEditFeed
-        mGroupSpinner!!.visibility = visibilityEditFeed
-        mIsAutoImageLoadCb!!.visibility = visibilityEditFeed
-        mIsAutoRefreshCb!!.visibility = visibilityEditFeed
-        mKeepTimeCB!!.visibility = visibilityEditFeed
-        mKeepTimeSpinner!!.visibility = visibilityEditFeed
-        mShowTextInEntryListCb!!.visibility = visibilityEditFeed
-        mNameEditText!!.visibility = visibilityEditFeed
+        mRetrieveFulltextCb.isEnabled = (isRss || isOneWebPage) && !isWebPageSearch
+        mRetrieveFulltextCb.visibility = visibilityEditFeed
+        mHasGroupCb.visibility = visibilityEditFeed
+        mGroupSpinner.visibility = visibilityEditFeed
+        mIsAutoImageLoadCb.visibility = visibilityEditFeed
+        mIsAutoRefreshCb.visibility = visibilityEditFeed
+        mKeepTimeCB.visibility = visibilityEditFeed
+        mKeepTimeSpinner.visibility = visibilityEditFeed
+        mShowTextInEntryListCb.visibility = visibilityEditFeed
+        mNameEditText.visibility = visibilityEditFeed
         findViewById<View>(R.id.layout_next_page).visibility = if (isRss) View.GONE else View.VISIBLE
         findViewById<View>(R.id.name_textview).visibility = visibilityEditFeed
         findViewById<View>(R.id.rbWebPageSearch).visibility = if (IsAdd()) View.VISIBLE else View.GONE
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         UpdateSpinnerGroup()
         UpdateSpinnerKeepTime()
-        mOneWebPageLayout!!.visibility = if (isOneWebPage) View.VISIBLE else View.GONE
+        mOneWebPageLayout.visibility = if (isOneWebPage) View.VISIBLE else View.GONE
         findViewById<View>(R.id.layout_next_page).visibility = if (isWebLinks || isOneWebPage) View.VISIBLE else View.GONE
     }
 
@@ -482,21 +507,21 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     private fun UpdateSpinnerGroup() {
-        mGroupSpinner!!.visibility = if (mHasGroupCb!!.isChecked) View.VISIBLE else View.GONE
+        mGroupSpinner.visibility = if (mHasGroupCb.isChecked) View.VISIBLE else View.GONE
     }
 
     private fun UpdateSpinnerKeepTime() {
-        mKeepTimeSpinner!!.visibility = if (mKeepTimeCB!!.isChecked) View.VISIBLE else View.GONE
+        mKeepTimeSpinner.visibility = if (mKeepTimeCB.isChecked) View.VISIBLE else View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(STATE_CURRENT_TAB, mTabHost!!.currentTab)
+        outState.putInt(STATE_CURRENT_TAB, mTabHost.currentTab)
         super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
-        if (IsAdd()) PrefUtils.putInt(STATE_FEED_EDIT_LOAD_TYPE_ID, mLoadTypeRG!!.checkedRadioButtonId) else if (intent.action == Intent.ACTION_EDIT) {
-            var url = mUrlEditText!!.text.toString()
+        if (IsAdd()) PrefUtils.putInt(STATE_FEED_EDIT_LOAD_TYPE_ID, mLoadTypeRG.checkedRadioButtonId) else if (intent.action == Intent.ACTION_EDIT) {
+            var url = mUrlEditText.text.toString()
             val cr = contentResolver
             var cursor: Cursor? = null
             try {
@@ -508,15 +533,15 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     val values = ContentValues()
                     if (!url.startsWith(Constants.HTTP_SCHEME) && !url.startsWith(Constants.HTTPS_SCHEME)) url = Constants.HTTP_SCHEME + url
                     values.put(FeedColumns.URL, url)
-                    val name = mNameEditText!!.text.toString()
+                    val name = mNameEditText.text.toString()
                     values.put(FeedColumns.NAME, if (name.trim { it <= ' ' }.length > 0) name else null)
-                    values.put(FeedColumns.RETRIEVE_FULLTEXT, if (mRetrieveFulltextCb!!.isChecked) 1 else null)
-                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, if (mShowTextInEntryListCb!!.isChecked) 1 else null)
-                    values.put(FeedColumns.IS_AUTO_REFRESH, if (mIsAutoRefreshCb!!.isChecked) 1 else null)
-                    values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, if (mIsAutoImageLoadCb!!.isChecked) 1 else 0)
+                    values.put(FeedColumns.RETRIEVE_FULLTEXT, if (mRetrieveFulltextCb.isChecked) 1 else null)
+                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, if (mShowTextInEntryListCb.isChecked) 1 else null)
+                    values.put(FeedColumns.IS_AUTO_REFRESH, if (mIsAutoRefreshCb.isChecked) 1 else null)
+                    values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, if (mIsAutoImageLoadCb.isChecked) 1 else 0)
                     values.put(FeedColumns.OPTIONS, optionsJsonString)
                     values.put(FeedColumns.FETCH_MODE, 0)
-                    if (mHasGroupCb!!.isChecked && mGroupSpinner!!.selectedItemId != AdapterView.INVALID_ROW_ID) values.put(FeedColumns.GROUP_ID, mGroupSpinner!!.selectedItemId) else values.putNull(FeedColumns.GROUP_ID)
+                    if (mHasGroupCb.isChecked && mGroupSpinner.selectedItemId != AdapterView.INVALID_ROW_ID) values.put(FeedColumns.GROUP_ID, mGroupSpinner.selectedItemId) else values.putNull(FeedColumns.GROUP_ID)
                     values.putNull(FeedColumns.ERROR)
                     GeneralPrefsFragment.SetupChanged()
                     cr.update(intent.data!!, values, null, null)
@@ -530,23 +555,23 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     private val optionsJsonString: String
-        private get() {
+        get() {
             val jsonOptions = JSONObject()
             try {
-                jsonOptions.put("isRss", mLoadTypeRG!!.checkedRadioButtonId == R.id.rbRss)
-                jsonOptions.put(FetcherService.IS_ONE_WEB_PAGE, mLoadTypeRG!!.checkedRadioButtonId == R.id.rbOneWebPage)
-                jsonOptions.put(FetcherService.NEXT_PAGE_URL_CLASS_NAME, mNextPageClassName!!.text.toString())
-                jsonOptions.put(FetcherService.NEXT_PAGE_MAX_COUNT, mNextPageMaxCount!!.text.toString())
-                jsonOptions.put(AUTO_SET_AS_READ, mIsAutoSetAsRead!!.isChecked)
-                if (mLoadTypeRG!!.checkedRadioButtonId == R.id.rbOneWebPage) {
-                    jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName!!.text.toString())
-                    jsonOptions.put(ONE_WEB_PAGE_URL_CLASS_NAME, mOneWebPageUrlClassName!!.text.toString())
-                    jsonOptions.put(ONE_WEB_PAGE_AUTHOR_CLASS_NAME, mOneWebPageAuthorClassName!!.text.toString())
-                    jsonOptions.put(ONE_WEB_PAGE_DATE_CLASS_NAME, mOneWebPageDateClassName!!.text.toString())
-                    jsonOptions.put(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME, mOneWebPageImageUrlClassName!!.text.toString())
-                    jsonOptions.put(ONE_WEB_PAGE_TEXT_CLASS_NAME, mOneWebPageTextClassName!!.text.toString())
+                jsonOptions.put("isRss", mLoadTypeRG.checkedRadioButtonId == R.id.rbRss)
+                jsonOptions.put(FetcherService.IS_ONE_WEB_PAGE, mLoadTypeRG.checkedRadioButtonId == R.id.rbOneWebPage)
+                jsonOptions.put(FetcherService.NEXT_PAGE_URL_CLASS_NAME, mNextPageClassName.text.toString())
+                jsonOptions.put(FetcherService.NEXT_PAGE_MAX_COUNT, mNextPageMaxCount.text.toString())
+                jsonOptions.put(AUTO_SET_AS_READ, mIsAutoSetAsRead.isChecked)
+                if (mLoadTypeRG.checkedRadioButtonId == R.id.rbOneWebPage) {
+                    jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.text.toString())
+                    jsonOptions.put(ONE_WEB_PAGE_URL_CLASS_NAME, mOneWebPageUrlClassName.text.toString())
+                    jsonOptions.put(ONE_WEB_PAGE_AUTHOR_CLASS_NAME, mOneWebPageAuthorClassName.text.toString())
+                    jsonOptions.put(ONE_WEB_PAGE_DATE_CLASS_NAME, mOneWebPageDateClassName.text.toString())
+                    jsonOptions.put(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME, mOneWebPageImageUrlClassName.text.toString())
+                    jsonOptions.put(ONE_WEB_PAGE_TEXT_CLASS_NAME, mOneWebPageTextClassName.text.toString())
                 }
-                if (mKeepTimeCB!!.isChecked) jsonOptions.put(FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner!!.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_KEEP_TIME)
+                if (mKeepTimeCB.isChecked) jsonOptions.put(FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_KEEP_TIME)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -560,7 +585,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        if (mTabHost!!.currentTab == 0) {
+        if (mTabHost.currentTab == 0) {
             menu.findItem(R.id.menu_add_filter).isVisible = false
         } else {
             menu.findItem(R.id.menu_add_filter).isVisible = true
@@ -569,7 +594,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         val insert = intent != null &&
                 (intent.action == Intent.ACTION_INSERT || intent.action == Intent.ACTION_VIEW || intent.action == Intent.ACTION_SEND)
         menu.findItem(R.id.menu_validate).isVisible = insert
-        menu.findItem(R.id.menu_delete_feed).isVisible = edit && mTabHost!!.currentTab == 0
+        menu.findItem(R.id.menu_delete_feed).isVisible = edit && mTabHost.currentTab == 0
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -617,20 +642,17 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     fun Validate() {
-        val urlOrSearch = mUrlEditText!!.text.toString().trim { it <= ' ' }
+        val urlOrSearch = mUrlEditText.text.toString().trim { it <= ' ' }
         if (urlOrSearch.isEmpty()) {
             UiUtils.showMessage(this@EditFeedActivity, R.string.error_feed_error)
         }
-        if (IsAdd()) PrefUtils.putInt(STATE_LAST_LOAD_TYPE, mLoadTypeRG!!.checkedRadioButtonId)
-        if (mLoadTypeRG!!.checkedRadioButtonId == R.id.rbWebPageSearch) {
-            PrefUtils.putString(STATE_WEB_SEARCH_TEXT, mUrlEditText!!.text.toString())
+        if (IsAdd()) PrefUtils.putInt(STATE_LAST_LOAD_TYPE, mLoadTypeRG.checkedRadioButtonId)
+        if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+            PrefUtils.putString(STATE_WEB_SEARCH_TEXT, mUrlEditText.text.toString())
             val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
-            AddFeedFromUserSelection("", """
-     ${getString(R.string.web_page_search_duckduckgo)}
-     ${loader.mUrl}
-     """.trimIndent(), loader)
+            AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
         } else {
-            val name = mNameEditText!!.text.toString().trim { it <= ' ' }
+            val name = mNameEditText.text.toString().trim { it <= ' ' }
             if (!urlOrSearch.toLowerCase().contains("www") &&
                     (!urlOrSearch.contains(".") || !urlOrSearch.contains("/") || urlOrSearch.contains(" "))) {
                 AddFeedFromUserSelection(name, getString(R.string.feed_search), GetFeedSearchResultsLoader(this@EditFeedActivity, urlOrSearch))
@@ -646,7 +668,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         pd.setCancelable(true)
         pd.isIndeterminate = true
         pd.show()
-        loaderManager.restartLoader<ArrayList<HashMap<String, String>>>(1, null, object : LoaderManager.LoaderCallbacks<ArrayList<HashMap<String, String>>> {
+        loaderManager.restartLoader(1, Bundle(), object : LoaderManager.LoaderCallbacks<ArrayList<HashMap<String, String>>> {
             override fun onCreateLoader(id: Int, args: Bundle): Loader<ArrayList<HashMap<String, String>>> {
                 return loader
             }
@@ -716,7 +738,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                         }
                     })
                     lv.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
-                        mUserSelectionDialog!!.dismiss()
+                        mUserSelectionDialog?.dismiss()
                         AddFeed(data[i])
                     }
                     if (Build.VERSION.SDK_INT >= 17) builder.setOnDismissListener { mUserSelectionDialog = null }
