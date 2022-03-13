@@ -605,6 +605,8 @@
     <string name="operationCanceled">Un\'operazione è stata annullata</string>
     <string name="comments">Commenti: </string>
     <string name="video_tag_found_in_article">È stata trovata un\'etichetta video nel testo dell\'articolo</string>
+    <string name="disable_tap_actions_when_video">Disabilita l\'azione del tocco con il video</string>
+    <string name="disable_tap_actions_when_video_descr">Disabilita temporaneamente l\'azione del tocco nell\'articolo quando contiene un video</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
