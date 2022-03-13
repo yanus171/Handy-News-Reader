@@ -1861,6 +1861,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void DisableTapActionsIfVideo( EntryView view ) {
         if ( view.mLoadTitleOnly )
             return;
+        if ( !PrefUtils.getBoolean( PrefUtils.PREF_TAP_ENABLED, true ) )
+            return;
         final boolean tapActionsEnabled;
         synchronized ( this ) {
             tapActionsEnabled = mIsFullTextShown ||
