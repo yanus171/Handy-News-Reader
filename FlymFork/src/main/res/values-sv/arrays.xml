@@ -15,7 +15,7 @@
         <item>3 day</item>
     </string-array>
     <string-array name="settings_keep_times">
-        <item>1 hour</item>
+        <item>1 timme</item>
         <item>12 hours</item>
         <item>1 dag</item>
         <item>2 dagar</item>
@@ -31,5 +31,10 @@
         <item>Aldrig</item>
         <item>Endast via Wi-Fi</item>
         <item>Alltid</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Svart</item>
     </string-array>
 </resources>
