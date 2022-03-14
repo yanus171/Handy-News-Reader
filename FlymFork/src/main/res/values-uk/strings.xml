@@ -604,6 +604,7 @@
     <string name="downloadAllImagesStarted">Розпочато завантаження всіх зображень</string>
     <string name="operationCanceled">Операцію скасовано</string>
     <string name="comments">Коментарі: </string>
+    <string name="video_tag_found_in_article">Тег відео був знайдений в тексті статті</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
