@@ -909,10 +909,22 @@ public class FetcherService extends IntentService {
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
 
 
-                        final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                        if ( entryCursor.isNull(titleCol) )
-                            values.put(EntryColumns.TITLE, title);
+                        {
+                            boolean isOneWebPage = false;
+                            final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
+                            final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
+                            if (!jsonText.isEmpty())
+                                try {
+                                    JSONObject jsonOptions = new JSONObject(jsonText);
+                                    isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
+                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                            if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage )
+                                values.put(EntryColumns.TITLE, title);
+                        }
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
                             HtmlUtils.replaceImageURLs( mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );

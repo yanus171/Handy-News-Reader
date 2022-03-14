@@ -805,7 +805,8 @@ public class EntryView extends WebView implements Handler.Callback {
             public void onPageFinished(WebView view, String url) {
                 if (!mLoadTitleOnly)
                     mContentWasLoaded = true;
-                mActivity.mEntryFragment.DisableTapActionsIfVideo( EntryView.this );
+                if ( mActivity.mEntryFragment != null )
+                    mActivity.mEntryFragment.DisableTapActionsIfVideo( EntryView.this );
                 //else
                 //    EndStatus();
                 //if ( mActivity.mEntryFragment.getCurrentEntryID() == mEntryId )
