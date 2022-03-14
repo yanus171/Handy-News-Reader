@@ -605,6 +605,9 @@
     <string name="operationCanceled">Операцію скасовано</string>
     <string name="comments">Коментарі: </string>
     <string name="video_tag_found_in_article">Тег відео був знайдений в тексті статті</string>
+    <string name="disable_tap_actions_when_video">Вимкнути дії за натисканням під час перегляду відео</string>
+    <string name="disable_tap_actions_when_video_descr">Тимчасово вимкнути дії за натисканням в статті яка містить відео</string>
+    <string name="feedWasAutoConfigured">Стрічка була налаштована автоматично</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
