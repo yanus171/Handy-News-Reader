@@ -120,7 +120,10 @@ object LabelVoc {
     fun getList(): ArrayList<Label> {
         initInThread()
         synchronized(mVoc) {
-            return ArrayList(mVoc.values.sortedBy{ it.mOrder })
+            return if ( PrefUtils.IsLabelABCSort() )
+                ArrayList(mVoc.values.sortedBy{ it.mName })
+            else
+                ArrayList(mVoc.values.sortedBy{ it.mOrder })
         }
     }
 

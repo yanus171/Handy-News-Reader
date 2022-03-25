@@ -622,9 +622,14 @@
             android:summary=""
             android:title="@string/setting_label_list" >
             <intent
-                android:targetClass="ru.yanus171.feedexfork.activity.TagListActivity"
+                android:targetClass="ru.yanus171.feedexfork.activity.LabelListActivity"
                 android:targetPackage="ru.yanus171.feedexfork"/>
         </PreferenceScreen>
+        <CheckBoxPreference
+            android:key="labels_sort_alphabetical"
+            android:defaultValue="false"
+            android:title="@string/settings_labels_sort_alphabetical"
+            android:summary="@string/settings_labels_sort_alphabetical_descr"/>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

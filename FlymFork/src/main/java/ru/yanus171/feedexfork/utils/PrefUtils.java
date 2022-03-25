@@ -126,7 +126,9 @@ public class PrefUtils {
     public static int getFontSizeEntryList() {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
     }
-
+    public static boolean IsLabelABCSort() {
+        return PrefUtils.getBoolean("labels_sort_alphabetical", false);
+    }
     public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
     public static Boolean isImageWhiteBackground() {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
