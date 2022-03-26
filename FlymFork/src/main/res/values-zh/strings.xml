@@ -495,6 +495,7 @@
     <string name="search_in_yandex">通过 Yandex 搜索</string>
     <string name="search_in_google">用谷歌（Google）搜索</string>
     <string name="long_operation">长期操作</string>
+    <string name="unread_article">未读文章</string>
     <string name="reading_article">阅读文章</string>
     <string name="reading_notification">文章阅读通知</string>
     <string name="reading_notification_descr">持续状态栏通知以防止应用被系统杀死-在长时间延迟后加速启动应用</string>
@@ -603,6 +604,14 @@
     <string name="label_setup_by_tap_on_date_descr">文章列表中的作者和 url</string>
     <string name="downloadAllImagesStarted">图片下载已全部开始</string>
     <string name="operationCanceled">操作已取消</string>
+    <string name="comments">评论: </string>
+    <string name="video_tag_found_in_article">在文章内容中发现了一个视频标签</string>
+    <string name="disable_tap_actions_when_video">禁用视频点击动作</string>
+    <string name="disable_tap_actions_when_video_descr">文章中包含视频时暂时禁用点击动作</string>
+    <string name="addFeedTelegramPatternFound">这似乎是一条 Telegram 的 Url。您想要自动优化 Telegram 频道的订阅源设置吗？</string>
+    <string name="feedWasAutoConfigured">已自动配置订阅源</string>
+    <string name="settings_labels_sort_alphabetical">A-Z 排序标签</string>
+    <string name="settings_labels_sort_alphabetical_descr">按字母顺序对标签进行排序，否则手动排序</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>

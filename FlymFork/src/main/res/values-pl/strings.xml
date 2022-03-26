@@ -29,56 +29,49 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licencja i informacje</big></b><br/>
-    Niniejszy program stanowi wolne oprogramowanie, możesz go rozpowszechniać i/lub modyfikować na zasadach licencji GNU General Public License opublikowanej przez Fundację Wolnego Oprogramowania, w wydaniu 3 licencji, lub (wedle uznania) jakimkolwiek późniejszym. Zobacz https://www.gnu.org/licenses/licenses.pl.html<br/>
-    <br/>
-    Niniejszy program bazuje na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Pośród funkcji dodanych w tym forku znajdują się:<br/>
-    <br/>
-    • rozwijalne grupy kanałów<br/>
-    • neiwidoczne przyciski przewijania strony w trybie pełnoekranowym<br/>
-    • limit obrazków do pobrania dla każdego kanału z osobna<br/>
-    • możliwość anulowania odświeżania<br/>
-    • i wiele więcej<br/>
-    <br/>
-    <b><big>Gdzie możesz nas znaleźć</big></b>
-    <br/>
-    • Zapraszamy do odwiedzenia naszej <b><a href="https://handynewsreader.blogspot.com">strony</a></b> dla nowości i informacji<br/>
-    • Możesz pobrać tą aplikację z <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
-    • Możesz pobrać tą aplikację z <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
-    • Mamy również wątek na <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">forum XDA</a></b><br/>
-    • Pliki źródłowe znajdziesz na <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHubie</a></b><br/>
-    <br/>
-    <b><big>Nasze wsparcie</big></b>
-    <br/>
-    Jeśli napotkasz problem z aplikacją, najlepiej<br/>
-    • utwórz wątek na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubie</a></b> or<br/>
-    • wyślij maila do <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">dewelopera</a></b><br/>
-    <br/>
-    <b><big>Twoje wsparcie</big></b>
-    <br/>
-    Jeśli masz pomysł na nową funkcję, możesz:<br/>
-    • założyć wątek na <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubie</a></b> or<br/>
-    • wysłać email do <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">dewelopera</a></b><br/>
-    <br/>
-    <b>Jeśli przydaje Ci się ten program, prosimy wystaw ocenę na <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
-    <br/>
-    <b><big>Tłumaczenia</big></b>
-    <br/>
-    Możesz pomóc przy tłumaczeniu na Twój Własny język na <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>.<br/>
-    Jeśli Twój język nie jest dostępny, prosimy wyślij <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail do dewelopera</a></b>.<br/>
-    <br/>
-    <b><big>Podziękowania</big></b>
-    <br/>
-    <b>Deweloperzy:</b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Licencja i informacje.</h2>
+    <p>Niniejszy program jest Wolnym Oprogramowaniem: możesz go rozpowszechniać i/lub modyfikować zgodnie z warunkami Powszechnej Licencji Publicznej GNU opublikowanej przez Fundację Wolnego Oprogramowania, tak w wersji 3 lub jakiejkolwiek późniejszej do Twego wyboru. Patrz <a href="http://www.gnu.org.pl/index.html">www.gnu.org.pl/index.html</a></p>
+    <p>Ten program jest bazowany na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Pośród funkcji dodanych do tego forka znajdują się:</p>
+    
+	• rozwijalne grupy kanałów,<br/>
+    • przezroczyste przyciski strony w dół|w górę w pełnym ekranie,<br/>
+    • maksymalna ilość pobieranych obrazków na kanał,<br/>
+    • możliwość anulowania procesu odświeżania,<br/>
+    • i wiele, wiele więcej;
+
+    <h2>Możesz znaleźć nas na:</h2>
+
+    • naszej <b><a href=\"https://handynewsreader.blogspot.com\">stronie internetowej</a></b> (nowości i informacje),<br/>
+    • w sklepie <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>,<br/>
+    • na łamach <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a>,<br/>
+    • na forum <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA</a>,<br/>
+    • na <a href="https://github.com/yanus171/Handy-News-Reader">GitHubie</a>;
+
+    <h2>Nasze wsparcie.</h2>
+    <p>Jeśli napotkasz problem z aplikacją, możesz:</p>
+    • sprawdzić czy został omówiony w <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a>,<br/>
+    • założyć wątek na <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubie</a>,<br/>
+    • wysłać<a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">maila</a> do dewelopera;<br/>
+	
+    <h2>Twoje wsparcie.</h2>
+    <p>Jeśli masz pomysł na nową funkcję, możesz:</p>
+    • założyć wątek na <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubie</a>,<br/>
+    • wysłać<a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">maila</a> do dewelopera;
+
+	<p>Jeśli ten program jest Tobie przydatny, prosimy oceń go w <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</p>
+    Możesz też <a href=\"https://github.com/yanus171/Handy-News-Reader\">przesłać dotację</a> </b> (link na końcu opisu).
+ 
+    <h2>Tłumaczenia.</h2>
+	<p>Możesz pomóc w przetłumaczeniu na Twój język na <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b>. Jeśli Twój język nie jest dostępny, prosimy <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">skontaktuj się z deweloperem</a></b>.</p>
+
+    <h2>Podziękowania.</h2>
+    <h3>Deweloperzy:</h3>
     ***developerList***
-    <br/>
-    <b>Tłumacze:</b><br/>
+    <br/><br/>
+	<h3>Tłumacze:</h3>
     ***translatorList***
     <br/>
-    
- 
-about_us_content
-GENERAL]]></string>
+    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">wersja</string>
     <string name="about_handy_news_reader">O Handy News Reader</string>
@@ -134,7 +127,7 @@ GENERAL]]></string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
     <string name="web_page_search_duckduckgo">Szukaj w Sieci (Duck Duck Go)</string>
-    <string name="select_file">Wybierz plik (z folderu feedex w miejscu przechowywania danych)</string>
+    <string name="select_file">Wybierz plik (z folderu Downloads)</string>
     <string name="question_delete_feed">Czy na pewno chcesz usunąć ten kanał?</string>
     <string name="question_delete_group">Czy na pewno chcesz usunąć tą grupę wraz z jej kanałami?</string>
     <string name="question_delete_filter">Czy na pewno chcesz usunąć ten filtr?</string>
@@ -197,6 +190,7 @@ GENERAL]]></string>
     <string name="tip_sentence">Porada: oznacz jako przeczytane przesuwając w prawo, przesuń w lewo by dodać do Ulubionych</string>
     <string name="undo">Cofnij</string>
     <string name="marked_as_read">Oznaczono jako przeczytane</string>
+    <string name="removed_from_favorites">Usunięto z Ulubionych</string>
     <string name="image_count">Licznik obrazków</string>
     <!-- WIDGET -->
     <string name="red">Czerwony</string>
@@ -348,11 +342,11 @@ GENERAL]]></string>
     <string name="addFeed">Dodaj kanał</string>
     <string name="externalLinks">Poza kanałami</string>
     <string name="markAllAsRead">Oznacz wszystko jako przeczytane</string>
-    <string name="pageUp">strona w górę / przesuń w dół by o(d)znaczyć gwiazdką</string>
-    <string name="pageDown">strona w dół</string>
-    <string name="fullScreenToggle">przełącznik pełnego ekranu</string>
+    <string name="pageUp">strona w górę (dłuższe przytrzymanie - na początek) lub \nprzesuń w dół by za- lub odgwiazdkować</string>
+    <string name="pageDown">strona w dół (dłuższe przytrzymanie - na sam dół)</string>
+    <string name="fullScreenToggle">przełącznik pełnego ekranu | wszystkie obrazy)</string>
     <string name="auto_refresh_feed">Automatycznie odświeżaj kanał</string>
-    <string name="actionBarToggle">przełącznik Paska Akcji</string>
+    <string name="actionBarToggle">przełącznik Paska Akcji | przeładuj tekst)</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Rozmiar tekstu na liście artykułów</string>
     <string name="confirmation">Potwierdzenie</string>
@@ -405,10 +399,10 @@ GENERAL]]></string>
     <string name="create_auto_backup">Utwórz kopię zapasową teraz</string>
     <string name="auto_backup_opml_file_created">Kopia zapasowa utworzona w pliku .opml:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
-    <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
+    <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml do importu - tylko z folderu feedex (poprzez wbudowane okno dialogowe). Nieaktywne od Androida 10</string>
     <string name="settings">Ustawienia</string>
-    <string name="entry_go_prev">Poprzedni artykuł</string>
-    <string name="entry_go_next">Następny artykuł</string>
+    <string name="entry_go_prev">Poprzedni artykuł | anuluj</string>
+    <string name="entry_go_next">Następny artykuł | etykiety</string>
     <string name="colorSlotSaveLongTapHint">Porada: by zachować aktualny kolor, przytrzymaj jedną z komórek</string>
     <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
     <string name="text">Tekst</string>
@@ -435,6 +429,8 @@ GENERAL]]></string>
     <string name="delete_read_articles_descr">niezależnie od czasu przechowywania artykułów</string>
     <string name="data_folder">Folder danych</string>
     <string name="data_folder_descr">Gdzie przechowywać tekst i obrazki pobranych artykułów</string>
+    <string name="internalMemoryCache">Pamięć wewnętrzna (Cache)</string>
+    <string name="internalMemoryData">Pamięć wewnętrzna (Dane)</string>
     <string name="externalMemory">Pamięć zewnętrzna</string>
     <string name="show_html">Pokaż HTML</string>
     <string name="image_white_background">Białe tło obrazków</string>
@@ -497,6 +493,7 @@ GENERAL]]></string>
     <string name="search_in_yandex">Szukaj w Yandex</string>
     <string name="search_in_google">Szukaj w Google</string>
     <string name="long_operation">Długa operacja</string>
+    <string name="unread_article">Nieczytane artykuły</string>
     <string name="reading_article">Lektura artykułu</string>
     <string name="reading_notification">Powiadomienie o lekturze artykułu</string>
     <string name="reading_notification_descr">Trwałe powiadomienie na belce statusu, chroniące aplikację przed zamknięciem przez system - by przyspieszyć uruchomienie po dłuższym nieużywaniu</string>
@@ -505,7 +502,7 @@ GENERAL]]></string>
     <string name="settings_category_header_descr">Dla ekranów tekstu artykułu oraz listy artykułów. </string>
     <string name="article_text_buttons_layout">Układ przycisków</string>
     <string name="article_text_buttons_layout_descr">Układ oraz widoczność przycisków na końcu artykułu</string>
-    <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
+    <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci i przyspieszyć jej uruchamianie</string>
     <string name="auto_set_as_read">Oznacz artykuł jako przeczytany gdy jego tytuł jest widoczny na liście</string>
     <string name="removeText">Usuń tekst</string>
     <string name="set_category">Ustaw jako kategorię</string>
@@ -537,7 +534,7 @@ GENERAL]]></string>
     <string name="defaultFontFamily">Domyślne systemowe</string>
     <string name="fontTextSample">Tekst</string>
     <string name="fontFamily">Czcionka</string>
-    <string name="fontFamilySummary">Dot. prawie całego tekstu w aplikacji. Możesz dodać pliki ttf niestandardowej czcionki w folderze sdcard/feedex/fonts</string>
+    <string name="fontFamilySummary">Krój czcionki prawie wszystkich tekstów w aplikacji. Możesz dodać pliki własnych czcionek wybierając pozycję na końcu ich listy</string>
     <string name="settings_font_rules">Czcionka Niestandardowa</string>
     <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - dla poszczególnych domen. Pozostaw nazwę klasy pustą by zastosować czcionkę do całego tekstu. Format: site_url:nazwa klasy=nazwa pliku czcionki=komendy CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="bold">Pogrubiona</string>
@@ -570,7 +567,7 @@ GENERAL]]></string>
     <string name="tap_actions_were_disabled">Akcje tapnięcia zostały wyłączone! Tapnij na górze po prawej by włączyć</string>
     <string name="list_was_scrolled_to_top">Przewinięto na górę</string>
     <string name="list_was_scrolled_to_bottom">Przewinięto na dół</string>
-    <string name="articleWasUnstarred">Artykuł został odznaczony gwiazdką</string>
+    <string name="articleWasUnstarred">Artykuł został odgwiazdkowany</string>
     <string name="articleNotFound">Artykuł nie został znaleziony :(</string>
     <string name="atricle_list_size_progressbar_maxsize">"Maks. rozmiar tekstu"</string>
     <string name="atricle_list_size_progressbar_maxsize_descr">W kB dla poziomego wskaźnika (0 by wyłączyć)</string>
@@ -598,10 +595,25 @@ GENERAL]]></string>
     <string name="all_labels">Wszystkie etykiety</string>
     <string name="filter_label_title">Filtr</string>
     <string name="menu_edit_feed">Edytuj kanał</string>
+    <string name="addCustomFont">Dodaj niestandardową czcionkę…</string>
+    <string name="fileCopied">Plik skopiowano w %s</string>
+    <string name="unableToCopyFile">Nie można skopiować pliku %s</string>
+    <string name="label_setup_by_tap_on_date">Konfiguracja etykiet poprzez tapnięcie daty</string>
+    <string name="label_setup_by_tap_on_date_descr">Autor i URL na liście artykułów</string>
+    <string name="downloadAllImagesStarted">Rozpoczęto pobieranie wszystkich obrazków</string>
+    <string name="operationCanceled">Operacja została anulowana</string>
+    <string name="comments">Komentarze: </string>
+    <string name="video_tag_found_in_article">W tekście artykułu znaleziono tag wideo</string>
+    <string name="disable_tap_actions_when_video">Wyłącz akcje dotyku z wideo</string>
+    <string name="disable_tap_actions_when_video_descr">Tymczasowo wyłącza akcje dotyku w artykule zawierającym wideo</string>
+    <string name="addFeedTelegramPatternFound">Link wygląda na telegramowy. Czy chcesz automatycznie skonfigurować ustawienia dla kanału Telegramu?</string>
+    <string name="feedWasAutoConfigured">Kanał został automatycznie skonfigurowany</string>
+    <string name="settings_labels_sort_alphabetical">Sortuj etykiety alfabetycznie</string>
+    <string name="settings_labels_sort_alphabetical_descr">Sortuj etykiety alfabetycznie. W przeciwnym razie ręcznie</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
-        <item quantity="many">%d nowych artykułów.</item>
+        <item quantity="many">%d nowych artykułów</item>
         <item quantity="other">%d nowych artykułów</item>
     </plurals>
 </resources>
