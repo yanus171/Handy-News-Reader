@@ -613,6 +613,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
     <string name="addFeedTelegramPatternFound">Похоже, что url является телеграмм-каналом. Вы хотите автоматически оптимизировать настройки ленты для канала telegram?</string>
     <string name="feedWasAutoConfigured">Лента была настроена автоматически</string>
+    <string name="settings_labels_sort_alphabetical">Сортировка ярлыков ABC</string>
+    <string name="settings_labels_sort_alphabetical_descr">Сортировать ярлыки по алфавиту. Иначе ручная сортировка</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
