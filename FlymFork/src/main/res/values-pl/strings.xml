@@ -609,6 +609,8 @@ GENERAL]]></string>
     <string name="downloadAllImagesStarted">Rozpoczęto pobieranie wszystkich obrazków</string>
     <string name="operationCanceled">Operacja została anulowana</string>
     <string name="comments">Komentarze: </string>
+    <string name="addFeedTelegramPatternFound">Link wygląda na telegramowy. Czy chcesz automatycznie skonfigurować ustawienia dla kanału Telegramu?</string>
+    <string name="feedWasAutoConfigured">Kanał został automatycznie skonfigurowany</string>
     <string name="settings_labels_sort_alphabetical">Sortuj etykiety alfabetycznie</string>
     <string name="settings_labels_sort_alphabetical_descr">Sortuj etykiety alfabetycznie. W przeciwnym razie ręcznie</string>
     <plurals name="number_of_new_entries">
