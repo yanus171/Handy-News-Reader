@@ -786,11 +786,6 @@
         </PreferenceScreen>
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="settings_add_google_news_dialog"
-            android:summary="@string/settings_add_google_news_dialog_descr"
-            android:title="@string/settings_add_google_news_dialog" />
-        <CheckBoxPreference
-            android:defaultValue="true"
             android:key="setting_convert_xml_symbols_before_parsing"
             android:title="Convert xml symbols before parsing"/>
 

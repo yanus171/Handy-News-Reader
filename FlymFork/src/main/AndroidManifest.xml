@@ -86,11 +86,6 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".activity.AddGoogleNewsActivity"
-            android:label="@string/google_news_title"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_handy_news_reader"
             android:launchMode="singleTask" />

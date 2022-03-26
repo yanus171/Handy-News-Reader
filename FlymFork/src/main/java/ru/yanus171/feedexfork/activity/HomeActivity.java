@@ -484,19 +484,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     public void onClickAdd(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if ( !PrefUtils.getBoolean("settings_add_google_news_dialog", true ) )
-            startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
-        else
-            builder.setTitle(R.string.menu_add_feed)
-                .setItems(new CharSequence[]{getString(R.string.add_custom_feed), getString(R.string.google_news_title)}, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
-                        } else {
-                            startActivity(new Intent(HomeActivity.this, AddGoogleNewsActivity.class));
-                        }
-                    }
-                }).show();
+        startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
     }
 
     public void onClickSettings(View view) {
@@ -674,19 +662,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             if (mDrawerLayout != null) {
                 mDrawerLayout.postDelayed(() -> mDrawerLayout.openDrawer(mLeftDrawer), 500);
             }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.welcome_title)
-                    .setItems(new CharSequence[]{getString(R.string.google_news_title), getString(R.string.add_custom_feed)}, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (which == 1) {
-                                startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
-                            } else {
-                                startActivity(new Intent(HomeActivity.this, AddGoogleNewsActivity.class));
-                            }
-                        }
-                    });
-            builder.show();
         }
 
         // Set title & icon
