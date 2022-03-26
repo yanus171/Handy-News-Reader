@@ -405,8 +405,8 @@
     <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
     <string name="settings">Настройки</string>
-    <string name="entry_go_prev">Пред. статья</string>
-    <string name="entry_go_next">След. статья</string>
+    <string name="entry_go_prev">Пред. статья | отмена</string>
+    <string name="entry_go_next">След. статья | метки</string>
     <string name="colorSlotSaveLongTapHint">Совет: Чтобы сохранить текущий цвет, сделайте долгий тап на одну из ячеек</string>
     <string name="colorSlotSaved">Цвет был сохранен в ячейку</string>
     <string name="text">Текст</string>
@@ -497,6 +497,7 @@
     <string name="search_in_yandex">Поиск через Яндекс</string>
     <string name="search_in_google">Поиск через Google</string>
     <string name="long_operation">Длительная операция</string>
+    <string name="unread_article">Непрочитанные статьи</string>
     <string name="reading_article">Чтение статьи</string>
     <string name="reading_notification">Постоянное уведомление чтения</string>
     <string name="reading_notification_descr">Постоянное уведомление в строке состояния для предотвращения закрытия приложения системой - для ускорения запуска приложения после работы с другими приложениями</string>
@@ -606,6 +607,12 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="label_setup_by_tap_on_date_descr">На дату, автора и адреса в списке статей</string>
     <string name="downloadAllImagesStarted">Загрузка всех изображений началась</string>
     <string name="operationCanceled">Операция отменена</string>
+    <string name="comments">Комментарии: </string>
+    <string name="video_tag_found_in_article">В тексте статьи обнаружен тег видео</string>
+    <string name="disable_tap_actions_when_video">Отключить действие касания при просмотре видео</string>
+    <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
+    <string name="settings_labels_sort_alphabetical">Сортировка ярлыков ABC</string>
+    <string name="settings_labels_sort_alphabetical_descr">Сортировать ярлыки по алфавиту. Иначе ручная сортировка</string>
     <string name="addFeedTelegramPatternFound">URL-адрес, похоже, относится к telegram. Вы хотите автоматически настроить ленту для telegram-канала?</string>
     <string name="feedWasAutoConfigured">Лента была настроена</string>
 

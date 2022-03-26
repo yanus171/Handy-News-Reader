@@ -493,6 +493,7 @@
     <string name="search_in_yandex">Über Yandex suchen</string>
     <string name="search_in_google">Über Google suchen</string>
     <string name="long_operation">Aktualisierung</string>
+    <string name="unread_article">Ungelesene(r) Artikel</string>
     <string name="reading_article">Artikel lesen</string>
     <string name="reading_notification">Artikel-Lese-Benachrichtigung</string>
     <string name="reading_notification_descr">Dauerhafte Benachrichtigung in der Statusleiste, um das Beenden der App durch das System zu verhindern - zur Beschleunigung des App-Starts nach längerer Pause</string>
@@ -601,6 +602,14 @@
     <string name="label_setup_by_tap_on_date_descr">Autor und URL in der Artikelliste</string>
     <string name="downloadAllImagesStarted">Herunterladen aller Bilder gestartet</string>
     <string name="operationCanceled">Ein Vorgang wurde abgebrochen</string>
+    <string name="comments">Kommentare: </string>
+    <string name="video_tag_found_in_article">Im Artikeltext wurde ein Video-Tag gefunden</string>
+    <string name="disable_tap_actions_when_video">Tippen bei Video deaktivieren</string>
+    <string name="disable_tap_actions_when_video_descr">Tipp-Aktionen im Artikel vorübergehend deaktivieren, wenn der ein Video enthält</string>
+    <string name="addFeedTelegramPatternFound">Die URL scheint aus Telegram zu sein. Möchten Sie die Feed-Einstellungen automatisch für einen Telegram-Kanal optimieren?</string>
+    <string name="feedWasAutoConfigured">Der Feed wurde automatisch konfiguriert</string>
+    <string name="settings_labels_sort_alphabetical">Kategorien alphabetisch sortieren</string>
+    <string name="settings_labels_sort_alphabetical_descr">Kategorien alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
