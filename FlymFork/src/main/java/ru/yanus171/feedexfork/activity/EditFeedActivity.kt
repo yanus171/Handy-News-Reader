@@ -520,7 +520,9 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     override fun onDestroy() {
-        if (IsAdd()) PrefUtils.putInt(STATE_FEED_EDIT_LOAD_TYPE_ID, mLoadTypeRG.checkedRadioButtonId) else if (intent.action == Intent.ACTION_EDIT) {
+        if (IsAdd())
+            PrefUtils.putInt(STATE_FEED_EDIT_LOAD_TYPE_ID, mLoadTypeRG.checkedRadioButtonId)
+        else if (intent.action == Intent.ACTION_EDIT) {
             var url = mUrlEditText.text.toString()
             val cr = contentResolver
             var cursor: Cursor? = null
@@ -534,13 +536,14 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     if (!url.startsWith(Constants.HTTP_SCHEME) && !url.startsWith(Constants.HTTPS_SCHEME)) url = Constants.HTTP_SCHEME + url
                     values.put(FeedColumns.URL, url)
                     val name = mNameEditText.text.toString()
-                    values.put(FeedColumns.NAME, if (name.trim { it <= ' ' }.length > 0) name else null)
+                    values.put(FeedColumns.NAME, if (name.trim { it <= ' ' }.isNotEmpty()) name else null)
                     values.put(FeedColumns.RETRIEVE_FULLTEXT, if (mRetrieveFulltextCb.isChecked) 1 else null)
                     values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, if (mShowTextInEntryListCb.isChecked) 1 else null)
                     values.put(FeedColumns.IS_AUTO_REFRESH, if (mIsAutoRefreshCb.isChecked) 1 else null)
                     values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, if (mIsAutoImageLoadCb.isChecked) 1 else 0)
                     values.put(FeedColumns.OPTIONS, optionsJsonString)
                     values.put(FeedColumns.FETCH_MODE, 0)
+                    values.put(FeedColumns.REAL_LAST_UPDATE, 0)
                     if (mHasGroupCb.isChecked && mGroupSpinner.selectedItemId != AdapterView.INVALID_ROW_ID) values.put(FeedColumns.GROUP_ID, mGroupSpinner.selectedItemId) else values.putNull(FeedColumns.GROUP_ID)
                     values.putNull(FeedColumns.ERROR)
                     GeneralPrefsFragment.SetupChanged()

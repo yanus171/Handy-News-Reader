@@ -204,6 +204,8 @@ public class FetcherService extends IntentService {
     public static final String NEXT_PAGE_URL_CLASS_NAME = "UrlNextPageClassName";
     public static final String NEXT_PAGE_MAX_COUNT = "NextPageMaxCount";
 
+    public static final long MILLS_IN_DAY = 86400000L;
+
     public static Boolean mCancelRefresh = false;
     private static final ArrayList<Long> mActiveEntryIDList = new ArrayList<>();
     private static Boolean mIsDownloadImageCursorNeedsRequery = false;
@@ -371,7 +373,7 @@ public class FetcherService extends IntentService {
                 public void run() {
                 SetNotifyEnabled( false );
                 try {
-                    long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
+                    long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
                     long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
                     deleteOldEntries(keepDateBorderTime);
                     deleteGhost();
@@ -461,7 +463,7 @@ public class FetcherService extends IntentService {
             LongOper(R.string.RefreshFeeds, new Runnable() {
                 @Override
                 public void run() {
-                    long keepTime = (long) (GetDefaultKeepTime() * 86400000L);
+                    long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
                     long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
                     String feedId = intent.getStringExtra(Constants.FEED_ID);
@@ -1336,7 +1338,7 @@ public class FetcherService extends IntentService {
                     try {
                         JSONObject jsonOptions = new JSONObject(jsonText);
                         if (jsonOptions.has(CUSTOM_KEEP_TIME))
-                            keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * 86400000l);
+                            keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1411,9 +1413,9 @@ public class FetcherService extends IntentService {
             int urlPosition = cursor.getColumnIndex(FeedColumns.URL);
             int idPosition = cursor.getColumnIndex(_ID);
             int titlePosition = cursor.getColumnIndex(FeedColumns.NAME);
-            if ( cursor.isNull( cursor.getColumnIndex(FeedColumns.REAL_LAST_UPDATE) ) ) {
-                keepDateBorderTime = 0;
-            }
+            //if ( cursor.isNull( cursor.getColumnIndex(FeedColumns.REAL_LAST_UPDATE) ) ) {
+            //    keepDateBorderTime = 0;
+            //}
             boolean isRss = true;
             boolean isOneWebPage = false;
             try {
@@ -1426,6 +1428,8 @@ public class FetcherService extends IntentService {
                 }
                 isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
                 isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+                if (jsonOptions.has(CUSTOM_KEEP_TIME) && jsonOptions.getDouble(CUSTOM_KEEP_TIME) != 0)
+                    keepDateBorderTime = System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
 
                 final String feedID = cursor.getString(idPosition);
                 final String feedUrl = cursor.getString(urlPosition);
