@@ -135,6 +135,8 @@ public class FeedFilters {
         return false;
     }
     public String removeText( String text, int applyType ) {
+        if ( text == null )
+            return text;
         String result = text;
         for (Rule r : mFilters)
             if ( r.isRemoveText && applyType == r.mApplyType) {
