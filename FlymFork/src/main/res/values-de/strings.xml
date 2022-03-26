@@ -139,17 +139,6 @@
     <string name="to_group_above">Außerhalb der Gruppe</string>
     <string name="to_group_into">In die Gruppe</string>
     <string name="add_custom_feed">Feed oder Artikel suchen und hinzufügen</string>
-    <string name="google_news_title">Google News Themen</string>
-    <string name="google_news_indicator">Ein oder mehrere Themen auswählen. Möglicherweise bietet Google einige davon nicht in Ihrer Sprache an.</string>
-    <string name="google_news_top_stories">Top-Meldungen</string>
-    <string name="google_news_world">Welt</string>
-    <string name="google_news_business">Wirtschaft</string>
-    <string name="google_news_technology">Technik</string>
-    <string name="google_news_entertainment">Unterhaltung</string>
-    <string name="google_news_sports">Sport</string>
-    <string name="google_news_science">Wissenschaft</string>
-    <string name="google_news_health">Gesundheit</string>
-    <string name="google_news_custom_topic">Eigenes Thema</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Ungelesene Artikel</string>
     <string name="all_entries">Alle Artikel</string>
@@ -434,8 +423,6 @@
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Bilder mit weißem Hintergrund</string>
-    <string name="settings_add_google_news_dialog">Google News Themen</string>
-    <string name="settings_add_google_news_dialog_descr">Wenn aktiviert, können beim Hinzufügen neuer Feeds auch Google News Themen gewählt werden</string>
     <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
     <string name="reload_fulltext_after_tag_editing_descr">Wenn das Kontrollkästchen deaktiviert ist, wird der Volltext nicht nach jeder Schlagwort-Bearbeitung neu geladen (Anzeigen|Ausblenden|Stamm), damit mehrere Änderungen einfacher durchgeführt werden können. In diesem Fall sollten Sie den Volltext nach Abschluss der Bearbeitung manuell neu laden.</string>
     <string name="article_menu_show_by_tap">Artikelmenü durch Antippen anzeigen</string>
