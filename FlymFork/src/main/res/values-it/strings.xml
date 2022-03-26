@@ -141,17 +141,6 @@
     <string name="to_group_above">Fuori dal Gruppo</string>
     <string name="to_group_into">Dentro il Gruppo</string>
     <string name="add_custom_feed">Aggiungi Feed o Cercane Uno</string>
-    <string name="google_news_title">Argomenti di Google News</string>
-    <string name="google_news_indicator">Seleziona uno o più argomenti da aggiungere. Alcuni di questi potrebbero non essere forniti da Google nella tua lingua.</string>
-    <string name="google_news_top_stories">In Evidenza</string>
-    <string name="google_news_world">Mondo</string>
-    <string name="google_news_business">Business</string>
-    <string name="google_news_technology">Tecnologia</string>
-    <string name="google_news_entertainment">Intrattenimento</string>
-    <string name="google_news_sports">Sport</string>
-    <string name="google_news_science">Scienza</string>
-    <string name="google_news_health">Salute</string>
-    <string name="google_news_custom_topic">Inserisci Argomento Personalizzato</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Non letti</string>
     <string name="all_entries">Tutti</string>
@@ -435,8 +424,6 @@
     <string name="externalMemory">Memoria esterna</string>
     <string name="show_html">Mostra HTML</string>
     <string name="image_white_background">Immagine di sfondo bianco</string>
-    <string name="settings_add_google_news_dialog">Aggiungi dialogo Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Deseleziona per ignorare un tipo di feed selezionato quando aggiungi un feed</string>
     <string name="reload_fulltext_after_tag_editing">Ricarica il testo dopo la modifica dei tag</string>
     <string name="reload_fulltext_after_tag_editing_descr">se deselezionato il testo completo non sarà ricaricato dopo ogni modifica di un tag (mostra|nascondi|root), quindi sarebbe facile fare più modifiche. In questo caso dovresti avviare manualmente il ricaricamento completo dopo la modifica completata</string>
     <string name="article_menu_show_by_tap">Mostra menù articolo con tocco</string>
