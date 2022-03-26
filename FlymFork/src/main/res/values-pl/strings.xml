@@ -134,7 +134,7 @@ GENERAL]]></string>
     <string name="reject">ODRZUĆ</string>
     <string name="feed_search">Wyszukiwanie kanałów</string>
     <string name="web_page_search_duckduckgo">Szukaj w Sieci (Duck Duck Go)</string>
-    <string name="select_file">Wybierz plik (z folderu feedex w miejscu przechowywania danych)</string>
+    <string name="select_file">Wybierz plik (z folderu Downloads)</string>
     <string name="question_delete_feed">Czy na pewno chcesz usunąć ten kanał?</string>
     <string name="question_delete_group">Czy na pewno chcesz usunąć tą grupę wraz z jej kanałami?</string>
     <string name="question_delete_filter">Czy na pewno chcesz usunąć ten filtr?</string>
@@ -500,6 +500,7 @@ GENERAL]]></string>
     <string name="search_in_yandex">Szukaj w Yandex</string>
     <string name="search_in_google">Szukaj w Google</string>
     <string name="long_operation">Długa operacja</string>
+    <string name="unread_article">Nieczytane artykuły</string>
     <string name="reading_article">Lektura artykułu</string>
     <string name="reading_notification">Powiadomienie o lekturze artykułu</string>
     <string name="reading_notification_descr">Trwałe powiadomienie na belce statusu, chroniące aplikację przed zamknięciem przez system - by przyspieszyć uruchomienie po dłuższym nieużywaniu</string>
@@ -609,6 +610,9 @@ GENERAL]]></string>
     <string name="downloadAllImagesStarted">Rozpoczęto pobieranie wszystkich obrazków</string>
     <string name="operationCanceled">Operacja została anulowana</string>
     <string name="comments">Komentarze: </string>
+    <string name="video_tag_found_in_article">W tekście artykułu znaleziono tag wideo</string>
+    <string name="disable_tap_actions_when_video">Wyłącz akcje dotyku z wideo</string>
+    <string name="disable_tap_actions_when_video_descr">Tymczasowo wyłącza akcje dotyku w artykule zawierającym wideo</string>
     <string name="addFeedTelegramPatternFound">Link wygląda na telegramowy. Czy chcesz automatycznie skonfigurować ustawienia dla kanału Telegramu?</string>
     <string name="feedWasAutoConfigured">Kanał został automatycznie skonfigurowany</string>
     <string name="settings_labels_sort_alphabetical">Sortuj etykiety alfabetycznie</string>
