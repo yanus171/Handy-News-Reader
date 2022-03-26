@@ -403,7 +403,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false );
+        PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         mImageDownloadObservable.addObserver(this);
         mIsResumed = true;
     }

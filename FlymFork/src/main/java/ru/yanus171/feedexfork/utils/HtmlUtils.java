@@ -107,7 +107,7 @@ public class HtmlUtils {
         //content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
         //content = ReplaceImagesWithDataOriginal(content, "<span[^>]+class..lazy-image-placeholder[^>]+src=\"([^\"]+)\"[^>]+>");
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-src=\"([^\"]+)\"([^>]+)?>");
-        content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+)\\s.+x\"+[^>]+></a>" );
+        content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+?)\\s.+\"+[^>]+></a>" );
         content = ReplaceImagesWithALink(content);
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"([^>]+)?>");
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?a>");
