@@ -50,6 +50,10 @@
                 android:icon="@drawable/ic_sync"
                 android:title="@string/create_start_auto_refersh"/>
             <item
+                android:id="@+id/menu_edit_feed"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/menu_edit_feed"/>
+            <item
                 android:id="@+id/menu_show_article_url_toggle"
                 android:icon="@drawable/ic_http"
                 android:checkable="true"

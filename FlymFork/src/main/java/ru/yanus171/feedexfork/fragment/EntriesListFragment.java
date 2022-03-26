@@ -686,8 +686,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
         menu.findItem( R.id.menu_show_entry_text ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
+        menu.findItem( R.id.menu_edit_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_full_screen ).setChecked(HomeActivity.GetIsStatusBarEntryListHidden() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!HomeActivity.GetIsActionBarEntryListHidden() );
+
     }
     @SuppressLint("Range")
     @Override
@@ -942,6 +944,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 FilterByLabels();
                 break;
             }
+            case R.id.menu_edit_feed: {
+                if ( IsFeedUri( mCurrentUri) ) {
+                    final String feedID = mCurrentUri.getPathSegments().get(1);
+                    startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedID)));
+                }
+                break;
+            }
             case R.id.menu_copy_feed: {
                 if ( IsFeedUri( mCurrentUri) ) {
                     final String feedID = mCurrentUri.getPathSegments().get(1);
@@ -1148,8 +1157,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         boolean result = false;
         if ( uri != null && uri.getPathSegments().size() > 1 )
             try {
-                Long.parseLong(uri.getPathSegments().get(1));
-                result = true;
+                long feedID = Long.parseLong(uri.getPathSegments().get(1));
+                result = feedID != Long.parseLong( FetcherService.GetExtrenalLinkFeedID() );
             } catch ( NumberFormatException ignored ) { }
         return result;
     }
