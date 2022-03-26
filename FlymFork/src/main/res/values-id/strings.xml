@@ -145,17 +145,6 @@ maksimum per umpan<br/>
     <string name="to_group_above">Ke luar grup</string>
     <string name="to_group_into">Ke dalam grup</string>
     <string name="add_custom_feed">Tambah umpan khusus atau cari</string>
-    <string name="google_news_title">Topik Google Berita</string>
-    <string name="google_news_indicator">Pilih satu atau beberapa topik untuk ditambahkan. Diantaranya mungkin tidak disediakan oleh Google untuk bahasa Anda</string>
-    <string name="google_news_top_stories">Berita Utama</string>
-    <string name="google_news_world">Dunia</string>
-    <string name="google_news_business">Bisnis</string>
-    <string name="google_news_technology">Teknologi</string>
-    <string name="google_news_entertainment">Hiburan</string>
-    <string name="google_news_sports">Olahraga</string>
-    <string name="google_news_science">Sains</string>
-    <string name="google_news_health">Kesehatan</string>
-    <string name="google_news_custom_topic">Masukkan topik khusus</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Belum dibaca</string>
     <string name="all_entries">Semua artikel</string>
@@ -430,8 +419,6 @@ maksimum per umpan<br/>
     <string name="externalMemory">Memori eksternal</string>
     <string name="show_html">Tampilkan HTML</string>
     <string name="image_white_background">Latar gambar putih</string>
-    <string name="settings_add_google_news_dialog">Tambah dialog Google Berita</string>
-    <string name="settings_add_google_news_dialog_descr">Lepas centang untuk melewati dialog pilihan tipe umpan saat menambah umpan</string>
     <string name="reload_fulltext_after_tag_editing">Muat ulang teks setelah mengedit tagar</string>
     <string name="reload_fulltext_after_tag_editing_descr">bila tidak dicentang, text lengkap tidak akan dimuat ulang setelah mengedit setiap tagar full teks (tampil|sembunyi|akar), sehingga Anda dapat lebih mudah mengajukan perubahan ganda easier (dalam hal ini Anda perlu memuat ulang teks lengkap setelah editan Anda selesai)</string>
     <string name="article_menu_show_by_tap">Tampilkan menu artikel dengan sentuh</string>
