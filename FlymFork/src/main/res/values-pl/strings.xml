@@ -344,9 +344,9 @@
     <string name="markAllAsRead">Oznacz wszystko jako przeczytane</string>
     <string name="pageUp">strona w górę (dłuższe przytrzymanie - na początek) lub \nprzesuń w dół by za- lub odgwiazdkować</string>
     <string name="pageDown">strona w dół (dłuższe przytrzymanie - na sam dół)</string>
-    <string name="fullScreenToggle">przełącznik pełnego ekranu</string>
+    <string name="fullScreenToggle">przełącznik pełnego ekranu | wszystkie obrazy)</string>
     <string name="auto_refresh_feed">Automatycznie odświeżaj kanał</string>
-    <string name="actionBarToggle">przełącznik Paska Akcji</string>
+    <string name="actionBarToggle">przełącznik Paska Akcji | przeładuj tekst)</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Rozmiar tekstu na liście artykułów</string>
     <string name="confirmation">Potwierdzenie</string>
@@ -399,10 +399,10 @@
     <string name="create_auto_backup">Utwórz kopię zapasową teraz</string>
     <string name="auto_backup_opml_file_created">Kopia zapasowa utworzona w pliku .opml:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
-    <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml z folderu feedex</string>
+    <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml do importu - tylko z folderu feedex (poprzez wbudowane okno dialogowe). Nieaktywne od Androida 10</string>
     <string name="settings">Ustawienia</string>
-    <string name="entry_go_prev">Poprzedni artykuł</string>
-    <string name="entry_go_next">Następny artykuł</string>
+    <string name="entry_go_prev">Poprzedni artykuł | anuluj</string>
+    <string name="entry_go_next">Następny artykuł | etykiety</string>
     <string name="colorSlotSaveLongTapHint">Porada: by zachować aktualny kolor, przytrzymaj jedną z komórek</string>
     <string name="colorSlotSaved">Kolor został zapisany w komórce</string>
     <string name="text">Tekst</string>
@@ -502,7 +502,7 @@
     <string name="settings_category_header_descr">Dla ekranów tekstu artykułu oraz listy artykułów. </string>
     <string name="article_text_buttons_layout">Układ przycisków</string>
     <string name="article_text_buttons_layout_descr">Układ oraz widoczność przycisków na końcu artykułu</string>
-    <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci podczas lektury artykułu</string>
+    <string name="article_reading_notification_hint">By utrzymać aplikację w pamięci i przyspieszyć jej uruchamianie</string>
     <string name="auto_set_as_read">Oznacz artykuł jako przeczytany gdy jego tytuł jest widoczny na liście</string>
     <string name="removeText">Usuń tekst</string>
     <string name="set_category">Ustaw jako kategorię</string>
@@ -534,7 +534,7 @@
     <string name="defaultFontFamily">Domyślne systemowe</string>
     <string name="fontTextSample">Tekst</string>
     <string name="fontFamily">Czcionka</string>
-    <string name="fontFamilySummary">Dot. prawie całego tekstu w aplikacji. Możesz dodać pliki ttf niestandardowej czcionki w folderze sdcard/feedex/fonts</string>
+    <string name="fontFamilySummary">Krój czcionki prawie wszystkich tekstów w aplikacji. Możesz dodać pliki własnych czcionek wybierając pozycję na końcu ich listy</string>
     <string name="settings_font_rules">Czcionka Niestandardowa</string>
     <string name="settings_font_rules_description">By ustawić niestandardową czcionkę dla poszczególnych klas w tekście artykułu - dla poszczególnych domen. Pozostaw nazwę klasy pustą by zastosować czcionkę do całego tekstu. Format: site_url:nazwa klasy=nazwa pliku czcionki=komendy CSS (np. font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
     <string name="bold">Pogrubiona</string>
@@ -567,7 +567,7 @@
     <string name="tap_actions_were_disabled">Akcje tapnięcia zostały wyłączone! Tapnij na górze po prawej by włączyć</string>
     <string name="list_was_scrolled_to_top">Przewinięto na górę</string>
     <string name="list_was_scrolled_to_bottom">Przewinięto na dół</string>
-    <string name="articleWasUnstarred">Artykuł został odznaczony gwiazdką</string>
+    <string name="articleWasUnstarred">Artykuł został odgwiazdkowany</string>
     <string name="articleNotFound">Artykuł nie został znaleziony :(</string>
     <string name="atricle_list_size_progressbar_maxsize">"Maks. rozmiar tekstu"</string>
     <string name="atricle_list_size_progressbar_maxsize_descr">W kB dla poziomego wskaźnika (0 by wyłączyć)</string>
@@ -613,7 +613,7 @@
     <plurals name="number_of_new_entries">
         <item quantity="one">Jeden nowy artykuł</item>
         <item quantity="few">%d nowych artykułów</item>
-        <item quantity="many">%d nowych artykułów.</item>
+        <item quantity="many">%d nowych artykułów</item>
         <item quantity="other">%d nowych artykułów</item>
     </plurals>
 </resources>
