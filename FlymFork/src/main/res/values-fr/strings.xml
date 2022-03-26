@@ -142,17 +142,6 @@
     <string name="to_group_above">Au-dessus du groupe</string>
     <string name="to_group_into">Dans le groupe</string>
     <string name="add_custom_feed">Ajoute un flux manuellement ou en rechercher</string>
-    <string name="google_news_title">Sujets Google Actualités</string>
-    <string name="google_news_indicator">Sélectionner un ou plusieurs thèmes à ajouter. Certains peuvent ne pas être fournis par Google pour votre langue.</string>
-    <string name="google_news_top_stories">À la une</string>
-    <string name="google_news_world">International</string>
-    <string name="google_news_business">Économie</string>
-    <string name="google_news_technology">High-Tech</string>
-    <string name="google_news_entertainment">Culture</string>
-    <string name="google_news_sports">Sport</string>
-    <string name="google_news_science">Science</string>
-    <string name="google_news_health">Santé</string>
-    <string name="google_news_custom_topic">Entrer un sujet personnalisé</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Non lus</string>
     <string name="all_entries">Tous les articles</string>
@@ -428,8 +417,6 @@
     <string name="externalMemory">Mémoire externe</string>
     <string name="show_html">Afficher le html</string>
     <string name="image_white_background">Arrière-plan blanc de l\'image</string>
-    <string name="settings_add_google_news_dialog">Ajouter une boîte de dialogue Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Décochez pour contourner la sélection du type de flux lors de l\'ajout d\'un flux</string>
     <string name="reload_fulltext_after_tag_editing">Recharger le texte après édition des tags</string>
     <string name="reload_fulltext_after_tag_editing_descr">si non coché, le texte complet ne sera pas rechargé après chaque édition du tag (montrer|cacher|racine), pour que vous puissiez introduire plusieurs modifications plus facilement (dans un tel cas, vous devez recharger manuellement le texte complet une fois que vous avez terminé l\'édition)</string>
     <string name="article_menu_show_by_tap">Afficher le menu des articles en appuyant</string>
