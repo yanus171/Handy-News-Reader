@@ -87,17 +87,6 @@
     <string name="to_group_above">Utanför gruppen</string>
     <string name="to_group_into">In till gruppen</string>
     <string name="add_custom_feed">Lägg till eller sök efter en feed</string>
-    <string name="google_news_title">Google News -temana</string>
-    <string name="google_news_indicator">Valj ett eller flera teman. Några teman må inte vara nåbar på svenska.</string>
-    <string name="google_news_top_stories">Nyheter</string>
-    <string name="google_news_world">Världen</string>
-    <string name="google_news_business">Ekonomi</string>
-    <string name="google_news_technology">Teknik</string>
-    <string name="google_news_entertainment">Nöje</string>
-    <string name="google_news_sports">Sport</string>
-    <string name="google_news_science">Vetenskap</string>
-    <string name="google_news_health">Hälsa</string>
-    <string name="google_news_custom_topic">Lägg till eget tema</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Nya</string>
     <string name="all_entries">Alla</string>
