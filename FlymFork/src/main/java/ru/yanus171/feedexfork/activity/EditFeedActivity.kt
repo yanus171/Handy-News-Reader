@@ -696,9 +696,11 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
                     // fill in the grid_item layout
                     val adapter = SimpleAdapter(this@EditFeedActivity, data, R.layout.item_search_result, from, to)
-                    adapter.viewBinder = SimpleAdapter.ViewBinder { view, data, s ->
+                    adapter.viewBinder = SimpleAdapter.ViewBinder { view, data_, _ ->
                         if (view is TextView) UiUtils.SetTypeFace(view)
-                        val value = data as String
+                        if ( data_ == null )
+                            return@ViewBinder false
+                        val value = data_ as String
                         if (view is TextView && value.startsWith(IS_READ_STUMB)) {
                             var text = value
                             view.setTextColor(Color.DKGRAY)
