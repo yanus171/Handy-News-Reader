@@ -137,17 +137,6 @@
     <string name="to_group_above">خارج المجموعة</string>
     <string name="to_group_into">داخِل المجموعة</string>
     <string name="add_custom_feed">أَضِفْ وَسيلَةً مُحَدَّدَةً، أَوْ إِسْتَخْدِمْ خاصّيَّةَ البَحْثِ</string>
-    <string name="google_news_title">مواضيع أخبار جوجل</string>
-    <string name="google_news_indicator">حَدَّدَ مَوْضُوعًا وَاحِدًا أَوْ أَكْثَرَ، لِلْإِضَافِهِ. قَدْ لَا توَفِّرُ جُوجَلْ بَعْضَها لِلْغَتِكَ</string>
-    <string name="google_news_top_stories">أهمُّ الأخبار</string>
-    <string name="google_news_world">العالم</string>
-    <string name="google_news_business">أعمال</string>
-    <string name="google_news_technology">تكنولوجيا</string>
-    <string name="google_news_entertainment">ترفيه</string>
-    <string name="google_news_sports">رياضة</string>
-    <string name="google_news_science">علوم</string>
-    <string name="google_news_health">صحة</string>
-    <string name="google_news_custom_topic">أدخِل موضوع مُحَدّد</string>
     <!-- ENTRIES -->
     <string name="unread_entries">غير مقروءة</string>
     <string name="all_entries">كل المقالات</string>
@@ -424,8 +413,6 @@
     <string name="externalMemory">الذاكِرَةُ الخارِجيّة</string>
     <string name="show_html">عَرْضُ الـ HTML</string>
     <string name="image_white_background">طَبَقَةٌ بَيْضَاءَ تَحْتَ الصُّورِ</string>
-    <string name="settings_add_google_news_dialog">نافِذَةُ حِوارِ أَخْبارِ جُوجَلْ</string>
-    <string name="settings_add_google_news_dialog_descr">قُمْ بِالْغَاءِ التَّحْدِيدِ لِإِزالَةِ خِيَارِ (مَوَاضِيعُ أَخْبَارِ جوجل) بِتَخَطِّي النّافِذَةِ</string>
     <string name="reload_fulltext_after_tag_editing">إِعادَةُ تَحْميلِ النَّصِّ بَعْدَ تَحْريرِ العَلامَة</string>
     <string name="reload_fulltext_after_tag_editing_descr">إِذَا لَمْ يَتِمَّ تَحْديدُ هَذَا الْخِيَارِ ، فَلَنْ تَتِمَّ إِعادَةُ تَحْميلِ النَّصِّ الكامِلِ بَعْدَ تَحْريرِ كُلِّ عَلامَةٍ ( إِظْهار | إِخْفاء | الجِذْر ) ، بِحَيْثُ يُمَكِّنُكَ إِدْخالُ تَغْيِيرَاتٍ مُتَعَدِّدَةٍ بِشَكْلٍ أَسْهَلَ ( فِي هَذِهِ الحالَةِ ، سَتَحْتَاجُ إِلَى إِعادَةِ تَحْميلِ النَّصِّ بِالْكَامِلِ يَدَوِيًّا بِمُجَرَّدِ الِانْتِهاءِ مِنْ التَّحْرِيرِ )</string>
     <string name="article_menu_show_by_tap">عَرْضُ قائِمَةِ المَقالِ عَنْ طَريقِ النَّقْرِ</string>
