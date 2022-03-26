@@ -21,6 +21,9 @@ package ru.yanus171.feedexfork.utils;
 
 import androidx.annotation.NonNull;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -28,6 +31,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -37,8 +41,10 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -78,8 +84,9 @@ public class HtmlUtils {
     private static final Pattern END_BR_PATTERN = Pattern.compile("(\\s*<br\\s*[/]*>\\s*)", Pattern.CASE_INSENSITIVE);
     private static final Pattern MULTIPLE_BR_PATTERN = Pattern.compile("(\\s*<br\\s*[/]*>\\s*){3,}", Pattern.CASE_INSENSITIVE);
     private static final Pattern EMPTY_LINK_PATTERN = Pattern.compile("<a\\s+[^>]*></a>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern REF_REPLY_PATTERN = Pattern.compile("<a[^>]+(reply|thread|comment|user)[^>]+(.)*?/a>", Pattern.CASE_INSENSITIVE);
     private static final Pattern IMG_USER_PATTERN = Pattern.compile("<img[^>]+(user)[^>]+(.)*?>", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_VIDEO = Pattern.compile("<video.+?</video>", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_IFRAME = Pattern.compile("<iframe(.|\\n|\\s|\\t)+?/iframe>", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern HTTP_PATTERN = Pattern.compile("(http.?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[?]|[=]|[:]|[/.]|[~])*");//Pattern.compile("(?<![\\>https?://|href=\"'])(?<http>(https?:[/][/]|www.)([a-z]|[-_%]|[A-Z]|[0-9]|[/.]|[~])*)");
 
@@ -103,7 +110,13 @@ public class HtmlUtils {
         content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+)\\s.+x\"+[^>]+></a>" );
         content = ReplaceImagesWithALink(content);
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"([^>]+)?>");
+        //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?a>");
+        //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?'(.+?)'(.|\\n|\\t|\\s)+?a>");
+        //content = ReplaceImagesWithDataOriginal(content, "<i+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?i>");
 
+        content = extractVideos(content);
+        content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
+        content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
         // clean by JSoup
         final Whitelist whiteList =
                 ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
@@ -127,11 +140,6 @@ public class HtmlUtils {
             //content = START_BR_PATTERN.matcher(content).replaceAll("");
             //content = END_BR_PATTERN.matcher(content).replaceAll("");
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
-            if (!baseUri.contains("user") && mobType != ArticleTextExtractor.MobilizeType.Tags) {
-                content = REF_REPLY_PATTERN.matcher(content).replaceAll("");
-                //content = IMG_USER_PATTERN.matcher(content).replaceAll(""); //
-            }
-
             if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
                 // xml
                 content = content.replace("&lt;", "<");
@@ -143,7 +151,7 @@ public class HtmlUtils {
         }
         content = content.replace( "&#39;", "'" );
 
-        if ( filters != null && mobType == ArticleTextExtractor.MobilizeType.Yes )
+        if ( filters != null )
             content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
 
         content = content.replaceAll( "<p>([\\n\\s\\t]*?)</p>", "" );
@@ -201,7 +209,7 @@ public class HtmlUtils {
 
                 final boolean isShowImages = maxImageDownloadCount == 0 || PrefUtils.getBoolean(PrefUtils.DISPLAY_IMAGES, true);
                 //final ArrayList<String> imagesToDl = new ArrayList<>();
-
+                String firstImageUrl = "";
                 matcher = IMG_PATTERN.matcher(content);
                 int index = 0;
                 while ( matcher.find() ) {
@@ -220,6 +228,8 @@ public class HtmlUtils {
                         final boolean isFileExists = mImageFileVoc.isExists( file.getPath() );
                         if ( !isFileExists && isImageToAdd )
                             imagesToDl.add(srcUrl);
+                        if (firstImageUrl.isEmpty() )
+                            firstImageUrl = srcUrl;
                         String btnLoadNext = "";
                         if ( index == maxImageDownloadCount + 1 ) {
                             btnLoadNext = getButtonHtml("downloadNextImages()", getString(R.string.downloadNext) + PrefUtils.getImageDownloadCount(), "download_next");
@@ -247,6 +257,22 @@ public class HtmlUtils {
                 // Download the images if needed
                 if ( isDownLoadImages && !imagesToDl.isEmpty() && entryId != -1 )
                     new Thread(() -> FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl)).start();
+
+                if ( entryId != -1 && !firstImageUrl.isEmpty() ) {
+                    String finalFirstImageUrl = firstImageUrl;
+                    new Thread(() -> {
+                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        Uri uri = FeedData.EntryColumns.CONTENT_URI(entryId);
+                        Cursor cur = cr.query(uri, new String[]{_ID}, FeedData.EntryColumns.IMAGE_URL + Constants.DB_IS_NOT_NULL + Constants.DB_AND + FeedData.EntryColumns.IMAGE_URL + "<> ''" , null, null);
+                        if (!cur.moveToFirst()) {
+                            ContentValues values = new ContentValues();
+                            values.put(FeedData.EntryColumns.IMAGE_URL, finalFirstImageUrl);
+                            cr.update(uri, values, null, null);
+                        }
+                        cur.close();
+                    }).start();
+                }
+
             }
             timer.End();
         } catch ( Exception e ) {
@@ -284,6 +310,22 @@ public class HtmlUtils {
             content = content.replace(match, newText);
         }
         return content;
+    }
+    private static String extractVideos(String content) {
+        final Pattern patternSrc = Pattern.compile("src=\"([^\"]+?)\"", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = PATTERN_VIDEO.matcher(content);
+        ArrayList<String> list = new ArrayList<>();
+        String result = content;
+        while (matcher.find()) {
+            String video = matcher.group();
+            result = result.replace(video, "");
+            video = video.replace( "<video ", "<video controls muted preload='metadata'" );
+            final Matcher m = patternSrc.matcher( video );
+            if ( m.find() && m.groupCount() >= 1 && !result.contains( m.group(1) ) )
+                list.add( video );
+        }
+        result += TextUtils.join( "\n", list );
+        return result;
     }
 
     private static String getDownloadImageHtml(String match) {

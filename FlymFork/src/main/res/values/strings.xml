@@ -193,7 +193,7 @@
     <string name="tip_sentence">Tip: swipe right to mark as read, swipe left to add to Favorites</string>
     <string name="undo">Undo</string>
     <string name="marked_as_read">Marked as read</string>
-    <string name="removed_from_favorites">Removed from favorites</string>
+    <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="image_count">Image count</string>
 
     <!-- WIDGET -->
@@ -509,6 +509,7 @@
     <string name="search_in_yandex">Search via Yandex</string>
     <string name="search_in_google">Search via Google</string>
     <string name="long_operation">Long operation</string>
+    <string name="unread_article">Unread Article(s)</string>
     <string name="reading_article">Reading an article</string>
     <string name="reading_notification">Article reading notification</string>
     <string name="reading_notification_descr">Persistent status bar notification to prevent app from being killed by system - to speed up app starting after long delay</string>
@@ -615,9 +616,17 @@
     <string name="fileCopied">File %s copied</string>
     <string name="unableToCopyFile">Unable to copy file %s</string>
     <string name="label_setup_by_tap_on_date">Label setup by tap on date</string>
-    <string name="label_setup_by_tap_on_date_descr">Author and url in the article list</string>
+    <string name="label_setup_by_tap_on_date_descr">Author and URL in the article list</string>
     <string name="downloadAllImagesStarted">All images download started</string>
     <string name="operationCanceled">An operation has been cancelled</string>
+    <string name="comments">Comments: </string>
+    <string name="video_tag_found_in_article">A video tag was found in the article text</string>
+    <string name="disable_tap_actions_when_video">Disable tap action with video</string>
+    <string name="disable_tap_actions_when_video_descr">Temporary disable tap action in the article when it contains a video</string>
+    <string name="addFeedTelegramPatternFound">The URL seems to be a Telegram one. Do you want to auto-setup feed settings for Telegram channel?</string>
+    <string name="feedWasAutoConfigured">The feed was automatically configured</string>
+    <string name="settings_labels_sort_alphabetical">ABC label sort</string>
+    <string name="settings_labels_sort_alphabetical_descr">Sort labels alphabetically. Otherwise manual sorting</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

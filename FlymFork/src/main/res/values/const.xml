@@ -3,7 +3,32 @@
     <string name="full_text_root_default">lenta.ru:class=b-topic__content
     wikipedia.org:id=bodyContent
     developer.android.com:id=body-content
-    livejournal.com:class=entry-content</string>
+    livejournal.com:class=entry-content
+    economist.com:class=layout-article-body
+    ourworldindata.org:class=wp-block-columns
+    bbc.com:class=ssrcss-rgov1k-MainColumn
+    axios.com:class=gtm-story-text
+    nav.al:class=container-inner
+    cbc.ca:class=story
+    old.reddit.com:class=entry
+    blog.discord.com:class=root
+    quantamagazine.org:class=post
+    buzzfeednews.com:class=subbuzz-text
+    calebkruse.com:class=container
+    copilot.github.com:class=__next
+    getkisi.com:class=v-anti
+    newyorker.com:class=article__body
+    kline.sh:class=Handy_News_Reader_root
+    cyberlaw.stanford.edu:class=content
+    ethz.ch:class=newsArticle
+    pine64.org:class=article
+    theparisreview.org:class=article-body-wrap
+    nytimes.com:class=css-53u6y8
+    indianexpress.com:class=pcl-full-content
+    cloud.google.com:class=uni-blog-article-container
+    danluu.com:class=Handy_News_Reader_root
+    intel.com:class=storypar
+    aws.amazon.com:class=aws-text-box</string>
     <string name="transparent_color" translatable="false">#00000000</string>
     <string name="default_text_color" translatable="false">#FFFFFF</string>
     <string name="default_text_color_background" translatable="false">#00000000</string>

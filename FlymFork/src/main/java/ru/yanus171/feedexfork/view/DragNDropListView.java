@@ -38,6 +38,7 @@ public class DragNDropListView extends ListView {
     private int mDragPointOffset; // Used to adjust drag view location
 
     private ImageView mDragView;
+    private boolean mIsDragEnabled = true;
 
     private DragNDropListener mDragNDropListener;
 
@@ -49,9 +50,13 @@ public class DragNDropListView extends ListView {
         mDragNDropListener = l;
     }
 
+    public void DisableDrag() {
+        mIsDragEnabled = false;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (ev.getActionIndex() != 0) {
+        if (!mIsDragEnabled || ev.getActionIndex() != 0) {
             return super.onTouchEvent(ev);
         }
 

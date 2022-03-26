@@ -126,15 +126,18 @@ public class PrefUtils {
     public static int getFontSizeEntryList() {
         return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
     }
-
+    public static boolean IsLabelABCSort() {
+        return PrefUtils.getBoolean("labels_sort_alphabetical", false);
+    }
     public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
     public static Boolean isImageWhiteBackground() {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
     }
 
-    public static final String PREF_ARTICLE_TAP_ENABLED = "article_tap_enabled";
-    public static Boolean isArticleTapEnabled() {
-        return PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED, true );
+    public static final String PREF_TAP_ENABLED = "article_tap_enabled";
+    public static final String PREF_ARTICLE_TAP_ENABLED_TEMP = "article_tap_enabled_temp";
+    public static Boolean isTapEnabled(boolean isArticleList ) {
+        return PrefUtils.getBoolean(PREF_TAP_ENABLED, true ) && (isArticleList || PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ));
     }
 
     public static int getFontSizeFooterClock() {
@@ -292,7 +295,7 @@ public class PrefUtils {
         if (theme.equals(BLACK)) PrefUtils.putString( PrefUtils.THEME, LIGHT);
         Context context = MainApplication.getContext();
         PreferenceManager.getDefaultSharedPreferences(context).edit().commit(); // to be sure all prefs are written
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
         //System.exit(0);

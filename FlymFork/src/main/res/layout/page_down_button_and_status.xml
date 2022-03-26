@@ -22,23 +22,6 @@
             android:layout_alignParentBottom="true"
             android:text="@string/pageDown" />
 
-        <TextView
-            android:id="@+id/toggleFullScreenStatusBarBtn"
-            style="@style/TapZoneBtn"
-            android:layout_gravity="start|bottom"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/fullScreenToggle" />
-
-        <TextView
-            android:id="@+id/toggleFullscreenBtn"
-            style="@style/TapZoneBtn"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="end|bottom"
-            android:text="@string/actionBarToggle" />
     </FrameLayout>
 
     <include layout="@layout/status_view" />

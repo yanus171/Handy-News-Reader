@@ -61,7 +61,7 @@ public class TickerWidgetService extends Service {
 
     private void updateWidgets() {
         RemoteViews widget = new RemoteViews(getPackageName(), R.layout.ticker_widget);
-        widget.setOnClickPendingIntent(R.id.feed_ticker_tap_area, PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
+        widget.setOnClickPendingIntent(R.id.feed_ticker_tap_area, PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), PendingIntent.FLAG_IMMUTABLE));
 
         Cursor unread = getContentResolver().query(FeedData.EntryColumns.CONTENT_URI, new String[]{FeedData.ALL_UNREAD_NUMBER}, null, null, null);
         if (unread != null) {

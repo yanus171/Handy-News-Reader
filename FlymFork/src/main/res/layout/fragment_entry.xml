@@ -52,17 +52,18 @@
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 <!--                </androidx.core.widget.NestedScrollView>-->
 
-                <include layout="@layout/brightness_slider_layout" />
+                <include layout="@layout/brightness_slider_layout_left" />
+                <include layout="@layout/brightness_slider_layout_right" />
 
-                <TextView
-                    android:id="@+id/pageDownBtnVert"
-                    style="@style/TapZone"
-                    android:layout_width="10mm"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/pageDown"
-                    tools:ignored="RtlHardcoded"
-                    android:layout_alignParentEnd="true" />
+<!--                <TextView-->
+<!--                    android:id="@+id/pageDownBtnVert"-->
+<!--                    style="@style/TapZone"-->
+<!--                    android:layout_width="10mm"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:text="@string/pageDown"-->
+<!--                    tools:ignored="RtlHardcoded"-->
+<!--                    android:layout_alignParentEnd="true" />-->
 
                 <TextView
                     android:id="@+id/pageUpBtn"
@@ -72,44 +73,31 @@
                     android:layout_alignParentTop="true"
                     android:text="@string/pageUp" />
 
+                <include layout="@layout/page_down_button_and_status" />
+
                 <TextView
-                    android:id="@+id/entryPrevBtn"
+                    android:id="@+id/entryLeftBottomBtn"
                     style="@style/TapZoneBtn"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
                     android:text="@string/entry_go_prev"
                     android:layout_alignParentStart="true" />
 
                 <TextView
-                    android:id="@+id/entryNextBtn"
+                    android:id="@+id/entryRightBottomBtn"
                     style="@style/TapZoneBtn"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
                     android:text="@string/entry_go_next"
                     tools:ignore="RtlHardcoded"
                     android:layout_alignParentEnd="true" />
-
-                <ProgressBar
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/progressBarLoader"
-                    android:layout_below="@id/entryNextBtn"
-                    android:layout_alignParentRight="true"
-                    android:padding="10dp"
-                    android:layout_marginRight="10dp"
-                    android:indeterminate="true"
-                    android:background="@drawable/progressbar_background"
-                    android:indeterminateDrawable="@drawable/spinner_ring"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp" />
 
                 <TextView
                     android:id="@+id/btnEndEditing"
                     style="@style/TapZone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/progressBarLoader"
+                    android:layout_below="@id/topBtnLayout"
                     android:layout_margin="10dp"
                     android:padding="10dp"
                     android:layout_alignParentRight="true"
@@ -118,22 +106,7 @@
                     android:background="@drawable/btn_background"
                     android:layout_alignParentEnd="true" />
 
-                <TextView
-                    android:id="@+id/progressText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/progressBarLoader"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_toStartOf="@+id/progressBarLoader"
-                    android:layout_toLeftOf="@+id/progressBarLoader"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:background="@drawable/progresstext_background"
-                    android:text="info"
-                    tools:ignore="RtlHardcoded" />
-
-                <include layout="@layout/bottom_buttons_and_status" />
+                <include layout="@layout/top_buttons_and_progress" />
 
 
             </RelativeLayout>

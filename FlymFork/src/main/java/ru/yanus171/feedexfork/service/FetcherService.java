@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.service;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -152,6 +153,7 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
@@ -161,6 +163,7 @@ import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEF
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
@@ -173,6 +176,7 @@ import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
+@SuppressLint("Range")
 public class FetcherService extends IntentService {
 
     public static final String ACTION_REFRESH_FEEDS = FeedData.PACKAGE_NAME + ".REFRESH";
@@ -354,6 +358,11 @@ public class FetcherService extends IntentService {
         } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
             startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
             EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
+            stopForeground(true);
+            return;
+        } else if (intent.hasExtra( Constants.SET_ITEMS_AS_READ )) {
+            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
+            EntriesListFragment.SetItemsAsRead( intent.getStringArrayListExtra(URL_LIST ) );
             stopForeground(true);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
@@ -752,6 +761,7 @@ public class FetcherService extends IntentService {
             cursor.close();
         } finally {
             SetNotifyEnabled( true );
+            notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
             Status().End( status );
         }
 
@@ -770,6 +780,7 @@ public class FetcherService extends IntentService {
 
     public enum AutoDownloadEntryImages {Yes, No}
 
+    @SuppressLint("Range")
     public static boolean mobilizeEntry(final long entryId,
                                         FeedFilters filters,
                                         final ArticleTextExtractor.MobilizeType mobilize,
@@ -836,7 +847,8 @@ public class FetcherService extends IntentService {
                             }
                         }
                     }
-                    String title = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.TITLE));
+                    final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
+                    String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
                     //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
                     if ( isCorrectTitle ) {
                         Elements titleEls = doc.getElementsByTag("title");
@@ -895,31 +907,47 @@ public class FetcherService extends IntentService {
                                 values.put(EntryColumns.DATE, date.getTime());
                         }
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
-                        if ( title != null )
-                            values.put(EntryColumns.TITLE, title);
 
-                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
-                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures()) {
-                            //imgUrlsToDownload = HtmlUtils.getImageURLs(mobilizedHtml);
-                            HtmlUtils.replaceImageURLs( mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
+
+                        {
+                            boolean isOneWebPage = false;
+                            final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
+                            final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
+                            if (!jsonText.isEmpty())
+                                try {
+                                    JSONObject jsonOptions = new JSONObject(jsonText);
+                                    isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                            if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage )
+                                values.put(EntryColumns.TITLE, title);
                         }
+                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
+                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
+                            HtmlUtils.replaceImageURLs( mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
 
                         String mainImgUrl;
-                        if (!imgUrlsToDownload.isEmpty() ) {
+                        if (!imgUrlsToDownload.isEmpty() )
                             mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
-                        } else {
+                        else
                             mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
-                        }
 
-                        if (mainImgUrl != null) {
+                        if (mainImgUrl != null)
                             values.put(EntryColumns.IMAGE_URL, mainImgUrl);
+
+                        if ( filters != null && filters.isEntryFiltered( title, "", link, mobilizedHtml, categoryList.toArray(new String[0]) ) ) {
+                            cr.delete( entryUri, null, null );
+                        } else {
+                            if ( filters != null && filters.isMarkAsStarred( title, "", link, mobilizedHtml, categoryList.toArray(new String[0]) ) )
+                                values.put(EntryColumns.IS_FAVORITE, 1);
+                            cr.update(entryUri, values, null, null);
+                            if ( !imgUrlsToDownload.isEmpty() )
+                                addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
                         }
-
-                        cr.update( entryUri, values, null, null );//operations.add(ContentProviderOperation.newUpdate(entryUri).withValues(values).build());
-
                         success = true;
-                        if ( !imgUrlsToDownload.isEmpty() )
-                            addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -980,7 +1008,7 @@ public class FetcherService extends IntentService {
         intent.putExtra("UnstarArticle", true );
         intent.putExtra( EXTRA_TEXT, link );
         intent.putExtra( EXTRA_ID, notificationID );
-        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     public enum ForceReload {Yes, No}
@@ -1241,7 +1269,7 @@ public class FetcherService extends IntentService {
                 executor.shutdown();
             }
             if ( downloadedCount > 0 )
-                EntryView.NotifyToUpdate( entryId, entryLink );
+                EntryView.NotifyToUpdate( entryId, entryLink, false );
         } catch ( Exception e ) {
             obs.SetError(null, "", String.valueOf(entryId), e);
         } finally {
@@ -1426,7 +1454,7 @@ public class FetcherService extends IntentService {
 
     private void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //
@@ -1438,7 +1466,10 @@ public class FetcherService extends IntentService {
                 .setContentTitle(getString(captionID)) //
                 .setLights(0xffffffff, 0, 0);
         if (Build.VERSION.SDK_INT >= 26 ) {
-            builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
+            if (ID == Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT)
+                builder.setChannelId(UNREAD_NOTIFICATION_CHANNEL_ID);
+            else
+                builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
             if ( cancelPI != null )
                 builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, getContext().getString(android.R.string.cancel), cancelPI);
         }
@@ -1512,6 +1543,7 @@ public class FetcherService extends IntentService {
         content = content.replaceAll( "<[a-z]+?:", "<" );
         content = content.replaceAll( "</[a-z]+?:", "</" );
         content = content.replace( "&mdash;", "-" );
+        content = content.replace( "&ndash;", "-" );
         content = content.replace((char) 0x1F, ' ');
         content = content.replace((char) 0x02, ' ');
         content = content.replace(String.valueOf((char)0x00), "");
@@ -1737,9 +1769,7 @@ public class FetcherService extends IntentService {
         public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
             int status = Status().Start("deleteAllFeedEntries", true);
             try {
-
                 final ContentResolver cr = getContext().getContentResolver();
-                final String feedID = entriesUri.getPathSegments().get( 1 );
                 final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
                 if ( cursor != null  ){
                     while ( cursor.moveToNext() ) {
@@ -2005,6 +2035,6 @@ public class FetcherService extends IntentService {
         Intent intent = new Intent(this, BroadcastActionReciever.class);
         intent.setAction( Action );
         intent.putExtra("FetchingServiceStart", true );
-        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, 0);
+        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
 }

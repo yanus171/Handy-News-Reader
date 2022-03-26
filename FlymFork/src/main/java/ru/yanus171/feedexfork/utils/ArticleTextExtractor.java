@@ -3,6 +3,8 @@ package ru.yanus171.feedexfork.utils;
 import android.text.TextUtils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,13 +16,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 
 /**
  * This class is thread safe.
@@ -180,9 +186,9 @@ public class ArticleTextExtractor {
             }
 
 
-        String ret = rootElement.toString();
-        if (ogImage != null && !ret.contains(ogImage)) {
-            ret = "<img src=\"" + ogImage + "\"><br>\n" + ret;
+        StringBuilder ret = new StringBuilder(rootElement.toString());
+        if (ogImage != null && !ret.toString().contains(ogImage)) {
+            ret.insert(0, "<img src=\"" + ogImage + "\"><br>\n");
         }
 
 
@@ -202,30 +208,72 @@ public class ArticleTextExtractor {
                         entry.tagName("p");
                     }
                     RemoveHiddenElements(item);
-                    ret += item;
+                    ret.append(item);
                 }
             }
+
+            ret.append(AddHabrComments(url));
         }
 
         if ( !isWithTables ) {
-            ret = RemoveTables(ret);
+            ret = new StringBuilder(RemoveTables(ret.toString()));
         }
 
         final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
-        ret = HtmlUtils.improveHtmlContent(ret, NetworkUtils.getBaseUrl(url), filters, mobilize, isAutoFullTextRoot );
+        ret = new StringBuilder(HtmlUtils.improveHtmlContent(ret.toString(), NetworkUtils.getBaseUrl(url), filters, mobilize, isAutoFullTextRoot));
 
         if ( mobilize == MobilizeType.Tags ) {
-            mLastLoadedAllDoc = ret;
-            Document tempDoc = Jsoup.parse(ret, NetworkUtils.getUrlDomain(url));
+            mLastLoadedAllDoc = ret.toString();
+            Document tempDoc = Jsoup.parse(ret.toString(), NetworkUtils.getUrlDomain(url));
             rootElement = FindBestElement(tempDoc, url, contentIndicator, isFindBestElement);
             AddTagButtons(tempDoc, url, rootElement);
-            ret = tempDoc.toString();
+            ret = new StringBuilder(tempDoc.toString());
         }
 
-
-        return ret;
+        return ret.toString();
     }
 
+    private static String AddHabrComments(String url) {
+        StringBuilder result = new StringBuilder();
+        if ( url.contains( "habr.com" ) ) {
+            Matcher matcher = Pattern.compile("/(\\d+)/").matcher(url);
+            if ( matcher.find() ) {
+                String id = matcher.group(1);
+                final Connection conn = new Connection("https://habr.com/kek/v2/articles/ARTICLE_ID/comments/?fl=ru&hl=ru".replace("ARTICLE_ID", id ));
+                try {
+                    final String s = conn.getText();
+                    Dog.d(TAG, s);
+                    JSONObject json = new JSONObject(s );
+                    JSONObject list = json.getJSONObject( "comments");
+                    result.append( String.format("<h2> %s </h2>", MainApplication.getContext().getString( R.string.comments )) );
+                    for (int i = 0; i < list.names().length(); i++) {
+                        JSONObject item = list.getJSONObject( list.names().getString( i ) );
+                        JSONObject author = item.getJSONObject( "author" );
+                        int score = item.getInt( "score" );
+                        result.append( String.format("<p class='subtitle'>%s<i>%s</i>, %s</p>%s<br/>",
+                                       score == 0 ? "" : String.format("[%s] ", score),
+                                       GetValue(author, "alias" ) + " " + GetValue(author, "fullname" ) + " " + GetValue(author, "speciality" ),
+                                       StringUtils.getDateTimeString(parseDate(item.getString("timePublished"), 0L).getTime() ),
+                                       item.getString("message")) );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    result.append( e.getLocalizedMessage() );
+                }
+                conn.disconnect();
+            }
+
+        }
+        return result.toString();
+    }
+
+    private static String GetValue( JSONObject json, String name ) throws JSONException {
+        String s = json.getString( name );
+        if ("null".equals( s ))
+            return "";
+        else
+            return s;
+    }
     public static void RemoveHiddenElements(Element rootElement) {
         final ArrayList<String> removeClassList = PrefUtils.GetRemoveClassList();
         for (String classItem : removeClassList) {
@@ -306,7 +354,6 @@ public class ArticleTextExtractor {
 
         final Element dateElement = getDateElementFromPref(doc, url);
 
-        final String baseUrl = url;//NetworkUtils.getUrlDomain(url);
         for (Element el : doc.getElementsByAttribute(CLASS_ATTRIBUTE))
             if (el.hasText()) {
                 //final String classNameList =
@@ -323,7 +370,7 @@ public class ArticleTextExtractor {
                     final boolean isTextRoot = el.equals( bestMatchElement ) ||
                         el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS ) ||
                         el.classNames().contains( fullTextRootElementFromPrefClassName );
-                    AddTagButton( el, className, baseUrl, isHidden, isTextRoot, isCategory, isDate );
+                    AddTagButton(el, className, url, isHidden, isTextRoot, isCategory, isDate );
                     if ( isHidden && el.parent() != null ) {
                         Element elementS = doc.createElement("s");
                         elementS.addClass( TAG_BUTTON_CLASS_HIDDEN );
@@ -450,7 +497,7 @@ public class ArticleTextExtractor {
                 String[] list1 = line.split(":");
                 String keyWord = list1[0];
                 String[] list2 = list1[1].split("=");
-                String elementType = list2[0].toLowerCase();
+                String  elementType = list2[0].toLowerCase();
                 String elementValue = list2[1];
                 if (url.contains(keyWord))
                     return elementValue;
@@ -602,14 +649,14 @@ public class ArticleTextExtractor {
 //            }
 //        }
 //    }
-    private static Element removeScriptsAndStyles(Element doc) {
+    private static void removeScriptsAndStyles(Element doc) {
         Elements scripts = doc.getElementsByTag("script");
         for (Element item : scripts) {
             item.remove();
         }
 
         if (FetcherService.isCancelRefresh())
-            return doc;
+            return;
 
         Elements noscripts = doc.getElementsByTag("noscript");
         for (Element item : noscripts) {
@@ -617,31 +664,29 @@ public class ArticleTextExtractor {
         }
 
         if (FetcherService.isCancelRefresh())
-            return doc;
+            return;
 
         Elements styles = doc.getElementsByTag("style");
         for (Element style : styles) {
             style.remove();
         }
 
-        return doc;
     }
 
-    private static Element removeSelectsAndOptions(Element doc) {
+    private static void removeSelectsAndOptions(Element doc) {
         Elements scripts = doc.getElementsByTag("select");
         for (Element item : scripts) {
             item.remove();
         }
 
         if (FetcherService.isCancelRefresh())
-            return doc;
+            return;
 
         Elements noscripts = doc.getElementsByTag("option");
         for (Element item : noscripts) {
             item.remove();
         }
 
-        return doc;
     }
 
     /**
@@ -649,9 +694,7 @@ public class ArticleTextExtractor {
      */
     private static Collection<Element> getMetas(Element doc) {
         Collection<Element> nodes = new HashSet<>(64);
-        for (Element el : doc.select("head").select("meta")) {
-            nodes.add(el);
-        }
+        nodes.addAll(doc.select("head").select("meta"));
         return nodes;
     }
 

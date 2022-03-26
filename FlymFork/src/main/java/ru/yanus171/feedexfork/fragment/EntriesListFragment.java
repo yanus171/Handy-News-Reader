@@ -34,9 +34,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.BaseColumns;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.EventLog;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -92,8 +95,10 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -103,14 +108,18 @@ import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.Constants.URL_LIST;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
@@ -182,7 +191,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             return mIsRead.toString() + ITEM_SEP + mUri;
         }
     }
-    private final ArrayList<String> mWasVisibleList = new ArrayList<>();
+    public static final HashSet<String> mWasVisibleList = new HashSet<>();
     private JSONObject mOptions;
 
     public boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
@@ -221,7 +230,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 Timer.End(ENTRIES_LOADER_ID);
                 Timer timer = new Timer("EntriesListFragment.onCreateLoader");
 
-                    mEntriesCursorAdapter.swapCursor(data);
+                    mEntriesCursorAdapter.changeCursor(data);
                     if (mNeedSetSelection) {
                         mNeedSetSelection = false;
                         mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
@@ -242,7 +251,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             if ( loader.getId() == ENTRIES_LOADER_ID ) {
                 Status().End( mStatus );
                 //getActivity().setProgressBarIndeterminateVisibility( true );
-                mEntriesCursorAdapter.swapCursor(Constants.EMPTY_CURSOR);
+                mEntriesCursorAdapter.changeCursor(Constants.EMPTY_CURSOR);
             }
         }
 
@@ -394,6 +403,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false );
         mImageDownloadObservable.addObserver(this);
         mIsResumed = true;
     }
@@ -442,23 +452,32 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if ( scrollState != SCROLL_STATE_IDLE )
+                    return;
+                HomeActivity activity = (HomeActivity) getActivity();
+                if ( GetActivity().mPageUpBtn != null )
+                    GetActivity().mPageUpBtn.setVisibility( mListView.getFirstVisiblePosition() == 0 || activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
+                if ( GetActivity().mPageUpBtnFS != null )
+                    GetActivity().mPageUpBtnFS.setVisibility( mListView.getFirstVisiblePosition() == 0 || !activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
 
+                UpdateFooter();
+
+                Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d)", scrollState ) );
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if ( mEntriesCursorAdapter == null || !mIsResumed )
                     return;
-                if ( GetActivity().mPageUpBtn != null )
-                    GetActivity().mPageUpBtn.setVisibility( firstVisibleItem == 0 ? View.GONE : View.VISIBLE );
                 for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
-                    String item = new VisibleReadItem( GetUri( i ).toString(), isAlsoSetAsRead() ).ToString();
-                    synchronized ( mWasVisibleList ) {
-                        if (!mWasVisibleList.contains(item))
-                            mWasVisibleList.add(item);
-                    }
+                    String item = new VisibleReadItem( GetUri( i ).toString(), false ).ToString();
+                    mWasVisibleList.add(item);
                 }
-                SetIsRead( firstVisibleItem - 2);
+                if ( mShowTextInEntryList || isAlsoSetAsRead() ) {
+                    final int pos = firstVisibleItem - 2;
+                    final Uri uri = GetUri( pos );
+                    EntriesCursorAdapter.mMarkAsReadList.add(uri.toString());
+                }
                 if ( firstVisibleItem > 0 ) {
                     mLastVisibleTopEntryID = mEntriesCursorAdapter.getItemId(firstVisibleItem);
                     View v = mListView.getChildAt(0);
@@ -470,8 +489,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         list.add( mEntriesCursorAdapter.getItemId( pos ) );
                     FetcherService.setEntryIDActiveList( list );
                 }
-                UpdateFooter();
                 Status().HideByScroll();
+
+                int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
+                int value = mListView.getFirstVisiblePosition();
+                getBaseActivity().UpdateHeaderProgressOnly( max, value );
+
                 Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
             }
         });
@@ -519,10 +542,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     public void UpdateFooter() {
-        getBaseActivity().UpdateHeader(mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount(),
-                                       mListView.getFirstVisiblePosition(),
-                                       HomeActivity.GetIsStatusBarEntryListHidden(),
-                                       HomeActivity.GetIsActionBarEntryListHidden());
+        int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
+        int value = mListView.getFirstVisiblePosition();
+        getBaseActivity().UpdateHeader( max,
+                                            value,
+                                            HomeActivity.GetIsStatusBarEntryListHidden(),
+                                            HomeActivity.GetIsActionBarEntryListHidden());
     }
 
     private BaseActivity getBaseActivity() {
@@ -530,44 +555,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
     private void SetListViewAdapter() {
-
-
         mListView.setAdapter(mEntriesCursorAdapter);
         mNeedSetSelection = true;
-    }
-
-
-
-
-    private void SetIsRead(final int pos) {
-        if ( !mShowTextInEntryList )
-            return;
-        final Uri uri = GetUri( pos );
-        if ( EntriesCursorAdapter.mMarkAsReadList.contains( uri ) )
-            return;
-        class Run implements Runnable {
-            private int mEntryPos;
-            private Run(final int entryPos) {
-                mEntryPos = entryPos;
-            }
-            @Override
-            public void run() {
-                if (mEntryPos < mListView.getFirstVisiblePosition() || mEntryPos > mListView.getLastVisiblePosition()) {
-                    EntriesCursorAdapter.mMarkAsReadList.add(uri);
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            SetNotifyEnabled( false ); try {
-                                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
-                            } finally { SetNotifyEnabled( true ); }
-                        }
-                    }.start();
-                }
-            }
-        }
-        UiUtils.RunOnGuiThread(  new Run( pos ), 2000);
-
     }
 
     public static void ShowDeleteDialog(Context context, final String title, final long id, final String entryLink) {
@@ -575,19 +564,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 .setIcon(android.R.drawable.ic_dialog_alert) //
                 .setTitle( R.string.question_delete_entry ) //
                 .setMessage( title ) //
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.yes, (dialog1, which) -> new Thread() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                cr.delete(EntryColumns.CONTENT_URI(id), null, null);
-                                EntryUrlVoc.INSTANCE.remove( entryLink );
-                            }
-                        }.start();
+                    public void run() {
+                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        cr.delete(EntryColumns.CONTENT_URI(id), null, null);
+                        EntryUrlVoc.INSTANCE.remove( entryLink );
                     }
-                }).setNegativeButton(android.R.string.no, null).create();
+                }.start()).setNegativeButton(android.R.string.no, null).create();
         dialog.getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -608,11 +592,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mJustMarkedAsReadEntries.close();
         }
 
-        synchronized ( mWasVisibleList ) {
-            FetcherService.StartService( FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
-                                         .putStringArrayListExtra(Constants.URL_LIST, mWasVisibleList), false );
-            mWasVisibleList.clear();
-        }
+        FetcherService.StartService(FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
+                                     .putStringArrayListExtra(Constants.URL_LIST, new ArrayList<>(mWasVisibleList) ), false );
+        mWasVisibleList.clear();
+
+        FetcherService.StartService(FetcherService.GetIntent(Constants.SET_ITEMS_AS_READ)
+                                        .putStringArrayListExtra(Constants.URL_LIST, new ArrayList<>(EntriesCursorAdapter.mMarkAsReadList) ), false );
+        EntriesCursorAdapter.mMarkAsReadList.clear();
         mFab = null;
 
         super.onStop();
@@ -656,17 +642,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         // Use a custom search icon for the SearchView in AppBar
         int searchImgId = androidx.appcompat.R.id.search_button;
-        ImageView v = (ImageView) searchView.findViewById(searchImgId);
+        ImageView v = searchView.findViewById(searchImgId);
         v.setImageResource(R.drawable.ic_search);
 
         if (EntryColumns.isSearchUri(mCurrentUri)) {
             searchItem.expandActionView();
-            searchView.post(new Runnable() { // Without that, it just does not work
-                @Override
-                public void run() {
-                    searchView.setQuery(mCurrentUri.getLastPathSegment(), false);
-                    searchView.clearFocus();
-                }
+            // Without that, it just does not work
+            searchView.post(() -> {
+                searchView.setQuery(mCurrentUri.getLastPathSegment(), false);
+                searchView.clearFocus();
             });
         }
 
@@ -684,14 +668,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return false;
             }
         });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-
-            @Override
-            public boolean onClose() {
-                setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
-                getActivity().invalidateOptionsMenu();
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
+            getActivity().invalidateOptionsMenu();
+            return false;
         });
 
         UpdateActions();
@@ -709,6 +689,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_full_screen ).setChecked(HomeActivity.GetIsStatusBarEntryListHidden() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!HomeActivity.GetIsActionBarEntryListHidden() );
     }
+    @SuppressLint("Range")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -718,22 +699,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     StringBuilder starredList = new StringBuilder();
                     final boolean temp = mShowUnReadOnly;
                     mShowUnReadOnly = false;
-                    Cursor cursor = getContext().getContentResolver().query( mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
-                                                                             EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC) );
-                    mShowUnReadOnly = temp;
-                    if (cursor != null && !cursor.isClosed()) {
-                        int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
-                        int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
-                        if (cursor.moveToFirst())
-                            do {
-                                starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
-                            } while (cursor.moveToNext());
-                        startActivity(Intent.createChooser(
-                                new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_favorites_title))
-                                        .putExtra(Intent.EXTRA_TEXT, starredList.toString()).setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
-                        ));
-                        cursor.close();
+                    final HashSet<Long> tempLabelsID = mLabelsID;
+                    for ( Label label: LabelVoc.INSTANCE.getList() ) {
+                        starredList.append( label.mName + ": \n" );
+                        starredList.append( "----------------------------------------\n" );
+                        SetSingleLabel( label.mID );
+                        AddAtriclesLinks(starredList);
                     }
+                    mShowUnReadOnly = temp;
+                    mLabelsID = tempLabelsID;
+                    final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "shared_article_links.txt", starredList.toString()) );
+                    startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
                 }
                 return true;
             }
@@ -787,34 +765,32 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_reset_feed_and_delete_all_articles: {
-                //if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_FEED ) {
-                    new AlertDialog.Builder(getContext()) //
-                            .setIcon(android.R.drawable.ic_dialog_alert) //
-                            .setTitle( R.string.question ) //
-                            .setMessage( R.string.deleteAllEntries ) //
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getContext()) //
+                    .setIcon(android.R.drawable.ic_dialog_alert) //
+                    .setTitle( R.string.question ) //
+                    .setMessage( R.string.deleteAllEntries ) //
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new Thread() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
-                                            // reset feed
-                                            if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
-                                                final String feedID = mCurrentUri.getPathSegments().get( 1 );
-                                                ContentValues values = new ContentValues();
-                                                values.putNull(FeedColumns.LAST_UPDATE);
-                                                values.putNull(FeedColumns.ICON_URL);
-                                                values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                                                final ContentResolver cr = getContext().getContentResolver();
-                                                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
-                                            }
-
-                                        }
-                                    }.start();
+                                public void run() {
+                                    FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
+                                    // reset feed
+                                    if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
+                                        final String feedID = mCurrentUri.getPathSegments().get( 1 );
+                                        ContentValues values = new ContentValues();
+                                        values.putNull(FeedColumns.LAST_UPDATE);
+                                        values.putNull(FeedColumns.ICON_URL);
+                                        values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                                        final ContentResolver cr = getContext().getContentResolver();
+                                        cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                                    }
+                                    UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
                                 }
-                            }).setNegativeButton(android.R.string.no, null).show();
-                //}
+                            }.start();
+                        }
+                    }).setNegativeButton(android.R.string.no, null).show();
                 return true;
             }
             case R.id.menu_mark_all_as_read: {
@@ -996,6 +972,18 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return super.onOptionsItemSelected(item);
     }
 
+    private void AddAtriclesLinks(StringBuilder starredList) {
+        Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
+                                                                EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC));
+        if (cursor != null) {
+            int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
+            int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
+            while (cursor.moveToNext())
+                starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
+            cursor.close();
+        }
+    }
+
     public void FilterByLabels() {
         LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
             mLabelsID = checkedLabels;
@@ -1117,15 +1105,18 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
-        final ArrayList<String> listCopy;
-        synchronized ( mWasVisibleList ) {
-            listCopy = (ArrayList<String>) mWasVisibleList.clone();
-            mWasVisibleList.clear();
-        }
+
+        final ArrayList<String> listVisible;
+        listVisible = new ArrayList<>(mWasVisibleList);
+        mWasVisibleList.clear();
+        final ArrayList<String> listRead;
+        listRead = new ArrayList<>( EntriesCursorAdapter.mMarkAsReadList );
+        EntriesCursorAdapter.mMarkAsReadList.clear();
         new Thread() {
             @Override
             public void run() {
-                SetVisibleItemsAsOld( listCopy );
+                SetVisibleItemsAsOld( listVisible );
+                SetItemsAsRead( listRead );
             }
         }.start();
 
@@ -1213,18 +1204,40 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
 
     }
+
+    public static void SetItemsAsRead(ArrayList<String> uriList) {
+        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
+        for (String data : uriList) {
+            updates.add(
+                ContentProviderOperation.newUpdate(Uri.parse(data))
+                    .withValues(FeedData.getReadContentValues())
+                    .withSelection(EntryColumns.WHERE_UNREAD, null)
+                    .build());
+        }
+        if (!updates.isEmpty()) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try {
+                cr.applyBatch(FeedData.AUTHORITY, updates);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void update(Observable observable, Object o) {
         //if ( !mShowTextInEntryList )
         //    return;
         if ( o instanceof Entry && mEntriesCursorAdapter != null ) {
             final Entry entry = (Entry) o;
-            final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
-            if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
-                mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
+            if (entry.mRestorePosition ) {
+                final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
+                if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
+                    mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
+                    mEntriesCursorAdapter.notifyDataSetChanged();
+                    RestoreListScrollPosition();
+                }
+            } else
                 mEntriesCursorAdapter.notifyDataSetChanged();
-                RestoreListScrollPosition();
-            }
         } else if ( o instanceof EntriesCursorAdapter.ListViewTopPos) {
             mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
         }

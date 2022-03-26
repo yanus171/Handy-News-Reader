@@ -123,6 +123,7 @@ public class FeedData {
     public static ContentValues getReadContentValues() {
         ContentValues values = new ContentValues();
         values.put(EntryColumns.IS_READ, true);
+        values.put(EntryColumns.IS_NEW, false);
         return values;
     }
 

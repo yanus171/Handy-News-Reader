@@ -511,7 +511,7 @@
     <string name="removeText">Удалить текст</string>
     <string name="set_category">Установить как категорию</string>
     <string name="menu_more_options">Больше опций</string>
-    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все избранные статьи</string>
+    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все неотмеченные статьи</string>
     <string name="filter_apply_to_author">Применить к автору</string>
     <string name="filter_apply_to_category">Применить к категории</string>
     <string name="filter_apply_to_url">Применить к URL</string>
@@ -611,10 +611,11 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="video_tag_found_in_article">В тексте статьи обнаружен тег видео</string>
     <string name="disable_tap_actions_when_video">Отключить действие касания при просмотре видео</string>
     <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
-    <string name="addFeedTelegramPatternFound">Похоже, что url является телеграмм-каналом. Вы хотите автоматически оптимизировать настройки ленты для канала telegram?</string>
-    <string name="feedWasAutoConfigured">Лента была настроена автоматически</string>
     <string name="settings_labels_sort_alphabetical">Сортировка ярлыков ABC</string>
     <string name="settings_labels_sort_alphabetical_descr">Сортировать ярлыки по алфавиту. Иначе ручная сортировка</string>
+    <string name="addFeedTelegramPatternFound">URL-адрес, похоже, относится к telegram. Вы хотите автоматически настроить ленту для telegram-канала?</string>
+    <string name="feedWasAutoConfigured">Лента была настроена</string>
+
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>

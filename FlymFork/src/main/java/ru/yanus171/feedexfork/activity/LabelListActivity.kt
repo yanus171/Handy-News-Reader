@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns
 import ru.yanus171.feedexfork.utils.*
+import ru.yanus171.feedexfork.utils.PrefUtils.IsLabelABCSort
 import ru.yanus171.feedexfork.view.ColorPreference
 import ru.yanus171.feedexfork.view.DragNDropListView
 import ru.yanus171.feedexfork.view.DragNDropListener
@@ -43,6 +44,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
                 val nameTextView = view!!.findViewById<TextView>(R.id.text_name)
                 nameTextView.text = label.mName
                 nameTextView.setTextColor(label.colorInt())
+                view!!.findViewById<View>(R.id.dragButton).visibility = if (IsLabelABCSort()) View.GONE else View.VISIBLE
             }
 
             override fun getItem(position: Int): Label {
@@ -54,36 +56,39 @@ class LabelListActivity : AppCompatActivity(), Observer {
         mListView.onItemClickListener  = AdapterView.OnItemClickListener { _, _, pos, _ -> createLabelAddEditDialog(mListView.adapter.getItem(pos) as Label).create().show()
         }
 
-        mListView.setDragNDropListener(object : DragNDropListener {
-            override fun onStopDrag(itemView: View) {}
-            override fun onStartDrag(itemView: View) {}
+        if ( IsLabelABCSort() )
+            mListView.DisableDrag()
+        else
+            mListView.setDragNDropListener(object : DragNDropListener {
+                override fun onStopDrag(itemView: View) {}
+                override fun onStartDrag(itemView: View) {}
 
-            override fun onDrop(flatPosFrom: Int, flatPosTo: Int) {
-                if ( flatPosFrom < flatPosTo )
-                    for ( i in flatPosFrom .. (flatPosTo - 1) )
-                        swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i+1] )
-                else
-                    for ( i in flatPosFrom downTo (flatPosTo + 1)  )
-                        swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i-1] )
-                refreshAdapter()
-            }
+                override fun onDrop(flatPosFrom: Int, flatPosTo: Int) {
+                    if ( flatPosFrom < flatPosTo )
+                        for ( i in flatPosFrom .. (flatPosTo - 1) )
+                            swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i+1] )
+                    else
+                        for ( i in flatPosFrom downTo (flatPosTo + 1)  )
+                            swapLabelsOrder( LabelVoc.getList()[i], LabelVoc.getList()[i-1] )
+                    refreshAdapter()
+                }
 
-            private fun swapLabelsOrder( label1: Label, label2: Label ) {
-                val order1 = label1.mOrder
-                setLabelOrder(label1, label2.mOrder)
-                setLabelOrder(label2, order1)
-            }
+                private fun swapLabelsOrder( label1: Label, label2: Label ) {
+                    val order1 = label1.mOrder
+                    setLabelOrder(label1, label2.mOrder)
+                    setLabelOrder(label2, order1)
+                }
 
-            private fun setLabelOrder(label: Label, order: Int) {
-                label.mOrder = order
-                LabelVoc.set(label)
-                val values = ContentValues()
-                values.put(LabelColumns.ORDER, label.mOrder)
-                contentResolver.update(LabelColumns.CONTENT_URI(label.mID), values, null, null)
-            }
+                private fun setLabelOrder(label: Label, order: Int) {
+                    label.mOrder = order
+                    LabelVoc.set(label)
+                    val values = ContentValues()
+                    values.put(LabelColumns.ORDER, label.mOrder)
+                    contentResolver.update(LabelColumns.CONTENT_URI(label.mID), values, null, null)
+                }
 
-            override fun onDrag(x: Int, y: Int, listView: ListView) {}
-        })
+                override fun onDrag(x: Int, y: Int, listView: ListView) {}
+            })
     }
 
     private fun createCursor() = contentResolver.query(
@@ -91,7 +96,7 @@ class LabelListActivity : AppCompatActivity(), Observer {
             arrayOf(LabelColumns._ID, LabelColumns.NAME, LabelColumns.COLOR, LabelColumns.ORDER),
             null,
             null,
-            LabelColumns.ORDER)
+            if (IsLabelABCSort()) LabelColumns.NAME else LabelColumns.ORDER)
 
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

@@ -9,13 +9,13 @@ android {
         //incremental true
     }*/
 
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
-        targetSdkVersion 30
-        versionCode 244
-        versionName '0.16.12'
+        targetSdkVersion 31
+        versionCode 251
+        versionName '0.16.21'
     }
     lintOptions {
         checkReleaseBuilds false

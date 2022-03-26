@@ -1,23 +1,12 @@
 package ru.yanus171.feedexfork.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -28,7 +17,6 @@ import android.widget.TextView;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Theme;
-import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 
@@ -88,7 +76,7 @@ public class MessageBox extends BaseActivity {
 		frameLayout.addView( dimFrame, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT );
 
 		View brightnessSlider = new TextView( this );
-		brightnessSlider.setId( R.id.brightnessSlider );
+		brightnessSlider.setId( R.id.brightnessSliderLeft);
 		LayoutParams lp = new LayoutParams( 20, LayoutParams.MATCH_PARENT );
 		lp.gravity = Gravity.LEFT;
 		frameLayout.addView( brightnessSlider, lp);

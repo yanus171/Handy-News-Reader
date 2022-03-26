@@ -53,17 +53,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -90,9 +94,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -100,10 +106,12 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
+import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -112,14 +120,18 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
+import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
@@ -155,7 +167,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mBackgroundColorLight = false;
     private final static int MAX_TEXT_LEN = 2500;
     FeedFilters mFilters = null;
-    public static final ArrayList<Uri> mMarkAsReadList = new ArrayList<>();
+    public static final HashSet<String> mMarkAsReadList = new HashSet<>();
 
     private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos,
         mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos,
@@ -409,8 +421,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             Dog.v("onTouch ACTION_UP");
-                            if (!mShowEntryText &&
-                                mEntryActivityStartingStatus == 0 &&
+                            if (mEntryActivityStartingStatus == 0 &&
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&
@@ -421,7 +432,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
                                 toggleReadState(holder, view);
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
-                                toggleFavoriteState(holder.entryID, view);
+                                toggleFavoriteState(view);
                         } else {
                             Dog.v("onTouch ACTION_CANCEL");
                         }
@@ -513,12 +524,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.dateTextView.setOnClickListener( manageLabels );
         holder.authorTextView.setOnClickListener( manageLabels );
 
-
-        if ( mMapRead.containsKey(holder.entryID) )
-            holder.isRead = mMapRead.get( holder.entryID );
-        else
-            holder.isRead = EntryColumns.IsRead(cursor, mIsReadPos);
-        holder.isRead = holder.isRead || mMarkAsReadList.contains(EntryUri(holder.entryID));
+        holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || EntryColumns.IsRead(cursor, mIsReadPos);
 
         if ( mMapFavourite.containsKey(holder.entryID) )
             holder.isFavorite = mMapFavourite.get( holder.entryID );
@@ -537,6 +543,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
+        final boolean isTextShown = mShowEntryText || holder.isTextShown();
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
             holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
@@ -544,15 +551,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setText(titleText);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             holder.titleTextView.setTextDirection( isTextRTL( titleText ) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_ANY_RTL );
+        holder.titleTextView.setMaxLines( isTextShown ? 20 : 5 );
 
         holder.urlTextView.setText(cursor.getString(mUrlPos));
 
         String feedName = cursor.getString(mFeedNamePos);
 
-        final boolean isTextShown = mShowEntryText || holder.isTextShown();
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
-        SetFont(holder.titleTextView, isTextShown ? 1.4F : 1 );
+        SetFont(holder.titleTextView, 1 );
         holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
             String mainImgUrl = cursor.getString(mMainImgPos);
@@ -647,7 +654,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.starImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFavoriteState(holder.entryID, view);
+                toggleFavoriteState(view);
             }
         });
 
@@ -687,6 +694,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     content = new EntryContent();
                     content.mID = holder.entryID;
                     content.mHTML = html;
+                    if ( mFilters != null )
+                        content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );;
                     content.mIsMobilized = false;//isMobilized;
                     content.mLink = holder.entryLink;
                     mContentVoc.put( holder.entryID, content );
@@ -709,9 +718,17 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setSingleLine();
             holder.mainImgView.setMaxHeight(  );
         }*/
-        holder.newImgView.setVisibility( PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) ? View.VISIBLE : View.GONE );
+        final boolean isNew = PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInWasVisibleList(EntryUri(holder.entryID).toString());
+        holder.newImgView.setVisibility( isNew ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
+    }
+
+    private boolean isInMarkAsReadList(String entryUri)  {
+        return mMarkAsReadList.contains(entryUri);
+    }
+    private boolean isInWasVisibleList(String entryUri)  {
+        return mMarkAsReadList.contains(entryUri);
     }
 
     private void UpdateLabelText(ViewHolder holder) {
@@ -789,7 +806,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             synchronized ( this ) {
                 mIsLoaded = true;
             }
-            EntryView.NotifyToUpdate( mID, mLink );
+            EntryView.NotifyToUpdate( mID, mLink, false );
         }
     }
 
@@ -864,7 +881,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
     }
 
-    private static void SetContentImage(Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
+    private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
         if ( allImages.size() > index ) {
             final Uri uri = allImages.get( index );
             imageView.setVisibility(View.VISIBLE);
@@ -884,6 +901,38 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     }
                 }
             });
+
+//            new AsyncTask<Pair<Uri,ImageView>, Void, Void>() {
+//                private Bitmap uriToBitmap(Uri selectedFileUri) {
+//                    Bitmap image = null;
+//                    try {
+//                        ParcelFileDescriptor parcelFileDescriptor =
+//                            context.getContentResolver().openFileDescriptor(selectedFileUri, "r");
+//                        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+//                        image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+//
+//                        parcelFileDescriptor.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return image;
+//                }
+//                Bitmap mBitmap = null;
+//                ImageView mInageView = null;
+//                @Override
+//                protected Void doInBackground(Pair<Uri, ImageView>... pairs) {
+//                    mBitmap = uriToBitmap( pairs[0].first );
+//                    mInageView = pairs[0].second;
+//                    return null;
+//                }
+//
+//
+//                @Override
+//                protected void onPostExecute(Void result) {
+//                    if ( mBitmap != null )
+//                        mInageView.setImageBitmap( mBitmap );
+//                }
+//            }.execute(new Pair<>(uri, imageView) );
         }
     }
 
@@ -966,7 +1015,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private void SetIsRead(final long entryId, final boolean isRead, final boolean isSilent ) {
         final Uri entryUri = EntryUri( entryId );
-        mMapRead.put( entryId, isRead );
+        if (isRead)
+            mMarkAsReadList.add(entryUri.toString());
+        else
+            mMarkAsReadList.remove(entryUri.toString());
         new Thread() {
             @Override
             public void run() {
@@ -985,7 +1037,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
 
-    private void toggleFavoriteState(final long id, View view) {
+    private void toggleFavoriteState(View view) {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isFavorite = !holder.isFavorite;
@@ -1051,7 +1103,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mIgnoreClearContentVocOnCursorChange = false;
         else {
             mContentVoc.clear();
-            mMapRead.clear();
             mMapFavourite.clear();
         }
         reinit(newCursor);
@@ -1107,7 +1158,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    HashMap<Long, Boolean> mMapRead = new HashMap<>();
     HashMap<Long, Boolean> mMapFavourite = new HashMap<>();
 
     private static class ViewHolder {
@@ -1159,7 +1209,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
                 return i;
         }
-        return getCount();
+        return getCount() - 1;
     }
     public int GetBottomNewPos() {
         for (int i = getCount() - 1; i >= 0; i--) {
@@ -1171,7 +1221,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
     public int GetPosByID( long id ) {
         if ( !isEmpty() ) {
-            final int fiID = ((Cursor) getItem(0)).getColumnIndex(EntryColumns._ID);
+            final int fiID = mIdPos;//((Cursor) getItem(0)).getColumnIndex(EntryColumns._ID);
             for (int i = 0; i < getCount(); i++) {
                 Cursor cursor = (Cursor) getItem(i);
                 if (cursor.getLong(fiID) == id)

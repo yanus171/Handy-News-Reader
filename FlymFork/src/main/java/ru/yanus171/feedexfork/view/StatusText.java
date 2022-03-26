@@ -327,8 +327,7 @@ public class StatusText implements Observer {
                     synchronized (mList) {
                         if ( mList.isEmpty() ) {
                             mBytesRecievedLast = 0;
-                            mErrorText = "";
-                            NotifyObservers( "", "", "", "", false, "" );
+                            NotifyObservers( "", mErrorText, mErrorFeedID, mErrorEntryID, false, "" );
                         }
                     }
                     }
@@ -361,7 +360,7 @@ public class StatusText implements Observer {
     }
     static public Notification GetNotification(final String text, final String title, int iconResID, String channelID, PendingIntent cancelPI ) {
         final Context context = MainApplication.getContext();
-        final PendingIntent pIntent = PendingIntent.getActivity(context, GetPendingIntentRequestCode(), new Intent(context, HomeActivity.class), 0 );
+        final PendingIntent pIntent = PendingIntent.getActivity(context, GetPendingIntentRequestCode(), new Intent(context, HomeActivity.class), PendingIntent.FLAG_IMMUTABLE );
 
         if (Build.VERSION.SDK_INT >= 26 ) {
             Notification.Builder builder;

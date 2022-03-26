@@ -183,6 +183,8 @@ public class UiUtils {
 
     public static void SetSize( View parent, int ID, int width, int height ) {
         View view = parent.findViewById( ID );
+        if ( view == null )
+            return;
         ViewGroup.LayoutParams lp = view.getLayoutParams();
         lp.width = width;
         lp.height = height;

@@ -104,6 +104,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
     public View mPageUpBtn = null;
+    public View mPageUpBtnFS = null;
     private int mStatus = 0;
 
     private static String FEED_NUMBER(final String where ) {
@@ -240,50 +241,57 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
+        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root), false, true);
 
-        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root), false);
-        findViewById(R.id.toggleFullscreenBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
-                if ( !GetIsActionBarEntryListHidden() )
-                    ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
+        {
+            final View.OnClickListener listener = view -> {
+                setFullScreen(GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden());
+                AppBarLayout appBar = mEntriesFragment.getView().findViewById(R.id.appbar);
+
+                if (!GetIsActionBarEntryListHidden())
+                    appBar.setExpanded(true);
                 if (mEntriesFragment != null)
                     mEntriesFragment.UpdateFooter();
-            }
-        });
-        findViewById(R.id.toggleFullscreenBtn).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
+            };
+            findViewById(R.id.rightTopBtn).setOnClickListener(listener);
+            findViewById(R.id.rightTopBtnFS).setOnClickListener(listener);
+        }
+        {
+            final View.OnLongClickListener listener = view -> {
                 mEntriesFragment.FilterByLabels();
                 return true;
-            }
-        });
-        findViewById(R.id.toggleFullScreenStatusBarBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            };
+            findViewById(R.id.rightTopBtn).setOnLongClickListener(listener);
+            findViewById(R.id.rightTopBtnFS).setOnLongClickListener(listener);
+        }
+        {
+            final View.OnClickListener listener = view -> {
                 setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden());
-            }
-        });
+            };
+            findViewById(R.id.leftTopBtn).setOnClickListener( listener );
+            findViewById(R.id.leftTopBtnFS).setOnClickListener( listener );
+        }
 
         mPageUpBtn = findViewById( R.id.pageUpBtn );
+        mPageUpBtnFS = findViewById( R.id.pageUpBtnFS );
 
-        mPageUpBtn.setOnClickListener(new TextView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PageUpDown( -1 );
-            }
-        });
-        mPageUpBtn.setOnLongClickListener(new TextView.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
+        {
+            View.OnClickListener listener = (view -> PageUpDown(-1));
+            mPageUpBtn.setOnClickListener(listener);
+            mPageUpBtnFS.setOnClickListener(listener);
+        }
+        {
+            View.OnLongClickListener listener = (view -> {
                 if ( mEntriesFragment.mListView.getCount() == 0 )
                     return false;
                 mEntriesFragment.mListView.setSelection( 0 );
                 Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT ).show();
                 return true;
-            }
-        });
+            });
+
+            mPageUpBtn.setOnLongClickListener(listener);
+            mPageUpBtnFS.setOnLongClickListener(listener);
+        }
 
         findViewById(R.id.pageDownBtn).setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -328,8 +336,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
-        setFullScreen( statusBarHidden, actionBarHidden,
-                       STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
+        findViewById(R.id.leftTopBtn).setVisibility( actionBarHidden ? View.GONE : View.VISIBLE );
+        findViewById(R.id.leftTopBtnFS).setVisibility( !actionBarHidden ? View.GONE : View.VISIBLE );
+        findViewById(R.id.rightTopBtn).setVisibility( actionBarHidden ? View.GONE : View.VISIBLE );
+        findViewById(R.id.rightTopBtnFS).setVisibility( !actionBarHidden ? View.GONE : View.VISIBLE );
+        mPageUpBtn.setVisibility( actionBarHidden ? View.GONE : View.VISIBLE );
+        mPageUpBtnFS.setVisibility( !actionBarHidden ? View.GONE : View.VISIBLE );
+        setFullScreen( statusBarHidden, actionBarHidden, STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
     }
 
     private void PageUpDown( int downOrUp ) {
@@ -357,7 +370,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     public void onPause() {
-        EntriesCursorAdapter.mMarkAsReadList.clear();
+        //EntriesCursorAdapter.mMarkAsReadList.clear();
         super.onPause();
     }
 
@@ -370,8 +383,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         if ( intent.getData() != null ) {
             mEntriesFragment.ClearSingleLabel();
-            if ( intent.hasExtra(LABEL_ID_EXTRA) )
-                mEntriesFragment.SetSingleLabel( intent.getLongExtra( LABEL_ID_EXTRA, 0 ) );
+            if ( intent.hasExtra(LABEL_ID_EXTRA) ) {
+                mEntriesFragment.SetSingleLabel(intent.getLongExtra(LABEL_ID_EXTRA, 0));
+                PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
+                if ( mDrawerAdapter != null )
+                    mDrawerAdapter.notifyDataSetChanged();
+            }
             if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
                 selectDrawerItem( 2 );
             else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
@@ -384,8 +401,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
                 else if ( mEntriesFragment.mIsSingleLabel ) {
-                    PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
-                    mDrawerAdapter.notifyDataSetChanged();
                     selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
                 } else {
                     long feedID = 0;

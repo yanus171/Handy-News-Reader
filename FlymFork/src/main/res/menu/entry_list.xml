@@ -59,6 +59,10 @@
                 android:checkable="true"
                 android:title="@string/show_article_category"/>
             <item
+                android:id="@+id/menu_reset_feed_and_delete_all_articles"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/reset_feed_and_delete_all_articles"/>
+            <item
                 android:id="@+id/menu_visible_articles_action"
                 android:icon="@drawable/ic_more_vert"
                 android:title="@string/menu_visible_articles_action">
@@ -70,10 +74,6 @@
                         android:id="@+id/menu_mark_all_as_read"
                         android:icon="@drawable/ic_done_all"
                         android:title="@string/markAllAsRead"/>
-                    <item
-                        android:id="@+id/menu_reset_feed_and_delete_all_articles"
-                        android:icon="@drawable/ic_delete"
-                        android:title="@string/reset_feed_and_delete_all_articles"/>
                     <item
                         android:id="@+id/menu_reload_all_texts"
                         android:title="@string/menu_reload_all_texts"/>

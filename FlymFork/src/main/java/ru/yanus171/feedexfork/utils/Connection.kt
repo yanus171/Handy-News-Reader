@@ -40,6 +40,7 @@ class Connection(url: String) {
             Jsoup.parse(inputStream, "UTF-8", mConnection?.url.toString())
         }
 
+
     init {
         if (IsOkHttp()) {
             var request = Request.Builder()
@@ -74,6 +75,12 @@ class Connection(url: String) {
         }
     }
 
+    fun getText(): String {
+        if (IsOkHttp()) {
+            return mResponse?.body!!.string()
+        } else
+            return "";
+    }
     companion object {
 
         fun IsOkHttp(): Boolean {

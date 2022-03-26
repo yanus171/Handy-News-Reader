@@ -60,7 +60,8 @@
                         android:layout_marginEnd="15dip" />
                 </ScrollView>
             </LinearLayout>
-            <include layout="@layout/brightness_slider_layout" />
+            <include layout="@layout/brightness_slider_layout_left" />
+            <include layout="@layout/brightness_slider_layout_right" />
         </FrameLayout>
     </LinearLayout>
     <include layout="@layout/dim_frame" />

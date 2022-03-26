@@ -62,6 +62,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -140,6 +141,7 @@ public class RssAtomParser extends DefaultHandler {
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
         new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss' 'Z", Locale.US),
         new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ", Locale.US),
         new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("dd-MM-yyyy' 'HH:mm:ss", Locale.US),
@@ -148,6 +150,7 @@ public class RssAtomParser extends DefaultHandler {
         new SimpleDateFormat("yyyy-MM-dd", Locale.US),
         new SimpleDateFormat("dd.MM.yyyy", Locale.US),
         new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US),
+        new SimpleDateFormat("HH:mm", Locale.US),
         new SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
 
     };
@@ -494,7 +497,6 @@ public class RssAtomParser extends DefaultHandler {
                             existenceStringBuilder.append(Constants.DB_AND).append(EntryColumns.GUID).append(Constants.DB_ARG);
                         }
 
-
                         String[] existenceValues = enclosureString != null ? (guidString != null ? new String[]{entryLinkString, enclosureString,
                                 guidString} : new String[]{entryLinkString, enclosureString}) : (guidString != null ? new String[]{entryLinkString,
                                 guidString} : new String[]{entryLinkString});
@@ -612,6 +614,15 @@ public class RssAtomParser extends DefaultHandler {
                 Date result = format.parse(dateStr);
                 if ( now == 0 )
                     return result;
+                if (  now - result.getTime() > 1000 * 60 * 60 * 24 * 365 ) {
+                    Calendar today = Calendar.getInstance();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis( result.getTime() );
+                    cal.set( today.get( Calendar.YEAR ), today.get( Calendar.MONTH ), today.get( Calendar.DATE ) );
+                    if ( cal.after( today ) )
+                        cal.add( Calendar.DATE, -1 );
+                    return new Date( cal.getTimeInMillis() );
+                }
                 if ( Math.abs( result.getTime() -  now ) < dateBorder )
                     return (result.getTime() > now ? new Date(now) : result);
             } catch (ParseException ignored) {
