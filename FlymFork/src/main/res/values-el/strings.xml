@@ -141,17 +141,6 @@
     <string name="to_group_above">Έξω από την ομάδα</string>
     <string name="to_group_into">Μέσα στην ομάδα</string>
     <string name="add_custom_feed">Προσθήκη της δικής σας Ροής ή αναζήτηση μίας</string>
-    <string name="google_news_title">Θέματα Ειδήσεων Google</string>
-    <string name="google_news_indicator">Διαλέξτε ένα ή περισσότερα θέματα για προσθήκη. Κάποια μπορεί να μη παρέχονται από τη Google στη γλώσσα σας</string>
-    <string name="google_news_top_stories">Κορυφαία νέα</string>
-    <string name="google_news_world">Κόσμος</string>
-    <string name="google_news_business">Επιχειρήσεις</string>
-    <string name="google_news_technology">Τεχνολογία</string>
-    <string name="google_news_entertainment">Διασκέδαση</string>
-    <string name="google_news_sports">Αθλητικά</string>
-    <string name="google_news_science">Επιστήμη</string>
-    <string name="google_news_health">Υγεία</string>
-    <string name="google_news_custom_topic">Προσθέστε δικό σας θέμα</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Αδιάβαστα</string>
     <string name="all_entries">Όλα τα άρθρα</string>
@@ -427,8 +416,6 @@
     <string name="externalMemory">Εξωτερική μνήμη</string>
     <string name="show_html">Να ναι ορατή η ηλεκτρονική διεύθυνση</string>
     <string name="image_white_background">Λευκή εικόνα φόντου</string>
-    <string name="settings_add_google_news_dialog">Προσθήκη Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Απεπιλέξτε για να παρακάμψετε ένα τύπο διαλόγου ροής κατά την προσθήκη μιας ροής</string>
     <string name="reload_fulltext_after_tag_editing">Επαναφόρτωση κειμένου μετά την επεξεργασία ετικετών</string>
     <string name="reload_fulltext_after_tag_editing_descr">αν αποεπιλεχθεί, ολοκλήρο το κείμενο δε θα φορτωθεί μετά την επεξεργασία των ετικετών (προβολή|απόκρυψη|root), έτσι μπορείτε να κάνετε πολλαπλές αλλαγές ευκολότερα (σε περίπτωση που θέλετε χειροκίνητα να φορτώσετε το κείμενο όταν τελειώσετε την επεξεργασία)</string>
     <string name="article_menu_show_by_tap">Δείξε το μενού του άρθρου πατώντας την οθόνη</string>
