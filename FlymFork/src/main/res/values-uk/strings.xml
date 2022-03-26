@@ -141,17 +141,6 @@
     <string name="to_group_above">Поза групою</string>
     <string name="to_group_into">В групі</string>
     <string name="add_custom_feed">Додати стрічку або шукати нову</string>
-    <string name="google_news_title">Google News</string>
-    <string name="google_news_indicator">Виберіть одну або кілька категорій.</string>
-    <string name="google_news_top_stories">Популярне</string>
-    <string name="google_news_world">Світ</string>
-    <string name="google_news_business">Бізнес</string>
-    <string name="google_news_technology">Технології</string>
-    <string name="google_news_entertainment">Розваги</string>
-    <string name="google_news_sports">Спорт</string>
-    <string name="google_news_science">Наука</string>
-    <string name="google_news_health">Здоров’я</string>
-    <string name="google_news_custom_topic">Своя тема</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Непрочитане</string>
     <string name="all_entries">Всі</string>
@@ -435,8 +424,6 @@
     <string name="externalMemory">Зовнішня пам’ять</string>
     <string name="show_html">Показати html</string>
     <string name="image_white_background">Білий фон зображень</string>
-    <string name="settings_add_google_news_dialog">Додати діалогове вікно Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Зніміть позначку, щоб обминути діалогове вікно вибору типу новин</string>
     <string name="reload_fulltext_after_tag_editing">Перезавантажити текст після редагування мітки</string>
     <string name="reload_fulltext_after_tag_editing_descr">якщо вимкнено, то весь текст не буде перезавантажений після кожного редагування мітки (показати|сховати|root), таким чином Ви можете ввести кілька змін легше (в іншому випадку потрібно вручну перезавантажити повний текст після завершення редагування)</string>
     <string name="article_menu_show_by_tap">Показувати меню статті дотиком</string>
