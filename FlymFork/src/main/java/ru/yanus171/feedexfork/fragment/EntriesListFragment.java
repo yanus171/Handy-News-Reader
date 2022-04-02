@@ -34,12 +34,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.BaseColumns;
-import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.EventLog;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -111,12 +108,9 @@ import ru.yanus171.feedexfork.view.StatusText;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
-import static ru.yanus171.feedexfork.Constants.URL_LIST;
-import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
@@ -238,6 +232,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     RestoreListScrollPosition();
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
+                UpdateTopTapZoneVisibility();
                 Status().End(mStatus);
                 timer.End();
             } else if (loader.getId() == FILTERS_LOADER_ID && mEntriesCursorAdapter != null ) {
@@ -454,14 +449,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if ( scrollState != SCROLL_STATE_IDLE )
                     return;
-                HomeActivity activity = (HomeActivity) getActivity();
-                if ( GetActivity().mPageUpBtn != null )
-                    GetActivity().mPageUpBtn.setVisibility( mListView.getFirstVisiblePosition() == 0 || activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
-                if ( GetActivity().mPageUpBtnFS != null )
-                    GetActivity().mPageUpBtnFS.setVisibility( mListView.getFirstVisiblePosition() == 0 || !activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
-
+                UpdateTopTapZoneVisibility();
                 UpdateFooter();
-
                 Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d)", scrollState ) );
             }
 
@@ -533,6 +522,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         UpdateFooter();
         timer.End();
         return rootView;
+    }
+
+    private void UpdateTopTapZoneVisibility() {
+        HomeActivity activity = (HomeActivity) getActivity();
+        if ( GetActivity().mPageUpBtn != null )
+            GetActivity().mPageUpBtn.setVisibility( mListView.getFirstVisiblePosition() == 0 || activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
+        if ( GetActivity().mPageUpBtnFS != null )
+            GetActivity().mPageUpBtnFS.setVisibility( mListView.getFirstVisiblePosition() == 0 || !activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
     }
 
 
