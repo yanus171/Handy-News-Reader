@@ -522,6 +522,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true);
         super.onDestroy();
     }
+
     @Override
     public void onResume() {
         mIsFinishing = false;

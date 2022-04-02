@@ -49,6 +49,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.ReadingService;
+import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -145,6 +146,12 @@ public class EntryActivity extends BaseActivity implements Observer {
     public void onDestroy() {
         mEntryFragment = null;
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mBrightness.mTapAction = () -> mEntryFragment.PageDown();
     }
 
     private void LoadAndOpenLink(final String url, final String title, final String text) {
