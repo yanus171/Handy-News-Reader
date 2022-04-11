@@ -98,6 +98,7 @@
     <string name="menu_add_feed">Ajouter un flux</string>
     <string name="no_feeds">Pas de flux</string>
     <string name="no_filters">Pas de filtres</string>
+    <string name="context_menu_add">Ajouter</string>
     <string name="context_menu_delete">Supprimer</string>
     <string name="edit_feed_title">Éditer le flux</string>
     <string name="new_feed_title">Nouveau flux</string>
@@ -152,6 +153,7 @@
     <string name="menu_star">Mettre en favoris</string>
     <string name="menu_unstar">Enlever des favoris</string>
     <string name="menu_share">Partager</string>
+    <string name="menu_mark_all_as_unread">Marquer tout comme non lus</string>
     <string name="menu_full_screen">Plein écran</string>
     <string name="menu_actionbar_visible">Barre d\’actions</string>
     <string name="menu_font_bold">Gras</string>
@@ -180,6 +182,7 @@
     <string name="tip_sentence">Astuce: glisser vers la droite pour marquer comme lu et glisser vers la gauche pour ajouter aux Favoris</string>
     <string name="undo">Annuler</string>
     <string name="marked_as_read">Marqués comme lus</string>
+    <string name="removed_from_favorites">Enlevé des favoris</string>
     <string name="image_count">Nombre d\'images</string>
     <!-- WIDGET -->
     <string name="red">Rouge</string>
@@ -337,7 +340,9 @@
     <string name="actionBarToggle">Activer/désactiver la barre d\'actions</string>
     <string name="standard">Standard</string>
     <string name="fontsize_entrylist">Taille de police de la liste des articles</string>
+    <string name="confirmation">Confirmation</string>
     <string name="question_delete_entry">Supprimer cet article?</string>
+    <string name="question_mark_all_as_unread">Marquer tous les articles comme non lus ?</string>
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
     <string name="auto_image_load">Chargement des images auto</string>
@@ -414,6 +419,8 @@
     <string name="delete_read_articles_descr">quel que soit le temps de conservation des articles</string>
     <string name="data_folder">Dossier de données</string>
     <string name="data_folder_descr">Où stocker les textes et les images des articles téléchargés</string>
+    <string name="internalMemoryCache">Mémoire interne (Cache)</string>
+    <string name="internalMemoryData">Mémoire interne (Données)</string>
     <string name="externalMemory">Mémoire externe</string>
     <string name="show_html">Afficher le html</string>
     <string name="image_white_background">Arrière-plan blanc de l\'image</string>
@@ -474,6 +481,7 @@
     <string name="search_in_yandex">Rechercher via Yandex</string>
     <string name="search_in_google">Rechercher via Google</string>
     <string name="long_operation">Opération longue</string>
+    <string name="unread_article">Article(s) non lu(s)</string>
     <string name="reading_article">Lecture d\'un article</string>
     <string name="reading_notification">Notification de lecture des articles</string>
     <string name="reading_notification_descr">Notification persistante de la barre d\'état pour empêcher l\'application d\'être arrêtée par le système - pour accélérer le démarrage de l\'application après un long délai</string>
