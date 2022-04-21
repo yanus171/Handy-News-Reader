@@ -57,7 +57,7 @@
                 android:title="@string/show_html" />
             <item
                 android:id="@+id/menu_add_entry_shortcut"
-                android:icon="@drawable/ic_library_add"
+                android:icon="@drawable/ic_home"
                 android:title="@string/add_entry_shortcut" />
         </menu>
     </item>

@@ -71,7 +71,10 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:autoRemoveFromRecents="true"
+            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Dark"
             android:exported="true" >
@@ -121,8 +124,8 @@
             android:name=".activity.EntryActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="standard"
-            android:parentActivityName=".activity.HomeActivity"
             android:theme="@style/Theme.Dark"
+            android:parentActivityName=".activity.HomeActivity"
             tools:targetApi="jelly_bean"
             android:exported="true" >
             <intent-filter android:scheme="http">
@@ -156,6 +159,21 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.EntryActivityNewTask"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:autoRemoveFromRecents="true"
+            android:alwaysRetainTaskState="true"
+            android:theme="@style/Theme.Dark"
+            tools:targetApi="lollipop"
+            android:exported="true" >
+
+
+        </activity>
+
         <activity
             android:name=".activity.LabelListActivity"
             android:label="@string/tag_list"
@@ -173,6 +191,7 @@
         <activity
             android:name=".activity.EditFeedActivity"
             android:screenOrientation="sensor"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.Dark"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:exported="true" >

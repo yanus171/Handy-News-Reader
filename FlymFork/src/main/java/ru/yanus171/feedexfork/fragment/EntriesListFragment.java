@@ -1,4 +1,3 @@
-
 /**
  * Flym
  * <p>
@@ -54,6 +53,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -105,11 +105,14 @@ import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
+import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -120,6 +123,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
@@ -358,7 +362,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             //if ( mShowTextInEntryList )
             //    mNeedSetSelection = true;
-            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly);
+            HomeActivity activity = (HomeActivity) getActivity();
+            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, activity.mIsNewTask);
         } else
             mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
 
@@ -740,26 +745,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle( R.string.question )
                     .setMessage( R.string.unstarAllArtcilesComfirm)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new AlertDialog.Builder(getContext())
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setTitle(R.string.question)
-                                .setMessage(R.string.unstarAllArtcilesComfirm2)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new Thread() {
-                                            @Override
-                                            public void run() {
-                                                FetcherService.unstarAllFeedEntries(mCurrentUri);
-                                            }
-                                        }.start();
-                                    }
-                                }).setNegativeButton(android.R.string.no, null).show();
-                        }
-                    }).setNegativeButton(android.R.string.no, null).show();
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> new AlertDialog.Builder(getContext())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(R.string.question)
+                        .setMessage(R.string.unstarAllArtcilesComfirm2)
+                        .setPositiveButton(android.R.string.yes, (dialog1, which1) -> new Thread() {
+                            @Override
+                            public void run() {
+                                FetcherService.unstarAllFeedEntries(mCurrentUri);
+                            }
+                        }.start()).setNegativeButton(android.R.string.no, null).show()).setNegativeButton(android.R.string.no, null).show();
                 return true;
             }
 
@@ -768,28 +763,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     .setIcon(android.R.drawable.ic_dialog_alert) //
                     .setTitle( R.string.question ) //
                     .setMessage( R.string.deleteAllEntries ) //
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> new Thread() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
-                                    // reset feed
-                                    if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
-                                        final String feedID = mCurrentUri.getPathSegments().get( 1 );
-                                        ContentValues values = new ContentValues();
-                                        values.putNull(FeedColumns.LAST_UPDATE);
-                                        values.putNull(FeedColumns.ICON_URL);
-                                        values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                                        final ContentResolver cr = getContext().getContentResolver();
-                                        cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
-                                    }
-                                    UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
-                                }
-                            }.start();
+                        public void run() {
+                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
+                            // reset feed
+                            if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
+                                final String feedID = mCurrentUri.getPathSegments().get( 1 );
+                                ContentValues values = new ContentValues();
+                                values.putNull(FeedColumns.LAST_UPDATE);
+                                values.putNull(FeedColumns.ICON_URL);
+                                values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                                final ContentResolver cr = getContext().getContentResolver();
+                                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                            }
+                            UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
                         }
-                    }).setNegativeButton(android.R.string.no, null).show();
+                    }.start()).setNegativeButton(android.R.string.no, null).show();
                 return true;
             }
             case R.id.menu_mark_all_as_read: {
@@ -864,14 +854,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.unread_entries );
                         image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_unread);
-                    } else if ( FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
+                    } else if ( EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.externalLinks );
                         image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_load_later);
                     } else {
                         long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
-                        Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID),
-                                new String[]{FeedData.FeedColumns.NAME, FeedColumns.ICON_URL },
-                                null, null, null);
+                        Cursor cursor = getContext().getContentResolver().query(FeedColumns.CONTENT_URI(feedID),
+                                                                                new String[]{FeedColumns.NAME, FeedColumns.ICON_URL },
+                                                                                null, null, null);
                         if (cursor.moveToFirst()) {
                             name = cursor.getString(0);
                             if (!cursor.isNull(2) )
@@ -886,7 +876,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         cursor.close();
                     }
 
-                    final Intent intent = new Intent(getContext(), HomeActivity.class).setAction(Intent.ACTION_MAIN).setData(mCurrentUri );
+                    final Intent intent =
+                        new Intent(getContext(), HomeActivity.class)
+                            .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK )
+                            .setAction(Intent.ACTION_MAIN).setData( mCurrentUri )
+                            .putExtra( NEW_TASK_EXTRA, true );
+
                     if ( !feedUrl.isEmpty() )
                         intent.putExtra( Constants.EXTRA_LINK, feedUrl );
                     if ( mIsSingleLabel )
@@ -896,22 +891,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     final IconCompat finalImage = image;
                     new WaitDialog(getActivity(), R.string.downloadImage, () -> {
                         final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl) : finalImage;
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        getActivity().runOnUiThread(() -> {
 
-                                ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
-                                    .setIcon(icon)
-                                    .setShortLabel(finalName)
-                                    .setIntent(intent)
-                                    .setLongLived()
-                                    .build();
-                                ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
-                                if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
-                                    Toast.makeText(
+                            ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
+                                .setIcon(icon)
+                                .setShortLabel(finalName)
+                                .setIntent(intent)
+                                .setLongLived()
+                                .build();
+                            ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
+                            if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
+                                Toast.makeText(
 
-                                getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
-                            }
+                            getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
                         });
                     }).execute();
                 } else
@@ -1126,7 +1118,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         }.start();
 
-        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly);
+        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity().mIsNewTask);
         SetListViewAdapter();
         //if ( mListView instanceof ListView )
             mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );

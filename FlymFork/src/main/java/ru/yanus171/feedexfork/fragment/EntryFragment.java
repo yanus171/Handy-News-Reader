@@ -52,6 +52,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -101,6 +102,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
@@ -127,6 +129,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
@@ -160,6 +163,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private static final String STATE_LOCK_LAND_ORIENTATION = "STATE_LOCK_LAND_ORIENTATION";
 
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
+    public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
+    public boolean mIgnoreNextLoading = false;
 
 
     private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
@@ -318,8 +323,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     mCurrentPagerPos = i;
                     mEntryPagerAdapter.onPause(); // pause all webviews
                     mEntryPagerAdapter.onResume(); // resume the current webview
-
-                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                    if ( !getEntryActivity().mIsNewTask )
+                        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
 
                     CancelStarNotification( getCurrentEntryID() );
 
@@ -545,7 +550,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if (entryView != null) {
             //PrefUtils.putInt(PrefUtils.LAST_ENTRY_SCROLL_Y, entryView.getScrollY());
             entryView.SaveScrollPos();
-            PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, getCurrentEntryID());
             PrefUtils.putBoolean(STATE_LOCK_LAND_ORIENTATION, mLockLandOrientation);
         }
 
@@ -792,7 +796,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                                if ( !getEntryActivity().mIsNewTask )
+                                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
                                 new Thread() {
                                     @Override
                                     public void run() {
@@ -833,7 +838,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                                if ( !getEntryActivity().mIsNewTask )
+                                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
                                 new Thread() {
                                     @Override
                                     public void run() {
@@ -926,20 +932,21 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                 public void run() {
 
                                     final IconCompat icon = LoadIcon(iconUrl);
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
+                                    getEntryActivity().runOnUiThread(() -> {
+                                        final Intent intent = new Intent(getContext(), EntryActivityNewTask.class)
+                                            .setAction(Intent.ACTION_VIEW)
+                                            .setData(uri)
+                                            .putExtra( NEW_TASK_EXTRA, true );
+                                        ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getEntryActivity(), String.valueOf(entryID))
+                                                .setIcon(icon)
+                                                .setShortLabel(name)
+                                                .setIntent( intent )
+                                                .build();
 
-                                            ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), String.valueOf(entryID))
-                                                    .setIcon(icon)
-                                                    .setShortLabel(name)
-                                                    .setIntent(new Intent(getContext(), EntryActivity.class).setAction(Intent.ACTION_VIEW).setData(uri))
-                                                    .build();
 
-                                            ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
-                                            if (Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)
-                                                Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
-                                        }
+                                        ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+                                            Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
                                     });
                                 }
                             }).execute();
@@ -957,9 +964,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @NotNull
     public static IconCompat LoadIcon(String iconUrl) {
-        final Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
+        Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
         if ( bitmap == null )
             UiUtils.RunOnGuiThread(() -> Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show());
+        //else
+        //    bitmap = Bitmap.createBitmap( bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() );
         return (bitmap == null) ?
             IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
             IconCompat.createWithBitmap(bitmap);
@@ -1025,9 +1034,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 //        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
 //    }
 
+    private EntryActivity getEntryActivity() {
+        return (EntryActivity) getActivity();
+    }
+
     private void CloseEntry() {
-        PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
-        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
+        if ( !getEntryActivity().mIsNewTask )
+            PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
         getActivity().finish();
     }
 
@@ -1578,6 +1591,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if ( mIsFinishing )
             return;
+        if ( mIgnoreNextLoading ) {
+            mIgnoreNextLoading = false;
+            return;
+        }
         Timer.End( loader.getId() );
         if (cursor != null) { // can be null if we do a setData(null) before
             try {

@@ -130,6 +130,7 @@ import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
@@ -174,8 +175,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mAbstractPos, mIsNewPos, mTextLenPos, mCategoriesPos;
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
+    public boolean mIsNewTask = false;
 
-    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
+    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, boolean isNewTask) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
         mContext = context;
@@ -184,6 +186,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mShowEntryText = showEntryText;
         mShowUnread = showUnread;
         mIsLoadImages = true;
+        mIsNewTask = isNewTask;
         //SetIsReadMakredList();
 
         mMarkAsReadList.clear();
@@ -815,7 +818,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
-        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)).putExtra( "SCROLL_TEXT", searchText ));
+        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
+                                   .putExtra( "SCROLL_TEXT", searchText )
+                                   .putExtra( NEW_TASK_EXTRA, mIsNewTask ) );
         if( isExpanded ) {
             EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
