@@ -39,6 +39,7 @@ import java.util.List;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -139,21 +140,21 @@ public class MainApplication extends Application {
                 .setShortLabel( getContext().getString( R.string.externalLinks ) )
                 .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_load_later))
 
-                .setIntent(new Intent(getContext(), HomeActivity.class)
+                .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
                            .setAction( Intent.ACTION_MAIN )
                            .setData(ENTRIES_FOR_FEED_CONTENT_URI(FetcherService.GetExtrenalLinkFeedID() ) ) )
                           .build() );
             list.add( new ShortcutInfo.Builder(getContext(), "idFavorities")
                           .setShortLabel( getContext().getString( R.string.favorites ) )
                           .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_with_star))
-                          .setIntent(new Intent(getContext(), HomeActivity.class)
+                          .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
                                          .setAction( Intent.ACTION_MAIN )
                                          .setData( FAVORITES_CONTENT_URI ))
                           .build() );
             list.add( new ShortcutInfo.Builder(getContext(), "idUnread")
                           .setShortLabel( getContext().getString( R.string.unread_entries ) )
                           .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_unread))
-                          .setIntent(new Intent(getContext(), HomeActivity.class)
+                          .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
                                          .setAction( Intent.ACTION_MAIN )
                                          .setData( UNREAD_ENTRIES_CONTENT_URI ))
                           .build() );

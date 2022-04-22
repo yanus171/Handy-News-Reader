@@ -156,8 +156,8 @@ import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHAN
 import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
@@ -389,34 +389,31 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
-            LongOper(R.string.reloading_all_texts, new Runnable() {
-                @Override
-                public void run() {
-                    SetNotifyEnabled(false);
-                    try {
-                        Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, GetWhereSQL(), null, null);
-                        ContentValues[] values = new ContentValues[cursor.getCount()];
-                        while (cursor.moveToNext()) {
-                            final long entryId = cursor.getLong(0);
-                            final String link = cursor.getString(1);
-                            FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
-                            values[cursor.getPosition()] = new ContentValues();
-                            values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
-                        }
-                        cursor.close();
-                        getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
-                    } finally {
-                        SetNotifyEnabled(true);
-                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+            LongOper(R.string.reloading_all_texts, () -> {
+                SetNotifyEnabled(false);
+                try {
+                    Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra( WHERE_SQL_EXTRA ), null, null);
+                    ContentValues[] values = new ContentValues[cursor.getCount()];
+                    while (cursor.moveToNext()) {
+                        final long entryId = cursor.getLong(0);
+                        final String link = cursor.getString(1);
+                        FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
+                        values[cursor.getPosition()] = new ContentValues();
+                        values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
                     }
+                    cursor.close();
+                    getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+                } finally {
+                    SetNotifyEnabled(true);
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                }
 
-                    ExecutorService executor = CreateExecutorService(GetThreadCount());
-                    try {
-                        mobilizeAllEntries(executor);
-                        downloadAllImages(executor);
-                    } finally {
-                        executor.shutdown();
-                    }
+                ExecutorService executor = CreateExecutorService(GetThreadCount());
+                try {
+                    mobilizeAllEntries(executor);
+                    downloadAllImages(executor);
+                } finally {
+                    executor.shutdown();
                 }
             });
             return;

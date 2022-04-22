@@ -135,7 +135,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final int LOADER_ID = 0;
     private static final int PERMISSIONS_REQUEST_IMPORT_FROM_OPML = 1;
 
-    private EntriesListFragment mEntriesFragment;
+    public EntriesListFragment mEntriesFragment;
     private DrawerLayout mDrawerLayout;
     private View mLeftDrawer;
     private ListView mDrawerList;
@@ -551,6 +551,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Timer.End( LOADER_ID );
         Timer timer = new Timer( "HomeActivity.onLoadFinished" );
+
         boolean needSelect = false;
         if (mDrawerAdapter != null ) {
             mDrawerAdapter.setCursor(cursor);
@@ -580,12 +581,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
 
         if ( needSelect )
-            mDrawerList.post(new Runnable() {
-                @Override
-                public void run() {
-                    selectDrawerItem(mCurrentDrawerPos);
-                }
-            });
+            mDrawerList.post(() -> selectDrawerItem(mCurrentDrawerPos));
 
         timer.End();
         Status().End( mStatus );

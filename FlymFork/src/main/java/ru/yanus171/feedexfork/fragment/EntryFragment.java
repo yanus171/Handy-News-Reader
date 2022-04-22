@@ -135,7 +135,6 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
@@ -191,6 +190,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private View mBtnEndEditing = null;
     private FeedFilters mFilters = null;
     private static EntryView mLeakEntryView = null;
+    private String mWhereSQL;
+    static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -200,6 +201,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         else
             mEntryPagerAdapter = new EntryPagerAdapter();
 
+        mWhereSQL = getActivity().getIntent().getStringExtra( WHERE_SQL_EXTRA );
         if ( savedInstanceState != null ) {
             mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS, -1);
             mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
@@ -967,8 +969,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
         if ( bitmap == null )
             UiUtils.RunOnGuiThread(() -> Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show());
-        //else
-        //    bitmap = Bitmap.createBitmap( bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() );
+        else
+            bitmap = UiUtils.getScaledBitmap( bitmap, 32 );
         return (bitmap == null) ?
             IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
             IconCompat.createWithBitmap(bitmap);
@@ -1095,7 +1097,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     final ContentResolver cr = MainApplication.getContext().getContentResolver();
                     // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, GetWhereSQL(), null, EntryColumns.DATE + entriesOrder);
+                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, mWhereSQL, null, EntryColumns.DATE + entriesOrder);
 
                     if (entriesCursor != null && entriesCursor.getCount() > 0) {
                         synchronized ( this ) {

@@ -71,10 +71,9 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name"
-            android:launchMode="standard"
-            android:documentLaunchMode="intoExisting"
-            android:autoRemoveFromRecents="true"
-            android:alwaysRetainTaskState="true"
+            android:launchMode="singleInstancePerTask"
+            android:autoRemoveFromRecents="false"
+            android:alwaysRetainTaskState="false"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Dark"
             android:exported="true" >
@@ -88,6 +87,18 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
+
+        <activity
+            android:name=".activity.HomeActivityNewTask"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:autoRemoveFromRecents="true"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.Dark"
+            android:exported="true" />
+
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_handy_news_reader"

@@ -25,7 +25,6 @@ import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -53,7 +52,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -83,13 +81,14 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
-import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
+import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
@@ -105,14 +104,12 @@ import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
-import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
-import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -121,9 +118,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
-import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
@@ -166,7 +160,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private FeedFilters mFilters = null;
     private boolean mIsResumed = false;
     static private boolean mIsSearch = false;
-    private static HashSet<Long> mLabelsID = new HashSet<Long>();
+    private HashSet<Long> mLabelsID = new HashSet<Long>();
     public boolean mIsSingleLabel = false;
 
     //private long mListDisplayDate = new Date().getTime();
@@ -257,7 +251,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     };
 
     @NotNull
-    public static String GetWhereSQL() {
+    public String GetWhereSQL() {
         String labelSQL = "";
         if ( mLabelsID.contains( ALL_LABELS ) )
             labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
@@ -363,7 +357,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             //if ( mShowTextInEntryList )
             //    mNeedSetSelection = true;
             HomeActivity activity = (HomeActivity) getActivity();
-            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, activity.mIsNewTask);
+            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
         } else
             mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
 
@@ -456,7 +450,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     return;
                 UpdateTopTapZoneVisibility();
                 UpdateFooter();
-                Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d)", scrollState ) );
+                //Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d)", scrollState ) );
             }
 
             @Override
@@ -489,7 +483,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 int value = mListView.getFirstVisiblePosition();
                 getBaseActivity().UpdateHeaderProgressOnly( max, value );
 
-                Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
+                //Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
             }
         });
 
@@ -791,7 +785,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_reload_all_texts: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT ).setData( mCurrentUri ), false );
+                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT )
+                                                 .setData( mCurrentUri )
+                                                 .putExtra( WHERE_SQL_EXTRA, GetWhereSQL() ), false );
                 return true;
             }
             case R.id.menu_show_article_url_toggle: {
@@ -877,7 +873,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     }
 
                     final Intent intent =
-                        new Intent(getContext(), HomeActivity.class)
+                        new Intent(getContext(), HomeActivityNewTask.class)
                             .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK )
                             .setAction(Intent.ACTION_MAIN).setData( mCurrentUri )
                             .putExtra( NEW_TASK_EXTRA, true );
@@ -1118,7 +1114,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         }.start();
 
-        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity().mIsNewTask);
+        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
         SetListViewAdapter();
         //if ( mListView instanceof ListView )
             mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
