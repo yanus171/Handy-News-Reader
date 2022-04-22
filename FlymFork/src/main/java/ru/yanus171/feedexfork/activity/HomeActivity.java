@@ -110,24 +110,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private int mStatus = 0;
     public boolean mIsNewTask = false;
 
-    private static String FEED_NUMBER(final String where ) {
-        return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
-                where + DB_AND  + EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
-    }
-    private static String GROUP_NUMBER(final String where ) {
-        if ( PrefUtils.getBoolean( "show_group_entries_count", false ) )
-            return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
-                    where + DB_AND + EntryColumns.FEED_ID + " IN ( SELECT " + FeedColumns._ID +  " FROM " +
-                    FeedColumns.TABLE_NAME + " AS t1"+ " WHERE " +
-                    FeedColumns.GROUP_ID +  " = " + FeedColumns.TABLE_NAME + "." + FeedColumns._ID  + ") " + " )";
-        else
-            return "0";
-
-    }
-    private String EXPR_NUMBER (final String where ) {
-        return "CASE WHEN " + FeedColumns.WHERE_GROUP + " THEN " + GROUP_NUMBER( where ) +
-               " ELSE " + FEED_NUMBER( where ) + " END";
-    }
     //private static final String FEED_ALL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
     //        EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
 
@@ -190,7 +172,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( position == DrawerAdapter.LABEL_GROUP_POS ) {
                     startActivity(new Intent(getApplicationContext(), LabelListActivity.class ));
                     return true;
-                } else if ( DrawerAdapter.isLabelPos( position, LabelVoc.INSTANCE.getList() ) ) {
+                } else if ( DrawerAdapter.isLabelPos( position ) ) {
 
                 } else if (id > 0) {
                     startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
@@ -211,6 +193,27 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
             mDrawerLayout.setDrawerListener(mDrawerToggle);
+            mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+                @Override
+                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+                }
+
+                @Override
+                public void onDrawerOpened(@NonNull View drawerView) {
+                    mDrawerAdapter.updateNumbersAsync();
+                }
+
+                @Override
+                public void onDrawerClosed(@NonNull View drawerView) {
+
+                }
+
+                @Override
+                public void onDrawerStateChanged(int newState) {
+
+                }
+            });
         }
 
         //if (!PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true))
@@ -524,13 +527,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Timer.Start( LOADER_ID, "HomeActivity.onCreateLoader" );
-        final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
         CursorLoader cursorLoader =
                 new CursorLoader(this,
                         FeedColumns.GROUPED_FEEDS_CONTENT_URI,
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
                                 FeedColumns.IS_GROUP, FeedColumns.ICON_URL, FeedColumns.LAST_UPDATE,
-                                FeedColumns.ERROR, EXPR_NUMBER( EntryColumns.WHERE_UNREAD ), EXPR_FEED_ALL_NUMBER, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
+                                FeedColumns.ERROR, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
                                 FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + DB_OR +
                                      FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
@@ -633,7 +635,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 showFeedInfo = true;
                 break;
             default:
-                if ( DrawerAdapter.isLabelPos( position, DrawerAdapter.getLabelList() )) {
+                if ( DrawerAdapter.isLabelPos( position )) {
                     newUri = CONTENT_URI;
                     mEntriesFragment.SetSingleLabel( DrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID );
                     showFeedInfo = true;
