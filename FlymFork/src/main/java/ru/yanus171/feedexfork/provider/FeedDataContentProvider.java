@@ -70,6 +70,7 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -918,8 +919,13 @@ public class FeedDataContentProvider extends ContentProvider {
     }
 
     public static void notifyChangeOnAllUris(int matchCode, Uri uri) {
+        synchronized (DrawerAdapter.class) {
+            DrawerAdapter.mIsNeedUpdateNumbers = true;
+        }
+
         if ( !IsNotifyEnabled() )
             return;
+
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         if ( uri != null )
             cr.notifyChange(uri, null);

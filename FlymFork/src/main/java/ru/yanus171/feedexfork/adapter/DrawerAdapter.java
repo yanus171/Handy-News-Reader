@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -49,6 +51,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -79,15 +82,16 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_LAST_UPDATE = 5;
     private static final int POS_ERROR = 6;
     private static final int POS_IS_SHOW_TEXT_IN_ENTRY_LIST = 7;
-    private static final int POS_IS_GROUP_EXPANDED = 9;
-    private static final int POS_IS_AUTO_RESRESH = 10;
+    private static final int POS_IS_GROUP_EXPANDED = 8;
+    private static final int POS_IS_AUTO_RESRESH = 9;
     private static final int POS_OPTIONS = 10;
     private static final int POS_IMAGESIZE = 11;
 
     public static final int EXTERNAL_ENTRY_POS = 3;
     public static final int LABEL_GROUP_POS = 4;
     public static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
-    private boolean updateNumbersInProcess = false;
+    private final ProgressBar mProgressBar;
+    public static boolean mIsNeedUpdateNumbers = true;
 
     public static int FIRST_ENTRY_POS() { return LABEL_GROUP_POS + (PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) ? LabelVoc.INSTANCE.getList().size() : 0) + 1; }
 
@@ -132,17 +136,14 @@ public class DrawerAdapter extends BaseAdapter {
 
     final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
 
-    public DrawerAdapter(Context context, Cursor feedCursor) {
+    public DrawerAdapter(Context context, Cursor feedCursor, ProgressBar progressBar) {
         mContext = context;
         mFeedsCursor = feedCursor;
-        //clearFaviconCache();
-        //updateNumbers();
+        mProgressBar = progressBar;
     }
 
     public void setCursor(Cursor feedCursor) {
         mFeedsCursor = feedCursor;
-
-        //updateNumbers();
         notifyDataSetChanged();
     }
 
@@ -198,7 +199,6 @@ public class DrawerAdapter extends BaseAdapter {
                         holder.titleTxt.setText(R.string.all_entries);
                         holder.iconView.setImageResource(R.drawable.cup_new_pot);
                         SetCount(mAllNumber, holder.unreadTxt);
-                        holder.unreadTxt.setText(String.valueOf(mAllNumber));
                         holder.readTxt.setText("");
                         SetImageSizeText(holder, mAllImagesSize);
                         String taskInfo = "";
@@ -309,9 +309,8 @@ public class DrawerAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void SetCount(int mAllUnreadNumber, TextView unreadTxt) {
-        if (mAllUnreadNumber != 0)
-            unreadTxt.setText(String.valueOf(mAllUnreadNumber));
+    private void SetCount(int count, TextView unreadTxt) {
+        unreadTxt.setText(count != 0 ? String.valueOf(count) : "");
     }
 
     @NotNull
@@ -422,17 +421,23 @@ public class DrawerAdapter extends BaseAdapter {
 
     private boolean isAutoRefresh(int position) {
         return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) && mFeedsCursor.getInt(POS_IS_AUTO_RESRESH) == 1;
-
     }
 
     public interface OnLabelReturnedFromCursor {
         void run(Label label, Cursor cur);
     }
 
+
+    @SuppressWarnings("deprecation")
+    @SuppressLint("StaticFieldLeak")
     public void updateNumbersAsync() {
-        if ( updateNumbersInProcess )
-            return;
-        updateNumbersInProcess = true;
+        synchronized (DrawerAdapter.class) {
+            if (!mIsNeedUpdateNumbers)
+                return;
+            mIsNeedUpdateNumbers = false;
+        }
+        mProgressBar.setVisibility( View.VISIBLE );
+
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -444,7 +449,7 @@ public class DrawerAdapter extends BaseAdapter {
             @Override
             protected void onPostExecute(Void result) {
                 notifyDataSetChanged();
-                updateNumbersInProcess = false;
+                mProgressBar.setVisibility( View.GONE );
             }
 
         }.execute();

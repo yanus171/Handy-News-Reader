@@ -558,7 +558,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         if (mDrawerAdapter != null ) {
             mDrawerAdapter.setCursor(cursor);
         } else {
-            mDrawerAdapter = new DrawerAdapter(this, cursor);
+            mDrawerAdapter = new DrawerAdapter(this, cursor, mDrawerLayout.findViewById( R.id.progressBarDrawer ) );
             mDrawerList.setAdapter(mDrawerAdapter);
             // We don't have any menu yet, we need to display it
             needSelect = true;

@@ -249,21 +249,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
             holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
-            holder.readMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String searchText = "";
-                    if ( holder.isTextShown() ) {
-                        CharSequence text = holder.textTextView.getText();
-                        String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
-                        if ( list.length > 1 ) {
-                            searchText = list[list.length - 2].replace( "\n", "" ).trim();
-                        }
+            holder.readMore.setOnClickListener(view12 -> {
+                String searchText = "";
+                if ( holder.isTextShown() ) {
+                    CharSequence text = holder.textTextView.getText();
+                    String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
+                    if ( list.length > 1 ) {
+                        searchText = list[list.length - 2].replace( "\n", "" ).trim();
                     }
-                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), searchText);
-
-
                 }
+                OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), searchText);
+
+
             });
 
             holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
@@ -420,7 +417,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&
-                                (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
+                                (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.mainImgView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 OpenArticle(v.getContext(), holder.entryID, holder.isTextShown(), "");
