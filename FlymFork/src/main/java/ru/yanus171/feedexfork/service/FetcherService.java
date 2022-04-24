@@ -1425,8 +1425,9 @@ public class FetcherService extends IntentService {
                 }
                 isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
                 isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
-                if (jsonOptions.has(CUSTOM_KEEP_TIME) && jsonOptions.getDouble(CUSTOM_KEEP_TIME) != 0)
-                    keepDateBorderTime = System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
+
+                if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                    keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
 
                 final String feedID = cursor.getString(idPosition);
                 final String feedUrl = cursor.getString(urlPosition);
