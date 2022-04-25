@@ -275,11 +275,12 @@ public class FeedDataContentProvider extends ContentProvider {
     static private String getSortOrder() {
         return IsFeedsABCSort() ? FeedColumns.NAME : FeedColumns.PRIORITY;
     }
-    public static final String FEEDS_TABLE_WITH_GROUP_PRIORITY = FeedColumns.TABLE_NAME +
-        " LEFT JOIN " +
-        "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + getSortOrder() + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
-        "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
-
+    public static String FEEDS_TABLE_WITH_GROUP_PRIORITY() {
+        return FeedColumns.TABLE_NAME +
+            " LEFT JOIN " +
+            "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + getSortOrder() + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
+            "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
+    }
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         FetcherService.Status().ChangeDB("query DB");
@@ -304,7 +305,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
         switch (matchCode) {
             case URI_GROUPED_FEEDS: {
-                queryBuilder.setTables(FEEDS_TABLE_WITH_GROUP_PRIORITY);
+                queryBuilder.setTables(FEEDS_TABLE_WITH_GROUP_PRIORITY());
                 if ( IsFeedsABCSort() )
                     sortOrder = "(CASE WHEN " + FeedColumns.IS_GROUP + " = 1 OR group_priority IS NOT NULL THEN 0 ELSE 1 END), IFNULL(group_priority, " + FeedColumns.NAME + " ), " + FeedColumns.IS_GROUP + " DESC, " + FeedColumns.NAME;
                 else
