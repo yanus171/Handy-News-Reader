@@ -128,6 +128,9 @@ public class PrefUtils {
     public static boolean IsLabelABCSort() {
         return PrefUtils.getBoolean("labels_sort_alphabetical", false);
     }
+    public static boolean IsFeedsABCSort() {
+        return PrefUtils.getBoolean("feeds_sort_alphabetical", false);
+    }
     public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
     public static Boolean isImageWhiteBackground() {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );

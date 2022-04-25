@@ -630,6 +630,11 @@
             android:defaultValue="false"
             android:title="@string/settings_labels_sort_alphabetical"
             android:summary="@string/settings_labels_sort_alphabetical_descr"/>
+        <CheckBoxPreference
+            android:key="feeds_sort_alphabetical"
+            android:defaultValue="false"
+            android:title="@string/settings_feeds_sort_alphabetical"
+            android:summary="@string/settings_feeds_sort_alphabetical_descr"/>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

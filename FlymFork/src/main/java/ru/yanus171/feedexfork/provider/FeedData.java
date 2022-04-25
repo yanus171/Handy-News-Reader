@@ -74,10 +74,6 @@ public class FeedData {
     private static final String CONTENT = "content://";
     public static final String AUTHORITY = PACKAGE_NAME + ".provider.FeedData";
     public static final String CONTENT_AUTHORITY = CONTENT + AUTHORITY;
-    public static final String FEEDS_TABLE_WITH_GROUP_PRIORITY = FeedColumns.TABLE_NAME +
-            " LEFT JOIN " +
-            "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + FeedColumns.PRIORITY + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
-            "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
     public static final String ENTRY_LABELS_WITH_ENTRIES(String where) {
         return
             "( SELECT * FROM " +

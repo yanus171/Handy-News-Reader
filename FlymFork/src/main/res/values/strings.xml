@@ -614,6 +614,8 @@
     <string name="feedWasAutoConfigured">The feed was automatically configured</string>
     <string name="settings_labels_sort_alphabetical">ABC label sort</string>
     <string name="settings_labels_sort_alphabetical_descr">Sort labels alphabetically. Otherwise manual sorting</string>
+    <string name="settings_feeds_sort_alphabetical">ABC feeds sort</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Sort feeds and groups alphabetically. Otherwise manual sorting</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
