@@ -95,6 +95,7 @@ import java.util.regex.Pattern
 @Suppress("DEPRECATION")
 class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mKeepTimeValues: Array<String>
+    private lateinit var mRefreshIntervalValues: Array<String>
     private val mFilterActionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
         // Called when the action mode is created; startActionMode() was called
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
@@ -150,6 +151,8 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
     private lateinit var mKeepTimeSpinner: Spinner
     private lateinit var mKeepTimeCB: CheckBox
+    private lateinit var mRefreshIntervalSpinner: Spinner
+    private lateinit var mRefreshIntervalCB: CheckBox
     private var mUserSelectionDialog: AlertDialog? = null
     private lateinit var mOneWebPageArticleClassName: EditText
     private lateinit var mOneWebPageUrlClassName: EditText
@@ -275,15 +278,27 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         mIsAutoSetAsRead.isChecked = false
         mFiltersListView = findViewById(android.R.id.list)
         mGroupSpinner = findViewById(R.id.spin_group)
+
         mKeepTimeCB = SetupSmallTextView(R.id.cbCustomKeepTime) as CheckBox
-        mKeepTimeCB.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerKeepTime() }
+        mKeepTimeCB.setOnCheckedChangeListener { _, _ -> UpdateSpinnerKeepTime() }
         mKeepTimeValues = resources.getStringArray(R.array.settings_keep_time_values)
         mKeepTimeSpinner = findViewById(R.id.spin_keeptime)
-        mKeepTimeSpinner.setSelection(4)
+        mKeepTimeSpinner.setSelection(3)
         for (i in mKeepTimeValues.indices) if (mKeepTimeValues[i].toDouble() == FetcherService.GetDefaultKeepTime().toDouble()) {
             mKeepTimeSpinner.setSelection(i)
             break
         }
+
+        mRefreshIntervalCB = SetupSmallTextView(R.id.cbCustomRefreshInterval) as CheckBox
+        mRefreshIntervalCB.setOnCheckedChangeListener { _, _ -> UpdateSpinnerRefreshInterval() }
+        mRefreshIntervalValues = resources.getStringArray(R.array.settings_interval_values)
+        mRefreshIntervalSpinner = findViewById(R.id.spin_RefreshInterval)
+        mRefreshIntervalSpinner.setSelection(4)
+        for (i in mRefreshIntervalValues.indices) if (mRefreshIntervalValues[i].toDouble() == FetcherService.GetDefaultRefreshInterval().toDouble()) {
+            mRefreshIntervalSpinner.setSelection(i)
+            break
+        }
+
         mHasGroupCb = SetupSmallTextView(R.id.has_group) as CheckBox
         mHasGroupCb.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerGroup() }
         mLoadTypeRG = findViewById(R.id.rgLoadType)
@@ -328,6 +343,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             mHasGroupCb.isChecked = false
             mIsAutoImageLoadCb.isChecked = true
             mKeepTimeCB.isChecked = false
+            mRefreshIntervalCB.isChecked = false
             mLoadTypeRG.check(PrefUtils.getInt(STATE_LAST_LOAD_TYPE, R.id.rbRss))
         } else if (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action) {
             if (intent.hasExtra(Intent.EXTRA_TEXT)) mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT)) else if (intent.dataString != null) mUrlEditText.setText(intent.dataString)
@@ -386,6 +402,14 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                         if (mKeepTimeCB.isChecked) {
                             for (i in mKeepTimeValues.indices) if (mKeepTimeValues[i].toDouble() == jsonOptions.getDouble(FetcherService.CUSTOM_KEEP_TIME)) {
                                 mKeepTimeSpinner.setSelection(i)
+                                break
+                            }
+                        }
+                        mRefreshIntervalCB.isChecked = jsonOptions.has(FetcherService.CUSTOM_REFRESH_INTERVAL)
+                        UpdateSpinnerRefreshInterval()
+                        if (mRefreshIntervalCB.isChecked) {
+                            for (i in mRefreshIntervalValues.indices) if (mRefreshIntervalValues[i].toLong() == jsonOptions.getLong(FetcherService.CUSTOM_REFRESH_INTERVAL)) {
+                                mRefreshIntervalSpinner.setSelection(i)
                                 break
                             }
                         }
@@ -481,19 +505,9 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         val isOneWebPage = i == R.id.rbOneWebPage
         val isWebLinks = i == R.id.rbWebLinks
         val isWebPageSearch = i == R.id.rbWebPageSearch
-        val visibilityEditFeed = if (isWebPageSearch) View.GONE else View.VISIBLE
         mRetrieveFulltextCb.isEnabled = (isRss || isOneWebPage) && !isWebPageSearch
-        mRetrieveFulltextCb.visibility = visibilityEditFeed
-        mHasGroupCb.visibility = visibilityEditFeed
-        mGroupSpinner.visibility = visibilityEditFeed
-        mIsAutoImageLoadCb.visibility = visibilityEditFeed
-        mIsAutoRefreshCb.visibility = visibilityEditFeed
-        mKeepTimeCB.visibility = visibilityEditFeed
-        mKeepTimeSpinner.visibility = visibilityEditFeed
-        mShowTextInEntryListCb.visibility = visibilityEditFeed
-        mNameEditText.visibility = visibilityEditFeed
+        findViewById<LinearLayout>( R.id.feed_edit_controls ).visibility = if (isWebPageSearch) View.GONE else View.VISIBLE
         findViewById<View>(R.id.layout_next_page).visibility = if (isRss) View.GONE else View.VISIBLE
-        findViewById<View>(R.id.name_textview).visibility = visibilityEditFeed
         findViewById<View>(R.id.rbWebPageSearch).visibility = if (IsAdd()) View.VISIBLE else View.GONE
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         UpdateSpinnerGroup()
@@ -512,6 +526,10 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private fun UpdateSpinnerKeepTime() {
         mKeepTimeSpinner.visibility = if (mKeepTimeCB.isChecked) View.VISIBLE else View.GONE
+    }
+
+    private fun UpdateSpinnerRefreshInterval() {
+        mRefreshIntervalSpinner.visibility = if (mRefreshIntervalCB.isChecked) View.VISIBLE else View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -574,7 +592,10 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     jsonOptions.put(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME, mOneWebPageImageUrlClassName.text.toString())
                     jsonOptions.put(ONE_WEB_PAGE_TEXT_CLASS_NAME, mOneWebPageTextClassName.text.toString())
                 }
-                if (mKeepTimeCB.isChecked) jsonOptions.put(FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_KEEP_TIME)
+                if (mKeepTimeCB.isChecked)
+                    jsonOptions.put(FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_KEEP_TIME)
+                if (mRefreshIntervalCB.isChecked)
+                    jsonOptions.put(FetcherService.CUSTOM_REFRESH_INTERVAL, mRefreshIntervalValues[mRefreshIntervalSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_REFRESH_INTERVAL)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }

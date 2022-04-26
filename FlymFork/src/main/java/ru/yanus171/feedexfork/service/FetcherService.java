@@ -71,6 +71,7 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -172,8 +173,11 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
+import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
+import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
 @SuppressLint("Range")
@@ -199,6 +203,7 @@ public class FetcherService extends IntentService {
     private static final String HTML_BODY = "<body";
     private static final String ENCODING = "encoding=\"";
     public static final String CUSTOM_KEEP_TIME = "customKeepTime";
+    public static final String CUSTOM_REFRESH_INTERVAL = "customRefreshInterval";
     public static final String IS_ONE_WEB_PAGE = "isOneWebPage";
     public static final String IS_RSS = "isRss";
     public static final String NEXT_PAGE_URL_CLASS_NAME = "UrlNextPageClassName";
@@ -474,8 +479,9 @@ public class FetcherService extends IntentService {
                         try {
                             newCount = (feedId == null ?
                                     refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
-                                    refreshFeed( executor, feedId, keepDateBorderTime));
-                            EntryUrlVoc.INSTANCE.reinit( false );
+                                    refreshFeed( executor, feedId, keepDateBorderTime ));
+                            if ( newCount > 0 )
+                                EntryUrlVoc.INSTANCE.reinit( false );
                         } finally {
                             if (mMarkAsStarredFoundList.size() > 5) {
                                 ArrayList<String> list = new ArrayList<>();
@@ -639,6 +645,9 @@ public class FetcherService extends IntentService {
 
     public static float GetDefaultKeepTime() {
         return Float.parseFloat(PrefUtils.getString(PrefUtils.KEEP_TIME, "4"));
+    }
+    public static float GetDefaultRefreshInterval() {
+        return Float.parseFloat(PrefUtils.getString(PrefUtils.REFRESH_INTERVAL, "3"));
     }
 
     private static boolean mIsWiFi = false;
@@ -1363,29 +1372,40 @@ public class FetcherService extends IntentService {
                 ContentResolver cr = getContentResolver();
                 final Cursor cursor;
                 String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
+                final String[] projection = new String[]{FeedColumns._ID, FeedColumns.LAST_UPDATE, FeedColumns.OPTIONS};
                 if (groupID != null)
-                    cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), FeedColumns.PROJECTION_ID, null, null, null);
+                    cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), projection, null, null, null);
                 else
-                    cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID, where, null, null);
+                    cursor = cr.query(FeedColumns.CONTENT_URI, projection, where, null, null);
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
                 while (cursor.moveToNext()) {
-                    //Status().Start(String.format("%d from %d", cursor.getPosition(), cursor.getCount()));
-                    final String feedId = cursor.getString(0);
-                    futures.add(executor.submit(new Callable<DownloadResult>() {
-                        @Override
-                        public DownloadResult call() {
-                            DownloadResult result = new DownloadResult();
-                            result.mResultCount = 0;
+                    if ( isFromAutoRefresh ) {
+                        final JSONObject jsonOptions = getJsonObject(cursor);
+                        int pos = cursor.getColumnIndex(FeedColumns.LAST_UPDATE);
+                        long lastUpdate = !cursor.isNull( pos ) ? cursor.getLong( pos ) : 0;
+                        long interval = getTimeIntervalInMSecs(REFRESH_INTERVAL, DEFAULT_INTERVAL);
+                        if (jsonOptions.has(CUSTOM_REFRESH_INTERVAL)) {
                             try {
-                                if (!isCancelRefresh())
-                                    result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
-                            } catch (Exception e) {
-                                Status().SetError( "", "", "", e );
+                                interval = jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            return result;
                         }
+                        if ( lastUpdate != 0 && System.currentTimeMillis() - lastUpdate < interval )
+                            continue;
+                    }
+                    final String feedId = cursor.getString(0);
+                    futures.add(executor.submit(() -> {
+                        DownloadResult result = new DownloadResult();
+                        result.mResultCount = 0;
+                        try {
+                            if (!isCancelRefresh())
+                                result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
+                        } catch (Exception e) {
+                            Status().SetError( "", "", "", e );
+                        }
+                        return result;
                     }));
-                    //Status().End();
                 }
                 cursor.close();
                 return FinishExecutionService( statusText, status,  futures );
@@ -1393,6 +1413,17 @@ public class FetcherService extends IntentService {
                 executorInner.shutdown();
             }
         } finally { Status().End( status ); }
+    }
+
+    @NotNull
+    private JSONObject getJsonObject(Cursor cursor) {
+        JSONObject jsonOptions = new JSONObject();
+        try {
+            jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonOptions;
     }
 
     private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime) {
@@ -1417,12 +1448,7 @@ public class FetcherService extends IntentService {
             boolean isOneWebPage = false;
             try {
 
-                JSONObject jsonOptions = new JSONObject();
-                try {
-                    jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
-                } catch ( Exception e) {
-                    e.printStackTrace();
-                }
+                JSONObject jsonOptions = getJsonObject(cursor);
                 isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
                 isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
 
