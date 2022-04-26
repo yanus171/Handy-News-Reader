@@ -374,6 +374,7 @@
     <string name="rule_text">规则文本</string>
     <string name="global_marks_as_star_filter_rule_descr">每行一条规则</string>
     <string name="customKeepTime">自定义文章保留时间</string>
+    <string name="custom_refresh_interval">自定义刷新间隔</string>
     <string name="menu_toggle_theme">更改主题</string>
     <string name="turnOn">打开</string>
     <string name="brightness">亮度</string>
@@ -599,6 +600,10 @@
     <string name="feedWasAutoConfigured">已自动配置订阅源</string>
     <string name="settings_labels_sort_alphabetical">A-Z 排序标签</string>
     <string name="settings_labels_sort_alphabetical_descr">按字母顺序对标签进行排序，否则手动排序</string>
+    <string name="settings_feeds_sort_alphabetical">ABC 订阅源排序</string>
+    <string name="settings_feeds_sort_alphabetical_descr">按字母顺序对订阅源和组进行排序，否则手动排序</string>
+    <string name="web_search_keyword">关键词</string>
+    <string name="web_search_title">文章网页搜索</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
