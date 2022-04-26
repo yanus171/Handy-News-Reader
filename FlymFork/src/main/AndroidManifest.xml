@@ -200,6 +200,19 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.ArticleWebSearchActivity"
+            android:screenOrientation="sensor"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:theme="@style/Theme.Dark"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.WEB_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.EditFeedActivity"
             android:screenOrientation="sensor"
             android:launchMode="singleInstance"
@@ -220,11 +233,7 @@
 
                 <data android:mimeType="vnd.android.cursor.dir/vnd.flymfork.feed" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.WEB_SEARCH" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
             <intent-filter
                 android:icon="@drawable/cup_new_add"
                 android:label="@string/addFeed">

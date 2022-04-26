@@ -99,7 +99,7 @@
     <string name="context_menu_add">Add</string>
     <string name="context_menu_delete">Delete</string>
     <string name="edit_feed_title">Edit a feed</string>
-    <string name="new_feed_title">New feed or article</string>
+    <string name="new_feed_title">New feed</string>
     <string name="context_menu_edit">Edit</string>
     <string name="menu_add_group">Add a group</string>
     <string name="menu_import_export">Export and import</string>
@@ -617,6 +617,8 @@
     <string name="settings_labels_sort_alphabetical_descr">Sort labels alphabetically. Otherwise manual sorting</string>
     <string name="settings_feeds_sort_alphabetical">ABC feeds sort</string>
     <string name="settings_feeds_sort_alphabetical_descr">Sort feeds and groups alphabetically. Otherwise manual sorting</string>
+    <string name="web_search_keyword">Key word</string>
+    <string name="web_search_title">Article Web search</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>

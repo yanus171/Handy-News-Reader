@@ -77,6 +77,7 @@ import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
+import ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment
 import ru.yanus171.feedexfork.loader.BaseLoader
 import ru.yanus171.feedexfork.parser.*
@@ -93,7 +94,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 @Suppress("DEPRECATION")
-class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
+open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mKeepTimeValues: Array<String>
     private lateinit var mRefreshIntervalValues: Array<String>
     private val mFilterActionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
@@ -338,6 +339,11 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         mOneWebPageTextClassName = findViewById(R.id.one_webpage_text_classname)
         mOneWebPageUrlClassName = findViewById(R.id.one_webpage_url_classname)
         setTitle(R.string.new_feed_title)
+        if ( this is ArticleWebSearchActivity ) {
+            findViewById<TextView>(R.id.url_textview).text = getString(R.string.web_search_keyword);
+            setTitle(R.string.web_search_title)
+            SetTaskTitle(getString(R.string.web_search_title))
+        }
         tabWidget.visibility = View.GONE
         if (Intent.ACTION_INSERT == intent.action) {
             mHasGroupCb.isChecked = false
@@ -349,7 +355,6 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             if (intent.hasExtra(Intent.EXTRA_TEXT)) mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT)) else if (intent.dataString != null) mUrlEditText.setText(intent.dataString)
             mLoadTypeRG.check(R.id.rbRss)
         } else if (Intent.ACTION_WEB_SEARCH == intent.action) {
-            mLoadTypeRG.check(R.id.rbWebPageSearch)
             if (intent.hasExtra(SearchManager.QUERY)) mUrlEditText.setText(intent.getStringExtra(SearchManager.QUERY))
         } else if (Intent.ACTION_EDIT == intent.action) {
             setTitle(R.string.edit_feed_title)
@@ -454,45 +459,44 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             checkIfTelegram()
         if (PrefUtils.getBoolean("setting_edit_feed_force_portrait_orientation", false)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
-
     @SuppressLint("SetTextI18n")
     private fun checkIfTelegram() {
         val url = mUrlEditText.text.toString()
-        val m = Pattern.compile( "((t.me)|(telegram.im))\\/([^\\/]+)" ).matcher( url )
+        val m = Pattern.compile("((t.me)|(telegram.im))\\/([^\\/]+)").matcher(url)
         if ( m.find() ) {
-            val name = m.group( 4 )
-            Theme.CreateDialog( this )
-                    .setMessage( R.string.addFeedTelegramPatternFound )
-                    .setNegativeButton( android.R.string.cancel, null )
-                    .setPositiveButton( android.R.string.yes ) { dialog, _ ->
-                        mLoadTypeRG.check( R.id.rbOneWebPage )
-                        mUrlEditText.setText( "https://t.me/s/$name" )
-                        mNameEditText.setText( name )
+            val name = m.group(4)
+            Theme.CreateDialog(this)
+                    .setMessage(R.string.addFeedTelegramPatternFound)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                        mLoadTypeRG.check(R.id.rbOneWebPage)
+                        mUrlEditText.setText("https://t.me/s/$name")
+                        mNameEditText.setText(name)
                         val BASE = "tgme_widget_message"
-                        mOneWebPageArticleClassName.setText( "${BASE}_wrap" )
-                        mOneWebPageUrlClassName.setText( BASE )
-                        mOneWebPageTextClassName.setText( "${BASE}_bubble" )
-                        mOneWebPageDateClassName.setText( "${BASE}_date" )
-                        mOneWebPageAuthorClassName.setText( "${BASE}_forwarded" )
+                        mOneWebPageArticleClassName.setText("${BASE}_wrap")
+                        mOneWebPageUrlClassName.setText(BASE)
+                        mOneWebPageTextClassName.setText("${BASE}_bubble")
+                        mOneWebPageDateClassName.setText("${BASE}_date")
+                        mOneWebPageAuthorClassName.setText("${BASE}_forwarded")
 
                         mIsAutoImageLoadCb.isChecked = true
                         mIsAutoSetAsRead.isChecked = true
 
-                        Toast.makeText( this@EditFeedActivity, R.string.feedWasAutoConfigured, Toast.LENGTH_LONG ).show()
+                        Toast.makeText(this@EditFeedActivity, R.string.feedWasAutoConfigured, Toast.LENGTH_LONG).show()
                         dialog.dismiss()
             }.create().show()
         }
     }
     override fun onResume() {
         super.onResume()
-        if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) mUrlEditText.setText(PrefUtils.getString(STATE_WEB_SEARCH_TEXT, ""))
+        if ( this is ArticleWebSearchActivity ) mUrlEditText.setText(PrefUtils.getString(STATE_WEB_SEARCH_TEXT, ""))
         if (IsAdd()) {
             mUrlEditText.requestFocus()
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
         if (mUserSelectionDialog?.isShowing == true) mUserSelectionDialog?.dismiss()
         if (PrefUtils.getBoolean(DIALOG_IS_SHOWN, false) &&
-                mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+                this is ArticleWebSearchActivity ) {
             val urlOrSearch = mUrlEditText.text.toString().trim { it <= ' ' }
             val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
             AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
@@ -504,11 +508,10 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         val isRss = i == R.id.rbRss
         val isOneWebPage = i == R.id.rbOneWebPage
         val isWebLinks = i == R.id.rbWebLinks
-        val isWebPageSearch = i == R.id.rbWebPageSearch
+        val isWebPageSearch = this is ArticleWebSearchActivity
         mRetrieveFulltextCb.isEnabled = (isRss || isOneWebPage) && !isWebPageSearch
-        findViewById<LinearLayout>( R.id.feed_edit_controls ).visibility = if (isWebPageSearch) View.GONE else View.VISIBLE
+        findViewById<LinearLayout>(R.id.feed_edit_controls).visibility = if (isWebPageSearch) View.GONE else View.VISIBLE
         findViewById<View>(R.id.layout_next_page).visibility = if (isRss) View.GONE else View.VISIBLE
-        findViewById<View>(R.id.rbWebPageSearch).visibility = if (IsAdd()) View.VISIBLE else View.GONE
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         UpdateSpinnerGroup()
         UpdateSpinnerKeepTime()
@@ -671,7 +674,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             UiUtils.showMessage(this@EditFeedActivity, R.string.error_feed_error)
         }
         if (IsAdd()) PrefUtils.putInt(STATE_LAST_LOAD_TYPE, mLoadTypeRG.checkedRadioButtonId)
-        if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+        if ( this is ArticleWebSearchActivity ) {
             PrefUtils.putString(STATE_WEB_SEARCH_TEXT, mUrlEditText.text.toString())
             val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
             AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
@@ -722,7 +725,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     val adapter = SimpleAdapter(this@EditFeedActivity, data, R.layout.item_search_result, from, to)
                     adapter.viewBinder = SimpleAdapter.ViewBinder { view, data_, _ ->
                         if (view is TextView) UiUtils.SetTypeFace(view)
-                        if ( data_ == null )
+                        if (data_ == null)
                             return@ViewBinder false
                         val value = data_ as String
                         if (view is TextView && value.startsWith(IS_READ_STUMB)) {
@@ -777,7 +780,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
             override fun onLoaderReset(loader: Loader<ArrayList<HashMap<String, String>>>) {}
             private fun AddFeed(dataItem: HashMap<String, String>) {
-                if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+                if (this@EditFeedActivity is ArticleWebSearchActivity) {
                     val url = dataItem[ITEM_URL]!!.replace(IS_READ_STUMB, "")
                     val intent: Intent
                     if (Intent.ACTION_WEB_SEARCH == dataItem[ITEM_URL]) {
@@ -791,6 +794,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     } else {
                         intent = Intent(this@EditFeedActivity, EntryActivity::class.java)
                         intent.data = Uri.parse(url)
+                        intent.putExtra( NEW_TASK_EXTRA, true )
                     }
                     this@EditFeedActivity.startActivity(intent)
                     return
@@ -940,8 +944,8 @@ internal class GetSiteAlternateListLoader(context: Context?, private val mUrl: S
                     if (urlMatcher.find()) {
                         var url = urlMatcher.group(1)
                         if (!url.toLowerCase().contains("rss") &&
-                                !url.toLowerCase().contains("feed") &&
-                                !url.toLowerCase().contains("atom")) continue
+                            !url.toLowerCase().contains("feed") &&
+                            !url.toLowerCase().contains("atom")) continue
                         if (url.startsWith(Constants.SLASH)) {
                             val index = mUrl.indexOf('/', 8)
                             url = if (index > -1) {

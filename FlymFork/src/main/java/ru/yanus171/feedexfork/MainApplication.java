@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
@@ -134,7 +135,7 @@ public class MainApplication extends Application {
                 .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_add))
                 .setIntent(new Intent( Intent.ACTION_WEB_SEARCH )
                                .setPackage( getContext().getPackageName() )
-                               .setClass(getContext(), EditFeedActivity.class))
+                               .setClass(getContext(), ArticleWebSearchActivity.class))
                 .build() );
             list.add( new ShortcutInfo.Builder(getContext(), "idExternal")
                 .setShortLabel( getContext().getString( R.string.externalLinks ) )
