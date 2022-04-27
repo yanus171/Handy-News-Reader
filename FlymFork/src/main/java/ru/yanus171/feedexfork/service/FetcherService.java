@@ -1770,51 +1770,48 @@ public class FetcherService extends IntentService {
         return handler != null ? handler.getNewCount() : 0;
     }
 
-    private static void parseXml ( InputStream in, Xml.Encoding
-        encoding,
-                ContentHandler contentHandler) throws IOException, SAXException {
-            Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(ToString(in, encoding).trim(), contentHandler);
-            Status().ChangeProgress("");
-            Status().AddBytes(contentHandler.toString().length());
-        }
+    private static void parseXml( InputStream in, Xml.Encoding encoding, ContentHandler contentHandler) throws IOException, SAXException {
+        Status().ChangeProgress(R.string.parseXml);
+        Xml.parse(ToString(in, encoding).trim(), contentHandler);
+        Status().ChangeProgress("");
+        Status().AddBytes(contentHandler.toString().length());
+    }
 
-        private static void parseXml (Reader reader,
-                ContentHandler contentHandler) throws IOException, SAXException {
-            Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(ToString( reader ), contentHandler);
-            Status().ChangeProgress("");
-            Status().AddBytes(contentHandler.toString().length());
-        }
+    private static void parseXml (Reader reader, ContentHandler contentHandler) throws IOException, SAXException {
+        Status().ChangeProgress(R.string.parseXml);
+        Xml.parse(ToString( reader ), contentHandler);
+        Status().ChangeProgress("");
+        Status().AddBytes(contentHandler.toString().length());
+    }
 
-        public static void cancelRefresh () {
-            synchronized (mCancelRefresh) {
-                getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
-                mCancelRefresh = true;
-            }
+    public static void cancelRefresh () {
+        synchronized (mCancelRefresh) {
+            getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
+            mCancelRefresh = true;
         }
+    }
 
-        public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
-            int status = Status().Start("deleteAllFeedEntries", true);
-            try {
-                final ContentResolver cr = getContext().getContentResolver();
-                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
-                if ( cursor != null  ){
-                    while ( cursor.moveToNext() ) {
-                        Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
-                        FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(1));
-                        EntryUrlVoc.INSTANCE.remove(  cursor.getString(1) );
-                    }
-                    cursor.close();
+    public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
+        int status = Status().Start("deleteAllFeedEntries", true);
+        try {
+            final ContentResolver cr = getContext().getContentResolver();
+            final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
+            if ( cursor != null  ){
+                while ( cursor.moveToNext() ) {
+                    Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
+                    FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(1));
+                    EntryUrlVoc.INSTANCE.remove(  cursor.getString(1) );
                 }
-                Status().ChangeProgress( "" );
-                cr.delete(entriesUri, condition, null);
-                EntryUrlVoc.INSTANCE.reinit( true );
-            } finally {
-                Status().End(status);
+                cursor.close();
             }
-
+            Status().ChangeProgress( "" );
+            cr.delete(entriesUri, condition, null);
+            EntryUrlVoc.INSTANCE.reinit( true );
+        } finally {
+            Status().End(status);
         }
+
+    }
 
     public static void unstarAllFeedEntries( Uri entriesUri ){
         int status = Status().Start("unstarAllFeedEntries", true);

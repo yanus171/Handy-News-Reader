@@ -205,7 +205,8 @@ public class OPML {
             LabelVoc.INSTANCE.reinit( false );
 
             final OPMLParser parser = new OPMLParser();
-            Xml.parse(FetcherService.ToString(input, UTF_8), parser);
+            //Xml.parse(FetcherService.ToString(input, UTF_8), parser);
+            Xml.parse(input, UTF_8, parser);
 
             EntryUrlVoc.INSTANCE.reinit( false );
             LabelVoc.INSTANCE.reinit( false );
@@ -822,6 +823,8 @@ public class OPML {
         if (requestCode == REQUEST_PICK_OPML_FILE) {
             if (resultCode == Activity.RESULT_OK)
                 AskQuestionForImport(activity, data.getData().toString(), true );
+            else
+                displayCustomFilePicker( activity );
         }
     }
 

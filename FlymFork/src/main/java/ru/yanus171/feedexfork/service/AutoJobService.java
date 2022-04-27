@@ -208,7 +208,7 @@ public class AutoJobService extends JobService {
         long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
         if ( jobParameters.getJobId() == AUTO_REFRESH_JOB_ID )
             currentInterval = getMinCustomRefreshInterval();
-        
+
         long lastJobOccured = 0;
         try {
             lastJobOccured = PrefUtils.getLong(LAST_JOB_OCCURED + keyInterval, 0 );
