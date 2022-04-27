@@ -635,6 +635,12 @@
             android:defaultValue="false"
             android:title="@string/settings_feeds_sort_alphabetical"
             android:summary="@string/settings_feeds_sort_alphabetical_descr"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="system"
+            android:entries="@array/settings_datetime_format"
+            android:entryValues="@array/settings_datetime_format_values"
+            android:key="datetime_format"
+            android:title="@string/settings_datetime_format"/>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

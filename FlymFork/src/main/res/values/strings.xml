@@ -619,11 +619,41 @@
     <string name="settings_feeds_sort_alphabetical_descr">Sort feeds and groups alphabetically. Otherwise manual sorting</string>
     <string name="web_search_keyword">Key word</string>
     <string name="web_search_title">Article Web search</string>
+    <string name="settings_datetime_format">Date time format</string>
 
     <plurals name="number_of_new_entries">
         <item quantity="one">One new article</item>
         <item quantity="other">%d new articles</item>
     </plurals>
 
+    <string name="rightNow">right now</string>
 
+    <string name="oneWeek">week</string>
+    <string name="twoFourWeek">weeks</string>
+    <string name="fiveWeek">weeks</string>
+
+    <string name="oneMonth">month</string>
+    <string name="twoFourMonth">months</string>
+    <string name="fiveMonth">months</string>
+
+    <string name="oneDay">day</string>
+    <string name="twoFourDay">days</string>
+    <string name="fiveDay">days</string>
+
+    <string name="oneHour">hour</string>
+    <string name="twoFourHour">hours</string>
+    <string name="fiveHour">hours</string>
+
+    <string name="oneMinute">minute</string>
+    <string name="twoFourMinute">minutes</string>
+    <string name="fiveMinute">minutes</string>
+
+    <string name="monthsShort">months</string>
+    <string name="weeksShort">w</string>
+    <string name="daysShort">d</string>
+    <string name="hoursShort">h</string>
+    <string name="minutesShort">m</string>
+
+    <string name="timeIntervalInFuture">in</string>
+    <string name="timeIntervalInPast">ago</string>
 </resources>

@@ -616,6 +616,37 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="addFeedTelegramPatternFound">URL-адрес, похоже, относится к telegram. Вы хотите автоматически настроить ленту для telegram-канала?</string>
     <string name="feedWasAutoConfigured">Лента была настроена</string>
 
+    <string name="rightNow">прямо сейчас</string>
+
+    <string name="oneMonth">месяц</string>
+    <string name="twoFourMonth">месяца</string>
+    <string name="fiveMonth">месяцев</string>
+
+    <string name="oneWeek">неделя</string>
+    <string name="twoFourWeek">недели</string>
+    <string name="fiveWeek">недель</string>
+
+    <string name="oneDay">день</string>
+    <string name="twoFourDay">дня</string>
+    <string name="fiveDay">дней</string>
+
+    <string name="oneHour">час</string>
+    <string name="twoFourHour">часа</string>
+    <string name="fiveHour">часов</string>
+
+    <string name="oneMinute">минуту</string>
+    <string name="twoFourMinute">минуты</string>
+    <string name="fiveMinute">минут</string>
+
+    <string name="monthsShort">мес</string>
+    <string name="weeksShort">нд</string>
+    <string name="daysShort">дн</string>
+    <string name="hoursShort">ч</string>
+    <string name="minutesShort">м</string>
+
+    <string name="timeIntervalInFuture">через</string>
+    <string name="timeIntervalInPast">назад</string>
+
     <plurals name="number_of_new_entries">
         <item quantity="one">%d new entry</item>
         <item quantity="few">%d new entries</item>
