@@ -372,6 +372,7 @@
     <string name="rule_text">Schlüsselwort(e)/Regeln</string>
     <string name="global_marks_as_star_filter_rule_descr">Ein Schlüsselwort bzw. Ausdruck pro Zeile</string>
     <string name="customKeepTime">Benutzerdefinierte Artikel-Aufbewahrzeit</string>
+    <string name="custom_refresh_interval">Benutzerdefiniertes Aktualisierungsintervall</string>
     <string name="menu_toggle_theme">Design ändern</string>
     <string name="turnOn">Aktivieren</string>
     <string name="brightness">Helligkeit</string>
@@ -597,6 +598,10 @@
     <string name="feedWasAutoConfigured">Der Feed wurde automatisch konfiguriert</string>
     <string name="settings_labels_sort_alphabetical">Kategorien alphabetisch sortieren</string>
     <string name="settings_labels_sort_alphabetical_descr">Kategorien alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
+    <string name="settings_feeds_sort_alphabetical">Feeds alphabetisch sortieren</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Feeds und Gruppen alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
+    <string name="web_search_keyword">Schlüsselwort</string>
+    <string name="web_search_title">Artikel im Web suchen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
