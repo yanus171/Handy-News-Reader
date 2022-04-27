@@ -154,6 +154,7 @@
     <string name="menu_unstar">Enlever des favoris</string>
     <string name="menu_share">Partager</string>
     <string name="menu_mark_all_as_unread">Marquer tout comme non lus</string>
+    <string name="menu_mark_upper_as_read">Marquer en haut comme lu</string>
     <string name="menu_full_screen">Plein écran</string>
     <string name="menu_actionbar_visible">Barre d\’actions</string>
     <string name="menu_font_bold">Gras</string>
@@ -342,6 +343,7 @@
     <string name="fontsize_entrylist">Taille de police de la liste des articles</string>
     <string name="confirmation">Confirmation</string>
     <string name="question_delete_entry">Supprimer cet article?</string>
+    <string name="question_mark_upper_as_read">Marquer les articles en haut comme lus ?</string>
     <string name="question_mark_all_as_unread">Marquer tous les articles comme non lus ?</string>
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
@@ -373,6 +375,7 @@
     <string name="rule_text">Texte de la règle</string>
     <string name="global_marks_as_star_filter_rule_descr">une règle par ligne</string>
     <string name="customKeepTime">Personnaliser la durée de conservation des articles</string>
+    <string name="custom_refresh_interval">Intervalle de rafraîchissement personnalisé</string>
     <string name="menu_toggle_theme">Changer de thème</string>
     <string name="turnOn">Activer</string>
     <string name="brightness">Luminosité</string>
@@ -551,6 +554,15 @@
     <string name="menu_unstar_articles">Retirer les articles des favoris</string>
     <string name="unstarAllArtcilesComfirm">RETIRER TOUS les articles visibles des FAVORIS. Êtes-vous sûr.e ?</string>
     <string name="unstarAllArtcilesComfirm2">Tous les articles visibles vont être retirés des favoris. Êtes-vous VRAIMENT sûr.e ?</string>
+    <string name="tap_actions_were_enabled">Les actions des touches ont été activées</string>
+    <string name="tap_actions_were_disabled">Les actions des touched ont été désactivées ! Appuyez en haut à droite pour activer</string>
+    <string name="list_was_scrolled_to_top">Défilé vers le haut</string>
+    <string name="list_was_scrolled_to_bottom">Défilé vers le bas</string>
+    <string name="articleWasUnstarred">Un article a été supprimé des favoris</string>
+    <string name="articleNotFound">Un article n\'a pas été trouvé :(</string>
+    <string name="atricle_list_size_progressbar_maxsize">"Taille maximum du texte "</string>
+    <string name="atricle_list_size_progressbar_maxsize_descr">En kB pour l\'indicateur horizontal (0 pour désactiver)</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Modifier l\'orientation portrait du flux</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
