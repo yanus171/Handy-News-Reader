@@ -204,7 +204,11 @@ public class AutoJobService extends JobService {
         else if ( jobParameters.getJobId() == DELETE_OLD_JOB_ID )
             keyInterval = DELETE_OLD_INTERVAL;
         final long currentTime = System.currentTimeMillis();
-        final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+
+        long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+        if ( jobParameters.getJobId() == AUTO_REFRESH_JOB_ID )
+            currentInterval = getMinCustomRefreshInterval();
+        
         long lastJobOccured = 0;
         try {
             lastJobOccured = PrefUtils.getLong(LAST_JOB_OCCURED + keyInterval, 0 );
