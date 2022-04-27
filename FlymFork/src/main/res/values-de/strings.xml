@@ -602,8 +602,26 @@
     <string name="settings_feeds_sort_alphabetical_descr">Feeds und Gruppen alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
     <string name="web_search_keyword">Schlüsselwort</string>
     <string name="web_search_title">Artikel im Web suchen</string>
+    <string name="settings_datetime_format">Datums- und Zeitformat</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
     </plurals>
+    <string name="rightNow">genau jetzt</string>
+    <string name="oneWeek">Woche</string>
+    <string name="twoFourWeek">Wochen</string>
+    <string name="fiveWeek">Wochen</string>
+    <string name="oneMonth">Monat</string>
+    <string name="twoFourMonth">Monate</string>
+    <string name="fiveMonth">Monate</string>
+    <string name="oneDay">Tag</string>
+    <string name="twoFourDay">Tage</string>
+    <string name="fiveDay">Tage</string>
+    <string name="oneHour">Stunde</string>
+    <string name="twoFourHour">Stunden</string>
+    <string name="fiveHour">Stunden</string>
+    <string name="oneMinute">Minute</string>
+    <string name="twoFourMinute">Minuten</string>
+    <string name="fiveMinute">Minuten</string>
+    <string name="monthsShort">Monate</string>
 </resources>
