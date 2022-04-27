@@ -625,4 +625,6 @@
     <string name="fiveMinute">Minuten</string>
     <string name="monthsShort">Monate</string>
     <string name="daysShort">T</string>
+    <string name="timeIntervalInFuture">in</string>
+    <string name="timeIntervalInPast">vor</string>
 </resources>
