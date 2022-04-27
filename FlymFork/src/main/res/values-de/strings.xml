@@ -598,7 +598,7 @@
     <string name="feedWasAutoConfigured">Der Feed wurde automatisch konfiguriert</string>
     <string name="settings_labels_sort_alphabetical">Kategorien alphabetisch sortieren</string>
     <string name="settings_labels_sort_alphabetical_descr">Kategorien alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
-    <string name="settings_feeds_sort_alphabetical">Feeds alphabetisch sortieren</string>
+    <string name="settings_feeds_sort_alphabetical">Alphabetische Sortierung</string>
     <string name="settings_feeds_sort_alphabetical_descr">Feeds und Gruppen alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
     <string name="web_search_keyword">Schlüsselwort</string>
     <string name="web_search_title">Artikel im Web suchen</string>
