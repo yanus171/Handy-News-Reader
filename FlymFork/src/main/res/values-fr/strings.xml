@@ -596,6 +596,15 @@
     <string name="comments">Commentaires : </string>
     <string name="video_tag_found_in_article">Une étiquette vidéo a été trouvé dans le texte de l\'article</string>
     <string name="disable_tap_actions_when_video">Désactiver les actions au toucher avec les vidéos</string>
+    <string name="disable_tap_actions_when_video_descr">Désactiver temporairement les actions au toucher dans le résumé de l\'article quand il contient une vidéo</string>
+    <string name="addFeedTelegramPatternFound">L\'url semble être une url Telegram. Voulez-vous configurer automatiquement les paramètres de flux pour les chaînes Telegram ?</string>
+    <string name="feedWasAutoConfigured">Le flux a été automatiquement configuré</string>
+    <string name="settings_labels_sort_alphabetical">Tri des libellés ABC</string>
+    <string name="settings_labels_sort_alphabetical_descr">Trier les libellés par ordre alphabétique. Sinon, tri manuel</string>
+    <string name="settings_feeds_sort_alphabetical">Tri des flux ABC</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Trier les flux et les groupes par ordre alphabétique. Sinon, tri manuel</string>
+    <string name="web_search_keyword">Mot clé</string>
+    <string name="web_search_title">Recherche d\'articles Web</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
