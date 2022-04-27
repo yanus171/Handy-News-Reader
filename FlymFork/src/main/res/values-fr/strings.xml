@@ -605,8 +605,32 @@
     <string name="settings_feeds_sort_alphabetical_descr">Trier les flux et les groupes par ordre alphabétique. Sinon, tri manuel</string>
     <string name="web_search_keyword">Mot clé</string>
     <string name="web_search_title">Recherche d\'articles Web</string>
+    <string name="settings_datetime_format">Format date heure</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d nouvel article</item>
         <item quantity="other">%d nouveaux articles</item>
     </plurals>
+    <string name="rightNow">à l\'instant</string>
+    <string name="oneWeek">semaine</string>
+    <string name="twoFourWeek">semaines</string>
+    <string name="fiveWeek">semaines</string>
+    <string name="oneMonth">mois</string>
+    <string name="twoFourMonth">mois</string>
+    <string name="fiveMonth">mois</string>
+    <string name="oneDay">jour</string>
+    <string name="twoFourDay">jours</string>
+    <string name="fiveDay">jours</string>
+    <string name="oneHour">heure</string>
+    <string name="twoFourHour">heures</string>
+    <string name="fiveHour">heures</string>
+    <string name="oneMinute">minute</string>
+    <string name="twoFourMinute">minutes</string>
+    <string name="fiveMinute">minutes</string>
+    <string name="monthsShort">mois</string>
+    <string name="weeksShort">s</string>
+    <string name="daysShort">j</string>
+    <string name="hoursShort">h</string>
+    <string name="minutesShort">m</string>
+    <string name="timeIntervalInFuture">dans</string>
+    <string name="timeIntervalInPast">il y a</string>
 </resources>
