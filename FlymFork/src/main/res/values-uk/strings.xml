@@ -373,6 +373,7 @@
     <string name="rule_text">Текст правила</string>
     <string name="global_marks_as_star_filter_rule_descr">правило на ряд</string>
     <string name="customKeepTime">Особистий час зберігання статей</string>
+    <string name="custom_refresh_interval">Користувацький інтервал оновлення</string>
     <string name="menu_toggle_theme">Змінити тему</string>
     <string name="turnOn">Увімкнути</string>
     <string name="brightness">Яскравість</string>
@@ -599,10 +600,28 @@
     <string name="settings_labels_sort_alphabetical">Сортування міток А-Я</string>
     <string name="settings_labels_sort_alphabetical_descr">Сортувати мітки за алфавітом. В іншому випадку ручне сортування</string>
     <string name="settings_feeds_sort_alphabetical">Сортування за абеткою</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Сортування стрічок і груп за абеткою. В іншому випадку ручне сортування</string>
+    <string name="web_search_keyword">Ключове слово</string>
+    <string name="web_search_title">Веб-пошук статей</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
         <item quantity="many">%d нових статей</item>
         <item quantity="other">%d нових статей</item>
     </plurals>
+    <string name="oneWeek">тиждень</string>
+    <string name="twoFourWeek">тижнів</string>
+    <string name="fiveWeek">тижнів</string>
+    <string name="oneMonth">місяць</string>
+    <string name="twoFourMonth">місяці</string>
+    <string name="fiveMonth">місяців</string>
+    <string name="oneDay">день</string>
+    <string name="twoFourDay">дні</string>
+    <string name="fiveDay">днів</string>
+    <string name="oneHour">година</string>
+    <string name="twoFourHour">години</string>
+    <string name="fiveHour">годин</string>
+    <string name="oneMinute">хвилина</string>
+    <string name="twoFourMinute">хвилини</string>
+    <string name="fiveMinute">хвилин</string>
 </resources>
