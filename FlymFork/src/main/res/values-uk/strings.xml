@@ -603,12 +603,14 @@
     <string name="settings_feeds_sort_alphabetical_descr">Сортування стрічок і груп за абеткою. В іншому випадку ручне сортування</string>
     <string name="web_search_keyword">Ключове слово</string>
     <string name="web_search_title">Веб-пошук статей</string>
+    <string name="settings_datetime_format">Формат дати та часу</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
         <item quantity="many">%d нових статей</item>
         <item quantity="other">%d нових статей</item>
     </plurals>
+    <string name="rightNow">зараз</string>
     <string name="oneWeek">тиждень</string>
     <string name="twoFourWeek">тижнів</string>
     <string name="fiveWeek">тижнів</string>
@@ -624,4 +626,11 @@
     <string name="oneMinute">хвилина</string>
     <string name="twoFourMinute">хвилини</string>
     <string name="fiveMinute">хвилин</string>
+    <string name="monthsShort">міс.</string>
+    <string name="weeksShort">тиж.</string>
+    <string name="daysShort">дн</string>
+    <string name="hoursShort">г</string>
+    <string name="minutesShort">хв</string>
+    <string name="timeIntervalInFuture">через</string>
+    <string name="timeIntervalInPast">тому</string>
 </resources>
