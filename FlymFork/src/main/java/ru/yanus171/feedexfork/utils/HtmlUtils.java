@@ -99,6 +99,7 @@ public class HtmlUtils {
 
         if (content == null )
             return content;
+
         content = ADS_PATTERN.matcher(content).replaceAll("");
         // remove some ads
         content = ADS_PATTERN.matcher(content).replaceAll("");

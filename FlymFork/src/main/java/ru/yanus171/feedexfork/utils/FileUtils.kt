@@ -34,6 +34,8 @@ import android.widget.Toast
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc
 import ru.yanus171.feedexfork.R
+import ru.yanus171.feedexfork.parser.FileSelectDialog
+import ru.yanus171.feedexfork.parser.FileSelectDialog.Companion.getPublicDir
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML
@@ -253,10 +255,6 @@ object FileUtils {
         return result
     }
 
-    public fun getPublicDir(): File {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-    }
-
     public fun getStorageList(): ArrayList<StorageItem> {
         val list = ArrayList<StorageItem>()
         list += StorageItem(MainApplication.getContext().cacheDir, R.string.internalMemoryCache)
@@ -276,39 +274,7 @@ object FileUtils {
     }
     public const val EMPTY_MOBILIZED_VALUE = "EMPTY_MOB"
 
-    fun startFilePickerIntent(activity: Activity, fileType: String, requestCode: Int) {
-        val intent: Intent
-        when {
-            Build.VERSION.SDK_INT >= 28 -> {
-                intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-            }
-            Build.VERSION.SDK_INT < 19 -> intent = Intent(Intent.ACTION_GET_CONTENT)
-            else -> intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        }
-        if (fileType.isNotEmpty()) intent.type = fileType
-        activity.startActivityForResult(intent, requestCode)
-    }
 
-    fun getFileName(uri: Uri): String? {
-        var result: String? = null
-        if (uri.scheme == "content") {
-            MainApplication.getContext().getContentResolver().query(uri, null, null, null, null).use { cursor ->
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.path
-            val cut = result!!.lastIndexOf('/')
-            if (cut != -1) {
-                result = result!!.substring(cut + 1)
-            }
-        }
-        return result
-    }
 
     // ----------------------------------------------------------------
     fun getPathFromUri(uri: Uri): String {
@@ -324,56 +290,5 @@ object FileUtils {
         return result
     }
 
-    // ----------------------------------------------------------------
-    @SuppressLint("NewApi")
-    fun copyFile(sourcePath: String?, destPath: String?): Boolean {
-        var result = false
-        val sd = Environment.getExternalStorageDirectory()
-        if (sd.canWrite()) {
-            try {
-                val src = File(sourcePath)
-                val dest = File(destPath)
-                if (!dest.exists()) {
-                    dest.createNewFile()
-                }
-                if (src.exists()) {
-                    FileInputStream(src).channel.use { inChannel -> FileOutputStream(dest).channel.use { outChannel -> result = inChannel.transferTo(0, inChannel.size(), outChannel) == inChannel.size() } }
-                }
-                dest.setReadable(true, false)
-            } catch (e: IOException) {
-                AddErrorToLog(null, e)
-            }
-        }
-        val s = String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourcePath)
-        Toast.makeText(MainApplication.getContext(), s, Toast.LENGTH_LONG).show()
-        return result
-    }
-
-    // ----------------------------------------------------------------
-    fun copyFile(sourceUri: Uri, destPath: String?): Boolean {
-        var result = false
-        try {
-            MainApplication.getContext().contentResolver.openInputStream(sourceUri).use { inputStream ->
-                BufferedReader(
-                        InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
-                    val selectedFileOutPutStream: OutputStream = FileOutputStream(destPath)
-                    val buffer = ByteArray(1024)
-                    var length: Int
-                    while (inputStream?.read(buffer).also { length = it!! }!! > 0) {
-                        selectedFileOutPutStream.write(buffer, 0, length)
-                    }
-                    selectedFileOutPutStream.flush()
-                    selectedFileOutPutStream.close()
-                    result = true
-                }
-            }
-        } catch (e: IOException) {
-            AddErrorToLog(null, e)
-        }
-        Toast.makeText(MainApplication.getContext(),
-                String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),
-                Toast.LENGTH_LONG).show()
-        return result
-    }
 
 }

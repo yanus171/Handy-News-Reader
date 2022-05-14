@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -51,20 +52,22 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
-import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.widget.FontSelectPreference;
 
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
+import static ru.yanus171.feedexfork.widget.FontSelectPreference.cAddFontFileResultCode;
 
 public class GeneralPrefsActivity extends BaseActivity {
 
+    @SuppressLint("StaticFieldLeak")
     public static Activity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +116,14 @@ public class GeneralPrefsActivity extends BaseActivity {
     }
 
     // ----------------------------------------------------------------
+
+    FileSelectDialog mAddCustomFileSelectDialog =
+        new FileSelectDialog(FontSelectPreference::addCustom, "ttf", cAddFontFileResultCode, R.string.error_add_customm_font );
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         setResult(resultCode);
-        FontSelectPreference.onActivityResult((PreferenceFragment) getFragmentManager().findFragmentById( R.id.entry_fragment), requestCode, data);
+        mAddCustomFileSelectDialog.onActivityResult( this, requestCode, resultCode, data );
     }
 }

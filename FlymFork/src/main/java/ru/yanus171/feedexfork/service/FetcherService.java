@@ -347,18 +347,15 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra(Constants.FROM_IMPORT)) {
-            LongOper(R.string.importingFromFile, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final boolean isRemoveExistingFeeds = intent.getBooleanExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, false );
-                        if ( intent.hasExtra( EXTRA_FILENAME ) )
-                            OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ), isRemoveExistingFeeds );
-                        else if ( intent.hasExtra( EXTRA_URI ) )
-                            OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ), isRemoveExistingFeeds );
-                    } catch (Exception e) {
-                        DebugApp.SendException(e, FetcherService.this);
-                    }
+            LongOper(R.string.importingFromFile, () -> {
+                try {
+                    final boolean isRemoveExistingFeeds = intent.getBooleanExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, false );
+                    if ( intent.hasExtra( EXTRA_FILENAME ) )
+                        OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ), isRemoveExistingFeeds );
+                    else if ( intent.hasExtra( EXTRA_URI ) )
+                        OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ), isRemoveExistingFeeds );
+                } catch (Exception e) {
+                    DebugApp.SendException(e, FetcherService.this);
                 }
             });
             return;

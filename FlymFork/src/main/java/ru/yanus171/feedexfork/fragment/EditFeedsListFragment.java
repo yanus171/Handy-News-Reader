@@ -83,6 +83,8 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
 import ru.yanus171.feedexfork.view.DragNDropListener;
 
+import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
+
 public class EditFeedsListFragment extends ListFragment {
 
 
@@ -518,8 +520,7 @@ public class EditFeedsListFragment extends ListFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        OPML.OnActivityResult(getActivity(), requestCode, resultCode, data);
-
+        mImportFileSelectDialog.onActivityResult(getActivity(), requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 

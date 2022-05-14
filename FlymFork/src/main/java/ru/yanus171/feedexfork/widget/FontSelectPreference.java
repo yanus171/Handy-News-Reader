@@ -7,11 +7,11 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Typeface;
-import android.os.Build;
+import android.net.Uri;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.text.Html;
@@ -35,6 +35,7 @@ import android.widget.TextView;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -53,7 +54,7 @@ public class FontSelectPreference extends Preference {
 	private static final String FontsDir = "fonts";
 	private static final int cImageDim = 40;
 	public static final String ADD_CUSTOM = "AddCustom";
-	static final int cAddFontFileResultCode = 1;
+	public static final int cAddFontFileResultCode = 1;
 	public static final String KEY = "fontFamily";
 
 	private Spinner mSpinApp;
@@ -162,7 +163,7 @@ public class FontSelectPreference extends Preference {
 		mSpinApp.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				if ( pos == mAdapter.getCount() - 1 )
-					FileUtils.INSTANCE.startFilePickerIntent(GeneralPrefsActivity.mActivity, "*/*", cAddFontFileResultCode);
+					FileSelectDialog.Companion.startFilePickerIntent(GeneralPrefsActivity.mActivity, "*/*", cAddFontFileResultCode);
 				else
 					persistString(GetCurrentFontName());
 			}
@@ -386,37 +387,26 @@ public class FontSelectPreference extends Preference {
 			}
 		//}
 	}
-	public static void onActivityResult(PreferenceFragment fragment, int requestCode, Intent data) {
-		if (requestCode == cAddFontFileResultCode) {
-			if ((data != null) && (data.getData() != null)) {
 
-				String fileName;
-				if ( Build.VERSION.SDK_INT >= 28 )
-					fileName = FileUtils.INSTANCE.getFileName(data.getData());
-				else {
-					final String[] list = TextUtils.split(FileUtils.INSTANCE.getFontsFolder() + data.getData().getLastPathSegment(), "/");
-					fileName = list[list.length - 1];
-					if (!fileName.endsWith(".ttf"))
-						fileName = fileName + ".ttf";
-				}
+	public static void addCustom(Activity activity, final String data, final boolean isFileNameUri) {
+		String fileName;
+		if ( isFileNameUri )
+			fileName = FileSelectDialog.Companion.getFileName(Uri.parse( data ) );
+		else {
+			final String[] list = TextUtils.split(FileUtils.INSTANCE.getFontsFolder() + "/" +  Uri.parse( data ).getLastPathSegment(), "/");
+			fileName = list[list.length - 1];
+			if (!fileName.endsWith(".ttf"))
+				fileName = fileName + ".ttf";
+		}
+		if (FileSelectDialog.Companion.copyFile(data, FileUtils.INSTANCE.getFontsFolder() + "/" + fileName)) {
+			final String value = FontsDir + "/" + fileName;
+			PrefUtils.putString(KEY, value);
+			PreferenceFragment fragment = (PreferenceFragment) activity.getFragmentManager().findFragmentById(R.id.entry_fragment);
+			FontSelectPreference pref = ( FontSelectPreference )fragment.findPreference(KEY);
+			CreateFontList();
 
-				String destFileName = FileUtils.INSTANCE.getFontsFolder() + "/" + fileName;
-				final boolean result;
-				if (Build.VERSION.SDK_INT >= 28)
-					result = FileUtils.INSTANCE.copyFile(data.getData(), destFileName);
-				else
-					result = FileUtils.INSTANCE.copyFile(FileUtils.INSTANCE.getPathFromUri(data.getData()), destFileName);
-
-				if (result) {
-					final String value = FontsDir + "/" + fileName;
-					PrefUtils.putString( KEY, value);
-					FontSelectPreference pref = (( FontSelectPreference )fragment.findPreference( KEY) );
-					pref.CreateFontList();
-
-					pref.mSpinApp.setAdapter(pref.mAdapter);
-					pref.mSpinApp.setSelection( pref.mAdapter.getCount() - 2 );
-				}
-			}
+			pref.mSpinApp.setAdapter(pref.mAdapter);
+			pref.mSpinApp.setSelection( pref.mAdapter.getCount() - 2 );
 		}
 	}
 }
