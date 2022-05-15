@@ -94,17 +94,6 @@
     <string name="to_group_above">Encima del grupo</string>
     <string name="to_group_into">Al grupo</string>
     <string name="add_custom_feed">Añadir un feed personalizado o buscar uno</string>
-    <string name="google_news_title">Temas de Google News</string>
-    <string name="google_news_indicator">Seleccione uno o varios temas para añadir. Algunos de ellos pueden no ser proporcionados por Google para su idioma.</string>
-    <string name="google_news_top_stories">Artículos destacados</string>
-    <string name="google_news_world">Mundo</string>
-    <string name="google_news_business">Negocio</string>
-    <string name="google_news_technology">Tecnología</string>
-    <string name="google_news_entertainment">Entretenimiento</string>
-    <string name="google_news_sports">Deportes</string>
-    <string name="google_news_science">Ciencia</string>
-    <string name="google_news_health">Salud</string>
-    <string name="google_news_custom_topic">Introduce un tema personalizado</string>
     <!-- ENTRIES -->
     <string name="unread_entries">No leído</string>
     <string name="all_entries">All entries</string>
@@ -375,8 +364,6 @@
     <string name="externalMemory">Memoria externa</string>
     <string name="show_html">Mostrar HTML</string>
     <string name="image_white_background">Fondo blanco de la imagen</string>
-    <string name="settings_add_google_news_dialog">Añadir diálogo de Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Desactive la casilla para evitar el diálogo de selección de tipo de feed cuando añada un feed</string>
     <string name="reload_fulltext_after_tag_editing">Recargar texto después de editar etiquetas</string>
     <string name="article_menu_show_by_tap">Mostrar el menú de artículos con un toque</string>
     <string name="article_list_loading">Cargando lista de artículos</string>

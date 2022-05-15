@@ -47,4 +47,8 @@
         <item>竖直</item>
         <item>不显示按钮</item>
     </string-array>
+    <string-array name="settings_datetime_format">
+        <item>系统默认</item>
+        <item>剩余时间</item>
+    </string-array>
 </resources>

@@ -47,4 +47,8 @@
         <item>Vertical</item>
         <item>Ne pas afficher les boutons</item>
     </string-array>
+    <string-array name="settings_datetime_format">
+        <item>Valeur par défaut du système</item>
+        <item>Remaining time</item>
+    </string-array>
 </resources>

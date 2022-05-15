@@ -141,17 +141,6 @@
     <string name="to_group_above">Fora do grupo</string>
     <string name="to_group_into">No grupo</string>
     <string name="add_custom_feed">Adicionar um feed personalizado ou procurar por um</string>
-    <string name="google_news_title">Tópicos de notícias do Google</string>
-    <string name="google_news_indicator">Selecione um ou vários tópicos para adicionar. Alguns deles podem não ser fornecidos pelo Google para o seu idioma.</string>
-    <string name="google_news_top_stories">Principais Notícias</string>
-    <string name="google_news_world">Mundo</string>
-    <string name="google_news_business">Negócios</string>
-    <string name="google_news_technology">Tecnologia</string>
-    <string name="google_news_entertainment">Entretenimento</string>
-    <string name="google_news_sports">Esportes</string>
-    <string name="google_news_science">Ciência</string>
-    <string name="google_news_health">Saúde</string>
-    <string name="google_news_custom_topic">Inserir tópico personalizado</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Não Lido</string>
     <string name="all_entries">Todos os artigos</string>
@@ -427,8 +416,6 @@
     <string name="externalMemory">Memória externa</string>
     <string name="show_html">Mostrar html</string>
     <string name="image_white_background">Fundo branco da imagem</string>
-    <string name="settings_add_google_news_dialog">Adicionar diálogo de notícias do Google</string>
-    <string name="settings_add_google_news_dialog_descr">Desmarque para ignorar uma caixa de diálogo do tipo feed ao adicionar um feed</string>
     <string name="reload_fulltext_after_tag_editing">Recarregar texto após edição de tags</string>
     <string name="reload_fulltext_after_tag_editing_descr">se desmarcado, o texto completo não será recarregado após cada edição de tag (mostrar|ocultar|root), para que você possa introduzir várias alterações mais facilmente (nos casos em que você precise recarregar manualmente o texto completo uma vez que você termine a edição)</string>
     <string name="article_menu_show_by_tap">Mostrar menu do artigo ao tocar</string>

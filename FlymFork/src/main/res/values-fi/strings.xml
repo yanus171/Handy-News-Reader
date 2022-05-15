@@ -87,17 +87,6 @@
     <string name="to_group_above">Ylemmälle tasolle</string>
     <string name="to_group_into">Ryhmään</string>
     <string name="add_custom_feed">Lisää tai hae syöte</string>
-    <string name="google_news_title">Google News -aiheet</string>
-    <string name="google_news_indicator">Valitse yksi tai useampi aihe. Kaikki aiheet eivät välttämättä ole saatavilla suomeksi.</string>
-    <string name="google_news_top_stories">Etusivun uutiset</string>
-    <string name="google_news_world">Ulkomaat</string>
-    <string name="google_news_business">Talous</string>
-    <string name="google_news_technology">Tekniikka</string>
-    <string name="google_news_entertainment">Viihde</string>
-    <string name="google_news_sports">Urheilu</string>
-    <string name="google_news_science">Tiede</string>
-    <string name="google_news_health">Terveys</string>
-    <string name="google_news_custom_topic">Lisää oma aihe</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Uudet</string>
     <string name="all_entries">Kaikki </string>

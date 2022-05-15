@@ -139,17 +139,6 @@
     <string name="to_group_above">Poza grupą</string>
     <string name="to_group_into">Wewnątrz grupy</string>
     <string name="add_custom_feed">Dodaj kanał lub wyszukaj nowy</string>
-    <string name="google_news_title">Tematy Wiadomości Google</string>
-    <string name="google_news_indicator">Wybierz jeden lub kilka tematów. Niektóre z nich mogą nie być dostępne w Twoim języku</string>
-    <string name="google_news_top_stories">Najpopularniejsze</string>
-    <string name="google_news_world">Świat</string>
-    <string name="google_news_business">Biznes</string>
-    <string name="google_news_technology">Technologia</string>
-    <string name="google_news_entertainment">Rozrywka</string>
-    <string name="google_news_sports">Sport</string>
-    <string name="google_news_science">Nauka</string>
-    <string name="google_news_health">Zdrowie</string>
-    <string name="google_news_custom_topic">Wprowadź Własny temat</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Nieprzeczytane</string>
     <string name="all_entries">Wszystkie</string>
@@ -434,8 +423,6 @@
     <string name="externalMemory">Pamięć zewnętrzna</string>
     <string name="show_html">Pokaż HTML</string>
     <string name="image_white_background">Białe tło obrazków</string>
-    <string name="settings_add_google_news_dialog">Okno dialogowe Dodaj Wiadomości Google</string>
-    <string name="settings_add_google_news_dialog_descr">Odznacz by pominąć wybór typu kanału podczas jego dodawania</string>
     <string name="reload_fulltext_after_tag_editing">Przeładuj tekst po edycji tagów</string>
     <string name="reload_fulltext_after_tag_editing_descr">gdy odznaczone, tekst nie będzie przeładowywany przy każdej pojedynczej edycji tagów (pokaż|ukryj|źródło), stąd łatwiej przeprowadzisz kilka zmian naraz (w takim przypadku potrzebujesz ręcznie przeładować pełny tekst, gdy zakończysz pracę nad edycją)</string>
     <string name="article_menu_show_by_tap">Dotknij, by pokazać menu</string>

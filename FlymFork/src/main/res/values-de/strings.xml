@@ -139,17 +139,6 @@
     <string name="to_group_above">Außerhalb der Gruppe</string>
     <string name="to_group_into">In die Gruppe</string>
     <string name="add_custom_feed">Feed oder Artikel suchen und hinzufügen</string>
-    <string name="google_news_title">Google News Themen</string>
-    <string name="google_news_indicator">Ein oder mehrere Themen auswählen. Möglicherweise bietet Google einige davon nicht in Ihrer Sprache an.</string>
-    <string name="google_news_top_stories">Top-Meldungen</string>
-    <string name="google_news_world">Welt</string>
-    <string name="google_news_business">Wirtschaft</string>
-    <string name="google_news_technology">Technik</string>
-    <string name="google_news_entertainment">Unterhaltung</string>
-    <string name="google_news_sports">Sport</string>
-    <string name="google_news_science">Wissenschaft</string>
-    <string name="google_news_health">Gesundheit</string>
-    <string name="google_news_custom_topic">Eigenes Thema</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Ungelesene Artikel</string>
     <string name="all_entries">Alle Artikel</string>
@@ -383,6 +372,7 @@
     <string name="rule_text">Schlüsselwort(e)/Regeln</string>
     <string name="global_marks_as_star_filter_rule_descr">Ein Schlüsselwort bzw. Ausdruck pro Zeile</string>
     <string name="customKeepTime">Benutzerdefinierte Artikel-Aufbewahrzeit</string>
+    <string name="custom_refresh_interval">Benutzerdefiniertes Aktualisierungsintervall</string>
     <string name="menu_toggle_theme">Design ändern</string>
     <string name="turnOn">Aktivieren</string>
     <string name="brightness">Helligkeit</string>
@@ -434,8 +424,6 @@
     <string name="externalMemory">Externer Speicher</string>
     <string name="show_html">HTML anzeigen</string>
     <string name="image_white_background">Bilder mit weißem Hintergrund</string>
-    <string name="settings_add_google_news_dialog">Google News Themen</string>
-    <string name="settings_add_google_news_dialog_descr">Wenn aktiviert, können beim Hinzufügen neuer Feeds auch Google News Themen gewählt werden</string>
     <string name="reload_fulltext_after_tag_editing">Text nach der Bearbeitung des Schlagwortes neu laden</string>
     <string name="reload_fulltext_after_tag_editing_descr">Wenn das Kontrollkästchen deaktiviert ist, wird der Volltext nicht nach jeder Schlagwort-Bearbeitung neu geladen (Anzeigen|Ausblenden|Stamm), damit mehrere Änderungen einfacher durchgeführt werden können. In diesem Fall sollten Sie den Volltext nach Abschluss der Bearbeitung manuell neu laden.</string>
     <string name="article_menu_show_by_tap">Artikelmenü durch Antippen anzeigen</string>
@@ -610,8 +598,33 @@
     <string name="feedWasAutoConfigured">Der Feed wurde automatisch konfiguriert</string>
     <string name="settings_labels_sort_alphabetical">Kategorien alphabetisch sortieren</string>
     <string name="settings_labels_sort_alphabetical_descr">Kategorien alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
+    <string name="settings_feeds_sort_alphabetical">Alphabetische Sortierung</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Feeds und Gruppen alphabetisch sortieren (Ansonsten manuelle Sortierung)</string>
+    <string name="web_search_keyword">Schlüsselwort</string>
+    <string name="web_search_title">Artikel im Web suchen</string>
+    <string name="settings_datetime_format">Datums- und Zeitformat</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
     </plurals>
+    <string name="rightNow">genau jetzt</string>
+    <string name="oneWeek">Woche</string>
+    <string name="twoFourWeek">Wochen</string>
+    <string name="fiveWeek">Wochen</string>
+    <string name="oneMonth">Monat</string>
+    <string name="twoFourMonth">Monate</string>
+    <string name="fiveMonth">Monate</string>
+    <string name="oneDay">Tag</string>
+    <string name="twoFourDay">Tage</string>
+    <string name="fiveDay">Tage</string>
+    <string name="oneHour">Stunde</string>
+    <string name="twoFourHour">Stunden</string>
+    <string name="fiveHour">Stunden</string>
+    <string name="oneMinute">Minute</string>
+    <string name="twoFourMinute">Minuten</string>
+    <string name="fiveMinute">Minuten</string>
+    <string name="monthsShort">Monate</string>
+    <string name="daysShort">T</string>
+    <string name="timeIntervalInFuture">in</string>
+    <string name="timeIntervalInPast">vor</string>
 </resources>
