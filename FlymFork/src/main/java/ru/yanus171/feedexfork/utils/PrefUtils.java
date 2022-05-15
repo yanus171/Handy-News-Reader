@@ -100,7 +100,6 @@ public class PrefUtils {
 
     public static final String LAST_ENTRY_URI = "last_entry_uri";
     public static final String LAST_ENTRY_SCROLL_Y = "last_entry_scroll_y";
-    public static final String LAST_ENTRY_ID = "last_entry_id";
     public static final String LAST_BRIGHTNESS_FLOAT = "last_brightness_float";
     public static final String LAST_BRIGHTNESS_ONPAUSE_TIME = "last_brightness_onpause_time";
 
@@ -128,6 +127,9 @@ public class PrefUtils {
     }
     public static boolean IsLabelABCSort() {
         return PrefUtils.getBoolean("labels_sort_alphabetical", false);
+    }
+    public static boolean IsFeedsABCSort() {
+        return PrefUtils.getBoolean("feeds_sort_alphabetical", false);
     }
     public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
     public static Boolean isImageWhiteBackground() {

@@ -67,6 +67,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.jetbrains.annotations.NotNull;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -134,7 +135,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
 public class OPML {
 
     public static final String AUTO_BACKUP_OPML_FILENAME = "HandyNewsReader_auto.backup";
-    private static final int REQUEST_PICK_OPML_FILE = 1;
+    public static final int REQUEST_PICK_OPML_FILE = 1;
     private static final int PERMISSIONS_REQUEST_IMPORT_FROM_OPML = 1;
     private static final int PERMISSIONS_REQUEST_EXPORT_TO_OPML = 2;
     private static final int PERMISSIONS_REQUEST_BACKUP = 3;
@@ -205,7 +206,8 @@ public class OPML {
             LabelVoc.INSTANCE.reinit( false );
 
             final OPMLParser parser = new OPMLParser();
-            Xml.parse(FetcherService.ToString(input, UTF_8), parser);
+            //Xml.parse(FetcherService.ToString(input, UTF_8), parser);
+            Xml.parse(input, UTF_8, parser);
 
             EntryUrlVoc.INSTANCE.reinit( false );
             LabelVoc.INSTANCE.reinit( false );
@@ -699,62 +701,27 @@ public class OPML {
             }
         }
     }
-    static private void displayCustomFilePicker(final Activity activity ) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity );
-
-        builder.setTitle(activity.getString( R.string.select_file ) );
-        //builder.setMessage( FileUtils.INSTANCE.getFolder().getPath() );
-        File path = FileUtils.INSTANCE.getPublicDir();
-        try {
-            final String[] fileNames = path.list((dir, filename) -> new File(dir, filename).isFile());
-            builder.setItems(fileNames,
-                             (dialog, which) -> AskQuestionForImport(activity, path.toString() + File.separator + fileNames[which], false ));
-            builder.show();
-        } catch (Exception unused) {
-            UiUtils.showMessage(activity, R.string.error_feed_import);
-        }
-    }
     private static void exportToOpml(final Activity activity, final boolean isBackup) {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-            || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
+        new WaitDialog(activity, R.string.exportingToFile, () -> {
+            try {
+                final String dateTimeStr = new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date(System.currentTimeMillis() ) );
+                final String name = "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
+                final String fileName =  FileUtils.INSTANCE.getFolder() +  name;
 
-            new WaitDialog(activity, R.string.exportingToFile, () -> {
-                try {
-                    final String dateTimeStr = new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date(System.currentTimeMillis() ) );
-                    final String name = "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
-                    final String fileName =  FileUtils.INSTANCE.getFolder() +  name;
-
-                    OPML.exportToFile( fileName, isBackup );
-                    final File destFile = new File(FileUtils.INSTANCE.getPublicDir(), name);
-                    FileUtils.INSTANCE.copy( new File( fileName ), destFile  );
-                    activity.runOnUiThread(() -> {
-                        UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), destFile.getAbsolutePath() ));
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    activity.runOnUiThread(() -> UiUtils.showMessage(activity, R.string.error_feed_export));
-                }
-            }).execute();
-        } else {
-            UiUtils.showMessage(activity, R.string.error_external_storage_not_available);
-        }
+                OPML.exportToFile( fileName, isBackup );
+                final File destFile = new File(FileSelectDialog.Companion.getPublicDir(), name);
+                FileUtils.INSTANCE.copy( new File( fileName ), destFile );
+                activity.runOnUiThread(() -> {
+                    UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), destFile.getAbsolutePath() ));
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+                activity.runOnUiThread(() -> UiUtils.showMessage(activity, R.string.error_feed_export));
+            }
+        }).execute();
     }
     static private void importFromOpml( final Activity activity ) {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-            || Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-
-            if (Build.VERSION.SDK_INT > 28 || PrefUtils.getBoolean("use_standard_file_manager", false)) {
-                // First, try to use a file app
-                try {
-                    FileUtils.INSTANCE.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
-                } catch (Exception unused) { // Else use a custom file selector
-                    unused.printStackTrace();
-                }
-            } else
-                displayCustomFilePicker( activity );
-        } else {
-            UiUtils.showMessage(activity, R.string.error_external_storage_not_available);
-        }
+        FileSelectDialog.Companion.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
     }
     private static void RequestPermissions(Activity activity, ExportImport operType) {
         if ( operType == ExportImport.ExportToOPML )
@@ -818,12 +785,9 @@ public class OPML {
             }
         }
     }
-    public static void OnActivityResult( Activity activity, int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_PICK_OPML_FILE) {
-            if (resultCode == Activity.RESULT_OK)
-                AskQuestionForImport(activity, data.getData().toString(), true );
-        }
-    }
+
+    public static final FileSelectDialog mImportFileSelectDialog =
+        new FileSelectDialog(OPML::AskQuestionForImport, "backup", REQUEST_PICK_OPML_FILE, R.string.error_feed_import  );
 
     private static void StartServiceForImport(String fileName, boolean isRemoveExistingFeeds, boolean isFileNameUri) {
         FetcherService.StartService( FetcherService.GetIntent(Constants.FROM_IMPORT )

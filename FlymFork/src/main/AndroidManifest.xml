@@ -71,7 +71,9 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstancePerTask"
+            android:autoRemoveFromRecents="false"
+            android:alwaysRetainTaskState="false"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Dark"
             android:exported="true" >
@@ -85,6 +87,18 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
+
+        <activity
+            android:name=".activity.HomeActivityNewTask"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:autoRemoveFromRecents="true"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.Dark"
+            android:exported="true" />
+
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_handy_news_reader"
@@ -121,8 +135,8 @@
             android:name=".activity.EntryActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="standard"
-            android:parentActivityName=".activity.HomeActivity"
             android:theme="@style/Theme.Dark"
+            android:parentActivityName=".activity.HomeActivity"
             tools:targetApi="jelly_bean"
             android:exported="true" >
             <intent-filter android:scheme="http">
@@ -156,6 +170,21 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.EntryActivityNewTask"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:autoRemoveFromRecents="true"
+            android:alwaysRetainTaskState="true"
+            android:theme="@style/Theme.Dark"
+            tools:targetApi="lollipop"
+            android:exported="true" >
+
+
+        </activity>
+
         <activity
             android:name=".activity.LabelListActivity"
             android:label="@string/tag_list"
@@ -171,8 +200,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.ArticleWebSearchActivity"
+            android:screenOrientation="sensor"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:theme="@style/Theme.Dark"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.WEB_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.EditFeedActivity"
             android:screenOrientation="sensor"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.Dark"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:exported="true" >
@@ -190,11 +233,7 @@
 
                 <data android:mimeType="vnd.android.cursor.dir/vnd.flymfork.feed" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.WEB_SEARCH" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
             <intent-filter
                 android:icon="@drawable/cup_new_add"
                 android:label="@string/addFeed">

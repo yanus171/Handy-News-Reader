@@ -24,6 +24,8 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
     private val mInfo: TextView? = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha : Float = 128F
+    @kotlin.jvm.JvmField
+    var mTapAction: Runnable? = null
 
     init {
         mInfo?.visibility = View.GONE
@@ -92,6 +94,8 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                         }
                         event.action == MotionEvent.ACTION_UP -> {
                             mInfo?.visibility = View.GONE
+                            if ( abs( paddingX ) < 10 && abs( paddingY ) < 10 )
+                                mTapAction?.run()
                             return false
                         }
                         else -> {
@@ -104,6 +108,9 @@ class Brightness(private val mActivity: Activity, rootView: View) {
             }
             rootView.findViewById<View>(R.id.brightnessSliderLeft)?.setOnTouchListener(touchListener);
             rootView.findViewById<View>(R.id.brightnessSliderRight)?.setOnTouchListener(touchListener);
+        } else if ( PrefUtils.getBoolean(PrefUtils.PREF_TAP_ENABLED, true) ){
+            rootView.findViewById<View>(R.id.brightnessSliderLeft)?.setOnClickListener{ mTapAction?.run() };
+            rootView.findViewById<View>(R.id.brightnessSliderRight)?.setOnClickListener{ mTapAction?.run() };
         }
     }
 

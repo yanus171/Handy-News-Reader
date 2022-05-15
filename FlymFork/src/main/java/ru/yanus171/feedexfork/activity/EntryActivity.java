@@ -49,6 +49,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.ReadingService;
+import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -59,6 +60,9 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
+import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
@@ -77,6 +81,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     public boolean mHasSelection = false;
     private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
+    public boolean mIsNewTask = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,8 @@ public class EntryActivity extends BaseActivity implements Observer {
         setContentView(R.layout.activity_entry);
 
         mEntryFragment = (EntryFragment) getSupportFragmentManager().findFragmentById(R.id.entry_fragment);
+
+        mIsNewTask = getIntent() != null && getIntent().getBooleanExtra( NEW_TASK_EXTRA, false );
 
         final Intent intent = getIntent();
         final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
@@ -102,11 +109,6 @@ public class EntryActivity extends BaseActivity implements Observer {
         }
 
         mEntryFragment.setData(getIntent().getData());
-
-        //if (savedInstanceState == null) { // Put the data only the first time (the fragment will save its state)
-        //}
-        //mEntryFragment.setData(intent.getData());
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -147,6 +149,12 @@ public class EntryActivity extends BaseActivity implements Observer {
         super.onDestroy();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mBrightness.mTapAction = () -> mEntryFragment.PageDown();
+    }
+
     private void LoadAndOpenLink(final String url, final String title, final String text) {
         new Thread(new Runnable() {
             @Override
@@ -168,7 +176,8 @@ public class EntryActivity extends BaseActivity implements Observer {
                     SetEntryID(entryUri, url);
                     EntryUrlVoc.INSTANCE.set( url, entryUri );
                     entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
-                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
+                    if ( !mIsNewTask )
+                        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
                     timer.End();
 
                     FetcherService.LoadLink(feedID, url, title, null, FetcherService.ForceReload.Yes, true, true, false, FetcherService.AutoDownloadEntryImages.No, false, true);
@@ -223,8 +232,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
-
+        mEntryFragment.mIgnoreNextLoading = true;
     }
 
     @Override
@@ -237,9 +245,9 @@ public class EntryActivity extends BaseActivity implements Observer {
         mEntryFragment.mIsFinishing = true;
         //if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().onBackPressed()  )
         //    return;
+        if ( !mIsNewTask )
+            PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
 
-        PrefUtils.putLong(PrefUtils.LAST_ENTRY_ID, 0);
-        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
         FetcherService.clearActiveEntryID();
         new Thread() {
             @Override

@@ -50,6 +50,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
+import static ru.yanus171.feedexfork.utils.RegexUtils.createMatcherWithTimeout;
 
 public class HtmlUtils {
 
@@ -98,6 +99,7 @@ public class HtmlUtils {
 
         if (content == null )
             return content;
+
         content = ADS_PATTERN.matcher(content).replaceAll("");
         // remove some ads
         content = ADS_PATTERN.matcher(content).replaceAll("");
@@ -303,7 +305,7 @@ public class HtmlUtils {
 
     private static String ReplaceImagesWithDataOriginal(String content, String regex) {
         final Pattern IMG_DATA_ORIGINAL = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = IMG_DATA_ORIGINAL.matcher(content);
+        Matcher matcher = IMG_DATA_ORIGINAL.matcher( content );//createMatcherWithTimeout( content, IMG_DATA_ORIGINAL, 2000, 100 );
         while (matcher.find()) {
             String match = matcher.group();
             String newText = "<img src=\"" + matcher.group(1) + "\" />";

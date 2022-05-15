@@ -46,6 +46,7 @@ package ru.yanus171.feedexfork.view;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
@@ -484,6 +485,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 });
             }
         }.start();
+        mActivity.SetTaskTitle( title );
         timer.End();
         return isFullTextShown;
     }

@@ -48,12 +48,28 @@
             android:src="@drawable/ic_settings"/>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/drawer_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:fastScrollEnabled="true"/>
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/drawer_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:fastScrollEnabled="true"/>
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progressBarDrawer"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/spinner_ring"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 </LinearLayout>

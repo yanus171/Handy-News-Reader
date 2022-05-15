@@ -58,10 +58,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.Handler;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import java.util.Date;
 
@@ -70,18 +71,20 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FilterColumns;
-import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
-import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
+import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 
 import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.provider.FeedData.ENTRY_LABELS_WITH_ENTRIES;
+import static ru.yanus171.feedexfork.utils.PrefUtils.IsFeedsABCSort;
 
 public class FeedDataContentProvider extends ContentProvider {
 
@@ -269,6 +272,15 @@ public class FeedDataContentProvider extends ContentProvider {
         return true;
     }
 
+    static private String getSortOrder() {
+        return IsFeedsABCSort() ? FeedColumns.NAME : FeedColumns.PRIORITY;
+    }
+    public static String FEEDS_TABLE_WITH_GROUP_PRIORITY() {
+        return FeedColumns.TABLE_NAME +
+            " LEFT JOIN " +
+            "(SELECT " + FeedColumns._ID + " AS joined_feed_id, " + getSortOrder() + " AS group_priority FROM " + FeedColumns.TABLE_NAME + ") AS f " +
+            "ON (" + FeedColumns.TABLE_NAME + '.' + FeedColumns.GROUP_ID + " = f.joined_feed_id)";
+    }
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         FetcherService.Status().ChangeDB("query DB");
@@ -293,8 +305,11 @@ public class FeedDataContentProvider extends ContentProvider {
 
         switch (matchCode) {
             case URI_GROUPED_FEEDS: {
-                queryBuilder.setTables(FeedData.FEEDS_TABLE_WITH_GROUP_PRIORITY);
-                sortOrder = "IFNULL(group_priority, " + FeedColumns.PRIORITY + "), IFNULL(" + FeedColumns.GROUP_ID + ", " + _ID + "), " + FeedColumns.IS_GROUP + " DESC, " + FeedColumns.PRIORITY;
+                queryBuilder.setTables(FEEDS_TABLE_WITH_GROUP_PRIORITY());
+                if ( IsFeedsABCSort() )
+                    sortOrder = "(CASE WHEN " + FeedColumns.IS_GROUP + " = 1 OR group_priority IS NOT NULL THEN 0 ELSE 1 END), IFNULL(group_priority, " + FeedColumns.NAME + " ), " + FeedColumns.IS_GROUP + " DESC, " + FeedColumns.NAME;
+                else
+                    sortOrder =  "IFNULL(group_priority, " + FeedColumns.PRIORITY + "), IFNULL(" + FeedColumns.GROUP_ID + ", " + _ID + "), " + FeedColumns.IS_GROUP + " DESC, " + FeedColumns.PRIORITY;
                 break;
             }
             case URI_GROUPS: {
@@ -918,8 +933,13 @@ public class FeedDataContentProvider extends ContentProvider {
     }
 
     public static void notifyChangeOnAllUris(int matchCode, Uri uri) {
+        synchronized (DrawerAdapter.class) {
+            DrawerAdapter.mIsNeedUpdateNumbers = true;
+        }
+
         if ( !IsNotifyEnabled() )
             return;
+
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         if ( uri != null )
             cr.notifyChange(uri, null);

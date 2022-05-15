@@ -53,21 +53,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -94,24 +90,22 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
@@ -120,16 +114,14 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
-import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
@@ -163,6 +155,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowFeedInfo;
     private final boolean mShowEntryText;
     private final boolean mShowUnread;
+    private final HomeActivity mActivity;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
     private final static int MAX_TEXT_LEN = 2500;
@@ -174,8 +167,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mAbstractPos, mIsNewPos, mTextLenPos, mCategoriesPos;
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
+    public boolean mIsNewTask = false;
 
-    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread) {
+    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, HomeActivity activity) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
         mContext = context;
@@ -184,6 +178,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mShowEntryText = showEntryText;
         mShowUnread = showUnread;
         mIsLoadImages = true;
+        mActivity = activity;
         //SetIsReadMakredList();
 
         mMarkAsReadList.clear();
@@ -254,21 +249,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
             holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
-            holder.readMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String searchText = "";
-                    if ( holder.isTextShown() ) {
-                        CharSequence text = holder.textTextView.getText();
-                        String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
-                        if ( list.length > 1 ) {
-                            searchText = list[list.length - 2].replace( "\n", "" ).trim();
-                        }
+            holder.readMore.setOnClickListener(view12 -> {
+                String searchText = "";
+                if ( holder.isTextShown() ) {
+                    CharSequence text = holder.textTextView.getText();
+                    String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
+                    if ( list.length > 1 ) {
+                        searchText = list[list.length - 2].replace( "\n", "" ).trim();
                     }
-                    OpenArticle(view.getContext(), holder.entryID, holder.isTextShown(), searchText);
-
-
                 }
+                OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), searchText);
+
+
             });
 
             holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
@@ -425,7 +417,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&
-                                (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
+                                (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.mainImgView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
                                 mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                 OpenArticle(v.getContext(), holder.entryID, holder.isTextShown(), "");
@@ -815,7 +807,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
-        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID)).putExtra( "SCROLL_TEXT", searchText ));
+        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
+                                   .putExtra( "SCROLL_TEXT", searchText )
+                                   .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
+                                   .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
         if( isExpanded ) {
             EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );

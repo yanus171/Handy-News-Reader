@@ -79,25 +79,24 @@
                                         android:singleLine="true"
                                         android:importantForAutofill="no" />
 
-                                    <TextView
+                                    <LinearLayout
+                                        android:id="@+id/feed_edit_controls"
+                                        android:orientation="vertical"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/loadType"
-                                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                                        android:layout_height="wrap_content">
 
-
-                                    <RadioGroup
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/loadType"
+                                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                                        <RadioGroup
                                             android:id="@+id/rgLoadType"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:checkedButton="@+id/rbRss"
                                             android:orientation="vertical">
 
-                                            <RadioButton
-                                                android:id="@+id/rbWebPageSearch"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="@string/loadTypeWebPageSearch" />
                                             <RadioButton
                                                 android:id="@+id/rbRss"
                                                 android:layout_width="wrap_content"
@@ -116,232 +115,251 @@
                                                 android:layout_height="wrap_content"
                                                 android:text="@string/loadTypeOneWebPage" />
 
-
                                         </RadioGroup>
-
-                                    <TextView
-                                        android:id="@+id/name_textview"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:text="@string/feed_title"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"
-                                        android:textStyle="bold" />
-
-                                    <EditText
-                                        android:id="@+id/feed_title"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:hint="@string/optional"
-                                        android:singleLine="true"
-                                        android:importantForAutofill="no"
-                                        android:inputType="text" />
-
-                                    <LinearLayout
-                                        android:id="@+id/layout_group"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-
-                                        <CheckBox
-                                            android:id="@+id/has_group"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@string/group" />
-
-                                        <Spinner
-                                            android:id="@+id/spin_group"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:choiceMode="singleChoice"
-                                            android:visibility="visible" />
-                                    </LinearLayout>
-
-                                    <CheckBox
-                                        android:id="@+id/retrieve_fulltext"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/get_full_text" />
-
-                                    <CheckBox
-                                        android:id="@+id/show_text_in_entry_list"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:singleLine="false"
-                                        android:text="@string/show_text_in_entry_list" />
-
-                                    <CheckBox
-                                        android:id="@+id/auto_refresh"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/auto_refresh_feed" />
-
-                                    <CheckBox
-                                        android:id="@+id/auto_image_load"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/auto_image_load" />
-                                    <CheckBox
-                                        android:id="@+id/auto_set_as_read"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/auto_set_as_read" />
-
-                                    <LinearLayout
-                                        android:id="@+id/layout_keeptime"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-
-                                        <CheckBox
-                                            android:id="@+id/cbCustomKeepTime"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@string/customKeepTime" />
-
-                                        <Spinner
-                                            android:id="@+id/spin_keeptime"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:choiceMode="singleChoice"
-                                            android:entries="@array/settings_keep_times" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/layout_next_page"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/next_page_classname"
-                                                android:layout_weight="1"
-                                                style="@style/FeedAttrLabel" />
-                                            <EditText
-                                                android:id="@+id/next_page_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no" />
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/next_page_max_count_classname"
-                                                style="@style/FeedAttrLabel"/>
-                                            <EditText
-                                                android:id="@+id/next_page_max_count"
-                                                android:layout_weight="4"
-                                                android:inputType="numberDecimal"
-                                                android:text="10"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no"
-                                                tools:ignore="HardcodedText" />
-                                        </LinearLayout>
-                                    </LinearLayout>
-                                    <LinearLayout
-                                        android:id="@+id/one_webpage_layout"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="0dp"
-                                        android:orientation="vertical">
-
                                         <TextView
-                                            android:id="@+id/one_webpage_hint"
-                                            android:layout_width="match_parent"
+                                            android:id="@+id/name_textview"
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="20dp"
-                                            android:justificationMode="inter_word"
-                                            android:text="@string/one_webpage_hint"
-                                            android:textAppearance="?android:attr/textAppearanceSmall"
-                                            android:textStyle="normal"
-                                            tools:targetApi="o" />
-                                        <LinearLayout
+                                            android:text="@string/feed_title"
+                                            android:textAppearance="?android:attr/textAppearanceMedium"
+                                            android:textStyle="bold" />
+
+                                        <EditText
+                                            android:id="@+id/feed_title"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="5dp"
+                                            android:hint="@string/optional"
+                                            android:singleLine="true"
+                                            android:importantForAutofill="no"
+                                            android:inputType="text" />
+
+                                        <LinearLayout
+                                            android:id="@+id/layout_group"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
                                             android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/one_webpage_article_classname_label"
-                                                style="@style/FeedAttrLabel"/>
-                                            <EditText
-                                                android:id="@+id/one_webpage_article_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:singleLine="true"
-                                                android:importantForAutofill="no" />
+
+                                            <CheckBox
+                                                android:id="@+id/has_group"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@string/group" />
+
+                                            <Spinner
+                                                android:id="@+id/spin_group"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:choiceMode="singleChoice"
+                                                android:visibility="visible" />
+                                        </LinearLayout>
+
+                                        <CheckBox
+                                            android:id="@+id/retrieve_fulltext"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/get_full_text" />
+
+                                        <CheckBox
+                                            android:id="@+id/show_text_in_entry_list"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:singleLine="false"
+                                            android:text="@string/show_text_in_entry_list" />
+
+                                        <CheckBox
+                                            android:id="@+id/auto_refresh"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/auto_refresh_feed" />
+
+                                        <CheckBox
+                                            android:id="@+id/auto_image_load"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/auto_image_load" />
+                                        <CheckBox
+                                            android:id="@+id/auto_set_as_read"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/auto_set_as_read" />
+
+                                        <LinearLayout
+                                            android:id="@+id/layout_refresh_interval"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <CheckBox
+                                                android:id="@+id/cbCustomRefreshInterval"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@string/custom_refresh_interval" />
+
+                                            <Spinner
+                                                android:id="@+id/spin_RefreshInterval"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:choiceMode="singleChoice"
+                                                android:entries="@array/settings_intervals" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/layout_keeptime"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <CheckBox
+                                                android:id="@+id/cbCustomKeepTime"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@string/customKeepTime" />
+
+                                            <Spinner
+                                                android:id="@+id/spin_keeptime"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:choiceMode="singleChoice"
+                                                android:entries="@array/settings_keep_times" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/layout_next_page"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/next_page_classname"
+                                                    android:layout_weight="1"
+                                                    style="@style/FeedAttrLabel" />
+                                                <EditText
+                                                    android:id="@+id/next_page_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/next_page_max_count_classname"
+                                                    style="@style/FeedAttrLabel"/>
+                                                <EditText
+                                                    android:id="@+id/next_page_max_count"
+                                                    android:layout_weight="4"
+                                                    android:inputType="numberDecimal"
+                                                    android:text="10"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no"
+                                                    tools:ignore="HardcodedText" />
+                                            </LinearLayout>
                                         </LinearLayout>
                                         <LinearLayout
+                                            android:id="@+id/one_webpage_layout"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
+                                            android:layout_marginLeft="0dp"
+                                            android:orientation="vertical">
+
                                             <TextView
-                                                android:text="@string/one_webpage_url_classname_label"
-                                                style="@style/FeedAttrLabel"/>
-                                            <EditText
-                                                android:id="@+id/one_webpage_url_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no"
-                                                tools:ignore="TextFields" />
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/one_webpage_text_classname_label"
-                                                style="@style/FeedAttrLabel" />
-                                            <EditText
-                                                android:id="@+id/one_webpage_text_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no" />
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/one_webpage_date_classname_label"
-                                                style="@style/FeedAttrLabel" />
-                                            <EditText
-                                                android:id="@+id/one_webpage_date_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no" />
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/one_webpage_author_classname_label"
-                                                style="@style/FeedAttrLabel" />
-                                            <EditText
-                                                android:id="@+id/one_webpage_author_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no" />
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:orientation="horizontal">
-                                            <TextView
-                                                android:text="@string/one_webpage_image_url_classname_label"
-                                                style="@style/FeedAttrLabel" />
-                                            <EditText
-                                                android:id="@+id/one_webpage_image_url_classname"
-                                                style="@style/FeedAttrEdit"
-                                                android:importantForAutofill="no"
-                                                tools:ignore="TextFields" />
+                                                android:id="@+id/one_webpage_hint"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="20dp"
+                                                android:justificationMode="inter_word"
+                                                android:text="@string/one_webpage_hint"
+                                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                                android:textStyle="normal"
+                                                tools:targetApi="o" />
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/one_webpage_article_classname_label"
+                                                    style="@style/FeedAttrLabel"/>
+                                                <EditText
+                                                    android:id="@+id/one_webpage_article_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:singleLine="true"
+                                                    android:importantForAutofill="no" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/one_webpage_url_classname_label"
+                                                    style="@style/FeedAttrLabel"/>
+                                                <EditText
+                                                    android:id="@+id/one_webpage_url_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no"
+                                                    tools:ignore="TextFields" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/one_webpage_text_classname_label"
+                                                    style="@style/FeedAttrLabel" />
+                                                <EditText
+                                                    android:id="@+id/one_webpage_text_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/one_webpage_date_classname_label"
+                                                    style="@style/FeedAttrLabel" />
+                                                <EditText
+                                                    android:id="@+id/one_webpage_date_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/one_webpage_author_classname_label"
+                                                    style="@style/FeedAttrLabel" />
+                                                <EditText
+                                                    android:id="@+id/one_webpage_author_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="5dp"
+                                                android:orientation="horizontal">
+                                                <TextView
+                                                    android:text="@string/one_webpage_image_url_classname_label"
+                                                    style="@style/FeedAttrLabel" />
+                                                <EditText
+                                                    android:id="@+id/one_webpage_image_url_classname"
+                                                    style="@style/FeedAttrEdit"
+                                                    android:importantForAutofill="no"
+                                                    tools:ignore="TextFields" />
+                                            </LinearLayout>
                                         </LinearLayout>
                                     </LinearLayout>
                                 </LinearLayout>

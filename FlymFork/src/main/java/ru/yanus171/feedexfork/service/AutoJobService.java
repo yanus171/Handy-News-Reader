@@ -52,16 +52,25 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Build;
 
+import org.json.JSONObject;
+
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
+import static ru.yanus171.feedexfork.service.FetcherService.CUSTOM_KEEP_TIME;
+import static ru.yanus171.feedexfork.service.FetcherService.CUSTOM_REFRESH_INTERVAL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.AUTO_BACKUP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.AUTO_BACKUP_INTERVAL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DELETE_OLD_INTERVAL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class AutoJobService extends JobService {
@@ -94,7 +103,7 @@ public class AutoJobService extends JobService {
     }
 
     private static  final String LAST = "LAST_";
-    private static long getTimeIntervalInMSecs(String key, long defaultValue) {
+    static long getTimeIntervalInMSecs(String key, long defaultValue) {
         long time = defaultValue;
         try {
             time = Math.max(60L * 1000, Long.parseLong(PrefUtils.getString(key, "")));
@@ -107,17 +116,18 @@ public class AutoJobService extends JobService {
     private static final int AUTO_BACKUP_JOB_ID = 3;
     private static final int AUTO_REFRESH_JOB_ID = 1;
     private static final int DELETE_OLD_JOB_ID = 4;
-    final static long DEFAULT_INTERVAL = 3600L * 1000 * 24;
+    public final static long DEFAULT_INTERVAL = 3600L * 1000 * 24;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static void initAutoJob(Context context,
                                     final String keyInterval,
                                     final String keyEnabled,
+                                    long minimumInterval,
                                     final int jobID,
                                     boolean requiresNetwork,
                                     boolean requiresCharging) {
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+        final long currentInterval = minimumInterval != -1 ? minimumInterval : getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
         final long lastInterval = getTimeIntervalInMSecs(LAST + keyInterval, DEFAULT_INTERVAL);
         final long currentTime = System.currentTimeMillis();
         long lastJobOccured = 0;
@@ -129,9 +139,9 @@ public class AutoJobService extends JobService {
 
         if ( PrefUtils.getBoolean( keyEnabled, true )  ) {
             if ( lastInterval != currentInterval ||
-                    currentTime - lastJobOccured > currentInterval ||
-                    GetPendingJobByID(jobScheduler, jobID) == null ||
-                    GetPendingJobByID(jobScheduler, jobID).isRequireCharging() != requiresCharging ) {
+                 currentTime - lastJobOccured > currentInterval ||
+                 GetPendingJobByID(jobScheduler, jobID) == null ||
+                 GetPendingJobByID(jobScheduler, jobID).isRequireCharging() != requiresCharging ) {
                 ComponentName serviceComponent = new ComponentName(context, AutoJobService.class);
                 JobInfo.Builder builder =
                         new JobInfo.Builder(jobID, serviceComponent)
@@ -155,28 +165,32 @@ public class AutoJobService extends JobService {
     }
     public static void init(Context context) {
         if (Build.VERSION.SDK_INT >= 21 ) {
-            initAutoJob(context, REFRESH_INTERVAL, REFRESH_ENABLED, AUTO_REFRESH_JOB_ID, true, PrefUtils.getBoolean("auto_refresh_requires_charging", false ) );
-            initAutoJob( context,DELETE_OLD_INTERVAL, REFRESH_ENABLED, DELETE_OLD_JOB_ID, false, PrefUtils.getBoolean( "delete_old_requires_charging", true ) );
-            initAutoJob( context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, AUTO_BACKUP_JOB_ID, false, false );
+            initAutoJob(context, REFRESH_INTERVAL, REFRESH_ENABLED, getMinCustomRefreshInterval(), AUTO_REFRESH_JOB_ID, true, PrefUtils.getBoolean("auto_refresh_requires_charging", false ) );
+            initAutoJob( context,DELETE_OLD_INTERVAL, REFRESH_ENABLED, -1, DELETE_OLD_JOB_ID, false, PrefUtils.getBoolean( "delete_old_requires_charging", true ) );
+            initAutoJob( context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, -1, AUTO_BACKUP_JOB_ID, false, false );
         }
-        /*else {
-            GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);
-            if (isAutoUpdateEnabled()) {
-                PeriodicTask task = new PeriodicTask.Builder()
-                        .setService(AutoRefreshService.class)
-                        .setTag(TASK_TAG_PERIODIC)
-                        .setPeriod(getTimeIntervalInMSecs() / 1000)
-                        .setPersisted(true)
-                        .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
-                        .setUpdateCurrent(true)
-                        .build();
+    }
 
-                gcmNetworkManager.schedule(task);
-            } else {
-                gcmNetworkManager.cancelTask(TASK_TAG_PERIODIC, AutoRefreshService.class);
+    private static long getMinCustomRefreshInterval() {
+        long result = Long.parseLong(PrefUtils.getString(REFRESH_INTERVAL, String.valueOf(DEFAULT_INTERVAL) ) );
+        {
+            final Cursor cur = MainApplication.getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI, new String[]{FeedData.FeedColumns.OPTIONS}, FeedData.FeedColumns.IS_GROUP + Constants.DB_IS_NULL, null, null);
+            while (cur.moveToNext()) {
+                final String jsonText = cur.isNull( 0 ) ? "" : cur.getString(0);
+                if ( !jsonText.isEmpty() )
+                    try {
+                        JSONObject jsonOptions = new JSONObject(jsonText);
+                        if (jsonOptions.has(CUSTOM_REFRESH_INTERVAL))
+                            if ( result > jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL) )
+                                result = jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
-
-        }*/
+            cur.close();
+        }
+        Dog.v( TAG, "AutoJobService.minCustomRefreshInterval = " + result  );
+        return result;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -190,7 +204,11 @@ public class AutoJobService extends JobService {
         else if ( jobParameters.getJobId() == DELETE_OLD_JOB_ID )
             keyInterval = DELETE_OLD_INTERVAL;
         final long currentTime = System.currentTimeMillis();
-        final long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+
+        long currentInterval = getTimeIntervalInMSecs(keyInterval, DEFAULT_INTERVAL);
+        if ( jobParameters.getJobId() == AUTO_REFRESH_JOB_ID )
+            currentInterval = getMinCustomRefreshInterval();
+
         long lastJobOccured = 0;
         try {
             lastJobOccured = PrefUtils.getLong(LAST_JOB_OCCURED + keyInterval, 0 );

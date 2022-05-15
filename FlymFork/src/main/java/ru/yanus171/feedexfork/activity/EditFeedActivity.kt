@@ -77,6 +77,7 @@ import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
+import ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment
 import ru.yanus171.feedexfork.loader.BaseLoader
 import ru.yanus171.feedexfork.parser.*
@@ -93,8 +94,9 @@ import java.util.*
 import java.util.regex.Pattern
 
 @Suppress("DEPRECATION")
-class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
+open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mKeepTimeValues: Array<String>
+    private lateinit var mRefreshIntervalValues: Array<String>
     private val mFilterActionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
         // Called when the action mode is created; startActionMode() was called
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
@@ -150,6 +152,8 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     }
     private lateinit var mKeepTimeSpinner: Spinner
     private lateinit var mKeepTimeCB: CheckBox
+    private lateinit var mRefreshIntervalSpinner: Spinner
+    private lateinit var mRefreshIntervalCB: CheckBox
     private var mUserSelectionDialog: AlertDialog? = null
     private lateinit var mOneWebPageArticleClassName: EditText
     private lateinit var mOneWebPageUrlClassName: EditText
@@ -275,15 +279,27 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         mIsAutoSetAsRead.isChecked = false
         mFiltersListView = findViewById(android.R.id.list)
         mGroupSpinner = findViewById(R.id.spin_group)
+
         mKeepTimeCB = SetupSmallTextView(R.id.cbCustomKeepTime) as CheckBox
-        mKeepTimeCB.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerKeepTime() }
+        mKeepTimeCB.setOnCheckedChangeListener { _, _ -> UpdateSpinnerKeepTime() }
         mKeepTimeValues = resources.getStringArray(R.array.settings_keep_time_values)
         mKeepTimeSpinner = findViewById(R.id.spin_keeptime)
-        mKeepTimeSpinner.setSelection(4)
+        mKeepTimeSpinner.setSelection(3)
         for (i in mKeepTimeValues.indices) if (mKeepTimeValues[i].toDouble() == FetcherService.GetDefaultKeepTime().toDouble()) {
             mKeepTimeSpinner.setSelection(i)
             break
         }
+
+        mRefreshIntervalCB = SetupSmallTextView(R.id.cbCustomRefreshInterval) as CheckBox
+        mRefreshIntervalCB.setOnCheckedChangeListener { _, _ -> UpdateSpinnerRefreshInterval() }
+        mRefreshIntervalValues = resources.getStringArray(R.array.settings_interval_values)
+        mRefreshIntervalSpinner = findViewById(R.id.spin_RefreshInterval)
+        mRefreshIntervalSpinner.setSelection(4)
+        for (i in mRefreshIntervalValues.indices) if (mRefreshIntervalValues[i].toDouble() == FetcherService.GetDefaultRefreshInterval().toDouble()) {
+            mRefreshIntervalSpinner.setSelection(i)
+            break
+        }
+
         mHasGroupCb = SetupSmallTextView(R.id.has_group) as CheckBox
         mHasGroupCb.setOnCheckedChangeListener { buttonView, isChecked -> UpdateSpinnerGroup() }
         mLoadTypeRG = findViewById(R.id.rgLoadType)
@@ -323,17 +339,22 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         mOneWebPageTextClassName = findViewById(R.id.one_webpage_text_classname)
         mOneWebPageUrlClassName = findViewById(R.id.one_webpage_url_classname)
         setTitle(R.string.new_feed_title)
+        if ( this is ArticleWebSearchActivity ) {
+            findViewById<TextView>(R.id.url_textview).text = getString(R.string.web_search_keyword);
+            setTitle(R.string.web_search_title)
+            SetTaskTitle(getString(R.string.web_search_title))
+        }
         tabWidget.visibility = View.GONE
         if (Intent.ACTION_INSERT == intent.action) {
             mHasGroupCb.isChecked = false
             mIsAutoImageLoadCb.isChecked = true
             mKeepTimeCB.isChecked = false
+            mRefreshIntervalCB.isChecked = false
             mLoadTypeRG.check(PrefUtils.getInt(STATE_LAST_LOAD_TYPE, R.id.rbRss))
         } else if (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action) {
             if (intent.hasExtra(Intent.EXTRA_TEXT)) mUrlEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT)) else if (intent.dataString != null) mUrlEditText.setText(intent.dataString)
             mLoadTypeRG.check(R.id.rbRss)
         } else if (Intent.ACTION_WEB_SEARCH == intent.action) {
-            mLoadTypeRG.check(R.id.rbWebPageSearch)
             if (intent.hasExtra(SearchManager.QUERY)) mUrlEditText.setText(intent.getStringExtra(SearchManager.QUERY))
         } else if (Intent.ACTION_EDIT == intent.action) {
             setTitle(R.string.edit_feed_title)
@@ -389,6 +410,14 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                                 break
                             }
                         }
+                        mRefreshIntervalCB.isChecked = jsonOptions.has(FetcherService.CUSTOM_REFRESH_INTERVAL)
+                        UpdateSpinnerRefreshInterval()
+                        if (mRefreshIntervalCB.isChecked) {
+                            for (i in mRefreshIntervalValues.indices) if (mRefreshIntervalValues[i].toLong() == jsonOptions.getLong(FetcherService.CUSTOM_REFRESH_INTERVAL)) {
+                                mRefreshIntervalSpinner.setSelection(i)
+                                break
+                            }
+                        }
                         if (jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean(AUTO_SET_AS_READ)) mIsAutoSetAsRead.isChecked = true
                         mNextPageClassName.setText(jsonOptions.getString(FetcherService.NEXT_PAGE_URL_CLASS_NAME))
                         mNextPageMaxCount.setText(jsonOptions.getString(FetcherService.NEXT_PAGE_MAX_COUNT))
@@ -430,45 +459,44 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             checkIfTelegram()
         if (PrefUtils.getBoolean("setting_edit_feed_force_portrait_orientation", false)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
-
     @SuppressLint("SetTextI18n")
     private fun checkIfTelegram() {
         val url = mUrlEditText.text.toString()
-        val m = Pattern.compile( "((t.me)|(telegram.im))\\/([^\\/]+)" ).matcher( url )
+        val m = Pattern.compile("((t.me)|(telegram.im))\\/([^\\/]+)").matcher(url)
         if ( m.find() ) {
-            val name = m.group( 4 )
-            Theme.CreateDialog( this )
-                    .setMessage( R.string.addFeedTelegramPatternFound )
-                    .setNegativeButton( android.R.string.cancel, null )
-                    .setPositiveButton( android.R.string.yes ) { dialog, _ ->
-                        mLoadTypeRG.check( R.id.rbOneWebPage )
-                        mUrlEditText.setText( "https://t.me/s/$name" )
-                        mNameEditText.setText( name )
+            val name = m.group(4)
+            Theme.CreateDialog(this)
+                    .setMessage(R.string.addFeedTelegramPatternFound)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                        mLoadTypeRG.check(R.id.rbOneWebPage)
+                        mUrlEditText.setText("https://t.me/s/$name")
+                        mNameEditText.setText(name)
                         val BASE = "tgme_widget_message"
-                        mOneWebPageArticleClassName.setText( "${BASE}_wrap" )
-                        mOneWebPageUrlClassName.setText( BASE )
-                        mOneWebPageTextClassName.setText( "${BASE}_bubble" )
-                        mOneWebPageDateClassName.setText( "${BASE}_date" )
-                        mOneWebPageAuthorClassName.setText( "${BASE}_forwarded" )
+                        mOneWebPageArticleClassName.setText("${BASE}_wrap")
+                        mOneWebPageUrlClassName.setText(BASE)
+                        mOneWebPageTextClassName.setText("${BASE}_bubble")
+                        mOneWebPageDateClassName.setText("${BASE}_date")
+                        mOneWebPageAuthorClassName.setText("${BASE}_forwarded")
 
                         mIsAutoImageLoadCb.isChecked = true
                         mIsAutoSetAsRead.isChecked = true
 
-                        Toast.makeText( this@EditFeedActivity, R.string.feedWasAutoConfigured, Toast.LENGTH_LONG ).show()
+                        Toast.makeText(this@EditFeedActivity, R.string.feedWasAutoConfigured, Toast.LENGTH_LONG).show()
                         dialog.dismiss()
             }.create().show()
         }
     }
     override fun onResume() {
         super.onResume()
-        if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) mUrlEditText.setText(PrefUtils.getString(STATE_WEB_SEARCH_TEXT, ""))
+        if ( this is ArticleWebSearchActivity ) mUrlEditText.setText(PrefUtils.getString(STATE_WEB_SEARCH_TEXT, ""))
         if (IsAdd()) {
             mUrlEditText.requestFocus()
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
         if (mUserSelectionDialog?.isShowing == true) mUserSelectionDialog?.dismiss()
         if (PrefUtils.getBoolean(DIALOG_IS_SHOWN, false) &&
-                mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+                this is ArticleWebSearchActivity ) {
             val urlOrSearch = mUrlEditText.text.toString().trim { it <= ' ' }
             val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
             AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
@@ -480,21 +508,10 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         val isRss = i == R.id.rbRss
         val isOneWebPage = i == R.id.rbOneWebPage
         val isWebLinks = i == R.id.rbWebLinks
-        val isWebPageSearch = i == R.id.rbWebPageSearch
-        val visibilityEditFeed = if (isWebPageSearch) View.GONE else View.VISIBLE
+        val isWebPageSearch = this is ArticleWebSearchActivity
         mRetrieveFulltextCb.isEnabled = (isRss || isOneWebPage) && !isWebPageSearch
-        mRetrieveFulltextCb.visibility = visibilityEditFeed
-        mHasGroupCb.visibility = visibilityEditFeed
-        mGroupSpinner.visibility = visibilityEditFeed
-        mIsAutoImageLoadCb.visibility = visibilityEditFeed
-        mIsAutoRefreshCb.visibility = visibilityEditFeed
-        mKeepTimeCB.visibility = visibilityEditFeed
-        mKeepTimeSpinner.visibility = visibilityEditFeed
-        mShowTextInEntryListCb.visibility = visibilityEditFeed
-        mNameEditText.visibility = visibilityEditFeed
+        findViewById<LinearLayout>(R.id.feed_edit_controls).visibility = if (isWebPageSearch) View.GONE else View.VISIBLE
         findViewById<View>(R.id.layout_next_page).visibility = if (isRss) View.GONE else View.VISIBLE
-        findViewById<View>(R.id.name_textview).visibility = visibilityEditFeed
-        findViewById<View>(R.id.rbWebPageSearch).visibility = if (IsAdd()) View.VISIBLE else View.GONE
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         UpdateSpinnerGroup()
         UpdateSpinnerKeepTime()
@@ -512,6 +529,10 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private fun UpdateSpinnerKeepTime() {
         mKeepTimeSpinner.visibility = if (mKeepTimeCB.isChecked) View.VISIBLE else View.GONE
+    }
+
+    private fun UpdateSpinnerRefreshInterval() {
+        mRefreshIntervalSpinner.visibility = if (mRefreshIntervalCB.isChecked) View.VISIBLE else View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -574,7 +595,10 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     jsonOptions.put(ONE_WEB_PAGE_IAMGE_URL_CLASS_NAME, mOneWebPageImageUrlClassName.text.toString())
                     jsonOptions.put(ONE_WEB_PAGE_TEXT_CLASS_NAME, mOneWebPageTextClassName.text.toString())
                 }
-                if (mKeepTimeCB.isChecked) jsonOptions.put(FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_KEEP_TIME)
+                if (mKeepTimeCB.isChecked)
+                    jsonOptions.put(FetcherService.CUSTOM_KEEP_TIME, mKeepTimeValues[mKeepTimeSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_KEEP_TIME)
+                if (mRefreshIntervalCB.isChecked)
+                    jsonOptions.put(FetcherService.CUSTOM_REFRESH_INTERVAL, mRefreshIntervalValues[mRefreshIntervalSpinner.selectedItemPosition]) else jsonOptions.remove(FetcherService.CUSTOM_REFRESH_INTERVAL)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -650,7 +674,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
             UiUtils.showMessage(this@EditFeedActivity, R.string.error_feed_error)
         }
         if (IsAdd()) PrefUtils.putInt(STATE_LAST_LOAD_TYPE, mLoadTypeRG.checkedRadioButtonId)
-        if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+        if ( this is ArticleWebSearchActivity ) {
             PrefUtils.putString(STATE_WEB_SEARCH_TEXT, mUrlEditText.text.toString())
             val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
             AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
@@ -701,7 +725,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     val adapter = SimpleAdapter(this@EditFeedActivity, data, R.layout.item_search_result, from, to)
                     adapter.viewBinder = SimpleAdapter.ViewBinder { view, data_, _ ->
                         if (view is TextView) UiUtils.SetTypeFace(view)
-                        if ( data_ == null )
+                        if (data_ == null)
                             return@ViewBinder false
                         val value = data_ as String
                         if (view is TextView && value.startsWith(IS_READ_STUMB)) {
@@ -756,7 +780,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
             override fun onLoaderReset(loader: Loader<ArrayList<HashMap<String, String>>>) {}
             private fun AddFeed(dataItem: HashMap<String, String>) {
-                if (mLoadTypeRG.checkedRadioButtonId == R.id.rbWebPageSearch) {
+                if (this@EditFeedActivity is ArticleWebSearchActivity) {
                     val url = dataItem[ITEM_URL]!!.replace(IS_READ_STUMB, "")
                     val intent: Intent
                     if (Intent.ACTION_WEB_SEARCH == dataItem[ITEM_URL]) {
@@ -770,6 +794,7 @@ class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     } else {
                         intent = Intent(this@EditFeedActivity, EntryActivity::class.java)
                         intent.data = Uri.parse(url)
+                        intent.putExtra( NEW_TASK_EXTRA, true )
                     }
                     this@EditFeedActivity.startActivity(intent)
                     return
@@ -919,8 +944,8 @@ internal class GetSiteAlternateListLoader(context: Context?, private val mUrl: S
                     if (urlMatcher.find()) {
                         var url = urlMatcher.group(1)
                         if (!url.toLowerCase().contains("rss") &&
-                                !url.toLowerCase().contains("feed") &&
-                                !url.toLowerCase().contains("atom")) continue
+                            !url.toLowerCase().contains("feed") &&
+                            !url.toLowerCase().contains("atom")) continue
                         if (url.startsWith(Constants.SLASH)) {
                             val index = mUrl.indexOf('/', 8)
                             url = if (index > -1) {

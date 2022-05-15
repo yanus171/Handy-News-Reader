@@ -151,6 +151,11 @@
         <item>Black</item>
     </string-array>
 
+    <string-array name="settings_datetime_format_values">
+        <item>system</item>
+        <item>remaining</item>
+    </string-array>
+
     <string name="developerList" translatable="false"><![CDATA[• eighthave<br/>
     • equiem<br/>
     • Frédéric Julian<br/>

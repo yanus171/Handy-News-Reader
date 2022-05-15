@@ -23,13 +23,25 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.StrictMode;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
+import ru.yanus171.feedexfork.activity.EditFeedActivity;
+import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
@@ -39,6 +51,11 @@ import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
 
+import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
 public class MainApplication extends Application {
@@ -108,10 +125,44 @@ public class MainApplication extends Application {
         mImageFileVoc.init1();
         mHTMLFileVoc.init1();
         EntryUrlVoc.INSTANCE.initInThread();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+
+            ArrayList<ShortcutInfo> list = new ArrayList<ShortcutInfo>();
+            ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
+            list.add( new ShortcutInfo.Builder(getContext(), "idSearch")
+                .setShortLabel( getContext().getString( R.string.menu_add_feed ) )
+                .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_add))
+                .setIntent(new Intent( Intent.ACTION_WEB_SEARCH )
+                               .setPackage( getContext().getPackageName() )
+                               .setClass(getContext(), ArticleWebSearchActivity.class))
+                .build() );
+            list.add( new ShortcutInfo.Builder(getContext(), "idExternal")
+                .setShortLabel( getContext().getString( R.string.externalLinks ) )
+                .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_load_later))
+
+                .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
+                           .setAction( Intent.ACTION_MAIN )
+                           .setData(ENTRIES_FOR_FEED_CONTENT_URI(FetcherService.GetExtrenalLinkFeedID() ) ) )
+                          .build() );
+            list.add( new ShortcutInfo.Builder(getContext(), "idFavorities")
+                          .setShortLabel( getContext().getString( R.string.favorites ) )
+                          .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_with_star))
+                          .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
+                                         .setAction( Intent.ACTION_MAIN )
+                                         .setData( FAVORITES_CONTENT_URI ))
+                          .build() );
+            list.add( new ShortcutInfo.Builder(getContext(), "idUnread")
+                          .setShortLabel( getContext().getString( R.string.unread_entries ) )
+                          .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_unread))
+                          .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
+                                         .setAction( Intent.ACTION_MAIN )
+                                         .setData( UNREAD_ENTRIES_CONTENT_URI ))
+                          .build() );
+
+            shortcutManager.setDynamicShortcuts(list);
+        }
     }
-
-
-
 
     @Override
     public void onConfigurationChanged (Configuration newConfig) {

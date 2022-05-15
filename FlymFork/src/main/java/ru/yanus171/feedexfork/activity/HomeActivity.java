@@ -20,6 +20,7 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -53,6 +54,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -61,9 +63,9 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
-import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -79,6 +81,8 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
 import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
@@ -88,6 +92,10 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.parser.OPML.AskQuestionForImport;
+import static ru.yanus171.feedexfork.parser.OPML.REQUEST_PICK_OPML_FILE;
+import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
@@ -106,25 +114,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public View mPageUpBtn = null;
     public View mPageUpBtnFS = null;
     private int mStatus = 0;
+    public boolean mIsNewTask = false;
 
-    private static String FEED_NUMBER(final String where ) {
-        return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
-                where + DB_AND  + EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
-    }
-    private static String GROUP_NUMBER(final String where ) {
-        if ( PrefUtils.getBoolean( "show_group_entries_count", false ) )
-            return "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
-                    where + DB_AND + EntryColumns.FEED_ID + " IN ( SELECT " + FeedColumns._ID +  " FROM " +
-                    FeedColumns.TABLE_NAME + " AS t1"+ " WHERE " +
-                    FeedColumns.GROUP_ID +  " = " + FeedColumns.TABLE_NAME + "." + FeedColumns._ID  + ") " + " )";
-        else
-            return "0";
-
-    }
-    private String EXPR_NUMBER (final String where ) {
-        return "CASE WHEN " + FeedColumns.WHERE_GROUP + " THEN " + GROUP_NUMBER( where ) +
-               " ELSE " + FEED_NUMBER( where ) + " END";
-    }
     //private static final String FEED_ALL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
     //        EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
 
@@ -132,13 +123,13 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final int LOADER_ID = 0;
     private static final int PERMISSIONS_REQUEST_IMPORT_FROM_OPML = 1;
 
-    private EntriesListFragment mEntriesFragment;
+    public EntriesListFragment mEntriesFragment;
     private DrawerLayout mDrawerLayout;
     private View mLeftDrawer;
     private ListView mDrawerList;
     private DrawerAdapter mDrawerAdapter = null;
     private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mTitle;
+    private String mTitle;
     private int mCurrentDrawerPos;
     enum AppBarLayoutState {
         EXPANDED,
@@ -148,11 +139,17 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     private AppBarLayoutState mAppBarLayoutState = AppBarLayoutState.IDLE;
 
+    private boolean IsRememberLast() {
+        return !mIsNewTask && PrefUtils.getBoolean( PrefUtils.REMEBER_LAST_ENTRY, true );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "HomeActivity.onCreate" );
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS );
         super.onCreate(savedInstanceState);
+
+        mIsNewTask = getIntent() != null && getIntent().getBooleanExtra( NEW_TASK_EXTRA, false );
 
         if ( getIntent().hasCategory( "LoadLinkLater" ) )
             finish();
@@ -164,19 +161,16 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
 
-        mTitle = getTitle();
+        mTitle = getTitle().toString();
 
         mLeftDrawer = findViewById(R.id.left_drawer);
         //mLeftDrawer.setBackgroundColor(ContextCompat.getColor( this, PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background));
 
         mDrawerList = findViewById(R.id.drawer_list);
         mDrawerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectDrawerItem(position);
-                CloseDrawer();
-            }
+        mDrawerList.setOnItemClickListener((parent, view, position, id) -> {
+            selectDrawerItem(position);
+            CloseDrawer();
         });
         mDrawerList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -184,7 +178,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( position == DrawerAdapter.LABEL_GROUP_POS ) {
                     startActivity(new Intent(getApplicationContext(), LabelListActivity.class ));
                     return true;
-                } else if ( DrawerAdapter.isLabelPos( position, LabelVoc.INSTANCE.getList() ) ) {
+                } else if ( DrawerAdapter.isLabelPos( position ) ) {
 
                 } else if (id > 0) {
                     startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
@@ -195,7 +189,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         });
 
         mCurrentDrawerPos = 0;
-        if ( PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true) )
+        if ( IsRememberLast() )
             mCurrentDrawerPos = PrefUtils.getInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 
 
@@ -205,6 +199,27 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
             mDrawerLayout.setDrawerListener(mDrawerToggle);
+            mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+                @Override
+                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+                }
+
+                @Override
+                public void onDrawerOpened(@NonNull View drawerView) {
+                    mDrawerAdapter.updateNumbersAsync();
+                }
+
+                @Override
+                public void onDrawerClosed(@NonNull View drawerView) {
+
+                }
+
+                @Override
+                public void onDrawerStateChanged(int newState) {
+
+                }
+            });
         }
 
         //if (!PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true))
@@ -414,11 +429,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
                 }
             }
-
-        } else if (PrefUtils.getBoolean(PrefUtils.REMEBER_LAST_ENTRY, true)) {
+            if ( IsRememberLast()  )
+                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
+        } else if ( IsRememberLast()  ) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
-                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ).setFlags( Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT ));
+                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ));
             }
         }
 
@@ -510,23 +526,24 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        OPML.OnActivityResult(this, requestCode, resultCode, data);
+        mImportFileSelectDialog.onActivityResult(this, requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Timer.Start( LOADER_ID, "HomeActivity.onCreateLoader" );
-        final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
         CursorLoader cursorLoader =
                 new CursorLoader(this,
                         FeedColumns.GROUPED_FEEDS_CONTENT_URI,
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
                                 FeedColumns.IS_GROUP, FeedColumns.ICON_URL, FeedColumns.LAST_UPDATE,
-                                FeedColumns.ERROR, EXPR_NUMBER( EntryColumns.WHERE_UNREAD ), EXPR_FEED_ALL_NUMBER, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
+                                FeedColumns.ERROR, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
                                 FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
-                        "(" + FeedColumns.WHERE_GROUP + Constants.DB_OR + FeedColumns.GROUP_ID + Constants.DB_IS_NULL + Constants.DB_OR +
-                                FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
+                        "(" + FeedColumns.WHERE_GROUP + DB_OR +
+                                     FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
+                                     FeedColumns.GROUP_ID + "=0" + DB_OR +
+                                     FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
                                 " FROM " + FeedColumns.TABLE_NAME +
                                 " WHERE " + FeedColumns.IS_GROUP_EXPANDED + Constants.DB_IS_TRUE + "))" + FeedData.getWhereNotExternal(),
                         null,
@@ -542,11 +559,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Timer.End( LOADER_ID );
         Timer timer = new Timer( "HomeActivity.onLoadFinished" );
+
         boolean needSelect = false;
         if (mDrawerAdapter != null ) {
             mDrawerAdapter.setCursor(cursor);
         } else {
-            mDrawerAdapter = new DrawerAdapter(this, cursor);
+            mDrawerAdapter = new DrawerAdapter(this, cursor, mDrawerLayout.findViewById( R.id.progressBarDrawer ) );
             mDrawerList.setAdapter(mDrawerAdapter);
             // We don't have any menu yet, we need to display it
             needSelect = true;
@@ -571,12 +589,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         }
 
         if ( needSelect )
-            mDrawerList.post(new Runnable() {
-                @Override
-                public void run() {
-                    selectDrawerItem(mCurrentDrawerPos);
-                }
-            });
+            mDrawerList.post(() -> selectDrawerItem(mCurrentDrawerPos));
 
         timer.End();
         Status().End( mStatus );
@@ -604,27 +617,32 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         switch (position) {
             case 0:
-                newUri = EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+                newUri = UNREAD_ENTRIES_CONTENT_URI;
+                mTitle = getString( R.string.unread_entries );
+
                 break;
             case 1:
-                newUri = EntryColumns.CONTENT_URI;
+                newUri = CONTENT_URI;
+                mTitle = getString( R.string.all_entries );
                 break;
             case 2:
-                newUri = EntryColumns.FAVORITES_CONTENT_URI;
+                newUri = FAVORITES_CONTENT_URI;
+                mTitle = getString( R.string.favorites );
                 break;
             case EXTERNAL_ENTRY_POS:
-                newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );
+                newUri = ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );
+                mTitle = getString( R.string.externalLinks );
                 showFeedInfo = false;
                 break;
             case LABEL_GROUP_POS:
-                newUri = EntryColumns.CONTENT_URI;
+                newUri = CONTENT_URI;
                 mTitle = getString( R.string.labels_group_title );
                 mEntriesFragment.SetSingleLabel( ALL_LABELS );
                 showFeedInfo = true;
                 break;
             default:
-                if ( DrawerAdapter.isLabelPos( position, DrawerAdapter.getLabelList() )) {
-                    newUri = EntryColumns.CONTENT_URI;
+                if ( DrawerAdapter.isLabelPos( position )) {
+                    newUri = CONTENT_URI;
                     mEntriesFragment.SetSingleLabel( DrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID );
                     showFeedInfo = true;
                 } else {
@@ -633,11 +651,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                         if (mDrawerAdapter.isItemAGroup(position)) {
                             newUri = EntryColumns.ENTRIES_FOR_GROUP_CONTENT_URI(feedOrGroupId);
                         } else {
-                            newUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId);
+                            newUri = ENTRIES_FOR_FEED_CONTENT_URI(feedOrGroupId);
                             showFeedInfo = false;
                         }
                     } else
-                        newUri = EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+                        newUri = UNREAD_ENTRIES_CONTENT_URI;
                 }
                 mTitle = mDrawerAdapter.getItemName(position);
 
@@ -670,23 +688,18 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             getSupportActionBar().setHomeAsUpIndicator( 0 );
             switch (mCurrentDrawerPos) {
                 case 0:
-                    getSupportActionBar().setTitle(R.string.unread_entries);
                     SetActionbarIndicator( R.drawable.cup_new_unread);
                     break;
                 case 1:
-                    getSupportActionBar().setTitle(R.string.all_entries);
                     SetActionbarIndicator( R.drawable.cup_new_pot );
                     break;
                 case 2:
-                    getSupportActionBar().setTitle(R.string.favorites);
                     SetActionbarIndicator( R.drawable.cup_new_star);
                     break;
                 case 3:
-                    getSupportActionBar().setTitle(R.string.externalLinks);
                     SetActionbarIndicator( R.drawable.cup_new_load_later );
                     break;
                 default:
-                    getSupportActionBar().setTitle(mTitle);
                     Drawable image = mDrawerAdapter.getItemIcon( position ) == null ?
                                      null :
                                      new BitmapDrawable( MainApplication.getContext().getResources(),
@@ -694,11 +707,14 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     getSupportActionBar().setHomeAsUpIndicator( image );
                     break;
             }
+            SetTaskTitle( mTitle );
             if ( mEntriesFragment.getView() != null )
                 ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).setExpanded( true );
         }
-        PrefUtils.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
+        if ( !mIsNewTask )
+            PrefUtils.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
 
+        getSupportActionBar().setTitle( mTitle );
         // Put the good menu
         invalidateOptionsMenu();
         timer.End();

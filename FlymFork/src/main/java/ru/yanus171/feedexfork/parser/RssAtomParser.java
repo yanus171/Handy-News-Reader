@@ -135,6 +135,7 @@ public class RssAtomParser extends DefaultHandler {
 
     private static final DateFormat[] DATE_FORMATS = {
         new SimpleDateFormat("HH:mm' 'dd.MM.yyyy", Locale.US),
+        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US),
         new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
         new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
@@ -614,7 +615,7 @@ public class RssAtomParser extends DefaultHandler {
                 Date result = format.parse(dateStr);
                 if ( now == 0 )
                     return result;
-                if (  now - result.getTime() > 1000 * 60 * 60 * 24 * 365 ) {
+                if (  now - result.getTime() > dateBorder ) {
                     Calendar today = Calendar.getInstance();
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis( result.getTime() );

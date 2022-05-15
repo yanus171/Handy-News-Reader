@@ -71,6 +71,7 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -156,8 +157,8 @@ import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHAN
 import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.GetWhereSQL;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
@@ -172,8 +173,11 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
+import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
+import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
 @SuppressLint("Range")
@@ -199,6 +203,7 @@ public class FetcherService extends IntentService {
     private static final String HTML_BODY = "<body";
     private static final String ENCODING = "encoding=\"";
     public static final String CUSTOM_KEEP_TIME = "customKeepTime";
+    public static final String CUSTOM_REFRESH_INTERVAL = "customRefreshInterval";
     public static final String IS_ONE_WEB_PAGE = "isOneWebPage";
     public static final String IS_RSS = "isRss";
     public static final String NEXT_PAGE_URL_CLASS_NAME = "UrlNextPageClassName";
@@ -342,18 +347,15 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra(Constants.FROM_IMPORT)) {
-            LongOper(R.string.importingFromFile, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final boolean isRemoveExistingFeeds = intent.getBooleanExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, false );
-                        if ( intent.hasExtra( EXTRA_FILENAME ) )
-                            OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ), isRemoveExistingFeeds );
-                        else if ( intent.hasExtra( EXTRA_URI ) )
-                            OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ), isRemoveExistingFeeds );
-                    } catch (Exception e) {
-                        DebugApp.SendException(e, FetcherService.this);
-                    }
+            LongOper(R.string.importingFromFile, () -> {
+                try {
+                    final boolean isRemoveExistingFeeds = intent.getBooleanExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, false );
+                    if ( intent.hasExtra( EXTRA_FILENAME ) )
+                        OPML.importFromFile( intent.getStringExtra( EXTRA_FILENAME ), isRemoveExistingFeeds );
+                    else if ( intent.hasExtra( EXTRA_URI ) )
+                        OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ), isRemoveExistingFeeds );
+                } catch (Exception e) {
+                    DebugApp.SendException(e, FetcherService.this);
                 }
             });
             return;
@@ -389,34 +391,31 @@ public class FetcherService extends IntentService {
             });
             return;
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
-            LongOper(R.string.reloading_all_texts, new Runnable() {
-                @Override
-                public void run() {
-                    SetNotifyEnabled(false);
-                    try {
-                        Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, GetWhereSQL(), null, null);
-                        ContentValues[] values = new ContentValues[cursor.getCount()];
-                        while (cursor.moveToNext()) {
-                            final long entryId = cursor.getLong(0);
-                            final String link = cursor.getString(1);
-                            FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
-                            values[cursor.getPosition()] = new ContentValues();
-                            values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
-                        }
-                        cursor.close();
-                        getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
-                    } finally {
-                        SetNotifyEnabled(true);
-                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+            LongOper(R.string.reloading_all_texts, () -> {
+                SetNotifyEnabled(false);
+                try {
+                    Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra( WHERE_SQL_EXTRA ), null, null);
+                    ContentValues[] values = new ContentValues[cursor.getCount()];
+                    while (cursor.moveToNext()) {
+                        final long entryId = cursor.getLong(0);
+                        final String link = cursor.getString(1);
+                        FileUtils.INSTANCE.deleteMobilized(link, EntryColumns.CONTENT_URI(entryId));
+                        values[cursor.getPosition()] = new ContentValues();
+                        values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
                     }
+                    cursor.close();
+                    getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+                } finally {
+                    SetNotifyEnabled(true);
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                }
 
-                    ExecutorService executor = CreateExecutorService(GetThreadCount());
-                    try {
-                        mobilizeAllEntries(executor);
-                        downloadAllImages(executor);
-                    } finally {
-                        executor.shutdown();
-                    }
+                ExecutorService executor = CreateExecutorService(GetThreadCount());
+                try {
+                    mobilizeAllEntries(executor);
+                    downloadAllImages(executor);
+                } finally {
+                    executor.shutdown();
                 }
             });
             return;
@@ -477,8 +476,9 @@ public class FetcherService extends IntentService {
                         try {
                             newCount = (feedId == null ?
                                     refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
-                                    refreshFeed( executor, feedId, keepDateBorderTime));
-                            EntryUrlVoc.INSTANCE.reinit( false );
+                                    refreshFeed( executor, feedId, keepDateBorderTime ));
+                            if ( newCount > 0 )
+                                EntryUrlVoc.INSTANCE.reinit( false );
                         } finally {
                             if (mMarkAsStarredFoundList.size() > 5) {
                                 ArrayList<String> list = new ArrayList<>();
@@ -642,6 +642,9 @@ public class FetcherService extends IntentService {
 
     public static float GetDefaultKeepTime() {
         return Float.parseFloat(PrefUtils.getString(PrefUtils.KEEP_TIME, "4"));
+    }
+    public static float GetDefaultRefreshInterval() {
+        return Float.parseFloat(PrefUtils.getString(PrefUtils.REFRESH_INTERVAL, "3"));
     }
 
     private static boolean mIsWiFi = false;
@@ -1366,29 +1369,40 @@ public class FetcherService extends IntentService {
                 ContentResolver cr = getContentResolver();
                 final Cursor cursor;
                 String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
+                final String[] projection = new String[]{FeedColumns._ID, FeedColumns.LAST_UPDATE, FeedColumns.OPTIONS};
                 if (groupID != null)
-                    cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), FeedColumns.PROJECTION_ID, null, null, null);
+                    cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), projection, null, null, null);
                 else
-                    cursor = cr.query(FeedColumns.CONTENT_URI, FeedColumns.PROJECTION_ID, where, null, null);
+                    cursor = cr.query(FeedColumns.CONTENT_URI, projection, where, null, null);
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
                 while (cursor.moveToNext()) {
-                    //Status().Start(String.format("%d from %d", cursor.getPosition(), cursor.getCount()));
-                    final String feedId = cursor.getString(0);
-                    futures.add(executor.submit(new Callable<DownloadResult>() {
-                        @Override
-                        public DownloadResult call() {
-                            DownloadResult result = new DownloadResult();
-                            result.mResultCount = 0;
+                    if ( isFromAutoRefresh ) {
+                        final JSONObject jsonOptions = getJsonObject(cursor);
+                        int pos = cursor.getColumnIndex(FeedColumns.LAST_UPDATE);
+                        long lastUpdate = !cursor.isNull( pos ) ? cursor.getLong( pos ) : 0;
+                        long interval = getTimeIntervalInMSecs(REFRESH_INTERVAL, DEFAULT_INTERVAL);
+                        if (jsonOptions.has(CUSTOM_REFRESH_INTERVAL)) {
                             try {
-                                if (!isCancelRefresh())
-                                    result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
-                            } catch (Exception e) {
-                                Status().SetError( "", "", "", e );
+                                interval = jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            return result;
                         }
+                        if ( lastUpdate != 0 && System.currentTimeMillis() - lastUpdate < interval )
+                            continue;
+                    }
+                    final String feedId = cursor.getString(0);
+                    futures.add(executor.submit(() -> {
+                        DownloadResult result = new DownloadResult();
+                        result.mResultCount = 0;
+                        try {
+                            if (!isCancelRefresh())
+                                result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
+                        } catch (Exception e) {
+                            Status().SetError( "", "", "", e );
+                        }
+                        return result;
                     }));
-                    //Status().End();
                 }
                 cursor.close();
                 return FinishExecutionService( statusText, status,  futures );
@@ -1396,6 +1410,17 @@ public class FetcherService extends IntentService {
                 executorInner.shutdown();
             }
         } finally { Status().End( status ); }
+    }
+
+    @NotNull
+    private JSONObject getJsonObject(Cursor cursor) {
+        JSONObject jsonOptions = new JSONObject();
+        try {
+            jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonOptions;
     }
 
     private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime) {
@@ -1420,16 +1445,12 @@ public class FetcherService extends IntentService {
             boolean isOneWebPage = false;
             try {
 
-                JSONObject jsonOptions = new JSONObject();
-                try {
-                    jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
-                } catch ( Exception e) {
-                    e.printStackTrace();
-                }
+                JSONObject jsonOptions = getJsonObject(cursor);
                 isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
                 isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
-                if (jsonOptions.has(CUSTOM_KEEP_TIME) && jsonOptions.getDouble(CUSTOM_KEEP_TIME) != 0)
-                    keepDateBorderTime = System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
+
+                if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                    keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
 
                 final String feedID = cursor.getString(idPosition);
                 final String feedUrl = cursor.getString(urlPosition);
@@ -1746,51 +1767,48 @@ public class FetcherService extends IntentService {
         return handler != null ? handler.getNewCount() : 0;
     }
 
-    private static void parseXml ( InputStream in, Xml.Encoding
-        encoding,
-                ContentHandler contentHandler) throws IOException, SAXException {
-            Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(ToString(in, encoding).trim(), contentHandler);
-            Status().ChangeProgress("");
-            Status().AddBytes(contentHandler.toString().length());
-        }
+    private static void parseXml( InputStream in, Xml.Encoding encoding, ContentHandler contentHandler) throws IOException, SAXException {
+        Status().ChangeProgress(R.string.parseXml);
+        Xml.parse(ToString(in, encoding).trim(), contentHandler);
+        Status().ChangeProgress("");
+        Status().AddBytes(contentHandler.toString().length());
+    }
 
-        private static void parseXml (Reader reader,
-                ContentHandler contentHandler) throws IOException, SAXException {
-            Status().ChangeProgress(R.string.parseXml);
-            Xml.parse(ToString( reader ), contentHandler);
-            Status().ChangeProgress("");
-            Status().AddBytes(contentHandler.toString().length());
-        }
+    private static void parseXml (Reader reader, ContentHandler contentHandler) throws IOException, SAXException {
+        Status().ChangeProgress(R.string.parseXml);
+        Xml.parse(ToString( reader ), contentHandler);
+        Status().ChangeProgress("");
+        Status().AddBytes(contentHandler.toString().length());
+    }
 
-        public static void cancelRefresh () {
-            synchronized (mCancelRefresh) {
-                getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
-                mCancelRefresh = true;
-            }
+    public static void cancelRefresh () {
+        synchronized (mCancelRefresh) {
+            getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
+            mCancelRefresh = true;
         }
+    }
 
-        public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
-            int status = Status().Start("deleteAllFeedEntries", true);
-            try {
-                final ContentResolver cr = getContext().getContentResolver();
-                final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
-                if ( cursor != null  ){
-                    while ( cursor.moveToNext() ) {
-                        Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
-                        FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(1));
-                        EntryUrlVoc.INSTANCE.remove(  cursor.getString(1) );
-                    }
-                    cursor.close();
+    public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
+        int status = Status().Start("deleteAllFeedEntries", true);
+        try {
+            final ContentResolver cr = getContext().getContentResolver();
+            final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
+            if ( cursor != null  ){
+                while ( cursor.moveToNext() ) {
+                    Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
+                    FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(1));
+                    EntryUrlVoc.INSTANCE.remove(  cursor.getString(1) );
                 }
-                Status().ChangeProgress( "" );
-                cr.delete(entriesUri, condition, null);
-                EntryUrlVoc.INSTANCE.reinit( true );
-            } finally {
-                Status().End(status);
+                cursor.close();
             }
-
+            Status().ChangeProgress( "" );
+            cr.delete(entriesUri, condition, null);
+            EntryUrlVoc.INSTANCE.reinit( true );
+        } finally {
+            Status().End(status);
         }
+
+    }
 
     public static void unstarAllFeedEntries( Uri entriesUri ){
         int status = Status().Start("unstarAllFeedEntries", true);
