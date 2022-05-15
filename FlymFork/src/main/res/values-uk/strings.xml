@@ -633,4 +633,5 @@
     <string name="minutesShort">хв</string>
     <string name="timeIntervalInFuture">через</string>
     <string name="timeIntervalInPast">тому</string>
+    <string name="error_add_customm_font">Шрифт користувача не додано</string>
 </resources>
