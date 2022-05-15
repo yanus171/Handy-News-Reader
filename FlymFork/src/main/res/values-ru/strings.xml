@@ -376,6 +376,7 @@
     <string name="rule_text">Текст правила</string>
     <string name="global_marks_as_star_filter_rule_descr">Каждое правило на своей строке</string>
     <string name="customKeepTime">Особое время хранения статей</string>
+    <string name="custom_refresh_interval">Особый интервал обновления</string>
     <string name="menu_toggle_theme">Сменить тему</string>
     <string name="turnOn">Включить</string>
     <string name="brightness">Яркость</string>
@@ -635,9 +636,9 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="timeIntervalInPast">назад</string>
 
     <plurals name="number_of_new_entries">
-        <item quantity="one">%d new entry</item>
-        <item quantity="few">%d new entries</item>
-        <item quantity="many">%d new entries</item>
-        <item quantity="other">%d new entries</item>
+        <item quantity="one">%d новая статья</item>
+        <item quantity="few">%d новые статьи</item>
+        <item quantity="many">%d новых статей</item>
+        <item quantity="other">%d новых статей</item>
     </plurals>
 </resources>
