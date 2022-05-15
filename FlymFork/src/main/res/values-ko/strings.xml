@@ -85,16 +85,6 @@
     <string name="to_group_message">피드를 그룹 안에 넣을 수도 있고 위에 놓을 수도 있습니다. 어떻게 하시겠습니까?</string>
     <string name="to_group_above">그룹 위</string>
     <string name="to_group_into">그룹 안</string>
-    <string name="google_news_title">구글 뉴스 주제</string>
-    <string name="google_news_indicator">추가할 주제를 하나 또는 여러 개를 선택하십시오. 언어에 따라 일부 주제는 Google에서 제공하지 않을 수도 있습니다.</string>
-    <string name="google_news_top_stories">주요 뉴스</string>
-    <string name="google_news_world">국제</string>
-    <string name="google_news_business">경제</string>
-    <string name="google_news_technology">기술</string>
-    <string name="google_news_entertainment">연예</string>
-    <string name="google_news_sports">스포츠</string>
-    <string name="google_news_science">과학</string>
-    <string name="google_news_health">건강</string>
     <!-- ENTRIES -->
     <string name="all_entries">All entries</string>
     <string name="no_entries">항목 없음</string>

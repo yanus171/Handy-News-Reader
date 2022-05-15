@@ -144,17 +144,6 @@
     <string name="to_group_above">Над группой</string>
     <string name="to_group_into">Внутрь группы</string>
     <string name="add_custom_feed">Добавить ленту по адресу или по названию</string>
-    <string name="google_news_title">Темы новостей Google</string>
-    <string name="google_news_indicator">Выберите одну или несколько категорий.</string>
-    <string name="google_news_top_stories">Лучшее</string>
-    <string name="google_news_world">Мир</string>
-    <string name="google_news_business">Бизнес</string>
-    <string name="google_news_technology">Технолгии</string>
-    <string name="google_news_entertainment">Развлечения</string>
-    <string name="google_news_sports">Спорт</string>
-    <string name="google_news_science">Наука</string>
-    <string name="google_news_health">Здоровье</string>
-    <string name="google_news_custom_topic">Своя тема</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Непрочитанное</string>
     <string name="all_entries">Все</string>
@@ -438,8 +427,6 @@
     <string name="externalMemory">Внешний накопитель</string>
     <string name="show_html">Показать HTML</string>
     <string name="image_white_background">Изображения на белом фоне</string>
-    <string name="settings_add_google_news_dialog">Диалог выбора типа канала Google News</string>
-    <string name="settings_add_google_news_dialog_descr">Снимите флажок, чтобы не показывать диалоговое окно выбора типа канала (RSS/Google News) при добавлении ленты</string>
     <string name="reload_fulltext_after_tag_editing">Перезагружать текст после редактирования тегов</string>
     <string name="reload_fulltext_after_tag_editing_descr">если флажок снят, полный текст не будет перезагружен после редактирования тегов (Показать|Спрятать|Выбрать полный текст), поэтому вы можете внести несколько изменений (в таком случае вам нужно вручную перезагрузить полный текст после завершения редактирования)</string>
     <string name="article_menu_show_by_tap">Показывать меню статьи по нажатию на тексте статьи</string>
@@ -511,7 +498,7 @@
     <string name="removeText">Удалить текст</string>
     <string name="set_category">Установить как категорию</string>
     <string name="menu_more_options">Больше опций</string>
-    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все неотмеченные статьи</string>
+    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все избранные статьи</string>
     <string name="filter_apply_to_author">Применить к автору</string>
     <string name="filter_apply_to_category">Применить к категории</string>
     <string name="filter_apply_to_url">Применить к URL</string>
@@ -609,8 +596,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="operationCanceled">Операция отменена</string>
     <string name="comments">Комментарии: </string>
     <string name="video_tag_found_in_article">В тексте статьи обнаружен тег видео</string>
+    <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
     <string name="disable_tap_actions_when_video">Отключить действия по нажатию видео</string>
-    <string name="disable_tap_actions_when_video_descr">Временное отключение действий по нажатию в статье, если статья  содержит видео</string>
     <string name="settings_labels_sort_alphabetical">Сортировка меток по алфавиту</string>
     <string name="settings_labels_sort_alphabetical_descr">Сортировать метки по алфавиту. Иначе ручная сортировка</string>
     <string name="addFeedTelegramPatternFound">URL-адрес, похоже, относится к telegram. Вы хотите автоматически настроить ленту для telegram-канала?</string>

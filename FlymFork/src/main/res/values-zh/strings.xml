@@ -142,17 +142,6 @@
     <string name="to_group_above">组外</string>
     <string name="to_group_into">进入组</string>
     <string name="add_custom_feed">添加一个自定义订阅源或搜索一个</string>
-    <string name="google_news_title">谷歌新闻主题</string>
-    <string name="google_news_indicator">选择添加一个或多个话题，其中一些可能不会以您所用的语言显示，因谷歌未提供。</string>
-    <string name="google_news_top_stories">头条新闻</string>
-    <string name="google_news_world">世界</string>
-    <string name="google_news_business">商业</string>
-    <string name="google_news_technology">科技</string>
-    <string name="google_news_entertainment">娱乐</string>
-    <string name="google_news_sports">体育</string>
-    <string name="google_news_science">科学</string>
-    <string name="google_news_health">健康</string>
-    <string name="google_news_custom_topic">输入自定义话题</string>
     <!-- ENTRIES -->
     <string name="unread_entries">未读</string>
     <string name="all_entries">所有条目</string>
@@ -385,6 +374,7 @@
     <string name="rule_text">规则文本</string>
     <string name="global_marks_as_star_filter_rule_descr">每行一条规则</string>
     <string name="customKeepTime">自定义文章保留时间</string>
+    <string name="custom_refresh_interval">自定义刷新间隔</string>
     <string name="menu_toggle_theme">更改主题</string>
     <string name="turnOn">打开</string>
     <string name="brightness">亮度</string>
@@ -436,8 +426,6 @@
     <string name="externalMemory">外部存储</string>
     <string name="show_html">显示 HTML</string>
     <string name="image_white_background">图像白色背景</string>
-    <string name="settings_add_google_news_dialog">添加Google新闻对话框</string>
-    <string name="settings_add_google_news_dialog_descr">添加新闻源时取消选中的新闻源类型对话框</string>
     <string name="reload_fulltext_after_tag_editing">编辑标签后重新加载文本</string>
     <string name="reload_fulltext_after_tag_editing_descr">如果未选中，每个标签编辑(show|hide|root) 后不会重新加载全文， 这样您可以更容易地进行多次更改(在这种情况下，您需要在完成编辑后手动重新加载全文)</string>
     <string name="article_menu_show_by_tap">点击显示文章菜单</string>
@@ -612,7 +600,36 @@
     <string name="feedWasAutoConfigured">已自动配置订阅源</string>
     <string name="settings_labels_sort_alphabetical">A-Z 排序标签</string>
     <string name="settings_labels_sort_alphabetical_descr">按字母顺序对标签进行排序，否则手动排序</string>
+    <string name="settings_feeds_sort_alphabetical">ABC 订阅源排序</string>
+    <string name="settings_feeds_sort_alphabetical_descr">按字母顺序对订阅源和组进行排序，否则手动排序</string>
+    <string name="web_search_keyword">关键词</string>
+    <string name="web_search_title">文章网页搜索</string>
+    <string name="settings_datetime_format">日期时间格式</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d新文章</item>
     </plurals>
+    <string name="rightNow">刚刚</string>
+    <string name="oneWeek">周</string>
+    <string name="twoFourWeek">周</string>
+    <string name="fiveWeek">周</string>
+    <string name="oneMonth">个月</string>
+    <string name="twoFourMonth">个月</string>
+    <string name="fiveMonth">个月</string>
+    <string name="oneDay">天</string>
+    <string name="twoFourDay">天</string>
+    <string name="fiveDay">天</string>
+    <string name="oneHour">小时</string>
+    <string name="twoFourHour">小时</string>
+    <string name="fiveHour">小时</string>
+    <string name="oneMinute">分钟</string>
+    <string name="twoFourMinute">分钟</string>
+    <string name="fiveMinute">分钟</string>
+    <string name="monthsShort">个月</string>
+    <string name="weeksShort">周</string>
+    <string name="daysShort">天</string>
+    <string name="hoursShort">小时</string>
+    <string name="minutesShort">分钟</string>
+    <string name="timeIntervalInFuture">于</string>
+    <string name="timeIntervalInPast">之前</string>
+    <string name="error_add_customm_font">自定义字体添加失败</string>
 </resources>

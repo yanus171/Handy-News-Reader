@@ -47,4 +47,8 @@
         <item>Vertikal</item>
         <item>Tasten nicht anzeigen</item>
     </string-array>
+    <string-array name="settings_datetime_format">
+        <item>Systemvorgabe</item>
+        <item>Verbleibende Zeit</item>
+    </string-array>
 </resources>

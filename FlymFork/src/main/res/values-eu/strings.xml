@@ -138,17 +138,6 @@
     <string name="to_group_above">Taldearen kanpoan</string>
     <string name="to_group_into">Taldearen barruan</string>
     <string name="add_custom_feed">Gehitu edo bilatu jarioa</string>
-    <string name="google_news_title">Google News gaiak</string>
-    <string name="google_news_indicator">Hautatu gehitzeko gai bat edo gehiago. Baliteke haietako batzuk Googlek zure hizkuntzan ez eskaintzea.</string>
-    <string name="google_news_top_stories">Berri nagusiak</string>
-    <string name="google_news_world">Mundua</string>
-    <string name="google_news_business">Negozioak</string>
-    <string name="google_news_technology">Teknologia</string>
-    <string name="google_news_entertainment">Aisia</string>
-    <string name="google_news_sports">Kirolak</string>
-    <string name="google_news_science">Zientzia</string>
-    <string name="google_news_health">Osasuna</string>
-    <string name="google_news_custom_topic">Sartu mintzagai pertsonalizatua</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Irakurri gabea</string>
     <string name="all_entries">Artikulu guztiak</string>
@@ -414,8 +403,6 @@
     <string name="externalMemory">Kanpo memoria</string>
     <string name="show_html">Erakutsi html-a</string>
     <string name="image_white_background">Irudiaren atzealde zuria</string>
-    <string name="settings_add_google_news_dialog">Gehitu Google News elkarrizketa-koadroa</string>
-    <string name="settings_add_google_news_dialog_descr">Desmarkatu jarioa gehitzean jario mota aukeratzeko elkarrizketa-koadroa saltatzeko</string>
     <string name="reload_fulltext_after_tag_editing">Birkargatu testua etiketa editatu eta gero</string>
     <string name="reload_fulltext_after_tag_editing_descr">desmarkatuta badago, ez da testu osoa birkargatuko etiketa aldaketekin (erakutsi|ezkutatu|root), beraz aldaketa gehiago egin ditzakezu errazago (eta amaitutakoan testua eskuz birkargatu)</string>
     <string name="article_menu_show_by_tap">Erakutsi artikuluaren menua sakatuz</string>
