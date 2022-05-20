@@ -633,4 +633,5 @@
     <string name="minutesShort">m</string>
     <string name="timeIntervalInFuture">dans</string>
     <string name="timeIntervalInPast">il y a</string>
+    <string name="error_add_customm_font">L\'ajout de police personnalisée a échoué</string>
 </resources>
