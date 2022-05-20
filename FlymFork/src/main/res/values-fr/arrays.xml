@@ -49,6 +49,6 @@
     </string-array>
     <string-array name="settings_datetime_format">
         <item>Valeur par défaut du système</item>
-        <item>Remaining time</item>
+        <item>Temps restant</item>
     </string-array>
 </resources>
