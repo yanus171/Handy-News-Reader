@@ -627,4 +627,6 @@
     <string name="daysShort">T</string>
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">vor</string>
+    <string name="article_text_footer_show_remaining">Verbleibend</string>
+    <string name="article_text_footer_show_remaining_description">"Zeigt die noch verbleibende Seitenzahl an, um zum Ende zu blättern "</string>
 </resources>
