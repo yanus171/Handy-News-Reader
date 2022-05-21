@@ -827,14 +827,14 @@ public class EntryView extends WebView implements Handler.Callback {
                             findAllAsync(searchText);
                         else
                             findAll(searchText);
-                        UiUtils.RunOnGuiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.clearMatches();
-                            }
-                        }, 5000 );
-                    } else
+                        UiUtils.RunOnGuiThread(() -> view.clearMatches(), 5000 );
+                    } else {
+                        UiUtils.RunOnGuiThread(() -> {
+                                                   if (mActivity.mEntryFragment != null)
+                                                       mActivity.mEntryFragment.UpdateFooter();
+                                               });
                         ScrollToY();
+                    }
                     DownLoadImages();
                     EndStatus();
                 } else {

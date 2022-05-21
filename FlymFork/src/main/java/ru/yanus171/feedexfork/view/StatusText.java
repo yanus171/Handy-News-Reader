@@ -116,7 +116,7 @@ public class StatusText implements Observer {
         FetcherService.Status().UpdateText();
     }
 
-    int GetHeight() {
+    public int GetHeight() {
         int result = 0;
         if ( mView.getVisibility() == View.VISIBLE )
             result += mView.getHeight();

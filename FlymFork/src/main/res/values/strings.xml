@@ -657,4 +657,6 @@
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">ago</string>
     <string name="error_add_customm_font">Custom font adding failed</string>
+    <string name="article_text_footer_show_remaining">Remaining</string>
+    <string name="article_text_footer_show_remaining_description">"Show remaining page count to scroll to bottom "</string>
 </resources>

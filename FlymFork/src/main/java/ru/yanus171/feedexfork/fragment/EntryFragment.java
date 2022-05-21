@@ -52,7 +52,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
-import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -129,7 +128,6 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
@@ -1261,8 +1259,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         getBaseActivity().UpdateHeader(contentHeight - webViewHeight,
                                        entryView == null ? 0 : entryView.getScrollY(),
+                                       entryView == null ? 0 : entryView.getHeight() - mStatusText.GetHeight(),
                                        GetIsStatusBarHidden(),
-                                       GetIsActionBarHidden() );
+                                       GetIsActionBarHidden());
     }
 
 

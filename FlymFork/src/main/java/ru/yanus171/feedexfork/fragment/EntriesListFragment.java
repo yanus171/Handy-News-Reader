@@ -231,6 +231,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
                 UpdateTopTapZoneVisibility();
+                UiUtils.RunOnGuiThread( () -> UpdateHeader(), 1000 );
+
                 Status().End(mStatus);
                 timer.End();
             } else if (loader.getId() == FILTERS_LOADER_ID && mEntriesCursorAdapter != null ) {
@@ -449,7 +451,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 if ( scrollState != SCROLL_STATE_IDLE )
                     return;
                 UpdateTopTapZoneVisibility();
-                UpdateFooter();
+                UpdateHeader();
                 //Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d)", scrollState ) );
             }
 
@@ -481,7 +483,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
                 int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
                 int value = mListView.getFirstVisiblePosition();
-                getBaseActivity().UpdateHeaderProgressOnly( max, value );
+                getBaseActivity().UpdateHeaderProgressOnly(max, value, getHeaderStep());
 
                 //Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
             }
@@ -518,7 +520,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         emptyView.setText( getString( R.string.no_entries ) );
         mListView.setEmptyView( emptyView );
 
-        UpdateFooter();
+        UpdateHeader();
         timer.End();
         return rootView;
     }
@@ -537,13 +539,18 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
 
-    public void UpdateFooter() {
+    public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
-        int value = mListView.getFirstVisiblePosition();
-        getBaseActivity().UpdateHeader( max,
-                                            value,
-                                            HomeActivity.GetIsStatusBarEntryListHidden(),
-                                            HomeActivity.GetIsActionBarEntryListHidden());
+        int value = mListView.getLastVisiblePosition();
+        getBaseActivity().UpdateHeader(max,
+                                       value,
+                                       getHeaderStep(),
+                                       HomeActivity.GetIsStatusBarEntryListHidden(),
+                                       HomeActivity.GetIsActionBarEntryListHidden());
+    }
+
+    private int getHeaderStep() {
+        return 1;
     }
 
     private BaseActivity getBaseActivity() {
@@ -1123,7 +1130,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             restartLoaders();
 
         //refreshUI();
-        UpdateFooter();
+        UpdateHeader();
         UpdateActions();
         mStatusText.SetFeedID( mCurrentUri );
         timer.End();

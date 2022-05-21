@@ -20,7 +20,6 @@
 package ru.yanus171.feedexfork.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -54,7 +53,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -65,21 +63,18 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
-import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
@@ -93,8 +88,6 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.parser.OPML.AskQuestionForImport;
-import static ru.yanus171.feedexfork.parser.OPML.REQUEST_PICK_OPML_FILE;
 import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
@@ -148,7 +141,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Timer timer = new Timer( "HomeActivity.onCreate" );
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS );
         super.onCreate(savedInstanceState);
-
         mIsNewTask = getIntent() != null && getIntent().getBooleanExtra( NEW_TASK_EXTRA, false );
 
         if ( getIntent().hasCategory( "LoadLinkLater" ) )
@@ -265,8 +257,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
                 if (!GetIsActionBarEntryListHidden())
                     appBar.setExpanded(true);
-                if (mEntriesFragment != null)
-                    mEntriesFragment.UpdateFooter();
+                UpdateHeader();
             };
             findViewById(R.id.rightTopBtn).setOnClickListener(listener);
             findViewById(R.id.rightTopBtnFS).setOnClickListener(listener);
@@ -341,6 +332,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         });
         timer.End();
+    }
+
+    private void UpdateHeader() {
+        if (mEntriesFragment != null)
+            mEntriesFragment.UpdateHeader();
     }
 
     static public boolean GetIsActionBarEntryListHidden() {

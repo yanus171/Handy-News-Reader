@@ -293,6 +293,11 @@
                 android:key="article_text_footer_show_date"
                 android:title="@string/article_text_show_date"
                 android:summary="@string/article_text_show_date_description" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_text_footer_show_remaining"
+                android:title="@string/article_text_footer_show_remaining"
+                android:summary="@string/article_text_footer_show_remaining_description" />
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="0"
                 android:entries="@array/settings_font_sizes"
