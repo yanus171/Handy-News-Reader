@@ -634,4 +634,6 @@
     <string name="timeIntervalInFuture">через</string>
     <string name="timeIntervalInPast">тому</string>
     <string name="error_add_customm_font">Шрифт користувача не додано</string>
+    <string name="article_text_footer_show_remaining">Залишилось</string>
+    <string name="article_text_footer_show_remaining_description">"Показувати залишок сторінок для прокручування донизу "</string>
 </resources>
