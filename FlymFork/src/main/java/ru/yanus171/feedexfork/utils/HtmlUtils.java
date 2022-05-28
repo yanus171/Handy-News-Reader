@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.jsoup.safety.Whitelist;
 
 import java.io.File;
@@ -75,6 +76,7 @@ public class HtmlUtils {
     private static final Pattern IMG_PATTERN = Pattern.compile("<img\\s+[^>]*src=\\s*['\"]([^'\"]+)['\"][^>]*>", Pattern.CASE_INSENSITIVE);
     private static final Pattern A_IMG_PATTERN = Pattern.compile("<a[^>]+href([^>]+)>([^<]?)<img(.)*?</a>", Pattern.CASE_INSENSITIVE);
     private static final Pattern ADS_PATTERN = Pattern.compile("<div class=('|\")mf-viral('|\")><table border=('|\")0('|\")>.*", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TEMPLATE_PATTERN = Pattern.compile("<template(.|\\s)+?/template>", Pattern.CASE_INSENSITIVE);
     //private static final Pattern LAZY_LOADING_PATTERN = Pattern.compile("\\s+src=[^>]+\\s+original[-]*src=(\"|')", Pattern.CASE_INSENSITIVE);
     private static final Pattern LAZY_LOADING_PATTERN2 = Pattern.compile("src=\"[^\"]+?lazy[^\"]+\"", Pattern.CASE_INSENSITIVE);
     //private static final Pattern DATA_SRC_PATTERN = Pattern.compile("data-src=\"([^\"]+)\"", Pattern.CASE_INSENSITIVE);
@@ -100,6 +102,7 @@ public class HtmlUtils {
         if (content == null )
             return content;
 
+        content = TEMPLATE_PATTERN.matcher(content).replaceAll( "" );
         content = ADS_PATTERN.matcher(content).replaceAll("");
         // remove some ads
         content = ADS_PATTERN.matcher(content).replaceAll("");
@@ -120,7 +123,7 @@ public class HtmlUtils {
         content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
         content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
         // clean by JSoup
-        final Whitelist whiteList =
+        final Safelist whiteList =
                 ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
                 JSOUP_WHITELIST.addAttributes( "i", "onclick" )
                                .addAttributes( "span", "class" )
