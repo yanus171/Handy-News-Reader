@@ -330,7 +330,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                     final Item[] items = {
                                         new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
                                         new Item(R.string.menu_mark_upper_as_read, 0),
-                                        new Item(R.string.menu_mark_all_as_unread, 0),
+                                        new Item(R.string.menu_mark_lower_as_read, 0),
                                         new Item(R.string.menu_edit_labels, R.drawable.label_white)
                                     };
 
@@ -362,18 +362,22 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                                             return v;
                                         }
-                                    }, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int item) {
-                                            final Intent intent;
-                                            if (item == 0)
-                                                EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
-                                            else if (item == 1)
-                                                ShowMarkUpperAsReadDialog( context, getItemPosition(holder.entryID) );
-                                            else if (item == 2)
-                                                ShowMarkAllAsUnReadDialog( context  );
-                                            else if (item == 3)
-                                                LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
-                                        }
+                                    }, (dialog, item) -> {
+                                        final int pos = getItemPosition(holder.entryID);
+                                        ArrayList<Integer> posList = new ArrayList<>();
+                                        final Intent intent;
+                                        if (item == 0)
+                                            EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
+                                        else if (item == 1) {
+                                            for (int i = 0; i < pos; i++ )
+                                                posList.add( i );
+                                            ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
+                                        } else if (item == 2) {
+                                            for (int i = pos + 1; i < getCount(); i++)
+                                                posList.add( i );
+                                            ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
+                                        }  else if (item == 3)
+                                            LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
                                     });
 
                                     builder.setTitle( holder.titleTextView.getText() );
@@ -817,52 +821,33 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    public void ShowDialog(Context context, int messageID, final Runnable action ) {
+    static public void ShowDialog(Context context, int messageID, final Runnable action ) {
         AlertDialog dialog = new AlertDialog.Builder(context) //
             .setIcon(android.R.drawable.ic_dialog_alert) //
             .setTitle( R.string.confirmation ) //
             .setMessage( messageID ) //
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            .setPositiveButton(android.R.string.yes, (dialog1, which) -> new Thread() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            action.run();
-                        }
-                    }.start();
+                public void run() {
+                    action.run();
                 }
-            }).setNegativeButton(android.R.string.no, null).create();
+            }.start()).setNegativeButton(android.R.string.no, null).create();
         dialog.getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         dialog.show();
     }
 
-    public void ShowMarkUpperAsReadDialog(Context context, final int pos) {
-        ShowDialog(context, R.string.question_mark_upper_as_read, new Runnable() {
-           @Override
-           public void run() {
-               ContentResolver cr = MainApplication.getContext().getContentResolver();
-               ArrayList<Long> ids = new ArrayList<>();
-               for (int i = 0; i < pos; i++)
-                   ids.add(getItemId(i));
-               String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
-               cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
-           }
-       } );
+    public void ShowMarkPosListAsReadDialog(Context context, int confirmID, ArrayList<Integer> posList) {
+        ShowDialog(context, confirmID, () -> {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            ArrayList<Long> ids = new ArrayList<>();
+            for ( int pos: posList)
+                ids.add(getItemId(pos));
+            String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
+            cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
+        });
     }
-
-    public void ShowMarkAllAsUnReadDialog(Context context) {
-        ShowDialog(context, R.string.question_mark_all_as_unread, new Runnable() {
-            @Override
-            public void run() {
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.update(FeedData.EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), null, null);
-            }
-        } );
-    }
-
 
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
         //final String s = text.toString();

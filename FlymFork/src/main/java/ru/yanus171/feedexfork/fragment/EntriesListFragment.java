@@ -107,6 +107,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
@@ -787,6 +788,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 markAllAsRead();
                 return true;
             }
+            case R.id.menu_mark_all_as_unread: {
+                ShowMarkAllAsUnReadDialog( getContext() );
+                return true;
+            }
             case R.id.menu_delete_old: {
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
                 return true;
@@ -1262,4 +1267,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public Long GetSingleLabelID() {
         return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
     }
+    public void ShowMarkAllAsUnReadDialog(Context context) {
+        ShowDialog(context, R.string.question_mark_all_as_unread, new Runnable() {
+            @Override
+            public void run() {
+                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                cr.update(FeedData.EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), null, null);
+            }
+        } );
+    }
+
+
 }

@@ -79,6 +79,10 @@
                         android:icon="@drawable/ic_done_all"
                         android:title="@string/markAllAsRead"/>
                     <item
+                        android:id="@+id/menu_mark_all_as_unread"
+                        android:icon="@drawable/ic_done_all"
+                        android:title="@string/menu_mark_all_as_unread"/>
+                    <item
                         android:id="@+id/menu_reload_all_texts"
                         android:title="@string/menu_reload_all_texts"/>
                     <item
