@@ -149,8 +149,9 @@
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
-    <string name="menu_mark_all_as_unread">Alles als ungelesen kennzeichnen</string>
+    <string name="menu_mark_all_as_unread">Alles als „Ungelesen” kennzeichnen</string>
     <string name="menu_mark_upper_as_read">Alle oberhalb als gelesen kennzeichnen</string>
+    <string name="menu_mark_lower_as_read">Alle unterhalb als „Gelesen” kennzeichnen</string>
     <string name="menu_full_screen">Vollbild</string>
     <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
@@ -341,7 +342,8 @@
     <string name="confirmation">Bestätigung</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
     <string name="question_mark_upper_as_read">Alle oberen Artikel als gelesen kennzeichnen?</string>
-    <string name="question_mark_all_as_unread">Alle Artikel als ungelesen kennzeichnen?</string>
+    <string name="question_mark_lower_as_read">Alle unteren Artikel als „Gelesen” kennzeichnen?</string>
+    <string name="question_mark_all_as_unread">Alle Artikel als „Ungelesen” kennzeichnen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
     <string name="auto_image_load">Bilder automatisch laden</string>
