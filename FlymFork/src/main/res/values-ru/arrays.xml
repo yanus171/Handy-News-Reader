@@ -47,4 +47,8 @@
         <item>Вертикально</item>
         <item>Не показывать кнопки</item>
     </string-array>
+    <string-array name="settings_datetime_format">
+        <item>Как в системе</item>
+        <item>Оставшееся время</item>
+    </string-array>
 </resources>
