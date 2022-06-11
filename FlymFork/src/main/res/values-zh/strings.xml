@@ -154,6 +154,7 @@
     <string name="menu_share">分享</string>
     <string name="menu_mark_all_as_unread">标记全部为未读</string>
     <string name="menu_mark_upper_as_read">标记这条上面的条目未读</string>
+    <string name="menu_mark_lower_as_read">标记下方为已读</string>
     <string name="menu_full_screen">全屏</string>
     <string name="menu_actionbar_visible">操作栏</string>
     <string name="menu_font_bold">粗体</string>
@@ -343,6 +344,7 @@
     <string name="confirmation">确认</string>
     <string name="question_delete_entry">删除这篇文章？</string>
     <string name="question_mark_upper_as_read">标记上面的文章为已读？</string>
+    <string name="question_mark_lower_as_read">标记下方文章为已读？</string>
     <string name="question_mark_all_as_unread">标记所有文章为未读？</string>
     <string name="share_all_text">分享全文</string>
     <string name="group">组</string>
