@@ -153,6 +153,7 @@
     <string name="menu_share">Поділитися</string>
     <string name="menu_mark_all_as_unread">Позначити всі як непрочитані</string>
     <string name="menu_mark_upper_as_read">Позначити вгорі як прочитані</string>
+    <string name="menu_mark_lower_as_read">Позначити все нижче, як прочитане</string>
     <string name="menu_full_screen">Весь екран</string>
     <string name="menu_actionbar_visible">Смуга подій</string>
     <string name="menu_font_bold">Жирний шрифт</string>
@@ -342,6 +343,7 @@
     <string name="confirmation">Підтвердження</string>
     <string name="question_delete_entry">Вилучити статтю?</string>
     <string name="question_mark_upper_as_read">Позначити статті вгорі як прочитані?</string>
+    <string name="question_mark_lower_as_read">Помітити статті, що нижче як прочитані?</string>
     <string name="question_mark_all_as_unread">Позначити всі статті як непрочитані?</string>
     <string name="share_all_text">Поділитися текстом</string>
     <string name="group">Група</string>
