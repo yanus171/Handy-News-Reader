@@ -49,12 +49,9 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -69,14 +66,12 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
@@ -90,7 +85,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -116,6 +110,7 @@ import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
+import ru.yanus171.feedexfork.view.MenuItem;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
@@ -144,6 +139,7 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
+import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -312,76 +308,31 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             @Override
                             public void run() {
                                 if (isPress) {
-                                    class Item {
-                                        public final String text;
-                                        public final int icon;
+                                    final int pos = getItemPosition(holder.entryID);
+                                    ArrayList<Integer> posList = new ArrayList<>();
 
-                                        private Item(int textID, Integer icon) {
-                                            this.text = context.getString(textID);
-                                            this.icon = icon;
-                                        }
-
-                                        @Override
-                                        public String toString() {
-                                            return text;
-                                        }
-                                    }
-
-                                    final Item[] items = {
-                                        new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
-                                        new Item(R.string.menu_mark_upper_as_read, 0),
-                                        new Item(R.string.menu_mark_lower_as_read, 0),
-                                        new Item(R.string.menu_edit_labels, R.drawable.label_white)
-                                    };
-
-                                    AlertDialog.Builder builder = new AlertDialog.Builder( context );
-                                    builder.setTitle( feedTitle );
-                                    builder.setAdapter(new ArrayAdapter<Item>(
-                                        context,
-                                        android.R.layout.select_dialog_item,
-                                        android.R.id.text1,
-                                        items) {
-                                        @NonNull
-                                        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                                            //Use super class to create the View
-                                            View v = super.getView(position, convertView, parent);
-                                            TextView tv = SetupTextView( v, android.R.id.text1);
-
-                                            if ( items[position].icon > 0 ) {
-                                                //Put the image on the TextView
-                                                int dp50 = (int) (40 * context.getResources().getDisplayMetrics().density + 0.5f);
-                                                Drawable dr = context.getResources().getDrawable(items[position].icon);
-                                                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-                                                Drawable d = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
-                                                d.setBounds(0, 0, dp50, dp50);
-                                                tv.setCompoundDrawables(d, null, null, null);
-                                            }
-                                            //Add margin between image and text (support various screen densities)
-                                            int dp5 = (int) (5 * context.getResources().getDisplayMetrics().density + 0.5f);
-                                            tv.setCompoundDrawablePadding(dp5);
-
-                                            return v;
-                                        }
-                                    }, (dialog, item) -> {
-                                        final int pos = getItemPosition(holder.entryID);
-                                        ArrayList<Integer> posList = new ArrayList<>();
-                                        final Intent intent;
-                                        if (item == 0)
-                                            EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
-                                        else if (item == 1) {
-                                            for (int i = 0; i < pos; i++ )
-                                                posList.add( i );
+                                    final MenuItem[] items = {
+                                        new MenuItem(R.string.context_menu_delete, R.drawable.delete, (_1, _2) ->
+                                            EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ),
+                                        new MenuItem(R.string.menu_mark_upper_as_read, R.drawable.ic_arrow_drop_up, (_1, _2) -> {
+                                            for (int i = 0; i < pos; i++)
+                                                posList.add(i);
                                             ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
-                                        } else if (item == 2) {
+                                        } ),
+                                        new MenuItem(R.string.menu_mark_lower_as_read, R.drawable.arrow_drop_down, (_1, _2) -> {
                                             for (int i = pos + 1; i < getCount(); i++)
-                                                posList.add( i );
+                                                posList.add(i);
                                             ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
-                                        }  else if (item == 3)
-                                            LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
-                                    });
-
-                                    builder.setTitle( holder.titleTextView.getText() );
-                                    builder.show();
+                                            }),
+                                        new MenuItem(R.string.menu_edit_labels, R.drawable.ic_label, (_1, _2) ->
+                                            LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
+                                        new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
+                                            context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
+                                                                                        .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
+                                                                                        .setType(Constants.MIMETYPE_TEXT_PLAIN),
+                                                                                        context.getString(R.string.menu_share))))
+                                    };
+                                    ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
                                     //wasMove = true;
                                 }
                             }
@@ -870,17 +821,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     //.override(dim)
                     .into(imageView);
             //imageView.setImageURI( uri );
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        EntryView.OpenImage( uri.toString(), view.getContext() );
-                    } catch (IOException e) {
-                        UiUtils.toast( view.getContext(), view.getContext().getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
-                        e.printStackTrace();
-                    }
-                }
-            });
+            imageView.setOnClickListener(view -> EntryView.ShowImageMenu(uri.toString(), view.getContext() ));
 
 //            new AsyncTask<Pair<Uri,ImageView>, Void, Void>() {
 //                private Bitmap uriToBitmap(Uri selectedFileUri) {

@@ -643,4 +643,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
         <item quantity="many">%d новых статей</item>
         <item quantity="other">%d новых статей</item>
     </plurals>
+
+    <string name="open_image">Просмотреть</string>
+    <string name="copy_to_downloads">Копировать в Загрузки</string>
 </resources>
