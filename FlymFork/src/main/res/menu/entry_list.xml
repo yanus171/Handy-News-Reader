@@ -37,11 +37,6 @@
                 android:visible="false"
                 android:title="@string/menu_show_entry_text" />
             <item
-                android:id="@+id/menu_toggle_theme"
-                android:icon="@drawable/ic_style"
-                android:visible="true"
-                android:title="@string/menu_toggle_theme"/>
-            <item
                 android:id="@+id/menu_delete_old"
                 android:icon="@drawable/ic_delete"
                 android:title="@string/menu_delete_old"/>

@@ -737,11 +737,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
 
-            case R.id.menu_toggle_theme: {
-                PrefUtils.ToogleTheme( new Intent(getContext(), HomeActivity.class) );
-                return true;
-            }
-
             case R.id.menu_unstarr_articles: {
                 new AlertDialog.Builder(getContext())
                     .setIcon(android.R.drawable.ic_dialog_alert)
