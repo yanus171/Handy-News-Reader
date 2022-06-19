@@ -636,4 +636,6 @@
     <string name="error_add_customm_font">自定义字体添加失败</string>
     <string name="article_text_footer_show_remaining">剩余</string>
     <string name="article_text_footer_show_remaining_description">"显示离滚动到底部还剩几页 "</string>
+    <string name="open_image">打开图片</string>
+    <string name="copy_to_downloads">复制到下载目录</string>
 </resources>
