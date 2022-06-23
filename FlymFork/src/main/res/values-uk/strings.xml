@@ -638,4 +638,6 @@
     <string name="error_add_customm_font">Шрифт користувача не додано</string>
     <string name="article_text_footer_show_remaining">Залишилось</string>
     <string name="article_text_footer_show_remaining_description">"Показувати залишок сторінок для прокручування донизу "</string>
+    <string name="open_image">Відкрити зображення</string>
+    <string name="copy_to_downloads">Копіювати до Завантажень</string>
 </resources>
