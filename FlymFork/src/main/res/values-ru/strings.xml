@@ -96,6 +96,7 @@
     <string name="drawer_close">Закрыть меню навигации</string>
     <!-- FEEDS -->
     <string name="feeds">Ленты</string>
+    <string name="menu_article_web_search">Веб-поиск статьи</string>
     <string name="menu_add_feed">Веб поиск статьи</string>
     <string name="no_feeds">Нет лент</string>
     <string name="no_filters">Нет фильтров</string>
