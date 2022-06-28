@@ -663,4 +663,6 @@
     <string name="article_text_footer_show_remaining_description">"Show remaining page count to scroll to bottom "</string>
     <string name="open_image">Open image</string>
     <string name="copy_to_downloads">Copy to Downloads</string>
+    <string name="sendErrorConfirm">An error coured during operation. Send it to developer?</string>
+    <string name="wrongFontFileSelected">"Fonts file should ends with ttf "</string>
 </resources>

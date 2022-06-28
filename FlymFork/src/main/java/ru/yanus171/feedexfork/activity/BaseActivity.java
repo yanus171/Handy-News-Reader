@@ -300,7 +300,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         final int result = (max - value) / step;
         if ( result <= 0 )
             return "";
-        return String.format("%d+", result);
+        return String.format("+%d", result);
     }
     protected TextView SetupTextView(int id) {
         TextView result = findViewById(id);

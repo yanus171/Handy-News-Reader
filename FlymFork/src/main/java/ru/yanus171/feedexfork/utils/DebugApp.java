@@ -465,19 +465,24 @@ public class DebugApp {
 	}
 
 	// ------------------------------------------------------------------------
-	static void ShowError(String text, Exception e) {
-		StringBuilder error = new StringBuilder();
-		error.append("----------------------\n");
-		if (text != null) {
-			error.append(text + "\n");
-		}
-		if (e != null) {
-			error.append(GetStackTrace(e) + "\n");
-			if (e.getMessage() != null) {
-				Log.v(TAG, e.getMessage());
-			}
-		}
-		ShowSendErrorActivity(error.toString());
+	public static void ShowError(String text, Exception e, Context context ) {
+		Theme.CreateDialog( context )
+			.setTitle( R.string.sendErrorConfirm )
+			.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss() )
+			.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+				StringBuilder error = new StringBuilder();
+				error.append("----------------------\n");
+				if (text != null) {
+					error.append(text + "\n");
+				}
+				if (e != null) {
+					error.append(GetStackTrace(e) + "\n");
+					if (e.getMessage() != null) {
+						Log.v(TAG, e.getMessage());
+					}
+				}
+				ShowSendErrorActivity(error.toString());
+			}).create().show();
 	}
 
 	// --------------------------------------------------------------------------

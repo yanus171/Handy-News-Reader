@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -68,7 +69,7 @@ public class FontSelectPreference extends Preference {
 
 		FontInfo( String name ) {
 			mFontName = name;
-			if ( name != ADD_CUSTOM )
+			if (!name.equals(ADD_CUSTOM))
 				mTypeface = FontSelectPreference.GetTypeFaceByName( name );
 		}
 		// --------------------------------------------------------------
@@ -389,16 +390,19 @@ public class FontSelectPreference extends Preference {
 	}
 
 	public static void addCustom(Activity activity, final String data, final boolean isFileNameUri) {
+		final String TTF_EXT = ".ttf";
 		String fileName;
 		if ( isFileNameUri )
-			fileName = FileSelectDialog.Companion.getFileName(Uri.parse( data ) );
+				fileName = FileSelectDialog.Companion.getFileName(Uri.parse( data ) );
 		else {
 			final String[] list = TextUtils.split(FileUtils.INSTANCE.getFontsFolder() + "/" +  Uri.parse( data ).getLastPathSegment(), "/");
 			fileName = list[list.length - 1];
-			if (!fileName.endsWith(".ttf"))
-				fileName = fileName + ".ttf";
+			if (!fileName.endsWith(TTF_EXT))
+				fileName = fileName + TTF_EXT;
 		}
-		if (FileSelectDialog.Companion.copyFile(data, FileUtils.INSTANCE.getFontsFolder() + "/" + fileName)) {
+		if ( !fileName.toLowerCase().endsWith( TTF_EXT ) )
+			Toast.makeText( activity, R.string.wrongFontFileSelected, Toast.LENGTH_LONG ).show();
+		else if (FileSelectDialog.Companion.copyFile(data, FileUtils.INSTANCE.getFontsFolder() + "/" + fileName, isFileNameUri, activity)) {
 			final String value = FontsDir + "/" + fileName;
 			PrefUtils.putString(KEY, value);
 			PreferenceFragment fragment = (PreferenceFragment) activity.getFragmentManager().findFragmentById(R.id.entry_fragment);
