@@ -176,6 +176,8 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChan
 import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
@@ -830,7 +832,7 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    connection = new Connection( linkToLoad );
+                    connection = new Connection( linkToLoad, OKHTTP );
 
                     String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);
@@ -846,7 +848,7 @@ public class FetcherService extends IntentService {
                                 String s = el.attr("content");
                                 link = s.replaceFirst("\\d+;URL=", "");
                                 connection.disconnect();
-                                connection = new Connection(link);
+                                connection = new Connection(link, OKHTTP);
                                 doc = Jsoup.parse(connection.getInputStream(), null, "");
                                 break;
                             }
@@ -1552,8 +1554,7 @@ public class FetcherService extends IntentService {
         return content;
     }
 
-    private static String ToString (Reader reader ) throws
-        IOException {
+    private static String ToString (Reader reader ) {
 
         Scanner scanner = new Scanner(reader).useDelimiter("\\A");
         String content = scanner.hasNext() ? scanner.next() : "";
@@ -1591,7 +1592,7 @@ public class FetcherService extends IntentService {
         ContentResolver cr = getContext().getContentResolver();
         try {
 
-            connection = new Connection( feedUrl);
+            connection = new Connection( feedUrl, OKHTTP);
             String contentType = connection.getContentType();
             int fetchMode = cursor.getInt(fetchModePosition);
 
@@ -1626,7 +1627,7 @@ public class FetcherService extends IntentService {
                     String xmlDescription = new String(chars, 0, length);
 
                     connection.disconnect();
-                    connection = new Connection(feedUrl);
+                    connection = new Connection(feedUrl, OKHTTP);
 
                     int start = xmlDescription.indexOf(ENCODING);
 
@@ -1657,6 +1658,12 @@ public class FetcherService extends IntentService {
             handler.setFetchImages(NetworkUtils.needDownloadPictures() && autoDownloadImages);
 
             InputStream inputStream = connection.getInputStream();
+
+            if ( inputStream.available() == 0 ) {
+                connection.disconnect();
+                connection = new Connection( feedUrl, NATIVE );
+                inputStream = connection.getInputStream();
+            }
 
             switch (fetchMode) {
                 default:

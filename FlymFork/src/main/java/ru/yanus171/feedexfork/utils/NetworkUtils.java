@@ -56,6 +56,8 @@ import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 
 public class NetworkUtils {
 
+    public static final boolean OKHTTP = true;
+    public static final boolean NATIVE = false;
     //public static final File IMAGE_FOLDER_FILE = new File(MainApplication.getContext().getCacheDir(), "images/");
     //public static final String IMAGE_FOLDER = IMAGE_FOLDER_FILE.getAbsolutePath() + '/';
     private static final String TEMP_PREFIX = "TEMP__";
@@ -116,7 +118,7 @@ public class NetworkUtils {
 
                 // Compute the real URL (without "&eacute;", ...)
                 String realUrl = Html.fromHtml(imgUrl).toString();
-                imgURLConnection = new Connection( realUrl);
+                imgURLConnection = new Connection( realUrl, OKHTTP );
 
                 long size = imgURLConnection.getContentLength();
                 int maxImageDownloadSize = PrefUtils.getImageMaxDownloadSizeInKb() * 1024;
@@ -298,7 +300,7 @@ public class NetworkUtils {
     public static Bitmap downloadImage(String url) {
         Bitmap bitmap = null;
         try {
-            Connection connection = new Connection( url ); try {
+            Connection connection = new Connection( url, OKHTTP ); try {
 
                 byte[] iconBytes = getBytes(connection.getInputStream());
                 if (iconBytes != null && iconBytes.length > 0) {

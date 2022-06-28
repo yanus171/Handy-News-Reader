@@ -9,7 +9,7 @@ import java.net.HttpURLConnection
 
 import org.jsoup.Jsoup
 
-class Connection(url: String) {
+class Connection(url: String, val mIsOKHttp: Boolean = true ) {
     private var mConnection: HttpURLConnection? = null
     private var mResponse: Response? = null
     val inputStream: InputStream
@@ -81,11 +81,7 @@ class Connection(url: String) {
         } else
             return "";
     }
-    companion object {
-
-        fun IsOkHttp(): Boolean {
-            return Build.VERSION.SDK_INT >= 21
-        }
+    fun IsOkHttp(): Boolean {
+        return mIsOKHttp && Build.VERSION.SDK_INT >= 21
     }
-
 }

@@ -25,6 +25,7 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
 
@@ -239,7 +240,7 @@ public class ArticleTextExtractor {
             Matcher matcher = Pattern.compile("/(\\d+)/").matcher(url);
             if ( matcher.find() ) {
                 String id = matcher.group(1);
-                final Connection conn = new Connection("https://habr.com/kek/v2/articles/ARTICLE_ID/comments/?fl=ru&hl=ru".replace("ARTICLE_ID", id ));
+                final Connection conn = new Connection("https://habr.com/kek/v2/articles/ARTICLE_ID/comments/?fl=ru&hl=ru".replace("ARTICLE_ID", id ), OKHTTP);
                 try {
                     final String s = conn.getText();
                     Dog.d(TAG, s);
