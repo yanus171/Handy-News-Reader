@@ -153,6 +153,7 @@
     <string name="menu_share">Condividi</string>
     <string name="menu_mark_all_as_unread">Segna tutte come da leggere</string>
     <string name="menu_mark_upper_as_read">Segna in alto come letto</string>
+    <string name="menu_mark_lower_as_read">Segna in basso come letto</string>
     <string name="menu_full_screen">Schermo Intero</string>
     <string name="menu_actionbar_visible">Barra delle azioni</string>
     <string name="menu_font_bold">Grassetto</string>
@@ -342,6 +343,7 @@
     <string name="confirmation">Conferma</string>
     <string name="question_delete_entry">Elimina questo articolo?</string>
     <string name="question_mark_upper_as_read">Segnare gli articoli in alto come letti?</string>
+    <string name="question_mark_lower_as_read">Segnare gli articoli inferiori come letti?</string>
     <string name="question_mark_all_as_unread">Segnare tutti gli articoli come non letti?</string>
     <string name="share_all_text">Condividi tutto il testo</string>
     <string name="group">Gruppo</string>
@@ -373,6 +375,7 @@
     <string name="rule_text">Regola Testo</string>
     <string name="global_marks_as_star_filter_rule_descr">una regola per riga</string>
     <string name="customKeepTime">Articoli personalizzati mantienili nel tempo</string>
+    <string name="custom_refresh_interval">Intervallo di aggiornamento personalizzato</string>
     <string name="menu_toggle_theme">Cambia Tema</string>
     <string name="turnOn">Attiva</string>
     <string name="brightness">Luminosità</string>
@@ -635,4 +638,6 @@
     <string name="article_text_footer_show_remaining_description">"Mostra il contatore rimanente di pagine da scorrere in basso "</string>
     <string name="open_image">Apri immagine</string>
     <string name="copy_to_downloads">Copia negli scaricamenti</string>
+    <string name="sendErrorConfirm">Si è verificato un errore durante l\'operazione. Inviarlo allo sviluppatore?</string>
+    <string name="wrongFontFileSelected">"Il file dei caratteri dovrebbe terminare con ttf "</string>
 </resources>
