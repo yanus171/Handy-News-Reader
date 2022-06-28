@@ -329,6 +329,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                         new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
                                             context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
                                                                                         .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
+                                                                                        .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
                                                                                         .setType(Constants.MIMETYPE_TEXT_PLAIN),
                                                                                         context.getString(R.string.menu_share))))
                                     };
