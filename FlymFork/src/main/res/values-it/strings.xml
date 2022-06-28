@@ -93,6 +93,7 @@
     <string name="drawer_close">Chiudi Pannello di Navigazione</string>
     <!-- FEEDS -->
     <string name="feeds">Feed</string>
+    <string name="menu_article_web_search">Ricerca Web Articolo</string>
     <string name="menu_add_feed">Aggiungi feed</string>
     <string name="no_feeds">Nessun feed</string>
     <string name="no_filters">Nessuna Regola</string>
