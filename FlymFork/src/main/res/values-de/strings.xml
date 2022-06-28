@@ -91,6 +91,7 @@
     <string name="drawer_close">Navigationsleiste schließen</string>
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
+    <string name="menu_article_web_search">Artikel im Web suchen</string>
     <string name="menu_add_feed">Feed-/Artikelsuche</string>
     <string name="no_feeds">Keine Feeds</string>
     <string name="no_filters">Keine Filter</string>
