@@ -93,6 +93,7 @@
     <string name="drawer_close">Закрити меню навігації</string>
     <!-- FEEDS -->
     <string name="feeds">Стрічки</string>
+    <string name="menu_article_web_search">Веб пошук статті</string>
     <string name="menu_add_feed">Додати стрічку</string>
     <string name="no_feeds">Немає стрічок</string>
     <string name="no_filters">Немає фільтрів</string>
