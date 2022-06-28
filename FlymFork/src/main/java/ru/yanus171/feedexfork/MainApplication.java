@@ -131,7 +131,7 @@ public class MainApplication extends Application {
             ArrayList<ShortcutInfo> list = new ArrayList<ShortcutInfo>();
             ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
             list.add( new ShortcutInfo.Builder(getContext(), "idSearch")
-                .setShortLabel( getContext().getString( R.string.menu_add_feed ) )
+                .setShortLabel( getContext().getString( R.string.menu_article_web_search ) )
                 .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_add))
                 .setIntent(new Intent( Intent.ACTION_WEB_SEARCH )
                                .setPackage( getContext().getPackageName() )

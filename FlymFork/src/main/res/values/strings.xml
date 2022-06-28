@@ -93,7 +93,8 @@
 
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
-    <string name="menu_add_feed">Article Web Search</string>
+    <string name="menu_article_web_search">Article Web Search</string>
+    <string name="menu_add_feed">Add feed</string>
     <string name="no_feeds">No feeds</string>
     <string name="no_filters">No rules</string>
     <string name="context_menu_add">Add</string>
@@ -619,7 +620,7 @@
     <string name="settings_labels_sort_alphabetical_descr">Sort labels alphabetically. Otherwise manual sorting</string>
     <string name="settings_feeds_sort_alphabetical">ABC feeds sort</string>
     <string name="settings_feeds_sort_alphabetical_descr">Sort feeds and groups alphabetically. Otherwise manual sorting</string>
-    <string name="web_search_keyword">Key word</string>
+    <string name="web_search_keyword">Key word or web site url</string>
     <string name="web_search_title">Article Web search</string>
     <string name="settings_datetime_format">Date time format</string>
 

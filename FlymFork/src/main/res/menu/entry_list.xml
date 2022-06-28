@@ -32,6 +32,10 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/menu_article_web_search"
+                android:icon="@drawable/ic_add_circle_outline"
+                android:title="@string/menu_article_web_search" />
+            <item
                 android:id="@+id/menu_show_entry_text"
                 android:icon="@drawable/ic_receipt"
                 android:visible="false"
@@ -44,10 +48,6 @@
                 android:id="@+id/menu_start_auto_refersh"
                 android:icon="@drawable/ic_sync"
                 android:title="@string/create_start_auto_refersh"/>
-            <item
-                android:id="@+id/menu_edit_feed"
-                android:icon="@drawable/ic_edit"
-                android:title="@string/menu_edit_feed"/>
             <item
                 android:id="@+id/menu_show_article_url_toggle"
                 android:icon="@drawable/ic_http"
@@ -99,6 +99,14 @@
                         android:id="@+id/menu_copy_feed"
                         android:icon="@drawable/ic_content_copy"
                         android:title="@string/menu_copy_feed"/>
+                    <item
+                        android:id="@+id/menu_add_feed"
+                        android:icon="@drawable/ic_add_circle_outline"
+                        android:title="@string/menu_add_feed" />
+                    <item
+                        android:id="@+id/menu_edit_feed"
+                        android:icon="@drawable/ic_edit"
+                        android:title="@string/menu_edit_feed"/>
                     <item
                         android:id="@+id/menu_show_progress_info"
                         android:icon="@drawable/ic_info_outline"

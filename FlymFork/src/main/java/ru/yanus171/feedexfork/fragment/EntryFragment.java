@@ -99,6 +99,7 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
@@ -902,8 +903,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }
                     break;
                 }
-                case R.id.menu_add_feed: {
-                    startActivity( new Intent( Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI ).putExtra(EXTRA_WEB_SEARCH, true) );
+                case R.id.menu_article_web_search: {
+                    startActivity( new Intent(Intent.ACTION_WEB_SEARCH)
+                                .setPackage(getContext().getPackageName())
+                                .setClass(getContext(), ArticleWebSearchActivity.class) );
                     break;
                 }
                 case R.id.menu_edit_feed: {

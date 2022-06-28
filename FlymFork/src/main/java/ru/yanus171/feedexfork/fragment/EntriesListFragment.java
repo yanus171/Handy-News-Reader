@@ -79,6 +79,7 @@ import java.util.Observer;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
@@ -699,6 +700,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_article_web_search: {
+                startActivity(new Intent( Intent.ACTION_WEB_SEARCH )
+                                  .setPackage( getContext().getPackageName() )
+                                  .setClass(getContext(), ArticleWebSearchActivity.class));
+                break;
+            }
+            case R.id.menu_add_feed: {
+                startActivity( new Intent( Intent.ACTION_INSERT ).setData(FeedColumns.CONTENT_URI ) );
+                break;
+            }
 
             case R.id.menu_share_starred: {
                 if (mEntriesCursorAdapter != null) {
