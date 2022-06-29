@@ -455,7 +455,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     return;
                 UpdateTopTapZoneVisibility();
                 UpdateHeader();
-                //Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d)", scrollState ) );
+                //Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d) last=%d count=%d", scrollState, mListView.getLastVisiblePosition(), mListView.getCount() ) );
             }
 
             @Override
@@ -487,7 +487,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
                 int value = mListView.getFirstVisiblePosition();
                 getBaseActivity().UpdateHeaderProgressOnly(max, value, getHeaderStep());
-
                 //Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d)", firstVisibleItem, visibleItemCount ) );
             }
         });
@@ -544,7 +543,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
-        int value = mListView.getLastVisiblePosition();
+        int value = mListView.getFirstVisiblePosition();
         getBaseActivity().UpdateHeader(max,
                                        value,
                                        getHeaderStep(),
