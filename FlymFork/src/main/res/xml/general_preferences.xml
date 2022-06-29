@@ -129,6 +129,13 @@
             android:title="@string/show_article_category"/>
 
         <CheckBoxPreference
+            android:key="settings_show_article_text_preview"
+            android:defaultValue="false"
+            android:title="@string/show_article_text_preview"
+            android:summary="@string/show_article_text_preview_descr"
+            />
+
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="display_oldest_first"
             android:summary="@string/settings_display_oldest_first_description"

@@ -71,6 +71,7 @@ public class PrefUtils {
     public static final String DISPLAY_ENTRIES_FULLSCREEN = "display_entries_fullscreen";
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
     public static final String SHOW_ARTICLE_URL = "settings_show_article_url";
+    public static final String SHOW_ARTICLE_TEXT_PREVIEW = "settings_show_article_text_preview";
     public static final String SHOW_ARTICLE_CATEGORY = "settings_show_article_category";
     //public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
     public static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";

@@ -1659,10 +1659,16 @@ public class FetcherService extends IntentService {
 
             InputStream inputStream = connection.getInputStream();
 
-            if ( inputStream.available() == 0 ) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            String xmlText = ReadAll(inputStream, outputStream);
+
+            if ( xmlText.isEmpty() ) {
                 connection.disconnect();
                 connection = new Connection( feedUrl, NATIVE );
                 inputStream = connection.getInputStream();
+
+                outputStream = new ByteArrayOutputStream();
+                xmlText = ReadAll(inputStream, outputStream);
             }
 
             switch (fetchMode) {
@@ -1685,19 +1691,8 @@ public class FetcherService extends IntentService {
                     }
                     break;
                 }
+
                 case FETCHMODE_REENCODE: {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-                    byte[] byteBuffer = new byte[4096];
-
-                    int n;
-                    while ((n = inputStream.read(byteBuffer)) > 0) {
-                        FetcherService.Status().AddBytes(n);
-                        outputStream.write(byteBuffer, 0, n);
-                    }
-
-                    String xmlText = outputStream.toString().trim();
-
                     int start = xmlText != null ? xmlText.indexOf(ENCODING) : -1;
 
                     if (start > -1) {
@@ -1772,6 +1767,19 @@ public class FetcherService extends IntentService {
             }
         }
         return handler != null ? handler.getNewCount() : 0;
+    }
+
+    @NotNull
+    private String ReadAll(InputStream inputStream, ByteArrayOutputStream outputStream) throws IOException {
+        String xmlText;
+        byte[] byteBuffer = new byte[4096];
+        int n;
+        while ((n = inputStream.read(byteBuffer)) > 0) {
+            FetcherService.Status().AddBytes(n);
+            outputStream.write(byteBuffer, 0, n);
+        }
+        xmlText = outputStream.toString().trim();
+        return xmlText;
     }
 
     private static void parseXml( InputStream in, Xml.Encoding encoding, ContentHandler contentHandler) throws IOException, SAXException {

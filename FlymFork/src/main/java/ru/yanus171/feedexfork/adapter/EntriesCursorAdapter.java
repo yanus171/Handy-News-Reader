@@ -127,6 +127,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
@@ -213,6 +214,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final ViewHolder holder = new ViewHolder();
             holder.titleTextView = SetupTextView(view, android.R.id.text1);
             holder.urlTextView = SetupSmallTextView(view, R.id.textUrl);
+            holder.textPreviewTextView = SetupSmallTextView(view, R.id.textTextPreview);
             holder.textTextView = SetupTextView(view, R.id.textSource);
             if (mShowEntryText) {
                 holder.dateTextView = SetupSmallTextView(view, R.id.textDate);
@@ -588,6 +590,33 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) ;
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
+        final boolean showTextPreview = PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
+            cursor.getString(mAbstractPos) != null && !holder.isTextShown();
+        holder.textPreviewTextView.setVisibility( showTextPreview ? View.VISIBLE : View.GONE );
+        if ( showTextPreview ) {
+            String s = getBoldText(GetHtmlAligned(cursor.getString(mAbstractPos))).toString();
+            s = s.replace( "\n", " " );
+            s = s.replace( holder.titleTextView.getText().toString(), "" );
+            s = s.replace( "￼", "" );
+            s = s.replace( "\t", " " );
+            for ( int i = 0; i < 2; i++ )
+                s = s.replace( "  ", " " );
+            s = s.trim();
+            if ( s.startsWith( "." ) )
+                s = s.substring( 1 );
+            s = s.trim();
+            if ( !s.isEmpty() ) {
+                holder.textPreviewTextView.setText(getBoldText(s));
+                holder.textPreviewTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OpenArticle(holder.textPreviewTextView.getContext(), holder.entryID, false, "");
+                    }
+                });
+            } else
+                holder.textPreviewTextView.setVisibility( View.GONE );
+        }
+
 
         UpdateStarImgView(holder);
         holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
@@ -899,6 +928,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.authorTextView.setTextColor( color );
             holder.categoriesTextView.setTextColor(color );
             holder.labelTextView.setTextColor(color );
+            holder.textPreviewTextView.setTextColor(color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
             //holder.readMore.setTextColor( color );
@@ -1087,6 +1117,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView collapsedBtn;
         TextView titleTextView;
         TextView urlTextView;
+        TextView textPreviewTextView;
         TextView textTextView;
         TextView categoriesTextView;
         TextView labelTextView;

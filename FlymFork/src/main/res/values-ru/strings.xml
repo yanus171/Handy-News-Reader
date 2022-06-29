@@ -649,5 +649,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
     <string name="menu_article_web_search">Веб поиск статьи</string>
     <string name="web_search_title">Веб поиск статьи</string>
+    <string name="show_article_text_preview">Предпросмотр текста</string>
+    <string name="show_article_text_preview_descr">Показывать несколь первых строк текста статьи</string>
 
 </resources>

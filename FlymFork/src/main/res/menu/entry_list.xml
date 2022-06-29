@@ -54,6 +54,11 @@
                 android:checkable="true"
                 android:title="@string/show_article_url"/>
             <item
+                android:id="@+id/menu_show_article_text_preview_toggle"
+                android:icon="@drawable/ic_receipt"
+                android:checkable="true"
+                android:title="@string/show_article_text_preview"/>
+            <item
                 android:id="@+id/menu_show_article_category_toggle"
                 android:checkable="true"
                 android:title="@string/show_article_category"/>

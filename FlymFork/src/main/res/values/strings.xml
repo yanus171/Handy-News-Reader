@@ -666,4 +666,6 @@
     <string name="copy_to_downloads">Copy to Downloads</string>
     <string name="sendErrorConfirm">An error coured during operation. Send it to developer?</string>
     <string name="wrongFontFileSelected">"Fonts file should ends with ttf "</string>
+    <string name="show_article_text_preview">Text preview</string>
+    <string name="show_article_text_preview_descr">Show several first lines of article text</string>
 </resources>
