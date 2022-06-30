@@ -479,7 +479,6 @@
     <string name="menu_copy_feed">Дублировать текущую ленту</string>
     <string name="feed_copied">Лента дублирована</string>
     <string name="menu_show_entry_text">Текст статьи</string>
-    <string name="read_more">Подробнее …</string>
     <string name="cant_open_image">Не удается открыть изображение</string>
     <string name="parsing_one_web_page">Разбор страницы</string>
     <string name="end_editing">Завершить редактирование</string>
