@@ -255,5 +255,10 @@ public class Theme {
 	public static AlertDialog.Builder CreateDialog(Context context) {
 		return new AlertDialog.Builder(context, GetThemeDialog());
 	}
-
+	public static String GetTextColorRead() {
+		return GetColor( TEXT_COLOR_READ, R.string.default_read_color );
+	}
+	public static int GetTextColorReadInt() {
+		return GetColorInt( TEXT_COLOR_READ, R.string.default_read_color );
+	}
 }

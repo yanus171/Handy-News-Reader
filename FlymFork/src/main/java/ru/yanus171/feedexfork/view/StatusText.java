@@ -65,7 +65,7 @@ public class StatusText implements Observer {
         mErrorView = errorView;
         mView.setVisibility(View.GONE);
         mView.setGravity(Gravity.START | Gravity.TOP);
-        mView.setTextColor( Theme.GetColorInt( TEXT_COLOR_READ, R.string.default_read_color ) );
+        mView.setTextColor( Theme.GetTextColorReadInt() );
         mView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
         mView.setOnClickListener(new View.OnClickListener() {
             @Override

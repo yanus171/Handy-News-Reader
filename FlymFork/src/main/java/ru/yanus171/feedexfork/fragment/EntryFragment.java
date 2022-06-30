@@ -392,7 +392,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public boolean onTouch(final View view, MotionEvent event) {
                 if ( event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Dog.v( "onTouch ACTION_DOWN " );
+                    //Dog.v( "onTouch ACTION_DOWN " );
                     initialY = (int) event.getY();
                     mWasVibrate = false;
                     mWasSwipe = false;
@@ -409,7 +409,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }, ViewConfiguration.getLongPressTimeout() );
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_MOVE) {
-                    Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
+                    //Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
                     int w = Math.max(0, (int) (event.getY() - initialY));
                     SetStarFrameWidth(Math.min(w, MAX_HEIGHT));
                     if (prefVibrate && w >= MAX_HEIGHT && !mWasVibrate) {
@@ -424,7 +424,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     frameStarImage.setImageResource((w >= MAX_HEIGHT) == mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow);
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_UP) {
-                    Dog.v( "onTouch ACTION_UP " );
+                    //Dog.v( "onTouch ACTION_UP " );
                     if ( !mWasSwipe ) {
                         if ( !IsLong() )
                             PageUp();
@@ -1443,7 +1443,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         final LinearLayout parent = new LinearLayout(getContext() );
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setGravity(Gravity.CENTER);
-        UiUtils.AddText( parent, null, getString( R.string.open_tag_menu_hint ) ).setTextColor( Theme.GetColorInt( TEXT_COLOR_READ, R.string.default_read_color ));
+        UiUtils.AddText( parent, null, getString( R.string.open_tag_menu_hint ) ).setTextColor( Theme.GetTextColorReadInt() );
         final RadioGroup groupUrl = new RadioGroup(getContext() );
         //groupUrl.setGravity( Gravity.CENTER );
         parent.addView(groupUrl);

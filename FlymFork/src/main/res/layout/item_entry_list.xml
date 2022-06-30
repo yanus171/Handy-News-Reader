@@ -260,6 +260,7 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:visibility="gone"
         android:src="@drawable/ic_earth_gray" />
     <ImageView
         android:id="@+id/image2"
@@ -267,6 +268,7 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:visibility="gone"
         android:src="@drawable/ic_earth_gray" />
     <ImageView
         android:id="@+id/image3"
@@ -274,6 +276,7 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:visibility="gone"
         android:src="@drawable/ic_earth_gray" />
     <TextView
         android:id="@+id/textSource"
@@ -281,33 +284,59 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:letterSpacing="0.04"
         android:lineSpacingMultiplier="1.1"
-        android:maxLength="2500"
-        android:ellipsize="end"
+        android:ellipsize="none"
         android:focusable="true"
         android:justificationMode="inter_word"
         android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/dark_theme_color_unread"
         tools:targetApi="o" />
-    <TextView
-        android:id="@+id/textSourceReadMore"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/read_more"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/dark_theme_color_unread"
-        android:textIsSelectable="false" />
+        android:weightSum="0"
+        android:paddingTop="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textSourceOpenArticle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/open_article"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_theme_color_unread"
+            android:layout_marginLeft="15dp"
+            android:textIsSelectable="false"
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:visibility="visible"/>
+        <TextView
+            android:id="@+id/textSourceShowMore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/show_more"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_theme_color_unread"
+            android:layout_marginLeft="15dp"
+            android:textIsSelectable="false"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:visibility="visible"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/textTextPreview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:text="text Preivew"

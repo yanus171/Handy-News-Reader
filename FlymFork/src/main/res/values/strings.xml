@@ -491,7 +491,6 @@
     <string name="menu_copy_feed">Duplicate current feed</string>
     <string name="feed_copied">Feed is duplicated</string>
     <string name="menu_show_entry_text">Article text</string>
-    <string name="read_more">Read more …</string>
     <string name="cant_open_image">Can\'t open image</string>
     <string name="parsing_one_web_page">Page</string>
     <string name="end_editing">End editing</string>
@@ -668,4 +667,5 @@
     <string name="wrongFontFileSelected">"Fonts file should ends with ttf "</string>
     <string name="show_article_text_preview">Text preview</string>
     <string name="show_article_text_preview_descr">Show several first lines of article text</string>
+    <string name="show_more">Show more…</string>
 </resources>

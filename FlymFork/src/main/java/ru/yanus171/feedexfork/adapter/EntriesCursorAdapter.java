@@ -144,7 +144,7 @@ import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
-
+    private final int MAX_LINES_STEP = 50;
     public static final String STATE_TEXTSHOWN_ENTRY_ID = "STATE_TEXTSHOWN_ENTRY_ID";
     private final HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
@@ -155,7 +155,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final HomeActivity mActivity;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
-    private final static int MAX_TEXT_LEN = 2500;
     FeedFilters mFilters = null;
     public static final HashSet<String> mMarkAsReadList = new HashSet<>();
 
@@ -197,6 +196,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return EntryColumns.CONTENT_URI( id ); //ContentUris.withAppendedId(mUri, id);
     }
 
+    private static boolean HasMoreText( ViewHolder holder) {
+        return Build.VERSION.SDK_INT >= 16 && holder.textTextView.getLineCount() > holder.textTextView.getMaxLines();
+    }
 
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
@@ -216,6 +218,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.urlTextView = SetupSmallTextView(view, R.id.textUrl);
             holder.textPreviewTextView = SetupSmallTextView(view, R.id.textTextPreview);
             holder.textTextView = SetupTextView(view, R.id.textSource);
+            holder.textTextView.setMaxLines( MAX_LINES_STEP );
             if (mShowEntryText) {
                 holder.dateTextView = SetupSmallTextView(view, R.id.textDate);
             } else {
@@ -236,7 +239,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView1 = view.findViewById(R.id.image1);
             holder.contentImgView2 = view.findViewById(R.id.image2);
             holder.contentImgView3 = view.findViewById(R.id.image3);
-            holder.readMore = SetupTextView(view, R.id.textSourceReadMore);
+            holder.openArticle = SetupSmallTextView(view, R.id.textSourceOpenArticle);
+            holder.showMore = SetupSmallTextView(view, R.id.textSourceShowMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
             holder.categoriesTextView = SetupSmallTextView(view, R.id.textCategories);
             holder.labelTextView = SetupSmallTextView(view, R.id.textLabel);
@@ -245,9 +249,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
 
-            holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
-            holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
-            holder.readMore.setOnClickListener(view12 -> {
+            holder.openArticle.setTextColor( Theme.GetTextColorReadInt() );
+            holder.openArticle.setOnClickListener(view12 -> {
                 String searchText = "";
                 if ( holder.isTextShown() ) {
                     CharSequence text = holder.textTextView.getText();
@@ -261,10 +264,21 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             });
 
+            if ( Build.VERSION.SDK_INT >= 16 ) {
+                holder.showMore.setTextColor(Theme.GetTextColorReadInt());
+                holder.showMore.setOnClickListener(v -> {
+                    holder.textTextView.setMaxLines(holder.textTextView.getMaxLines() + MAX_LINES_STEP);
+                    holder.textTextView.invalidate();
+                });
+                holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener(
+                    () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ));
+            }
+
             holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                    holder.textTextView.setMaxLines( MAX_LINES_STEP );
                     if (shownId == holder.entryID) {
                         PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     } else {
@@ -294,7 +308,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel(5);
                     final ViewHolder holder = (ViewHolder) ((ViewGroup) v.getParent().getParent()).getTag(R.id.holder);
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Dog.v("onTouch ACTION_DOWN");
+                        //Dog.v("onTouch ACTION_DOWN");
                         paddingX = 0;
                         paddingY = 0;
                         initialx = (int) event.getX();
@@ -347,7 +361,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         currenty = (int) event.getY();
                         paddingX = currentx - initialx;
                         paddingY = currenty - initialy;
-                        Dog.v("onTouch ACTION_MOVE " + paddingX + ", " + paddingY);
+                        //Dog.v("onTouch ACTION_MOVE " + paddingX + ", " + paddingY);
 
                         //allow vertical scrolling
                         if ((initialx < minX * 2 || Math.abs(paddingY) > Math.abs(paddingX)) &&
@@ -370,7 +384,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         isPress = false;
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            Dog.v("onTouch ACTION_UP");
+                            //Dog.v("onTouch ACTION_UP");
                             if (mEntryActivityStartingStatus == 0 &&
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
@@ -384,7 +398,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
                                 toggleFavoriteState(view);
                         } else {
-                            Dog.v("onTouch ACTION_CANCEL");
+                            //Dog.v("onTouch ACTION_CANCEL");
                         }
                         paddingX = 0;
                         paddingY = 0;
@@ -443,7 +457,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     v.setPadding(Math.max(paddingX, 0), 0, paddingX < 0 ? -paddingX : 0, 0);
 
-                    Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold);
+                    //Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold);
                     return true;
                 }
 
@@ -651,13 +665,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView1.setVisibility( View.GONE );
         holder.contentImgView2.setVisibility( View.GONE );
         holder.contentImgView3.setVisibility( View.GONE );
-        holder.readMore.setVisibility( View.GONE );
+        holder.openArticle.setVisibility(View.GONE );
+        holder.showMore.setVisibility( View.GONE );
         if ( isTextShown ) {
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
-            SetupEntryText(holder, getBoldText(html), IsReadMore(html ) );
+            SetupEntryText(holder, getBoldText(html), NeedToOpenArticle( html ) || HasMoreText( holder ) );
             //holder.textTextView.setMovementMethod(LinkMovementMethod.getInstance());
             //final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
             //if ( html.contains( "<img" ) /*|| isMobilized*/ ) {
@@ -666,7 +681,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList);
                     SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList);
                     SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList);
-                    SetupEntryText(holder, content.mText, content.mIsReadMore);
+                    SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
                 } else if ( content == null ) {
                     content = new EntryContent();
                     content.mID = holder.entryID;
@@ -748,7 +763,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         String mHTML;
         boolean mIsLoaded = false;
         boolean mIsMobilized = false;
-        boolean mIsReadMore = false;
+        boolean mNeedToOpenArticle = false;
         boolean GetIsLoaded() {
             synchronized ( this ) {
                 return mIsLoaded;
@@ -778,8 +793,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                imagesToDl,
                                                mImageUrlList,
                                                3 );
+
             mText = getBoldText( GetHtmlAligned( temp ));
-            mIsReadMore = IsReadMore(temp);
+            mNeedToOpenArticle = NeedToOpenArticle(temp);
             synchronized ( this ) {
                 mIsLoaded = true;
             }
@@ -787,8 +803,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    private static boolean IsReadMore(String temp) {
-        return temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
+    private static boolean NeedToOpenArticle(String temp ) {
+        return temp.contains( "<img" );
     }
 
     private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
@@ -838,8 +854,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         //Linkify.addLinks(holder.textTextView, Linkify.ALL);
         //holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
         //holder.readMore.setText( isReadMore ? R.string.read_more : R.string.open_article );
-        holder.readMore.setText( R.string.read_more );
-        holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
+        holder.openArticle.setText( R.string.open_article );
+        holder.openArticle.setVisibility(isReadMore ? View.VISIBLE : View.GONE );
     }
 
     private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
@@ -923,7 +939,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
         parentView.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
         {
-            final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
+            final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetTextColorRead() );
             holder.imageSizeTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
             holder.categoriesTextView.setTextColor(color );
@@ -1139,7 +1155,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView contentImgView1;
         ImageView contentImgView2;
         ImageView contentImgView3;
-        TextView readMore;
+        TextView openArticle;
+        TextView showMore;
         boolean isRead;
         boolean isFavorite;
 
