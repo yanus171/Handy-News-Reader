@@ -642,4 +642,7 @@
     <string name="copy_to_downloads">Копіювати до Завантажень</string>
     <string name="sendErrorConfirm">Сталася помилка. Відправити її розробнику?</string>
     <string name="wrongFontFileSelected">"Файл шрифту має бути ttf "</string>
+    <string name="show_article_text_preview">Попередній перегляд тексту</string>
+    <string name="show_article_text_preview_descr">Показувати кілька перших рядків статті</string>
+    <string name="show_more">Показати ще…</string>
 </resources>
