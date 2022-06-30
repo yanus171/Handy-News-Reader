@@ -471,7 +471,6 @@
     <string name="menu_copy_feed">Zdubluj aktualny kanał</string>
     <string name="feed_copied">Kanał zdublowany</string>
     <string name="menu_show_entry_text">Tekst artykułu</string>
-    <string name="read_more">Czytaj więcej …</string>
     <string name="cant_open_image">Nie można otworzyć obrazka</string>
     <string name="parsing_one_web_page">Strona</string>
     <string name="end_editing">Koniec edycji</string>
