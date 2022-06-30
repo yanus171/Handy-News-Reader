@@ -640,4 +640,7 @@
     <string name="copy_to_downloads">复制到下载目录</string>
     <string name="sendErrorConfirm">操作过程中出现错误。将其发送给开发者吗？</string>
     <string name="wrongFontFileSelected">"字体文件名应该以 ttf 结尾 "</string>
+    <string name="show_article_text_preview">文本预览</string>
+    <string name="show_article_text_preview_descr">显示文章文本的开头几行</string>
+    <string name="show_more">显示更多…</string>
 </resources>
