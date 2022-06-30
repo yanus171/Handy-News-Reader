@@ -522,9 +522,10 @@ public class FetcherService extends IntentService {
                         else if (Constants.NOTIF_MGR != null)
                             Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
-                        mobilizeAllEntries( executor );
-
-                        downloadAllImages( executor );
+                        if ( isFromAutoRefresh || newCount > 0 ) {
+                            mobilizeAllEntries(executor);
+                            downloadAllImages(executor);
+                        }
                     } finally {
                         executor.shutdown();
                     }
