@@ -202,7 +202,6 @@
     <string name="one_webpage_text_classname_label">Text</string>
     <string name="one_webpage_image_url_classname_label">Bild-URL</string>
     <string name="articleCountLoaded">artiklar laddade</string>
-    <string name="read_more">Läs mer …</string>
     <string name="cant_open_image">Kan inte öppna bild</string>
     <string name="parsing_one_web_page">Sida</string>
     <string name="open_article">Öppna artikel</string>
