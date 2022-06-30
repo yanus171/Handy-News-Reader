@@ -461,7 +461,6 @@
     <string name="menu_copy_feed">تَكْرارُ التَّغْذِيَةِ الحاليَّةِ</string>
     <string name="feed_copied">تَمَّ تَكْرارُ التَّغْذِيَةِ</string>
     <string name="menu_show_entry_text">نَصُّ المَقالِ</string>
-    <string name="read_more">قِراءَةُ المَزيدِ …</string>
     <string name="cant_open_image">يَتَعَذَّرُ فَتْحُ الصّورَةِ</string>
     <string name="parsing_one_web_page">الصَّفْحَةُ</string>
     <string name="end_editing">إِنْهاءُ الوَضْعِ</string>
