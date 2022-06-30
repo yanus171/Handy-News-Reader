@@ -475,7 +475,6 @@
     <string name="menu_copy_feed">Aktuellen Feed duplizieren</string>
     <string name="feed_copied">Feed wurde dupliziert</string>
     <string name="menu_show_entry_text">Artikeltext</string>
-    <string name="read_more">Weiterlesen …</string>
     <string name="cant_open_image">Bild kann nicht geöffnet werden</string>
     <string name="parsing_one_web_page">Eine Webseite analysieren</string>
     <string name="end_editing">Bearbeiten beenden</string>
