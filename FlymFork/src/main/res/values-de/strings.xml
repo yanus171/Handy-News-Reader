@@ -635,6 +635,6 @@
     <string name="copy_to_downloads">In Downloads kopieren</string>
     <string name="sendErrorConfirm">Während des Vorgangs ist ein Fehler aufgetreten. Möchten Sie diesen an den Entwickler senden?</string>
     <string name="show_article_text_preview">Textvorschau</string>
-    <string name="show_article_text_preview_descr">Mehrere erste Zeilen des Artikeltextes anzeigen</string>
+    <string name="show_article_text_preview_descr">Einige Textzeilen des Artikelanfangs anzeigen</string>
     <string name="show_more">Mehr anzeigen …</string>
 </resources>
