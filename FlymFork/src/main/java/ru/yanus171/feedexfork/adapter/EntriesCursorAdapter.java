@@ -52,6 +52,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -59,8 +60,14 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.text.style.ImageSpan;
+import android.text.style.URLSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -89,6 +96,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -100,7 +108,6 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -131,19 +138,20 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
+    private static final String STATE_TEXT_LINE_COUNT_ENTRY_ID = "TEXT_LINE_COUNT_ENTRY_ID";
+    private static final String STATE_TEXT_LINE_COUNT = "TEXT_LINE_COUNT";
     private final int MAX_LINES_STEP = 50;
     public static final String STATE_TEXTSHOWN_ENTRY_ID = "STATE_TEXTSHOWN_ENTRY_ID";
     private final HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
@@ -218,7 +226,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.urlTextView = SetupSmallTextView(view, R.id.textUrl);
             holder.textPreviewTextView = SetupSmallTextView(view, R.id.textTextPreview);
             holder.textTextView = SetupTextView(view, R.id.textSource);
-            holder.textTextView.setMaxLines( MAX_LINES_STEP );
+
             if (mShowEntryText) {
                 holder.dateTextView = SetupSmallTextView(view, R.id.textDate);
             } else {
@@ -268,7 +276,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.showMore.setTextColor(Theme.GetTextColorReadInt());
                 holder.showMore.setOnClickListener(v -> {
                     holder.textTextView.setMaxLines(holder.textTextView.getMaxLines() + MAX_LINES_STEP);
-                    holder.textTextView.invalidate();
+                    PrefUtils.putInt( STATE_TEXT_LINE_COUNT, holder.textTextView.getMaxLines() );
+                    PrefUtils.putLong( STATE_TEXT_LINE_COUNT_ENTRY_ID, holder.entryID );
                 });
                 holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener(
                     () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ));
@@ -487,6 +496,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.urlTextView.setOnClickListener( manageLabels );
         holder.dateTextView.setOnClickListener( manageLabels );
         holder.authorTextView.setOnClickListener( manageLabels );
+
+        final int lineCount = holder.isTextShown() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt( STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
+        holder.textTextView.setMaxLines( lineCount );
 
         holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || EntryColumns.IsRead(cursor, mIsReadPos);
 
@@ -731,7 +743,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private Spanned getBoldText(String html) {
-        return Html.fromHtml(PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html );
+        String result = PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html;
+        return Html.fromHtml(result);
     }
 
     public static String CategoriesToOutput(String categories) {
@@ -846,14 +859,94 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         });
     }
 
+    protected void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span, final Context context)
+    {
+        int start = strBuilder.getSpanStart(span);
+        int end = strBuilder.getSpanEnd(span);
+        int flags = strBuilder.getSpanFlags(span);
+        ClickableSpan clickable = new ClickableSpan() {
+            public void onClick(View view) {
+                ShowLinkMenu(span.getURL(), strBuilder.subSequence(start, end ).toString(), context);
+            }
+        };
+        strBuilder.setSpan(clickable, start, end, flags);
+        strBuilder.removeSpan(span);
+    }
+
+    protected void SetTextViewHTMLWithLinks(TextView textView, Spanned spanned)
+    {
+        SpannableStringBuilder strBuilder = new SpannableStringBuilder(spanned);
+        URLSpan[] urls = strBuilder.getSpans(0, spanned.length(), URLSpan.class);
+        for(URLSpan span : urls)
+            makeLinkClickable(strBuilder, span, textView.getContext());
+        textView.setText(strBuilder);
+        //textView.setMovementMethod(LinkMovementMethod.getInstance());
+        //justify( textView );
+    }
+
+    public static void justify(final TextView textView) {
+
+        final AtomicBoolean isJustify = new AtomicBoolean(false);
+
+        final String textString = textView.getText().toString();
+
+        final TextPaint textPaint = textView.getPaint();
+
+        final SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        textView.post(new Runnable() {
+            @Override
+            public void run() {
+
+                if (!isJustify.get()) {
+
+                    final int lineCount = textView.getLineCount();
+                    final int textViewWidth = textView.getWidth();
+
+                    for (int i = 0; i < lineCount; i++) {
+
+                        int lineStart = textView.getLayout().getLineStart(i);
+                        int lineEnd = textView.getLayout().getLineEnd(i);
+
+                        String lineString = textString.substring(lineStart, lineEnd);
+
+                        if (i == lineCount - 1) {
+                            builder.append(new SpannableString(lineString));
+                            break;
+                        }
+
+                        String trimSpaceText = lineString.trim();
+                        String removeSpaceText = lineString.replaceAll(" ", "");
+
+                        float removeSpaceWidth = textPaint.measureText(removeSpaceText);
+                        float spaceCount = trimSpaceText.length() - removeSpaceText.length();
+
+                        float eachSpaceWidth = (textViewWidth - removeSpaceWidth) / spaceCount;
+
+                        SpannableString spannableString = new SpannableString(lineString);
+                        for (int j = 0; j < trimSpaceText.length(); j++) {
+                            char c = trimSpaceText.charAt(j);
+                            if (c == ' ') {
+                                Drawable drawable = new ColorDrawable(0x00ffffff);
+                                drawable.setBounds(0, 0, (int) eachSpaceWidth, 0);
+                                ImageSpan span = new ImageSpan(drawable);
+                                spannableString.setSpan(span, j, j + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+                        }
+
+                        builder.append(spannableString);
+                    }
+
+                    textView.setText(builder);
+                    isJustify.set(true);
+                }
+            }
+        });
+    }
+
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
-        //final String s = text.toString();
-//        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
+        //SetTextViewHTMLWithLinks(holder.textTextView, text );
         holder.textTextView.setText( text );
-        //holder.textTextView.setText( s.length() > MAX_TEXT_LEN ? s.substring( 0, MAX_TEXT_LEN ) + " ..." : s );
-        //Linkify.addLinks(holder.textTextView, Linkify.ALL);
-        //holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
-        //holder.readMore.setText( isReadMore ? R.string.read_more : R.string.open_article );
         holder.openArticle.setText( R.string.open_article );
         holder.openArticle.setVisibility(isReadMore ? View.VISIBLE : View.GONE );
     }

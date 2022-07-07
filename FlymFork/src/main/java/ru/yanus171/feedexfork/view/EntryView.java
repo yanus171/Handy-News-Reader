@@ -684,26 +684,6 @@ public class EntryView extends WebView implements Handler.Callback {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         getContext().startActivity(intent.setData(Uri.parse(url.replace(NO_MENU, ""))));
                     } else {
-                        final MenuItem itemTitle = new MenuItem(url);
-                        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(getContext(), EntryActivity.class).setData(Uri.parse(url)) );
-                        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)));
-                        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
-                            LabelVoc.INSTANCE.showDialog(getContext(), R.string.article_labels_setup_title, false, new HashSet<Long>(), null, (checkedLabels) -> {
-                                Intent intent_ = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
-                                ArrayList<String> list = new ArrayList<>();
-                                for (long labelID : checkedLabels)
-                                    list.add(String.valueOf(labelID));
-                                intent_.putStringArrayListExtra(EXTRA_LABEL_ID_LIST, list);
-                                getContext().startActivity(intent_);
-                                return null;
-                            }));
-                        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, new Intent(Intent.ACTION_VIEW, Uri.parse(url)) );
-                        final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
-                            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
-                                .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share)) );
-                        final MenuItem[] items = { itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare };
-                        final MenuItem[] itemsNoRead = { itemTitle, itemOpenLink, itemShare };
-
                         final String urlWithoutRegexSymbols =
                             url.replace( "/", "." ).
                                 replace( ":", "." ).
@@ -717,7 +697,7 @@ public class EntryView extends WebView implements Handler.Callback {
                         String title = matcher.find() ? Jsoup.parse(matcher.group(1 ) ).text() : url;
                         title = url.equals( title )  ? "" : title;
 
-                        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, getContext());
+                        ShowLinkMenu(url, title, context);
                     }
                  } catch ( ActivityNotFoundException e ) {
                      Toast.makeText(context, R.string.cant_open_link, Toast.LENGTH_SHORT).show();
@@ -827,6 +807,30 @@ public class EntryView extends WebView implements Handler.Callback {
 
         //setNestedScrollingEnabled( true );
         timer.End();
+    }
+
+    public static void ShowLinkMenu(String url, String title, Context context ) {
+        final MenuItem itemTitle = new MenuItem(url);
+        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)) );
+        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
+        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
+            LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<Long>(), null, (checkedLabels) -> {
+                Intent intent_ = new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
+                ArrayList<String> list = new ArrayList<>();
+                for (long labelID : checkedLabels)
+                    list.add(String.valueOf(labelID));
+                intent_.putStringArrayListExtra(EXTRA_LABEL_ID_LIST, list);
+                context.startActivity(intent_);
+                return null;
+            }));
+        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, new Intent(Intent.ACTION_VIEW, Uri.parse(url)) );
+        final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
+            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
+                .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share)) );
+        final MenuItem[] items = { itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare };
+        final MenuItem[] itemsNoRead = { itemTitle, itemOpenLink, itemShare };
+
+        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context);
     }
 
     public static void ShowImageMenu(String url, Context context) {
