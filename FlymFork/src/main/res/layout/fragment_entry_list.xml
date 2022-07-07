@@ -92,6 +92,7 @@
                             android:footerDividersEnabled="false" />
 
                         <include layout="@layout/brightness_slider_layout_left" />
+                        <include layout="@layout/brightness_slider_layout_right" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

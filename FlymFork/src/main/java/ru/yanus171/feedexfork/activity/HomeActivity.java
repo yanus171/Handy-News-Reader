@@ -743,6 +743,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     public void onStart() {
         super.onStart();
+        mBrightness.mTapAction = () -> PageUpDown(1);
     }
 
     @Override

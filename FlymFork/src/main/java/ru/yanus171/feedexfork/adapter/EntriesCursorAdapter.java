@@ -236,6 +236,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.imageSizeTextView = SetupSmallTextView(view, R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
             //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
+            holder.layoutControls = view.findViewById(R.id.layout_controls);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
@@ -283,7 +284,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ));
             }
 
-            holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
+            final View.OnClickListener collapseListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
@@ -297,7 +298,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     MainApplication.getContext().getContentResolver().notifyChange(mUri, null);//notifyDataSetChanged();
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 }
-            });
+            };
+            holder.collapsedBtn.setOnClickListener( collapseListener );
+            holder.categoriesTextView.setOnClickListener( collapseListener );
+            holder.layoutControls.setOnClickListener( collapseListener );
             view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
@@ -495,7 +499,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             null;
         holder.urlTextView.setOnClickListener( manageLabels );
         holder.dateTextView.setOnClickListener( manageLabels );
-        holder.authorTextView.setOnClickListener( manageLabels );
+        //holder.authorTextView.setOnClickListener( manageLabels );
 
         final int lineCount = holder.isTextShown() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt( STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
         holder.textTextView.setMaxLines( lineCount );
@@ -680,6 +684,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.openArticle.setVisibility(View.GONE );
         holder.showMore.setVisibility( View.GONE );
         if ( isTextShown ) {
+            holder.openArticle.setVisibility(View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
@@ -947,8 +952,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
         //SetTextViewHTMLWithLinks(holder.textTextView, text );
         holder.textTextView.setText( text );
-        holder.openArticle.setText( R.string.open_article );
-        holder.openArticle.setVisibility(isReadMore ? View.VISIBLE : View.GONE );
+        //holder.openArticle.setText( R.string.open_article );
+        //holder.openArticle.setVisibility(isReadMore ? View.VISIBLE : View.GONE );
     }
 
     private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
@@ -1223,6 +1228,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private static class ViewHolder {
         ProgressBar textSizeProgressBar;
+        View layoutControls;
         ImageView collapsedBtn;
         TextView titleTextView;
         TextView urlTextView;

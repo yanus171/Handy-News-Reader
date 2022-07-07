@@ -25,7 +25,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     private val mInfo: TextView? = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha : Float = 128F
     @kotlin.jvm.JvmField
-    var mTapAction: Runnable? = null
+    public var mTapAction: Runnable? = null
 
     init {
         mInfo?.visibility = View.GONE
