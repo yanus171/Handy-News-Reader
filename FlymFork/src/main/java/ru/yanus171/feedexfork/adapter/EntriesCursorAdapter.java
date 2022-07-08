@@ -172,6 +172,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
     public boolean mIsNewTask = false;
+    private boolean mNeedScrollToTopExpandedArticle = false;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, HomeActivity activity) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -281,24 +282,23 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     PrefUtils.putLong( STATE_TEXT_LINE_COUNT_ENTRY_ID, holder.entryID );
                 });
                 holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener(
-                    () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ));
+                    () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ) );
             }
 
-            final View.OnClickListener collapseListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
-                    holder.textTextView.setMaxLines( MAX_LINES_STEP );
-                    if (shownId == holder.entryID) {
-                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
-                    } else {
-                        SetIsRead(shownId, true, true);
-                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
-                    }
-                    MainApplication.getContext().getContentResolver().notifyChange(mUri, null);//notifyDataSetChanged();
+            final View.OnClickListener collapseListener = view13 -> {
+                final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                holder.textTextView.setMaxLines( MAX_LINES_STEP );
+                if (shownId == holder.entryID) {
+                    PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                } else {
+                    SetIsRead(holder.entryID, true, true);
+                    PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+                    mNeedScrollToTopExpandedArticle = true;
                 }
+                MainApplication.getContext().getContentResolver().notifyChange(mUri, null );
             };
+
             holder.collapsedBtn.setOnClickListener( collapseListener );
             holder.categoriesTextView.setOnClickListener( collapseListener );
             holder.layoutControls.setOnClickListener( collapseListener );
@@ -699,12 +699,21 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList);
                     SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList);
                     SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
+                    if ( mNeedScrollToTopExpandedArticle ) {
+                        mNeedScrollToTopExpandedArticle = false;
+                        UiUtils.RunOnGuiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+                            }
+                        }, 100);
+                    }
                 } else if ( content == null ) {
                     content = new EntryContent();
                     content.mID = holder.entryID;
                     content.mHTML = html;
                     if ( mFilters != null )
-                        content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );;
+                        content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );
                     content.mIsMobilized = false;//isMobilized;
                     content.mLink = holder.entryLink;
                     mContentVoc.put( holder.entryID, content );
@@ -753,7 +762,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     public static String CategoriesToOutput(String categories) {
-        return TextUtils.join(", ", TextUtils.split(categories, CATEGORY_LIST_SEP) );
+        String[] list = TextUtils.split(categories, CATEGORY_LIST_SEP);
+        for ( int i = 0; i < list.length; i++ )
+            list[i] = "#" + list[i];
+        return TextUtils.join(", ", list );
     }
 
     @NotNull
@@ -1065,12 +1077,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( holder.isRead && mShowUnread ) {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
-                        .setAction(R.string.undo, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                SetIsRead(holder.entryID, false, false);
-                            }
-                        });
+                        .setAction(R.string.undo, v -> SetIsRead(holder.entryID, false, false));
                 snackbar.getView().setBackgroundResource(R.color.material_grey_900);
                 snackbar.show();
             }
