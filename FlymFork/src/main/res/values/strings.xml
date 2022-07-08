@@ -490,7 +490,7 @@
     <string name="next_page_max_count_classname">Max page count to process</string>
     <string name="menu_copy_feed">Duplicate current feed</string>
     <string name="feed_copied">Feed is duplicated</string>
-    <string name="menu_show_entry_text">Article text</string>
+    <string name="menu_show_entry_text">Article\'s texts</string>
     <string name="cant_open_image">Can\'t open image</string>
     <string name="parsing_one_web_page">Page</string>
     <string name="end_editing">End editing</string>

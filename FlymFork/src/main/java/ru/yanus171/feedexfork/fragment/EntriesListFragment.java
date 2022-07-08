@@ -309,9 +309,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null ) {
             int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             item.setVisible( uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
-            mMenu.findItem(R.id.menu_show_entry_text).setVisible(uriMatch != FeedDataContentProvider.URI_ENTRIES &&
+            mMenu.findItem(R.id.menu_show_entry_text).setVisible( uriMatch != FeedDataContentProvider.URI_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
                     uriMatch != FeedDataContentProvider.URI_FAVORITES );
+            mMenu.findItem( R.id.menu_show_entry_text ).setChecked( mShowTextInEntryList );
         }
 
         boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
@@ -834,10 +835,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_show_entry_text: {
                 if ( IsFeedUri( mCurrentUri) ) {
+                    mShowTextInEntryList = !mShowTextInEntryList;
+                    item.setChecked( mShowTextInEntryList );
                     final String feedID = mCurrentUri.getPathSegments().get(1);
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     ContentValues values = new ContentValues();
-                    mShowTextInEntryList = !mShowTextInEntryList;
                     values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
                     cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
                     setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
