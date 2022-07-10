@@ -668,4 +668,10 @@
     <string name="show_article_text_preview">Text preview</string>
     <string name="show_article_text_preview_descr">Show several first lines of article text</string>
     <string name="show_more">Show more…</string>
+    <string name="appListLoading">Application list loading</string>
+    <string name="open_image_tap_action">Open image application</string>
+    <string name="open_link_in_browser_tap_action">Browser application</string>
+    <string name="open_image_tap_action_descr">The show image app that will be used directly, to do not waste time on system app select dialog</string>
+    <string name="open_link_in_browser_tap_action_descr">The browser app that will be used directly, to do not waste time on system app select dialog</string>
+    <string name="not_selected">Not selected</string>
 </resources>

@@ -93,7 +93,6 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
-import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
@@ -430,7 +429,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         } else if ( IsRememberLast()  ) {
             String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
             if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
-                startActivity(GetActionIntent( Intent.ACTION_VIEW, Uri.parse(lastUri) ));
+                startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, Uri.parse(lastUri) ));
             }
         }
 

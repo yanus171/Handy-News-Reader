@@ -108,6 +108,7 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -129,7 +130,6 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
@@ -838,7 +838,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
-        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
+        context.startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
                                    .putExtra( "SCROLL_TEXT", searchText )
                                    .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
                                    .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));

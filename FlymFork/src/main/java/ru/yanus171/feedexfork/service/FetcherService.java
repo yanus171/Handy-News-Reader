@@ -504,7 +504,7 @@ public class FetcherService extends IntentService {
 
                                     ShowEventNotification(item.mCaption,
                                                           R.string.markedAsStarred,
-                                                          GetActionIntent( Intent.ACTION_VIEW, entryUri),
+                                                          GetEntryActivityIntent(Intent.ACTION_VIEW, entryUri),
                                                           ID, createCancelStarPI( item.mLink, ID ));
                                 }
                             if ( isFromAutoRefresh ) {
@@ -996,7 +996,7 @@ public class FetcherService extends IntentService {
     public static Intent GetActionIntent( String action, Uri uri, Class<?> class1 ) {
         return new Intent(action, uri).setPackage( getContext().getPackageName() ).setClass( getContext(), class1 );
     }
-    public static Intent GetActionIntent( String action, Uri uri ) {
+    public static Intent GetEntryActivityIntent(String action, Uri uri ) {
         return GetActionIntent( action, uri, EntryActivity.class );
     }
     public static Intent GetIntent( String extra ) {

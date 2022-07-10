@@ -653,6 +653,16 @@
             android:entryValues="@array/settings_datetime_format_values"
             android:key="datetime_format"
             android:title="@string/settings_datetime_format"/>
+        <ru.yanus171.feedexfork.widget.AppSelectPreference
+            android:defaultValue="noApp"
+            android:key="openImageTapAction"
+            android:title="@string/open_image_tap_action"
+            android:summary="@string/open_image_tap_action_descr"/>
+        <ru.yanus171.feedexfork.widget.AppSelectPreference
+            android:defaultValue="noApp"
+            android:key="openLinkInBrowserTapAction"
+            android:title="@string/open_link_in_browser_tap_action"
+            android:summary="@string/open_link_in_browser_tap_action_descr"/>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

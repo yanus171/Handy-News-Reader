@@ -89,6 +89,8 @@ import ru.yanus171.feedexfork.provider.FeedData.FilterColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.*
+import ru.yanus171.feedexfork.widget.AppSelectPreference
+import ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -798,7 +800,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                         intent.putExtra(SearchManager.QUERY, mUrlEditText.text)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     } else if (Intent.ACTION_VIEW == dataItem[ITEM_ACTION]) {
-                        intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        intent = GetShowInBrowserIntent( url );
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
                         intent = Intent(this@EditFeedActivity, EntryActivity::class.java)

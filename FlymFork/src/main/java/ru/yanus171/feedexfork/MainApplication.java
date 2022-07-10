@@ -33,13 +33,9 @@ import android.os.StrictMode;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.activity.EditFeedActivity;
-import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
@@ -49,10 +45,9 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.FileVoc;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.widget.AppSelectPreference;
 
 
-import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
@@ -78,6 +73,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        AppSelectPreference.Init();
         Status();
         mImageFileVoc = new FileVoc(FileUtils.INSTANCE.GetImagesFolder() );
         mHTMLFileVoc = new FileVoc(FileUtils.INSTANCE.GetHTMLFolder() );

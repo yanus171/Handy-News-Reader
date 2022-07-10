@@ -652,4 +652,10 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="show_article_text_preview">Предпросмотр текста</string>
     <string name="show_article_text_preview_descr">Показывать несколь первых строк текста статьи</string>
     <string name="show_more">Дальше…</string>
+    <string name="appListLoading">Загружается список приложений…</string>
+    <string name="open_image_tap_action">Приложение просмотра картинок</string>
+    <string name="open_link_in_browser_tap_action">Приложение браузер</string>
+    <string name="open_image_tap_action_descr">Приложение просмотра картинок, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
+    <string name="open_link_in_browser_tap_action_descr">Приложение браузер, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
+    <string name="not_selected">Не выбрано</string>
 </resources>

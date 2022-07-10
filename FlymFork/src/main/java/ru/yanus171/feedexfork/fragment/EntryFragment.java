@@ -131,12 +131,10 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
-import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
@@ -147,8 +145,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
+import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -666,7 +664,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_toggle_theme: {
                     mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos();
-                    PrefUtils.ToogleTheme(GetActionIntent( Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
+                    PrefUtils.ToogleTheme(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
                     return true;
                 }
 
@@ -742,9 +740,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_open_link: {
-                    Uri uri = Uri.parse( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) );
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri );
-                    getActivity().startActivity(intent);
+                    getActivity().startActivity(GetShowInBrowserIntent( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) ));
                     break;
                 }
 

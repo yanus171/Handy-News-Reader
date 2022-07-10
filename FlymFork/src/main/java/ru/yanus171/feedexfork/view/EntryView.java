@@ -46,20 +46,15 @@ package ru.yanus171.feedexfork.view;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -69,19 +64,14 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -136,9 +126,9 @@ import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCou
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_HIDDEN;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
@@ -147,9 +137,9 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetPackageNameForAction;
+import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.widget.FontSelectPreference.DefaultFontFamily;
 import static ru.yanus171.feedexfork.widget.FontSelectPreference.GetTypeFaceLocalUrl;
 
@@ -681,8 +671,7 @@ public class EntryView extends WebView implements Handler.Callback {
                             mHistoryAchorScrollY.push(getScrollY());
                         }
                     } else if (url.contains(NO_MENU)) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        getContext().startActivity(intent.setData(Uri.parse(url.replace(NO_MENU, ""))));
+                        getContext().startActivity(GetShowInBrowserIntent(url.replace(NO_MENU, "")));
                     } else {
                         final String urlWithoutRegexSymbols =
                             url.replace( "/", "." ).
@@ -823,7 +812,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 context.startActivity(intent_);
                 return null;
             }));
-        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, new Intent(Intent.ACTION_VIEW, Uri.parse(url)) );
+        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(url) );
         final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
             new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
                 .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share)) );
@@ -835,7 +824,6 @@ public class EntryView extends WebView implements Handler.Callback {
 
     public static void ShowImageMenu(String url, Context context) {
         final MenuItem[] items = {
-            new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) ),
             new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
             new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
                 File file = new File(url.replace(Constants.FILE_SCHEME, ""));
@@ -846,7 +834,8 @@ public class EntryView extends WebView implements Handler.Callback {
                 } catch ( IOException e  ) {
                     Toast.makeText(context, context.getString(R.string.unableToCopyFile, destFile ), Toast.LENGTH_LONG ).show();
                 }
-            })
+            }),
+            new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
         };
         ShowMenu(items, null, context );
     }
@@ -886,6 +875,9 @@ public class EntryView extends WebView implements Handler.Callback {
             Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "image/*");
+            final String packageName = GetPackageNameForAction( "openImageTapAction" );
+            if ( packageName != null )
+                intent.setPackage(packageName);
             context.startActivity(intent);
         } catch ( Exception e ) {
             e.printStackTrace();

@@ -17,6 +17,18 @@
     <permission
         android:name="ru.yanus171.feedexfork.provider.WRITE_PERMISSION"
         android:protectionLevel="signature" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="image/*" />
+<!--            <action android:name="android.intent.action.MAIN" />-->
+<!--            <category android:name="android.intent.category.LAUNCHER" />-->
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
 
     <application
         android:name=".MainApplication"
