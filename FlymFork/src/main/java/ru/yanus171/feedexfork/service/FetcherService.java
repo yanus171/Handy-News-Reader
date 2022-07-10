@@ -176,6 +176,8 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChan
 import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
@@ -502,7 +504,7 @@ public class FetcherService extends IntentService {
 
                                     ShowEventNotification(item.mCaption,
                                                           R.string.markedAsStarred,
-                                                          GetActionIntent( Intent.ACTION_VIEW, entryUri),
+                                                          GetEntryActivityIntent(Intent.ACTION_VIEW, entryUri),
                                                           ID, createCancelStarPI( item.mLink, ID ));
                                 }
                             if ( isFromAutoRefresh ) {
@@ -520,9 +522,10 @@ public class FetcherService extends IntentService {
                         else if (Constants.NOTIF_MGR != null)
                             Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
-                        mobilizeAllEntries( executor );
-
-                        downloadAllImages( executor );
+                        if ( isFromAutoRefresh || newCount > 0 ) {
+                            mobilizeAllEntries(executor);
+                            downloadAllImages(executor);
+                        }
                     } finally {
                         executor.shutdown();
                     }
@@ -830,7 +833,7 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    connection = new Connection( linkToLoad );
+                    connection = new Connection( linkToLoad, OKHTTP );
 
                     String mobilizedHtml;
                     Status().ChangeProgress(R.string.extractContent);
@@ -846,7 +849,7 @@ public class FetcherService extends IntentService {
                                 String s = el.attr("content");
                                 link = s.replaceFirst("\\d+;URL=", "");
                                 connection.disconnect();
-                                connection = new Connection(link);
+                                connection = new Connection(link, OKHTTP);
                                 doc = Jsoup.parse(connection.getInputStream(), null, "");
                                 break;
                             }
@@ -993,7 +996,7 @@ public class FetcherService extends IntentService {
     public static Intent GetActionIntent( String action, Uri uri, Class<?> class1 ) {
         return new Intent(action, uri).setPackage( getContext().getPackageName() ).setClass( getContext(), class1 );
     }
-    public static Intent GetActionIntent( String action, Uri uri ) {
+    public static Intent GetEntryActivityIntent(String action, Uri uri ) {
         return GetActionIntent( action, uri, EntryActivity.class );
     }
     public static Intent GetIntent( String extra ) {
@@ -1552,8 +1555,7 @@ public class FetcherService extends IntentService {
         return content;
     }
 
-    private static String ToString (Reader reader ) throws
-        IOException {
+    private static String ToString (Reader reader ) {
 
         Scanner scanner = new Scanner(reader).useDelimiter("\\A");
         String content = scanner.hasNext() ? scanner.next() : "";
@@ -1591,7 +1593,7 @@ public class FetcherService extends IntentService {
         ContentResolver cr = getContext().getContentResolver();
         try {
 
-            connection = new Connection( feedUrl);
+            connection = new Connection( feedUrl, OKHTTP);
             String contentType = connection.getContentType();
             int fetchMode = cursor.getInt(fetchModePosition);
 
@@ -1626,7 +1628,7 @@ public class FetcherService extends IntentService {
                     String xmlDescription = new String(chars, 0, length);
 
                     connection.disconnect();
-                    connection = new Connection(feedUrl);
+                    connection = new Connection(feedUrl, OKHTTP);
 
                     int start = xmlDescription.indexOf(ENCODING);
 
@@ -1658,6 +1660,18 @@ public class FetcherService extends IntentService {
 
             InputStream inputStream = connection.getInputStream();
 
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            String xmlText = ReadAll(inputStream, outputStream);
+
+            if ( xmlText.isEmpty() ) {
+                connection.disconnect();
+                connection = new Connection( feedUrl, NATIVE );
+                inputStream = connection.getInputStream();
+
+                outputStream = new ByteArrayOutputStream();
+                xmlText = ReadAll(inputStream, outputStream);
+            }
+
             switch (fetchMode) {
                 default:
                 case FETCHMODE_DIRECT: {
@@ -1678,19 +1692,8 @@ public class FetcherService extends IntentService {
                     }
                     break;
                 }
+
                 case FETCHMODE_REENCODE: {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-                    byte[] byteBuffer = new byte[4096];
-
-                    int n;
-                    while ((n = inputStream.read(byteBuffer)) > 0) {
-                        FetcherService.Status().AddBytes(n);
-                        outputStream.write(byteBuffer, 0, n);
-                    }
-
-                    String xmlText = outputStream.toString().trim();
-
                     int start = xmlText != null ? xmlText.indexOf(ENCODING) : -1;
 
                     if (start > -1) {
@@ -1765,6 +1768,19 @@ public class FetcherService extends IntentService {
             }
         }
         return handler != null ? handler.getNewCount() : 0;
+    }
+
+    @NotNull
+    private String ReadAll(InputStream inputStream, ByteArrayOutputStream outputStream) throws IOException {
+        String xmlText;
+        byte[] byteBuffer = new byte[4096];
+        int n;
+        while ((n = inputStream.read(byteBuffer)) > 0) {
+            FetcherService.Status().AddBytes(n);
+            outputStream.write(byteBuffer, 0, n);
+        }
+        xmlText = outputStream.toString().trim();
+        return xmlText;
     }
 
     private static void parseXml( InputStream in, Xml.Encoding encoding, ContentHandler contentHandler) throws IOException, SAXException {

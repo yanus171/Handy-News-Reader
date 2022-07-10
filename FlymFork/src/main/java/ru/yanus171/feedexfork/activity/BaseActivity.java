@@ -18,7 +18,6 @@
  */
 package ru.yanus171.feedexfork.activity;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -36,11 +35,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.text.DateFormatSymbols;
@@ -50,6 +46,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.ReadingService;
 import ru.yanus171.feedexfork.utils.Brightness;
@@ -73,6 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int PAGE_SCROLL_DURATION_MSEC = 450;
     private int mLastMax = 0;
     private int mLastProgress = 0;
+    private int mLastStep = 0;
     public ProgressBar mProgressBarRefresh = null;
     private static int mActivityCount = 0;
 
@@ -193,7 +191,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             else
                 getSupportActionBar().show();
         }
-        UpdateHeader( mLastMax, mLastProgress, statusBarHidden, actionBarHidden );
+        UpdateHeader(mLastMax, mLastProgress, mLastStep, statusBarHidden, actionBarHidden);
         invalidateOptionsMenu();
     }
 
@@ -202,17 +200,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView mLabelClock = null;
     private TextView mLabelBattery = null;
     private TextView mLabelDate = null;
+    private TextView mLabelRemaining = null;
     public View mRootView = null;
 
-    public void UpdateHeaderProgressOnly(int max, int progress) {
+    public void UpdateHeaderProgressOnly(int max, int progress, int step) {
         if ( mProgressBar == null )
             return;
         mProgressBar.setMax( max );
         mLastMax = max;
         mLastProgress = progress;
+        mLastStep = step;
         mProgressBar.setProgress( progress );
     }
-    public void UpdateHeader(int max, int progress, boolean isStatusBarHidden, boolean isToolBarHidden) {
+    public void UpdateHeader(int max, int progress, int step, boolean isStatusBarHidden, boolean isToolBarHidden) {
         if ( mRootView == null )
             return;
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null ) {
@@ -225,6 +225,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             mLabelBattery.setText( "" );
             mLabelDate = UiUtils.SetupSmallTextView(mRootView, R.id.textDate);
             mLabelDate.setText( "" );
+            mLabelRemaining = UiUtils.SetupSmallTextView(mRootView, R.id.textRemaining);
+            mLabelRemaining.setText( "" );
+
         }
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null )
             return;
@@ -235,6 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressBar.setMax( max );
             mLastMax = max;
             mLastProgress = progress;
+            mLastStep = step;
             mProgressBar.setProgress( progress );
             ( (LinearLayout) mProgressBar.getParent() ).setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
             String color = Theme.GetColor( "article_text_footer_progress_color", R.string.default_article_text_footer_color);
@@ -246,6 +250,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         isLayoutVisible = SetupHeaderLabel(mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible);
         isLayoutVisible = SetupHeaderLabel(mLabelBattery, GetBatteryText(), "article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
         isLayoutVisible = SetupHeaderLabel(mLabelDate, GetDateText(), "article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel(mLabelRemaining, GetRemainingText( progress, max, step ), "article_text_footer_show_remaining", isStatusBarHidden, isLayoutVisible);
         mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
         {
             final int color = !isToolBarHidden ? Theme.GetToolBarColorInt() :Color.TRANSPARENT;
@@ -286,6 +291,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         final String week = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
         final int day = cal.get(Calendar.DAY_OF_MONTH);
         return String.format( "%d %s", day, week  );
+    }
+    private String GetRemainingText( int value, int max, int step ) {
+        if ( step == 0 )
+            return "";
+        if ( value < 0 )
+            return "";
+        final int result = (max - value) / step;
+        if ( result <= 0 )
+            return "";
+        return String.format("+%d", result);
     }
     protected TextView SetupTextView(int id) {
         TextView result = findViewById(id);

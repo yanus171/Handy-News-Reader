@@ -17,10 +17,14 @@
         android:id="@+id/menu_mark_as_unread"
         android:icon="@drawable/ic_check_box"
         android:title="@string/menu_mark_as_unread" />
+<!--    <item-->
+<!--        android:id="@+id/menu_add_feed"-->
+<!--        android:icon="@drawable/ic_add_circle_outline"-->
+<!--        android:title="@string/menu_add_feed" />-->
     <item
-        android:id="@+id/menu_add_feed"
+        android:id="@+id/menu_article_web_search"
         android:icon="@drawable/ic_add_circle_outline"
-        android:title="@string/menu_add_feed" />
+        android:title="@string/menu_article_web_search" />
     <item
         android:id="@+id/menu_go_back"
         android:icon="@drawable/ic_arrow_back"

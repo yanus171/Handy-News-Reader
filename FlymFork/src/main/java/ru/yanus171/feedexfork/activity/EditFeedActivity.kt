@@ -74,6 +74,8 @@ import com.bumptech.glide.Glide
 import org.json.JSONException
 import org.json.JSONObject
 import ru.yanus171.feedexfork.Constants
+import ru.yanus171.feedexfork.Constants.HTTPS_SCHEME
+import ru.yanus171.feedexfork.Constants.HTTP_SCHEME
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
@@ -87,6 +89,8 @@ import ru.yanus171.feedexfork.provider.FeedData.FilterColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.*
+import ru.yanus171.feedexfork.widget.AppSelectPreference
+import ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -676,8 +680,15 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         if (IsAdd()) PrefUtils.putInt(STATE_LAST_LOAD_TYPE, mLoadTypeRG.checkedRadioButtonId)
         if ( this is ArticleWebSearchActivity ) {
             PrefUtils.putString(STATE_WEB_SEARCH_TEXT, mUrlEditText.text.toString())
-            val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
-            AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
+            if ( urlOrSearch.startsWith( HTTP_SCHEME ) || urlOrSearch.startsWith( HTTPS_SCHEME ) ) {
+                intent = Intent(this@EditFeedActivity, EntryActivity::class.java)
+                intent.data = Uri.parse(urlOrSearch)
+                intent.putExtra( NEW_TASK_EXTRA, true )
+                this@EditFeedActivity.startActivity(intent)
+            } else {
+                val loader = GetWebSearchDuckDuckGoResultsLoader(this@EditFeedActivity, urlOrSearch)
+                AddFeedFromUserSelection("", "${getString(R.string.web_page_search_duckduckgo)}\n${loader.mUrl}".trimIndent(), loader)
+            }
         } else {
             val name = mNameEditText.text.toString().trim { it <= ' ' }
             if (!urlOrSearch.toLowerCase().contains("www") &&
@@ -789,7 +800,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                         intent.putExtra(SearchManager.QUERY, mUrlEditText.text)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     } else if (Intent.ACTION_VIEW == dataItem[ITEM_ACTION]) {
-                        intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        intent = GetShowInBrowserIntent( url );
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
                         intent = Intent(this@EditFeedActivity, EntryActivity::class.java)

@@ -32,15 +32,9 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/menu_show_entry_text"
-                android:icon="@drawable/ic_receipt"
-                android:visible="false"
-                android:title="@string/menu_show_entry_text" />
-            <item
-                android:id="@+id/menu_toggle_theme"
-                android:icon="@drawable/ic_style"
-                android:visible="true"
-                android:title="@string/menu_toggle_theme"/>
+                android:id="@+id/menu_article_web_search"
+                android:icon="@drawable/ic_add_circle_outline"
+                android:title="@string/menu_article_web_search" />
             <item
                 android:id="@+id/menu_delete_old"
                 android:icon="@drawable/ic_delete"
@@ -50,18 +44,25 @@
                 android:icon="@drawable/ic_sync"
                 android:title="@string/create_start_auto_refersh"/>
             <item
-                android:id="@+id/menu_edit_feed"
-                android:icon="@drawable/ic_edit"
-                android:title="@string/menu_edit_feed"/>
+                android:id="@+id/menu_show_entry_text"
+                android:icon="@drawable/ic_receipt"
+                android:visible="false"
+                android:checkable="true"
+                android:title="@string/menu_show_entry_text" />
+            <item
+                android:id="@+id/menu_show_article_text_preview_toggle"
+                android:icon="@drawable/ic_receipt"
+                android:checkable="true"
+                android:title="@string/show_article_text_preview"/>
+            <item
+                android:id="@+id/menu_show_article_category_toggle"
+                android:checkable="true"
+                android:title="@string/show_article_category"/>
             <item
                 android:id="@+id/menu_show_article_url_toggle"
                 android:icon="@drawable/ic_http"
                 android:checkable="true"
                 android:title="@string/show_article_url"/>
-            <item
-                android:id="@+id/menu_show_article_category_toggle"
-                android:checkable="true"
-                android:title="@string/show_article_category"/>
             <item
                 android:id="@+id/menu_reset_feed_and_delete_all_articles"
                 android:icon="@drawable/ic_delete"
@@ -78,6 +79,10 @@
                         android:id="@+id/menu_mark_all_as_read"
                         android:icon="@drawable/ic_done_all"
                         android:title="@string/markAllAsRead"/>
+                    <item
+                        android:id="@+id/menu_mark_all_as_unread"
+                        android:icon="@drawable/ic_done_all"
+                        android:title="@string/menu_mark_all_as_unread"/>
                     <item
                         android:id="@+id/menu_reload_all_texts"
                         android:title="@string/menu_reload_all_texts"/>
@@ -100,6 +105,14 @@
                         android:id="@+id/menu_copy_feed"
                         android:icon="@drawable/ic_content_copy"
                         android:title="@string/menu_copy_feed"/>
+                    <item
+                        android:id="@+id/menu_add_feed"
+                        android:icon="@drawable/ic_add_circle_outline"
+                        android:title="@string/menu_add_feed" />
+                    <item
+                        android:id="@+id/menu_edit_feed"
+                        android:icon="@drawable/ic_edit"
+                        android:title="@string/menu_edit_feed"/>
                     <item
                         android:id="@+id/menu_show_progress_info"
                         android:icon="@drawable/ic_info_outline"

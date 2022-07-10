@@ -3,6 +3,7 @@ package ru.yanus171.feedexfork.parser
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -13,7 +14,6 @@ import android.widget.Toast
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.utils.DebugApp
-import ru.yanus171.feedexfork.utils.UiUtils
 import java.io.*
 import java.util.*
 
@@ -86,34 +86,39 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
             }
             return result
         }
-
+        fun copyFile( source: String, destFileName: String, isSourceUri: Boolean, context: Context ): Boolean {
+            return if (isSourceUri)
+                copyFile(Uri.parse(source), destFileName, context)
+            else
+                copyFile(source, destFileName, context)
+        }
         // ----------------------------------------------------------------
         @SuppressLint("NewApi")
-        fun copyFile(sourcePath: String?, destPath: String?): Boolean {
+        fun copyFile(sourcePath: String?, destPath: String?, context: Context): Boolean {
             var result = false
-            val sd = Environment.getExternalStorageDirectory()
-            if (sd.canWrite()) {
+            //val sd = Environment.getExternalStorageDirectory()
+            //if (sd.canWrite()) {
                 try {
                     val src = File(sourcePath)
                     val dest = File(destPath)
                     if (!dest.exists()) {
                         dest.createNewFile()
                     }
-                    if (src.exists()) {
+                    //if (src.exists()) {
                         FileInputStream(src).channel.use { inChannel -> FileOutputStream(dest).channel.use { outChannel -> result = inChannel.transferTo(0, inChannel.size(), outChannel) == inChannel.size() } }
-                    }
+                    //}
                     dest.setReadable(true, false)
                 } catch (e: IOException) {
-                    DebugApp.AddErrorToLog(null, e)
+                    DebugApp.ShowError( null, e, context )
                 }
-            }
+            //}
             val s = String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourcePath)
             Toast.makeText(MainApplication.getContext(), s, Toast.LENGTH_LONG).show()
             return result
         }
 
         // ----------------------------------------------------------------
-        fun copyFile(sourceUri: Uri, destPath: String?): Boolean {
+        fun copyFile(sourceUri: Uri, destPath: String?, context: Context): Boolean {
             var result = false
             try {
                 MainApplication.getContext().contentResolver.openInputStream(sourceUri).use { inputStream ->
@@ -131,7 +136,7 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
                     }
                 }
             } catch (e: IOException) {
-                DebugApp.AddErrorToLog(null, e)
+                DebugApp.ShowError( null, e, context )
             }
             Toast.makeText(MainApplication.getContext(),
                     String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),

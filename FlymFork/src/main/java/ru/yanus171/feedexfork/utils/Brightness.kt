@@ -25,7 +25,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     private val mInfo: TextView? = rootView.findViewById(R.id.brightnessInfo)
     var mCurrentAlpha : Float = 128F
     @kotlin.jvm.JvmField
-    var mTapAction: Runnable? = null
+    public var mTapAction: Runnable? = null
 
     init {
         mInfo?.visibility = View.GONE
@@ -59,7 +59,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                             mInitialAlpha = mCurrentAlpha
                             //view1.parent.requestDisallowInterceptTouchEvent(false)
 
-                            Dog.v("onTouch ACTION_DOWN")
+                            //Dog.v("onTouch ACTION_DOWN")
                             return true
                         }
                         event.action == MotionEvent.ACTION_MOVE -> {
@@ -79,7 +79,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                                     currentAlpha = 255F
                                 else if (currentAlpha < 1)
                                     currentAlpha = 1F
-                                Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
+                                //Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
                                 setBrightness(currentAlpha)
                                 mInfo?.visibility = View.VISIBLE
                                 mInfo?.text = String.format("%s: %.1f %%",

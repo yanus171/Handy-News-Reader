@@ -42,7 +42,7 @@ public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) 
 
     init {
         if (mColor.isNullOrEmpty())
-            mColor = Theme.GetColor(Theme.TEXT_COLOR_READ, R.string.default_read_color)
+            mColor = Theme.GetTextColorRead()
     }
 
     constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3))

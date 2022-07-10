@@ -49,12 +49,10 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -62,21 +60,25 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.text.style.ImageSpan;
+import android.text.style.URLSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
@@ -90,11 +92,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -106,7 +108,7 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -116,6 +118,7 @@ import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
+import ru.yanus171.feedexfork.view.MenuItem;
 
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
@@ -127,27 +130,29 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
+import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
-
+    private static final String STATE_TEXT_LINE_COUNT_ENTRY_ID = "TEXT_LINE_COUNT_ENTRY_ID";
+    private static final String STATE_TEXT_LINE_COUNT = "TEXT_LINE_COUNT";
+    private final int MAX_LINES_STEP = 50;
     public static final String STATE_TEXTSHOWN_ENTRY_ID = "STATE_TEXTSHOWN_ENTRY_ID";
     private final HashMap<Long, EntryContent> mContentVoc = new HashMap<>();
     private final Uri mUri;
@@ -158,7 +163,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final HomeActivity mActivity;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
-    private final static int MAX_TEXT_LEN = 2500;
     FeedFilters mFilters = null;
     public static final HashSet<String> mMarkAsReadList = new HashSet<>();
 
@@ -168,6 +172,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
     public boolean mIsNewTask = false;
+    private boolean mNeedScrollToTopExpandedArticle = false;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, HomeActivity activity) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -200,6 +205,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return EntryColumns.CONTENT_URI( id ); //ContentUris.withAppendedId(mUri, id);
     }
 
+    private static boolean HasMoreText( ViewHolder holder) {
+        return Build.VERSION.SDK_INT >= 16 && holder.textTextView.getLineCount() > holder.textTextView.getMaxLines();
+    }
 
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
@@ -217,7 +225,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             final ViewHolder holder = new ViewHolder();
             holder.titleTextView = SetupTextView(view, android.R.id.text1);
             holder.urlTextView = SetupSmallTextView(view, R.id.textUrl);
+            holder.textPreviewTextView = SetupSmallTextView(view, R.id.textTextPreview);
             holder.textTextView = SetupTextView(view, R.id.textSource);
+
             if (mShowEntryText) {
                 holder.dateTextView = SetupSmallTextView(view, R.id.textDate);
             } else {
@@ -227,6 +237,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.imageSizeTextView = SetupSmallTextView(view, R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
             //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
+            holder.layoutControls = view.findViewById(R.id.layout_controls);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
@@ -238,7 +249,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.contentImgView1 = view.findViewById(R.id.image1);
             holder.contentImgView2 = view.findViewById(R.id.image2);
             holder.contentImgView3 = view.findViewById(R.id.image3);
-            holder.readMore = SetupTextView(view, R.id.textSourceReadMore);
+            holder.openArticle = SetupSmallTextView(view, R.id.textSourceOpenArticle);
+            holder.showMore = SetupSmallTextView(view, R.id.textSourceShowMore);
             holder.collapsedBtn = view.findViewById(R.id.collapsed_btn);
             holder.categoriesTextView = SetupSmallTextView(view, R.id.textCategories);
             holder.labelTextView = SetupSmallTextView(view, R.id.textLabel);
@@ -247,9 +259,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
 
-            holder.readMore.setTextColor(Theme.GetColorInt(LINK_COLOR, R.string.default_link_color));
-            holder.readMore.setBackgroundColor(Theme.GetColorInt(LINK_COLOR_BACKGROUND, R.string.default_text_color_background));
-            holder.readMore.setOnClickListener(view12 -> {
+            holder.openArticle.setTextColor( Theme.GetTextColorReadInt() );
+            holder.openArticle.setOnClickListener(view12 -> {
                 String searchText = "";
                 if ( holder.isTextShown() ) {
                     CharSequence text = holder.textTextView.getText();
@@ -263,20 +274,34 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             });
 
-            holder.collapsedBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
-                    if (shownId == holder.entryID) {
-                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
-                    } else {
-                        SetIsRead(shownId, true, true);
-                        PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
-                    }
-                    MainApplication.getContext().getContentResolver().notifyChange(mUri, null);//notifyDataSetChanged();
+            if ( Build.VERSION.SDK_INT >= 16 ) {
+                holder.showMore.setTextColor(Theme.GetTextColorReadInt());
+                holder.showMore.setOnClickListener(v -> {
+                    holder.textTextView.setMaxLines(holder.textTextView.getMaxLines() + MAX_LINES_STEP);
+                    PrefUtils.putInt( STATE_TEXT_LINE_COUNT, holder.textTextView.getMaxLines() );
+                    PrefUtils.putLong( STATE_TEXT_LINE_COUNT_ENTRY_ID, holder.entryID );
+                });
+                holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener(
+                    () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ) );
+            }
+
+            final View.OnClickListener collapseListener = view13 -> {
+                final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                holder.textTextView.setMaxLines( MAX_LINES_STEP );
+                if (shownId == holder.entryID) {
+                    PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                } else {
+                    SetIsRead(holder.entryID, true, true);
+                    PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+                    mNeedScrollToTopExpandedArticle = true;
                 }
-            });
+                MainApplication.getContext().getContentResolver().notifyChange(mUri, null );
+            };
+
+            holder.collapsedBtn.setOnClickListener( collapseListener );
+            holder.categoriesTextView.setOnClickListener( collapseListener );
+            holder.layoutControls.setOnClickListener( collapseListener );
             view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
@@ -296,7 +321,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     final int MIN_X_TO_VIEW_ARTICLE = UiUtils.mmToPixel(5);
                     final ViewHolder holder = (ViewHolder) ((ViewGroup) v.getParent().getParent()).getTag(R.id.holder);
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Dog.v("onTouch ACTION_DOWN");
+                        //Dog.v("onTouch ACTION_DOWN");
                         paddingX = 0;
                         paddingY = 0;
                         initialx = (int) event.getX();
@@ -312,72 +337,32 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             @Override
                             public void run() {
                                 if (isPress) {
-                                    class Item {
-                                        public final String text;
-                                        public final int icon;
+                                    final int pos = getItemPosition(holder.entryID);
+                                    ArrayList<Integer> posList = new ArrayList<>();
 
-                                        private Item(int textID, Integer icon) {
-                                            this.text = context.getString(textID);
-                                            this.icon = icon;
-                                        }
-
-                                        @Override
-                                        public String toString() {
-                                            return text;
-                                        }
-                                    }
-
-                                    final Item[] items = {
-                                        new Item(R.string.context_menu_delete, android.R.drawable.ic_menu_delete),
-                                        new Item(R.string.menu_mark_upper_as_read, 0),
-                                        new Item(R.string.menu_mark_all_as_unread, 0),
-                                        new Item(R.string.menu_edit_labels, R.drawable.label_white)
+                                    final MenuItem[] items = {
+                                        new MenuItem(R.string.context_menu_delete, R.drawable.delete, (_1, _2) ->
+                                            EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ),
+                                        new MenuItem(R.string.menu_mark_upper_as_read, R.drawable.ic_arrow_drop_up, (_1, _2) -> {
+                                            for (int i = 0; i < pos; i++)
+                                                posList.add(i);
+                                            ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
+                                        } ),
+                                        new MenuItem(R.string.menu_mark_lower_as_read, R.drawable.arrow_drop_down, (_1, _2) -> {
+                                            for (int i = pos + 1; i < getCount(); i++)
+                                                posList.add(i);
+                                            ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
+                                            }),
+                                        new MenuItem(R.string.menu_edit_labels, R.drawable.ic_label, (_1, _2) ->
+                                            LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
+                                        new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
+                                            context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
+                                                                                        .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
+                                                                                        .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
+                                                                                        .setType(Constants.MIMETYPE_TEXT_PLAIN),
+                                                                                        context.getString(R.string.menu_share))))
                                     };
-
-                                    AlertDialog.Builder builder = new AlertDialog.Builder( context );
-                                    builder.setTitle( feedTitle );
-                                    builder.setAdapter(new ArrayAdapter<Item>(
-                                        context,
-                                        android.R.layout.select_dialog_item,
-                                        android.R.id.text1,
-                                        items) {
-                                        @NonNull
-                                        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                                            //Use super class to create the View
-                                            View v = super.getView(position, convertView, parent);
-                                            TextView tv = SetupTextView( v, android.R.id.text1);
-
-                                            if ( items[position].icon > 0 ) {
-                                                //Put the image on the TextView
-                                                int dp50 = (int) (40 * context.getResources().getDisplayMetrics().density + 0.5f);
-                                                Drawable dr = context.getResources().getDrawable(items[position].icon);
-                                                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-                                                Drawable d = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
-                                                d.setBounds(0, 0, dp50, dp50);
-                                                tv.setCompoundDrawables(d, null, null, null);
-                                            }
-                                            //Add margin between image and text (support various screen densities)
-                                            int dp5 = (int) (5 * context.getResources().getDisplayMetrics().density + 0.5f);
-                                            tv.setCompoundDrawablePadding(dp5);
-
-                                            return v;
-                                        }
-                                    }, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int item) {
-                                            final Intent intent;
-                                            if (item == 0)
-                                                EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink);
-                                            else if (item == 1)
-                                                ShowMarkUpperAsReadDialog( context, getItemPosition(holder.entryID) );
-                                            else if (item == 2)
-                                                ShowMarkAllAsUnReadDialog( context  );
-                                            else if (item == 3)
-                                                LabelVoc.INSTANCE.showDialogToSetArticleLabels( context, holder.entryID, EntriesCursorAdapter.this );
-                                        }
-                                    });
-
-                                    builder.setTitle( holder.titleTextView.getText() );
-                                    builder.show();
+                                    ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
                                     //wasMove = true;
                                 }
                             }
@@ -389,7 +374,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         currenty = (int) event.getY();
                         paddingX = currentx - initialx;
                         paddingY = currenty - initialy;
-                        Dog.v("onTouch ACTION_MOVE " + paddingX + ", " + paddingY);
+                        //Dog.v("onTouch ACTION_MOVE " + paddingX + ", " + paddingY);
 
                         //allow vertical scrolling
                         if ((initialx < minX * 2 || Math.abs(paddingY) > Math.abs(paddingX)) &&
@@ -412,7 +397,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         isPress = false;
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            Dog.v("onTouch ACTION_UP");
+                            //Dog.v("onTouch ACTION_UP");
                             if (mEntryActivityStartingStatus == 0 &&
                                 currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
@@ -426,7 +411,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
                                 toggleFavoriteState(view);
                         } else {
-                            Dog.v("onTouch ACTION_CANCEL");
+                            //Dog.v("onTouch ACTION_CANCEL");
                         }
                         paddingX = 0;
                         paddingY = 0;
@@ -485,7 +470,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     v.setPadding(Math.max(paddingX, 0), 0, paddingX < 0 ? -paddingX : 0, 0);
 
-                    Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold);
+                    //Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold);
                     return true;
                 }
 
@@ -514,7 +499,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             null;
         holder.urlTextView.setOnClickListener( manageLabels );
         holder.dateTextView.setOnClickListener( manageLabels );
-        holder.authorTextView.setOnClickListener( manageLabels );
+        //holder.authorTextView.setOnClickListener( manageLabels );
+
+        final int lineCount = holder.isTextShown() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt( STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
+        holder.textTextView.setMaxLines( lineCount );
 
         holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || EntryColumns.IsRead(cursor, mIsReadPos);
 
@@ -632,6 +620,33 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) ;
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
+        final boolean showTextPreview = PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
+            cursor.getString(mAbstractPos) != null && !holder.isTextShown();
+        holder.textPreviewTextView.setVisibility( showTextPreview ? View.VISIBLE : View.GONE );
+        if ( showTextPreview ) {
+            String s = getBoldText(GetHtmlAligned(cursor.getString(mAbstractPos))).toString();
+            s = s.replace( "\n", " " );
+            s = s.replace( holder.titleTextView.getText().toString(), "" );
+            s = s.replace( "￼", "" );
+            s = s.replace( "\t", " " );
+            for ( int i = 0; i < 2; i++ )
+                s = s.replace( "  ", " " );
+            s = s.trim();
+            if ( s.startsWith( "." ) )
+                s = s.substring( 1 );
+            s = s.trim();
+            if ( !s.isEmpty() ) {
+                holder.textPreviewTextView.setText(getBoldText(s));
+                holder.textPreviewTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OpenArticle(holder.textPreviewTextView.getContext(), holder.entryID, false, "");
+                    }
+                });
+            } else
+                holder.textPreviewTextView.setVisibility( View.GONE );
+        }
+
 
         UpdateStarImgView(holder);
         holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
@@ -666,13 +681,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView1.setVisibility( View.GONE );
         holder.contentImgView2.setVisibility( View.GONE );
         holder.contentImgView3.setVisibility( View.GONE );
-        holder.readMore.setVisibility( View.GONE );
+        holder.openArticle.setVisibility(View.GONE );
+        holder.showMore.setVisibility( View.GONE );
         if ( isTextShown ) {
+            holder.openArticle.setVisibility(View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
-            SetupEntryText(holder, getBoldText(html), IsReadMore(html ) );
+            SetupEntryText(holder, getBoldText(html), NeedToOpenArticle( html ) || HasMoreText( holder ) );
             //holder.textTextView.setMovementMethod(LinkMovementMethod.getInstance());
             //final boolean isMobilized = FileUtils.INSTANCE.isMobilized( holder.entryLink, cursor );
             //if ( html.contains( "<img" ) /*|| isMobilized*/ ) {
@@ -681,13 +698,22 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList);
                     SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList);
                     SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList);
-                    SetupEntryText(holder, content.mText, content.mIsReadMore);
+                    SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
+                    if ( mNeedScrollToTopExpandedArticle ) {
+                        mNeedScrollToTopExpandedArticle = false;
+                        UiUtils.RunOnGuiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+                            }
+                        }, 100);
+                    }
                 } else if ( content == null ) {
                     content = new EntryContent();
                     content.mID = holder.entryID;
                     content.mHTML = html;
                     if ( mFilters != null )
-                        content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );;
+                        content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );
                     content.mIsMobilized = false;//isMobilized;
                     content.mLink = holder.entryLink;
                     mContentVoc.put( holder.entryID, content );
@@ -731,11 +757,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private Spanned getBoldText(String html) {
-        return Html.fromHtml(PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html );
+        String result = PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html;
+        return Html.fromHtml(result);
     }
 
     public static String CategoriesToOutput(String categories) {
-        return TextUtils.join(", ", TextUtils.split(categories, CATEGORY_LIST_SEP) );
+        String[] list = TextUtils.split(categories, CATEGORY_LIST_SEP);
+        for ( int i = 0; i < list.length; i++ )
+            list[i] = "#" + list[i];
+        return TextUtils.join(", ", list );
     }
 
     @NotNull
@@ -763,7 +793,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         String mHTML;
         boolean mIsLoaded = false;
         boolean mIsMobilized = false;
-        boolean mIsReadMore = false;
+        boolean mNeedToOpenArticle = false;
         boolean GetIsLoaded() {
             synchronized ( this ) {
                 return mIsLoaded;
@@ -793,8 +823,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                imagesToDl,
                                                mImageUrlList,
                                                3 );
+
             mText = getBoldText( GetHtmlAligned( temp ));
-            mIsReadMore = IsReadMore(temp);
+            mNeedToOpenArticle = NeedToOpenArticle(temp);
             synchronized ( this ) {
                 mIsLoaded = true;
             }
@@ -802,12 +833,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    private static boolean IsReadMore(String temp) {
-        return temp.length() > MAX_TEXT_LEN || temp.contains( "<img" );
+    private static boolean NeedToOpenArticle(String temp ) {
+        return temp.contains( "<img" );
     }
 
     private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
-        context.startActivity( GetActionIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
+        context.startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
                                    .putExtra( "SCROLL_TEXT", searchText )
                                    .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
                                    .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
@@ -817,63 +848,124 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    public void ShowDialog(Context context, int messageID, final Runnable action ) {
+    static public void ShowDialog(Context context, int messageID, final Runnable action ) {
         AlertDialog dialog = new AlertDialog.Builder(context) //
             .setIcon(android.R.drawable.ic_dialog_alert) //
             .setTitle( R.string.confirmation ) //
             .setMessage( messageID ) //
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            .setPositiveButton(android.R.string.yes, (dialog1, which) -> new Thread() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            action.run();
-                        }
-                    }.start();
+                public void run() {
+                    action.run();
                 }
-            }).setNegativeButton(android.R.string.no, null).create();
+            }.start()).setNegativeButton(android.R.string.no, null).create();
         dialog.getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         dialog.show();
     }
 
-    public void ShowMarkUpperAsReadDialog(Context context, final int pos) {
-        ShowDialog(context, R.string.question_mark_upper_as_read, new Runnable() {
-           @Override
-           public void run() {
-               ContentResolver cr = MainApplication.getContext().getContentResolver();
-               ArrayList<Long> ids = new ArrayList<>();
-               for (int i = 0; i < pos; i++)
-                   ids.add(getItemId(i));
-               String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
-               cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
-           }
-       } );
+    public void ShowMarkPosListAsReadDialog(Context context, int confirmID, ArrayList<Integer> posList) {
+        ShowDialog(context, confirmID, () -> {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            ArrayList<Long> ids = new ArrayList<>();
+            for ( int pos: posList)
+                ids.add(getItemId(pos));
+            String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
+            cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
+        });
     }
 
-    public void ShowMarkAllAsUnReadDialog(Context context) {
-        ShowDialog(context, R.string.question_mark_all_as_unread, new Runnable() {
+    protected void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span, final Context context)
+    {
+        int start = strBuilder.getSpanStart(span);
+        int end = strBuilder.getSpanEnd(span);
+        int flags = strBuilder.getSpanFlags(span);
+        ClickableSpan clickable = new ClickableSpan() {
+            public void onClick(View view) {
+                ShowLinkMenu(span.getURL(), strBuilder.subSequence(start, end ).toString(), context);
+            }
+        };
+        strBuilder.setSpan(clickable, start, end, flags);
+        strBuilder.removeSpan(span);
+    }
+
+    protected void SetTextViewHTMLWithLinks(TextView textView, Spanned spanned)
+    {
+        SpannableStringBuilder strBuilder = new SpannableStringBuilder(spanned);
+        URLSpan[] urls = strBuilder.getSpans(0, spanned.length(), URLSpan.class);
+        for(URLSpan span : urls)
+            makeLinkClickable(strBuilder, span, textView.getContext());
+        textView.setText(strBuilder);
+        //textView.setMovementMethod(LinkMovementMethod.getInstance());
+        //justify( textView );
+    }
+
+    public static void justify(final TextView textView) {
+
+        final AtomicBoolean isJustify = new AtomicBoolean(false);
+
+        final String textString = textView.getText().toString();
+
+        final TextPaint textPaint = textView.getPaint();
+
+        final SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        textView.post(new Runnable() {
             @Override
             public void run() {
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.update(FeedData.EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), null, null);
+
+                if (!isJustify.get()) {
+
+                    final int lineCount = textView.getLineCount();
+                    final int textViewWidth = textView.getWidth();
+
+                    for (int i = 0; i < lineCount; i++) {
+
+                        int lineStart = textView.getLayout().getLineStart(i);
+                        int lineEnd = textView.getLayout().getLineEnd(i);
+
+                        String lineString = textString.substring(lineStart, lineEnd);
+
+                        if (i == lineCount - 1) {
+                            builder.append(new SpannableString(lineString));
+                            break;
+                        }
+
+                        String trimSpaceText = lineString.trim();
+                        String removeSpaceText = lineString.replaceAll(" ", "");
+
+                        float removeSpaceWidth = textPaint.measureText(removeSpaceText);
+                        float spaceCount = trimSpaceText.length() - removeSpaceText.length();
+
+                        float eachSpaceWidth = (textViewWidth - removeSpaceWidth) / spaceCount;
+
+                        SpannableString spannableString = new SpannableString(lineString);
+                        for (int j = 0; j < trimSpaceText.length(); j++) {
+                            char c = trimSpaceText.charAt(j);
+                            if (c == ' ') {
+                                Drawable drawable = new ColorDrawable(0x00ffffff);
+                                drawable.setBounds(0, 0, (int) eachSpaceWidth, 0);
+                                ImageSpan span = new ImageSpan(drawable);
+                                spannableString.setSpan(span, j, j + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+                        }
+
+                        builder.append(spannableString);
+                    }
+
+                    textView.setText(builder);
+                    isJustify.set(true);
+                }
             }
-        } );
+        });
     }
 
-
     private void SetupEntryText(ViewHolder holder, Spanned text, boolean isReadMore) {
-        //final String s = text.toString();
-//        holder.textTextView.setText( text.length() > MAX_TEXT_LEN ? text.subSequence( 0, MAX_TEXT_LEN ) + " ..." : text );
+        //SetTextViewHTMLWithLinks(holder.textTextView, text );
         holder.textTextView.setText( text );
-        //holder.textTextView.setText( s.length() > MAX_TEXT_LEN ? s.substring( 0, MAX_TEXT_LEN ) + " ..." : s );
-        //Linkify.addLinks(holder.textTextView, Linkify.ALL);
-        //holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
-        //holder.readMore.setText( isReadMore ? R.string.read_more : R.string.open_article );
-        holder.readMore.setText( R.string.read_more );
-        holder.readMore.setVisibility( isReadMore ? View.VISIBLE : View.GONE );
+        //holder.openArticle.setText( R.string.open_article );
+        //holder.openArticle.setVisibility(isReadMore ? View.VISIBLE : View.GONE );
     }
 
     private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
@@ -885,17 +977,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     //.override(dim)
                     .into(imageView);
             //imageView.setImageURI( uri );
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        EntryView.OpenImage( uri.toString(), view.getContext() );
-                    } catch (IOException e) {
-                        UiUtils.toast( view.getContext(), view.getContext().getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
-                        e.printStackTrace();
-                    }
-                }
-            });
+            imageView.setOnClickListener(view -> EntryView.ShowImageMenu(uri.toString(), view.getContext() ));
 
 //            new AsyncTask<Pair<Uri,ImageView>, Void, Void>() {
 //                private Bitmap uriToBitmap(Uri selectedFileUri) {
@@ -967,11 +1049,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
         parentView.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
         {
-            final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetColor( TEXT_COLOR_READ, R.string.default_read_color ) );
+            final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetTextColorRead() );
             holder.imageSizeTextView.setTextColor( color );
             holder.authorTextView.setTextColor( color );
             holder.categoriesTextView.setTextColor(color );
             holder.labelTextView.setTextColor(color );
+            holder.textPreviewTextView.setTextColor(color );
             holder.dateTextView.setTextColor( color );
             holder.textTextView.setTextColor( color );
             //holder.readMore.setTextColor( color );
@@ -994,12 +1077,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( holder.isRead && mShowUnread ) {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
-                        .setAction(R.string.undo, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                SetIsRead(holder.entryID, false, false);
-                            }
-                        });
+                        .setAction(R.string.undo, v -> SetIsRead(holder.entryID, false, false));
                 snackbar.getView().setBackgroundResource(R.color.material_grey_900);
                 snackbar.show();
             }
@@ -1157,9 +1235,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private static class ViewHolder {
         ProgressBar textSizeProgressBar;
+        View layoutControls;
         ImageView collapsedBtn;
         TextView titleTextView;
         TextView urlTextView;
+        TextView textPreviewTextView;
         TextView textTextView;
         TextView categoriesTextView;
         TextView labelTextView;
@@ -1181,7 +1261,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView contentImgView1;
         ImageView contentImgView2;
         ImageView contentImgView3;
-        TextView readMore;
+        TextView openArticle;
+        TextView showMore;
         boolean isRead;
         boolean isFavorite;
 

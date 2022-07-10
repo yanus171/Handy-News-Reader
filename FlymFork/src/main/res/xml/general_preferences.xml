@@ -129,6 +129,13 @@
             android:title="@string/show_article_category"/>
 
         <CheckBoxPreference
+            android:key="settings_show_article_text_preview"
+            android:defaultValue="false"
+            android:title="@string/show_article_text_preview"
+            android:summary="@string/show_article_text_preview_descr"
+            />
+
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="display_oldest_first"
             android:summary="@string/settings_display_oldest_first_description"
@@ -293,6 +300,11 @@
                 android:key="article_text_footer_show_date"
                 android:title="@string/article_text_show_date"
                 android:summary="@string/article_text_show_date_description" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="article_text_footer_show_remaining"
+                android:title="@string/article_text_footer_show_remaining"
+                android:summary="@string/article_text_footer_show_remaining_description" />
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:defaultValue="0"
                 android:entries="@array/settings_font_sizes"
@@ -641,6 +653,16 @@
             android:entryValues="@array/settings_datetime_format_values"
             android:key="datetime_format"
             android:title="@string/settings_datetime_format"/>
+        <ru.yanus171.feedexfork.widget.AppSelectPreference
+            android:defaultValue="noApp"
+            android:key="openImageTapAction"
+            android:title="@string/open_image_tap_action"
+            android:summary="@string/open_image_tap_action_descr"/>
+        <ru.yanus171.feedexfork.widget.AppSelectPreference
+            android:defaultValue="noApp"
+            android:key="openLinkInBrowserTapAction"
+            android:title="@string/open_link_in_browser_tap_action"
+            android:summary="@string/open_link_in_browser_tap_action_descr"/>
 
         <CheckBoxPreference
             android:key="settings_show_progress_info"

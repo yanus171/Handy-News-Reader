@@ -46,20 +46,15 @@ package ru.yanus171.feedexfork.view;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -69,19 +64,14 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -108,6 +98,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.parser.FeedFilters;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
@@ -135,9 +126,9 @@ import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCou
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_HIDDEN;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
@@ -146,8 +137,9 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetPackageNameForAction;
+import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.widget.FontSelectPreference.DefaultFontFamily;
 import static ru.yanus171.feedexfork.widget.FontSelectPreference.GetTypeFaceLocalUrl;
 
@@ -665,10 +657,12 @@ public class EntryView extends WebView implements Handler.Callback {
                 DoNotShowMenu();
                 if ( System.currentTimeMillis() - mMovedTime < MOVE_TIMEOUT  )
                     return true;
+
+
                 final Context context = getContext();
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
-                        OpenImage(url, context);
+                        ShowImageMenu(url, context);
                     } else if (url.contains("#")) {
                         String hash = url.substring(url.indexOf('#') + 1);
                         hash = URLDecoder.decode(hash);
@@ -677,104 +671,8 @@ public class EntryView extends WebView implements Handler.Callback {
                             mHistoryAchorScrollY.push(getScrollY());
                         }
                     } else if (url.contains(NO_MENU)) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        getContext().startActivity(intent.setData(Uri.parse(url.replace(NO_MENU, ""))));
+                        getContext().startActivity(GetShowInBrowserIntent(url.replace(NO_MENU, "")));
                     } else {
-
-                        class Item {
-                            public final String text;
-                            public final int icon;
-
-                            private Item(int textID, Integer icon) {
-                                this.text = getContext().getString(textID);
-                                this.icon = icon;
-                            }
-                            private Item(String text, Integer icon) {
-                                this.text = text;
-                                this.icon = icon;
-                            }
-
-                            @Override
-                            public String toString() {
-                                return text;
-                            }
-                        }
-
-
-                        final Item[] items = {
-                                new Item(url, 0),
-                                new Item(R.string.loadLink, R.drawable.cup_new_load_now),
-                                new Item(R.string.loadLinkLater, R.drawable.cup_new_load_later),
-                                new Item(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star),
-                                new Item(R.string.open_link, android.R.drawable.ic_menu_send),
-                                new Item(R.string.menu_share, android.R.drawable.ic_menu_share)
-                        };
-
-                        final Item[] itemsNoRead = {
-                            new Item(url, 0),
-                            new Item(R.string.open_link, android.R.drawable.ic_menu_send),
-                            new Item(R.string.menu_share, android.R.drawable.ic_menu_share)
-                        };
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                        builder.setAdapter(new ArrayAdapter<Item>(
-                                getContext(),
-                                android.R.layout.select_dialog_item,
-                                android.R.id.text1,
-                                !isLinkToLoad( url ) ? itemsNoRead : items) {
-                            @NonNull
-                            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                                //Use super class to create the View
-                                View v = super.getView(position, convertView, parent);
-                                TextView tv = SetupTextView( v, android.R.id.text1);
-                                if ( items[position].icon > 0 ) {
-                                    //Put the image on the TextView
-                                    int dp50 = (int) (50 * getResources().getDisplayMetrics().density + 0.5f);
-                                    Drawable dr = getResources().getDrawable(items[position].icon);
-                                    Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-                                    Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dp50, dp50, true));
-                                    d.setBounds(0, 0, dp50, dp50);
-                                    tv.setCompoundDrawables(d, null, null, null);
-                                    //Add margin between image and text (support various screen densities)
-                                    int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-                                    tv.setCompoundDrawablePadding(dp5);
-                                } else {
-                                    tv = SetupSmallTextView(v, android.R.id.text1);
-                                    tv.setCompoundDrawables( null, null, null, null );
-                                }
-                                return v;
-                            }
-                        }, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int item) {
-                                if (item > 0) {
-                                    Intent intent = null;
-                                    if (item == 1)
-                                        intent = new Intent(getContext(), EntryActivity.class).setData(Uri.parse(url));
-                                    else if (item == 2)
-                                        intent = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url));
-                                    else if (item == 3) {
-                                        LabelVoc.INSTANCE.showDialog(getContext(), R.string.article_labels_setup_title, false, new HashSet<Long>(), null, (checkedLabels) -> {
-                                            Intent intent_ = new Intent(getContext(), LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
-                                            ArrayList<String> list = new ArrayList<>();
-                                            for( long labelID: checkedLabels )
-                                                list.add( String.valueOf( labelID ) );
-                                            intent_.putStringArrayListExtra( EXTRA_LABEL_ID_LIST, list );
-                                            getContext().startActivity(intent_);
-                                            return null;
-                                        });
-                                    } else if (item == 4)
-                                        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    else
-                                        intent = Intent.createChooser(
-                                            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
-                                                .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share));
-                                    if ( intent != null )
-                                        getContext().startActivity(intent);
-                                }
-                            }
-                        });
-
                         final String urlWithoutRegexSymbols =
                             url.replace( "/", "." ).
                                 replace( ":", "." ).
@@ -783,19 +681,19 @@ public class EntryView extends WebView implements Handler.Callback {
                                 replace( "&", "&amp;" ).
                                 replace( "*", "." ).
                                 replace( ",", "." );
-                        final Pattern REGEX = java.util.regex.Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace( "url", urlWithoutRegexSymbols ), java.util.regex.Pattern.CASE_INSENSITIVE);
+                        final Pattern REGEX = Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace("url", urlWithoutRegexSymbols ), Pattern.CASE_INSENSITIVE);
                         Matcher matcher = REGEX.matcher(mData);
-                        final String title = matcher.find() ? Jsoup.parse( matcher.group( 1 ) ).text() : url;
-                        builder.setTitle( url.equals( title )  ? "" : title );
-                        builder.show();
+                        String title = matcher.find() ? Jsoup.parse(matcher.group(1 ) ).text() : url;
+                        title = url.equals( title )  ? "" : title;
+
+                        ShowLinkMenu(url, title, context);
                     }
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, R.string.cant_open_link, Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return true;
+                 } catch ( ActivityNotFoundException e ) {
+                     Toast.makeText(context, R.string.cant_open_link, Toast.LENGTH_SHORT).show();
+                 }
+                 return true;
             }
+
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -827,14 +725,14 @@ public class EntryView extends WebView implements Handler.Callback {
                             findAllAsync(searchText);
                         else
                             findAll(searchText);
-                        UiUtils.RunOnGuiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.clearMatches();
-                            }
-                        }, 5000 );
-                    } else
+                        UiUtils.RunOnGuiThread(() -> view.clearMatches(), 5000 );
+                    } else {
+                        UiUtils.RunOnGuiThread(() -> {
+                                                   if (mActivity.mEntryFragment != null)
+                                                       mActivity.mEntryFragment.UpdateFooter();
+                                               });
                         ScrollToY();
+                    }
                     DownLoadImages();
                     EndStatus();
                 } else {
@@ -900,6 +798,50 @@ public class EntryView extends WebView implements Handler.Callback {
         timer.End();
     }
 
+    public static void ShowLinkMenu(String url, String title, Context context ) {
+        final MenuItem itemTitle = new MenuItem(url);
+        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)) );
+        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
+        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
+            LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<Long>(), null, (checkedLabels) -> {
+                Intent intent_ = new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
+                ArrayList<String> list = new ArrayList<>();
+                for (long labelID : checkedLabels)
+                    list.add(String.valueOf(labelID));
+                intent_.putStringArrayListExtra(EXTRA_LABEL_ID_LIST, list);
+                context.startActivity(intent_);
+                return null;
+            }));
+        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(url) );
+        final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
+            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
+                .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share)) );
+        final MenuItem[] items = { itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare };
+        final MenuItem[] itemsNoRead = { itemTitle, itemOpenLink, itemShare };
+
+        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context);
+    }
+
+    public static void ShowImageMenu(String url, Context context) {
+        final MenuItem[] items = {
+            new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
+            new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
+                File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+                File destFile = new File(FileSelectDialog.Companion.getPublicDir(), file.getName());
+                try {
+                    FileUtils.INSTANCE.copy(file, destFile);
+                    Toast.makeText(context, context.getString(R.string.fileCopied, destFile ), Toast.LENGTH_LONG ).show();
+                } catch ( IOException e  ) {
+                    Toast.makeText(context, context.getString(R.string.unableToCopyFile, destFile ), Toast.LENGTH_LONG ).show();
+                }
+            }),
+            new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
+        };
+        ShowMenu(items, null, context );
+    }
+
+
+
     private void DownLoadImages() {
         final ArrayList<String> imagesToDl = GetImageListCopy();
         if ( !imagesToDl.isEmpty() )
@@ -924,15 +866,41 @@ public class EntryView extends WebView implements Handler.Callback {
         return imagesToDl;
     }
 
-    public static void OpenImage( String url, Context context ) throws IOException {
-        File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-        File extTmpFile = new File(context.getCacheDir(), file.getName());
-        FileUtils.INSTANCE.copy(file, extTmpFile);
-        Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setDataAndType(contentUri, "image/*");
-        context.startActivity(intent);
+    public static void OpenImage( String url, Context context ) {
+        try {
+            File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+            File extTmpFile = new File(context.getCacheDir(), file.getName());
+            FileUtils.INSTANCE.copy(file, extTmpFile);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(contentUri, "image/*");
+            final String packageName = GetPackageNameForAction( "openImageTapAction" );
+            if ( packageName != null )
+                intent.setPackage(packageName);
+            context.startActivity(intent);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
+        }
+    }
+
+    public static void ShareImage( String url, Context context ) {
+        try {
+            File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+            File extTmpFile = new File(context.getCacheDir(), file.getName());
+            FileUtils.INSTANCE.copy(file, extTmpFile);
+            Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            intent.setType("image/jpeg");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            context.startActivity(intent);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
+        }
     }
 
     private void EndStatus() {
@@ -1262,7 +1230,6 @@ public class EntryView extends WebView implements Handler.Callback {
 //            }.start();
         }
     }
-
 }
 
 class ScheduledEnrtyNotifyObservers implements Runnable {
@@ -1283,4 +1250,6 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
         else
             EntryView.ScheduledNotifyObservers( mId, mLink );
     }
+
 }
+

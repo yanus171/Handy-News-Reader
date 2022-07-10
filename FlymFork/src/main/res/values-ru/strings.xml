@@ -97,7 +97,7 @@
     <!-- FEEDS -->
     <string name="feeds">Ленты</string>
     <string name="menu_article_web_search">Веб-поиск статьи</string>
-    <string name="menu_add_feed">Веб поиск статьи</string>
+    <string name="menu_add_feed">Добавить ленту</string>
     <string name="no_feeds">Нет лент</string>
     <string name="no_filters">Нет фильтров</string>
     <string name="context_menu_add">Добавить</string>
@@ -501,7 +501,7 @@
     <string name="removeText">Удалить текст</string>
     <string name="set_category">Установить как категорию</string>
     <string name="menu_more_options">Больше опций</string>
-    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все избранные статьи</string>
+    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все НЕ избранные статьи</string>
     <string name="filter_apply_to_author">Применить к автору</string>
     <string name="filter_apply_to_category">Применить к категории</string>
     <string name="filter_apply_to_url">Применить к URL</string>
@@ -639,6 +639,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="minutesShort">м</string>
     <string name="timeIntervalInFuture">через</string>
     <string name="timeIntervalInPast">назад</string>
+
     <string name="error_add_customm_font">Не удалось добавить пользовательский шрифт</string>
     <string name="article_text_footer_show_remaining">Осталось</string>
     <string name="article_text_footer_show_remaining_description">"Показать количество оставшихся страниц для прокрутки вниз "</string>
@@ -649,4 +650,26 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="show_article_text_preview">Предпросмотр</string>
     <string name="show_article_text_preview_descr">Показать несколько первых строк текста статьи</string>
     <string name="show_more">Показать больше…</string>
+
+    <plurals name="number_of_new_entries">
+        <item quantity="one">%d новая статья</item>
+        <item quantity="few">%d новые статьи</item>
+        <item quantity="many">%d новых статей</item>
+        <item quantity="other">%d новых статей</item>
+    </plurals>
+
+    <string name="open_image">Просмотреть</string>
+    <string name="copy_to_downloads">Копировать в Загрузки</string>
+    <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
+    <string name="menu_article_web_search">Веб поиск статьи</string>
+    <string name="web_search_title">Веб поиск статьи</string>
+    <string name="show_article_text_preview">Предпросмотр текста</string>
+    <string name="show_article_text_preview_descr">Показывать несколь первых строк текста статьи</string>
+    <string name="show_more">Дальше…</string>
+    <string name="appListLoading">Загружается список приложений…</string>
+    <string name="open_image_tap_action">Приложение просмотра картинок</string>
+    <string name="open_link_in_browser_tap_action">Приложение браузер</string>
+    <string name="open_image_tap_action_descr">Приложение просмотра картинок, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
+    <string name="open_link_in_browser_tap_action_descr">Приложение браузер, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
+    <string name="not_selected">Не выбрано</string>
 </resources>

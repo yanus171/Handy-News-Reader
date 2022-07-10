@@ -114,7 +114,7 @@ public class UiUtils {
 
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
         View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
-        Snackbar snackbar = Snackbar.make((coordinatorLayout != null ? coordinatorLayout : activity.findViewById(android.R.id.content)), message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make((coordinatorLayout != null ? coordinatorLayout : activity.findViewById(android.R.id.content)), message, Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundResource(R.color.material_grey_900);
         snackbar.show();
     }

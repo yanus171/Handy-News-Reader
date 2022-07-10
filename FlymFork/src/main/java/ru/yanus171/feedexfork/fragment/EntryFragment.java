@@ -52,7 +52,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
-import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -100,6 +99,7 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
@@ -129,15 +129,12 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
-import static android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
-import static ru.yanus171.feedexfork.activity.EditFeedActivity.EXTRA_WEB_SEARCH;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.GetActionIntent;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
@@ -148,8 +145,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
+import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -393,7 +390,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public boolean onTouch(final View view, MotionEvent event) {
                 if ( event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Dog.v( "onTouch ACTION_DOWN " );
+                    //Dog.v( "onTouch ACTION_DOWN " );
                     initialY = (int) event.getY();
                     mWasVibrate = false;
                     mWasSwipe = false;
@@ -410,7 +407,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }, ViewConfiguration.getLongPressTimeout() );
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_MOVE) {
-                    Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
+                    //Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
                     int w = Math.max(0, (int) (event.getY() - initialY));
                     SetStarFrameWidth(Math.min(w, MAX_HEIGHT));
                     if (prefVibrate && w >= MAX_HEIGHT && !mWasVibrate) {
@@ -425,7 +422,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     frameStarImage.setImageResource((w >= MAX_HEIGHT) == mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow);
                     return true;
                 } else if ( event.getAction() == MotionEvent.ACTION_UP) {
-                    Dog.v( "onTouch ACTION_UP " );
+                    //Dog.v( "onTouch ACTION_UP " );
                     if ( !mWasSwipe ) {
                         if ( !IsLong() )
                             PageUp();
@@ -653,22 +650,21 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_share: {
                     Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-                    if (cursor != null) {
-                        String link = cursor.getString(mLinkPos);
-                        if (link != null) {
-                            String title = cursor.getString(mTitlePos);
-                            startActivity(Intent.createChooser(
-                                    new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, link)
-                                            .setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)
-                            ));
-                        }
+                    String link = cursor.getString(mLinkPos);
+
+                    if (link != null) {
+                        String title = cursor.getString(mTitlePos);
+
+                        startActivity(Intent.createChooser(
+                            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, link)
+                                .setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)));
                     }
                     break;
                 }
 
                 case R.id.menu_toggle_theme: {
                     mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos();
-                    PrefUtils.ToogleTheme(GetActionIntent( Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
+                    PrefUtils.ToogleTheme(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
                     return true;
                 }
 
@@ -744,9 +740,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
                 case R.id.menu_open_link: {
-                    Uri uri = Uri.parse( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) );
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri );
-                    getActivity().startActivity(intent);
+                    getActivity().startActivity(GetShowInBrowserIntent( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) ));
                     break;
                 }
 
@@ -907,8 +901,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     }
                     break;
                 }
-                case R.id.menu_add_feed: {
-                    startActivity( new Intent( Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI ).putExtra(EXTRA_WEB_SEARCH, true) );
+                case R.id.menu_article_web_search: {
+                    startActivity( new Intent(Intent.ACTION_WEB_SEARCH)
+                                .setPackage(getContext().getPackageName())
+                                .setClass(getContext(), ArticleWebSearchActivity.class) );
                     break;
                 }
                 case R.id.menu_edit_feed: {
@@ -1261,8 +1257,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         getBaseActivity().UpdateHeader(contentHeight - webViewHeight,
                                        entryView == null ? 0 : entryView.getScrollY(),
+                                       entryView == null ? 0 : entryView.getHeight() - mStatusText.GetHeight(),
                                        GetIsStatusBarHidden(),
-                                       GetIsActionBarHidden() );
+                                       GetIsActionBarHidden());
     }
 
 
@@ -1442,7 +1439,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         final LinearLayout parent = new LinearLayout(getContext() );
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setGravity(Gravity.CENTER);
-        UiUtils.AddText( parent, null, getString( R.string.open_tag_menu_hint ) ).setTextColor( Theme.GetColorInt( TEXT_COLOR_READ, R.string.default_read_color ));
+        UiUtils.AddText( parent, null, getString( R.string.open_tag_menu_hint ) ).setTextColor( Theme.GetTextColorReadInt() );
         final RadioGroup groupUrl = new RadioGroup(getContext() );
         //groupUrl.setGravity( Gravity.CENTER );
         parent.addView(groupUrl);
