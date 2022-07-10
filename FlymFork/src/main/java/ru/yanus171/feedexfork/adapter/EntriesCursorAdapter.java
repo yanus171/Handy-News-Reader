@@ -764,7 +764,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public static String CategoriesToOutput(String categories) {
         String[] list = TextUtils.split(categories, CATEGORY_LIST_SEP);
         for ( int i = 0; i < list.length; i++ )
-            list[i] = "#" + list[i];
+            list[i] = "#" + list[i].replace( "#", "" );
         return TextUtils.join(", ", list );
     }
 

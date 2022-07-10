@@ -97,7 +97,7 @@ public class HtmlUtils {
 
     static final Pattern VIDEO_CHANNEL_URL = Pattern.compile("ube.com.watch.v=([^&]+)" );
 
-    public static String improveHtmlContent(String content, String baseUri, FeedFilters filters, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
+    public static String improveHtmlContent(String content, String baseUri, FeedFilters filters, ArrayList<String> categoryList, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
 
         if (content == null )
             return content;
@@ -168,6 +168,8 @@ public class HtmlUtils {
                 .replace( "222", "ube" )
                 .replace( "1111", "yout" );
         }
+
+        content = extractCategoryList( content, categoryList );
         return content;
     }
 
@@ -391,4 +393,17 @@ public class HtmlUtils {
         Collections.addAll(result, TextUtils.split(text, sep));
         return result;
     }
+
+    private static final Pattern CATEGORY_PATTERN = Pattern.compile( "[>\\s]#(\\w+)" );
+
+    private static String extractCategoryList(String content, ArrayList<String> categoryList) {
+        if ( !categoryList.isEmpty() )
+            return content;
+        Matcher match = CATEGORY_PATTERN.matcher(content);
+        while (match.find())
+            categoryList.add(match.group(1));
+        return match.replaceAll("");
+    }
+
+
 }

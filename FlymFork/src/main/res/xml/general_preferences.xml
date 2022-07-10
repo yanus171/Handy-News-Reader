@@ -679,6 +679,11 @@
             android:defaultValue="false"
             android:title="@string/setting_edit_feed_force_portrait_orientation"
             android:summary="@string/setting_edit_feed_force_portrait_orientation_summary"/>
+        <CheckBoxPreference
+            android:key="ignore_all_ssl_errors"
+            android:defaultValue="false"
+            android:title="@string/setting_ignore_all_ssl_errors"
+            android:summary="@string/setting_setting_ignore_all_ssl_errors_summary"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

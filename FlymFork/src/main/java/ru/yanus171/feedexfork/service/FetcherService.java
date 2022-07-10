@@ -2075,4 +2075,5 @@ public class FetcherService extends IntentService {
         intent.putExtra("FetchingServiceStart", true );
         return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
+
 }

@@ -16,7 +16,6 @@ import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHiddenElements
-import java.lang.reflect.Array
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
@@ -29,7 +28,6 @@ const val ONE_WEB_PAGE_URL_CLASS_NAME = "oneWebPageUrlClassName"
 const val ONE_WEB_PAGE_ARTICLE_CLASS_NAME = "oneWebPageArticleClassName"
 val TITLE_PATTERN = Pattern.compile( "<[^<,^/]+?>([^<]{10,})<[^<]+>" )
 val TITLE_PATTERN_SENTENCE = Pattern.compile( ".+?\\.\\s" )
-val CATEGORY_PATTERN = Pattern.compile( "[>\\s]#(\\w+)" )
 
 
 object OneWebPageParser {
@@ -95,13 +93,7 @@ object OneWebPageParser {
                     val isAutoFullTextRoot = ArticleTextExtractor.getFullTextRootElementFromPref(doc, entryUrl) == null
                     content = content.replace(">[\\n|\\s|\\.|\\t]+".toRegex(), "> ")
                     val categoryList = ArrayList<String>()
-                    run {
-                        val match = CATEGORY_PATTERN.matcher(content)
-                        while (match.find())
-                            categoryList.add(match.group(1))
-                        match.replaceAll( "" );
-                    }
-                    content = HtmlUtils.improveHtmlContent(content, feedBaseUrl, filters, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
+                    content = HtmlUtils.improveHtmlContent(content, feedBaseUrl, filters, categoryList, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
                     var title = ""
                     run {
                         val match = TITLE_PATTERN.matcher( content )

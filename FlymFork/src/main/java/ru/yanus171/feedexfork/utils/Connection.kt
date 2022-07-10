@@ -8,8 +8,13 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 
 import org.jsoup.Jsoup
+import java.security.cert.X509Certificate
+import java.security.SecureRandom
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
-class Connection(url: String, val mIsOKHttp: Boolean = true ) {
+class Connection(url: String, var mIsOKHttp: Boolean = true ) {
     private var mConnection: HttpURLConnection? = null
     private var mResponse: Response? = null
     val inputStream: InputStream
@@ -43,20 +48,52 @@ class Connection(url: String, val mIsOKHttp: Boolean = true ) {
 
     init {
         if (IsOkHttp()) {
+
+            fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
+                val naiveTrustManager = object : X509TrustManager {
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                    override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) = Unit
+                    override fun checkServerTrusted(certs: Array<X509Certificate>, authType: String) = Unit
+                }
+
+                val insecureSocketFactory = SSLContext.getInstance("TLSv1.2").apply {
+                    val trustAllCerts = arrayOf<TrustManager>(naiveTrustManager)
+                    init(null, trustAllCerts, SecureRandom())
+                }.socketFactory
+
+                sslSocketFactory(insecureSocketFactory, naiveTrustManager)
+                hostnameVerifier { _, _ -> true }
+                return this
+            }
+
+
             var request = Request.Builder()
                     .url(url.trim())
                     .build()
-            var call = OkHttpClient().newCall(request)
+            val client = OkHttpClient.Builder()
+            if ( PrefUtils.getBoolean( "ignore_all_ssl_errors", false ) )
+                client.apply {
+                    ignoreAllSSLErrors()
+                }
+            var call = client.build().newCall(request)
+
             try {
                 mResponse = call.execute()
             } catch ( e: IOException ) {
+                e.printStackTrace();
                 if ( url.startsWith( "https" ) ) {
-                    mResponse?.close()
-                    request = Request.Builder()
-                            .url(url.replace("https", "http"))
-                            .build()
-                    call = OkHttpClient().newCall(request)
-                    mResponse = call.execute()
+                    try {
+                        mResponse?.close()
+                        request = Request.Builder()
+                                .url(url.replace("https", "http"))
+                                .build()
+                        call = OkHttpClient().newCall(request)
+                        mResponse = call.execute()
+                    } catch ( e: IOException ) {
+                        disconnect();
+                        mIsOKHttp = false;
+                        mConnection = NetworkUtils.setupConnection(url.trim())
+                    }
                 } else
                     throw e
             }

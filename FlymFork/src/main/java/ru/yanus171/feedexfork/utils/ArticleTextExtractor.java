@@ -145,10 +145,12 @@ public class ArticleTextExtractor {
         {
             categoryList.clear();
             Element tagsElements = getCategoriesElementFromPref(doc, url);
-            if (tagsElements != null)
+            if (tagsElements != null) {
                 for (Element item : tagsElements.getAllElements())
-                    if ( !item.ownText().isEmpty() )
+                    if (!item.ownText().isEmpty())
                         categoryList.add(item.ownText());
+                tagsElements.remove();
+            }
         }
         Dog.v( "tagList = " + TextUtils.join( " ", categoryList ));
 
@@ -192,7 +194,6 @@ public class ArticleTextExtractor {
             ret.insert(0, "<img src=\"" + ogImage + "\"><br>\n");
         }
 
-
         if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false) ) {
 
             Element commentsElement = getCommentsElementFromPref(doc, url);
@@ -221,7 +222,7 @@ public class ArticleTextExtractor {
         }
 
         final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
-        ret = new StringBuilder(HtmlUtils.improveHtmlContent(ret.toString(), NetworkUtils.getBaseUrl(url), filters, mobilize, isAutoFullTextRoot));
+        ret = new StringBuilder(HtmlUtils.improveHtmlContent(ret.toString(), NetworkUtils.getBaseUrl(url), filters, categoryList, mobilize, isAutoFullTextRoot));
 
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret.toString();
