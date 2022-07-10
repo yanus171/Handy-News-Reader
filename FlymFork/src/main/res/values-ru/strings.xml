@@ -96,8 +96,8 @@
     <string name="drawer_close">Закрыть меню навигации</string>
     <!-- FEEDS -->
     <string name="feeds">Ленты</string>
-    <string name="menu_article_web_search">Веб-поиск статьи</string>
-    <string name="menu_add_feed">Веб поиск статьи</string>
+    <string name="menu_article_web_search">Веб поиск статьи</string>
+    <string name="menu_add_feed">Добавить ленту</string>
     <string name="no_feeds">Нет лент</string>
     <string name="no_filters">Нет фильтров</string>
     <string name="context_menu_add">Добавить</string>
@@ -478,7 +478,7 @@
     <string name="next_page_max_count_classname">Максимальное количество страниц для обработки</string>
     <string name="menu_copy_feed">Дублировать текущую ленту</string>
     <string name="feed_copied">Лента дублирована</string>
-    <string name="menu_show_entry_text">Текст статьи</string>
+    <string name="menu_show_entry_text">Тексты статей</string>
     <string name="cant_open_image">Не удается открыть изображение</string>
     <string name="parsing_one_web_page">Разбор страницы</string>
     <string name="end_editing">Завершить редактирование</string>
@@ -501,7 +501,7 @@
     <string name="removeText">Удалить текст</string>
     <string name="set_category">Установить как категорию</string>
     <string name="menu_more_options">Больше опций</string>
-    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все избранные статьи</string>
+    <string name="reset_feed_and_delete_all_articles">Сбросить ленту и удалить все НЕ избранные статьи</string>
     <string name="filter_apply_to_author">Применить к автору</string>
     <string name="filter_apply_to_category">Применить к категории</string>
     <string name="filter_apply_to_url">Применить к URL</string>
@@ -546,7 +546,7 @@
     <string name="megabytes">МБ</string>
     <string name="create_start_auto_refersh">Запустить автообновление</string>
     <string name="settings_thread_count">Количество потоков</string>
-    <string name="settings_thread_count_description">(1-100) Количество параллельных операций, выполняемых одновременно во время обновления статей, а также загрузки картинок. Маленькие значения повышают активность ЦП и уменьшают потребление памяти при обновлении. Большие значения ускоряют процесс и повышают загрузку процессора. Оптимальное значение зависит от количества ядер процессора устройства и других факторов и определяется экспериментально</string>
+    <string name="settings_thread_count_description">(1–100) Количество параллельных операций, выполняемых одновременно во время обновления статей, а также загрузки картинок. Маленькие значения повышают активность ЦП и уменьшают потребление памяти при обновлении. Большие значения ускоряют процесс и повышают загрузку процессора. Оптимальное значение зависит от количества ядер процессора устройства и других факторов и определяется экспериментально</string>
     <string name="main_font_css_text_title">Текст стиля CSS основного шрифта</string>
     <string name="main_font_css_text_title_description">для установки веса шрифта, интервала букв и т. д. в тексте статьи</string>
     <string name="btn_reload_full_text">Перезагрузить текст</string>
@@ -578,7 +578,7 @@
     <string name="color">Цвет</string>
     <string name="label_color_dialog_title">Цвет метки</string>
     <string name="menu_labels">Метки</string>
-    <string name="menu_edit_article_url">Редактировать адрес статью</string>
+    <string name="menu_edit_article_url">Редактировать адрес статьи</string>
     <string name="edit_article_url_title_message">Вы можете использовать шаблон для текущей даты {…} в URL, например http://test.org/{yyyy-MM-dd}. Правила формата даты описаны на странице
 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Переименовать</string>
@@ -607,14 +607,14 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="settings_labels_sort_alphabetical_descr">Сортировать метки по алфавиту. Иначе ручная сортировка</string>
     <string name="settings_feeds_sort_alphabetical">Сортировка по алфавиту</string>
     <string name="settings_feeds_sort_alphabetical_descr">Сортировать статьи и группы по алфавиту. Иначе ручная сортировка</string>
-    <string name="web_search_keyword">Ключевое слово</string>
-    <string name="web_search_title">Веб-поиск статьи</string>
+    <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
+    <string name="web_search_title">Веб поиск статьи</string>
     <string name="settings_datetime_format">Формат даты и времени</string>
     <plurals name="number_of_new_entries">
-        <item quantity="one">%d new entry</item>
-        <item quantity="few">%d new entries</item>
-        <item quantity="many">%d new entries</item>
-        <item quantity="other">%d new entries</item>
+        <item quantity="one">%d новая статья</item>
+        <item quantity="few">%d новые статьи</item>
+        <item quantity="many">%d новых статей</item>
+        <item quantity="other">%d новых статей</item>
     </plurals>
     <string name="rightNow">прямо сейчас</string>
     <string name="oneWeek">неделя</string>
@@ -642,11 +642,17 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="error_add_customm_font">Не удалось добавить пользовательский шрифт</string>
     <string name="article_text_footer_show_remaining">Осталось</string>
     <string name="article_text_footer_show_remaining_description">"Показать количество оставшихся страниц для прокрутки вниз "</string>
-    <string name="open_image">Открыть изображение</string>
-    <string name="copy_to_downloads">Скопировать в загрузки</string>
+    <string name="open_image">Просмотреть</string>
+    <string name="copy_to_downloads">Копировать в Загрузки</string>
     <string name="sendErrorConfirm">Во время работы произошла ошибка. Отправить разработчику?</string>
     <string name="wrongFontFileSelected">"Файл со шрифтами должен иметь расширение ttf "</string>
-    <string name="show_article_text_preview">Предпросмотр</string>
-    <string name="show_article_text_preview_descr">Показать несколько первых строк текста статьи</string>
-    <string name="show_more">Показать больше…</string>
+    <string name="show_article_text_preview">Предпросмотр текста</string>
+    <string name="show_article_text_preview_descr">Показывать несколь первых строк текста статьи</string>
+    <string name="show_more">Дальше…</string>
+    <string name="appListLoading">Загружается список приложений…</string>
+    <string name="open_image_tap_action">Приложение просмотра картинок</string>
+    <string name="open_link_in_browser_tap_action">Приложение браузер</string>
+    <string name="open_image_tap_action_descr">Приложение просмотра картинок, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
+    <string name="open_link_in_browser_tap_action_descr">Приложение браузер, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
+    <string name="not_selected">Не выбрано</string>
 </resources>
