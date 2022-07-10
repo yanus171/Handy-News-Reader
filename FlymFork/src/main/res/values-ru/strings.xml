@@ -546,7 +546,7 @@
     <string name="megabytes">МБ</string>
     <string name="create_start_auto_refersh">Запустить автообновление</string>
     <string name="settings_thread_count">Количество потоков</string>
-    <string name="settings_thread_count_description">(1-100) Количество параллельных операций, выполняемых одновременно во время обновления статей, а также загрузки картинок. Маленькие значения повышают активность ЦП и уменьшают потребление памяти при обновлении. Большие значения ускоряют процесс и повышают загрузку процессора. Оптимальное значение зависит от количества ядер процессора устройства и других факторов и определяется экспериментально</string>
+    <string name="settings_thread_count_description">(1–100) Количество параллельных операций, выполняемых одновременно во время обновления статей, а также загрузки картинок. Маленькие значения повышают активность ЦП и уменьшают потребление памяти при обновлении. Большие значения ускоряют процесс и повышают загрузку процессора. Оптимальное значение зависит от количества ядер процессора устройства и других факторов и определяется экспериментально</string>
     <string name="main_font_css_text_title">Текст стиля CSS основного шрифта</string>
     <string name="main_font_css_text_title_description">для установки веса шрифта, интервала букв и т. д. в тексте статьи</string>
     <string name="btn_reload_full_text">Перезагрузить текст</string>
@@ -578,7 +578,7 @@
     <string name="color">Цвет</string>
     <string name="label_color_dialog_title">Цвет метки</string>
     <string name="menu_labels">Метки</string>
-    <string name="menu_edit_article_url">Редактировать адрес статью</string>
+    <string name="menu_edit_article_url">Редактировать адрес статьи</string>
     <string name="edit_article_url_title_message">Вы можете использовать шаблон для текущей даты {…} в URL, например http://test.org/{yyyy-MM-dd}. Правила формата даты описаны на странице
 https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_article_title">Переименовать</string>
