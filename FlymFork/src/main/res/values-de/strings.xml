@@ -644,4 +644,6 @@
     <string name="open_link_in_browser_tap_action_descr">Der Browser, der direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="not_selected">Nicht ausgewählt</string>
     <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
+    <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
+    <string name="settings_category_connection">Verbindung</string>
 </resources>
