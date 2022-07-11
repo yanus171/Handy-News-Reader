@@ -475,7 +475,6 @@
     <string name="menu_copy_feed">Dupliquer le flux courant</string>
     <string name="feed_copied">Flux dupliqué</string>
     <string name="menu_show_entry_text">Texte de l\'article</string>
-    <string name="read_more">En savoir plus …</string>
     <string name="cant_open_image">Impossible d\'ouvrir l\'image</string>
     <string name="parsing_one_web_page">Analyse de la page</string>
     <string name="end_editing">Fin de l\'édition</string>
@@ -633,4 +632,5 @@
     <string name="minutesShort">m</string>
     <string name="timeIntervalInFuture">dans</string>
     <string name="timeIntervalInPast">il y a</string>
+    <string name="error_add_customm_font">L\'ajout de police personnalisée a échoué</string>
 </resources>

@@ -464,7 +464,6 @@
     <string name="menu_copy_feed">Feed atual duplicado</string>
     <string name="feed_copied">Feed está duplicado</string>
     <string name="menu_show_entry_text">Texto do artigo</string>
-    <string name="read_more">Leia mais …</string>
     <string name="cant_open_image">Impossível abrir a imagem</string>
     <string name="parsing_one_web_page">Analisando uma página da web</string>
     <string name="end_editing">Finalizar edição</string>

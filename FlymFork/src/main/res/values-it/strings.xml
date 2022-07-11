@@ -93,6 +93,7 @@
     <string name="drawer_close">Chiudi Pannello di Navigazione</string>
     <!-- FEEDS -->
     <string name="feeds">Feed</string>
+    <string name="menu_article_web_search">Ricerca Web Articolo</string>
     <string name="menu_add_feed">Aggiungi feed</string>
     <string name="no_feeds">Nessun feed</string>
     <string name="no_filters">Nessuna Regola</string>
@@ -153,6 +154,7 @@
     <string name="menu_share">Condividi</string>
     <string name="menu_mark_all_as_unread">Segna tutte come da leggere</string>
     <string name="menu_mark_upper_as_read">Segna in alto come letto</string>
+    <string name="menu_mark_lower_as_read">Segna in basso come letto</string>
     <string name="menu_full_screen">Schermo Intero</string>
     <string name="menu_actionbar_visible">Barra delle azioni</string>
     <string name="menu_font_bold">Grassetto</string>
@@ -342,6 +344,7 @@
     <string name="confirmation">Conferma</string>
     <string name="question_delete_entry">Elimina questo articolo?</string>
     <string name="question_mark_upper_as_read">Segnare gli articoli in alto come letti?</string>
+    <string name="question_mark_lower_as_read">Segnare gli articoli inferiori come letti?</string>
     <string name="question_mark_all_as_unread">Segnare tutti gli articoli come non letti?</string>
     <string name="share_all_text">Condividi tutto il testo</string>
     <string name="group">Gruppo</string>
@@ -373,6 +376,7 @@
     <string name="rule_text">Regola Testo</string>
     <string name="global_marks_as_star_filter_rule_descr">una regola per riga</string>
     <string name="customKeepTime">Articoli personalizzati mantienili nel tempo</string>
+    <string name="custom_refresh_interval">Intervallo di aggiornamento personalizzato</string>
     <string name="menu_toggle_theme">Cambia Tema</string>
     <string name="turnOn">Attiva</string>
     <string name="brightness">Luminosità</string>
@@ -472,7 +476,6 @@
     <string name="menu_copy_feed">Duplica feed corrente</string>
     <string name="feed_copied">Feed duplicato</string>
     <string name="menu_show_entry_text">Testo dell\'articolo</string>
-    <string name="read_more">Per saperne di più …</string>
     <string name="cant_open_image">Impossibile aprire l\'immagine</string>
     <string name="parsing_one_web_page">Analisi di una pagina web</string>
     <string name="end_editing">Fine modifica</string>
@@ -596,8 +599,45 @@
     <string name="disable_tap_actions_when_video_descr">Disabilita temporaneamente l\'azione del tocco nell\'articolo quando contiene un video</string>
     <string name="addFeedTelegramPatternFound">L\'url sembra essere un feed di telegram. Vuoi ottimizzare automaticamente le impostazioni del feed per il canale telegram?</string>
     <string name="feedWasAutoConfigured">Il feed è stato configurato automaticamente</string>
+    <string name="settings_labels_sort_alphabetical">Ordinamento etichetta ABC</string>
+    <string name="settings_labels_sort_alphabetical_descr">Ordina le etichette alfabeticamente. Altrimenti ordinamento manuale</string>
+    <string name="settings_feeds_sort_alphabetical">Ordinamento feed ABC</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Ordina feed e gruppi alfabeticamente. Altrimenti ordinamento manuale</string>
+    <string name="web_search_keyword">Parola chiave</string>
+    <string name="web_search_title">Ricerca articolo Web</string>
+    <string name="settings_datetime_format">Formato ora data</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Un nuovo articolo</item>
         <item quantity="other">%d nuovi articoli</item>
     </plurals>
+    <string name="rightNow">adesso</string>
+    <string name="oneWeek">settimana</string>
+    <string name="twoFourWeek">settimane</string>
+    <string name="fiveWeek">settimane</string>
+    <string name="oneMonth">mese</string>
+    <string name="twoFourMonth">mesi</string>
+    <string name="fiveMonth">mesi</string>
+    <string name="oneDay">giorno</string>
+    <string name="twoFourDay">giorni</string>
+    <string name="fiveDay">giorni</string>
+    <string name="oneHour">ora</string>
+    <string name="twoFourHour">ore</string>
+    <string name="fiveHour">ore</string>
+    <string name="oneMinute">minuto</string>
+    <string name="twoFourMinute">minuti</string>
+    <string name="fiveMinute">minuti</string>
+    <string name="monthsShort">mesi</string>
+    <string name="weeksShort">s</string>
+    <string name="daysShort">g</string>
+    <string name="hoursShort">o</string>
+    <string name="minutesShort">m</string>
+    <string name="timeIntervalInFuture">pollice</string>
+    <string name="timeIntervalInPast">fa</string>
+    <string name="error_add_customm_font">Aggiunta del carattere personalizzato non riuscita</string>
+    <string name="article_text_footer_show_remaining">Rimanenza</string>
+    <string name="article_text_footer_show_remaining_description">"Mostra il contatore rimanente di pagine da scorrere in basso "</string>
+    <string name="open_image">Apri immagine</string>
+    <string name="copy_to_downloads">Copia negli scaricamenti</string>
+    <string name="sendErrorConfirm">Si è verificato un errore durante l\'operazione. Inviarlo allo sviluppatore?</string>
+    <string name="wrongFontFileSelected">"Il file dei caratteri dovrebbe terminare con ttf "</string>
 </resources>

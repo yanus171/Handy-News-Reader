@@ -94,6 +94,7 @@
     <string name="drawer_close">隐藏导航栏</string>
     <!-- FEEDS -->
     <string name="feeds">订阅源</string>
+    <string name="menu_article_web_search">文章网页搜索</string>
     <string name="menu_add_feed">文章网页搜索</string>
     <string name="no_feeds">未找到订阅源</string>
     <string name="no_filters">无规则</string>
@@ -154,6 +155,7 @@
     <string name="menu_share">分享</string>
     <string name="menu_mark_all_as_unread">标记全部为未读</string>
     <string name="menu_mark_upper_as_read">标记这条上面的条目未读</string>
+    <string name="menu_mark_lower_as_read">标记下方为已读</string>
     <string name="menu_full_screen">全屏</string>
     <string name="menu_actionbar_visible">操作栏</string>
     <string name="menu_font_bold">粗体</string>
@@ -343,6 +345,7 @@
     <string name="confirmation">确认</string>
     <string name="question_delete_entry">删除这篇文章？</string>
     <string name="question_mark_upper_as_read">标记上面的文章为已读？</string>
+    <string name="question_mark_lower_as_read">标记下方文章为已读？</string>
     <string name="question_mark_all_as_unread">标记所有文章为未读？</string>
     <string name="share_all_text">分享全文</string>
     <string name="group">组</string>
@@ -474,7 +477,6 @@
     <string name="menu_copy_feed">复制当前订阅</string>
     <string name="feed_copied">订阅源重复</string>
     <string name="menu_show_entry_text">文章内容</string>
-    <string name="read_more">阅读全文</string>
     <string name="cant_open_image">无法打开图像</string>
     <string name="parsing_one_web_page">解析页面</string>
     <string name="end_editing">结束编辑</string>
@@ -632,4 +634,24 @@
     <string name="timeIntervalInFuture">于</string>
     <string name="timeIntervalInPast">之前</string>
     <string name="error_add_customm_font">自定义字体添加失败</string>
+    <string name="article_text_footer_show_remaining">剩余</string>
+    <string name="article_text_footer_show_remaining_description">"显示离滚动到底部还剩几页 "</string>
+    <string name="open_image">打开图片</string>
+    <string name="copy_to_downloads">复制到下载目录</string>
+    <string name="sendErrorConfirm">操作过程中出现错误。将其发送给开发者吗？</string>
+    <string name="wrongFontFileSelected">"字体文件名应该以 ttf 结尾 "</string>
+    <string name="show_article_text_preview">文本预览</string>
+    <string name="show_article_text_preview_descr">显示文章文本的开头几行</string>
+    <string name="show_more">显示更多…</string>
+    <string name="appListLoading">应用程序列表加载</string>
+    <string name="open_image_tap_action">打开图像应用程序</string>
+    <string name="open_link_in_browser_tap_action">浏览器应用程序</string>
+    <string name="open_image_tap_action_descr">将直接使用的节目图像应用，以免在系统应用选择对话框上浪费时间</string>
+    <string name="open_link_in_browser_tap_action_descr">将直接使用的浏览器应用，避免在系统应用选择对话框上浪费时间</string>
+    <string name="not_selected">未选择</string>
+    <string name="setting_ignore_all_ssl_errors">忽略所有 SSL 错误</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">如果您在加载网页内容时遇到证书问题，请选中此选项！！！注意 ！！！这可能会使您的设备不安全 :(</string>
+    <string name="connection_timeout">连接超时</string>
+    <string name="connection_timeout_summary">单位毫秒。 我们应该等待互联网连接多长时间</string>
+    <string name="settings_category_connection">连接</string>
 </resources>

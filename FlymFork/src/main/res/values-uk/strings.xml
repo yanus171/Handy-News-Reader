@@ -93,6 +93,7 @@
     <string name="drawer_close">Закрити меню навігації</string>
     <!-- FEEDS -->
     <string name="feeds">Стрічки</string>
+    <string name="menu_article_web_search">Веб пошук статті</string>
     <string name="menu_add_feed">Додати стрічку</string>
     <string name="no_feeds">Немає стрічок</string>
     <string name="no_filters">Немає фільтрів</string>
@@ -153,6 +154,7 @@
     <string name="menu_share">Поділитися</string>
     <string name="menu_mark_all_as_unread">Позначити всі як непрочитані</string>
     <string name="menu_mark_upper_as_read">Позначити вгорі як прочитані</string>
+    <string name="menu_mark_lower_as_read">Позначити все нижче, як прочитане</string>
     <string name="menu_full_screen">Весь екран</string>
     <string name="menu_actionbar_visible">Смуга подій</string>
     <string name="menu_font_bold">Жирний шрифт</string>
@@ -342,6 +344,7 @@
     <string name="confirmation">Підтвердження</string>
     <string name="question_delete_entry">Вилучити статтю?</string>
     <string name="question_mark_upper_as_read">Позначити статті вгорі як прочитані?</string>
+    <string name="question_mark_lower_as_read">Помітити статті, що нижче як прочитані?</string>
     <string name="question_mark_all_as_unread">Позначити всі статті як непрочитані?</string>
     <string name="share_all_text">Поділитися текстом</string>
     <string name="group">Група</string>
@@ -473,7 +476,6 @@
     <string name="menu_copy_feed">Дублювати поточну стрічку</string>
     <string name="feed_copied">Стрічка продубльована</string>
     <string name="menu_show_entry_text">Текст статті</string>
-    <string name="read_more">Ще…</string>
     <string name="cant_open_image">Не вдалося відкрити зображення</string>
     <string name="parsing_one_web_page">Розбір однієї веб-сторінки</string>
     <string name="end_editing">Завершити редагування</string>
@@ -634,4 +636,13 @@
     <string name="timeIntervalInFuture">через</string>
     <string name="timeIntervalInPast">тому</string>
     <string name="error_add_customm_font">Шрифт користувача не додано</string>
+    <string name="article_text_footer_show_remaining">Залишилось</string>
+    <string name="article_text_footer_show_remaining_description">"Показувати залишок сторінок для прокручування донизу "</string>
+    <string name="open_image">Відкрити зображення</string>
+    <string name="copy_to_downloads">Копіювати до Завантажень</string>
+    <string name="sendErrorConfirm">Сталася помилка. Відправити її розробнику?</string>
+    <string name="wrongFontFileSelected">"Файл шрифту має бути ttf "</string>
+    <string name="show_article_text_preview">Попередній перегляд тексту</string>
+    <string name="show_article_text_preview_descr">Показувати кілька перших рядків статті</string>
+    <string name="show_more">Показати ще…</string>
 </resources>

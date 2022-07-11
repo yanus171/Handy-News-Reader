@@ -404,7 +404,6 @@
     <string name="menu_copy_feed">Duplicar feed actual</string>
     <string name="feed_copied">El feed está duplicado</string>
     <string name="menu_show_entry_text">Texto del artículo</string>
-    <string name="read_more">Leer más…</string>
     <string name="cant_open_image">No se puede abrir la imagen</string>
     <string name="parsing_one_web_page">Analizando una página web</string>
     <string name="end_editing">Terminar edición</string>

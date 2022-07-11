@@ -464,7 +464,6 @@
     <string name="menu_copy_feed">Αντιγραφή τρέχουσας ροής</string>
     <string name="feed_copied">Η ροή αντιγράφηκε</string>
     <string name="menu_show_entry_text">Κείμενο άρθρου</string>
-    <string name="read_more">Διάβασε περισσότερα…</string>
     <string name="cant_open_image">Αποτυχία ανοίγματος εικόνας</string>
     <string name="parsing_one_web_page">Ανάλυση σελίδας</string>
     <string name="end_editing">Τέλος επεξεργασίας</string>

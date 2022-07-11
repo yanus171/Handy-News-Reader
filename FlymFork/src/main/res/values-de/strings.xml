@@ -91,6 +91,7 @@
     <string name="drawer_close">Navigationsleiste schließen</string>
     <!-- FEEDS -->
     <string name="feeds">Feeds</string>
+    <string name="menu_article_web_search">Artikel im Web suchen</string>
     <string name="menu_add_feed">Feed-/Artikelsuche</string>
     <string name="no_feeds">Keine Feeds</string>
     <string name="no_filters">Keine Filter</string>
@@ -149,8 +150,9 @@
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
-    <string name="menu_mark_all_as_unread">Alles als ungelesen kennzeichnen</string>
+    <string name="menu_mark_all_as_unread">Alles als „Ungelesen” kennzeichnen</string>
     <string name="menu_mark_upper_as_read">Alle oberhalb als gelesen kennzeichnen</string>
+    <string name="menu_mark_lower_as_read">Alle unterhalb als „Gelesen” kennzeichnen</string>
     <string name="menu_full_screen">Vollbild</string>
     <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
@@ -341,7 +343,8 @@
     <string name="confirmation">Bestätigung</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
     <string name="question_mark_upper_as_read">Alle oberen Artikel als gelesen kennzeichnen?</string>
-    <string name="question_mark_all_as_unread">Alle Artikel als ungelesen kennzeichnen?</string>
+    <string name="question_mark_lower_as_read">Alle unteren Artikel als „Gelesen” kennzeichnen?</string>
+    <string name="question_mark_all_as_unread">Alle Artikel als „Ungelesen” kennzeichnen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
     <string name="auto_image_load">Bilder automatisch laden</string>
@@ -472,7 +475,6 @@
     <string name="menu_copy_feed">Aktuellen Feed duplizieren</string>
     <string name="feed_copied">Feed wurde dupliziert</string>
     <string name="menu_show_entry_text">Artikeltext</string>
-    <string name="read_more">Weiterlesen …</string>
     <string name="cant_open_image">Bild kann nicht geöffnet werden</string>
     <string name="parsing_one_web_page">Eine Webseite analysieren</string>
     <string name="end_editing">Bearbeiten beenden</string>
@@ -626,4 +628,21 @@
     <string name="daysShort">T</string>
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">vor</string>
+    <string name="article_text_footer_show_remaining">Verbleibend</string>
+    <string name="article_text_footer_show_remaining_description">"Zeigt die noch verbleibende Seitenzahl, um bis zum Ende zu blättern "</string>
+    <string name="open_image">Bild öffnen</string>
+    <string name="copy_to_downloads">In Downloads kopieren</string>
+    <string name="sendErrorConfirm">Während des Vorgangs ist ein Fehler aufgetreten. Möchten Sie diesen an den Entwickler senden?</string>
+    <string name="show_article_text_preview">Textvorschau</string>
+    <string name="show_article_text_preview_descr">Einige Textzeilen des Artikelanfangs anzeigen</string>
+    <string name="show_more">Mehr anzeigen …</string>
+    <string name="appListLoading">App-Liste wird geladen</string>
+    <string name="open_image_tap_action">Bildanzeige öffnen</string>
+    <string name="open_link_in_browser_tap_action">Browser</string>
+    <string name="open_image_tap_action_descr">Die App zur Bildanzeige, die direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
+    <string name="open_link_in_browser_tap_action_descr">Der Browser, der direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
+    <string name="not_selected">Nicht ausgewählt</string>
+    <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
+    <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
+    <string name="settings_category_connection">Verbindung</string>
 </resources>

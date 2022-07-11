@@ -96,6 +96,7 @@
     <string name="drawer_close">Закрыть меню навигации</string>
     <!-- FEEDS -->
     <string name="feeds">Ленты</string>
+    <string name="menu_article_web_search">Веб поиск статьи</string>
     <string name="menu_add_feed">Добавить ленту</string>
     <string name="no_feeds">Нет лент</string>
     <string name="no_filters">Нет фильтров</string>
@@ -478,7 +479,6 @@
     <string name="menu_copy_feed">Дублировать текущую ленту</string>
     <string name="feed_copied">Лента дублирована</string>
     <string name="menu_show_entry_text">Тексты статей</string>
-    <string name="read_more">Подробнее …</string>
     <string name="cant_open_image">Не удается открыть изображение</string>
     <string name="parsing_one_web_page">Разбор страницы</string>
     <string name="end_editing">Завершить редактирование</string>
@@ -599,56 +599,53 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="operationCanceled">Операция отменена</string>
     <string name="comments">Комментарии: </string>
     <string name="video_tag_found_in_article">В тексте статьи обнаружен тег видео</string>
-    <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
     <string name="disable_tap_actions_when_video">Отключить действия по нажатию видео</string>
-    <string name="settings_labels_sort_alphabetical">Сортировка меток по алфавиту</string>
-    <string name="settings_labels_sort_alphabetical_descr">Сортировать метки по алфавиту. Иначе ручная сортировка</string>
+    <string name="disable_tap_actions_when_video_descr">Временное отключение действия касания в статье, если она содержит видео</string>
     <string name="addFeedTelegramPatternFound">URL-адрес, похоже, относится к telegram. Вы хотите автоматически настроить ленту для telegram-канала?</string>
     <string name="feedWasAutoConfigured">Лента была настроена</string>
-
-    <string name="rightNow">прямо сейчас</string>
-
-    <string name="oneMonth">месяц</string>
-    <string name="twoFourMonth">месяца</string>
-    <string name="fiveMonth">месяцев</string>
-
-    <string name="oneWeek">неделя</string>
-    <string name="twoFourWeek">недели</string>
-    <string name="fiveWeek">недель</string>
-
-    <string name="oneDay">день</string>
-    <string name="twoFourDay">дня</string>
-    <string name="fiveDay">дней</string>
-
-    <string name="oneHour">час</string>
-    <string name="twoFourHour">часа</string>
-    <string name="fiveHour">часов</string>
-
-    <string name="oneMinute">минуту</string>
-    <string name="twoFourMinute">минуты</string>
-    <string name="fiveMinute">минут</string>
-
-    <string name="monthsShort">мес</string>
-    <string name="weeksShort">нд</string>
-    <string name="daysShort">дн</string>
-    <string name="hoursShort">ч</string>
-    <string name="minutesShort">м</string>
-
-    <string name="timeIntervalInFuture">через</string>
-    <string name="timeIntervalInPast">назад</string>
-
+    <string name="settings_labels_sort_alphabetical">Сортировка меток по алфавиту</string>
+    <string name="settings_labels_sort_alphabetical_descr">Сортировать метки по алфавиту. Иначе ручная сортировка</string>
+    <string name="settings_feeds_sort_alphabetical">Сортировка по алфавиту</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Сортировать статьи и группы по алфавиту. Иначе ручная сортировка</string>
+    <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
+    <string name="web_search_title">Веб поиск статьи</string>
+    <string name="settings_datetime_format">Формат даты и времени</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d новая статья</item>
         <item quantity="few">%d новые статьи</item>
         <item quantity="many">%d новых статей</item>
         <item quantity="other">%d новых статей</item>
     </plurals>
-
+    <string name="rightNow">прямо сейчас</string>
+    <string name="oneWeek">неделя</string>
+    <string name="twoFourWeek">недели</string>
+    <string name="fiveWeek">недель</string>
+    <string name="oneMonth">месяц</string>
+    <string name="twoFourMonth">месяца</string>
+    <string name="fiveMonth">месяцев</string>
+    <string name="oneDay">день</string>
+    <string name="twoFourDay">дня</string>
+    <string name="fiveDay">дней</string>
+    <string name="oneHour">час</string>
+    <string name="twoFourHour">часа</string>
+    <string name="fiveHour">часов</string>
+    <string name="oneMinute">минуту</string>
+    <string name="twoFourMinute">минуты</string>
+    <string name="fiveMinute">минут</string>
+    <string name="monthsShort">мес</string>
+    <string name="weeksShort">нд</string>
+    <string name="daysShort">дн</string>
+    <string name="hoursShort">ч</string>
+    <string name="minutesShort">м</string>
+    <string name="timeIntervalInFuture">через</string>
+    <string name="timeIntervalInPast">назад</string>
+    <string name="error_add_customm_font">Не удалось добавить пользовательский шрифт</string>
+    <string name="article_text_footer_show_remaining">Осталось</string>
+    <string name="article_text_footer_show_remaining_description">"Показать количество оставшихся страниц для прокрутки вниз "</string>
     <string name="open_image">Просмотреть</string>
     <string name="copy_to_downloads">Копировать в Загрузки</string>
-    <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
-    <string name="menu_article_web_search">Веб поиск статьи</string>
-    <string name="web_search_title">Веб поиск статьи</string>
+    <string name="sendErrorConfirm">Во время работы произошла ошибка. Отправить разработчику?</string>
+    <string name="wrongFontFileSelected">"Файл со шрифтами должен иметь расширение ttf "</string>
     <string name="show_article_text_preview">Предпросмотр текста</string>
     <string name="show_article_text_preview_descr">Показывать несколь первых строк текста статьи</string>
     <string name="show_more">Дальше…</string>
@@ -658,4 +655,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="open_image_tap_action_descr">Приложение просмотра картинок, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
     <string name="open_link_in_browser_tap_action_descr">Приложение браузер, которое будет использовано напрямую, не тратя времени на вызов системного диалога выбора приложения</string>
     <string name="not_selected">Не выбрано</string>
+    <string name="setting_ignore_all_ssl_errors">Игнорировать все ошибки SSL</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Установите этот флажок, если у вас возникают проблемы с сертификатом при загрузке веб-контента. !!! ВНИМАНИЕ !!! Это может сделать ваше устройство небезопасным :(</string>
+    <string name="connection_timeout">Таймаут соединения</string>
+    <string name="settings_category_connection">Подключение</string>
 </resources>
