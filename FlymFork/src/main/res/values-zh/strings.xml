@@ -643,4 +643,6 @@
     <string name="show_article_text_preview">文本预览</string>
     <string name="show_article_text_preview_descr">显示文章文本的开头几行</string>
     <string name="show_more">显示更多…</string>
+    <string name="setting_ignore_all_ssl_errors">忽略所有 SSL 错误</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">如果您在加载网页内容时遇到证书问题，请选中此选项！！！注意 ！！！这可能会使您的设备不安全 :(</string>
 </resources>
