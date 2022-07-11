@@ -42,7 +42,7 @@
  * THE SOFTWARE.
  */
 
-package ru.yanus171.feedexfork.widget;
+package ru.yanus171.feedexfork.view;
 
 import android.content.Context;
 import android.preference.DialogPreference;
@@ -52,6 +52,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.widget.WidgetProvider;
 
 public class ColorPickerDialogPreference extends DialogPreference {
 

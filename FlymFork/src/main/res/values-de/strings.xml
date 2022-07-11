@@ -563,7 +563,6 @@
     <string name="setting_edit_feed_force_portrait_orientation_summary">Auf dem Feed-Bearbeitungsbildschirm Ausrichtung im Hochformat erzwingen - prüfen Sie, ob das Gerät ein schmales Display hat</string>
     <string name="name">Name</string>
     <string name="remove_label_confirmation">"Kategorie entfernen? "</string>
-    <string name="setting_label_list">Liste der Kategorien</string>
     <string name="tag_list">Liste der Kategorien</string>
     <string name="menu_edit_labels">Kategorien</string>
     <string name="manage_labels">Kategorien verwalten</string>

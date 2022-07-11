@@ -40,7 +40,7 @@
                 android:key="theme"
                 android:title="@string/theme" />
 
-            <ru.yanus171.feedexfork.widget.FontSelectPreference
+            <ru.yanus171.feedexfork.view.FontSelectPreference
                 android:defaultValue=""
                 android:key="fontFamily"
                 android:title="@string/fontFamily"
@@ -632,7 +632,7 @@
         <PreferenceScreen
             android:layout="@layout/preference_items"
             android:summary=""
-            android:title="@string/setting_label_list" >
+            android:title="@string/tag_list" >
             <intent
                 android:targetClass="ru.yanus171.feedexfork.activity.LabelListActivity"
                 android:targetPackage="ru.yanus171.feedexfork"/>
@@ -653,12 +653,12 @@
             android:entryValues="@array/settings_datetime_format_values"
             android:key="datetime_format"
             android:title="@string/settings_datetime_format"/>
-        <ru.yanus171.feedexfork.widget.AppSelectPreference
+        <ru.yanus171.feedexfork.view.AppSelectPreference
             android:defaultValue="noApp"
             android:key="openImageTapAction"
             android:title="@string/open_image_tap_action"
             android:summary="@string/open_image_tap_action_descr"/>
-        <ru.yanus171.feedexfork.widget.AppSelectPreference
+        <ru.yanus171.feedexfork.view.AppSelectPreference
             android:defaultValue="noApp"
             android:key="openLinkInBrowserTapAction"
             android:title="@string/open_link_in_browser_tap_action"
@@ -674,11 +674,22 @@
             android:defaultValue="true"
             android:title="@string/settings_show_circle_progress"
             android:summary="@string/settings_show_circle_progress_summary"/>
+
         <CheckBoxPreference
             android:key="setting_edit_feed_force_portrait_orientation"
             android:defaultValue="false"
             android:title="@string/setting_edit_feed_force_portrait_orientation"
             android:summary="@string/setting_edit_feed_force_portrait_orientation_summary"/>
+
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_connection"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:defaultValue="10000"
+            android:inputType="number"
+            android:key="connection_timeout"
+            android:summary="@string/connection_timeout_summary"
+            android:title="@string/connection_timeout" />
         <CheckBoxPreference
             android:key="ignore_all_ssl_errors"
             android:defaultValue="false"

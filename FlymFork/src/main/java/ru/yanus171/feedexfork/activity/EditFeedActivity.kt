@@ -89,8 +89,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FilterColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.*
-import ru.yanus171.feedexfork.widget.AppSelectPreference
-import ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent
+import ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.net.URLEncoder

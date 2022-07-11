@@ -138,10 +138,10 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
-import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetPackageNameForAction;
-import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent;
-import static ru.yanus171.feedexfork.widget.FontSelectPreference.DefaultFontFamily;
-import static ru.yanus171.feedexfork.widget.FontSelectPreference.GetTypeFaceLocalUrl;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
+import static ru.yanus171.feedexfork.view.FontSelectPreference.DefaultFontFamily;
+import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalUrl;
 
 public class EntryView extends WebView implements Handler.Callback {
 

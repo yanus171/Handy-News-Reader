@@ -60,11 +60,10 @@ import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.widget.AppSelectPreference;
-import ru.yanus171.feedexfork.widget.FontSelectPreference;
+import ru.yanus171.feedexfork.view.FontSelectPreference;
 
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
-import static ru.yanus171.feedexfork.widget.FontSelectPreference.cAddFontFileResultCode;
+import static ru.yanus171.feedexfork.view.FontSelectPreference.cAddFontFileResultCode;
 
 public class GeneralPrefsActivity extends BaseActivity {
 

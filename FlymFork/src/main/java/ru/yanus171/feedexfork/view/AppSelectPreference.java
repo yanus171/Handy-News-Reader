@@ -1,4 +1,4 @@
-package ru.yanus171.feedexfork.widget;
+package ru.yanus171.feedexfork.view;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -42,9 +42,9 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 
 import static ru.yanus171.feedexfork.fragment.EntryFragment.DpToPx;
-import static ru.yanus171.feedexfork.widget.AppSelectPreference.CreateAppList;
-import static ru.yanus171.feedexfork.widget.AppSelectPreference.Separator;
-import static ru.yanus171.feedexfork.widget.AppSelectPreference.cNoApp;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.CreateAppList;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.Separator;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.cNoApp;
 
 public class AppSelectPreference extends Preference {
 	final static String Separator = "#";

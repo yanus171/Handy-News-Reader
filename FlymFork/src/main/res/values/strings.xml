@@ -676,4 +676,8 @@
     <string name="not_selected">Not selected</string>
     <string name="setting_ignore_all_ssl_errors">Ignore all SSL errors</string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Check this if your experience certificate problems with loading web content. !!! ATTENTION !!! This can make your device insecure :(</string>
+    <string name="connection_timeout">Connection timeout</string>
+    <string name="connection_timeout_summary">In mills. How long should we wait for internet connection</string>
+    <string name="settings_category_connection">Connection</string>
+
 </resources>

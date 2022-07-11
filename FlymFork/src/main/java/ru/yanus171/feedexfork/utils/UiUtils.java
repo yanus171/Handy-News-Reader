@@ -37,8 +37,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -47,9 +45,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.widget.FontSelectPreference;
+import ru.yanus171.feedexfork.view.FontSelectPreference;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.MainApplication.getContext;

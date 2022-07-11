@@ -2,19 +2,18 @@ package ru.yanus171.feedexfork.utils
 
 import android.os.Build
 import okhttp3.*
-
+import org.jsoup.Jsoup
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
-
-import org.jsoup.Jsoup
 import java.security.cert.X509Certificate
 import java.security.SecureRandom
-import javax.net.ssl.SSLContext
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+import javax.net.ssl.SSLContext
 
-class Connection(url: String, var mIsOKHttp: Boolean = true ) {
+class Connection(url: String, var mIsOKHttp: Boolean = true) {
     private var mConnection: HttpURLConnection? = null
     private var mResponse: Response? = null
     val inputStream: InputStream
@@ -47,6 +46,8 @@ class Connection(url: String, var mIsOKHttp: Boolean = true ) {
 
 
     init {
+        val timeout = PrefUtils.getIntFromText( "connection_timeout", 10000 )
+
         if (IsOkHttp()) {
 
             fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
@@ -71,7 +72,9 @@ class Connection(url: String, var mIsOKHttp: Boolean = true ) {
                     .url(url.trim())
                     .build()
             val client = OkHttpClient.Builder()
-            if ( PrefUtils.getBoolean( "ignore_all_ssl_errors", false ) )
+                    .connectTimeout(timeout.toLong(), TimeUnit.MILLISECONDS)
+                    .readTimeout(timeout.toLong(), TimeUnit.MILLISECONDS)
+            if ( PrefUtils.getBoolean("ignore_all_ssl_errors", false) )
                 client.apply {
                     ignoreAllSSLErrors()
                 }
@@ -79,9 +82,9 @@ class Connection(url: String, var mIsOKHttp: Boolean = true ) {
 
             try {
                 mResponse = call.execute()
-            } catch ( e: IOException ) {
+            } catch (e: IOException) {
                 e.printStackTrace();
-                if ( url.startsWith( "https" ) ) {
+                if ( url.startsWith("https") ) {
                     try {
                         mResponse?.close()
                         request = Request.Builder()
@@ -89,17 +92,17 @@ class Connection(url: String, var mIsOKHttp: Boolean = true ) {
                                 .build()
                         call = OkHttpClient().newCall(request)
                         mResponse = call.execute()
-                    } catch ( e: IOException ) {
+                    } catch (e: IOException) {
                         disconnect();
                         mIsOKHttp = false;
-                        mConnection = NetworkUtils.setupConnection(url.trim())
+                        mConnection = NetworkUtils.setupConnection(url.trim(), timeout)
                     }
                 } else
                     throw e
             }
 
         } else
-            mConnection = NetworkUtils.setupConnection(url.trim())
+            mConnection = NetworkUtils.setupConnection(url.trim(), timeout)
 
     }
 

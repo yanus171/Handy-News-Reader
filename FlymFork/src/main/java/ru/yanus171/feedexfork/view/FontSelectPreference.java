@@ -1,4 +1,4 @@
-package ru.yanus171.feedexfork.widget;
+package ru.yanus171.feedexfork.view;
 
 import java.io.File;
 import java.io.IOException;

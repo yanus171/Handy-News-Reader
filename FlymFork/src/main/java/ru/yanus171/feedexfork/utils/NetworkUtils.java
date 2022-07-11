@@ -293,8 +293,8 @@ public class NetworkUtils {
         }
     }
 
-    public static HttpURLConnection setupConnection(String url) throws IOException {
-        return setupConnection(new URL(url));
+    public static HttpURLConnection setupConnection(String url, int timeout) throws IOException {
+        return setupConnection(new URL(url), timeout);
     }
 
     public static Bitmap downloadImage(String url) {
@@ -320,7 +320,7 @@ public class NetworkUtils {
         return bitmap;
     }
 
-    public static HttpURLConnection setupConnection(URL url) throws IOException {
+    public static HttpURLConnection setupConnection(URL url, int timeout) throws IOException {
         FetcherService.Status().ChangeProgress(R.string.setupConnection);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();//; new OkUrlFactory(new OkHttpClient()).open(url);
@@ -329,8 +329,8 @@ public class NetworkUtils {
         connection.setDoInput(true);
         connection.setDoOutput(false);
         connection.setRequestProperty("User-agent", "Mozilla/5.0 (compatible) AppleWebKit Chrome Safari"); // some feeds need this to work properly
-        connection.setConnectTimeout(30000);
-        connection.setReadTimeout(30000);
+        connection.setConnectTimeout(timeout);
+        connection.setReadTimeout(timeout);
         connection.setUseCaches(false);
         connection.setInstanceFollowRedirects(true);
         connection.setRequestProperty("accept", "*/*");

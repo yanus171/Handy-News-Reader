@@ -146,7 +146,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUN
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
-import static ru.yanus171.feedexfork.widget.AppSelectPreference.GetShowInBrowserIntent;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
