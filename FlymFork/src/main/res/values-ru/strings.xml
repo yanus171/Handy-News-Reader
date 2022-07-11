@@ -657,4 +657,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="not_selected">Не выбрано</string>
     <string name="setting_ignore_all_ssl_errors">Игнорировать все ошибки SSL</string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Установите этот флажок, если у вас возникают проблемы с сертификатом при загрузке веб-контента. !!! ВНИМАНИЕ !!! Это может сделать ваше устройство небезопасным :(</string>
+    <string name="connection_timeout">Таймаут соединения</string>
+    <string name="settings_category_connection">Подключение</string>
 </resources>
