@@ -643,4 +643,5 @@
     <string name="open_image_tap_action_descr">Die App zur Bildanzeige, die direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="open_link_in_browser_tap_action_descr">Der Browser, der direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="not_selected">Nicht ausgewählt</string>
+    <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
 </resources>
