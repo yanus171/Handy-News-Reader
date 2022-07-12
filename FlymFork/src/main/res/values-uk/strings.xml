@@ -650,4 +650,10 @@
     <string name="open_link_in_browser_tap_action">Браузер</string>
     <string name="open_image_tap_action_descr">Програма перегляду зображень яка буде використовуватись безпосередньо, без витрати часу на системний діалог вибору</string>
     <string name="open_link_in_browser_tap_action_descr">Браузер який буде використовуватись безпосередньо, без витрати часу на системний діалог вибору</string>
+    <string name="not_selected">Не обрано</string>
+    <string name="setting_ignore_all_ssl_errors">Ігнорувати всі SSL помилки</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Оберіть це, якщо є проблема з сертифікатом при завантаженні вебвмісту. !!! УВАГА !!! Це може зашкодите безпеці Вашого пристрою :(</string>
+    <string name="connection_timeout">Час очікування з\'єднання</string>
+    <string name="connection_timeout_summary">В мілісекундах. Як довго ми повинні чекати підключення до Інтернету</string>
+    <string name="settings_category_connection">З\'єднання</string>
 </resources>
