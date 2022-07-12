@@ -645,4 +645,9 @@
     <string name="show_article_text_preview">Попередній перегляд тексту</string>
     <string name="show_article_text_preview_descr">Показувати кілька перших рядків статті</string>
     <string name="show_more">Показати ще…</string>
+    <string name="appListLoading">Список програм завантажується</string>
+    <string name="open_image_tap_action">Відкрити програму перегляду зображень</string>
+    <string name="open_link_in_browser_tap_action">Браузер</string>
+    <string name="open_image_tap_action_descr">Програма перегляду зображень яка буде використовуватись безпосередньо, без витрати часу на системний діалог вибору</string>
+    <string name="open_link_in_browser_tap_action_descr">Браузер який буде використовуватись безпосередньо, без витрати часу на системний діалог вибору</string>
 </resources>
