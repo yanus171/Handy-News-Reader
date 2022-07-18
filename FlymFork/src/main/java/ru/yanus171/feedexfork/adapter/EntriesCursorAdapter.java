@@ -823,7 +823,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                imagesToDl,
                                                mImageUrlList,
                                                3 );
-
             mText = getBoldText( GetHtmlAligned( temp ));
             mNeedToOpenArticle = NeedToOpenArticle(temp);
             synchronized ( this ) {
@@ -1092,6 +1091,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mMarkAsReadList.add(entryUri.toString());
         else
             mMarkAsReadList.remove(entryUri.toString());
+        if ( isRead && isSilent )
+            return;
         new Thread() {
             @Override
             public void run() {
