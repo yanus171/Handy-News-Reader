@@ -163,6 +163,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.HomeActivity" />
 
+        </activity>
+
+        <activity
+            android:name=".activity.EntryActivityNewTask"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard"
+            android:documentLaunchMode="intoExisting"
+            android:autoRemoveFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            android:theme="@style/Theme.Dark"
+            tools:targetApi="lollipop"
+            android:exported="true" >
+
             <intent-filter
                 android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">
@@ -181,20 +194,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".activity.EntryActivityNewTask"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="standard"
-            android:documentLaunchMode="intoExisting"
-            android:autoRemoveFromRecents="false"
-            android:alwaysRetainTaskState="true"
-            android:theme="@style/Theme.Dark"
-            tools:targetApi="lollipop"
-            android:exported="true" >
-
-
         </activity>
 
         <activity
