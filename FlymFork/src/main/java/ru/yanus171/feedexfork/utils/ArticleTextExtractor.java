@@ -149,7 +149,6 @@ public class ArticleTextExtractor {
                 for (Element item : tagsElements.getAllElements())
                     if (!item.ownText().isEmpty())
                         categoryList.add(item.ownText());
-                tagsElements.remove();
             }
         }
         Dog.v( "tagList = " + TextUtils.join( " ", categoryList ));
@@ -454,6 +453,7 @@ public class ArticleTextExtractor {
                                 result = new Element("p");
                                 result.insertChildren(0, elements.clone());
                             }
+                            elements.remove();
                         } else if ( HANDY_NEWS_READER_ROOT_CLASS.equals( className ) )
                             result = doc;
                     }

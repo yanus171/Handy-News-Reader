@@ -712,6 +712,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     content = new EntryContent();
                     content.mID = holder.entryID;
                     content.mHTML = html;
+                    content.mTitle = holder.titleTextView.getText().toString();
                     if ( mFilters != null )
                         content.mHTML = mFilters.removeText(content.mHTML, DB_APPLIED_TO_CONTENT );
                     content.mIsMobilized = false;//isMobilized;
@@ -788,6 +789,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     class EntryContent {
         long mID = 0L;
         String mLink;
+        String mTitle;
         ArrayList<Uri> mImageUrlList = new ArrayList<>();
         Spanned mText;
         String mHTML;
@@ -823,6 +825,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                imagesToDl,
                                                mImageUrlList,
                                                3 );
+            temp = temp.replace(mTitle, "");
+
             mText = getBoldText( GetHtmlAligned( temp ));
             mNeedToOpenArticle = NeedToOpenArticle(temp);
             synchronized ( this ) {

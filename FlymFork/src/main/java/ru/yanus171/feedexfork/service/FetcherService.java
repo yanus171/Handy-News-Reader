@@ -867,7 +867,7 @@ public class FetcherService extends IntentService {
                     String dateText = "";
                     if (isParseDateFromHTML) {
                         Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
-                        if (element != null) {
+                        if ( element != null ) {
                             for (Element el : element.getAllElements())
                                 if (el.hasText())
                                     dateText += el.ownText() + " ";

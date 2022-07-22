@@ -401,7 +401,8 @@ public class HtmlUtils {
             return content;
         Matcher match = CATEGORY_PATTERN.matcher(content);
         while (match.find())
-            categoryList.add(match.group(1));
+            if ( !categoryList.contains(match.group(1)) )
+                categoryList.add(match.group(1));
         return match.replaceAll("");
     }
 
