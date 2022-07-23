@@ -67,16 +67,12 @@ public class StatusText implements Observer {
         mView.setGravity(Gravity.START | Gravity.TOP);
         mView.setTextColor( Theme.GetTextColorReadInt() );
         mView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
-        mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FetcherObservable status = (FetcherObservable)observable;
-                status.Clear();
-                v.setVisibility(View.GONE);
-
-            }
+        mView.setOnClickListener(v -> {
+            FetcherObservable status = (FetcherObservable)observable;
+            status.Clear();
+            v.setVisibility(View.GONE);
         });
-        mView.setMaxLines( 2 );
+        mView.setLines( 2 );
         UiUtils.SetSmallFont( mView );
 
         mErrorView.setVisibility(View.GONE);

@@ -1,45 +1,48 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/entry_list_layout_root_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingStart="5dp"
     android:paddingLeft="5dp"
-    android:paddingBottom="0dp"
-    android:paddingRight="5dp"
     android:paddingEnd="5dp"
-    android:paddingStart="5dp">
+    android:paddingRight="5dp"
+    android:paddingBottom="0dp">
+
     <FrameLayout
         android:id="@+id/entry_list_layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/swype_btn_toggle_read"
             android:layout_width="@dimen/entry_img_width"
             android:layout_height="@dimen/entry_img_height"
-            android:layout_gravity="start|center_vertical"
+            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:src="@drawable/ic_check_box_gray"
-            android:visibility="visible"
-            android:scaleType="centerCrop"
-            android:paddingEnd="5dp"
+            android:layout_gravity="start|center_vertical"
             android:paddingStart="5dp"
-            android:layout_alignParentStart="true" />
+            android:paddingLeft="5dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_check_box_gray"
+            android:visibility="visible" />
+
         <ImageView
             android:id="@+id/swype_btn_toggle_star"
             android:layout_width="@dimen/entry_img_width"
             android:layout_height="@dimen/entry_img_height"
             android:layout_gravity="center_vertical|end"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:src="@drawable/ic_star_half_grey"
-            android:visibility="visible"
-            android:scaleType="centerCrop"
             android:paddingStart="5dp"
-            android:paddingEnd="5dp" />
+            android:paddingLeft="5dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_star_half_grey"
+            android:visibility="visible" />
+
         <FrameLayout
             android:id="@+id/layout_ontouch"
             android:layout_width="match_parent"
@@ -50,9 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:background="@color/dark_theme_background"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/layout_with_background"
@@ -64,10 +67,10 @@
                         android:id="@+id/main_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:paddingTop="5dp"
+                        android:paddingEnd="5dp"
                         android:paddingRight="5dp"
-                        android:paddingEnd="5dp" />
+                        android:scaleType="centerCrop" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -98,14 +101,16 @@
                             android:id="@+id/layout_controls"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:orientation="horizontal"
                             android:paddingEnd="35dp"
-                            android:paddingRight="35dp"
-                            android:orientation="horizontal">
+                            android:paddingRight="35dp">
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingEnd="5dp"
                                 android:paddingRight="5dp">
+
                                 <ImageView
                                     android:id="@+id/new_icon"
                                     android:layout_width="20dp"
@@ -113,6 +118,7 @@
                                     android:layout_gravity="center"
                                     android:alpha="0.7"
                                     android:src="@drawable/ic_indicator_new_article_dark" />
+
                                 <ImageView
                                     android:id="@+id/favorite_icon"
                                     android:layout_width="20dp"
@@ -120,6 +126,7 @@
                                     android:layout_gravity="center"
                                     android:alpha="0.7"
                                     android:src="@drawable/ic_indicator_star_dark" />
+
                                 <ImageView
                                     android:id="@+id/mobilized_icon"
                                     android:layout_width="20dp"
@@ -127,6 +134,7 @@
                                     android:layout_gravity="center"
                                     android:alpha="0.7"
                                     android:src="@drawable/ic_indicator_full_text" />
+
                                 <ImageView
                                     android:id="@+id/read_icon"
                                     android:layout_width="20dp"
@@ -135,17 +143,18 @@
                                     android:alpha="0.7"
                                     android:src="@drawable/ic_indicator_unread" />
                             </LinearLayout>
+
                             <TextView
                                 android:id="@+id/textDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.7"
                                 android:drawablePadding="3dp"
-                                android:singleLine="true"
                                 android:paddingStart="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingEnd="10dp"
                                 android:paddingRight="10dp"
+                                android:singleLine="true"
                                 android:text="date"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@color/dark_theme_color_unread"
@@ -175,6 +184,7 @@
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
+
                             <ImageView
                                 android:id="@+id/collapsed_btn"
                                 android:layout_width="30dp"
@@ -182,6 +192,7 @@
                                 android:alpha="0.5"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_keyboard_arrow_down_gray" />
+
                             <TextView
                                 android:id="@+id/textAuthor"
                                 android:layout_width="wrap_content"
@@ -196,6 +207,7 @@
                                 android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
                         </LinearLayout>
+
                         <TextView
                             android:id="@+id/textLabel"
                             android:layout_width="match_parent"
@@ -211,6 +223,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/textUrl"
                     android:layout_width="match_parent"
@@ -224,6 +237,7 @@
                     android:text="url url url url url url url url url url url url url url url url url url url url url url url url  "
                     android:textColor="@color/dark_theme_color_unread"
                     android:textIsSelectable="false" />
+
                 <TextView
                     android:id="@+id/textCategories"
                     android:layout_width="match_parent"
@@ -236,6 +250,7 @@
                     android:text="#tag1, #tag2, #tag3"
                     android:textColor="@color/dark_theme_color_unread"
                     android:textIsSelectable="false" />
+
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -246,9 +261,9 @@
                     android:indeterminate="false"
                     android:indeterminateOnly="false"
                     android:max="100"
+                    android:paddingLeft="5dp"
                     android:paddingTop="4dp"
                     android:progress="33"
-                    android:paddingLeft="5dp"
                     android:progressBackgroundTint="#00000000"
                     android:progressTint="#FF777777"
                     tools:targetApi="lollipop" />
@@ -262,26 +277,29 @@
         android:id="@+id/image1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:visibility="gone"
-        android:src="@drawable/ic_earth_gray" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_earth_gray"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/image2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:visibility="gone"
-        android:src="@drawable/ic_earth_gray" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_earth_gray"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/image3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:visibility="gone"
-        android:src="@drawable/ic_earth_gray" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_earth_gray"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/textSource"
         android:layout_width="match_parent"
@@ -289,80 +307,93 @@
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="0dp"
-        android:letterSpacing="0.04"
-        android:lineSpacingMultiplier="1.0"
+        android:autoLink="none"
         android:ellipsize="none"
         android:justificationMode="inter_word"
-        android:autoLink="none"
+        android:letterSpacing="0.04"
+        android:lineSpacingMultiplier="1.0"
         android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/dark_theme_color_unread"
-        tools:targetApi="o"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:targetApi="o" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="0"
-        android:paddingTop="5dp"
         android:paddingLeft="15dp"
+        android:paddingTop="5dp"
         android:paddingRight="15dp"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:weightSum="2">
+
         <TextView
             android:id="@+id/textSourceOpenArticle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:singleLine="true"
             android:text="@string/open_article"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/dark_theme_color_unread"
-            android:layout_marginLeft="15dp"
             android:textIsSelectable="false"
-            android:singleLine="true"
-            android:layout_weight="1"
-            android:layout_marginStart="15dp"
-            android:visibility="visible"/>
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/collapse_btn_bottom"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:alpha="0.5"
+            android:gravity="left"
+            android:layout_gravity="left"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_keyboard_arrow_up" />
+
         <TextView
             android:id="@+id/textSourceShowMore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/show_more"
             android:singleLine="true"
+            android:text="@string/show_more"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/dark_theme_color_unread"
-            android:layout_marginRight="15dp"
             android:textIsSelectable="false"
-            android:layout_weight="1"
-            android:layout_marginEnd="15dp"
-            android:visibility="visible"/>
+            android:visibility="visible" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/textTextPreview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:text="text Preivew"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:maxLines="3"
+        android:text="text Preivew"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/dark_theme_color_unread"
-        android:textIsSelectable="false"
-        />
+        android:textIsSelectable="false" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
         android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:alpha="0.4"
         android:src="@color/dark_theme_color_primary" />
+
     <TextView
         android:id="@+id/bottomEmptyPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </LinearLayout>

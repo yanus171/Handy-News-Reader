@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -211,6 +212,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return Build.VERSION.SDK_INT >= 16 && holder.textTextView.getLineCount() > holder.textTextView.getMaxLines();
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
 
@@ -258,6 +260,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.labelTextView = SetupSmallTextView(view, R.id.textLabel);
             holder.textSizeProgressBar = view.findViewById(R.id.progressBar);
             holder.bottomEmptyPage = view.findViewById(R.id.bottomEmptyPage);
+            holder.collapseBtnBottom = view.findViewById(R.id.collapse_btn_bottom);
             view.setTag(R.id.holder, holder);
 
             //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
@@ -284,8 +287,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     PrefUtils.putInt( STATE_TEXT_LINE_COUNT, holder.textTextView.getMaxLines() );
                     PrefUtils.putLong( STATE_TEXT_LINE_COUNT_ENTRY_ID, holder.entryID );
                 });
-                holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener(
-                    () -> holder.showMore.setVisibility( holder.isTextShown() && HasMoreText( holder ) ? View.VISIBLE : View.GONE ) );
+                holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener( () -> {
+                    final boolean visible = holder.isTextShown() && HasMoreText( holder );
+                    holder.showMore.setVisibility( visible ? View.VISIBLE : View.GONE );
+                    if ( visible ) {
+                        final int count = holder.textTextView.getLineCount() / MAX_LINES_STEP;
+                        final int page = holder.textTextView.getMaxLines() / MAX_LINES_STEP;
+                        holder.showMore.setText( MainApplication.getContext().getString( R.string.show_more ) +
+                                                         String.format( " (%d/%d)", page, count ) );
+                    }
+                } );
             }
 
             final View.OnClickListener collapseListener = view13 -> {
@@ -303,8 +314,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             };
 
             holder.collapsedBtn.setOnClickListener( collapseListener );
+            holder.collapseBtnBottom.setOnClickListener( collapseListener );
             holder.categoriesTextView.setOnClickListener( collapseListener );
             holder.layoutControls.setOnClickListener( collapseListener );
+
             view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
@@ -685,9 +698,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView2.setVisibility( View.GONE );
         holder.contentImgView3.setVisibility( View.GONE );
         holder.openArticle.setVisibility(View.GONE );
+        holder.collapseBtnBottom.setVisibility(View.GONE );
         holder.showMore.setVisibility( View.GONE );
         if ( isTextShown ) {
             holder.openArticle.setVisibility(View.VISIBLE );
+            holder.collapseBtnBottom.setVisibility(View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
@@ -1278,6 +1293,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView contentImgView3;
         TextView openArticle;
         TextView showMore;
+        View collapseBtnBottom;
         TextView bottomEmptyPage;
         boolean isRead;
         boolean isFavorite;
