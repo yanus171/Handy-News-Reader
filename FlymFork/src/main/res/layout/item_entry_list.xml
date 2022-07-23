@@ -357,5 +357,12 @@
         android:layout_gravity="center"
         android:alpha="0.4"
         android:src="@color/dark_theme_color_primary" />
+    <TextView
+        android:id="@+id/bottomEmptyPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="gone"
+        />
 
 </LinearLayout>

@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -68,6 +69,7 @@ import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -255,6 +257,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.categoriesTextView = SetupSmallTextView(view, R.id.textCategories);
             holder.labelTextView = SetupSmallTextView(view, R.id.textLabel);
             holder.textSizeProgressBar = view.findViewById(R.id.progressBar);
+            holder.bottomEmptyPage = view.findViewById(R.id.bottomEmptyPage);
             view.setTag(R.id.holder, holder);
 
             //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
@@ -741,6 +744,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setVisibility( isNew ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
+        holder.bottomEmptyPage.setVisibility( View.GONE );
+        if ( cursor.getPosition() == getCount() - 1  ) {
+            holder.bottomEmptyPage.setVisibility( View.VISIBLE );
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity)holder.bottomEmptyPage.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
+        }
     }
 
     private boolean isInMarkAsReadList(String entryUri)  {
@@ -1268,6 +1278,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView contentImgView3;
         TextView openArticle;
         TextView showMore;
+        TextView bottomEmptyPage;
         boolean isRead;
         boolean isFavorite;
 
