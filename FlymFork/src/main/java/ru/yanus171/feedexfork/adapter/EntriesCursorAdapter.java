@@ -1,3 +1,4 @@
+
 /**
  * Flym
  * <p/>
@@ -198,9 +199,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         return super.getView(position, convertView, parent);
     }
-    public int getItemPosition( long feedID ) {
+    public int getItemPosition( long ID ) {
         for( int i = 0; i < getCount(); i++ )
-            if ( getItemId( i ) == feedID )
+            if ( getItemId( i ) == ID )
                 return i;
         return -1;
     }
@@ -266,19 +267,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
 
             holder.openArticle.setTextColor( Theme.GetTextColorReadInt() );
-            holder.openArticle.setOnClickListener(view12 -> {
-                String searchText = "";
-                if ( holder.isTextShown() ) {
-                    CharSequence text = holder.textTextView.getText();
-                    String[] list = TextUtils.split( text.toString(), "[\\.|\\,|\\?|\\!|\\:|\\;|\\-]" );
-                    if ( list.length > 1 ) {
-                        searchText = list[list.length - 2].replace( "\n", "" ).trim();
-                    }
-                }
-                OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), searchText);
-
-
-            });
+            holder.openArticle.setOnClickListener(view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), holder.getSearchText()));
 
             if ( Build.VERSION.SDK_INT >= 16 ) {
                 holder.showMore.setTextColor(Theme.GetTextColorReadInt());
@@ -294,7 +283,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         final int count = holder.textTextView.getLineCount() / MAX_LINES_STEP;
                         final int page = holder.textTextView.getMaxLines() / MAX_LINES_STEP;
                         holder.showMore.setText( MainApplication.getContext().getString( R.string.show_more ) +
-                                                         String.format( " (%d/%d)", page, count ) );
+                                                         String.format( " +%d", count - page + 1 ) );
                     }
                 } );
             }
@@ -304,6 +293,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.textTextView.setMaxLines( MAX_LINES_STEP );
                 if (shownId == holder.entryID) {
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+                    EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 } else {
                     SetIsRead(holder.entryID, true, true);
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
@@ -719,12 +709,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
                     if ( mNeedScrollToTopExpandedArticle ) {
                         mNeedScrollToTopExpandedArticle = false;
-                        UiUtils.RunOnGuiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
-                            }
-                        }, 100);
+                        UiUtils.RunOnGuiThread(() -> EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID))), 100);
                     }
                 } else if ( content == null ) {
                     content = new EntryContent();
@@ -760,11 +745,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
         holder.bottomEmptyPage.setVisibility( View.GONE );
-        if ( cursor.getPosition() == getCount() - 1  ) {
-            holder.bottomEmptyPage.setVisibility( View.VISIBLE );
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity)holder.bottomEmptyPage.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
+        final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
+        if ( shownId != 0 ) {
+            final int showIdPos = getItemPosition(shownId);
+            final int bottomPos = getCount() - 1;
+            if ( bottomPos - showIdPos <= 2 && cursorPosition == bottomPos) {
+                holder.bottomEmptyPage.setVisibility(View.VISIBLE);
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                ((Activity) holder.bottomEmptyPage.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
+            }
         }
     }
 
@@ -1301,6 +1291,20 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isTextShown() {
             return entryID == PrefUtils.getLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         }
+        
+        private String getSearchText() {
+            if ( !isTextShown() || Build.VERSION.SDK_INT < 16 )
+                return "";
+            final TextView view = textTextView;
+            @SuppressLint("NewApi") final int count = Math.min(view.getMaxLines(), view.getLineCount() );
+            if ( count < 1 )
+              return "";
+            int start = view.getLayout().getLineStart( count - 1 );
+            int end = view.getLayout().getLineEnd( count - 1 );
+            String result = view.getText().toString().substring(start, end);
+            return result;
+        }
+
     }
 
     public int GetFirstUnReadPos() {
