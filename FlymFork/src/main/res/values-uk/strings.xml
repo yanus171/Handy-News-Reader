@@ -31,12 +31,12 @@
 <resources>
     <string name="about_us_content" translatable="true"><![CDATA[ <b><big>Ліцензії та інформація</big></b> 
  <br/>
- Цей додаток вільне програмне забезпечення: Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
+ Цей застосунок - вільне програмне забезпечення: Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
  <br/> 
- Додаток заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано: <br/>
+ Застосунок заснований на \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Допрацьовано: <br/>
  <br/>
  • згортання груп стрічок<br/> 
- • невидимі  тап зони для переходу на наступну/попередню сторінку при читанні статті<br/>
+ • невидимі зони натиску для переходу на наступну/попередню сторінку при читанні статті<br/>
  • обмеження числа завантажень зображень статті<br/>
  • можливість зупинити процес оновлення стрічок<br/>
  • та багато іншого<br/>
@@ -44,14 +44,14 @@
   <b><big>Ви можете знайти нас </big></b>
   <br/>
  • Завітайте на наш <b><a href="https://handynewsreader.blogspot.com">вебсайт</a></b> щоб  бути в курсі новин<br/>
- • Ви можете завантажити додаток з <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
- • Ви можете завантажити додаток  з <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
+ • Ви можете завантажити застосунок з <b><a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></b><br/>
+ • Ви можете завантажити застосунок з <b><a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a></b><br/>
  • Розділ на <b><a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA форумі</a></b><br/>
  • Початкові коди на <b><a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a></b><br/>
  <br/>
  <b><big>Наша підтримка</big></b>
  <br/>
-  Якщо є проблеми з додатком тоді: <br/>
+  Якщо є проблеми з застосунком тоді: <br/>
  • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
  • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b> 
  <br/>
@@ -62,7 +62,7 @@
  • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
  • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
  <br/>
- <b>Якщо додаток виявився корисним, оцініть, будь ласка, на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
+ <b>Якщо застосунок виявився корисним, оцініть, будь ласка, на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
  <br/>
  <b><big>Переклади</big></b>
  <br/>
@@ -130,7 +130,7 @@
     <string name="reject">ВІДХИЛИТИ</string>
     <string name="feed_search">Пошук стрічок</string>
     <string name="web_page_search_duckduckgo">Веб-пошук сторінок (Duck Duck Go)</string>
-    <string name="select_file">Вибрати файл (корінь SD-карти)</string>
+    <string name="select_file">Виберіть файл (з теки Завантаження)</string>
     <string name="question_delete_feed">Ви дійсно бажаєте вилучити цю стрічку?</string>
     <string name="question_delete_group">Ви дійсно бажаєте вилучити цю групу та всі ії стрічки?</string>
     <string name="question_delete_filter">Ви дійсно бажаєте вилучити цей фільтр?</string>
@@ -175,7 +175,7 @@
     <string name="original_text">Коротко</string>
     <string name="see_enclosure">Відкрити вкладення</string>
     <string name="see_link">Відкрити у браузері</string>
-    <string name="cant_open_link">Не знайдено додатків для відкриття цього посилання</string>
+    <string name="cant_open_link">Не знайдено застосунку для відкриття цього посилання</string>
     <string name="open_enclosure">Відкрити вкладення</string>
     <string name="file">Файл</string>
     <string name="download_and_save">Завантажити та зберегти</string>
@@ -303,7 +303,7 @@
     <string name="settings_display_text_color">Яскравість тексту</string>
     <string name="settings_visible_feeds">Видимі стрічки</string>
     <string name="settings_widget_background">Тло</string>
-    <string name="settings_widget_background_description">Колір та прозорість фону віджета</string>
+    <string name="settings_widget_background_description">Колір та прозорість тла віджета</string>
     <string name="all_feeds">Всі стрічки (+ майбутні)</string>
     <string name="downloadImage">Завантаження зображень</string>
     <string name="loadFullText">Завантаження усього тексту</string>
