@@ -640,4 +640,11 @@
     <string name="copy_to_downloads">Copia negli scaricamenti</string>
     <string name="sendErrorConfirm">Si è verificato un errore durante l\'operazione. Inviarlo allo sviluppatore?</string>
     <string name="wrongFontFileSelected">"Il file dei caratteri dovrebbe terminare con ttf "</string>
+    <string name="show_article_text_preview">Anteprima testo</string>
+    <string name="show_more">Mostra altro…</string>
+    <string name="appListLoading">Caricamento dell\'elenco delle applicazioni</string>
+    <string name="not_selected">Non selezionato</string>
+    <string name="setting_ignore_all_ssl_errors">Ignora tutti gli errori SSL</string>
+    <string name="connection_timeout">Timeout connessione</string>
+    <string name="settings_category_connection">Connessione</string>
 </resources>
