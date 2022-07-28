@@ -81,7 +81,6 @@
     <string name="question_delete_filter">Haluatko poistaa tämän säännön?</string>
     <string name="add_group_title">Uusi ryhmä</string>
     <string name="edit_group_title">Muokkaa ryhmän nimeä</string>
-    <string name="message_exported_to">Viety tiedostoon %s</string>
     <string name="to_group_title">Syötteen siirtäminen</string>
     <string name="to_group_message">Voit asettaa tämän syötteen ryhmän sisään tai tasoa ylemmäs. Mitä haluat tehdä?</string>
     <string name="to_group_above">Ylemmälle tasolle</string>
