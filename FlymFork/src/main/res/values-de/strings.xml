@@ -134,7 +134,6 @@
     <string name="question_delete_filter">Möchten Sie diesen Filter wirklich löschen?</string>
     <string name="add_group_title">Gruppenname wählen</string>
     <string name="edit_group_title">Gruppenname bearbeiten</string>
-    <string name="message_exported_to">Nach %s exportiert.</string>
     <string name="to_group_title">Feed verschieben</string>
     <string name="to_group_message">Möchten Sie den Feed in die Gruppe verschieben oder außerhalb der Gruppe positionieren?</string>
     <string name="to_group_above">Außerhalb der Gruppe</string>
@@ -390,7 +389,6 @@
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
     <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird</string>
     <string name="create_auto_backup">Backup ausführen</string>
-    <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
     <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog)</string>
     <string name="settings">Einstellungen</string>
@@ -565,6 +563,7 @@
     <string name="setting_edit_feed_force_portrait_orientation_summary">Auf dem Feed-Bearbeitungsbildschirm Ausrichtung im Hochformat erzwingen - prüfen Sie, ob das Gerät ein schmales Display hat</string>
     <string name="name">Name</string>
     <string name="remove_label_confirmation">"Kategorie entfernen? "</string>
+    <string name="setting_label_list">Liste der Kategorien</string>
     <string name="tag_list">Liste der Kategorien</string>
     <string name="menu_edit_labels">Kategorien</string>
     <string name="manage_labels">Kategorien verwalten</string>
