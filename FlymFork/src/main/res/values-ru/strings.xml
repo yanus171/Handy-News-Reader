@@ -139,7 +139,6 @@
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
     <string name="add_group_title">Выберите название группы</string>
     <string name="edit_group_title">Редактировать название группы</string>
-    <string name="message_exported_to">Экспортировано в %s.</string>
     <string name="to_group_title">Перенос ленты</string>
     <string name="to_group_message">Вы можете поместить ленту внутрь этой группы, либо сверху от нее. Что вы хотите сделать?</string>
     <string name="to_group_above">Над группой</string>
@@ -394,7 +393,6 @@
     <string name="autobackup_interval">Интервал резервного копирования</string>
     <string name="autobackup_interval_descr">Как часто будет создаваться файл резервной копии лент и статьей</string>
     <string name="create_auto_backup">Создать автоматическую резервную копию</string>
-    <string name="auto_backup_opml_file_created">Создан файл автоматической резервной копии: </string>
     <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
     <string name="settings">Настройки</string>
