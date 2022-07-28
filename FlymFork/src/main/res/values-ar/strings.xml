@@ -131,7 +131,6 @@
     <string name="question_delete_filter">هَلْ حَقًّا تُرِيدُ حَذْفَ هَذَا اَلْفِلْتِرْ؟</string>
     <string name="add_group_title">حدّد إسم المجموعة</string>
     <string name="edit_group_title">تعديل إسم المجموعة</string>
-    <string name="message_exported_to">تَمَّ التَّصْديرُ لـِ %s.</string>
     <string name="to_group_title">إجراءات تحريك الخلاصة</string>
     <string name="to_group_message">هل ترغب بوضع الخلاصة داخل أو خارج هذه المجموعة؟</string>
     <string name="to_group_above">خارج المجموعة</string>
@@ -378,7 +377,6 @@
     <string name="autobackup_interval">الفاصل الزمني للنسخ الإحتياطي التلقائي</string>
     <string name="autobackup_interval_descr">الفَتَرَاتُ اَلَّتِي سَيَتِمُّ فِيهَا إِنْشاءُ مَلَفِّ نَسَخٍ إِحْتِيَاطِيٍّ</string>
     <string name="create_auto_backup">إنشاء نسخه إحتياطية</string>
-    <string name="auto_backup_opml_file_created">تَمَّ إنشاء ملف .opml للنسخ الإحتياطي التلقائي:</string>
     <string name="use_standard_file_manager">إستخدام مدير الملفات القياسي</string>
     <string name="use_standard_file_manager_descr">وَعِنْدَ التَّراجُعِ، إِخْتِرْ مَلَفّ . opml مِنْ خِلالِ نافِذَةِ الحِوارِ اَلَّتِي تَظْهَرُ تَالِيًا</string>
     <string name="settings">الإعدادات</string>
