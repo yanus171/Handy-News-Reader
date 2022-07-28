@@ -11,9 +11,11 @@ import android.os.Build
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.widget.Toast
+import okio.use
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.utils.DebugApp
+import ru.yanus171.feedexfork.utils.UiUtils
 import java.io.*
 import java.util.*
 
@@ -93,7 +95,7 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
                 copyFile(source, destFileName, context)
         }
         // ----------------------------------------------------------------
-        @SuppressLint("NewApi")
+        @SuppressLint("NewApi", "SetWorldReadable")
         fun copyFile(sourcePath: String?, destPath: String?, context: Context): Boolean {
             var result = false
             //val sd = Environment.getExternalStorageDirectory()
@@ -142,6 +144,22 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
                     String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),
                     Toast.LENGTH_LONG).show()
             return result
+        }
+        // ----------------------------------------------------------------
+        fun copyFile(sourceUri: Uri, destUri: Uri) {
+            MainApplication.getContext().contentResolver.openInputStream(sourceUri).use { inputStream ->
+                BufferedReader(
+                        InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
+                            val selectedFileOutPutStream: OutputStream = MainApplication.getContext().contentResolver.openOutputStream( destUri )!!
+                            val buffer = ByteArray(1024)
+                            var length: Int
+                            while (inputStream?.read(buffer).also { length = it!! }!! > 0) {
+                                selectedFileOutPutStream.write(buffer, 0, length)
+                            }
+                            selectedFileOutPutStream.flush()
+                            selectedFileOutPutStream.close()
+                        }
+            }
         }
 
     }

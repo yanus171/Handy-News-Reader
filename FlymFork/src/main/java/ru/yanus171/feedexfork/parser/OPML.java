@@ -48,6 +48,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -60,12 +61,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Xml;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.Attributes;
@@ -102,7 +105,9 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static android.util.Xml.Encoding.UTF_8;
+import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
@@ -140,8 +145,9 @@ public class OPML {
     private static final int PERMISSIONS_REQUEST_EXPORT_TO_OPML = 2;
     private static final int PERMISSIONS_REQUEST_BACKUP = 3;
     public static final String EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT = "EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT";
+    public static final String FILENAME_DATETIME_FORMAT = "yyyyMMdd_HHmmss";
 
-    public static String GetAutoBackupOPMLFileName() { return  FileUtils.INSTANCE.getFolder() + "/" + AUTO_BACKUP_OPML_FILENAME; }
+    public static String GetAutoBackupOPMLFileName() { return FileUtils.INSTANCE.getFolder() + "/" + AUTO_BACKUP_OPML_FILENAME; }
 
     private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
@@ -237,6 +243,7 @@ public class OPML {
     }
 
     public static void exportToFile(String filename, boolean isBackup) throws IOException {
+
         if ( GetAutoBackupOPMLFileName().equals(filename) && !IsAutoBackupEnabled() )
             return;
 
@@ -704,22 +711,18 @@ public class OPML {
     private static void exportToOpml(final Activity activity, final boolean isBackup) {
         new WaitDialog(activity, R.string.exportingToFile, () -> {
             try {
-                final String dateTimeStr = new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date(System.currentTimeMillis() ) );
+                final String dateTimeStr = new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date(System.currentTimeMillis() ) );
                 final String name = "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
                 final String fileName =  FileUtils.INSTANCE.getFolder() +  name;
-
                 OPML.exportToFile( fileName, isBackup );
-                final File destFile = new File(FileSelectDialog.Companion.getPublicDir(), name);
-                FileUtils.INSTANCE.copy( new File( fileName ), destFile );
-                activity.runOnUiThread(() -> {
-                    UiUtils.showMessage(activity, String.format(activity.getString(R.string.message_exported_to), destFile.getAbsolutePath() ));
-                });
+                FileUtils.INSTANCE.copyFileToDownload( fileName );
             } catch (IOException e) {
                 e.printStackTrace();
                 activity.runOnUiThread(() -> UiUtils.showMessage(activity, R.string.error_feed_export));
             }
         }).execute();
     }
+
     static private void importFromOpml( final Activity activity ) {
         FileSelectDialog.Companion.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
     }

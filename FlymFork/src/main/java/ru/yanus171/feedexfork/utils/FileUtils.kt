@@ -19,22 +19,23 @@
 
 package ru.yanus171.feedexfork.utils
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Intent
+import android.content.Context
 import android.database.Cursor
+import android.database.sqlite.SQLiteConstraintException
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.BaseColumns
 import android.provider.BaseColumns._ID
 import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc
 import ru.yanus171.feedexfork.R
-import ru.yanus171.feedexfork.parser.FileSelectDialog
+import ru.yanus171.feedexfork.parser.FileSelectDialog.Companion.copyFile
 import ru.yanus171.feedexfork.parser.FileSelectDialog.Companion.getPublicDir
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK
@@ -49,6 +50,7 @@ object FileUtils {
 
     private var mGetImagesFolder: File? = null
 
+    private const val SUB_FOLDER = "/HandyNewsReader"
 
     @Throws(IOException::class)
     fun copy(src: File, dst: File) {
@@ -60,6 +62,37 @@ object FileUtils {
         inStream.close()
         outStream.close()
     }
+
+    public fun copyFileToDownload( fileName: String ) {
+        copyFileToDownload( fileName, File( fileName ).name )
+    }
+    public fun copyFileToDownload( fileName: String, destName: String ) {
+        val context = MainApplication.getContext();
+        val name = destName
+
+        if (Build.VERSION.SDK_INT >= 29) {
+            val resolver = context.contentResolver
+            val contentValues = ContentValues()
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/HandyNewsReader")
+            var uri = resolver.insert( MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
+            copyFile(FileProvider.getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName)),
+                    uri!!)
+        } else {
+            val dir = File( getPublicDir().path + SUB_FOLDER );
+            if ( !dir.exists() && !dir.mkdir() )
+                throw IOException( MainApplication.getContext().getString(R.string.couldNotCreateDownloadsSubfolder) + ": " + dir.path )
+            val destFile = File(dir, name)
+            copy(File(fileName), destFile)
+        }
+        UiUtils.RunOnGuiThread {
+            Toast.makeText(MainApplication.getContext(),
+                    String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), name, SUB_FOLDER ),
+                    Toast.LENGTH_LONG).show()
+        }
+
+    }
+
 
     public const val APP_SUBDIR = "feedex/"
 
@@ -291,4 +324,7 @@ object FileUtils {
     }
 
 
+}
+
+object Companion {
 }

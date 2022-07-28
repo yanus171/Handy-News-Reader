@@ -140,6 +140,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
+import ru.yanus171.feedexfork.view.StorageItem;
 
 import static android.content.Intent.EXTRA_TEXT;
 import static android.provider.BaseColumns._ID;
@@ -313,38 +314,15 @@ public class FetcherService extends IntentService {
         FileUtils.INSTANCE.reloadPrefs();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
-            LongOper(R.string.exportingToFile, new Runnable() {
-                @Override
-                public void run() {
+            LongOper(R.string.exportingToFile, () -> {
                 try {
                     final String sourceFileName = OPML.GetAutoBackupOPMLFileName();
                     OPML.exportToFile( sourceFileName, true );
-                    //final ArrayList<String> resultList = new ArrayList<>();
-                    //resultList.add( sourceFileName );
-                    String lastFile = "";
-                    for (String destDir: FileUtils.INSTANCE.getStorageListWithPublic() ) {
-                        File destFile = new File(destDir, AUTO_BACKUP_OPML_FILENAME);
-                        if ( !destFile.getAbsolutePath().equals(sourceFileName) ) {
-                            try {
-                                lastFile = destFile.getPath();
-                                FileUtils.INSTANCE.copy(new File(sourceFileName), destFile);
-                                //resultList.add( destFile.getAbsolutePath() );
-                            } catch ( Exception e ) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+                    FileUtils.INSTANCE.copyFileToDownload( sourceFileName );
                     PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
-                    final String finalLastFile = lastFile;
-                    UiUtils.RunOnGuiThread(() -> {
-                        Toast.makeText(getContext(), getString(R.string.auto_backup_opml_file_created) + "\n" + finalLastFile, Toast.LENGTH_LONG ).show();
-                    });
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                     DebugApp.SendException( e, FetcherService.this );
-                }
                 }
             });
             return;

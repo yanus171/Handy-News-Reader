@@ -703,9 +703,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             //if ( html.contains( "<img" ) /*|| isMobilized*/ ) {
                 EntryContent content = mContentVoc.get(holder.entryID);
                 if (content != null && content.GetIsLoaded() ) {
-                    SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList);
-                    SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList);
-                    SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList);
+                    SetContentImage(context, holder.contentImgView1, 0, content.mImageUrlList, feedTitle);
+                    SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList, feedTitle);
+                    SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList, feedTitle);
                     SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
                     if ( mNeedScrollToTopExpandedArticle ) {
                         mNeedScrollToTopExpandedArticle = false;
@@ -861,7 +861,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                    .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
                                    .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
         if( isExpanded ) {
-            EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID( entryID ) ) );
+            EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(entryID)));
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         }
     }
@@ -986,7 +986,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         //holder.openArticle.setVisibility(isReadMore ? View.VISIBLE : View.GONE );
     }
 
-    private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages) {
+    private static void SetContentImage(final Context context, ImageView imageView, int index, ArrayList<Uri> allImages, String feedTitle) {
         if ( allImages.size() > index ) {
             final Uri uri = allImages.get( index );
             imageView.setVisibility(View.VISIBLE);
@@ -995,7 +995,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     //.override(dim)
                     .into(imageView);
             //imageView.setImageURI( uri );
-            imageView.setOnClickListener(view -> EntryView.ShowImageMenu(uri.toString(), view.getContext() ));
+            imageView.setOnClickListener(view -> EntryView.ShowImageMenu(uri.toString(), feedTitle, view.getContext() ));
 
 //            new AsyncTask<Pair<Uri,ImageView>, Void, Void>() {
 //                private Bitmap uriToBitmap(Uri selectedFileUri) {
@@ -1243,7 +1243,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    public class ListViewTopPos {
+    public static class ListViewTopPos {
         public int mPos = 0;
 
         ListViewTopPos(int pos) {

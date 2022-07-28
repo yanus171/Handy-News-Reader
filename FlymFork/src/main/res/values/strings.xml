@@ -136,7 +136,6 @@
     <string name="question_delete_filter">Do you really want to delete this filter?</string>
     <string name="add_group_title">Select the group name</string>
     <string name="edit_group_title">Edit the group name</string>
-    <string name="message_exported_to">Exported into %s</string>
     <string name="to_group_title">Feed move action</string>
     <string name="to_group_message">Would You like to put this feed inside or outside this group?</string>
     <string name="to_group_above">Outside the group</string>
@@ -406,7 +405,6 @@
     <string name="autobackup_interval">Auto backup interval</string>
     <string name="autobackup_interval_descr">How often a backup file will be created</string>
     <string name="create_auto_backup">Run auto backup now</string>
-    <string name="auto_backup_opml_file_created">Auto backup .opml file created:</string>
     <string name="use_standard_file_manager">Use a standard file manager</string>
     <string name="use_standard_file_manager_descr">otherwise select .opml file to import -  out of feedex folder only (via inner dialog). Disabled in Android 10+</string>
     <string name="settings">Settings</string>
@@ -536,7 +534,7 @@
     <string name="no">No</string>
     <string name="remove_existing_feeds_confirmation">This will remove ALL existing articles from ALL feeds (except “Read It Later”), even starred. Are you sure?</string>
     <string name="yes_I_realize_btn_caption">Yes, I realize!</string>
-    <string name="sorry_I_was_wrong_btn_caption">Ohh... I was wrong. Get me out of here quick!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh… I was wrong. Get me out of here quick!</string>
     <string name="create_backup">Create separate backup file</string>
     <string name="defaultFontFamily">System Default</string>
     <string name="fontTextSample">Text</string>
@@ -604,6 +602,7 @@
     <string name="menu_edit_feed">Edit feed</string>
     <string name="addCustomFont">Add custom font …</string>
     <string name="fileCopied">File %s copied</string>
+    <string name="fileCopiedToDownloadsFolder">File %s copied to %s subfolder of Downloads</string>
     <string name="unableToCopyFile">Unable to copy file %s</string>
     <string name="label_setup_by_tap_on_date">Label setup by tap on date</string>
     <string name="label_setup_by_tap_on_date_descr">Author and URL in the article list</string>
@@ -679,5 +678,6 @@
     <string name="connection_timeout">Connection timeout</string>
     <string name="connection_timeout_summary">In mills. How long should we wait for internet connection</string>
     <string name="settings_category_connection">Connection</string>
+    <string name="couldNotCreateDownloadsSubfolder">Could not create subfolder in Downloads</string>
 
 </resources>

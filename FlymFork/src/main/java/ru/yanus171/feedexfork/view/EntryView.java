@@ -81,7 +81,10 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -115,6 +118,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
+import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
@@ -171,6 +175,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mIsEditingMode = false;
     public long mLastSetHTMLTime = 0;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
+    private String mTitle;
 
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
@@ -398,10 +403,10 @@ public class EntryView extends WebView implements Handler.Callback {
         final String categories = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
         //final String feedTitle = filters.removeTextFromTitle( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
-        String title =
+        String feedTitle =
             newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
         if ( filters != null )
-            title = filters.removeText(title, DB_APPLIED_TO_TITLE );
+            feedTitle = filters.removeText(feedTitle, DB_APPLIED_TO_TITLE );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -457,7 +462,7 @@ public class EntryView extends WebView implements Handler.Callback {
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
-        final String finalTitle = title;
+        final String finalTitle = feedTitle;
         new Thread() {
             @Override
             public void run() {
@@ -477,7 +482,8 @@ public class EntryView extends WebView implements Handler.Callback {
                 });
             }
         }.start();
-        mActivity.SetTaskTitle( title );
+        mActivity.SetTaskTitle( feedTitle );
+        mTitle = feedTitle;
         timer.End();
         return isFullTextShown;
     }
@@ -662,7 +668,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 final Context context = getContext();
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
-                        ShowImageMenu(url, context);
+                        ShowImageMenu(url, mTitle, context);
                     } else if (url.contains("#")) {
                         String hash = url.substring(url.indexOf('#') + 1);
                         hash = URLDecoder.decode(hash);
@@ -822,18 +828,19 @@ public class EntryView extends WebView implements Handler.Callback {
         ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context);
     }
 
-    public static void ShowImageMenu(String url, Context context) {
+    public static String sanitizeFilename(String inputName) {
+        return inputName.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+    }
+    @SuppressLint("SimpleDateFormat")
+    public static String getDestFileName(String title) {
+        return sanitizeFilename( title ) + "_" + new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date());
+    }
+    public static void ShowImageMenu(String url, String title, Context context) {
         final MenuItem[] items = {
             new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
             new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
                 File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                File destFile = new File(FileSelectDialog.Companion.getPublicDir(), file.getName());
-                try {
-                    FileUtils.INSTANCE.copy(file, destFile);
-                    Toast.makeText(context, context.getString(R.string.fileCopied, destFile ), Toast.LENGTH_LONG ).show();
-                } catch ( IOException e  ) {
-                    Toast.makeText(context, context.getString(R.string.unableToCopyFile, destFile ), Toast.LENGTH_LONG ).show();
-                }
+                FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title) );
             }),
             new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
         };
