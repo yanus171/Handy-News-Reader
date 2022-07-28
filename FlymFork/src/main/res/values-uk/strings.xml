@@ -136,7 +136,6 @@
     <string name="question_delete_filter">Ви дійсно бажаєте вилучити цей фільтр?</string>
     <string name="add_group_title">Виберіть назву групи</string>
     <string name="edit_group_title">Редагувати назву групи</string>
-    <string name="message_exported_to">Експортовано в %s.</string>
     <string name="to_group_title">Перенос стрічки</string>
     <string name="to_group_message">Ви можете розмістити стрічку в ці групі, або поза нею. Що бажаєте?</string>
     <string name="to_group_above">Поза групою</string>
@@ -391,7 +390,6 @@
     <string name="autobackup_interval">Інтервал резервного копіювання</string>
     <string name="autobackup_interval_descr">Як часто буде створюватись файл резервної копії стрічок та статей</string>
     <string name="create_auto_backup">Створити резервну копію зараз</string>
-    <string name="auto_backup_opml_file_created">Створено резервну копію:</string>
     <string name="use_standard_file_manager">Стандартний файловий менеджер</string>
     <string name="use_standard_file_manager_descr">інакше виберіть .opml файл для імпортування за допомогою вбудованного діалогу з теки додатку на картці пам’яті</string>
     <string name="settings">Налаштування</string>
