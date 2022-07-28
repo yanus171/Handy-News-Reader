@@ -88,7 +88,6 @@
     <string name="question_delete_filter">¿Seguor que quiere eliminar este filtro?</string>
     <string name="add_group_title">Añadir nombre de grupo</string>
     <string name="edit_group_title">Editar nombre de grupo</string>
-    <string name="message_exported_to">Exportar a %s</string>
     <string name="to_group_title">Mover la fuente</string>
     <string name="to_group_message">Puede mover la fuente al grupo o encima del grupo. ¿Qué desea hacer?</string>
     <string name="to_group_above">Encima del grupo</string>
@@ -332,7 +331,6 @@
     <string name="autobackup_interval">Intervalo de copia automática</string>
     <string name="autobackup_interval_descr">Con qué frecuencia se creará un archivo de copia de seguridad de los feeds y artículos</string>
     <string name="create_auto_backup">Crear respaldo automático</string>
-    <string name="auto_backup_opml_file_created">Auto respaldo .opml archivo creado:</string>
     <string name="use_standard_file_manager">Usar un gestor de archivos estándar</string>
     <string name="use_standard_file_manager_descr">de lo contrario, seleccione el archivo .opml para importar - solo fuera de la carpeta de feedex (a través de un diálogo interno)</string>
     <string name="settings">Ajustes</string>
