@@ -590,6 +590,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_feed">Редактировать ленту</string>
     <string name="addCustomFont">Добавить свой шрифт …</string>
     <string name="fileCopied">Файл %s скопирован</string>
+    <string name="fileCopiedToDownloadsFolder">Файл %s скопирован в подпапку %s папки Загрузки</string>
     <string name="unableToCopyFile">Невозможно скопировать файл %s</string>
     <string name="label_setup_by_tap_on_date">Настройка ярлыков нажатием</string>
     <string name="label_setup_by_tap_on_date_descr">На дату, автора и адреса в списке статей</string>
@@ -657,4 +658,5 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Установите этот флажок, если у вас возникают проблемы с сертификатом при загрузке веб-контента. !!! ВНИМАНИЕ !!! Это может сделать ваше устройство небезопасным :(</string>
     <string name="connection_timeout">Таймаут соединения</string>
     <string name="settings_category_connection">Подключение</string>
+    <string name="couldNotCreateDownloadsSubfolder">Не удалось создать подпапку в папке Загрузки</string>
 </resources>
