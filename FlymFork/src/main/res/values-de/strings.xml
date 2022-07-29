@@ -585,6 +585,7 @@
     <string name="menu_edit_feed">Feed bearbeiten</string>
     <string name="addCustomFont">Benutzerdefinierte Schriftart hinzufügen …</string>
     <string name="fileCopied">Datei „%s” kopiert</string>
+    <string name="fileCopiedToDownloadsFolder">Datei „%s” in den Unterordner „%s” von Downloads kopiert</string>
     <string name="unableToCopyFile">Kopieren der Datei „%s” fehlgeschlagen</string>
     <string name="label_setup_by_tap_on_date">Einrichtung der Kategorien durch Tippen auf das Datum</string>
     <string name="label_setup_by_tap_on_date_descr">Autor und URL in der Artikelliste</string>
@@ -644,4 +645,5 @@
     <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
+    <string name="couldNotCreateDownloadsSubfolder">Unterordner in Downloads konnte nicht erstellt werden</string>
 </resources>
