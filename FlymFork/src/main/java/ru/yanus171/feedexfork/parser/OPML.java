@@ -110,6 +110,7 @@ import static android.util.Xml.Encoding.UTF_8;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI;
@@ -147,7 +148,7 @@ public class OPML {
     public static final String EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT = "EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT";
     public static final String FILENAME_DATETIME_FORMAT = "yyyyMMdd_HHmmss";
 
-    public static String GetAutoBackupOPMLFileName() { return FileUtils.INSTANCE.getFolder() + "/" + AUTO_BACKUP_OPML_FILENAME; }
+    public static String GetAutoBackupOPMLFileName() { return getContext().getCacheDir().getAbsolutePath() + "/" + AUTO_BACKUP_OPML_FILENAME; }
 
     private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
@@ -196,13 +197,13 @@ public class OPML {
     }
     public static
     void importFromFile(Uri fileUri, boolean isRemoveExistingFeeds) throws IOException, SAXException {
-        importFromFile( MainApplication.getContext().getContentResolver().openInputStream(fileUri), isRemoveExistingFeeds);
+        importFromFile( getContext().getContentResolver().openInputStream(fileUri), isRemoveExistingFeeds);
     }
 
     private static void importFromFile(InputStream input, boolean isRemoveExistingFeeds) throws IOException, SAXException {
         SetAutoBackupEnabled(false); // Do not write the auto backup file while reading it...
         try {
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            ContentResolver cr = getContext().getContentResolver();
 
             if ( isRemoveExistingFeeds ) {
                 cr.delete(FeedData.FeedColumns.CONTENT_URI, _ID + "<> " + FetcherService.GetExtrenalLinkFeedID(), null);
@@ -225,7 +226,7 @@ public class OPML {
         UiUtils.RunOnGuiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText( MainApplication.getContext(), R.string.import_completed, Toast.LENGTH_LONG ).show();
+                Toast.makeText( getContext(), R.string.import_completed, Toast.LENGTH_LONG ).show();
             }
         });
     }
@@ -248,7 +249,7 @@ public class OPML {
             return;
 
 
-        final Context context = MainApplication.getContext();
+        final Context context = getContext();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         //final int status = FetcherService.Status().Start( context.getString( R.string.exportingToFile ) );
         try {
@@ -387,7 +388,7 @@ public class OPML {
 //        return result;
 //    }
     private static void ExportEntries(Writer writer, String feedID, boolean saveAbstract) throws IOException {
-        Cursor cur = MainApplication.getContext().getContentResolver()
+        Cursor cur = getContext().getContentResolver()
                 .query(ENTRIES_FOR_FEED_CONTENT_URI( feedID ), ENTRIES_PROJECTION, null, null, null);
         if (cur != null && cur.getCount() != 0) {
             while (cur.moveToNext()) {
@@ -446,7 +447,7 @@ public class OPML {
             FilterColumns.APPLY_TYPE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED, FilterColumns.IS_REMOVE_TEXT,};
 
     private static void ExportFilters(Writer writer, String feedID) throws IOException {
-        Cursor cur = MainApplication.getContext().getContentResolver()
+        Cursor cur = getContext().getContentResolver()
                 .query(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedID), FILTERS_PROJECTION, null, null, null);
         if (cur.getCount() != 0) {
             while (cur.moveToNext()) {
@@ -477,7 +478,7 @@ public class OPML {
     private static final String PREF_CLASS_STRING = "String";
 
     private static void SaveSettings(Writer writer, final String prefix) throws IOException {
-        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
+        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
         for (final Map.Entry<String, ?> entry : settings.getAll().entrySet()) {
             String prefClass = entry.getValue().getClass().getName();
             String prefValue;
@@ -532,12 +533,12 @@ public class OPML {
 
         @SuppressLint("CommitPrefEdits")
         OPMLParser() {
-            mEditor = PreferenceManager.getDefaultSharedPreferences( MainApplication.getContext() ).edit();
+            mEditor = PreferenceManager.getDefaultSharedPreferences( getContext() ).edit();
         }
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) {
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            ContentResolver cr = getContext().getContentResolver();
             if (!mBodyTagEntered) {
                 if (TAG_BODY.equals(localName)) {
                     mBodyTagEntered = true;
@@ -713,7 +714,7 @@ public class OPML {
             try {
                 final String dateTimeStr = new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date(System.currentTimeMillis() ) );
                 final String name = "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
-                final String fileName =  FileUtils.INSTANCE.getFolder() +  name;
+                final String fileName =  getContext().getCacheDir().getAbsolutePath() + "/" + name;
                 OPML.exportToFile( fileName, isBackup );
                 FileUtils.INSTANCE.copyFileToDownload( fileName );
             } catch (IOException e) {
@@ -798,7 +799,7 @@ public class OPML {
                                      .putExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, isRemoveExistingFeeds ), false);
     }
     public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
-        Cursor cursor = MainApplication.getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );
+        Cursor cursor = getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );
         if ( cursor.moveToFirst() ) {
             new AlertDialog.Builder( activity )
                 .setTitle( activity.getString( R.string.remove_existing_feeds_question ) )
