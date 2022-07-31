@@ -55,6 +55,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -77,6 +78,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -113,6 +115,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -213,6 +216,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return Build.VERSION.SDK_INT >= 16 && holder.textTextView.getLineCount() > holder.textTextView.getMaxLines();
     }
 
+    private boolean isViewUnderTouch( MotionEvent event, View view ) {
+        int x = (int) event.getRawX();
+        int y = (int) event.getRawY();
+        Rect rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+        return rect.contains(x, y);
+    }
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
@@ -303,10 +313,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 MainApplication.getContext().getContentResolver().notifyChange(mUri, null );
             };
 
-            holder.collapsedBtn.setOnClickListener( collapseListener );
             holder.collapseBtnBottom.setOnClickListener( collapseListener );
-            holder.categoriesTextView.setOnClickListener( collapseListener );
-            holder.layoutControls.setOnClickListener( collapseListener );
+
+            final View.OnClickListener manageLabels = PrefUtils.getBoolean( "label_setup_by_tap_on_date", false ) ?
+                view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
+                null;
 
             view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
@@ -318,8 +329,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 private boolean wasVibrateRead = false, wasVibrateStar = false;
                 private boolean isPress = false;
                 private long downTime = 0;
-                //private boolean wasMove = false;
-                //private  ViewHolder viewHolder;
 
                 public boolean onTouch(View v, MotionEvent event) {
                     final int minX = 40;
@@ -330,12 +339,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         //Dog.v("onTouch ACTION_DOWN");
                         paddingX = 0;
                         paddingY = 0;
-                        initialx = (int) event.getX();
-                        initialy = (int) event.getY();
-                        currentx = (int) event.getX();
-                        currenty = (int) event.getY();
+                        initialx = (int) event.getRawX();
+                        initialy = (int) event.getRawY();
+                        currentx = (int) event.getRawX();
+                        currenty = (int) event.getRawY();
                         downTime = SystemClock.elapsedRealtime();
-                        //wasMove = false;
                         view.getParent().requestDisallowInterceptTouchEvent(true);
 
                         isPress = true;
@@ -376,8 +384,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     }
                     if (event.getAction() == MotionEvent.ACTION_MOVE) {
 
-                        currentx = (int) event.getX();
-                        currenty = (int) event.getY();
+                        currentx = (int) event.getRawX();
+                        currenty = (int) event.getRawY();
                         paddingX = currentx - initialx;
                         paddingY = currenty - initialy;
                         //Dog.v("onTouch ACTION_MOVE " + paddingX + ", " + paddingY);
@@ -404,16 +412,25 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         isPress = false;
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             //Dog.v("onTouch ACTION_UP");
-                            if (mEntryActivityStartingStatus == 0 &&
-                                currentx > MIN_X_TO_VIEW_ARTICLE &&
+                            if ( currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&
-                                (IsUnderView(event, holder.titleTextView, v) || IsUnderView(event, holder.mainImgView, v) || IsUnderView(event, holder.dateTextView, v) || IsUnderView(event, holder.authorTextView, v)) &&
-                                SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout()) {
-                                mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
-                                OpenArticle(v.getContext(), holder.entryID, holder.isTextShown(), "");
+                                SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
+
+                                if ( isViewUnderTouch( event, holder.urlTextView ) || isViewUnderTouch( event, holder.dateTextView ) ||  isViewUnderTouch( event, holder.labelTextView ) )
+                                    manageLabels.onClick( view );
+                                else if ( isViewUnderTouch( event, holder.collapsedBtn ) ||
+                                    isViewUnderTouch( event, holder.collapseBtnBottom ) ||
+                                    isViewUnderTouch( event, holder.categoriesTextView ) ||
+                                    isViewUnderTouch( event, holder.layoutControls ) )
+                                    collapseListener.onClick( view );
+                                else if (mEntryActivityStartingStatus == 0 &&
+                                    ( isViewUnderTouch( event, holder.titleTextView ) || isViewUnderTouch( event, holder.mainImgView )) ) {
+                                    mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
+                                    OpenArticle(v.getContext(), holder.entryID, holder.isTextShown(), "");
+                                }
                             } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
-                                toggleReadState(holder, view);
+                                toggleReadState(holder, view) ;
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
                                 toggleFavoriteState(view);
                         } else {
@@ -473,8 +490,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         //holder.starToggleSwypeBtnView.setVisibility( View.VISIBLE );
                     } else
                         wasVibrateStar = false;
-
-                    v.setPadding(Math.max(paddingX, 0), 0, paddingX < 0 ? -paddingX : 0, 0);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
+                    //if ( Math.abs( params.leftMargin - paddingX ) > 10 ) {
+                        params.setMargins(paddingX, 0, -paddingX, 0);
+                        v.setLayoutParams(params);
+                        v.invalidate();
+                    //}
 
                     //Dog.v(" onTouch paddingX = " + paddingX + ", paddingY= " + paddingY + ", minX= " + minX + ", minY= " + minY + ", isPress = " + isPress + ", threshold = " + threshold);
                     return true;
@@ -499,13 +520,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
-
-        final View.OnClickListener manageLabels = PrefUtils.getBoolean( "label_setup_by_tap_on_date", false ) ?
-            view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
-            null;
-        holder.urlTextView.setOnClickListener( manageLabels );
-        holder.dateTextView.setOnClickListener( manageLabels );
-        //holder.authorTextView.setOnClickListener( manageLabels );
 
         final int lineCount = holder.isTextShown() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt( STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
         holder.textTextView.setMaxLines( lineCount );
@@ -679,10 +693,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.categoriesTextView.setText(CategoriesToOutput(categories) );
             }
         }
-        //view.findViewById(R.id.text2Layout).setOnClickListener(manageLabels);
 
         UpdateLabelText(holder);
-        holder.labelTextView.setOnClickListener(manageLabels);
 
         holder.contentImgView1.setVisibility( View.GONE );
         holder.contentImgView2.setVisibility( View.GONE );
