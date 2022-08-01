@@ -150,8 +150,8 @@
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_mark_all_as_unread">Alles als „Ungelesen” kennzeichnen</string>
-    <string name="menu_mark_upper_as_read">Alle oberhalb als gelesen kennzeichnen</string>
-    <string name="menu_mark_lower_as_read">Alle unterhalb als „Gelesen” kennzeichnen</string>
+    <string name="menu_mark_upper_as_read">Darüber als „Gelesen” kennzeichnen</string>
+    <string name="menu_mark_lower_as_read">Darunter als „Gelesen” kennzeichnen</string>
     <string name="menu_full_screen">Vollbild</string>
     <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
@@ -390,7 +390,7 @@
     <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird</string>
     <string name="create_auto_backup">Backup ausführen</string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
-    <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog)</string>
+    <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog). Ab Android 10 nicht mehr möglich</string>
     <string name="settings">Einstellungen</string>
     <string name="entry_go_prev">Vorheriger Artikel</string>
     <string name="entry_go_next">Nächster Artikel</string>
@@ -628,6 +628,7 @@
     <string name="daysShort">T</string>
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">vor</string>
+    <string name="error_add_customm_font">Hinzufügen einer benutzerdefinierten Schriftart fehlgeschlagen</string>
     <string name="article_text_footer_show_remaining">Verbleibend</string>
     <string name="article_text_footer_show_remaining_description">"Zeigt die noch verbleibende Seitenzahl, um bis zum Ende zu blättern "</string>
     <string name="open_image">Bild öffnen</string>
@@ -644,6 +645,7 @@
     <string name="open_link_in_browser_tap_action_descr">Der Browser, der direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="not_selected">Nicht ausgewählt</string>
     <string name="setting_ignore_all_ssl_errors">Alle SSL-Fehler ignorieren</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Auswählen, wenn es zu Zertifikatproblemen beim Laden von Webinhalten kommt. !!! ACHTUNG !!! Das kann Ihr Gerät unsicher machen :(</string>
     <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
