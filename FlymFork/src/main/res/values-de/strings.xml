@@ -633,6 +633,7 @@
     <string name="open_image">Bild öffnen</string>
     <string name="copy_to_downloads">In Downloads kopieren</string>
     <string name="sendErrorConfirm">Während des Vorgangs ist ein Fehler aufgetreten. Möchten Sie diesen an den Entwickler senden?</string>
+    <string name="wrongFontFileSelected">"Schriftartendatei sollte mit ttf enden "</string>
     <string name="show_article_text_preview">Textvorschau</string>
     <string name="show_article_text_preview_descr">Einige Textzeilen des Artikelanfangs anzeigen</string>
     <string name="show_more">Mehr anzeigen …</string>
@@ -642,6 +643,7 @@
     <string name="open_image_tap_action_descr">Die App zur Bildanzeige, die direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="open_link_in_browser_tap_action_descr">Der Browser, der direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="not_selected">Nicht ausgewählt</string>
+    <string name="setting_ignore_all_ssl_errors">Alle SSL-Fehler ignorieren</string>
     <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
