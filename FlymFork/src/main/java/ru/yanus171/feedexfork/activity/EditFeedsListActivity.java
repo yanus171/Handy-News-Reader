@@ -19,11 +19,15 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.parser.OPML;
+
+import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
 
 public class EditFeedsListActivity extends BaseActivity {
 
@@ -48,4 +52,17 @@ public class EditFeedsListActivity extends BaseActivity {
 
         return false;
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        OPML.OnRequestPermissionResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        mImportFileSelectDialog.onActivityResult(this, requestCode, resultCode, data, false);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }

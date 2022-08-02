@@ -50,7 +50,7 @@ object FileUtils {
 
     private var mGetImagesFolder: File? = null
 
-    private const val SUB_FOLDER = "/HandyNewsReader"
+    const val SUB_FOLDER = "handy_news_reader"
 
     @Throws(IOException::class)
     fun copy(src: File, dst: File) {
@@ -74,12 +74,12 @@ object FileUtils {
             val resolver = context.contentResolver
             val contentValues = ContentValues()
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/HandyNewsReader")
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER )
             var uri = resolver.insert( MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
             copyFile(FileProvider.getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName)),
                     uri!!)
         } else {
-            val dir = File( getPublicDir().path + SUB_FOLDER );
+            val dir = File( getPublicDir().path + "/" + SUB_FOLDER );
             if ( !dir.exists() && !dir.mkdir() )
                 throw IOException( MainApplication.getContext().getString(R.string.couldNotCreateDownloadsSubfolder) + ": " + dir.path )
             val destFile = File(dir, name)

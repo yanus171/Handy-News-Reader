@@ -124,6 +124,6 @@ public class GeneralPrefsActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         setResult(resultCode);
-        mAddCustomFileSelectDialog.onActivityResult( this, requestCode, resultCode, data );
+        mAddCustomFileSelectDialog.onActivityResult( this, requestCode, resultCode, data, false );
     }
 }

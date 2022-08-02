@@ -521,7 +521,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mImportFileSelectDialog.onActivityResult(this, requestCode, resultCode, data);
+        mImportFileSelectDialog.onActivityResult(this, requestCode, resultCode, data, true);
         super.onActivityResult(requestCode, resultCode, data);
     }
 

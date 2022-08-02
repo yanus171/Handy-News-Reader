@@ -130,7 +130,8 @@
     <string name="reject">REJECT</string>
     <string name="feed_search">Feed search</string>
     <string name="web_page_search_duckduckgo">Search the Web (DuckDuckGo)</string>
-    <string name="select_file">Select a file (from Downloads folder)</string>
+    <string name="select_file">Select Downloads folder file:</string>
+    <string name="select_file_from_subfolder">Select Downloads/handy_news_reader folder file:</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
     <string name="question_delete_filter">Do you really want to delete this filter?</string>
@@ -674,7 +675,7 @@
     <string name="open_link_in_browser_tap_action_descr">The browser app that will be used directly, to do not waste time on system app select dialog</string>
     <string name="not_selected">Not selected</string>
     <string name="setting_ignore_all_ssl_errors">Ignore all SSL errors</string>
-    <string name="setting_setting_ignore_all_ssl_errors_summary">Check this if your experience certificate problems with loading web content. !!! ATTENTION !!! This can make your device insecure :(</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Check this if you experience certificate problems with loading web content. !!! ATTENTION !!! This can make your device insecure :(</string>
     <string name="connection_timeout">Connection timeout</string>
     <string name="connection_timeout_summary">In mills. How long should we wait for internet connection</string>
     <string name="settings_category_connection">Connection</string>

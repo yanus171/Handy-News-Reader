@@ -15,7 +15,9 @@ import okio.use
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.utils.DebugApp
-import ru.yanus171.feedexfork.utils.UiUtils
+import ru.yanus171.feedexfork.utils.FileUtils
+import ru.yanus171.feedexfork.utils.Theme
+import ru.yanus171.feedexfork.utils.Theme.CreateDialog
 import java.io.*
 import java.util.*
 
@@ -27,21 +29,21 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
         fun run(activity: Activity, fileName: String?, isFileNameUri: Boolean)
     }
 
-    fun onActivityResult(activity: Activity, requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onActivityResult(activity: Activity, requestCode: Int, resultCode: Int, data: Intent?, fromDownloadsSubFolder: Boolean ) {
         if (requestCode == mRequestCode) {
             if (resultCode == Activity.RESULT_OK && data != null )
                 mAction.run(activity, data.data.toString(), true)
             else
-                displayCustomFilePicker(activity)
+                displayCustomFilePicker(activity, fromDownloadsSubFolder)
         }
     }
-    private fun displayCustomFilePicker(activity: Activity) {
-        val builder = AlertDialog.Builder(activity)
-        builder.setTitle(activity.getString(R.string.select_file))
-        val path = getPublicDir()
+    private fun displayCustomFilePicker(activity: Activity, fromDownloadsSubFolder: Boolean) {
+        val builder = CreateDialog(activity)
+        builder.setTitle(activity.getString( if ( fromDownloadsSubFolder ) R.string.select_file_from_subfolder else R.string.select_file ))
+        val path = if ( fromDownloadsSubFolder ) File( getPublicDir(), FileUtils.SUB_FOLDER ) else getPublicDir()
         try {
             val fileNames = path.list { dir: File?, filename: String? -> File(dir, filename).isFile && File(dir, filename).extension.equals(mFileExt, ignoreCase = true) }
-            builder.setItems(fileNames) { dialog: DialogInterface?, which: Int -> mAction.run(activity, path.toString() + File.separator + fileNames[which], false) }
+            builder.setItems(fileNames) { _: DialogInterface?, which: Int -> mAction.run(activity, path.toString() + File.separator + fileNames[which], false) }
             builder.show()
         } catch (unused: Exception) {
             Toast.makeText(activity, mErrorTextID, Toast.LENGTH_LONG ).show()

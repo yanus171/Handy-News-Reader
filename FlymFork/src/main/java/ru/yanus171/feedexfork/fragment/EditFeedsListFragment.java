@@ -513,18 +513,5 @@ public class EditFeedsListFragment extends ListFragment {
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        OPML.OnRequestPermissionResult(getActivity(), requestCode, grantResults);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        mImportFileSelectDialog.onActivityResult(getActivity(), requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
 
 }
