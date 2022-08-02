@@ -347,39 +347,36 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         view.getParent().requestDisallowInterceptTouchEvent(true);
 
                         isPress = true;
-                        UiUtils.RunOnGuiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (isPress) {
-                                    final int pos = getItemPosition(holder.entryID);
-                                    ArrayList<Integer> posList = new ArrayList<>();
+                        UiUtils.RunOnGuiThread(() -> {
+                            if (!isPress)
+                                return;
+                            final int pos = getItemPosition(holder.entryID);
+                            ArrayList<Integer> posList = new ArrayList<>();
 
-                                    final MenuItem[] items = {
-                                        new MenuItem(R.string.context_menu_delete, R.drawable.delete, (_1, _2) ->
-                                            EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ),
-                                        new MenuItem(R.string.menu_mark_upper_as_read, R.drawable.ic_arrow_drop_up, (_1, _2) -> {
-                                            for (int i = 0; i < pos; i++)
-                                                posList.add(i);
-                                            ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
-                                        } ),
-                                        new MenuItem(R.string.menu_mark_lower_as_read, R.drawable.arrow_drop_down, (_1, _2) -> {
-                                            for (int i = pos + 1; i < getCount(); i++)
-                                                posList.add(i);
-                                            ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
-                                            }),
-                                        new MenuItem(R.string.menu_edit_labels, R.drawable.ic_label, (_1, _2) ->
-                                            LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
-                                        new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
-                                            context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
-                                                                                        .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
-                                                                                        .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
-                                                                                        .setType(Constants.MIMETYPE_TEXT_PLAIN),
-                                                                                        context.getString(R.string.menu_share))))
-                                    };
-                                    ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
-                                    //wasMove = true;
-                                }
-                            }
+                            final MenuItem[] items = {
+                                new MenuItem(R.string.context_menu_delete, R.drawable.delete, (_1, _2) ->
+                                    EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ),
+                                new MenuItem(R.string.menu_mark_upper_as_read, R.drawable.ic_arrow_drop_up, (_1, _2) -> {
+                                    for (int i = 0; i < pos; i++)
+                                        posList.add(i);
+                                    ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
+                                } ),
+                                new MenuItem(R.string.menu_mark_lower_as_read, R.drawable.arrow_drop_down, (_1, _2) -> {
+                                    for (int i = pos + 1; i < getCount(); i++)
+                                        posList.add(i);
+                                    ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
+                                    }),
+                                new MenuItem(R.string.menu_edit_labels, R.drawable.ic_label, (_1, _2) ->
+                                    LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
+                                new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
+                                    context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
+                                                                                .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
+                                                                                .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
+                                                                                .setType(Constants.MIMETYPE_TEXT_PLAIN),
+                                                                                context.getString(R.string.menu_share))))
+                            };
+                            ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
+                            //wasMove = true;
                         }, ViewConfiguration.getLongPressTimeout());
                     }
                     if (event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -392,10 +389,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                         //allow vertical scrolling
                         if ((initialx < minX * 2 || Math.abs(paddingY) > Math.abs(paddingX)) &&
-                            Math.abs(initialy - event.getY()) > minY &&
+                            Math.abs(initialy - event.getRawY()) > minY &&
                             view.getParent() != null)
                             view.getParent().requestDisallowInterceptTouchEvent(false);
-                        if (Math.abs(initialy - event.getY()) > minY)
+                        if (Math.abs(initialy - event.getRawY()) > minY)
                             isPress = false;
                         holder.readToggleSwypeBtnView.setVisibility(View.VISIBLE);
                         holder.starToggleSwypeBtnView.setVisibility(View.VISIBLE);
@@ -501,19 +498,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     return true;
                 }
 
-                private boolean IsUnderView(MotionEvent event, View view, View rootView) {
-                    final int x = (int) event.getX();
-                    final int y = (int) event.getY();
-                    int[] location = new int[2];
-                    view.getLocationInWindow(location);
-                    int[] locationRoot = new int[2];
-                    rootView.getLocationInWindow(locationRoot);
-                    final int left = location[0] - locationRoot[0];//view.getLeft();
-                    final int top = location[1] - locationRoot[1];//view.getTop();
-                    final int right = left + view.getWidth();
-                    final int bottom = top + view.getHeight();
-                    return x > left && x < right && y > top && y < bottom;
-                }
             });
         }
 
