@@ -132,6 +132,7 @@
     <string name="feed_search">Feed搜索</string>
     <string name="web_page_search_duckduckgo">网页搜索 (Duck Duck Go)</string>
     <string name="select_file">选择一个文件 (从 feedx 文件夹 从存储额外设置)</string>
+    <string name="select_file_from_subfolder">选择 Downloads/handy_news_reader 文件夹文件：</string>
     <string name="question_delete_feed">您真的想要删除该订阅源吗？</string>
     <string name="question_delete_group">您真的想要删除该组及其所有订阅源吗?</string>
     <string name="question_delete_filter">您真的想要删除该过滤器吗？</string>
