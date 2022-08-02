@@ -608,7 +608,7 @@ public class RssAtomParser extends DefaultHandler {
 
     public static Date parseDate(String dateStr, long now) {
         Dog.d( "parseDate " + dateStr );
-        long dateBorder = 5 * 365 * 24 * 60 * 60 * 1000L; // five years ago
+        long dateBorder = 20 * 365 * 24 * 60 * 60 * 1000L; // twenty years ago
         dateStr = improveDateString(dateStr);
         for (DateFormat format : DATE_FORMATS ) {
             try {
