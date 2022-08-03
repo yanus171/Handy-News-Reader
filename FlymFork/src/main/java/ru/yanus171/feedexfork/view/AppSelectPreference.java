@@ -361,7 +361,7 @@ public class AppSelectPreference extends Preference {
 	static public Intent GetShowInBrowserIntent( String url ) {
 		final String packageName = GetPackageNameForAction("openLinkInBrowserTapAction" );
 		final Intent result = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		if (packageName != null)
+		if ( !url.contains( "//t.me/" ) && packageName != null )
 			result.setPackage(packageName);
 		return result;
 	}

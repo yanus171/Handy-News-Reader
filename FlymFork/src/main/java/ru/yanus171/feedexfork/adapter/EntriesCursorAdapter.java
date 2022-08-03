@@ -150,6 +150,7 @@ import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_I
 import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
@@ -373,7 +374,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                                                 .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
                                                                                 .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
                                                                                 .setType(Constants.MIMETYPE_TEXT_PLAIN),
-                                                                                context.getString(R.string.menu_share))))
+                                                                                context.getString(R.string.menu_share)))),
+                                new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(holder.entryLink) )
                             };
                             ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
                             //wasMove = true;

@@ -37,7 +37,7 @@ public class MenuItem {
         this.mListener = listener;
         this.mIntent = null;
     }
-    MenuItem(int textID, Integer icon, Intent intent ) {
+    public MenuItem(int textID, Integer icon, Intent intent ) {
         this.text = MainApplication.getContext().getString(textID);
         this.icon = icon;
         this.mListener = null;
