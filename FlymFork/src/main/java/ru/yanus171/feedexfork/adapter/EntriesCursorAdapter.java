@@ -445,8 +445,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                         if (view.getParent() != null)
                             view.getParent().requestDisallowInterceptTouchEvent(false);
-                        holder.readToggleSwypeBtnView.setVisibility(View.GONE);
-                        holder.starToggleSwypeBtnView.setVisibility(View.GONE);
+                        holder.readToggleSwypeBtnView.setVisibility(View.INVISIBLE);
+                        holder.starToggleSwypeBtnView.setVisibility(View.INVISIBLE);
 
                     }
 
@@ -519,8 +519,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         //mBackgroundColorLight =  daysTo % 2 == 1; //mShowEntryText && cursor.getPosition() % 2 == 1;
 
-        holder.readToggleSwypeBtnView.setVisibility( View.GONE );
-        holder.starToggleSwypeBtnView.setVisibility( View.GONE );
+        holder.readToggleSwypeBtnView.setVisibility( View.INVISIBLE );
+        holder.starToggleSwypeBtnView.setVisibility( View.INVISIBLE );
 
         holder.dateTextView.setVisibility(View.VISIBLE);
 
