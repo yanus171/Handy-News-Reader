@@ -121,10 +121,10 @@ public class PrefUtils {
     public static final int BASE_TEXT_FONT_SIZE = 18;
 
     public static int getFontSize() {
-        return Integer.parseInt(PrefUtils.getString("fontsize", "0"));
+        return PrefUtils.getIntFromText( "fontsize", 0);
     }
     public static int getFontSizeEntryList() {
-        return Integer.parseInt(PrefUtils.getString("fontsize_entrylist", "0"));
+        return PrefUtils.getIntFromText("fontsize_entrylist", 0);
     }
     public static boolean IsLabelABCSort() {
         return PrefUtils.getBoolean("labels_sort_alphabetical", false);
@@ -144,31 +144,19 @@ public class PrefUtils {
     }
 
     public static int getFontSizeFooterClock() {
-        return Integer.parseInt(PrefUtils.getString("article_text_footer_show_clock_fontsize", "0"));
+        return PrefUtils.getIntFromText("article_text_footer_show_clock_fontsize", 0);
     }
 
     public static int getImageDownloadCount() {
-        try {
-            return Integer.parseInt(PrefUtils.getString(PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT, "10"));
-        } catch ( NumberFormatException e ) {
-            return 10;
-        }
+        return PrefUtils.getIntFromText(PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT, 10);
     }
 
     public static int getMaxSingleRefreshTraffic() {
-        try {
-            return Integer.parseInt(PrefUtils.getString(PrefUtils.MAX_SINGLE_REFRESH_TRAFFIC, "50"));
-        } catch ( NumberFormatException e ) {
-            return 50;
-        }
+        return PrefUtils.getIntFromText(PrefUtils.MAX_SINGLE_REFRESH_TRAFFIC, 50);
     }
 
     static int getImageMaxDownloadSizeInKb() {
-        try {
-            return Integer.parseInt(PrefUtils.getString(PrefUtils.MAX_IMAGE_DOWNLOAD_SIZE, "2048"));
-        } catch ( NumberFormatException e ) {
-            return 2048;
-        }
+        return PrefUtils.getIntFromText(PrefUtils.MAX_IMAGE_DOWNLOAD_SIZE, 2048);
     }
 
     public static boolean IsShowReadCheckbox() {
@@ -204,7 +192,7 @@ public class PrefUtils {
         int result = defValue;
         try {
             result = Integer.parseInt( getString( key, String.valueOf( defValue ) ) );
-        } catch ( Exception e ) {
+        } catch ( NumberFormatException e ) {
             e.printStackTrace();
         }
         return result;
@@ -306,9 +294,7 @@ public class PrefUtils {
     }
 
     public static int GetTapZoneSize() {
-        //if ( !isArticleTapEnabled() )
-        //    return 0;
-        return UiUtils.mmToPixel(Integer.parseInt( PrefUtils.getString( "tap_zone_size", "7" ) ));
+        return UiUtils.mmToPixel( PrefUtils.getIntFromText( "tap_zone_size", 7 ) );
     }
     // ------------------------------------------------------------------------------------
     public static int GetPrefColorDefID(String key, int defaultValueID) {
