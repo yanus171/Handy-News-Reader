@@ -186,7 +186,6 @@
     <string name="show_read_article_count">Mostrar recuento de artículos leídos</string>
     <string name="show_read_article_count_descr">En lista de feeds</string>
     <string name="show_group_entrries_count">Recuento de artículos del grupo</string>
-    <string name="show_group_entries_count_descr">puede reducir el rendimiento</string>
     <string name="textColorRead">Leer artículos</string>
     <string name="textColorRead_descr">Leer texto de artículos y color de fondo</string>
     <string name="settings_color_text_read_sample_short">Leer</string>
