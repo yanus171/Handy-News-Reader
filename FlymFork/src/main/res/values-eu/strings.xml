@@ -230,7 +230,6 @@
     <string name="show_read_article_count">Bistaratu irakurritako artikulu kopurua</string>
     <string name="show_read_article_count_descr">Jarioen zerrendan</string>
     <string name="show_group_entrries_count">Taldearen artikulu kopurua</string>
-    <string name="show_group_entries_count_descr">errendimendua gutxiagotu dezake</string>
     <string name="textColorRead">Irakurri artikuluak</string>
     <string name="textColorRead_descr">Irakurritako artikuluen kolorea</string>
     <string name="settings_color_text_read_sample_short">Irakurri</string>
