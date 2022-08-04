@@ -233,7 +233,6 @@
     <string name="show_read_article_count">Εμφάνιση αριθμού αναγνωσμένων άρθρων</string>
     <string name="show_read_article_count_descr">Στη λίστα Ροών</string>
     <string name="show_group_entrries_count">Αρίθμηση άρθρων στην ομάδα</string>
-    <string name="show_group_entries_count_descr">μπορεί να μειώσει την απόδοση</string>
     <string name="textColorRead">Χρώμα κειμένου διαβασμένων</string>
     <string name="textColorRead_descr">Το χρώμα των άρθρων που έχουν διαβαστεί</string>
     <string name="settings_color_text_read_sample_short">Διαβασμένα</string>
