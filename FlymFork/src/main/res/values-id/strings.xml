@@ -237,7 +237,6 @@ maksimum per umpan<br/>
     <string name="show_read_article_count">Tampilkan jumlah artikel dibaca</string>
     <string name="show_read_article_count_descr">Di daftar umpan</string>
     <string name="show_group_entrries_count">Jumlah grup artikel</string>
-    <string name="show_group_entries_count_descr">bisa mengurangi performa</string>
     <string name="textColorRead">Warna baca artikel</string>
     <string name="textColorRead_descr">Teks dan latar</string>
     <string name="settings_color_text_read_sample_short">Baca</string>
