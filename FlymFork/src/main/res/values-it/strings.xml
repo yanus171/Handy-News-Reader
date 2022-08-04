@@ -238,7 +238,6 @@
     <string name="show_read_article_count">Mostra Numero Articoli Letti</string>
     <string name="show_read_article_count_descr">Nella lista dei feed</string>
     <string name="show_group_entrries_count">Numero Totale Articoli per ogni Gruppo</string>
-    <string name="show_group_entries_count_descr">Potrebbe ridurre le prestazioni</string>
     <string name="textColorRead">Articoli Letti</string>
     <string name="textColorRead_descr">Colori degli articoli letti</string>
     <string name="settings_color_text_read_sample_short">Leggi</string>
