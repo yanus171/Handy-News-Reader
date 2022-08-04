@@ -239,7 +239,6 @@
     <string name="show_read_article_count">Число прочитаних статей стрічок</string>
     <string name="show_read_article_count_descr">В списку стрічок</string>
     <string name="show_group_entrries_count">Число статей у групах</string>
-    <string name="show_group_entries_count_descr">може знизити швидкодію</string>
     <string name="textColorRead">Прочитані статті</string>
     <string name="textColorRead_descr">Колір прочитаних статей</string>
     <string name="settings_color_text_read_sample_short">Прочитано</string>
