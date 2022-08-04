@@ -238,7 +238,6 @@
     <string name="show_read_article_count">Afficher le nombre d\'articles lus</string>
     <string name="show_read_article_count_descr">Dans liste des flux</string>
     <string name="show_group_entrries_count">Nombre de groupe d\'articles</string>
-    <string name="show_group_entries_count_descr">peut réduire les performances</string>
     <string name="textColorRead">Articles lus</string>
     <string name="textColorRead_descr">Couleur du texte et de l\'arrière-plan des articles lus</string>
     <string name="settings_color_text_read_sample_short">Lu</string>
