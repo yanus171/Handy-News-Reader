@@ -230,7 +230,6 @@
     <string name="show_read_article_count">إظهار عدد المقالات المقروءة</string>
     <string name="show_read_article_count_descr">في قائمة الخلاصة</string>
     <string name="show_group_entrries_count">إِظْهارُ عَدَدِ مَقالاتِ المَجْموعَةِ</string>
-    <string name="show_group_entries_count_descr">قد يُقلل من الأداء</string>
     <string name="textColorRead">لَوْنُ المَقَالَاتِ المَقْروءَةِ</string>
     <string name="textColorRead_descr">لَوْنُ النَّصِّ وَخَلْفيَّتُهُ فِي قائِمَةِ المَقَالَاتِ</string>
     <string name="settings_color_text_read_sample_short">القراءة</string>
