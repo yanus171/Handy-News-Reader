@@ -131,6 +131,7 @@
     <string name="feed_search">Пошук стрічок</string>
     <string name="web_page_search_duckduckgo">Веб-пошук сторінок (Duck Duck Go)</string>
     <string name="select_file">Виберіть файл (з теки Завантаження)</string>
+    <string name="select_file_from_subfolder">Оберіть файл з теки Завантаження/handy_news_reader:</string>
     <string name="question_delete_feed">Ви дійсно бажаєте вилучити цю стрічку?</string>
     <string name="question_delete_group">Ви дійсно бажаєте вилучити цю групу та всі ії стрічки?</string>
     <string name="question_delete_filter">Ви дійсно бажаєте вилучити цей фільтр?</string>
