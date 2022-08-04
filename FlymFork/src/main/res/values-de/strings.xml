@@ -237,7 +237,6 @@
     <string name="show_read_article_count">Anzahl der gelesenen Artikel zeigen</string>
     <string name="show_read_article_count_descr">In der Feed-Liste die Anzahl der gelesenen Artikel anzeigen</string>
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
-    <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
     <string name="textColorRead">Textfarbe gelesener Artikel</string>
     <string name="textColorRead_descr">Text- und Hintergrundfarbe gelesener Artikel in der Artikelliste</string>
     <string name="settings_color_text_read_sample_short">Text</string>
