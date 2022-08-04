@@ -234,7 +234,6 @@
     <string name="show_read_article_count">Pokaż licznik przeczytanych artykułów</string>
     <string name="show_read_article_count_descr">Na liście źródeł</string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
-    <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
     <string name="textColorRead">Kolor przeczytanych artykułów</string>
     <string name="textColorRead_descr">Tekst oraz tło</string>
     <string name="settings_color_text_read_sample_short">Przeczytane</string>
