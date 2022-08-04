@@ -241,7 +241,6 @@
     <string name="show_read_article_count">Число прочитанных статей</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
-    <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
     <string name="textColorRead">Цвет прочитанных статей</string>
     <string name="textColorRead_descr">Цвет прочитанных</string>
     <string name="settings_color_text_read_sample_short">Прочитанные</string>
