@@ -110,11 +110,24 @@ public class DrawerAdapter extends BaseAdapter {
 
     private final Context mContext;
     private Cursor mFeedsCursor;
-    private int mAllUnreadNumber, mFavoritesUnreadNumber, mFavoritesReadNumber, mAllNumber, mExternalUnreadNumber, mExternalReadNumber;
-    private long mAllImagesSize, mAllUnreadImagesSize, mFavoritiesImagesSize, mExternalImagesSize;
-    private int mTextTaskCount, mImageTaskCount;
-    private HashMap<Long, Integer> mUnreadArticleCountVoc = new HashMap<>();
-    private HashMap<Long, Integer> mAllArticleCountVoc = new HashMap<>();
+    private final String KEY_AllUnreadNumber = "AllUnreadNumber";
+    private final String KEY_FavoritesUnreadNumber = "FavoritesUnreadNumber";
+    private final String KEY_FavoritesReadNumber = "FavoritesReadNumber";
+    private final String KEY_AllNumber = "AllNumber";
+    private final String KEY_ExternalUnreadNumber = "ExternalUnreadNumber";
+    private final String KEY_ExternalReadNumber = "ExternalReadNumber";
+    private final String KEY_AllImagesSize = "AllImagesSize";
+    private final String KEY_AllUnreadImagesSize = "AllUnreadImagesSize";
+    private final String KEY_FavoritiesImagesSize = "FavoritiesImagesSize";
+    private final String KEY_ExternalImagesSize = "ExternalImagesSize";
+    private final String KEY_TextTaskCount = "TextTaskCount";
+    private final String KEY_ImageTaskCount = "ImageTaskCount";
+    private final String KEY_LabelEntriesUnreadCount = "LabelEntriesUnreadCount_";
+    private final String KEY_LabelEntriesImagesSize = "LabelEntriesImagesSize1_";
+    private final String KEY_LabelEntriesReadCount = "LabelEntriesReadCount_";
+    private final String KEY_FeedAllArticleCountVoc = "FeedAllArticleCountVoc_";
+    private final String KEY_FeedUnreadArticleCountVoc = "FeedUnreadArticleCountVoc_";
+
     private String EXPR_NUMBER (final String where ) {
         return "CASE WHEN " + FeedData.FeedColumns.WHERE_GROUP + " THEN " + GROUP_NUMBER(where ) +
             " ELSE " + FEED_NUMBER( where ) + " END";
@@ -148,169 +161,170 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
-        synchronized ( DrawerAdapter.this ) {
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.item_drawer_list, parent, false);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_drawer_list, parent, false);
 
-                ViewHolder holder = new ViewHolder();
-                holder.iconView = convertView.findViewById(android.R.id.icon);
-                holder.titleTxt = SetupTextView(convertView, android.R.id.text1);
-                holder.stateTxt = SetupSmallTextView(convertView, android.R.id.text2);
-                holder.imageSizeTxt = SetupSmallTextView(convertView, R.id.imageSize);
-                holder.unreadTxt = SetupTextView(convertView, R.id.unread_count);
-                holder.readTxt = SetupTextView(convertView, R.id.read_count);
-                holder.tasksTxt = SetupSmallTextView(convertView, R.id.tasks);
-                holder.autoRefreshIcon = convertView.findViewById(R.id.auto_refresh_icon);
-                holder.separator = convertView.findViewById(R.id.separator);
-                convertView.setTag(R.id.holder, holder);
+            ViewHolder holder = new ViewHolder();
+            holder.iconView = convertView.findViewById(android.R.id.icon);
+            holder.titleTxt = SetupTextView(convertView, android.R.id.text1);
+            holder.stateTxt = SetupSmallTextView(convertView, android.R.id.text2);
+            holder.imageSizeTxt = SetupSmallTextView(convertView, R.id.imageSize);
+            holder.unreadTxt = SetupTextView(convertView, R.id.unread_count);
+            holder.readTxt = SetupTextView(convertView, R.id.read_count);
+            holder.tasksTxt = SetupSmallTextView(convertView, R.id.tasks);
+            holder.autoRefreshIcon = convertView.findViewById(R.id.auto_refresh_icon);
+            holder.separator = convertView.findViewById(R.id.separator);
+            convertView.setTag(R.id.holder, holder);
+        }
+
+        ViewHolder holder = (ViewHolder) convertView.getTag(R.id.holder);
+
+        // default init
+        holder.iconView.setImageDrawable(null);
+        holder.titleTxt.setText("");
+        holder.titleTxt.setTextColor(NORMAL_TEXT_COLOR);
+        holder.titleTxt.setAllCaps(false);
+        UiUtils.SetFont(holder.titleTxt, 1);
+        holder.stateTxt.setVisibility(View.GONE);
+        holder.unreadTxt.setText("");
+        UiUtils.SetFont(holder.unreadTxt, 1);
+        holder.readTxt.setText("");
+        UiUtils.SetFont(holder.readTxt, 1);
+        convertView.setPadding(0, 0, 0, 0);
+        holder.separator.setVisibility(View.GONE);
+        holder.autoRefreshIcon.setVisibility(View.GONE);
+        holder.imageSizeTxt.setVisibility(View.GONE);
+        holder.tasksTxt.setVisibility(View.GONE);
+
+        ArrayList<Label> labelList = getLabelList();
+
+        if (position == 0 || position == 1 || position == 2 || position == EXTERNAL_ENTRY_POS) {
+            switch (position) {
+                case 0:
+                    holder.titleTxt.setText(R.string.unread_entries);
+                    holder.iconView.setImageResource(R.drawable.cup_new_unread);
+                    SetCount(KEY_AllUnreadNumber, holder.unreadTxt);
+                    SetImageSizeText(holder, KEY_AllUnreadImagesSize);
+                    break;
+                case 1:
+                    holder.titleTxt.setText(R.string.all_entries);
+                    holder.iconView.setImageResource(R.drawable.cup_new_pot);
+                    SetCount(KEY_AllNumber, holder.unreadTxt);
+                    holder.readTxt.setText("");
+                    SetImageSizeText(holder, KEY_AllImagesSize);
+                    String taskInfo = "";
+                    final int textTaskCount = PrefUtils.getInt(KEY_TextTaskCount, 0);
+                    if (textTaskCount != 0)
+                        taskInfo += String.format(" T:%d", textTaskCount);
+                    final int imageTaskCount = PrefUtils.getInt(KEY_ImageTaskCount, 0);
+                    if (imageTaskCount != 0)
+                        taskInfo += String.format(" I:%d", imageTaskCount);
+                    if (!taskInfo.isEmpty()) {
+                        holder.tasksTxt.setVisibility(View.VISIBLE);
+                        holder.tasksTxt.setText(getContext().getString(R.string.tasks_to_download) + ": " + taskInfo);
+                    }
+                    break;
+                case 2:
+                    holder.titleTxt.setText(R.string.favorites);
+                    holder.iconView.setImageResource(R.drawable.cup_new_star);
+                    SetCount(KEY_FavoritesUnreadNumber, holder.unreadTxt);
+                    SetCount(KEY_FavoritesReadNumber, holder.readTxt);
+                    SetImageSizeText(holder, KEY_FavoritiesImagesSize);
+                    break;
+                case EXTERNAL_ENTRY_POS:
+                    holder.titleTxt.setText(R.string.externalLinks);
+                    holder.iconView.setImageResource(R.drawable.cup_new_load_later);
+                    SetCount(KEY_ExternalUnreadNumber, holder.unreadTxt);
+                    SetCount(KEY_ExternalReadNumber, holder.readTxt);
+                    SetImageSizeText(holder, KEY_ExternalImagesSize);
+                    break;
             }
+        } else if (position == LABEL_GROUP_POS) {
+            holder.iconView.setImageResource(isGroupExpanded(position) ? R.drawable.ic_group_expanded_gray : R.drawable.ic_group_collapsed_gray);
+            holder.iconView.setOnClickListener(v -> {
+                PrefUtils.putBoolean(PREF_IS_LABEL_GROUP_EXPANDED, !isGroupExpanded(LABEL_GROUP_POS));
+                notifyDataSetChanged();
+            });
+            holder.titleTxt.setText(R.string.labels_group_title);
+            holder.titleTxt.setTextColor(GROUP_TEXT_COLOR);
+            holder.titleTxt.setAllCaps(true);
+            holder.separator.setVisibility(View.VISIBLE);
+        } else if (isLabelPos(position)) {
+            Label label = labelList.get(getLabelPosition(position));
+            holder.titleTxt.setText(label.mName);
+            holder.titleTxt.setTextColor(label.colorInt());
+            holder.iconView.setImageResource(R.drawable.label_brown);
+            SetCount( KEY_LabelEntriesUnreadCount + label.mID, holder.unreadTxt);
+            SetCount( KEY_LabelEntriesReadCount + label.mID, holder.readTxt);
+            SetImageSizeText(holder, KEY_LabelEntriesImagesSize + label.mID);
+        } else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
+            holder.titleTxt.setText((mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME)));
 
-            ViewHolder holder = (ViewHolder) convertView.getTag(R.id.holder);
-
-            // default init
-            holder.iconView.setImageDrawable(null);
-            holder.titleTxt.setText("");
-            holder.titleTxt.setTextColor(NORMAL_TEXT_COLOR);
-            holder.titleTxt.setAllCaps(false);
-            UiUtils.SetFont(holder.titleTxt, 1);
-            holder.stateTxt.setVisibility(View.GONE);
-            holder.unreadTxt.setText("");
-            UiUtils.SetFont(holder.unreadTxt, 1);
-            holder.readTxt.setText("");
-            UiUtils.SetFont(holder.readTxt, 1);
-            convertView.setPadding(0, 0, 0, 0);
-            holder.separator.setVisibility(View.GONE);
-            holder.autoRefreshIcon.setVisibility(View.GONE);
-            holder.imageSizeTxt.setVisibility(View.GONE);
-            holder.tasksTxt.setVisibility(View.GONE);
-
-            ArrayList<Label> labelList = getLabelList();
-
-            if (position == 0 || position == 1 || position == 2 || position == EXTERNAL_ENTRY_POS) {
-                switch (position) {
-                    case 0:
-                        holder.titleTxt.setText(R.string.unread_entries);
-                        holder.iconView.setImageResource(R.drawable.cup_new_unread);
-                        SetCount(mAllUnreadNumber, holder.unreadTxt);
-                        SetImageSizeText(holder, mAllUnreadImagesSize);
-                        break;
-                    case 1:
-                        holder.titleTxt.setText(R.string.all_entries);
-                        holder.iconView.setImageResource(R.drawable.cup_new_pot);
-                        SetCount(mAllNumber, holder.unreadTxt);
-                        holder.readTxt.setText("");
-                        SetImageSizeText(holder, mAllImagesSize);
-                        String taskInfo = "";
-                        if (mTextTaskCount != 0)
-                            taskInfo += String.format(" T:%d", mTextTaskCount);
-                        if (mImageTaskCount != 0)
-                            taskInfo += String.format(" I:%d", mImageTaskCount);
-                        if (!taskInfo.isEmpty()) {
-                            holder.tasksTxt.setVisibility(View.VISIBLE);
-                            holder.tasksTxt.setText(getContext().getString(R.string.tasks_to_download) + ": " + taskInfo);
-                        }
-                        break;
-                    case 2:
-                        holder.titleTxt.setText(R.string.favorites);
-                        holder.iconView.setImageResource(R.drawable.cup_new_star);
-                        SetCount(mFavoritesUnreadNumber, holder.unreadTxt);
-                        SetCount(mFavoritesReadNumber, holder.readTxt);
-                        SetImageSizeText(holder, mFavoritiesImagesSize);
-                        break;
-                    case EXTERNAL_ENTRY_POS:
-                        holder.titleTxt.setText(R.string.externalLinks);
-                        holder.iconView.setImageResource(R.drawable.cup_new_load_later);
-                        SetCount(mExternalUnreadNumber, holder.unreadTxt);
-                        SetCount(mExternalReadNumber, holder.readTxt);
-                        SetImageSizeText(holder, mExternalImagesSize);
-                        break;
-                }
-            } else if (position == LABEL_GROUP_POS) {
+            if (mFeedsCursor.getInt(POS_IS_GROUP) == 1) {
                 holder.iconView.setImageResource(isGroupExpanded(position) ? R.drawable.ic_group_expanded_gray : R.drawable.ic_group_collapsed_gray);
                 holder.iconView.setOnClickListener(v -> {
-                    PrefUtils.putBoolean(PREF_IS_LABEL_GROUP_EXPANDED, !isGroupExpanded(LABEL_GROUP_POS));
-                    notifyDataSetChanged();
+                    ContentResolver cr = getContext().getContentResolver();
+                    ContentValues values = new ContentValues();
+                    values.put(FeedData.FeedColumns.IS_GROUP_EXPANDED, isGroupExpanded(position) ? null : 1);
+                    cr.update(FeedData.FeedColumns.CONTENT_URI(getItemId(position)), values, null, null);
                 });
-                holder.titleTxt.setText(R.string.labels_group_title);
                 holder.titleTxt.setTextColor(GROUP_TEXT_COLOR);
                 holder.titleTxt.setAllCaps(true);
                 holder.separator.setVisibility(View.VISIBLE);
-            } else if (isLabelPos(position)) {
-                Label label = labelList.get(getLabelPosition(position));
-                holder.titleTxt.setText(label.mName);
-                holder.titleTxt.setTextColor(label.colorInt());
-                holder.iconView.setImageResource(R.drawable.label_brown);
-                SetCount(label.mEntriesUnreadCount, holder.unreadTxt);
-                SetCount(label.mEntriesReadCount, holder.readTxt);
-                SetImageSizeText(holder, label.mEntriesImagesSize);
-            } else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
-                holder.titleTxt.setText((mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME)));
+            } else {
+                holder.stateTxt.setVisibility(View.VISIBLE);
 
-                if (mFeedsCursor.getInt(POS_IS_GROUP) == 1) {
-                    holder.iconView.setImageResource(isGroupExpanded(position) ? R.drawable.ic_group_expanded_gray : R.drawable.ic_group_collapsed_gray);
-                    holder.iconView.setOnClickListener(v -> {
-                        ContentResolver cr = getContext().getContentResolver();
-                        ContentValues values = new ContentValues();
-                        values.put(FeedData.FeedColumns.IS_GROUP_EXPANDED, isGroupExpanded(position) ? null : 1);
-                        cr.update(FeedData.FeedColumns.CONTENT_URI(getItemId(position)), values, null, null);
-                    });
-                    holder.titleTxt.setTextColor(GROUP_TEXT_COLOR);
-                    holder.titleTxt.setAllCaps(true);
-                    holder.separator.setVisibility(View.VISIBLE);
-                } else {
-                    holder.stateTxt.setVisibility(View.VISIBLE);
+                if (mFeedsCursor.isNull(POS_ERROR)) {
+                    long timestamp = mFeedsCursor.getLong(POS_LAST_UPDATE);
 
-                    if (mFeedsCursor.isNull(POS_ERROR)) {
-                        long timestamp = mFeedsCursor.getLong(POS_LAST_UPDATE);
+                    // Date formatting is expensive, look at the cache
+                    String formattedDate = mFormattedDateCache.get(timestamp);
+                    if (formattedDate == null) {
 
-                        // Date formatting is expensive, look at the cache
-                        String formattedDate = mFormattedDateCache.get(timestamp);
-                        if (formattedDate == null) {
+                        formattedDate = "";//mContext.getString(R.string.last_update) + COLON;
 
-                            formattedDate = "";//mContext.getString(R.string.last_update) + COLON;
-
-                            if (timestamp == 0) {
-                                formattedDate += mContext.getString(R.string.never);
-                            } else {
-                                formattedDate += StringUtils.getDateTimeString(timestamp);
-                            }
-
-                            mFormattedDateCache.put(timestamp, formattedDate);
+                        if (timestamp == 0) {
+                            formattedDate += mContext.getString(R.string.never);
+                        } else {
+                            formattedDate += StringUtils.getDateTimeString(timestamp);
                         }
 
-                        holder.stateTxt.setText(formattedDate);
-                    } else {
-                        holder.stateTxt.setText(new StringBuilder(mContext.getString(R.string.error)).append(COLON).append(mFeedsCursor.getString(POS_ERROR)));
+                        mFormattedDateCache.put(timestamp, formattedDate);
                     }
 
-                    Uri iconUri = mFeedsCursor.isNull(POS_ICON_URL) ? Uri.EMPTY : GetImageFileUri(mFeedsCursor.getString(POS_ICON_URL), mFeedsCursor.getString(POS_ICON_URL));
-                    //final int dim = UiUtils.dpToPixel(35);
-                    Glide.with(parent.getContext())
-                        .load(iconUri)
-                        //.override( dim, dim )
-                        //.centerCrop()
-                        .placeholder(R.drawable.cup_new_empty)
-                        .into(holder.iconView);
-
-                    holder.autoRefreshIcon.setVisibility(isAutoRefresh(position) ? View.VISIBLE : View.GONE);
+                    holder.stateTxt.setText(formattedDate);
+                } else {
+                    holder.stateTxt.setText(new StringBuilder(mContext.getString(R.string.error)).append(COLON).append(mFeedsCursor.getString(POS_ERROR)));
                 }
-                final long feedOrGroupID = mFeedsCursor.getLong(POS_ID);
-                int unread = mUnreadArticleCountVoc.containsKey(feedOrGroupID) ? mUnreadArticleCountVoc.get(feedOrGroupID) : 0;
-                int all = mAllArticleCountVoc.containsKey(feedOrGroupID) ? mAllArticleCountVoc.get(feedOrGroupID) : 0;
-                SetCount(unread, holder.unreadTxt);
-                int read = all - unread;
-                if (read > 0)
-                    holder.readTxt.setText(String.valueOf(read));
 
-                SetImageSizeText(holder, mFeedsCursor.getInt(POS_IMAGESIZE));
+                Uri iconUri = mFeedsCursor.isNull(POS_ICON_URL) ? Uri.EMPTY : GetImageFileUri(mFeedsCursor.getString(POS_ICON_URL), mFeedsCursor.getString(POS_ICON_URL));
+                //final int dim = UiUtils.dpToPixel(35);
+                Glide.with(parent.getContext())
+                    .load(iconUri)
+                    //.override( dim, dim )
+                    //.centerCrop()
+                    .placeholder(R.drawable.cup_new_empty)
+                    .into(holder.iconView);
+
+                holder.autoRefreshIcon.setVisibility(isAutoRefresh(position) ? View.VISIBLE : View.GONE);
             }
+            final long feedOrGroupID = mFeedsCursor.getLong(POS_ID);
+            int unread = PrefUtils.getInt( KEY_FeedUnreadArticleCountVoc + feedOrGroupID, 0 );
+            int all = PrefUtils.getInt( KEY_FeedAllArticleCountVoc + feedOrGroupID, 0 );
+            SetCount(KEY_FeedUnreadArticleCountVoc + feedOrGroupID, holder.unreadTxt);
+            int read = all - unread;
+            if (read > 0)
+                holder.readTxt.setText(String.valueOf(read));
+
+            SetImageSizeText(holder, mFeedsCursor.getInt(POS_IMAGESIZE));
         }
         return convertView;
     }
 
-    private void SetCount(int count, TextView unreadTxt) {
-        unreadTxt.setText(count != 0 ? String.valueOf(count) : "");
+    private void SetCount(String key, TextView view) {
+        int count = PrefUtils.getInt( key, 0 );
+        view.setText(count != 0 ? String.valueOf(count) : "");
     }
 
     @NotNull
@@ -328,6 +342,10 @@ public class DrawerAdapter extends BaseAdapter {
             holder.imageSizeTxt.setText(GetImageSizeText(size));
         } else
             holder.imageSizeTxt.setVisibility( View.GONE );
+    }
+
+    static private void SetImageSizeText(ViewHolder holder, String key) {
+        SetImageSizeText( holder, PrefUtils.getLong( key, 0 ) );
     }
 
     static private String GetImageSizeText(long imageSize) {
@@ -456,10 +474,6 @@ public class DrawerAdapter extends BaseAdapter {
     }
     private void updateNumbers() {
         ContentResolver cr = mContext.getContentResolver();
-        synchronized ( DrawerAdapter.this ) {
-            mAllUnreadNumber = mFavoritesUnreadNumber = mFavoritesReadNumber = mAllNumber = mExternalReadNumber = mExternalUnreadNumber = 0;
-            mAllImagesSize = 0;
-        }
         Timer timer = new Timer("updateNumbers()");
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
         Cursor numbers = cr.query(EntryColumns.CONTENT_URI,
@@ -476,18 +490,16 @@ public class DrawerAdapter extends BaseAdapter {
                                   null, null, null);
         if (numbers != null) {
             if (numbers.moveToFirst()) {
-                synchronized ( DrawerAdapter.this ) {
-                    mAllUnreadNumber = numbers.getInt(0);
-                    mFavoritesReadNumber = numbers.getInt(1);
-                    mFavoritesUnreadNumber = numbers.getInt(2);
-                    mAllNumber = numbers.getInt(3);
-                    mExternalUnreadNumber = numbers.getInt(4);
-                    mExternalReadNumber = numbers.getInt(5);
-                    mAllImagesSize = numbers.getLong(6);
-                    mAllUnreadImagesSize = numbers.getLong(7);
-                    mFavoritiesImagesSize = numbers.getLong(8);
-                    mExternalImagesSize = numbers.getLong(9);
-                }
+                PrefUtils.putInt( KEY_AllUnreadNumber, numbers.getInt(0) );
+                PrefUtils.putInt( KEY_FavoritesReadNumber, numbers.getInt(1) );
+                PrefUtils.putInt( KEY_FavoritesUnreadNumber, numbers.getInt(2) );
+                PrefUtils.putInt( KEY_AllNumber, numbers.getInt(3) );
+                PrefUtils.putInt( KEY_ExternalUnreadNumber, numbers.getInt(4) );
+                PrefUtils.putInt( KEY_ExternalReadNumber, numbers.getInt(5) );
+                PrefUtils.putLong( KEY_AllImagesSize, numbers.getLong(6) );
+                PrefUtils.putLong( KEY_AllUnreadImagesSize, numbers.getLong(7) );
+                PrefUtils.putLong( KEY_FavoritiesImagesSize, numbers.getLong(8) );
+                PrefUtils.putLong( KEY_ExternalImagesSize, numbers.getLong(9) );
             }
             numbers.close();
         }
@@ -496,36 +508,18 @@ public class DrawerAdapter extends BaseAdapter {
             Cursor cur = cr.query(FeedData.TaskColumns.CONTENT_URI,
                                   new String[]{FeedData.TaskColumns.TEXT_COUNT, FeedData.TaskColumns.IMAGE_COUNT},
                                   null, null, null);
-            synchronized ( DrawerAdapter.this ) {
-                mTextTaskCount = 0;
-                mImageTaskCount = 0;
-                if (cur.moveToFirst()) {
-                    mTextTaskCount = cur.getInt(0);
-                    mImageTaskCount = cur.getInt(1);
-                }
-                cur.close();
+            if (cur.moveToFirst()) {
+                PrefUtils.putInt(KEY_TextTaskCount, cur.getInt(0) );
+                PrefUtils.putInt(KEY_ImageTaskCount, cur.getInt(1) );
             }
+            cur.close();
         }
 
-        synchronized ( DrawerAdapter.this ) {
-            for ( Label label: LabelVoc.INSTANCE.getList() ) {
-                label.mEntriesUnreadCount = 0;
-                label.mEntriesReadCount = 0;
-                label.mEntriesImagesSize = 0;
-                LabelVoc.INSTANCE.set(label);
-            }
-        }
-
-
-        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, (label, cur) -> label.mEntriesUnreadCount = cur.isNull(1 ) ? 0 : cur.getInt(1));
-        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, (label, cur) -> label.mEntriesReadCount = cur.isNull(1 ) ? 0 : cur.getInt(1));
-        SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, (label, cur) -> label.mEntriesImagesSize = cur.isNull(1 ) ? 0 : cur.getInt(1));
+        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, (label, cur) -> PrefUtils.putInt(KEY_LabelEntriesUnreadCount + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1)) );
+        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, (label, cur) -> PrefUtils.putInt(KEY_LabelEntriesReadCount + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1)) );
+        SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, (label, cur) -> PrefUtils.putLong(KEY_LabelEntriesImagesSize + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1)) );
 
         {
-            synchronized ( DrawerAdapter.this ) {
-                mUnreadArticleCountVoc.clear();
-                mAllArticleCountVoc.clear();
-            }
             Cursor cur = cr.query( FeedData.FeedColumns.GROUPED_FEEDS_CONTENT_URI,
                                    new String[]{FeedData.FeedColumns._ID, EXPR_FEED_ALL_NUMBER, EXPR_NUMBER( WHERE_UNREAD )},
                                    "(" + FeedData.FeedColumns.WHERE_GROUP + DB_OR +
@@ -538,10 +532,8 @@ public class DrawerAdapter extends BaseAdapter {
                                    null);
             if (cur != null) {
                 while (cur.moveToNext()) {
-                    synchronized ( DrawerAdapter.this ) {
-                        mAllArticleCountVoc.put(cur.getLong(0), cur.getInt(1));
-                        mUnreadArticleCountVoc.put(cur.getLong(0), cur.getInt(2));
-                    }
+                    PrefUtils.putInt(KEY_FeedAllArticleCountVoc + cur.getString(0), cur.getInt(1));
+                    PrefUtils.putInt(KEY_FeedUnreadArticleCountVoc + cur.getString(0), cur.getInt(2));
                 }
                 cur.close();
             }
