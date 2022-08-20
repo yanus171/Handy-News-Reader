@@ -843,7 +843,16 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                mImageUrlList,
                                                3 );
             temp = temp.replace(mTitle, "");
+            temp = temp.replaceAll( "<p[^>]+>", "" );
+            temp = temp.replace( "</p>", "" ).trim();
+            temp = temp.replace( "<b>", "" );
+            temp = temp.replace( "</b>", "" ).trim();
+            temp = temp.replaceAll( "<[^>]+>(\\s)?+</[^>]+>", "" );
 
+            while ( temp.startsWith( "<br>" ) )
+                temp = temp.replaceFirst( "<br>", "" ).trim();
+            while ( temp.endsWith( "<br>" ) )
+                temp = removeLast( temp, "<br>" ).trim();
             mText = getBoldText( GetHtmlAligned( temp ));
             mNeedToOpenArticle = NeedToOpenArticle(temp);
             synchronized ( this ) {
@@ -851,6 +860,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             }
             EntryView.NotifyToUpdate( mID, mLink, false );
         }
+        private String removeLast(String string, String from) {
+            int lastIndex = string.lastIndexOf(from);
+            if (lastIndex < 0)
+                return string;
+            String tail = string.substring(lastIndex).replaceFirst(from, "");
+            return string.substring(0, lastIndex) + tail;
+        }
+
     }
 
     private static boolean NeedToOpenArticle(String temp ) {
