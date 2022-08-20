@@ -137,7 +137,6 @@
     <string name="question_delete_filter">Voulez-vous vraiment supprimer ce filtre ?</string>
     <string name="add_group_title">Entrez le nom du groupe</string>
     <string name="edit_group_title">Éditer le nom du groupe</string>
-    <string name="message_exported_to">Exporté vers %s.</string>
     <string name="to_group_title">Déplacement de flux</string>
     <string name="to_group_message">Vous pouvez placer ce flux dans ou au-dessus de ce groupe. Que voulez-vous faire ?</string>
     <string name="to_group_above">Au-dessus du groupe</string>
@@ -239,7 +238,6 @@
     <string name="show_read_article_count">Afficher le nombre d\'articles lus</string>
     <string name="show_read_article_count_descr">Dans liste des flux</string>
     <string name="show_group_entrries_count">Nombre de groupe d\'articles</string>
-    <string name="show_group_entries_count_descr">peut réduire les performances</string>
     <string name="textColorRead">Articles lus</string>
     <string name="textColorRead_descr">Couleur du texte et de l\'arrière-plan des articles lus</string>
     <string name="settings_color_text_read_sample_short">Lu</string>
@@ -390,7 +388,6 @@
     <string name="autobackup_interval">Intervalle de sauvegarde auto</string>
     <string name="autobackup_interval_descr">Fréquence de création d\'un fichier de sauvegarde des flux et des articles</string>
     <string name="create_auto_backup">Créer une sauvegarde auto</string>
-    <string name="auto_backup_opml_file_created">Fichier de sauvegarde automatique .opml créé :</string>
     <string name="use_standard_file_manager">Utiliser un gestionnaire de fichiers standard</string>
     <string name="use_standard_file_manager_descr">sinon sélectionner le fichier .opml à importer - uniquement depuis le dossier feedex (via le dialogue interne)</string>
     <string name="settings">Paramètres</string>

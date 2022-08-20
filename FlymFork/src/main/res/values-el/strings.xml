@@ -135,7 +135,6 @@
     <string name="question_delete_filter">Θέλετε πραγματικά να διαγράψετε αυτό το φίλτρο;</string>
     <string name="add_group_title">Επιλογή ονόματος ομάδας</string>
     <string name="edit_group_title">Επεξεργασία ονόματος ομάδας</string>
-    <string name="message_exported_to">Εξαγωγή στο %s</string>
     <string name="to_group_title">Ενέργεια μετακίνησης Ροής</string>
     <string name="to_group_message">Θέλετε να τοποθετήσετε αυτή τη ροή μέσα ή έξω από αυτή την ομάδα;</string>
     <string name="to_group_above">Έξω από την ομάδα</string>
@@ -234,7 +233,6 @@
     <string name="show_read_article_count">Εμφάνιση αριθμού αναγνωσμένων άρθρων</string>
     <string name="show_read_article_count_descr">Στη λίστα Ροών</string>
     <string name="show_group_entrries_count">Αρίθμηση άρθρων στην ομάδα</string>
-    <string name="show_group_entries_count_descr">μπορεί να μειώσει την απόδοση</string>
     <string name="textColorRead">Χρώμα κειμένου διαβασμένων</string>
     <string name="textColorRead_descr">Το χρώμα των άρθρων που έχουν διαβαστεί</string>
     <string name="settings_color_text_read_sample_short">Διαβασμένα</string>
@@ -381,7 +379,6 @@
     <string name="autobackup_interval">Χρόνος ανάμεσα στη δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
     <string name="autobackup_interval_descr">Πόσο συχνά δημιουργείται αρχείο με αντίγραφο ασφαλείας των Ροών σας και των άρθρων</string>
     <string name="create_auto_backup">Δημιουργία αυτόματων αντιγράφων ασφαλείας</string>
-    <string name="auto_backup_opml_file_created">Δημιουργήθηκε αυτόματα ένα αρχείο opml αντίγραφου ασφαλείας στο:</string>
     <string name="use_standard_file_manager">Χρήση του προεπιλεγμένου προγράμματος περιήγησης αρχείων</string>
     <string name="use_standard_file_manager_descr">αλλιώς επιλέξτε αρχείο opml για εισαγωγή -  μόνο από τον φάκελο feedex (μέσω του εσωτερικού πλαίσιου διαλόγου)</string>
     <string name="settings">Ρυθμίσεις</string>

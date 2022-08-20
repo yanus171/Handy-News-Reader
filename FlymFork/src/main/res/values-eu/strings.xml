@@ -132,7 +132,6 @@
     <string name="question_delete_filter">Ziur iragazki hau ezabatu nahi duzula?</string>
     <string name="add_group_title">Hautatu taldearen izena</string>
     <string name="edit_group_title">Editatu taldearen izena</string>
-    <string name="message_exported_to">%s helbidera esportatuta.</string>
     <string name="to_group_title">Jario mugitze ekintza</string>
     <string name="to_group_message">Jario hau talde honen barruan ala kanpoan jarri nahi duzu?</string>
     <string name="to_group_above">Taldearen kanpoan</string>
@@ -231,7 +230,6 @@
     <string name="show_read_article_count">Bistaratu irakurritako artikulu kopurua</string>
     <string name="show_read_article_count_descr">Jarioen zerrendan</string>
     <string name="show_group_entrries_count">Taldearen artikulu kopurua</string>
-    <string name="show_group_entries_count_descr">errendimendua gutxiagotu dezake</string>
     <string name="textColorRead">Irakurri artikuluak</string>
     <string name="textColorRead_descr">Irakurritako artikuluen kolorea</string>
     <string name="settings_color_text_read_sample_short">Irakurri</string>
@@ -369,7 +367,6 @@
     <string name="autobackup_interval">Babes-kopia automatikoaren tartea</string>
     <string name="autobackup_interval_descr">Jario eta artikuluen babes-kopia sortzeko maiztasuna</string>
     <string name="create_auto_backup">Sortu babes-kopia automatikoa</string>
-    <string name="auto_backup_opml_file_created">.opml fitxategiaren babes-kopia automatikoa sortuta:</string>
     <string name="use_standard_file_manager">Erabili fitxategi kudeatzaile estandarra</string>
     <string name="use_standard_file_manager_descr">bestela hautatu .ompl fitxategi bat inportatzeko, feedex karpetatik kanpo bakarrik (barne dialogoa)</string>
     <string name="settings">Ezarpenak</string>

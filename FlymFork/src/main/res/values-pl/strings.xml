@@ -133,7 +133,6 @@
     <string name="question_delete_filter">Czy na pewno chcesz usunąć ten filtr?</string>
     <string name="add_group_title">Wprowadź nazwę grupy</string>
     <string name="edit_group_title">Edytuj nazwę grupy</string>
-    <string name="message_exported_to">Wyeksportowano do %s</string>
     <string name="to_group_title">Przenieś kanał</string>
     <string name="to_group_message">Chcesz umieścić ten kanał wewnątrz wybranej grupy, czy poza nią?</string>
     <string name="to_group_above">Poza grupą</string>
@@ -235,7 +234,6 @@
     <string name="show_read_article_count">Pokaż licznik przeczytanych artykułów</string>
     <string name="show_read_article_count_descr">Na liście źródeł</string>
     <string name="show_group_entrries_count">Licznik artykułów w grupie</string>
-    <string name="show_group_entries_count_descr">może ograniczyć wydajność</string>
     <string name="textColorRead">Kolor przeczytanych artykułów</string>
     <string name="textColorRead_descr">Tekst oraz tło</string>
     <string name="settings_color_text_read_sample_short">Przeczytane</string>
@@ -386,7 +384,6 @@
     <string name="autobackup_interval">Przedział czasowy automatycznej kopii zapasowej</string>
     <string name="autobackup_interval_descr">Jak często będzie wykonywany plik kopii zapasowej</string>
     <string name="create_auto_backup">Utwórz kopię zapasową teraz</string>
-    <string name="auto_backup_opml_file_created">Kopia zapasowa utworzona w pliku .opml:</string>
     <string name="use_standard_file_manager">Użyj standardowego menedżera plików</string>
     <string name="use_standard_file_manager_descr">w przeciwnym razie wybierz plik .opml do importu - tylko z folderu feedex (poprzez wbudowane okno dialogowe). Nieaktywne od Androida 10</string>
     <string name="settings">Ustawienia</string>

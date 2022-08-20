@@ -76,7 +76,6 @@
     <string name="question_delete_filter">Voleu eliminar aquest filtre?</string>
     <string name="add_group_title">Sel·lecció del nom del grup</string>
     <string name="edit_group_title">Edició del nom del grup</string>
-    <string name="message_exported_to">S\'ha exportat a %s.</string>
     <string name="to_group_title">Relocalització del canal</string>
     <string name="to_group_message">Podeu posar el canal dins del grup o bé a sobre d\'aquest. Què voleu fer?</string>
     <string name="to_group_above">Situa a sobre del grup</string>

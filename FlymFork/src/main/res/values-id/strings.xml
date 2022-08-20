@@ -139,7 +139,6 @@ maksimum per umpan<br/>
     <string name="question_delete_filter">Apakah Anda yakin ingin menghapus filter ini?</string>
     <string name="add_group_title">Pilih nama grup</string>
     <string name="edit_group_title">Sunting nama grup</string>
-    <string name="message_exported_to">Diekspor ke %s</string>
     <string name="to_group_title">Tindakan pindah umpan</string>
     <string name="to_group_message">Apakah Anda ingin memindahkan umpan ini ke dalam atau ke luar grup ini?</string>
     <string name="to_group_above">Ke luar grup</string>
@@ -238,7 +237,6 @@ maksimum per umpan<br/>
     <string name="show_read_article_count">Tampilkan jumlah artikel dibaca</string>
     <string name="show_read_article_count_descr">Di daftar umpan</string>
     <string name="show_group_entrries_count">Jumlah grup artikel</string>
-    <string name="show_group_entries_count_descr">bisa mengurangi performa</string>
     <string name="textColorRead">Warna baca artikel</string>
     <string name="textColorRead_descr">Teks dan latar</string>
     <string name="settings_color_text_read_sample_short">Baca</string>
@@ -385,7 +383,6 @@ maksimum per umpan<br/>
     <string name="autobackup_interval">Interval pencadangan otomatis</string>
     <string name="autobackup_interval_descr">Frekuensi pembuatan berkas cadangan umpan dan artikel</string>
     <string name="create_auto_backup">Buat cadangan otomatis</string>
-    <string name="auto_backup_opml_file_created">Berkas cadangan .opml otomatis dibuat:</string>
     <string name="use_standard_file_manager">Pakai manager berkas standar</string>
     <string name="use_standard_file_manager_descr">kalau tidak pilih berkas .opml untuk diimpor  -  hanya yang di luar folder feedex (lewat dialog internal)</string>
     <string name="settings">Setelan</string>

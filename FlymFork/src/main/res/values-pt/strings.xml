@@ -135,7 +135,6 @@
     <string name="question_delete_filter">Você realmente deseja excluir este filtro?</string>
     <string name="add_group_title">Selecione o nome do grupo</string>
     <string name="edit_group_title">Edite o nome do grupo</string>
-    <string name="message_exported_to">Exportado para %s.</string>
     <string name="to_group_title">Ação de mover feed</string>
     <string name="to_group_message">Gostaria de colocar este feed dentro ou fora deste grupo?</string>
     <string name="to_group_above">Fora do grupo</string>
@@ -234,7 +233,6 @@
     <string name="show_read_article_count">Mostrar contador de artigos lidos</string>
     <string name="show_read_article_count_descr">Na lista de feed</string>
     <string name="show_group_entrries_count">Contagem de artigos do grupo</string>
-    <string name="show_group_entries_count_descr">pode reduzir o desempenho</string>
     <string name="textColorRead">Ler artigos</string>
     <string name="textColorRead_descr">Ler texto e cor de fundo dos artigos</string>
     <string name="settings_color_text_read_sample_short">Ler</string>
@@ -381,7 +379,6 @@
     <string name="autobackup_interval">Intervalo de backup automático</string>
     <string name="autobackup_interval_descr">Com que frequência um arquivo de backup dos feeds e artigos será criado</string>
     <string name="create_auto_backup">Criar backup automático</string>
-    <string name="auto_backup_opml_file_created">Arquivo .opml de backup automático foi criado:</string>
     <string name="use_standard_file_manager">Usar um gerenciador de arquivos padrão</string>
     <string name="use_standard_file_manager_descr">caso contrário, selecione o arquivo .opml para importar - a partir da pasta feedex somente (via diálogo interno)</string>
     <string name="settings">Configurações</string>
