@@ -115,7 +115,6 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -278,7 +277,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             //final View.OnClickListener openArticle = view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), "");
 
             holder.openArticle.setTextColor( Theme.GetTextColorReadInt() );
-            holder.openArticle.setOnClickListener(view12 -> OpenArticle(view12.getContext(), holder.entryID, holder.isTextShown(), holder.getSearchText()));
+            holder.openArticle.setOnClickListener(view12 -> OpenArticle( holder ));
 
             if ( Build.VERSION.SDK_INT >= 16 ) {
                 holder.showMore.setTextColor(Theme.GetTextColorReadInt());
@@ -288,7 +287,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     PrefUtils.putLong( STATE_TEXT_LINE_COUNT_ENTRY_ID, holder.entryID );
                 });
                 holder.showMore.getViewTreeObserver().addOnGlobalLayoutListener( () -> {
-                    final boolean visible = holder.isTextShown() && HasMoreText( holder );
+                    final boolean visible = isTextShown(holder) && HasMoreText(holder );
                     holder.showMore.setVisibility( visible ? View.VISIBLE : View.GONE );
                     if ( visible ) {
                         final int count = holder.textTextView.getLineCount() / MAX_LINES_STEP;
@@ -426,7 +425,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 else if (mEntryActivityStartingStatus == 0 &&
                                     ( isViewUnderTouch( event, holder.titleTextView ) || isViewUnderTouch( event, holder.mainImgView )) ) {
                                     mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
-                                    OpenArticle(v.getContext(), holder.entryID, holder.isTextShown(), "");
+                                    OpenArticle( holder );
                                 }
                             } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
                                 toggleReadState(holder, view) ;
@@ -507,7 +506,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.entryID = cursor.getLong(mIdPos);
         holder.entryLink = cursor.getString(mUrlPos);
 
-        final int lineCount = holder.isTextShown() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt( STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
+        final int lineCount = holder.isTextExpanded() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt(STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
         holder.textTextView.setMaxLines( lineCount );
 
         holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || EntryColumns.IsRead(cursor, mIsReadPos);
@@ -529,7 +528,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
-        final boolean isTextShown = mShowEntryText || holder.isTextShown();
+        final boolean isTextShown = isTextShown(holder);
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
             holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
@@ -544,7 +543,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         String feedName = cursor.getString(mFeedNamePos);
 
         holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
-        holder.collapsedBtn.setImageResource( holder.isTextShown() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
+        holder.collapsedBtn.setImageResource( holder.isTextExpanded() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         SetFont(holder.titleTextView, 1 );
         holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
         if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
@@ -627,7 +626,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
         final boolean showTextPreview = PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
-            cursor.getString(mAbstractPos) != null && !holder.isTextShown();
+            cursor.getString(mAbstractPos) != null && !isTextShown( holder );
         holder.textPreviewTextView.setVisibility( showTextPreview ? View.VISIBLE : View.GONE );
         if ( showTextPreview ) {
             String s = getBoldText(GetHtmlAligned(cursor.getString(mAbstractPos))).toString();
@@ -646,7 +645,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.textPreviewTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OpenArticle(holder.textPreviewTextView.getContext(), holder.entryID, false, "");
+                        OpenArticle( holder );
                     }
                 });
             } else
@@ -690,7 +689,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.showMore.setVisibility( View.GONE );
         if ( isTextShown ) {
             holder.openArticle.setVisibility(View.VISIBLE );
-            holder.collapseBtnBottom.setVisibility(View.VISIBLE );
+            if ( !mShowEntryText )
+                holder.collapseBtnBottom.setVisibility( View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
@@ -754,6 +754,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
             }
         }
+    }
+
+    private boolean isTextShown(ViewHolder holder) {
+        return mShowEntryText || holder.isTextExpanded();
     }
 
     private boolean isInMarkAsReadList(String entryUri)  {
@@ -853,13 +857,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return temp.contains( "<img" );
     }
 
-    private void OpenArticle(Context context, long entryID, boolean isExpanded, String searchText ) {
-        context.startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, entryID))
-                                   .putExtra( "SCROLL_TEXT", searchText )
+    private void OpenArticle( ViewHolder holder ) {
+        holder.textTextView.getContext().startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, holder.entryID))
+                                   .putExtra( "SCROLL_TEXT", holder.getSearchText() )
                                    .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
                                    .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
-        if( isExpanded ) {
-            EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(entryID)));
+        if( isTextShown( holder )) {
+            EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         }
     }
@@ -1051,10 +1055,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 //        holder.starImgView.setVisibility( holder.isFavorite ? View.VISIBLE : View.GONE );
     }
     private void UpdateReadView(ViewHolder holder, View parentView) {
-        if ( holder.isTextShown() )
+        if ( holder.isTextExpanded() )
             holder.isRead = false;
         {
-            boolean v = PrefUtils.IsShowReadCheckbox() && !mShowEntryText && !holder.isTextShown();
+            boolean v = PrefUtils.IsShowReadCheckbox() && !isTextShown( holder );
             holder.readImgView.setVisibility( v ? View.VISIBLE : View.GONE );
             if ( v )
                 holder.readImgView.setImageResource(holder.isRead ? R.drawable.ic_indicator_read : R.drawable.ic_indicator_unread);
@@ -1286,12 +1290,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isRead;
         boolean isFavorite;
 
-        boolean isTextShown() {
+        boolean isTextExpanded() {
             return entryID == PrefUtils.getLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         }
         
         private String getSearchText() {
-            if ( !isTextShown() || Build.VERSION.SDK_INT < 16 )
+            if ( !isTextExpanded() || Build.VERSION.SDK_INT < 16 )
                 return "";
             final TextView view = textTextView;
             @SuppressLint("NewApi") final int count = Math.min(view.getMaxLines(), view.getLineCount() );

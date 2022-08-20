@@ -696,6 +696,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_edit_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_full_screen ).setChecked(HomeActivity.GetIsStatusBarEntryListHidden() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!HomeActivity.GetIsActionBarEntryListHidden() );
+        menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
 
     }
     @SuppressLint("Range")
