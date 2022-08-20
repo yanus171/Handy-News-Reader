@@ -132,12 +132,12 @@
     <string name="feed_search">Feed搜索</string>
     <string name="web_page_search_duckduckgo">网页搜索 (Duck Duck Go)</string>
     <string name="select_file">选择一个文件 (从 feedx 文件夹 从存储额外设置)</string>
+    <string name="select_file_from_subfolder">选择 Downloads/handy_news_reader 文件夹文件：</string>
     <string name="question_delete_feed">您真的想要删除该订阅源吗？</string>
     <string name="question_delete_group">您真的想要删除该组及其所有订阅源吗?</string>
     <string name="question_delete_filter">您真的想要删除该过滤器吗？</string>
     <string name="add_group_title">选择组名</string>
     <string name="edit_group_title">编辑组名</string>
-    <string name="message_exported_to">已导出为 %s</string>
     <string name="to_group_title">订阅源移动操作</string>
     <string name="to_group_message">您想要将此订阅源放入或放置在此群组之外吗？</string>
     <string name="to_group_above">组外</string>
@@ -240,7 +240,6 @@
     <string name="show_read_article_count">显示已读文章数量</string>
     <string name="show_read_article_count_descr">在订阅源列表中</string>
     <string name="show_group_entrries_count">组文章计数</string>
-    <string name="show_group_entries_count_descr">可能会影响性能</string>
     <string name="textColorRead">阅读文章</string>
     <string name="textColorRead_descr">阅读文章文本和背景颜色</string>
     <string name="settings_color_text_read_sample_short">阅读</string>
@@ -392,7 +391,6 @@
     <string name="autobackup_interval">自动备份间隔</string>
     <string name="autobackup_interval_descr">创建备份文件的频率</string>
     <string name="create_auto_backup">创建备份</string>
-    <string name="auto_backup_opml_file_created">自动备份已创建的.opml 文件：</string>
     <string name="use_standard_file_manager">使用标准文件管理器</string>
     <string name="use_standard_file_manager_descr">否则只能选择 .opml 文件导入到feedex文件夹之外(通过内部对话)</string>
     <string name="settings">设置</string>
@@ -589,6 +587,7 @@
     <string name="menu_edit_feed">编辑订阅源</string>
     <string name="addCustomFont">添加自定义字体 …</string>
     <string name="fileCopied">文件 %s 已复制</string>
+    <string name="fileCopiedToDownloadsFolder">文件 %s 已复制到下载文件夹的 %s 子文件夹</string>
     <string name="unableToCopyFile">无法复制文件 %s</string>
     <string name="label_setup_by_tap_on_date">轻按日期设置标签</string>
     <string name="label_setup_by_tap_on_date_descr">文章列表中的作者和 url</string>
@@ -654,4 +653,5 @@
     <string name="connection_timeout">连接超时</string>
     <string name="connection_timeout_summary">单位毫秒。 我们应该等待互联网连接多长时间</string>
     <string name="settings_category_connection">连接</string>
+    <string name="couldNotCreateDownloadsSubfolder">无法在下载文件夹中创建子文件夹</string>
 </resources>

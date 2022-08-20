@@ -80,7 +80,6 @@
     <string name="question_delete_filter">정말로 이 필터를 삭제하시겠습니까?</string>
     <string name="add_group_title">그룹 이름 선택</string>
     <string name="edit_group_title">그룹 이름 편집</string>
-    <string name="message_exported_to">%s에 내보냄</string>
     <string name="to_group_title">피드 옮기기 동작</string>
     <string name="to_group_message">피드를 그룹 안에 넣을 수도 있고 위에 놓을 수도 있습니다. 어떻게 하시겠습니까?</string>
     <string name="to_group_above">그룹 위</string>

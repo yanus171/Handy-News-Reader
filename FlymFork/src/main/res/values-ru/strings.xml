@@ -139,7 +139,6 @@
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
     <string name="add_group_title">Выберите название группы</string>
     <string name="edit_group_title">Редактировать название группы</string>
-    <string name="message_exported_to">Экспортировано в %s.</string>
     <string name="to_group_title">Перенос ленты</string>
     <string name="to_group_message">Вы можете поместить ленту внутрь этой группы, либо сверху от нее. Что вы хотите сделать?</string>
     <string name="to_group_above">Над группой</string>
@@ -242,7 +241,6 @@
     <string name="show_read_article_count">Число прочитанных статей</string>
     <string name="show_read_article_count_descr">в списке лент</string>
     <string name="show_group_entrries_count">Число статей в группах</string>
-    <string name="show_group_entries_count_descr">Может снизить быстродействие</string>
     <string name="textColorRead">Цвет прочитанных статей</string>
     <string name="textColorRead_descr">Цвет прочитанных</string>
     <string name="settings_color_text_read_sample_short">Прочитанные</string>
@@ -394,7 +392,6 @@
     <string name="autobackup_interval">Интервал резервного копирования</string>
     <string name="autobackup_interval_descr">Как часто будет создаваться файл резервной копии лент и статьей</string>
     <string name="create_auto_backup">Создать автоматическую резервную копию</string>
-    <string name="auto_backup_opml_file_created">Создан файл автоматической резервной копии: </string>
     <string name="use_standard_file_manager">Стандартный файловый менеджер</string>
     <string name="use_standard_file_manager_descr">иначе выбирать opml файл для импорта с помощью встроеннного диалога из папки приложения на карте памяти</string>
     <string name="settings">Настройки</string>
@@ -592,6 +589,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_edit_feed">Редактировать ленту</string>
     <string name="addCustomFont">Добавить свой шрифт …</string>
     <string name="fileCopied">Файл %s скопирован</string>
+    <string name="fileCopiedToDownloadsFolder">Файл %s скопирован в подпапку %s папки Загрузки</string>
     <string name="unableToCopyFile">Невозможно скопировать файл %s</string>
     <string name="label_setup_by_tap_on_date">Настройка ярлыков нажатием</string>
     <string name="label_setup_by_tap_on_date_descr">На дату, автора и адреса в списке статей</string>
@@ -659,4 +657,5 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Установите этот флажок, если у вас возникают проблемы с сертификатом при загрузке веб-контента. !!! ВНИМАНИЕ !!! Это может сделать ваше устройство небезопасным :(</string>
     <string name="connection_timeout">Таймаут соединения</string>
     <string name="settings_category_connection">Подключение</string>
+    <string name="couldNotCreateDownloadsSubfolder">Не удалось создать подпапку в папке Загрузки</string>
 </resources>

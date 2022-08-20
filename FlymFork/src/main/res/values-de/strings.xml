@@ -129,12 +129,12 @@
     <string name="feed_search">Feed-Suche</string>
     <string name="web_page_search_duckduckgo">Webseitensuche (DuckDuckGo)</string>
     <string name="select_file">Datei auswählen (Feedex-Ordner)</string>
+    <string name="select_file_from_subfolder">Datei aus Downloads/handy_news_reader-Ordner auswählen:</string>
     <string name="question_delete_feed">Möchten Sie diesen Feed wirklich löschen?</string>
     <string name="question_delete_group">Möchten Sie diese Gruppe mit allen Feeds wirklich löschen?</string>
     <string name="question_delete_filter">Möchten Sie diesen Filter wirklich löschen?</string>
     <string name="add_group_title">Gruppenname wählen</string>
     <string name="edit_group_title">Gruppenname bearbeiten</string>
-    <string name="message_exported_to">Nach %s exportiert.</string>
     <string name="to_group_title">Feed verschieben</string>
     <string name="to_group_message">Möchten Sie den Feed in die Gruppe verschieben oder außerhalb der Gruppe positionieren?</string>
     <string name="to_group_above">Außerhalb der Gruppe</string>
@@ -151,8 +151,8 @@
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_mark_all_as_unread">Alles als „Ungelesen” kennzeichnen</string>
-    <string name="menu_mark_upper_as_read">Alle oberhalb als gelesen kennzeichnen</string>
-    <string name="menu_mark_lower_as_read">Alle unterhalb als „Gelesen” kennzeichnen</string>
+    <string name="menu_mark_upper_as_read">Darüber als „Gelesen” kennzeichnen</string>
+    <string name="menu_mark_lower_as_read">Darunter als „Gelesen” kennzeichnen</string>
     <string name="menu_full_screen">Vollbild</string>
     <string name="menu_actionbar_visible">Aktionsleiste</string>
     <string name="menu_font_bold">Fettschrift</string>
@@ -237,7 +237,6 @@
     <string name="show_read_article_count">Anzahl der gelesenen Artikel zeigen</string>
     <string name="show_read_article_count_descr">In der Feed-Liste die Anzahl der gelesenen Artikel anzeigen</string>
     <string name="show_group_entrries_count">Anzahl ungelesener Artikel je Gruppe</string>
-    <string name="show_group_entries_count_descr">Zeigt die Anzahl ungelesener Artikel der gesamten Gruppe an. Die kann die Performance beeinträchtigen.</string>
     <string name="textColorRead">Textfarbe gelesener Artikel</string>
     <string name="textColorRead_descr">Text- und Hintergrundfarbe gelesener Artikel in der Artikelliste</string>
     <string name="settings_color_text_read_sample_short">Text</string>
@@ -390,9 +389,8 @@
     <string name="autobackup_interval">Auto-Backup-Intervall</string>
     <string name="autobackup_interval_descr">Einstellung wie oft ein automatisches Backup der Feeds und Artikel erstellt wird</string>
     <string name="create_auto_backup">Backup ausführen</string>
-    <string name="auto_backup_opml_file_created">Automatisches Backup erstellt: </string>
     <string name="use_standard_file_manager">Standard-Dateimanager verwenden</string>
-    <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog)</string>
+    <string name="use_standard_file_manager_descr">andernfalls die zu importierende OPML-Datei auswählen - nur außerhalb des Feedex-Ordners (über den internen Dialog). Ab Android 10 nicht mehr möglich</string>
     <string name="settings">Einstellungen</string>
     <string name="entry_go_prev">Vorheriger Artikel</string>
     <string name="entry_go_next">Nächster Artikel</string>
@@ -565,6 +563,7 @@
     <string name="setting_edit_feed_force_portrait_orientation_summary">Auf dem Feed-Bearbeitungsbildschirm Ausrichtung im Hochformat erzwingen - prüfen Sie, ob das Gerät ein schmales Display hat</string>
     <string name="name">Name</string>
     <string name="remove_label_confirmation">"Kategorie entfernen? "</string>
+    <string name="setting_label_list">Liste der Kategorien</string>
     <string name="tag_list">Liste der Kategorien</string>
     <string name="menu_edit_labels">Kategorien</string>
     <string name="manage_labels">Kategorien verwalten</string>
@@ -586,6 +585,7 @@
     <string name="menu_edit_feed">Feed bearbeiten</string>
     <string name="addCustomFont">Benutzerdefinierte Schriftart hinzufügen …</string>
     <string name="fileCopied">Datei „%s” kopiert</string>
+    <string name="fileCopiedToDownloadsFolder">Datei „%s” in den Unterordner „%s” von Downloads kopiert</string>
     <string name="unableToCopyFile">Kopieren der Datei „%s” fehlgeschlagen</string>
     <string name="label_setup_by_tap_on_date">Einrichtung der Kategorien durch Tippen auf das Datum</string>
     <string name="label_setup_by_tap_on_date_descr">Autor und URL in der Artikelliste</string>
@@ -628,11 +628,13 @@
     <string name="daysShort">T</string>
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">vor</string>
+    <string name="error_add_customm_font">Hinzufügen einer benutzerdefinierten Schriftart fehlgeschlagen</string>
     <string name="article_text_footer_show_remaining">Verbleibend</string>
     <string name="article_text_footer_show_remaining_description">"Zeigt die noch verbleibende Seitenzahl, um bis zum Ende zu blättern "</string>
     <string name="open_image">Bild öffnen</string>
     <string name="copy_to_downloads">In Downloads kopieren</string>
     <string name="sendErrorConfirm">Während des Vorgangs ist ein Fehler aufgetreten. Möchten Sie diesen an den Entwickler senden?</string>
+    <string name="wrongFontFileSelected">"Schriftartendatei sollte mit ttf enden "</string>
     <string name="show_article_text_preview">Textvorschau</string>
     <string name="show_article_text_preview_descr">Einige Textzeilen des Artikelanfangs anzeigen</string>
     <string name="show_more">Mehr anzeigen …</string>
@@ -642,7 +644,10 @@
     <string name="open_image_tap_action_descr">Die App zur Bildanzeige, die direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="open_link_in_browser_tap_action_descr">Der Browser, der direkt verwendet wird, um keine Zeit mit der Auswahl einer App zu verschwenden</string>
     <string name="not_selected">Nicht ausgewählt</string>
+    <string name="setting_ignore_all_ssl_errors">Alle SSL-Fehler ignorieren</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Auswählen, wenn es zu Zertifikatproblemen beim Laden von Webinhalten kommt. !!! ACHTUNG !!! Das kann Ihr Gerät unsicher machen :(</string>
     <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
+    <string name="couldNotCreateDownloadsSubfolder">Unterordner in Downloads konnte nicht erstellt werden</string>
 </resources>

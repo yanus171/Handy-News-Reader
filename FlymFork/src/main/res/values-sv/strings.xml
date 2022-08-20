@@ -81,7 +81,6 @@
     <string name="question_delete_filter">Vill du radera denna regel?</string>
     <string name="add_group_title">Ny grupp</string>
     <string name="edit_group_title">Redigera gruppens namn</string>
-    <string name="message_exported_to">Exporterad till %s.</string>
     <string name="to_group_title">Flytta feed</string>
     <string name="to_group_message">Du kan flytta denna feed varken in till gruppen eller utanför gruppen. Vad vill du göra?</string>
     <string name="to_group_above">Utanför gruppen</string>
