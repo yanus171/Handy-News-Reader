@@ -235,6 +235,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final String feedId = cursor.getString(mFeedIdPos);
         //final long entryID = cursor.getLong(mIdPos);
         final String feedTitle = cursor.getString(mFeedTitlePos);
+        final boolean isExpandArticleText = PrefUtils.getBoolean( "settings_show_article_text_expand_controls", false );
 
         if (view.getTag(R.id.holder) == null) {
             final ViewHolder holder = new ViewHolder();
@@ -298,7 +299,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 } );
             }
 
-            final View.OnClickListener collapseListener = view13 -> {
+            final View.OnClickListener collapseListener = isExpandArticleText ? view13 -> {
                 final long shownId = PrefUtils.getLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                 holder.textTextView.setMaxLines( MAX_LINES_STEP );
                 if (shownId == holder.entryID) {
@@ -311,7 +312,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     mNeedScrollToTopExpandedArticle = true;
                 }
                 MainApplication.getContext().getContentResolver().notifyChange(mUri, null );
-            };
+            } : null;
 
             holder.collapseBtnBottom.setOnClickListener( collapseListener );
 
@@ -417,13 +418,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                                 if ( isViewUnderTouch( event, holder.urlTextView ) || isViewUnderTouch( event, holder.dateTextView ) ||  isViewUnderTouch( event, holder.labelTextView ) )
                                     manageLabels.onClick( view );
-                                else if ( isViewUnderTouch( event, holder.collapsedBtn ) ||
-                                    isViewUnderTouch( event, holder.collapseBtnBottom ) ||
-                                    isViewUnderTouch( event, holder.categoriesTextView ) ||
-                                    isViewUnderTouch( event, holder.layoutControls ) )
+                                else if ( collapseListener != null &&
+                                    ( isViewUnderTouch( event, holder.collapsedBtn ) ||
+                                      isViewUnderTouch( event, holder.collapseBtnBottom ) ||
+                                      isViewUnderTouch( event, holder.categoriesTextView ) ||
+                                      isViewUnderTouch( event, holder.layoutControls ) ) )
                                     collapseListener.onClick( view );
                                 else if (mEntryActivityStartingStatus == 0 &&
-                                    ( isViewUnderTouch( event, holder.titleTextView ) || isViewUnderTouch( event, holder.mainImgView )) ) {
+                                    ( collapseListener == null || isViewUnderTouch( event, holder.titleTextView ) || isViewUnderTouch( event, holder.mainImgView )) ) {
                                     mEntryActivityStartingStatus = Status().Start(R.string.article_opening, true);
                                     OpenArticle( holder );
                                 }
@@ -431,9 +433,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 toggleReadState(holder, view) ;
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
                                 toggleFavoriteState(view);
-                        } else {
+                        } //else
                             //Dog.v("onTouch ACTION_CANCEL");
-                        }
                         paddingX = 0;
                         paddingY = 0;
                         initialx = 0;
@@ -528,7 +529,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
-        final boolean isTextShown = isTextShown(holder);
+        final boolean isTextShown = isExpandArticleText && isTextShown(holder);
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
         if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
             holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
@@ -542,7 +543,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         String feedName = cursor.getString(mFeedNamePos);
 
-        holder.collapsedBtn.setVisibility( mShowEntryText ? View.GONE : View.VISIBLE );
+        holder.collapsedBtn.setVisibility( mShowEntryText || !isExpandArticleText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextExpanded() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         SetFont(holder.titleTextView, 1 );
         holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );

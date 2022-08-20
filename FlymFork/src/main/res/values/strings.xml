@@ -680,5 +680,7 @@
     <string name="connection_timeout_summary">In mills. How long should we wait for internet connection</string>
     <string name="settings_category_connection">Connection</string>
     <string name="couldNotCreateDownloadsSubfolder">Could not create subfolder in Downloads</string>
+    <string name="article_text_expand_controls">Article text expanding</string>
+    <string name="article_text_expand_controls_descr">An ability to expand article text in article list. If checked all tap actions except on article title expand or collapse article text instead of opening article in separate window</string>
 
 </resources>

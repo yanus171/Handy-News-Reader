@@ -134,6 +134,12 @@
             android:title="@string/show_article_text_preview"
             android:summary="@string/show_article_text_preview_descr"
             />
+        <CheckBoxPreference
+            android:key="settings_show_article_text_expand_controls"
+            android:defaultValue="false"
+            android:title="@string/article_text_expand_controls"
+            android:summary="@string/article_text_expand_controls_descr"
+            />
 
         <CheckBoxPreference
             android:defaultValue="false"
