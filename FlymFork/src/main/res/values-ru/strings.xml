@@ -658,4 +658,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="connection_timeout">Таймаут соединения</string>
     <string name="settings_category_connection">Подключение</string>
     <string name="couldNotCreateDownloadsSubfolder">Не удалось создать подпапку в папке Загрузки</string>
+    <string name="article_text_expand_controls">Развернуть текст статьи</string>
+    <string name="article_text_expand_controls_descr">Возможность развернуть текст статьи в списке. Если флажок установлен, нажатие в любое место статьи, кроме ее заголовка, разворачивают или сворачивают текст статьи вместо открытия статьи в отдельном окне</string>
 </resources>
