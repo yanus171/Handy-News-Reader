@@ -650,4 +650,5 @@
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
     <string name="couldNotCreateDownloadsSubfolder">Unterordner in Downloads konnte nicht erstellt werden</string>
+    <string name="article_text_expand_controls">Artikeltext erweitern</string>
 </resources>
