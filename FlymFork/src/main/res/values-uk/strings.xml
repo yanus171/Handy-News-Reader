@@ -656,4 +656,5 @@
     <string name="connection_timeout_summary">В мілісекундах. Як довго ми повинні чекати підключення до Інтернету</string>
     <string name="settings_category_connection">З\'єднання</string>
     <string name="couldNotCreateDownloadsSubfolder">Не вдалося створити теку в теці Завантаження</string>
+    <string name="article_text_expand_controls">Розгорнути текст статті</string>
 </resources>
