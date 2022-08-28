@@ -19,20 +19,19 @@
 
 package ru.yanus171.feedexfork.utils;
 
-import androidx.annotation.NonNull;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.jsoup.safety.Whitelist;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -51,7 +50,6 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
-import static ru.yanus171.feedexfork.utils.RegexUtils.createMatcherWithTimeout;
 
 public class HtmlUtils {
 
@@ -209,6 +207,7 @@ public class HtmlUtils {
                                           final ArrayList<Uri> externalImageList,
                                           final int maxImageDownloadCount) {
         final int status = Status().Start("Reading images", true); try {
+
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
             Timer timer = new Timer( "replaceImageURLs" );
             if (!TextUtils.isEmpty(content)) {
@@ -266,18 +265,15 @@ public class HtmlUtils {
                     new Thread(() -> FetcherService.downloadEntryImages(feedId, entryId, entryLink, imagesToDl)).start();
 
                 if ( entryId != -1 && !firstImageUrl.isEmpty() ) {
-                    String finalFirstImageUrl = firstImageUrl;
-                    new Thread(() -> {
-                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                        Uri uri = FeedData.EntryColumns.CONTENT_URI(entryId);
-                        Cursor cur = cr.query(uri, new String[]{_ID}, FeedData.EntryColumns.IMAGE_URL + Constants.DB_IS_NOT_NULL + Constants.DB_AND + FeedData.EntryColumns.IMAGE_URL + "<> ''" , null, null);
-                        if (!cur.moveToFirst()) {
-                            ContentValues values = new ContentValues();
-                            values.put(FeedData.EntryColumns.IMAGE_URL, finalFirstImageUrl);
-                            cr.update(uri, values, null, null);
-                        }
-                        cur.close();
-                    }).start();
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    Uri uri = FeedData.EntryColumns.CONTENT_URI(entryId);
+                    Cursor cur = cr.query(uri, new String[]{_ID}, FeedData.EntryColumns.IMAGE_URL + Constants.DB_IS_NOT_NULL + Constants.DB_AND + FeedData.EntryColumns.IMAGE_URL + "<> ''" , null, null);
+                    if (!cur.moveToFirst()) {
+                        ContentValues values = new ContentValues();
+                        values.put(FeedData.EntryColumns.IMAGE_URL, firstImageUrl);
+                        cr.update(uri, values, null, null);
+                    }
+                    cur.close();
                 }
 
             }
