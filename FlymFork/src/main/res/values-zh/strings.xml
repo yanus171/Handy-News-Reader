@@ -625,6 +625,7 @@
     <string name="oneMinute">分钟</string>
     <string name="twoFourMinute">分钟</string>
     <string name="fiveMinute">分钟</string>
+    <string name="yearsShort">年</string>
     <string name="monthsShort">个月</string>
     <string name="weeksShort">周</string>
     <string name="daysShort">天</string>
