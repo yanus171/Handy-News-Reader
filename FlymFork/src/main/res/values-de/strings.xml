@@ -624,6 +624,7 @@
     <string name="oneMinute">Minute</string>
     <string name="twoFourMinute">Minuten</string>
     <string name="fiveMinute">Minuten</string>
+    <string name="yearsShort">Jahre</string>
     <string name="monthsShort">Monate</string>
     <string name="daysShort">T</string>
     <string name="timeIntervalInFuture">in</string>
