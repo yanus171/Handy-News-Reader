@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element
 import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
+import ru.yanus171.feedexfork.adapter.DrawerAdapter
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
 import ru.yanus171.feedexfork.service.FetcherService
@@ -26,8 +27,8 @@ const val ONE_WEB_PAGE_DATE_CLASS_NAME = "oneWebPageDateClassName"
 const val ONE_WEB_PAGE_AUTHOR_CLASS_NAME = "oneWebPageAuthorClassName"
 const val ONE_WEB_PAGE_URL_CLASS_NAME = "oneWebPageUrlClassName"
 const val ONE_WEB_PAGE_ARTICLE_CLASS_NAME = "oneWebPageArticleClassName"
-val TITLE_PATTERN = Pattern.compile( "<[^<,^/]+?>([^<]{10,})<[^<]+>" )
-val TITLE_PATTERN_SENTENCE = Pattern.compile( ".+?\\.\\s" )
+val TITLE_PATTERN = Pattern.compile("<[^<,^/]+?>([^<]{10,})<[^<]+>")
+val TITLE_PATTERN_SENTENCE = Pattern.compile(".+?\\.\\s")
 
 
 object OneWebPageParser {
@@ -42,7 +43,7 @@ object OneWebPageParser {
             return 0
         var newCount = 0
         val cr = MainApplication.getContext().contentResolver
-        val status = FetcherService.Status().Start(if (recursionCount > 0)  MainApplication.getContext().getString(R.string.parsing_one_web_page) + ": " + recursionCount.toString() else "", false)
+        val status = FetcherService.Status().Start(if (recursionCount > 0) MainApplication.getContext().getString(R.string.parsing_one_web_page) + ": " + recursionCount.toString() else "", false)
         var urlNextPage = ""
         try { /* check and optionally find favicon */
             try {
@@ -96,7 +97,7 @@ object OneWebPageParser {
                     content = HtmlUtils.improveHtmlContent(content, feedBaseUrl, filters, categoryList, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
                     var title = ""
                     run {
-                        val match = TITLE_PATTERN.matcher( content )
+                        val match = TITLE_PATTERN.matcher(content)
                         if ( match.find() ) {
                             title = match.group(1)!!
                             if ( title.length < 100 )
@@ -106,7 +107,7 @@ object OneWebPageParser {
                                 if ( m.find() ) {
                                     title = m.group(0)
                                     content = content.replace(title, "")
-                                    title = title.replace( ". ", "" )
+                                    title = title.replace(". ", "")
                                 } else
                                     content = match.replaceFirst("")
                             }
@@ -138,7 +139,7 @@ object OneWebPageParser {
                         values.put(EntryColumns.FETCH_DATE, date)
                         values.put(EntryColumns.DATE, date)
                         if ( categoryList.isNotEmpty() )
-                            values.put(EntryColumns.CATEGORIES, categoryList.joinToString( EntryColumns.CATEGORY_LIST_SEP ))
+                            values.put(EntryColumns.CATEGORIES, categoryList.joinToString(EntryColumns.CATEGORY_LIST_SEP))
                         values.putNull(EntryColumns.MOBILIZED_HTML)
 
                         if ( isUpdated ) {
@@ -194,7 +195,7 @@ object OneWebPageParser {
         if ( list.isNotEmpty() )
             for (item in list.first()!!.allElements) {
                 val timeTag = item.getElementsByTag("time").first()
-                if ( timeTag != null && timeTag.hasAttr( "datetime" ) ) {
+                if ( timeTag != null && timeTag.hasAttr("datetime") ) {
                     result = RssAtomParser.parseDate(timeTag.attr("datetime"), now).time
                     break
                 } else if (item.hasText()) {

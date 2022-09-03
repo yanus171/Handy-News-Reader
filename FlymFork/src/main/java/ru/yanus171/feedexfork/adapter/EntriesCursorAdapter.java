@@ -129,6 +129,7 @@ import ru.yanus171.feedexfork.view.MenuItem;
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
@@ -172,14 +173,30 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mBackgroundColorLight = false;
     FeedFilters mFilters = null;
     public static final HashSet<String> mMarkAsReadList = new HashSet<>();
+    public static final HashMap<Long, Boolean> mDBReadMap = new HashMap<>();
 
-    private int mIdPos, mTitlePos, mFeedTitlePos, mUrlPos, mMainImgPos, mDatePos, mIsReadPos,
-        mAuthorPos, mImageSizePos, mFavoritePos, mMobilizedPos, mFeedIdPos, mFeedNamePos,
-        mAbstractPos, mIsNewPos, mTextLenPos, mCategoriesPos;
+    private int mIdPos;
+    private int mTitlePos;
+    private int mFeedTitlePos;
+    private int mUrlPos;
+    private int mMainImgPos;
+    private int mDatePos;
+    private static int mIsReadPos;
+    private int mAuthorPos;
+    private int mImageSizePos;
+    private int mFavoritePos;
+    private int mMobilizedPos;
+    private int mFeedIdPos;
+    private int mFeedNamePos;
+    private int mAbstractPos;
+    private int mIsNewPos;
+    private int mTextLenPos;
+    private int mCategoriesPos;
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
     public boolean mIsNewTask = false;
     private boolean mNeedScrollToTopExpandedArticle = false;
+    private static Cursor mCursor = null;
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, HomeActivity activity) {
         super(context, R.layout.item_entry_list, cursor, 0);
@@ -193,7 +210,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mActivity = activity;
         //SetIsReadMakredList();
 
-        mMarkAsReadList.clear();
+        TakeMarkAsReadList( true );
 
         reinit(cursor);
     }
@@ -306,7 +323,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 } else {
-                    SetIsRead(holder.entryID, true, true);
+                    SetIsRead(holder.entryID, feedId, true, true);
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                     mNeedScrollToTopExpandedArticle = true;
@@ -430,7 +447,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                     OpenArticle( holder );
                                 }
                             } else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold)
-                                toggleReadState(holder, view) ;
+                                toggleReadState(holder, feedId, view) ;
                             else if (Math.abs(paddingX) > Math.abs(paddingY) && paddingX <= -threshold)
                                 toggleFavoriteState(view);
                         } //else
@@ -510,7 +527,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final int lineCount = holder.isTextExpanded() && PrefUtils.getLong(STATE_TEXT_LINE_COUNT_ENTRY_ID, 0 ) == holder.entryID ? PrefUtils.getInt(STATE_TEXT_LINE_COUNT, MAX_LINES_STEP ) : MAX_LINES_STEP;
         holder.textTextView.setMaxLines( lineCount );
 
-        holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || EntryColumns.IsRead(cursor, mIsReadPos);
+        if ( !mDBReadMap.containsKey( holder.entryID ) )
+            mDBReadMap.put( holder.entryID, EntryColumns.IsRead(cursor, mIsReadPos) );
+        holder.isRead = isInMarkAsReadList(EntryUri(holder.entryID).toString()) || mDBReadMap.get( holder.entryID );
 
         if ( mMapFavourite.containsKey(holder.entryID) )
             holder.isFavorite = mMapFavourite.get( holder.entryID );
@@ -661,7 +680,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleReadState(holder, view);
+                toggleReadState(holder, feedId, view);
             }
         });
         holder.starImgView.setOnClickListener(new View.OnClickListener() {
@@ -739,7 +758,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setSingleLine();
             holder.mainImgView.setMaxHeight(  );
         }*/
-        final boolean isNew = PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInWasVisibleList(EntryUri(holder.entryID).toString());
+        final boolean isNew = PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInMarkAsReadList(EntryUri(holder.entryID).toString());
         holder.newImgView.setVisibility( isNew ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
@@ -761,11 +780,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return mShowEntryText || holder.isTextExpanded();
     }
 
-    private boolean isInMarkAsReadList(String entryUri)  {
-        return mMarkAsReadList.contains(entryUri);
-    }
-    private boolean isInWasVisibleList(String entryUri)  {
-        return mMarkAsReadList.contains(entryUri);
+    private boolean isInMarkAsReadList(String entryUri) {
+        synchronized ( EntriesCursorAdapter.class ) {
+            return mMarkAsReadList.contains(entryUri);
+        }
     }
 
     private void UpdateLabelText(ViewHolder holder) {
@@ -1102,7 +1120,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    private void toggleReadState(final ViewHolder holder, View parentView) {
+    private void toggleReadState(final ViewHolder holder, String feedID, View parentView) {
         if (holder != null) { // should not happen, but I had a crash with this on PlayStore...
             holder.isRead = !holder.isRead;
 
@@ -1111,11 +1129,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 MainApplication.getContext().getContentResolver().notifyChange(mUri, null);//notifyDataSetChanged();
             } else
                 UpdateReadView(holder, parentView);
-            SetIsRead(holder.entryID, holder.isRead, true);
+            SetIsRead(holder.entryID, feedID, holder.isRead, true);
             if ( holder.isRead && mShowUnread ) {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
-                        .setAction(R.string.undo, v -> SetIsRead(holder.entryID, false, false));
+                        .setAction(R.string.undo, v -> SetIsRead(holder.entryID, feedID,false, false));
                 snackbar.getView().setBackgroundResource(R.color.material_grey_900);
                 snackbar.show();
             }
@@ -1124,14 +1142,27 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
     }
 
-    private void SetIsRead(final long entryId, final boolean isRead, final boolean isSilent ) {
+    public static boolean getItemIsRead(int position) {
+        if (mCursor != null && mCursor.moveToPosition(position))
+            return !mCursor.isNull(mIsReadPos) && mCursor.getInt( mIsReadPos) == 1;
+
+        return false;
+    }
+
+    private void SetIsRead(final long entryId, final String feedID, final boolean isRead, final boolean isSilent ) {
         final Uri entryUri = EntryUri( entryId );
-        if (isRead)
-            mMarkAsReadList.add(entryUri.toString());
-        else
-            mMarkAsReadList.remove(entryUri.toString());
+        boolean needUpdate = false;
+        synchronized ( EntriesCursorAdapter.class ) {
+            if (isRead)
+                needUpdate = mMarkAsReadList.add(entryUri.toString());
+            else
+                needUpdate = mMarkAsReadList.remove(entryUri.toString());
+        }
+        if ( needUpdate && mDBReadMap.get( entryId ) != isRead )
+            DrawerAdapter.newNumber(feedID, DrawerAdapter.NewNumberOperType.Update, isRead );
         if ( isRead && isSilent )
             return;
+        mDBReadMap.put( entryId, isRead );
         new Thread() {
             @Override
             public void run() {
@@ -1140,6 +1171,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 try {
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.update(entryUri, isRead ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), null, null);
+
                     CancelStarNotification(Long.parseLong(entryUri.getLastPathSegment()));
                 } finally {
                     if ( isSilent )
@@ -1238,6 +1270,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private void reinit(Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
+            mCursor = cursor;
             mIdPos = cursor.getColumnIndex(EntryColumns._ID);
             mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
             mFeedTitlePos = cursor.getColumnIndex(FeedColumns.NAME);
@@ -1362,7 +1395,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         return -1;
     }
-
+    @NotNull
+    public static ArrayList<String> TakeMarkAsReadList( boolean clear ) {
+        ArrayList<String> list;
+        synchronized ( EntriesCursorAdapter.class ) {
+            list = new ArrayList<>(mMarkAsReadList);
+            if ( clear ) {
+                mMarkAsReadList.clear();
+                mDBReadMap.clear();
+            }
+        }
+        return list;
+    }
 }
 
 /*class MarkAsRadThread extends Thread  {

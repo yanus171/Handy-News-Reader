@@ -117,6 +117,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
+import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.parser.HTMLParser;
@@ -158,6 +159,7 @@ import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHAN
 import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
@@ -1448,6 +1450,7 @@ public class FetcherService extends IntentService {
                 } finally {
                     Status().End(status);
                 }
+                newNumber(feedID, DrawerAdapter.NewNumberOperType.Insert, newCount );
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -69,6 +69,7 @@ import java.util.Locale;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
@@ -83,6 +84,7 @@ import ru.yanus171.feedexfork.utils.NetworkUtils;
 
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
@@ -528,7 +530,6 @@ public class RssAtomParser extends DefaultHandler {
                             // We cannot update, we need to insert it
                             mInsertedEntriesImages.add(imagesUrls);
                             mInserts.add(ContentProviderOperation.newInsert(mFeedEntriesUri).withValues(values).build());
-
                             mNewCount++;
                         }
 
@@ -677,7 +678,6 @@ public class RssAtomParser extends DefaultHandler {
             HashSet<Long> entriesId = new HashSet<>();
             if (!mInserts.isEmpty()) {
                 ContentProviderResult[] results = cr.applyBatch(FeedData.AUTHORITY, mInserts);
-
                 if (mFetchImages) {
                     for (int i = 0; i < results.length; ++i) {
                         ArrayList<String> images = mInsertedEntriesImages.get(i);

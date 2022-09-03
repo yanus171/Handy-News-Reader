@@ -492,7 +492,8 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_ENTRIES_FOR_FEED: {
-                values.put(EntryColumns.FEED_ID, uri.getPathSegments().get(1));
+                final long feedID = Long.parseLong( uri.getPathSegments().get(1) );
+                values.put(EntryColumns.FEED_ID, feedID);
                 values.put(EntryColumns.FETCH_DATE, new Date().getTime());
                 newId = database.insert(EntryColumns.TABLE_NAME, null, values);
                 break;
@@ -811,7 +812,6 @@ public class FeedDataContentProvider extends ContentProvider {
                 table = EntryColumns.TABLE_NAME;
                 final String entryId = uri.getPathSegments().get(3);
                 where.append(_ID).append('=').append(entryId);
-
                 // Also remove the associated tasks
                 new Thread() {
                     @Override

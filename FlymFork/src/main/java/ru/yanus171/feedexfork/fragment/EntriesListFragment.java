@@ -83,6 +83,7 @@ import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
+import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.parser.OPML;
@@ -108,7 +109,12 @@ import ru.yanus171.feedexfork.view.StatusText;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
@@ -470,7 +476,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 if ( mShowTextInEntryList || isAlsoSetAsRead() ) {
                     final int pos = firstVisibleItem - 2;
                     final Uri uri = GetUri( pos );
-                    EntriesCursorAdapter.mMarkAsReadList.add(uri.toString());
+                    
+                    synchronized( EntriesCursorAdapter.class ) {
+                      if ( mMarkAsReadList.add(uri.toString()) && !getItemIsRead( pos ) )
+                        newNumber(mCurrentUri.getPathSegments().get(1), DrawerAdapter.NewNumberOperType.Update, true);
+                    }
                 }
                 if ( firstVisibleItem > 0 ) {
                     mLastVisibleTopEntryID = mEntriesCursorAdapter.getItemId(firstVisibleItem);
@@ -603,8 +613,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mWasVisibleList.clear();
 
         FetcherService.StartService(FetcherService.GetIntent(Constants.SET_ITEMS_AS_READ)
-                                        .putStringArrayListExtra(Constants.URL_LIST, new ArrayList<>(EntriesCursorAdapter.mMarkAsReadList) ), false );
-        EntriesCursorAdapter.mMarkAsReadList.clear();
+                                        .putStringArrayListExtra(Constants.URL_LIST, TakeMarkAsReadList( true ) ), false );
         mFab = null;
 
         super.onStop();
@@ -1131,9 +1140,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         final ArrayList<String> listVisible;
         listVisible = new ArrayList<>(mWasVisibleList);
         mWasVisibleList.clear();
-        final ArrayList<String> listRead;
-        listRead = new ArrayList<>( EntriesCursorAdapter.mMarkAsReadList );
-        EntriesCursorAdapter.mMarkAsReadList.clear();
+        final ArrayList<String> listRead = TakeMarkAsReadList( true );
         new Thread() {
             @Override
             public void run() {

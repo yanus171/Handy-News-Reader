@@ -42,6 +42,7 @@ import java.util.regex.Matcher;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -61,6 +62,7 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
 import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
@@ -250,6 +252,11 @@ public class EntryActivity extends BaseActivity implements Observer {
 
         FetcherService.clearActiveEntryID();
         new Thread() {
+            String mFeedID;
+            Thread init( String feedID ) {
+                mFeedID = feedID;
+                return this;
+            }
             @Override
             public void run() {
                 ContentResolver cr = getContentResolver();
@@ -261,10 +268,13 @@ public class EntryActivity extends BaseActivity implements Observer {
                 }
                 if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish )
                     //mark as read
-                    if ( mEntryFragment.getCurrentEntryID() != -1 )
-                        cr.update(EntryColumns.CONTENT_URI(  mEntryFragment.getCurrentEntryID() ), FeedData.getReadContentValues(), null, null);
+                    if ( mEntryFragment.getCurrentEntryID() != -1 ) {
+                        int result = cr.update(EntryColumns.CONTENT_URI(mEntryFragment.getCurrentEntryID()), FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
+                        if ( result > 0 )
+                            newNumber( mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
+                    }
             }
-        }.start();
+        }.init( mEntryFragment.getCurrentFeedID() ).start();
 
         //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPager.getCurrentItem() ).SaveScrollPos();
         super.onBackPressed();

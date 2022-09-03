@@ -198,6 +198,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
+                    mDrawerAdapter.notifyDataSetChanged();
                     mDrawerAdapter.updateNumbersAsync();
                 }
 

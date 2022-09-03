@@ -42,16 +42,15 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -66,6 +65,7 @@ import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.DB_SUM;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
@@ -125,8 +125,46 @@ public class DrawerAdapter extends BaseAdapter {
     private final String KEY_LabelEntriesUnreadCount = "LabelEntriesUnreadCount_";
     private final String KEY_LabelEntriesImagesSize = "LabelEntriesImagesSize1_";
     private final String KEY_LabelEntriesReadCount = "LabelEntriesReadCount_";
-    private final String KEY_FeedAllArticleCountVoc = "FeedAllArticleCountVoc_";
-    private final String KEY_FeedUnreadArticleCountVoc = "FeedUnreadArticleCountVoc_";
+    private static final String KEY_FeedAllArticleCountVoc = "FeedAllArticleCountVoc_";
+    private static final String KEY_FeedUnreadArticleCountVoc = "FeedUnreadArticleCountVoc_";
+
+    public enum NewNumberOperType { Insert, Update }
+    public static void newNumber( String feedID, NewNumberOperType type, boolean isRead ) {
+        newNumber( feedID, type, isRead ? -1 : +1 );
+    }
+    public static void newNumber( String feedID, NewNumberOperType type, int newUnreadCount ) {
+        if ( feedID.isEmpty() )
+            return;
+        {
+            final String key = getFeedUnreadArticleCountKey(Long.parseLong(feedID));
+            int oldCount = PrefUtils.getInt(key, 0);
+            if ( newUnreadCount > 0 && type == NewNumberOperType.Insert)
+                PrefUtils.putInt( key, oldCount + newUnreadCount);
+            //else if ( isRead && type == NewNumberOperType.Delete )
+            //    PrefUtils.putInt( key, oldCount - 1);
+            else if ( type == NewNumberOperType.Update )
+                PrefUtils.putInt( key, oldCount + newUnreadCount);
+        }
+        {
+            final String key = getFeedAllArticleCountKey(Long.parseLong(feedID));
+            int oldCount = PrefUtils.getInt(key, 0);
+            if (type == NewNumberOperType.Insert)
+                PrefUtils.putInt(key, oldCount + newUnreadCount);
+            //else if ( type == NewNumberOperType.Delete )
+            //    PrefUtils.putInt(key, oldCount - newUnreadCount);
+        }
+        synchronized (DrawerAdapter.class) {
+            mIsNeedUpdateNumbers = true;
+        }
+    }
+
+    public static String getFeedAllArticleCountKey( long feedID ) {
+        return KEY_FeedAllArticleCountVoc + feedID;
+    }
+    public static String getFeedUnreadArticleCountKey( long feedID ) {
+        return KEY_FeedUnreadArticleCountVoc + feedID;
+    }
+
 
     private String EXPR_NUMBER (final String where ) {
         return "CASE WHEN " + FeedData.FeedColumns.WHERE_GROUP + " THEN " + GROUP_NUMBER(where ) +
@@ -310,9 +348,9 @@ public class DrawerAdapter extends BaseAdapter {
                 holder.autoRefreshIcon.setVisibility(isAutoRefresh(position) ? View.VISIBLE : View.GONE);
             }
             final long feedOrGroupID = mFeedsCursor.getLong(POS_ID);
-            int unread = PrefUtils.getInt( KEY_FeedUnreadArticleCountVoc + feedOrGroupID, 0 );
-            int all = PrefUtils.getInt( KEY_FeedAllArticleCountVoc + feedOrGroupID, 0 );
-            SetCount(KEY_FeedUnreadArticleCountVoc + feedOrGroupID, holder.unreadTxt);
+            int unread = PrefUtils.getInt( getFeedUnreadArticleCountKey( feedOrGroupID ), 0 );
+            int all = PrefUtils.getInt( getFeedAllArticleCountKey(feedOrGroupID ), 0 );
+            SetCount(getFeedUnreadArticleCountKey( feedOrGroupID ), holder.unreadTxt);
             int read = all - unread;
             if (read > 0)
                 holder.readTxt.setText(String.valueOf(read));
@@ -473,6 +511,9 @@ public class DrawerAdapter extends BaseAdapter {
         }.execute();
     }
     private void updateNumbers() {
+
+        EntriesListFragment.SetItemsAsRead( TakeMarkAsReadList( false ) );
+
         ContentResolver cr = mContext.getContentResolver();
         Timer timer = new Timer("updateNumbers()");
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
@@ -532,8 +573,8 @@ public class DrawerAdapter extends BaseAdapter {
                                    null);
             if (cur != null) {
                 while (cur.moveToNext()) {
-                    PrefUtils.putInt(KEY_FeedAllArticleCountVoc + cur.getString(0), cur.getInt(1));
-                    PrefUtils.putInt(KEY_FeedUnreadArticleCountVoc + cur.getString(0), cur.getInt(2));
+                    PrefUtils.putInt(getFeedAllArticleCountKey( cur.getLong(0 ) ), cur.getInt(1));
+                    PrefUtils.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
                 }
                 cur.close();
             }

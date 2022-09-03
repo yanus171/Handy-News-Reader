@@ -133,6 +133,7 @@ import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
@@ -1198,27 +1199,33 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 				// Mark the previous opened article as read
 				//if (entryCursor.getInt(mIsReadPos) != 1) {
 				if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 ) {
-                    class ReadAndOldWriter implements Runnable {
-                        private final boolean mSetAsRead;
-                        private final int mPagerPos;
-                        private ReadAndOldWriter(int pagerPos, boolean setAsRead){
+                    new Thread() {
+                        private String mFeedID;
+                        private boolean mSetAsRead;
+                        private int mPagerPos;
+                        private Thread init(int pagerPos, boolean setAsRead, String feedID) {
                             mPagerPos = pagerPos;
                             mSetAsRead = setAsRead;
+                            mFeedID = feedID;
+                            return this;
                         }
 					    @Override
                         public void run() {
                             final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntry( mPagerPos ).mID);
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            if ( mSetAsRead )
-                                cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
+                            if ( mSetAsRead ) {
+                                if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null) > 0 )
+                                    newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
+                            }
                             cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
                             /*// Update the cursor
                             Cursor updatedCursor = cr.query(uri, null, null, null, null);
                             updatedCursor.moveToFirst();
                             mEntryPagerAdapter.setUpdatedCursor(mPagerPos, updatedCursor);*/
                         }
-                    }
-                    new Thread(new ReadAndOldWriter( mLastPagerPos, mEntryPagerAdapter.getCursor(mLastPagerPos).getInt(mIsReadPos) != 1 )).start();
+                    }.init( mLastPagerPos,
+                            mEntryPagerAdapter.getCursor(mLastPagerPos).getInt(mIsReadPos) != 1,
+                            getCurrentFeedID() ).start();
                 }
             }
 		} catch ( IllegalStateException e ) {
