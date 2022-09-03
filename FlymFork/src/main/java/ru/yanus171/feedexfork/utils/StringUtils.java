@@ -54,22 +54,45 @@ public class StringUtils {
     // -------------------------------------------------------------------------
     public static String MilliSecIntervalToString(final long ms, boolean shortCaption, boolean trimMinutesInBigHours) {
         String result = "";
-        long absMs = Math.abs(ms);
-        int days = (int) absMs / (24 * 60 * 60 * 1000);
-        absMs = absMs % (24 * 60 * 60 * 1000);
-        int hours = (int) absMs / (60 * 60 * 1000);
-        absMs = absMs % (60 * 60 * 1000);
-        int minutes = (int) absMs / (60 * 1000);
+        final Context context = MainApplication.getContext();
 
-        if (days > 0) {
-            result = result.trim() + DaysToString(days, shortCaption);
-        }
-        if (hours > 0 && (days < 2 || !trimMinutesInBigHours)) {
+        long absMs = Math.abs(ms);
+
+        final long MINUTE_DURATION = 60 * 1000;
+        final long HOUR_DURATION = 60 * MINUTE_DURATION;
+        final long DAY_DURATION = 24 * HOUR_DURATION;
+        final long MONTH_DURATION = 30 * DAY_DURATION;
+        final long YEAR_DURATION = 12 * MONTH_DURATION;
+        final int MAX_LENGTH = 10;
+
+        int years = (int) ((long) absMs / YEAR_DURATION);
+        absMs = absMs % YEAR_DURATION;
+
+        int months = (int) ((long) absMs / MONTH_DURATION);
+        absMs = absMs % MONTH_DURATION;
+
+        int days = (int) ((long) absMs / DAY_DURATION);
+        absMs = absMs % DAY_DURATION;
+
+        int hours = (int) ((long) absMs / HOUR_DURATION);
+        absMs = absMs % HOUR_DURATION;
+
+        int minutes = (int) ((long) absMs / MINUTE_DURATION);
+
+        if (years > 0)
+            result = result.trim() + String.format( " %d%s", years, context.getString(R.string.yearsShort) ) ;
+
+        if (months > 0 && years < 3)
+            result = result.trim() + String.format( " %d%s", months, context.getString(R.string.monthsShort) ) ;
+
+        if ( result.length() < MAX_LENGTH && days > 0 && months < 3)
+            result = result.trim() + " " + DaysToString(days, shortCaption);
+
+        if ( result.length() < MAX_LENGTH && hours > 0 && (days < 2 || !trimMinutesInBigHours) )
             result = result.trim() + " " + HoursToString(hours, shortCaption);
-        }
-        if (minutes > 0 && (hours < 2 || !trimMinutesInBigHours) && days == 0) {
+
+        if ( result.length() < MAX_LENGTH && minutes > 0 && (hours < 2 || !trimMinutesInBigHours) && days == 0)
             result = result.trim() + " " + MinutesToString(minutes, shortCaption);
-        }
 
         return result.trim();
     }

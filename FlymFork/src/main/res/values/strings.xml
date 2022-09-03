@@ -650,6 +650,7 @@
     <string name="twoFourMinute">minutes</string>
     <string name="fiveMinute">minutes</string>
 
+    <string name="yearsShort">years</string>
     <string name="monthsShort">months</string>
     <string name="weeksShort">w</string>
     <string name="daysShort">d</string>
