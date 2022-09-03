@@ -433,7 +433,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                 Math.abs(paddingY) < minY &&
                                 SystemClock.elapsedRealtime() - downTime < ViewConfiguration.getLongPressTimeout() ) {
 
-                                if ( isViewUnderTouch( event, holder.urlTextView ) || isViewUnderTouch( event, holder.dateTextView ) ||  isViewUnderTouch( event, holder.labelTextView ) )
+                                if ( manageLabels != null &&
+                                    ( isViewUnderTouch( event, holder.urlTextView ) ||
+                                      isViewUnderTouch( event, holder.dateTextView ) ||
+                                      isViewUnderTouch( event, holder.labelTextView ) ) )
                                     manageLabels.onClick( view );
                                 else if ( collapseListener != null &&
                                     ( isViewUnderTouch( event, holder.collapsedBtn ) ||
