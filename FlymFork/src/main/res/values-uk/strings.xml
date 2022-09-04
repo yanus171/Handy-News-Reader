@@ -627,6 +627,7 @@
     <string name="oneMinute">хвилина</string>
     <string name="twoFourMinute">хвилини</string>
     <string name="fiveMinute">хвилин</string>
+    <string name="yearsShort">р.</string>
     <string name="monthsShort">міс.</string>
     <string name="weeksShort">тиж.</string>
     <string name="daysShort">дн</string>
