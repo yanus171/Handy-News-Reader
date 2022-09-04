@@ -585,6 +585,7 @@
     <string name="menu_edit_feed">Modifica feed</string>
     <string name="addCustomFont">Aggiungi font personalizzato…</string>
     <string name="fileCopied">File %s copiato</string>
+    <string name="fileCopiedToDownloadsFolder">File %s copiato nella sottocartella %s di Downloads</string>
     <string name="unableToCopyFile">Impossibile copiare il file %s</string>
     <string name="label_setup_by_tap_on_date">Impostazione etichetta toccando la data</string>
     <string name="label_setup_by_tap_on_date_descr">Autore e URL nell\'elenco degli articoli</string>
@@ -623,6 +624,7 @@
     <string name="oneMinute">minuto</string>
     <string name="twoFourMinute">minuti</string>
     <string name="fiveMinute">minuti</string>
+    <string name="yearsShort">anni</string>
     <string name="monthsShort">mesi</string>
     <string name="weeksShort">s</string>
     <string name="daysShort">g</string>
@@ -638,10 +640,15 @@
     <string name="sendErrorConfirm">Si è verificato un errore durante l\'operazione. Inviarlo allo sviluppatore?</string>
     <string name="wrongFontFileSelected">"Il file dei caratteri dovrebbe terminare con ttf "</string>
     <string name="show_article_text_preview">Anteprima testo</string>
+    <string name="show_article_text_preview_descr">Mostra diverse prime righe di testo dell\'articolo</string>
     <string name="show_more">Mostra altro…</string>
     <string name="appListLoading">Caricamento dell\'elenco delle applicazioni</string>
+    <string name="open_image_tap_action">Apri applicazione immagine</string>
+    <string name="open_link_in_browser_tap_action">Applicazione browser</string>
     <string name="not_selected">Non selezionato</string>
     <string name="setting_ignore_all_ssl_errors">Ignora tutti gli errori SSL</string>
     <string name="connection_timeout">Timeout connessione</string>
     <string name="settings_category_connection">Connessione</string>
+    <string name="couldNotCreateDownloadsSubfolder">Impossibile creare la sottocartella in Downloads</string>
+    <string name="article_text_expand_controls">Espansione testo articolo</string>
 </resources>
