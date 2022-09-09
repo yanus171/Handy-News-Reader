@@ -625,6 +625,7 @@
     <string name="oneMinute">分钟</string>
     <string name="twoFourMinute">分钟</string>
     <string name="fiveMinute">分钟</string>
+    <string name="yearsShort">年</string>
     <string name="monthsShort">个月</string>
     <string name="weeksShort">周</string>
     <string name="daysShort">天</string>
@@ -654,4 +655,6 @@
     <string name="connection_timeout_summary">单位毫秒。 我们应该等待互联网连接多长时间</string>
     <string name="settings_category_connection">连接</string>
     <string name="couldNotCreateDownloadsSubfolder">无法在下载文件夹中创建子文件夹</string>
+    <string name="article_text_expand_controls">文章文本扩展</string>
+    <string name="article_text_expand_controls_descr">展开文章列表中文章文本的能力。勾选后，除去轻按文章列表，所有其他轻按操作会展开或收起文章文本，而不是在单独窗口中打开文章</string>
 </resources>

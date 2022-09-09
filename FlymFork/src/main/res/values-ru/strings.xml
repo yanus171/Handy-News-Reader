@@ -134,6 +134,7 @@
     <string name="feed_search">Поиск лент</string>
     <string name="web_page_search_duckduckgo">Веб поиск статьи (Duck Duck Go)</string>
     <string name="select_file">Выбрать файл (из папки Загрузки)</string>
+    <string name="select_file_from_subfolder">Выберите папку файла Downloads/handy_news_reader:</string>
     <string name="question_delete_feed">Вы действительно хотите удалить эту ленту?</string>
     <string name="question_delete_group">Вы действительно хотите удалить эту группу и все ее ленты?</string>
     <string name="question_delete_filter">Вы действительно хотите удалить этот фильтр?</string>
@@ -630,6 +631,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="oneMinute">минуту</string>
     <string name="twoFourMinute">минуты</string>
     <string name="fiveMinute">минут</string>
+    <string name="yearsShort">г.</string>
     <string name="monthsShort">мес</string>
     <string name="weeksShort">нд</string>
     <string name="daysShort">дн</string>
@@ -658,4 +660,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="connection_timeout">Таймаут соединения</string>
     <string name="settings_category_connection">Подключение</string>
     <string name="couldNotCreateDownloadsSubfolder">Не удалось создать подпапку в папке Загрузки</string>
+    <string name="article_text_expand_controls">Развернуть текст статьи</string>
+    <string name="article_text_expand_controls_descr">Возможность развернуть текст статьи в списке. Если флажок установлен, нажатие в любое место статьи, кроме ее заголовка, разворачивают или сворачивают текст статьи вместо открытия статьи в отдельном окне</string>
 </resources>

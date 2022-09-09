@@ -624,6 +624,7 @@
     <string name="oneMinute">Minute</string>
     <string name="twoFourMinute">Minuten</string>
     <string name="fiveMinute">Minuten</string>
+    <string name="yearsShort">Jahre</string>
     <string name="monthsShort">Monate</string>
     <string name="daysShort">T</string>
     <string name="timeIntervalInFuture">in</string>
@@ -650,4 +651,6 @@
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
     <string name="couldNotCreateDownloadsSubfolder">Unterordner in Downloads konnte nicht erstellt werden</string>
+    <string name="article_text_expand_controls">Artikeltext erweitern</string>
+    <string name="article_text_expand_controls_descr">Eine Möglichkeit, den Artikeltext in der Artikelliste aufzuklappen. Wenn markiert wird jedes Tippen, außer auf den Titel, den Text auf- oder zuklappen, anstatt den Artikel in einem separaten Fenster zu öffnen.</string>
 </resources>
