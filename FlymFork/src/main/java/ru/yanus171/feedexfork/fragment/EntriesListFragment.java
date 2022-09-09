@@ -478,8 +478,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     final Uri uri = GetUri( pos );
                     
                     synchronized( EntriesCursorAdapter.class ) {
-                      if ( mMarkAsReadList.add(uri.toString()) && !getItemIsRead( pos ) )
-                        newNumber(mCurrentUri.getPathSegments().get(1), DrawerAdapter.NewNumberOperType.Update, true);
+                        if (mMarkAsReadList.add(uri.toString()) && !getItemIsRead(pos)) {
+                            newNumber(mCurrentUri.getPathSegments().get(1), DrawerAdapter.NewNumberOperType.Update, true);
+                            Dog.v( String.format( "EntriesListFragment.onScroll(%d, %d) id = %s", firstVisibleItem, visibleItemCount, uri.toString() ) );
+                        }
                     }
                 }
                 if ( firstVisibleItem > 0 ) {
@@ -1036,27 +1038,22 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if (mEntriesCursorAdapter != null) {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                     .setActionTextColor(ContextCompat.getColor(getActivity(), R.color.light_theme_color_primary))
-                    .setAction(R.string.undo, new View.OnClickListener() {
+                    .setAction(R.string.undo, v -> new Thread() {
                         @Override
-                        public void onClick(View v) {
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
-                                        ArrayList<Integer> ids = new ArrayList<>();
-                                        while (mJustMarkedAsReadEntries.moveToNext()) {
-                                            ids.add(mJustMarkedAsReadEntries.getInt(0));
-                                        }
-                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                        String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
-                                        cr.update(FeedData.EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), where, null);
-
-                                        mJustMarkedAsReadEntries.close();
-                                    }
+                        public void run() {
+                            if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
+                                ArrayList<Integer> ids = new ArrayList<>();
+                                while (mJustMarkedAsReadEntries.moveToNext()) {
+                                    ids.add(mJustMarkedAsReadEntries.getInt(0));
                                 }
-                            }.start();
+                                ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
+                                cr.update(EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), where, null);
+
+                                mJustMarkedAsReadEntries.close();
+                            }
                         }
-                    });
+                    }.start());
             snackbar.getView().setBackgroundResource(R.color.material_grey_900);
             snackbar.show();
 
@@ -1081,6 +1078,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     }
 
                     cr.update(mCurrentUri, FeedData.getReadContentValues(), where, null);
+                    TakeMarkAsReadList( true );
                 }
             }.start();
 

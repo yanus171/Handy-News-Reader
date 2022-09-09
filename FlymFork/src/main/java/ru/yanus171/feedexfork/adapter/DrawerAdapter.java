@@ -51,6 +51,7 @@ import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -135,6 +136,7 @@ public class DrawerAdapter extends BaseAdapter {
     public static void newNumber( String feedID, NewNumberOperType type, int newUnreadCount ) {
         if ( feedID.isEmpty() )
             return;
+        Dog.v(String.format("newNumber( %s, %d)", feedID, newUnreadCount ) );
         {
             final String key = getFeedUnreadArticleCountKey(Long.parseLong(feedID));
             int oldCount = PrefUtils.getInt(key, 0);

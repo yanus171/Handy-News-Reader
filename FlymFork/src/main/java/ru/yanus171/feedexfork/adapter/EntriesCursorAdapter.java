@@ -1154,14 +1154,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private void SetIsRead(final long entryId, final String feedID, final boolean isRead, final boolean isSilent ) {
         final Uri entryUri = EntryUri( entryId );
-        boolean needUpdate = false;
+        boolean needUpdate;
         synchronized ( EntriesCursorAdapter.class ) {
             if (isRead)
                 needUpdate = mMarkAsReadList.add(entryUri.toString());
             else
                 needUpdate = mMarkAsReadList.remove(entryUri.toString());
         }
-        if ( needUpdate && mDBReadMap.get( entryId ) != isRead )
+        if ( needUpdate )
             DrawerAdapter.newNumber(feedID, DrawerAdapter.NewNumberOperType.Update, isRead );
         if ( isRead && isSilent )
             return;
