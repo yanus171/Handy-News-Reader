@@ -97,6 +97,8 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -131,6 +133,7 @@ import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
@@ -169,6 +172,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowEntryText;
     private final boolean mShowUnread;
     private final HomeActivity mActivity;
+    private boolean mIsAutoSetAsRead = false;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
     FeedFilters mFilters = null;
@@ -192,6 +196,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private int mIsNewPos;
     private int mTextLenPos;
     private int mCategoriesPos;
+    private int mFeedOptionsPos = -1;
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
     public boolean mIsNewTask = false;
@@ -626,8 +631,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
 
         {
-            final int max = PrefUtils.getIntFromText( "atricle_list_size_progressbar_maxsize", 50 ) * KBYTE;
-            if ( max > 0 ) {
+            final int max = PrefUtils.getIntFromText( "article_list_size_progressbar_maxsize", 50 ) * KBYTE;
+            if ( max > 0 && ( mShowFeedInfo || !mIsAutoSetAsRead ) ) {
                 holder.textSizeProgressBar.setMax( max );
                 holder.textSizeProgressBar.setProgress( (int)textSize );
                 holder.textSizeProgressBar.setVisibility(View.VISIBLE );
@@ -799,6 +804,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private Spanned getBoldText(String html) {
         String result = PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html;
         return Html.fromHtml(result);
+    }
+
+    private boolean isAlsoSetAsRead( Cursor cursor ) {
+        if ( cursor.isNull( mFeedOptionsPos ) )
+            return false;
+        try {
+            JSONObject json = new JSONObject( cursor.getString( mFeedOptionsPos ) );
+            return json.has( AUTO_SET_AS_READ ) && json.getBoolean( AUTO_SET_AS_READ );
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static String CategoriesToOutput(String categories) {
@@ -1291,11 +1308,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
             mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
             mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
+            mFeedOptionsPos = cursor.getColumnIndex(FeedColumns.OPTIONS);
             {
                 int col = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
                 if ( col != -1 && cursor.moveToFirst() )
                     mIsLoadImages = !cursor.isNull( col ) && cursor.getInt( col ) == 1;
             }
+            mIsAutoSetAsRead = isAlsoSetAsRead( cursor );
         }
     }
 

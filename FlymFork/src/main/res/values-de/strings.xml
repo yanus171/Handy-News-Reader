@@ -557,8 +557,8 @@
     <string name="list_was_scrolled_to_bottom">Listenende erreicht</string>
     <string name="articleWasUnstarred">Kennzeichnung eines Artikels wurde entfernt</string>
     <string name="articleNotFound">Es wurde kein Artikel gefunden 🙁</string>
-    <string name="atricle_list_size_progressbar_maxsize">"Max. Textgröße "</string>
-    <string name="atricle_list_size_progressbar_maxsize_descr">In KB für horizontale Anzeige</string>
+    <string name="article_list_size_progressbar_maxsize">"Max. Textgröße "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">In KB für horizontale Anzeige</string>
     <string name="setting_edit_feed_force_portrait_orientation">Feed-Bearbeitung im Hochformat</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Auf dem Feed-Bearbeitungsbildschirm Ausrichtung im Hochformat erzwingen - prüfen Sie, ob das Gerät ein schmales Display hat</string>
     <string name="name">Name</string>

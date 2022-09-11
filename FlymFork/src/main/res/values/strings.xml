@@ -575,8 +575,8 @@
     <string name="list_was_scrolled_to_bottom">Scrolled to the bottom</string>
     <string name="articleWasUnstarred">An article has been unstarred</string>
     <string name="articleNotFound">An article has not been found :(</string>
-    <string name="atricle_list_size_progressbar_maxsize">"Text Size Max "</string>
-    <string name="atricle_list_size_progressbar_maxsize_descr">In kB for horizontal indicator (0 to turn off)</string>
+    <string name="article_list_size_progressbar_maxsize">"Text Size Max "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">In kB for horizontal indicator (0 to turn off). It\'s hidden for feeds with Auto mark articles as read feed option enabled</string>
     <string name="setting_edit_feed_force_portrait_orientation">Edit Feed portrait orientation</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Force portrait screen orientation in Edit Feed window - check if your phone has narrow screen</string>
     <string name="name">Name</string>
