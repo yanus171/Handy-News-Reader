@@ -341,34 +341,24 @@ public class FetcherService extends IntentService {
                 }
             });
             return;
-        } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-            EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
-            stopForeground(true);
-            return;
-        } else if (intent.hasExtra( Constants.SET_ITEMS_AS_READ )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-            EntriesListFragment.SetItemsAsRead( intent.getStringArrayListExtra(URL_LIST ) );
-            stopForeground(true);
-            return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
             LongOper(R.string.menu_delete_old, new Runnable() {
                 @Override
                 public void run() {
-                SetNotifyEnabled( false );
-                try {
-                    long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
-                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
-                    deleteOldEntries(keepDateBorderTime);
-                    deleteGhost();
-                    if (PrefUtils.CALCULATE_IMAGES_SIZE())
-                        CalculateImageSizes();
-                    if (Build.VERSION.SDK_INT >= 21)
-                        PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
-                } finally {
-                    SetNotifyEnabled( true );
-                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
-                }
+                    SetNotifyEnabled( false );
+                    try {
+                        long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
+                        long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                        deleteOldEntries(keepDateBorderTime);
+                        deleteGhost();
+                        if (PrefUtils.CALCULATE_IMAGES_SIZE())
+                            CalculateImageSizes();
+                        if (Build.VERSION.SDK_INT >= 21)
+                            PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
+                    } finally {
+                        SetNotifyEnabled( true );
+                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                    }
                 }
             });
             return;

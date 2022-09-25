@@ -108,6 +108,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
@@ -610,12 +611,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mJustMarkedAsReadEntries.close();
         }
 
-        FetcherService.StartService(FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
-                                     .putStringArrayListExtra(Constants.URL_LIST, new ArrayList<>(mWasVisibleList) ), false );
-        mWasVisibleList.clear();
+        new Thread() {
+            @Override public void run() {
+                EntriesListFragment.SetVisibleItemsAsOld(new ArrayList<>(mWasVisibleList) );
+                mWasVisibleList.clear();
+                EntriesListFragment.SetVisibleItemsAsOld(TakeMarkAsReadList( true ) );
+            }
+        }.start();
 
-        FetcherService.StartService(FetcherService.GetIntent(Constants.SET_ITEMS_AS_READ)
-                                        .putStringArrayListExtra(Constants.URL_LIST, TakeMarkAsReadList( true ) ), false );
         mFab = null;
 
         super.onStop();

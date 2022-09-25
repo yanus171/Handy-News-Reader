@@ -79,8 +79,6 @@ public final class Constants {
   public static final String FROM_DELETE_OLD = "from_delete_old";
   public static final String FROM_RELOAD_ALL_TEXT = "reload_all_texts";
   public static final String FROM_IMPORT = "from_import";
-  public static final String SET_VISIBLE_ITEMS_AS_OLD = "set_visible_items_as_old";
-  public static final String SET_ITEMS_AS_READ = "SET_ITEMS_AS_READ";
   public static final String URL_LIST = "url_list";
   //public static final String OPEN_ACTIVITY = "open_activity";
   public static final String URL_TO_LOAD = "url_to_load";
