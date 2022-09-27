@@ -557,8 +557,6 @@
     <string name="list_was_scrolled_to_bottom">Scorri in basso</string>
     <string name="articleWasUnstarred">Un articolo non era preferito</string>
     <string name="articleNotFound">Un articolo non è stato trovato :(</string>
-    <string name="atricle_list_size_progressbar_maxsize">"Dimensione Del Testo Massima "</string>
-    <string name="atricle_list_size_progressbar_maxsize_descr">In kB per l\'indicatore orizzontale (0 per spegnere)</string>
     <string name="setting_edit_feed_force_portrait_orientation">Modifica orientamento verticale feed</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forza l\'orientamento dello schermo verticale nella finestra Modifica Feed - controlla se il telefono ha lo schermo piccolo</string>
     <string name="name">Nome</string>
