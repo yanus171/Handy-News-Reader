@@ -69,6 +69,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -198,6 +199,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
+                    Dog.v(String.format( "newNumber onDrawerOpened" ) );
                     mDrawerAdapter.notifyDataSetChanged();
                     mDrawerAdapter.updateNumbersAsync();
                 }

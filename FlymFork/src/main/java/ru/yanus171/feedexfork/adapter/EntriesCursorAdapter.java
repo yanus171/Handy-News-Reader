@@ -1176,7 +1176,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if (isRead)
                 needUpdate = mMarkAsReadList.add(entryUri.toString());
             else
-                needUpdate = mMarkAsReadList.remove(entryUri.toString());
+                needUpdate = (mDBReadMap.containsKey( entryId ) && mDBReadMap.get( entryId )) || mMarkAsReadList.remove(entryUri.toString());
         }
         if ( needUpdate )
             DrawerAdapter.newNumber(feedID, DrawerAdapter.NewNumberOperType.Update, isRead );

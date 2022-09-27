@@ -142,9 +142,9 @@ public class DrawerAdapter extends BaseAdapter {
         }
     }
     public static void newNumber( String feedID, NewNumberOperType type, int newUnreadCount ) {
+        Dog.v(String.format("newNumber( %s, %d)", feedID, newUnreadCount ) );
         if ( !isNumeric( feedID ) )
             return;
-        //Dog.v(String.format("newNumber( %s, %d)", feedID, newUnreadCount ) );
         {
             final String key = getFeedUnreadArticleCountKey(Long.parseLong(feedID));
             int oldCount = PrefUtils.getInt(key, 0);

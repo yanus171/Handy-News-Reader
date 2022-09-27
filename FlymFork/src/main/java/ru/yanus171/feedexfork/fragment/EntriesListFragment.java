@@ -611,17 +611,28 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mJustMarkedAsReadEntries.close();
         }
 
-        new Thread() {
-            @Override public void run() {
-                EntriesListFragment.SetVisibleItemsAsOld(new ArrayList<>(mWasVisibleList) );
-                mWasVisibleList.clear();
-                EntriesListFragment.SetVisibleItemsAsOld(TakeMarkAsReadList( true ) );
-            }
-        }.start();
+        ApplyOldAndReadArticleList();
 
         mFab = null;
 
         super.onStop();
+    }
+
+    private void ApplyOldAndReadArticleList() {
+        new Thread() {
+            HashSet<String> mVisibleList = null;
+            ArrayList<String> mMarkAsReadList = null;
+            Thread init( HashSet<String> wasVisibleList, ArrayList<String> markAsReadList ) {
+                mVisibleList = (HashSet<String>) wasVisibleList.clone();
+                mMarkAsReadList = markAsReadList;
+                return this;
+            }
+            @Override public void run() {
+                EntriesListFragment.SetVisibleItemsAsOld( mVisibleList );
+                EntriesListFragment.SetItemsAsRead( mMarkAsReadList );
+            }
+        }.init( mWasVisibleList, TakeMarkAsReadList( true ) ).start();
+        mWasVisibleList.clear();
     }
 
     @Override
@@ -1138,17 +1149,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
 
-        final ArrayList<String> listVisible;
-        listVisible = new ArrayList<>(mWasVisibleList);
-        mWasVisibleList.clear();
-        final ArrayList<String> listRead = TakeMarkAsReadList( true );
-        new Thread() {
-            @Override
-            public void run() {
-                SetVisibleItemsAsOld( listVisible );
-                SetItemsAsRead( listRead );
-            }
-        }.start();
+        ApplyOldAndReadArticleList();
 
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
         SetListViewAdapter();
@@ -1208,7 +1209,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mRefreshListBtn.setVisibility(View.GONE);
         }
     }*/
-    public static void SetVisibleItemsAsOld(ArrayList<String> uriList) {
+    public static void SetVisibleItemsAsOld(HashSet<String> uriList) {
         final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
         for (String data : uriList) {
             VisibleReadItem item = new VisibleReadItem( data );
