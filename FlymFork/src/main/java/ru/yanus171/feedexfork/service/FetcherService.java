@@ -1658,14 +1658,13 @@ public class FetcherService extends IntentService {
 
                     } else {
                         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-                        parseXml(reader, handler);
-
+                        Xml.parse( CleanRSS( xmlText ), handler);
                     }
                     break;
                 }
 
                 case FETCHMODE_REENCODE: {
-                    int start = xmlText != null ? xmlText.indexOf(ENCODING) : -1;
+                    int start = xmlText.indexOf(ENCODING);
 
                     if (start > -1) {
                         parseXml( new StringReader(new String(outputStream.toByteArray(),
