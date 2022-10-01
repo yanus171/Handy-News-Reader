@@ -895,7 +895,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 case R.id.menu_show_html: {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetData() + "</root>";
+                        final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetDataWithLinks() + "</root>";
                         String htmlFormatted = NetworkUtils.formatXML( html );
                         DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "html.html", html);
                         MessageBox.Show(htmlFormatted);

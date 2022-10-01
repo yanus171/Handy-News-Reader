@@ -954,6 +954,12 @@ public class EntryView extends WebView implements Handler.Callback {
         }
     }
 
+    public String GetDataWithLinks() {
+        synchronized (EntryView.this) {
+            return mDataWithWebLinks;
+        }
+    }
+
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         FetcherService.Status().HideByScroll();

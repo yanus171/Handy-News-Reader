@@ -116,7 +116,7 @@ object OneWebPageParser {
                     }
 
                     // Try to find if the entry is not filtered and need to be processed
-                    if (!filters.isEntryFiltered(author, author, entryUrl, content, null)) {
+                    if (!filters.isEntryFiltered(title, author, entryUrl, content, null)) {
                         var isUpdated = false
                         var entryID = 0L
                         val cursor = cr.query(feedEntriesUri, arrayOf(EntryColumns.DATE, EntryColumns._ID), EntryColumns.LINK + Constants.DB_ARG, arrayOf(entryUrl), null)
