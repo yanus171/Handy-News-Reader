@@ -279,6 +279,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
+            holder.videoImgView = view.findViewById(R.id.video_icon);
             holder.readImgView.setVisibility(PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE); //
             holder.textLayout = view.findViewById(R.id.textLayout);
             holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
@@ -653,11 +654,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) ;
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
+        final String abstractText = cursor.getString(mAbstractPos);
+
         final boolean showTextPreview = PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
-            cursor.getString(mAbstractPos) != null && !isTextShown( holder );
+            abstractText != null && !isTextShown( holder );
         holder.textPreviewTextView.setVisibility( showTextPreview ? View.VISIBLE : View.GONE );
         if ( showTextPreview ) {
-            String s = getBoldText(GetHtmlAligned(cursor.getString(mAbstractPos))).toString();
+            String s = getBoldText(GetHtmlAligned(abstractText)).toString();
             s = s.replace( "\n", " " );
             s = s.replace( holder.titleTextView.getText().toString(), "" );
             s = s.replace( "￼", "" );
@@ -680,6 +683,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.textPreviewTextView.setVisibility( View.GONE );
         }
 
+        holder.videoImgView.setVisibility(View.GONE);
 
         UpdateStarImgView(holder);
         holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
@@ -720,7 +724,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( !mShowEntryText )
                 holder.collapseBtnBottom.setVisibility( View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
-            final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
+            final String html = abstractText == null ? "" : GetHtmlAligned(abstractText);
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
             SetupEntryText(holder, getBoldText(html), NeedToOpenArticle( html ) || HasMoreText( holder ) );
@@ -733,6 +737,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList, feedTitle);
                     SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList, feedTitle);
                     SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
+
                     if ( mNeedScrollToTopExpandedArticle ) {
                         mNeedScrollToTopExpandedArticle = false;
                         UiUtils.RunOnGuiThread(() -> EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID))), 100);
@@ -759,6 +764,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         } else
             holder.textTextView.setVisibility(View.GONE);
+
+        holder.videoImgView.setVisibility( abstractText.contains( "<video" ) ? View.VISIBLE : View.GONE );
 
         /*Display display = ((WindowManager) context.getSystemService( Context.WINDOW_SERVICE ) ).getDefaultDisplay();
         int or = display.getOrientation();
@@ -1346,6 +1353,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView starImgView;
         ImageView mobilizedImgView;
         ImageView readImgView;
+        ImageView videoImgView;
         ImageView newImgView;
         ImageView readToggleSwypeBtnView;
         ImageView starToggleSwypeBtnView;
