@@ -341,8 +341,8 @@
     <string name="fontsize_entrylist">Schriftgröße in der Artikelliste</string>
     <string name="confirmation">Bestätigung</string>
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
-    <string name="question_mark_upper_as_read">Alle oberen Artikel als gelesen kennzeichnen?</string>
-    <string name="question_mark_lower_as_read">Alle unteren Artikel als „Gelesen” kennzeichnen?</string>
+    <string name="question_mark_upper_as_read">Alle Artikel darüber als gelesen kennzeichnen?</string>
+    <string name="question_mark_lower_as_read">Alle Artikel darunter als gelesen kennzeichnen?</string>
     <string name="question_mark_all_as_unread">Alle Artikel als „Ungelesen” kennzeichnen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
@@ -557,6 +557,8 @@
     <string name="list_was_scrolled_to_bottom">Listenende erreicht</string>
     <string name="articleWasUnstarred">Kennzeichnung eines Artikels wurde entfernt</string>
     <string name="articleNotFound">Es wurde kein Artikel gefunden 🙁</string>
+    <string name="article_list_size_progressbar_maxsize">"Max. Textgröße "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">In kB für die horizontale Anzeige (0 zum Deaktivieren). Er ist ausgeblendet für Feeds mit aktivierter Option „Artikel automatisch als gelesen kennzeichnen”</string>
     <string name="setting_edit_feed_force_portrait_orientation">Feed-Bearbeitung im Hochformat</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Auf dem Feed-Bearbeitungsbildschirm Ausrichtung im Hochformat erzwingen - prüfen Sie, ob das Gerät ein schmales Display hat</string>
     <string name="name">Name</string>
