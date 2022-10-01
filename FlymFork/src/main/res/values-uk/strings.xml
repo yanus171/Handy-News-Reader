@@ -558,6 +558,8 @@
     <string name="list_was_scrolled_to_bottom">Прокрутити до самого низу</string>
     <string name="articleWasUnstarred">Стаття вилучена з обраного</string>
     <string name="articleNotFound">Стаття не знайдена :(</string>
+    <string name="article_list_size_progressbar_maxsize">"Максимальний розмір тексту "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">В кБ для горизонтального індикатора (0 - вимк.) Сховано для стрічок з обраною опцією автоматично помічати статті як прочитані.</string>
     <string name="setting_edit_feed_force_portrait_orientation">Редагувати портретну орієнтацію стрічки</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Примусова вертикальна орієнтація екрану у вікні редагування стрічок - перевірте, чи Ваш телефон має вузький екран</string>
     <string name="name">Ім`я</string>
