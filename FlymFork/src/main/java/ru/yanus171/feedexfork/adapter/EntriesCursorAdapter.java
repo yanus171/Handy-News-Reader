@@ -765,7 +765,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         } else
             holder.textTextView.setVisibility(View.GONE);
 
-        holder.videoImgView.setVisibility( abstractText.contains( "<video" ) ? View.VISIBLE : View.GONE );
+        holder.videoImgView.setVisibility( abstractText != null && abstractText.contains( "<video" ) ? View.VISIBLE : View.GONE );
 
         /*Display display = ((WindowManager) context.getSystemService( Context.WINDOW_SERVICE ) ).getDefaultDisplay();
         int or = display.getOrientation();

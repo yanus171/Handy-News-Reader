@@ -309,10 +309,13 @@ object LabelVoc {
         synchronized(mVoc) {
             if ( labelIDs.contains( ALL_LABELS ) )
                 return MainApplication.getContext().getString( R.string.all_labels )
-            for ( id in labelIDs ) {
+            var index = 0
+            for ( id  in labelIDs ) {
                 val label = mVoc[id]
                 //result += "<b style=\"text-color: ${label?.mColor}\"> ${label?.mName} </b>"
-                result += "<b><font color=\"${label?.mColor}\"> ${label?.mName} </font></b>"
+                val sep = if (index < labelIDs.size - 1) ", " else ""
+                result += "<b><font color=\"${label?.mColor}\"> ${label?.mName}$sep </font></b>"
+                index++
             }
             return result
         }
