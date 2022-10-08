@@ -73,11 +73,24 @@ object FileUtils {
         if (Build.VERSION.SDK_INT >= 29) {
             val resolver = context.contentResolver
             val contentValues = ContentValues()
+            val relPath = Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER;
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER )
-            var uri = resolver.insert( MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
-            copyFile(FileProvider.getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName)),
-                    uri!!)
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, relPath )
+            try {
+                if (Build.VERSION.SDK_INT >= 30)
+                    resolver.delete(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                            MediaStore.MediaColumns.DISPLAY_NAME + " = '" + name + "'", null)
+                val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
+                copyFile( FileProvider.getUriForFile( context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName) ),
+                          uri!! )
+            } catch ( e: IllegalStateException ) {
+                UiUtils.RunOnGuiThread {
+                    Toast.makeText( MainApplication.getContext(),
+                                    String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$name"),
+                                    Toast.LENGTH_LONG ).show()
+                }
+            }
+
         } else {
             val dir = File( getPublicDir().path + "/" + SUB_FOLDER );
             if ( !dir.exists() && !dir.mkdir() )
