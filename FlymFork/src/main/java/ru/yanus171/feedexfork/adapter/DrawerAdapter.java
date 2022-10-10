@@ -89,7 +89,8 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_IMAGESIZE = 11;
 
     public static final int EXTERNAL_ENTRY_POS = 3;
-    public static final int LABEL_GROUP_POS = 4;
+    public static final int LAST_READ_ENTRY_POS = 4;
+    public static final int LABEL_GROUP_POS = 5;
     public static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
     private final ProgressBar mProgressBar;
     public static boolean mIsNeedUpdateNumbers = true;
@@ -114,6 +115,8 @@ public class DrawerAdapter extends BaseAdapter {
     private final String KEY_AllUnreadNumber = "AllUnreadNumber";
     private final String KEY_FavoritesUnreadNumber = "FavoritesUnreadNumber";
     private final String KEY_FavoritesReadNumber = "FavoritesReadNumber";
+    private final String KEY_LastReadUnreadNumber = "LastReadUnreadNumber";
+    private final String KEY_LastReadReadNumber = "LastReadReadNumber";
     private final String KEY_AllNumber = "AllNumber";
     private final String KEY_ExternalUnreadNumber = "ExternalUnreadNumber";
     private final String KEY_ExternalReadNumber = "ExternalReadNumber";
@@ -247,7 +250,7 @@ public class DrawerAdapter extends BaseAdapter {
 
         ArrayList<Label> labelList = getLabelList();
 
-        if (position == 0 || position == 1 || position == 2 || position == EXTERNAL_ENTRY_POS) {
+        if (position == 0 || position == 1 || position == 2 || position == EXTERNAL_ENTRY_POS || position == LAST_READ_ENTRY_POS ) {
             switch (position) {
                 case 0:
                     holder.titleTxt.setText(R.string.unread_entries);
@@ -286,6 +289,13 @@ public class DrawerAdapter extends BaseAdapter {
                     SetCount(KEY_ExternalUnreadNumber, holder.unreadTxt);
                     SetCount(KEY_ExternalReadNumber, holder.readTxt);
                     SetImageSizeText(holder, KEY_ExternalImagesSize);
+                    break;
+                case LAST_READ_ENTRY_POS:
+                    holder.titleTxt.setText(R.string.last_read);
+                    holder.iconView.setImageResource(R.drawable.cup_new_load_now);
+                    SetCount(KEY_LastReadUnreadNumber, holder.unreadTxt);
+                    SetCount(KEY_LastReadReadNumber, holder.readTxt);
+                    //SetImageSizeText(holder, KEY_ExternalImagesSize);
                     break;
             }
         } else if (position == LABEL_GROUP_POS) {
@@ -537,7 +547,10 @@ public class DrawerAdapter extends BaseAdapter {
                                       FeedData.ALL_IMAGESSIZE_NUMBER(),
                                       FeedData.ALL_UNREAD_IMAGESSIZE_NUMBER(),
                                       FeedData.FAVORITES_IMAGESSIZE_NUMBER(),
-                                      FeedData.EXTERNAL_IMAGESSIZE_NUMBER()},
+                                      FeedData.EXTERNAL_IMAGESSIZE_NUMBER(),
+                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.LAST_READ_READ_NUMBER : "0",
+                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.LAST_READ_UNREAD_NUMBER : FeedData.LAST_READ_NUMBER,
+                                  },
                                   null, null, null);
         if (numbers != null) {
             if (numbers.moveToFirst()) {
@@ -551,6 +564,9 @@ public class DrawerAdapter extends BaseAdapter {
                 PrefUtils.putLong( KEY_AllUnreadImagesSize, numbers.getLong(7) );
                 PrefUtils.putLong( KEY_FavoritiesImagesSize, numbers.getLong(8) );
                 PrefUtils.putLong( KEY_ExternalImagesSize, numbers.getLong(9) );
+                PrefUtils.putInt( KEY_LastReadReadNumber, numbers.getInt(10) );
+                PrefUtils.putInt( KEY_LastReadUnreadNumber, numbers.getInt(11) );
+
             }
             numbers.close();
         }

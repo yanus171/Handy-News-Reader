@@ -65,6 +65,7 @@ import static ru.yanus171.feedexfork.Constants.DB_SUM;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_LAST_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
@@ -93,6 +94,9 @@ public class FeedData {
     public static final String FAVORITES_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_FAVORITE  + ')';
     public static final String FAVORITES_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_FAVORITE + DB_AND + WHERE_UNREAD + ')';
     public static final String FAVORITES_READ_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_FAVORITE + DB_AND + WHERE_READ + ')';
+    public static final String LAST_READ_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_LAST_READ + DB_AND + WHERE_UNREAD + ')';
+    public static final String LAST_READ_READ_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_LAST_READ + DB_AND + WHERE_READ + ')';
+    public static final String LAST_READ_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_LAST_READ  + ')';
     public static final String EXTERNAL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
     public static final String EXTERNAL_UNREAD_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_UNREAD + DB_AND + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
     public static final String EXTERNAL_READ_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " + WHERE_READ + DB_AND + FEED_ID + "=" + GetExtrenalLinkFeedID() + ")";
@@ -256,6 +260,7 @@ public class FeedData {
         public static final String MOBILIZED_HTML = "mobilized";
         public static final String DATE = "date";
         public static final String FETCH_DATE = "fetch_date";
+        public static final String READ_DATE = "read_date";
         public static final String IS_READ = "isread";
         public static final String LINK = "link";
         public static final String IS_FAVORITE = "favorite";
@@ -299,7 +304,8 @@ public class FeedData {
                              String.format( "substr( %s, 1, 10 ) AS %s", EntryColumns.MOBILIZED_HTML, EntryColumns.MOBILIZED_HTML ),
                              FeedColumns.NAME,
                              FeedColumns.OPTIONS,
-                             TEXT_LEN_EXPR };
+                             TEXT_LEN_EXPR,
+                             EntryColumns.READ_DATE };
         public static final String[] PROJECTION_WITH_TEXT =
                 new String[]{EntryColumns._ID,
                         EntryColumns.AUTHOR,
@@ -324,10 +330,12 @@ public class FeedData {
                         FeedColumns.OPTIONS,
                         TEXT_LEN_EXPR,
                         EntryColumns.CATEGORIES,
-                        FeedColumns.IS_IMAGE_AUTO_LOAD};
+                        FeedColumns.IS_IMAGE_AUTO_LOAD,
+                        EntryColumns.READ_DATE};
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
         public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
+        public static final String WHERE_LAST_READ = "(" + READ_DATE + DB_IS_NOT_NULL + ')';
         public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ')';
         public static final String WHERE_NEW = "(" + EntryColumns.IS_NEW + DB_IS_NULL + DB_OR + IS_NEW + DB_IS_TRUE  + ")";
 
@@ -345,7 +353,7 @@ public class FeedData {
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
                 {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN},
-                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT} };
+                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT},  {READ_DATE, TYPE_DATE_TIME} };
 
         public static Uri ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/entries");
@@ -380,6 +388,7 @@ public class FeedData {
         public static final Uri UNREAD_ENTRIES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/unread_entries");
 
         public static final Uri FAVORITES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/favorites");
+        public static final Uri LAST_READ_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/last_read");
 
         public static boolean isSearchUri(Uri uri) {
             return uri != null && uri.toString().startsWith(CONTENT_AUTHORITY + "/entries/search/");

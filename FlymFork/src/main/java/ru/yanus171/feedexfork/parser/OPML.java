@@ -373,7 +373,7 @@ public class OPML {
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
             EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR,
-            EntryColumns.IS_WITH_TABLES};
+            EntryColumns.IS_WITH_TABLES, EntryColumns.READ_DATE};
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -417,6 +417,7 @@ public class OPML {
                 WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
                 WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
                 WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
+                WriteText(writer, cur, EntryColumns.READ_DATE, 15);
                 writer.write(CLOSING);
             }
             writer.write("\t");
@@ -630,6 +631,7 @@ public class OPML {
                 final String mobHtml = GetText( attributes, EntryColumns.MOBILIZED_HTML);
                 FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
                 values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
+                values.put(EntryColumns.READ_DATE, GetText( attributes, EntryColumns.READ_DATE));
                 values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
                 values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));
                 values.put(EntryColumns.SCROLL_POS, GetText( attributes, EntryColumns.SCROLL_POS ));

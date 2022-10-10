@@ -1231,6 +1231,7 @@ public class EntryView extends WebView implements Handler.Callback {
 //                public void run() {
                     ContentValues values = new ContentValues();
                     values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
+                    values.put(FeedData.EntryColumns.READ_DATE, new Date().getTime());
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     SetNotifyEnabled(false ); try {
                         //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;

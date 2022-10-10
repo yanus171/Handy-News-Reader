@@ -119,6 +119,7 @@ import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadLis
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -209,7 +210,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
                 final String where = GetWhereSQL();
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, EntryColumns.DATE + entriesOrder);
+                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE : EntryColumns.DATE;
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, orderField + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
                 mStatus = Status().Start(R.string.article_list_loading, true);
@@ -322,7 +324,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mMenu.findItem( R.id.menu_show_entry_text ).setChecked( mShowTextInEntryList );
         }
 
-        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
+        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !EntryColumns.LAST_READ_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
         if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
             String feedID = mCurrentUri.getPathSegments().get(1);
             isCanRefresh = !feedID.equals(FetcherService.GetExtrenalLinkFeedID());
@@ -900,6 +902,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.favorites);
                         image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
+                    } else if ( EntryColumns.LAST_READ_CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString(R.string.last_read);
+                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_load_now );
                     } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.unread_entries );
                         image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_unread);

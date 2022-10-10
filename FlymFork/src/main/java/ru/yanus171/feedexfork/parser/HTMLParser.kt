@@ -124,7 +124,7 @@ object HTMLParser {
             EntryUrlVoc.remove( feedUrlparam )
         }
         val filters = FeedFilters(feedID)
-        val uriMainEntry = LoadLink(feedID, feedUrlparam, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false).first
+        val uriMainEntry = LoadLink(feedID, feedUrlparam, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false, false).first
         run {
             val cursor = cr.query(uriMainEntry, arrayOf(EntryColumns.TITLE), null, null, null)!!
             if (cursor.moveToFirst()) {
@@ -184,7 +184,7 @@ object HTMLParser {
                         result.mTaskID = 0L
                         result.mResultCount = 0
                         try {
-                            val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true, false)
+                            val load = LoadLink(feedID, item.mUrl, item.mCaption, filters, ForceReload.No, true, false, false, IsAutoDownloadImages(feedID), true, false, false)
                             val uri = load.first
                             if (load.second) {
                                 result.mResultCount = 1

@@ -417,7 +417,8 @@ public class FetcherService extends IntentService {
                                  intent.getBooleanExtra(EXTRA_STAR, false),
                                  AutoDownloadEntryImages.Yes,
                                  false,
-                                 true);
+                                 true,
+                                                            true);
                         if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
                             HashSet<Long> labels = new HashSet<>();
                             for ( String item: intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) )
@@ -1026,7 +1027,8 @@ public class FetcherService extends IntentService {
                                              final boolean isStarred,
                                              AutoDownloadEntryImages autoDownloadEntryImages,
                                              boolean isParseDateFromHTML,
-                                             boolean isLoadingLinkStatus) {
+                                             boolean isLoadingLinkStatus,
+                                             boolean setReadDate ) {
         boolean load;
         Dog.v( "LoadLink " + url );
 
@@ -1039,6 +1041,8 @@ public class FetcherService extends IntentService {
                 if (load) {
                     ContentValues values = new ContentValues();
                     values.put(EntryColumns.DATE, (new Date()).getTime());
+                    if ( setReadDate )
+                        values.put(EntryColumns.READ_DATE, (new Date()).getTime());
                     cr.update(entryUri, values, null, null);//operations.add(ContentProviderOperation.newUpdate(entryUri).withValues(values).build());
                 }
             } else {
@@ -1051,6 +1055,8 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.AUTHOR, NULL);
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
+                if ( setReadDate )
+                    values.put(EntryColumns.READ_DATE, (new Date()).getTime());
                 values.put(LINK, url);
                 values.put(EntryColumns.IS_WITH_TABLES, 0);
                 values.put(EntryColumns.IMAGES_SIZE, 0);
@@ -1199,11 +1205,13 @@ public class FetcherService extends IntentService {
         if (!operations.isEmpty()) {
             new Thread() {
                 @Override public void run() {
-                    Status().ChangeProgress(R.string.applyOperations);
+                    int status = Status().Start( R.string.applyOperations, false );
                     try {
                         MainApplication.getContext().getContentResolver().applyBatch(FeedData.AUTHORITY, operations);
                     } catch (Throwable ignored) {
 
+                    } finally {
+                        Status().End( status );
                     }
                 }
             }.start();
