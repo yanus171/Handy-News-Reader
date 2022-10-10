@@ -559,6 +559,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
+        if ( mListView == null )
+            return;
         int value = mListView.getFirstVisiblePosition();
         getBaseActivity().UpdateHeader(max,
                                        value,

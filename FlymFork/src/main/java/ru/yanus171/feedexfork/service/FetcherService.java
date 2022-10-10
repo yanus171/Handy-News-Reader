@@ -691,49 +691,48 @@ public class FetcherService extends IntentService {
         int status = Status().Start(statusText, false);
         SetNotifyEnabled( false ); try {
             final ContentResolver cr = getContentResolver();
-            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
-                    TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
             Status().ChangeProgress("");
-            ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
-            while (cursor.moveToNext() && !isCancelRefresh()) {
-                final long taskId = cursor.getLong(0);
-                final long entryId = cursor.getLong(1);
-                int attemptCount = 0;
-                if (!cursor.isNull(2)) {
-                    attemptCount = cursor.getInt(2);
-                }
+            try ( Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
+                    TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null) ) {
+                ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
+                while (cursor.moveToNext() && !isCancelRefresh()) {
+                    final long taskId = cursor.getLong(0);
+                    final long entryId = cursor.getLong(1);
+                    int attemptCount = 0;
+                    if (!cursor.isNull(2)) {
+                        attemptCount = cursor.getInt(2);
+                    }
 
-                final int finalAttemptCount = attemptCount;
-                futures.add( executor.submit( new Callable<DownloadResult>() {
-                    @Override
-                    public DownloadResult call() {
-                        DownloadResult result = new DownloadResult();
-                        result.mAttemptNumber = finalAttemptCount;
-                        result.mTaskID = taskId;
-                        result.mResultCount = 0;
-                        try {
-                            try( Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null) ) {
-                                if (curEntry.moveToFirst()) {
-                                    final String feedID = curEntry.getString(0);
-                                    FeedFilters filters = new FeedFilters(feedID);
-                                    if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
-                                        ContentResolver cr = getContext().getContentResolver();
-                                        cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                                        result.mResultCount = 1;
+                    final int finalAttemptCount = attemptCount;
+                    futures.add(executor.submit(new Callable<DownloadResult>() {
+                        @Override
+                        public DownloadResult call() {
+                            DownloadResult result = new DownloadResult();
+                            result.mAttemptNumber = finalAttemptCount;
+                            result.mTaskID = taskId;
+                            result.mResultCount = 0;
+                            try {
+                                try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
+                                    if (curEntry.moveToFirst()) {
+                                        final String feedID = curEntry.getString(0);
+                                        FeedFilters filters = new FeedFilters(feedID);
+                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
+                                            ContentResolver cr = getContext().getContentResolver();
+                                            cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
+                                            result.mResultCount = 1;
+                                        }
                                     }
                                 }
+                            } catch (Exception e) {
+                                Status().SetError("", "", "", e);
                             }
-                        } catch ( Exception e ) {
-                            Status().SetError( "", "", "", e );
+                            return result;
                         }
-                        return result;
-                    }
-                }) );
+                    }));
+                }
+
+                FinishExecutionService(statusText, status, futures);
             }
-
-            FinishExecutionService( statusText, status, futures );
-
-            cursor.close();
         } finally {
             SetNotifyEnabled( true );
             notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
