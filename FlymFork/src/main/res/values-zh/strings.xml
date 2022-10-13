@@ -149,6 +149,7 @@
     <string name="no_entries">没有文章</string>
     <string name="downloadOneImage">下载图片</string>
     <string name="favorites">已加星标</string>
+    <string name="last_read">最后阅读</string>
     <string name="context_menu_share_starred">分享星标条目</string>
     <string name="menu_star">加星标</string>
     <string name="menu_unstar">取消星标</string>
