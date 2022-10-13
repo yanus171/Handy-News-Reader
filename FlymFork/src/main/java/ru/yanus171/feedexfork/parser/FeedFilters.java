@@ -13,6 +13,7 @@ import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
@@ -21,6 +22,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
+import static ru.yanus171.feedexfork.service.FetcherService.mMarkAsStarredFoundList;
 
 public class FeedFilters {
 
@@ -131,8 +133,12 @@ public class FeedFilters {
         final String categories = categoryList == null ? "" : TextUtils.join( ", ", categoryList );
 
         for (Rule r : mFilters)
-            if ( r.isMarkAsStarred && r.isMatch( title, author, url, content, categories ) )
+            if ( r.isMarkAsStarred && r.isMatch( title, author, url, content, categories ) ) {
+                synchronized(mMarkAsStarredFoundList) {
+                    mMarkAsStarredFoundList.add( new MarkItem( title, url ));
+                }
                 return true;
+            }
         return false;
     }
     public String removeText( String text, int applyType ) {

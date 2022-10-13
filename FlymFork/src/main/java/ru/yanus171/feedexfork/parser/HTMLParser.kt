@@ -55,7 +55,6 @@ package ru.yanus171.feedexfork.parser
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.database.Cursor
 import android.text.TextUtils
 import org.json.JSONObject
 import org.jsoup.Jsoup
@@ -85,14 +84,14 @@ object HTMLParser {
     private val TOMORROW_YYYY_MM_DD = "{tomorrow YYYY-MM-DD}"
     @SuppressLint("SimpleDateFormat")
     @JvmStatic
-    fun Parse( executor: ExecutorService, feedID: String, feedUrlparam: String, jsonOptions: JSONObject, recursionCount: Int): Int {
+    fun Parse(executor: ExecutorService, feedID: String, feedUrlparam: String, jsonOptions: JSONObject, recursionCount: Int): Int {
         //var feedUrl = feedUrl
-        val maxRecursionCount = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getInt(NEXT_PAGE_MAX_COUNT) else 20
+        val maxRecursionCount = if ( jsonOptions.has(NEXT_PAGE_MAX_COUNT) ) jsonOptions.getInt(NEXT_PAGE_MAX_COUNT) else 20
         if (recursionCount > maxRecursionCount)
             return 0
-        val statusText = if (recursionCount > 0) {(MainApplication.getContext().getString( R.string.parsing_web_page_links ) + ": " + recursionCount.toString() ) } else "";
-        val status = Status().Start( statusText, false)
-        val urlNextPageClassName = if ( jsonOptions.has( NEXT_PAGE_MAX_COUNT ) ) jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) else ""
+        val statusText = if (recursionCount > 0) {(MainApplication.getContext().getString(R.string.parsing_web_page_links) + ": " + recursionCount.toString() ) } else "";
+        val status = Status().Start(statusText, false)
+        val urlNextPageClassName = if ( jsonOptions.has(NEXT_PAGE_MAX_COUNT) ) jsonOptions.getString(NEXT_PAGE_URL_CLASS_NAME) else ""
         val newEntries: Int
         Status().ChangeProgress("Loading main page")
 
@@ -118,10 +117,10 @@ object HTMLParser {
             return 0;
 
         val cr = MainApplication.getContext().contentResolver
-        val entryUri = GetEntryUri( feedUrlparam )
+        val entryUri = GetEntryUri(feedUrlparam)
         if ( entryUri != null ) {
             cr.delete(entryUri, null, null);
-            EntryUrlVoc.remove( feedUrlparam )
+            EntryUrlVoc.remove(feedUrlparam)
         }
         val filters = FeedFilters(feedID)
         val uriMainEntry = LoadLink(feedID, feedUrlparam, "", filters, ForceReload.Yes, true, false, false, IsAutoDownloadImages(feedID), false, false, false).first
@@ -147,7 +146,7 @@ object HTMLParser {
         val listItem = ArrayList<Item>()
         val categoryList = ArrayList<String>()
         val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, filters,
-                ArticleTextExtractor.MobilizeType.Yes, categoryList ,false, false)
+                ArticleTextExtractor.MobilizeType.Yes, categoryList, false, false)
         doc = Jsoup.parse(content)
         run {
             val list: Elements = doc.select("a")
@@ -165,12 +164,12 @@ object HTMLParser {
                     }
                 }
                 Dog.v("link after = " + link)
-                if (!isLinkToLoad( link )) continue
+                if (!isLinkToLoad(link)) continue
                 if (filters.isEntryFiltered(el.text(), "", link, "", null) )
                     continue
                 val newItem = Item(link, el.text())
-                if ( !listItem.contains( newItem ) )
-                    listItem.add( newItem )
+                if ( !listItem.contains(newItem) )
+                    listItem.add(newItem)
             }
         }
         try {
@@ -189,17 +188,15 @@ object HTMLParser {
                             if (load.second) {
                                 result.mResultCount = 1
                                 val cursor = cr.query(uri, arrayOf(EntryColumns.TITLE, EntryColumns.AUTHOR, EntryColumns.CATEGORIES), null, null, null)
-                                if ( cursor != null ) {
-                                    if ( cursor.moveToFirst() ) {
+                                if (cursor != null) {
+                                    if (cursor.moveToFirst()) {
                                         val title = cursor.getString(0)
                                         val author = cursor.getString(1)
                                         val categoryList = TextUtils.split(if (cursor.isNull(2)) "" else cursor.getString(2), CATEGORY_LIST_SEP);
                                         if (filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList)) {
-                                            synchronized(mMarkAsStarredFoundList) {
-                                                mMarkAsStarredFoundList.add(MarkItem(feedID, cursor.getString(0), item.mUrl))
-                                            }
                                             val values = ContentValues()
                                             values.put(EntryColumns.IS_FAVORITE, 1)
+                                            values.put(EntryColumns.READ_DATE, Date().time)
                                             cr.update(uri, values, null, null)
                                         }
                                         if (isTomorrow) {
@@ -252,7 +249,7 @@ object HTMLParser {
         return if ( urlNextPage.isEmpty() || isCancelRefresh() )
             newEntries
         else
-            Parse( executor, feedID, urlNextPage, jsonOptions, recursionCount + 1 )
+            Parse(executor, feedID, urlNextPage, jsonOptions, recursionCount + 1)
     }
 
     fun replaceTomorrow(feedUrl: String): String {

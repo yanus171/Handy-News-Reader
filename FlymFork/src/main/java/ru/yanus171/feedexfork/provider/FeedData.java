@@ -144,15 +144,6 @@ public class FeedData {
         return values;
     }
 
-    public static ContentValues getFavoriteContentValues( boolean favorite ) {
-        ContentValues values = new ContentValues();
-        if ( favorite )
-            values.put(EntryColumns.IS_FAVORITE, 1);
-        else
-            values.putNull(EntryColumns.IS_FAVORITE);
-        return values;
-    }
-
     public static class FeedColumns implements BaseColumns {
         public static final String TABLE_NAME = "feeds";
 

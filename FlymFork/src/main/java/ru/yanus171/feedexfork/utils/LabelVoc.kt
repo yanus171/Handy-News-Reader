@@ -14,14 +14,11 @@ import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.LabelListActivity
 import ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS
-import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.UiUtils.*
 import java.util.*
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 
 public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {
 
@@ -121,9 +118,9 @@ object LabelVoc {
         initInThread()
         synchronized(mVoc) {
             return if ( PrefUtils.IsLabelABCSort() )
-                ArrayList(mVoc.values.sortedBy{ it.mName })
+                ArrayList(mVoc.values.sortedBy { it.mName })
             else
-                ArrayList(mVoc.values.sortedBy{ it.mOrder })
+                ArrayList(mVoc.values.sortedBy { it.mOrder })
         }
     }
 
@@ -210,13 +207,16 @@ object LabelVoc {
             init_()
     }
 
-    fun showDialogToSetArticleLabels( context: Context, entryID: Long, adapterToNotify: BaseAdapter? ) {
+    fun showDialogToSetArticleLabels(context: Context, entryID: Long, adapterToNotify: BaseAdapter?) {
         showDialog(context, R.string.article_labels_setup_title, false, getLabelIDs(entryID), adapterToNotify) {
             setEntry(entryID, it)
             run {
                 val values = ContentValues()
                 values.put(EntryColumns._ID, entryID)
-                values.put(EntryColumns.IS_FAVORITE, if (it.isNotEmpty()) 1 else 0)
+                val isFavorite = it.isNotEmpty();
+                values.put(EntryColumns.IS_FAVORITE, if (isFavorite) 1 else 0)
+                if (isFavorite) values.put(EntryColumns.READ_DATE, Date().time)
+
                 context.contentResolver.update(EntryColumns.CONTENT_URI(entryID), values, if (it.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null)
             }
         }
@@ -234,18 +234,18 @@ object LabelVoc {
             viewTitle.orientation = LinearLayout.VERTICAL
             run {
                 val label = TextView(context)
-                label.setPadding(dpToPixel( 25 ),dpToPixel( 10 ),0,dpToPixel( 10 ));
+                label.setPadding(dpToPixel(25), dpToPixel(10), 0, dpToPixel(10));
                 viewTitle.addView(label)
                 SetFont(label, 1F)
-                label.text = context.getString( titleID )
+                label.text = context.getString(titleID)
             }
             cbAll = CheckBox(context)
             viewTitle.addView(cbAll)
-            SetFont( cbAll, 1F )
+            SetFont(cbAll, 1F)
             cbAll.text = context.getString(R.string.all)
-            builder.setCustomTitle( viewTitle )
+            builder.setCustomTitle(viewTitle)
         } else
-            builder.setTitle( titleID )
+            builder.setTitle(titleID)
 
         val adapter = object : ArrayAdapter<Label>(context, R.layout.label_item_select, R.id.text_name, array) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -274,7 +274,7 @@ object LabelVoc {
         }
 
         cbAll?.setOnCheckedChangeListener { _, _ -> adapter.notifyDataSetChanged() }
-        cbAll?.isChecked = checkedLabels.contains( ALL_LABELS )
+        cbAll?.isChecked = checkedLabels.contains(ALL_LABELS)
 
         builder
         .setAdapter(adapter, null)
@@ -285,7 +285,7 @@ object LabelVoc {
             } else
                 checkedLabels -= ALL_LABELS
             Thread {
-                action( checkedLabels )
+                action(checkedLabels)
             }.start()
             adapterToNotify?.notifyDataSetChanged()
             dialog.dismiss()
@@ -301,14 +301,14 @@ object LabelVoc {
     }
     fun getStringList(entryID: Long): String {
         initInThread()
-        return getStringList( getLabelIDs(entryID) )
+        return getStringList(getLabelIDs(entryID))
     }
     fun getStringList(labelIDs: Set<Long>): String {
         initInThread()
         var result = ""
         synchronized(mVoc) {
-            if ( labelIDs.contains( ALL_LABELS ) )
-                return MainApplication.getContext().getString( R.string.all_labels )
+            if ( labelIDs.contains(ALL_LABELS) )
+                return MainApplication.getContext().getString(R.string.all_labels)
             var index = 0
             for ( id  in labelIDs ) {
                 val label = mVoc[id]
@@ -321,7 +321,7 @@ object LabelVoc {
         }
     }
     fun removeLabels(entryID: Long) {
-        if ( getLabelIDs( entryID ).isEmpty() )
+        if ( getLabelIDs(entryID).isEmpty() )
             return
         setEntry(entryID, java.util.HashSet())
         MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)

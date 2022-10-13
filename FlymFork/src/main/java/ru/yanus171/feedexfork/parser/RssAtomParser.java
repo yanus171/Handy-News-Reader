@@ -531,10 +531,8 @@ public class RssAtomParser extends DefaultHandler {
 
                             values.put(EntryColumns.LINK, entryLinkString);
                             if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) ) {
-                                synchronized ( FetcherService.mMarkAsStarredFoundList ) {
-                                    FetcherService.mMarkAsStarredFoundList.add(new MarkItem(mId, improvedTitle, entryLinkString));
-                                }
                                 values.put(EntryColumns.IS_FAVORITE, 1);
+                                values.put( EntryColumns.READ_DATE, new Date().getTime() );
                             }
 
                             // We cannot update, we need to insert it

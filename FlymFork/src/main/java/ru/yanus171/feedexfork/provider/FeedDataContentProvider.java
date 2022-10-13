@@ -83,7 +83,9 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 
 import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.provider.FeedData.ENTRY_LABELS_WITH_ENTRIES;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.READ_DATE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.IsFeedsABCSort;
 
 public class FeedDataContentProvider extends ContentProvider {
@@ -442,10 +444,10 @@ public class FeedDataContentProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
-        String limit = null;
         if ( matchCode == URI_LAST_READ )
-            limit = "20";
-        Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder, limit);
+            queryBuilder.setTables( "(SELECT * FROM ( " + FeedData.ENTRIES_TABLE_WITH_FEED_INFO + ") ORDER BY " + READ_DATE + DB_DESC + " LIMIT 20)" );
+
+        Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         Dog.v("query " + (new Date().getTime() - time) + " uri = " + uri);

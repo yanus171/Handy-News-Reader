@@ -148,8 +148,8 @@ object OneWebPageParser {
                             cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null)
                         } else if ( entryID == 0L ) {
                             if (filters.isMarkAsStarred(author, author, entryUrl, content, null)) {
-                                synchronized(FetcherService.mMarkAsStarredFoundList) { FetcherService.mMarkAsStarredFoundList.add(MarkItem(feedID, author, entryUrl)) }
                                 values.put(EntryColumns.IS_FAVORITE, 1)
+                                values.put(EntryColumns.READ_DATE, Date().time)
                             }
                             entryID = cr.insert(feedEntriesUri, values)!!.lastPathSegment!!.toLong()
                             newCount++

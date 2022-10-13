@@ -117,6 +117,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
@@ -359,7 +360,7 @@ public class EntryView extends WebView implements Handler.Callback {
     private EntryViewManager mEntryViewMgr;
     String mData = "";
     public double mScrollPartY = 0;
-
+    boolean mIsAutoMarkVisibleAsRead = false;
     private EntryActivity mActivity;
     private long mPressedTime = 0;
     private long mMovedTime = 0;
@@ -412,9 +413,11 @@ public class EntryView extends WebView implements Handler.Callback {
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
                 newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
         boolean hasOriginal = !feedID.equals(GetExtrenalLinkFeedID());
+        mIsAutoMarkVisibleAsRead = false;
         try {
             JSONObject options = new JSONObject( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.OPTIONS)) );
             hasOriginal = hasOriginal && options.has( IS_RSS ) && options.getBoolean( IS_RSS );
+            mIsAutoMarkVisibleAsRead = options.has(AUTO_SET_AS_READ) && options.getBoolean(AUTO_SET_AS_READ);
         } catch (Exception ignored) {
 
         }
@@ -1231,7 +1234,8 @@ public class EntryView extends WebView implements Handler.Callback {
 //                public void run() {
                     ContentValues values = new ContentValues();
                     values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
-                    values.put(FeedData.EntryColumns.READ_DATE, new Date().getTime());
+                    if ( !mIsAutoMarkVisibleAsRead )
+                        values.put(FeedData.EntryColumns.READ_DATE, new Date().getTime());
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     SetNotifyEnabled(false ); try {
                         //String where = FeedData.EntryColumns.SCROLL_POS + " < " + scrollPart + Constants.DB_OR + FeedData.EntryColumns.SCROLL_POS + Constants.DB_IS_NULL;

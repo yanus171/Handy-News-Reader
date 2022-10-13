@@ -1005,6 +1005,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             public void run() {
                 ContentValues values = new ContentValues();
                 values.put(EntryColumns.IS_FAVORITE, mFavorite ? 1 : 0);
+                if ( mFavorite )
+                    values.put( EntryColumns.READ_DATE, new Date().getTime() );
+
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
                 if ( !mFavorite )

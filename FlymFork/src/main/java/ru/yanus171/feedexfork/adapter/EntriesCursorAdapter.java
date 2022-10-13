@@ -102,6 +102,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1230,7 +1231,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 try {
                     ContentValues values = new ContentValues();
                     values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
-
+                    if ( isFavorite )
+                        values.put( EntryColumns.READ_DATE, new Date().getTime() );
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.update(entryUri, values, null, null);
                     if (!isFavorite) {

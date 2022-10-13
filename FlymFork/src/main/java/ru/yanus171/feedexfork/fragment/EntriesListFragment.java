@@ -107,6 +107,8 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_ASC;
+import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
@@ -206,11 +208,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             if ( id == ENTRIES_LOADER_ID ) {
                 Timer.Start(ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader");
 
-                String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
+                String entriesOrder = IsOldestFirst() ? DB_ASC : DB_DESC;
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
                 final String where = GetWhereSQL();
-                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE : EntryColumns.DATE;
+                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: EntryColumns.DATE;
                 CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, orderField + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
@@ -1028,7 +1030,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     private void AddAtriclesLinks(StringBuilder starredList) {
         Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
-                                                                EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC));
+                                                                EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC));
         if (cursor != null) {
             int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
             int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
