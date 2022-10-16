@@ -67,7 +67,8 @@ public class HtmlUtils {
             .addAttributes( "textroot", HANDY_NEWS_READER_ROOT_CLASS )
             .addTags("s")
             .addTags("time")
-            .addAttributes("track", "src", "kind", "srclang", "label");
+            .addAttributes("track", "src", "kind", "srclang", "label")
+            .addProtocols("img", "src", "http", "https", "data");
 
     public static final String URL_SPACE = "%20";
 
@@ -171,23 +172,6 @@ public class HtmlUtils {
         return content;
     }
 
-    public static ArrayList<String> getImageURLs1(String content) {
-        ArrayList<String> images = new ArrayList<>();
-
-        if (!TextUtils.isEmpty(content)) {
-            Matcher matcher = IMG_PATTERN.matcher(content);
-            int index = 0;
-            while (matcher.find() && ( ( index < FetcherService.mMaxImageDownloadCount ) || ( FetcherService.mMaxImageDownloadCount == 0 ) ) ) {
-                images.add(matcher.group(1).replace(" ", URL_SPACE));
-                index++;
-            }
-            FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-        }
-
-
-        return images;
-    }
-
     private static final String LINK_TAG_END = "</a>";
 
     private static String GetLinkStartTag(String imgPath) {
@@ -222,6 +206,8 @@ public class HtmlUtils {
                     index++;
                     String srcUrl = matcher.group(1);
                     srcUrl = srcUrl.replace(" ", URL_SPACE);
+                    if ( srcUrl.startsWith( "data:image/" ) )
+                        continue;
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
                     final File file = new File( imgFilePath );
