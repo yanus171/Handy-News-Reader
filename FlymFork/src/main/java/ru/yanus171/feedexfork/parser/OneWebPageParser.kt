@@ -17,6 +17,7 @@ import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHiddenElements
+import ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
@@ -27,9 +28,6 @@ const val ONE_WEB_PAGE_DATE_CLASS_NAME = "oneWebPageDateClassName"
 const val ONE_WEB_PAGE_AUTHOR_CLASS_NAME = "oneWebPageAuthorClassName"
 const val ONE_WEB_PAGE_URL_CLASS_NAME = "oneWebPageUrlClassName"
 const val ONE_WEB_PAGE_ARTICLE_CLASS_NAME = "oneWebPageArticleClassName"
-val TITLE_PATTERN = Pattern.compile("<[^<,^/]+?>([^<]{10,})<[^<]+>")
-val TITLE_PATTERN_SENTENCE = Pattern.compile(".+?\\.\\s")
-
 
 object OneWebPageParser {
     fun parse(lastUpdateDate: Long,
@@ -95,25 +93,8 @@ object OneWebPageParser {
                     content = content.replace(">[\\n|\\s|\\.|\\t]+".toRegex(), "> ")
                     val categoryList = ArrayList<String>()
                     content = HtmlUtils.improveHtmlContent(content, feedBaseUrl, filters, categoryList, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
-                    var title = ""
-                    run {
-                        val match = TITLE_PATTERN.matcher(content)
-                        if ( match.find() ) {
-                            title = match.group(1)!!
-                            if ( title.length < 100 )
-                                content = match.replaceFirst("")
-                            else {
-                                val m = TITLE_PATTERN_SENTENCE.matcher(title)
-                                if ( m.find() ) {
-                                    title = m.group(0)
-                                    content = content.replace(title, "")
-                                    title = title.replace(". ", "")
-                                } else
-                                    content = match.replaceFirst("")
-                            }
-                            title = title.trim()
-                        }
-                    }
+                    val title = extractTitle( content )
+                    content = content.replaceFirst( title, "" )
 
                     // Try to find if the entry is not filtered and need to be processed
                     if (!filters.isEntryFiltered(title, author, entryUrl, content, null)) {

@@ -179,6 +179,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChan
 import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
@@ -857,10 +858,12 @@ public class FetcherService extends IntentService {
                                                                             categoryList,
                                                                             !String.valueOf(feedId).equals(GetExtrenalLinkFeedID()),
                                                                             entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1);
-
                         Status().ChangeProgress("");
 
                         if (mobilizedHtml != null) {
+                            if ( title.isEmpty() )
+                                title = extractTitle( mobilizedHtml );
+
                             ContentValues values = new ContentValues();
                             if (!categoryList.isEmpty())
                                 values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));

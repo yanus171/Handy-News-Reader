@@ -1116,21 +1116,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                         entriesCursor.close();
                     }
-                    if ( IsFeedUri( mBaseUri ) ) {
-                        Dog.v( "EntryFragment.setData() mBaseUri.getPathSegments[1] = " + mBaseUri.getPathSegments().get(1) );
-                        final String feedId = mBaseUri.getPathSegments().get(1);
-                        if (feedId.equals(FetcherService.GetExtrenalLinkFeedID())) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Dog.v("EntryFragment.setData() update time to current");
-                                    ContentValues values = new ContentValues();
-                                    values.put(EntryColumns.DATE, (new Date()).getTime());
-                                    cr.update(uri, values, null, null);
-                                }
-                            }).start();
+                    try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(getCurrentEntryID()), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
+                        if (curEntry.moveToFirst()) {
+                            final String feedID = curEntry.getString(0);
+                            mFilters = new FeedFilters(feedID);
                         }
-                        mFilters = new FeedFilters(feedId);
                     }
                 } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
                     mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );

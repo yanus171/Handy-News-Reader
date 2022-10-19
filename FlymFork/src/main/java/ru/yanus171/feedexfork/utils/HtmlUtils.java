@@ -388,5 +388,24 @@ public class HtmlUtils {
         return match.replaceAll("");
     }
 
+    private static final Pattern TITLE_PATTERN = Pattern.compile("<[^<,^/]+?>([^<]{10,})<[^<]+>");
+    private static final Pattern TITLE_PATTERN_SENTENCE = Pattern.compile(".+?\\.\\s");
+
+    public static String extractTitle( String content ) {
+        String title = "";
+        Matcher match = TITLE_PATTERN.matcher(content);
+        if ( match.find() ) {
+            title = match.group(1);
+            if ( title.length() > 100 ) {
+                Matcher m = TITLE_PATTERN_SENTENCE.matcher(title);
+                if ( m.find() ) {
+                    title = m.group(0);
+                    title = title.replace(". ", "");
+                }
+            }
+            title = title.trim();
+        }
+        return title;
+    }
 
 }
