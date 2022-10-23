@@ -173,6 +173,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HT
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
@@ -919,7 +920,7 @@ public class FetcherService extends IntentService {
                                 cr.delete(entryUri, null, null);
                             } else {
                                 if (filters != null && filters.isMarkAsStarred(title, "", link, mobilizedHtml, categoryList.toArray(new String[0])))
-                                    values.put(EntryColumns.IS_FAVORITE, 1);
+                                    PutFavorite(values, true);
                                 cr.update(entryUri, values, null, null);
                                 if (!imgUrlsToDownload.isEmpty())
                                     addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
@@ -1063,8 +1064,7 @@ public class FetcherService extends IntentService {
                 values.put(EntryColumns.IS_WITH_TABLES, 0);
                 values.put(EntryColumns.IMAGES_SIZE, 0);
                 if ( isStarred )
-                    values.put(EntryColumns.IS_FAVORITE, 1);
-
+                    PutFavorite(values, true);
                 //values.put(EntryColumns.MOBILIZED_HTML, enclosureString);
                 //values.put(EntryColumns.ENCLOSURE, enclosureString);
                 entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);

@@ -118,6 +118,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -139,6 +140,7 @@ import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -156,6 +158,7 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
@@ -893,8 +896,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             temp = temp.replaceAll( "<p[^>]+>", "" );
             temp = temp.replace( "</p>", "" ).trim();
             temp = temp.replace( "<b>", "" );
-            temp = temp.replace( "</b>", "" ).trim();
-            temp = temp.replaceAll( "<[^>]+>(\\s)?+</[^>]+>", "" );
+            temp = temp.replace( "</b>",  "" ).trim();
+            temp = temp.replaceAll( "<[^>/]+>(\\s)+?</[^>]+>", "" );
 
             while ( temp.startsWith( "<br>" ) )
                 temp = temp.replaceFirst( "<br>", "" ).trim();
@@ -1230,9 +1233,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetNotifyEnabled( false );
                 try {
                     ContentValues values = new ContentValues();
-                    values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
-                    if ( isFavorite )
-                        values.put( EntryColumns.READ_DATE, new Date().getTime() );
+                    PutFavorite( values, isFavorite );
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.update(entryUri, values, null, null);
                     if (!isFavorite) {

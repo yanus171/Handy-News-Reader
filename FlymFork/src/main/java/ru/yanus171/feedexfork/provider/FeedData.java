@@ -50,6 +50,8 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import java.util.Date;
+
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -447,6 +449,11 @@ public class FeedData {
         public static final String IMAGE_COUNT = "(SELECT " + DB_COUNT + " FROM " + TaskColumns.TABLE_NAME + " WHERE " + IMG_URL_TO_DL + DB_IS_NOT_NULL + ")";
 
 
+    }
+    public static void PutFavorite(ContentValues values, boolean isFavorite ) {
+        values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
+        if ( isFavorite )
+            values.put(EntryColumns.READ_DATE, new Date().getTime());
     }
 
     public static String getWhereNotExternal() {

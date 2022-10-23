@@ -64,9 +64,8 @@ import org.jsoup.select.Elements
 import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
-import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
+import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP
-import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
 import ru.yanus171.feedexfork.service.FetcherService.*
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
@@ -195,8 +194,7 @@ object HTMLParser {
                                         val categoryList = TextUtils.split(if (cursor.isNull(2)) "" else cursor.getString(2), CATEGORY_LIST_SEP);
                                         if (filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList)) {
                                             val values = ContentValues()
-                                            values.put(EntryColumns.IS_FAVORITE, 1)
-                                            values.put(EntryColumns.READ_DATE, Date().time)
+                                            PutFavorite( values, true )
                                             cr.update(uri, values, null, null)
                                         }
                                         if (isTomorrow) {

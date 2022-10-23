@@ -9,8 +9,7 @@ import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.DrawerAdapter
-import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
-import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
+import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME
 import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
@@ -95,7 +94,8 @@ object OneWebPageParser {
                     content = HtmlUtils.improveHtmlContent(content, feedBaseUrl, filters, categoryList, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
                     val title = extractTitle( content )
                     content = content.replaceFirst( title, "" )
-
+                    content = content.replace( "\\s+?\\.\\s".toRegex(), "");
+                    content = content.replace("<br>(\\n|\\s)+".toRegex(), "")
                     // Try to find if the entry is not filtered and need to be processed
                     if (!filters.isEntryFiltered(title, author, entryUrl, content, null)) {
                         var isUpdated = false
@@ -128,10 +128,8 @@ object OneWebPageParser {
                             values.put(EntryColumns.IS_NEW, 1)
                             cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null)
                         } else if ( entryID == 0L ) {
-                            if (filters.isMarkAsStarred(author, author, entryUrl, content, null)) {
-                                values.put(EntryColumns.IS_FAVORITE, 1)
-                                values.put(EntryColumns.READ_DATE, Date().time)
-                            }
+                            if (filters.isMarkAsStarred(author, author, entryUrl, content, null))
+                                PutFavorite( values, true )
                             entryID = cr.insert(feedEntriesUri, values)!!.lastPathSegment!!.toLong()
                             newCount++
                         }

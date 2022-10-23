@@ -213,10 +213,7 @@ object LabelVoc {
             run {
                 val values = ContentValues()
                 values.put(EntryColumns._ID, entryID)
-                val isFavorite = it.isNotEmpty();
-                values.put(EntryColumns.IS_FAVORITE, if (isFavorite) 1 else 0)
-                if (isFavorite) values.put(EntryColumns.READ_DATE, Date().time)
-
+                PutFavorite( values, it.isNotEmpty() )
                 context.contentResolver.update(EntryColumns.CONTENT_URI(entryID), values, if (it.isNotEmpty()) EntryColumns.WHERE_NOT_FAVORITE else EntryColumns.WHERE_FAVORITE, null)
             }
         }

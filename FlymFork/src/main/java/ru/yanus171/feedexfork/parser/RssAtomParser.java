@@ -87,6 +87,7 @@ import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 
 public class RssAtomParser extends DefaultHandler {
@@ -530,10 +531,8 @@ public class RssAtomParser extends DefaultHandler {
                             }
 
                             values.put(EntryColumns.LINK, entryLinkString);
-                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) ) {
-                                values.put(EntryColumns.IS_FAVORITE, 1);
-                                values.put( EntryColumns.READ_DATE, new Date().getTime() );
-                            }
+                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) )
+                                PutFavorite( values, true );
 
                             // We cannot update, we need to insert it
                             mInsertedEntriesImages.add(imagesUrls);

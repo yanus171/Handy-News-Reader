@@ -135,6 +135,7 @@ import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
@@ -1004,10 +1005,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @Override
             public void run() {
                 ContentValues values = new ContentValues();
-                values.put(EntryColumns.IS_FAVORITE, mFavorite ? 1 : 0);
-                if ( mFavorite )
-                    values.put( EntryColumns.READ_DATE, new Date().getTime() );
-
+                PutFavorite( values, mFavorite );
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
                 if ( !mFavorite )
