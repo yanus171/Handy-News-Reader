@@ -50,6 +50,7 @@ import ru.yanus171.feedexfork.view.AppSelectPreference;
 
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
@@ -134,12 +135,11 @@ public class MainApplication extends Application {
                                .setClass(getContext(), ArticleWebSearchActivity.class))
                 .build() );
             list.add( new ShortcutInfo.Builder(getContext(), "idExternal")
-                .setShortLabel( getContext().getString( R.string.externalLinks ) )
-                .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_load_later))
-
+                .setShortLabel( getContext().getString( R.string.last_read ) )
+                .setIcon(Icon.createWithResource(getContext(), R.drawable.cup_new_load_now))
                 .setIntent(new Intent(getContext(), HomeActivityNewTask.class)
                            .setAction( Intent.ACTION_MAIN )
-                           .setData(ENTRIES_FOR_FEED_CONTENT_URI(FetcherService.GetExtrenalLinkFeedID() ) ) )
+                           .setData( LAST_READ_CONTENT_URI ) )
                           .build() );
             list.add( new ShortcutInfo.Builder(getContext(), "idFavorities")
                           .setShortLabel( getContext().getString( R.string.favorites ) )

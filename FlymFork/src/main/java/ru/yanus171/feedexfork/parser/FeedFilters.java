@@ -13,6 +13,7 @@ import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
@@ -21,29 +22,30 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_URL;
+import static ru.yanus171.feedexfork.service.FetcherService.mMarkAsStarredFoundList;
 
 public class FeedFilters {
 
     private final ArrayList<Rule> mFilters = new ArrayList<>();
 
     public FeedFilters(String feedId) {
-        init( GetCursor(feedId) );
+        init( GetCursor(feedId), true );
     }
     public FeedFilters(Cursor c) {
-        init( c );
+        init( c, false );
     }
-    public void init(Cursor c) {
-        if ( c.moveToFirst() )
+    public void init( Cursor cursor, boolean closeCursor ) {
+        if ( cursor.moveToFirst() )
             do {
                 Rule r = new Rule();
-                r.filterText = c.getString(0);
-                r.isRegex = c.getInt(1) == 1;
-                r.mApplyType = c.getInt(2);
-                r.isAcceptRule = c.getInt(3) == 1;
-                r.isMarkAsStarred = c.getInt(4) == 1;
-                r.isRemoveText = c.getInt(5) == 1;
+                r.filterText = cursor.getString(0);
+                r.isRegex = cursor.getInt(1) == 1;
+                r.mApplyType = cursor.getInt(2);
+                r.isAcceptRule = cursor.getInt(3) == 1;
+                r.isMarkAsStarred = cursor.getInt(4) == 1;
+                r.isRemoveText = cursor.getInt(5) == 1;
                 mFilters.add(r);
-            } while ( c.moveToNext() );
+            } while ( cursor.moveToNext() );
 
         if ( PrefUtils.getBoolean( "global_marks_as_star_filter_on", false ) ) {
             String[] list = TextUtils.split( PrefUtils.getString( "global_marks_as_star_filter_rule",
@@ -77,7 +79,8 @@ public class FeedFilters {
                 mFilters.add(r);
             }
         }
-
+        if ( closeCursor )
+            cursor.close();
     }
 
     public static Cursor GetCursor(String feedId) {
@@ -130,8 +133,12 @@ public class FeedFilters {
         final String categories = categoryList == null ? "" : TextUtils.join( ", ", categoryList );
 
         for (Rule r : mFilters)
-            if ( r.isMarkAsStarred && r.isMatch( title, author, url, content, categories ) )
+            if ( r.isMarkAsStarred && r.isMatch( title, author, url, content, categories ) ) {
+                synchronized(mMarkAsStarredFoundList) {
+                    mMarkAsStarredFoundList.add( new MarkItem( title, url ));
+                }
                 return true;
+            }
         return false;
     }
     public String removeText( String text, int applyType ) {

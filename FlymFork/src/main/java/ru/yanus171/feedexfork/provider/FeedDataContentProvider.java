@@ -83,7 +83,9 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 
 import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.provider.FeedData.ENTRY_LABELS_WITH_ENTRIES;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.READ_DATE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.IsFeedsABCSort;
 
 public class FeedDataContentProvider extends ContentProvider {
@@ -123,6 +125,8 @@ public class FeedDataContentProvider extends ContentProvider {
     private static final int URI_ENTRIES_LABELS = 31;
     private static final int URI_ENTRY_LABELS = 32;
     private static final int URI_ENTRIES_LABELS_WITH_ENTRIES = 33;
+    public static final int URI_LAST_READ = 34;
+    private static final int URI_LAST_READ_ENTRY = 35;
 
     public static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -147,6 +151,8 @@ public class FeedDataContentProvider extends ContentProvider {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "unread_entries/#", URI_UNREAD_ENTRY);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "unread_entries", URI_UNREAD_ENTRIES);
 
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "last_read", URI_LAST_READ);
+        URI_MATCHER.addURI(FeedData.AUTHORITY, "last_read/#", URI_LAST_READ_ENTRY);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites", URI_FAVORITES);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "favorites/#", URI_FAVORITES_ENTRY);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "tasks", URI_TASKS);
@@ -243,6 +249,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_FILTERS_FOR_FEED:
                 return "vnd.android.cursor.dir/vnd.flymfork.filter";
             case URI_FAVORITES:
+            case URI_LAST_READ:
             case URI_UNREAD_ENTRIES:
             case URI_ENTRIES:
             case URI_ENTRIES_FOR_FEED:
@@ -250,6 +257,7 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_SEARCH:
                 return "vnd.android.cursor.dir/vnd.flymfork.entry";
             case URI_FAVORITES_ENTRY:
+            case URI_LAST_READ_ENTRY:
             case URI_ENTRY:
             case URI_UNREAD_ENTRY:
             case URI_ENTRY_FOR_FEED:
@@ -366,8 +374,13 @@ public class FeedDataContentProvider extends ContentProvider {
                 queryBuilder.appendWhere(new StringBuilder(FeedColumns.GROUP_ID).append('=').append(uri.getPathSegments().get(1)));
                 break;
             }
-            case URI_ENTRIES: {
+            case URI_ENTRIES:{
                 queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
+                break;
+            }
+            case URI_LAST_READ:{
+                queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
+                queryBuilder.appendWhere(EntryColumns.WHERE_LAST_READ);
                 break;
             }
             case URI_UNREAD_ENTRIES: {
@@ -381,6 +394,7 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_FAVORITES_ENTRY:
+            case URI_LAST_READ_ENTRY:
             case URI_UNREAD_ENTRY:
             case URI_ENTRY: {
                 queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
@@ -430,6 +444,8 @@ public class FeedDataContentProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
+        if ( matchCode == URI_LAST_READ )
+            queryBuilder.setTables( "(SELECT * FROM ( " + FeedData.ENTRIES_TABLE_WITH_FEED_INFO + ") ORDER BY " + READ_DATE + DB_DESC + " LIMIT 20)" );
 
         Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
 
@@ -644,6 +660,7 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_FAVORITES_ENTRY:
+            case URI_LAST_READ_ENTRY:
             case URI_UNREAD_ENTRY:
             case URI_ENTRY: {
                 table = EntryColumns.TABLE_NAME;
@@ -859,6 +876,7 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_FAVORITES_ENTRY:
+            case URI_LAST_READ_ENTRY:
             case URI_UNREAD_ENTRY:
             case URI_ENTRY: {
                 table = EntryColumns.TABLE_NAME;
@@ -950,6 +968,7 @@ public class FeedDataContentProvider extends ContentProvider {
             cr.notifyChange(FeedColumns.GROUPED_FEEDS_CONTENT_URI, null);
             cr.notifyChange(EntryColumns.UNREAD_ENTRIES_CONTENT_URI, null);
             cr.notifyChange(EntryColumns.FAVORITES_CONTENT_URI, null);
+            cr.notifyChange(EntryColumns.LAST_READ_CONTENT_URI, null);
             cr.notifyChange(FeedColumns.CONTENT_URI, null);
             cr.notifyChange(FeedColumns.GROUPS_CONTENT_URI, null);
             cr.notifyChange(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, null);

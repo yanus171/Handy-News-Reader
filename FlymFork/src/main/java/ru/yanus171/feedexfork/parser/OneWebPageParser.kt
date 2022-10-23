@@ -9,14 +9,14 @@ import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.DrawerAdapter
-import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
-import ru.yanus171.feedexfork.provider.FeedData.FeedColumns
+import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME
 import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHiddenElements
+import ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
@@ -27,9 +27,6 @@ const val ONE_WEB_PAGE_DATE_CLASS_NAME = "oneWebPageDateClassName"
 const val ONE_WEB_PAGE_AUTHOR_CLASS_NAME = "oneWebPageAuthorClassName"
 const val ONE_WEB_PAGE_URL_CLASS_NAME = "oneWebPageUrlClassName"
 const val ONE_WEB_PAGE_ARTICLE_CLASS_NAME = "oneWebPageArticleClassName"
-val TITLE_PATTERN = Pattern.compile("<[^<,^/]+?>([^<]{10,})<[^<]+>")
-val TITLE_PATTERN_SENTENCE = Pattern.compile(".+?\\.\\s")
-
 
 object OneWebPageParser {
     fun parse(lastUpdateDate: Long,
@@ -95,28 +92,12 @@ object OneWebPageParser {
                     content = content.replace(">[\\n|\\s|\\.|\\t]+".toRegex(), "> ")
                     val categoryList = ArrayList<String>()
                     content = HtmlUtils.improveHtmlContent(content, feedBaseUrl, filters, categoryList, ArticleTextExtractor.MobilizeType.No, isAutoFullTextRoot)
-                    var title = ""
-                    run {
-                        val match = TITLE_PATTERN.matcher(content)
-                        if ( match.find() ) {
-                            title = match.group(1)!!
-                            if ( title.length < 100 )
-                                content = match.replaceFirst("")
-                            else {
-                                val m = TITLE_PATTERN_SENTENCE.matcher(title)
-                                if ( m.find() ) {
-                                    title = m.group(0)
-                                    content = content.replace(title, "")
-                                    title = title.replace(". ", "")
-                                } else
-                                    content = match.replaceFirst("")
-                            }
-                            title = title.trim()
-                        }
-                    }
-
+                    val title = extractTitle( content )
+                    content = content.replaceFirst( title, "" )
+                    content = content.replace( "\\s+?\\.\\s".toRegex(), "");
+                    content = content.replace("<br>(\\n|\\s)+".toRegex(), "")
                     // Try to find if the entry is not filtered and need to be processed
-                    if (!filters.isEntryFiltered(author, author, entryUrl, content, null)) {
+                    if (!filters.isEntryFiltered(title, author, entryUrl, content, null)) {
                         var isUpdated = false
                         var entryID = 0L
                         val cursor = cr.query(feedEntriesUri, arrayOf(EntryColumns.DATE, EntryColumns._ID), EntryColumns.LINK + Constants.DB_ARG, arrayOf(entryUrl), null)
@@ -147,10 +128,8 @@ object OneWebPageParser {
                             values.put(EntryColumns.IS_NEW, 1)
                             cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null)
                         } else if ( entryID == 0L ) {
-                            if (filters.isMarkAsStarred(author, author, entryUrl, content, null)) {
-                                synchronized(FetcherService.mMarkAsStarredFoundList) { FetcherService.mMarkAsStarredFoundList.add(MarkItem(feedID, author, entryUrl)) }
-                                values.put(EntryColumns.IS_FAVORITE, 1)
-                            }
+                            if (filters.isMarkAsStarred(author, author, entryUrl, content, null))
+                                PutFavorite( values, true )
                             entryID = cr.insert(feedEntriesUri, values)!!.lastPathSegment!!.toLong()
                             newCount++
                         }

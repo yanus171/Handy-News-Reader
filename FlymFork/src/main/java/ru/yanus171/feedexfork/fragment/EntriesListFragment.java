@@ -107,7 +107,10 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_ASC;
+import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
@@ -118,6 +121,7 @@ import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadLis
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -204,11 +208,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             if ( id == ENTRIES_LOADER_ID ) {
                 Timer.Start(ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader");
 
-                String entriesOrder = IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC;
+                String entriesOrder = IsOldestFirst() ? DB_ASC : DB_DESC;
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
                 final String where = GetWhereSQL();
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, EntryColumns.DATE + entriesOrder);
+                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: EntryColumns.DATE;
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, orderField + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
                 mStatus = Status().Start(R.string.article_list_loading, true);
@@ -321,7 +326,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mMenu.findItem( R.id.menu_show_entry_text ).setChecked( mShowTextInEntryList );
         }
 
-        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
+        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !EntryColumns.LAST_READ_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
         if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
             String feedID = mCurrentUri.getPathSegments().get(1);
             isCanRefresh = !feedID.equals(FetcherService.GetExtrenalLinkFeedID());
@@ -556,6 +561,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
+        if ( mListView == null )
+            return;
         int value = mListView.getFirstVisiblePosition();
         getBaseActivity().UpdateHeader(max,
                                        value,
@@ -610,15 +617,28 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mJustMarkedAsReadEntries.close();
         }
 
-        FetcherService.StartService(FetcherService.GetIntent(Constants.SET_VISIBLE_ITEMS_AS_OLD)
-                                     .putStringArrayListExtra(Constants.URL_LIST, new ArrayList<>(mWasVisibleList) ), false );
-        mWasVisibleList.clear();
+        ApplyOldAndReadArticleList();
 
-        FetcherService.StartService(FetcherService.GetIntent(Constants.SET_ITEMS_AS_READ)
-                                        .putStringArrayListExtra(Constants.URL_LIST, TakeMarkAsReadList( true ) ), false );
         mFab = null;
 
         super.onStop();
+    }
+
+    private void ApplyOldAndReadArticleList() {
+        new Thread() {
+            HashSet<String> mVisibleList = null;
+            ArrayList<String> mMarkAsReadList = null;
+            Thread init( HashSet<String> wasVisibleList, ArrayList<String> markAsReadList ) {
+                mVisibleList = (HashSet<String>) wasVisibleList.clone();
+                mMarkAsReadList = markAsReadList;
+                return this;
+            }
+            @Override public void run() {
+                EntriesListFragment.SetVisibleItemsAsOld( mVisibleList );
+                EntriesListFragment.SetItemsAsRead( mMarkAsReadList );
+            }
+        }.init( mWasVisibleList, TakeMarkAsReadList( true ) ).start();
+        mWasVisibleList.clear();
     }
 
     @Override
@@ -886,6 +906,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString(R.string.favorites);
                         image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
+                    } else if ( EntryColumns.LAST_READ_CONTENT_URI.equals(mCurrentUri) ) {
+                        name = getContext().getString(R.string.last_read);
+                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_load_now );
                     } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
                         name = getContext().getString( R.string.unread_entries );
                         image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_unread);
@@ -1007,7 +1030,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     private void AddAtriclesLinks(StringBuilder starredList) {
         Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
-                                                                EntryColumns.DATE + (IsOldestFirst() ? Constants.DB_ASC : Constants.DB_DESC));
+                                                                EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC));
         if (cursor != null) {
             int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
             int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
@@ -1135,17 +1158,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
 
-        final ArrayList<String> listVisible;
-        listVisible = new ArrayList<>(mWasVisibleList);
-        mWasVisibleList.clear();
-        final ArrayList<String> listRead = TakeMarkAsReadList( true );
-        new Thread() {
-            @Override
-            public void run() {
-                SetVisibleItemsAsOld( listVisible );
-                SetItemsAsRead( listRead );
-            }
-        }.start();
+        ApplyOldAndReadArticleList();
 
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
         SetListViewAdapter();
@@ -1205,7 +1218,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mRefreshListBtn.setVisibility(View.GONE);
         }
     }*/
-    public static void SetVisibleItemsAsOld(ArrayList<String> uriList) {
+    public static void SetVisibleItemsAsOld(HashSet<String> uriList) {
         final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
         for (String data : uriList) {
             VisibleReadItem item = new VisibleReadItem( data );

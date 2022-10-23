@@ -87,6 +87,7 @@ import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 
 public class RssAtomParser extends DefaultHandler {
@@ -106,6 +107,7 @@ public class RssAtomParser extends DefaultHandler {
     private static final String TAG_MEDIA_DESCRIPTION = "media:description";
     private static final String TAG_MEDIA_THUMBNAIL = "media:thumbnail";
     private static final String TAG_CONTENT = "content";
+    private static final String TAG_CONTENT_ENCODED = "content:encoded>";
     private static final String TAG_MEDIA_CONTENT = "media:content";
     private static final String TAG_ENCODED_CONTENT = "encoded";
     private static final String TAG_SUMMARY = "summary";
@@ -190,6 +192,7 @@ public class RssAtomParser extends DefaultHandler {
     private Date mPreviousEntryUpdateDate;
     private StringBuilder mEntryLink;
     private StringBuilder mDescription;
+    private StringBuilder mDescriptionTemp;
     private StringBuilder mEnclosure;
     private int mNewCount = 0;
     private String mFeedTitle;
@@ -204,6 +207,7 @@ public class RssAtomParser extends DefaultHandler {
     private StringBuilder mTmpCategory = null;
     private boolean mCategoryTagEntered = false;
     private String mMainImageUrl = null;
+    private boolean mGuidHasLink = false;
 
     public RssAtomParser(Date realLastUpdateDate, long keepDateBorderTime, final String id, String feedName, String url, boolean retrieveFullText) {
         mKeepDateBorder = new Date(keepDateBorderTime);
@@ -240,6 +244,7 @@ public class RssAtomParser extends DefaultHandler {
         } else if (TAG_ENTRY.equals(localName) || TAG_ITEM.equals(localName)) {
             mEntryTagEntered = true;
             mDescription = null;
+            mDescriptionTemp = null;
             mEntryLink = null;
             mCategoryList.clear();
             mTmpCategory = new StringBuilder();
@@ -289,14 +294,14 @@ public class RssAtomParser extends DefaultHandler {
                     }
                 }
             }
-        } else if ((TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName))
-                || (TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName))) {
+        } else if ( TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName)
+                || TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName) || TAG_CONTENT_ENCODED.equals(qName) ) {
             mDescriptionTagEntered = true;
-            mDescription = new StringBuilder();
+            mDescriptionTemp = new StringBuilder();
         } else if (TAG_SUMMARY.equals(localName)) {
-            if (mDescription == null) {
+            if (mDescriptionTemp == null) {
                 mDescriptionTagEntered = true;
-                mDescription = new StringBuilder();
+                mDescriptionTemp = new StringBuilder();
             }
         } else if ( TAG_MEDIA_THUMBNAIL.equals( qName ) ) {
             mMainImageUrl = attributes.getValue( "", "url" );
@@ -314,12 +319,14 @@ public class RssAtomParser extends DefaultHandler {
             mDateStringBuilder = new StringBuilder();
         } else if (TAG_ENCODED_CONTENT.equals(localName)) {
             mDescriptionTagEntered = true;
-            mDescription = new StringBuilder();
+            mDescriptionTemp = new StringBuilder();
         } else if (TAG_ENCLOSURE.equals(localName)) {
             startEnclosure(attributes, attributes.getValue("", ATTRIBUTE_URL));
         } else if (TAG_GUID.equals(localName)) {
             mGuidTagEntered = true;
             mGuid = new StringBuilder();
+            mGuidHasLink = "true".equals( attributes.getValue(  "isPermaLink" ) );
+
         } else if (TAG_NAME.equals(localName) || TAG_AUTHOR.equals(localName) || TAG_CREATOR.equals(localName)) {
             mAuthorTagEntered = true;
             if (mTmpAuthor == null) {
@@ -360,7 +367,7 @@ public class RssAtomParser extends DefaultHandler {
             } else if (mLinkTagEntered) {
                 mEntryLink.append(ch, start, length);
             } else if (mDescriptionTagEntered) {
-                mDescription.append(ch, start, length);
+                mDescriptionTemp.append(ch, start, length);
             } else if (mUpdatedTagEntered || mPubDateTagEntered || mPublishedTagEntered || mDateTagEntered || mLastBuildDateTagEntered) {
                 mDateStringBuilder.append(ch, start, length);
             } else if (mGuidTagEntered) {
@@ -377,8 +384,10 @@ public class RssAtomParser extends DefaultHandler {
             if (TAG_TITLE.equals(localName)) {
                 mTitleTagEntered = false;
             } else if (TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName) || TAG_SUMMARY.equals(localName)
-                    || TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName) || TAG_ENCODED_CONTENT.equals(localName)) {
+                    || TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName) || TAG_CONTENT_ENCODED.equals(qName) || TAG_ENCODED_CONTENT.equals(localName)) {
                 mDescriptionTagEntered = false;
+                if ( mDescription == null || (mDescriptionTemp != null && mDescriptionTemp.length() > mDescription.length() ) )
+                    mDescription = mDescriptionTemp;
             } else if (TAG_LINK.equals(localName)) {
                 mLinkTagEntered = false;
 
@@ -439,6 +448,8 @@ public class RssAtomParser extends DefaultHandler {
                                 + (entryLinkString.startsWith(Constants.SLASH) ? entryLinkString : Constants.SLASH + entryLinkString);
                         }
                     }
+                    if ( entryLinkString.isEmpty() && mGuidHasLink )
+                        entryLinkString = mGuid.toString();
 
                     String improvedTitle = unescapeTitle(mTitle.toString().trim());
                     values.put(EntryColumns.TITLE, improvedTitle);
@@ -457,7 +468,7 @@ public class RssAtomParser extends DefaultHandler {
                         }
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);
-                            HtmlUtils.replaceImageURLs( improvedContent, "", -1, mEntryLink.toString(), true, imagesUrls, null, mMaxImageDownloadCount );
+                            HtmlUtils.replaceImageURLs( improvedContent, "", -1, entryLinkString, true, imagesUrls, null, mMaxImageDownloadCount );
                             if ( mainImageUrl == null && !imagesUrls.isEmpty() ) {
                                 mainImageUrl = HtmlUtils.getMainImageURL(imagesUrls);
                             }
@@ -520,12 +531,8 @@ public class RssAtomParser extends DefaultHandler {
                             }
 
                             values.put(EntryColumns.LINK, entryLinkString);
-                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) ) {
-                                synchronized ( FetcherService.mMarkAsStarredFoundList ) {
-                                    FetcherService.mMarkAsStarredFoundList.add(new MarkItem(mId, improvedTitle, entryLinkString));
-                                }
-                                values.put(EntryColumns.IS_FAVORITE, 1);
-                            }
+                            if ( mFilters.isMarkAsStarred(improvedTitle, improvedAuthor, entryLinkString, improvedContent, mCategoryList.toArray(new String[0]) ) )
+                                PutFavorite( values, true );
 
                             // We cannot update, we need to insert it
                             mInsertedEntriesImages.add(imagesUrls);

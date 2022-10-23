@@ -173,12 +173,14 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HT
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
@@ -341,42 +343,31 @@ public class FetcherService extends IntentService {
                 }
             });
             return;
-        } else if (intent.hasExtra( Constants.SET_VISIBLE_ITEMS_AS_OLD )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-            EntriesListFragment.SetVisibleItemsAsOld(intent.getStringArrayListExtra(URL_LIST ) );
-            stopForeground(true);
-            return;
-        } else if (intent.hasExtra( Constants.SET_ITEMS_AS_READ )) {
-            startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", "", R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, null));
-            EntriesListFragment.SetItemsAsRead( intent.getStringArrayListExtra(URL_LIST ) );
-            stopForeground(true);
-            return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
             LongOper(R.string.menu_delete_old, new Runnable() {
                 @Override
                 public void run() {
-                SetNotifyEnabled( false );
-                try {
-                    long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
-                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
-                    deleteOldEntries(keepDateBorderTime);
-                    deleteGhost();
-                    if (PrefUtils.CALCULATE_IMAGES_SIZE())
-                        CalculateImageSizes();
-                    if (Build.VERSION.SDK_INT >= 21)
-                        PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
-                } finally {
-                    SetNotifyEnabled( true );
-                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
-                }
+                    SetNotifyEnabled( false );
+                    try {
+                        long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
+                        long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                        deleteOldEntries(keepDateBorderTime);
+                        deleteGhost();
+                        if (PrefUtils.CALCULATE_IMAGES_SIZE())
+                            CalculateImageSizes();
+                        if (Build.VERSION.SDK_INT >= 21)
+                            PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
+                    } finally {
+                        SetNotifyEnabled( true );
+                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                    }
                 }
             });
             return;
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
             LongOper(R.string.reloading_all_texts, () -> {
                 SetNotifyEnabled(false);
-                try {
-                    Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra( WHERE_SQL_EXTRA ), null, null);
+                try (Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra(WHERE_SQL_EXTRA), null, null)) {
                     ContentValues[] values = new ContentValues[cursor.getCount()];
                     while (cursor.moveToNext()) {
                         final long entryId = cursor.getLong(0);
@@ -385,11 +376,10 @@ public class FetcherService extends IntentService {
                         values[cursor.getPosition()] = new ContentValues();
                         values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
                     }
-                    cursor.close();
                     getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
                 } finally {
                     SetNotifyEnabled(true);
-                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
+                    notifyChangeOnAllUris(URI_ENTRIES_FOR_FEED, null);
                 }
 
                 ExecutorService executor = CreateExecutorService(GetThreadCount());
@@ -429,7 +419,8 @@ public class FetcherService extends IntentService {
                                  intent.getBooleanExtra(EXTRA_STAR, false),
                                  AutoDownloadEntryImages.Yes,
                                  false,
-                                 true);
+                                 true,
+                                                            true);
                         if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
                             HashSet<Long> labels = new HashSet<>();
                             for ( String item: intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) )
@@ -518,11 +509,11 @@ public class FetcherService extends IntentService {
 
     private void deleteGhost() {
         final int status = Status().Start( R.string.deleting_ghost_entries, false );
-        final Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null );
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
-        while  ( cursor.moveToNext() )
-            mapEntryLinkHash.add( FileUtils.INSTANCE.getLinkHash( cursor.getString( 0 ) ) );
-        cursor.close();
+        try (Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null ) ) {
+            while (cursor.moveToNext())
+                mapEntryLinkHash.add(FileUtils.INSTANCE.getLinkHash(cursor.getString(0)));
+        }
         deleteGhostHtmlFiles( mapEntryLinkHash );
         deleteGhostImages( mapEntryLinkHash );
         EntryUrlVoc.INSTANCE.reinit( true );
@@ -555,10 +546,10 @@ public class FetcherService extends IntentService {
         if ( isCancelRefresh() )
             return;
         HashSet<String> setEntryLinkHashFavorities = new HashSet<>();
-        Cursor cursor = getContentResolver().query( EntryColumns.FAVORITES_CONTENT_URI, new String[] {LINK}, null, null, null );
-        while ( cursor.moveToNext() )
-            setEntryLinkHashFavorities.add( cursor.getString( 0 ) );
-        cursor.close();
+        try (Cursor cursor = getContentResolver().query( EntryColumns.FAVORITES_CONTENT_URI, new String[] {LINK}, null, null, null ) ){
+            while (cursor.moveToNext())
+                setEntryLinkHashFavorities.add(cursor.getString(0));
+        }
         int deletedCount = 0;
         final File folder = FileUtils.INSTANCE.GetImagesFolder();
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
@@ -702,51 +693,48 @@ public class FetcherService extends IntentService {
         int status = Status().Start(statusText, false);
         SetNotifyEnabled( false ); try {
             final ContentResolver cr = getContentResolver();
-            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
-                    TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
             Status().ChangeProgress("");
-            ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
-            while (cursor.moveToNext() && !isCancelRefresh()) {
-                final long taskId = cursor.getLong(0);
-                final long entryId = cursor.getLong(1);
-                int attemptCount = 0;
-                if (!cursor.isNull(2)) {
-                    attemptCount = cursor.getInt(2);
-                }
+            try ( Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
+                    TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null) ) {
+                ArrayList<Future<FetcherService.DownloadResult>> futures = new ArrayList<>();
+                while (cursor.moveToNext() && !isCancelRefresh()) {
+                    final long taskId = cursor.getLong(0);
+                    final long entryId = cursor.getLong(1);
+                    int attemptCount = 0;
+                    if (!cursor.isNull(2)) {
+                        attemptCount = cursor.getInt(2);
+                    }
 
-                final int finalAttemptCount = attemptCount;
-                futures.add( executor.submit( new Callable<DownloadResult>() {
-                    @Override
-                    public DownloadResult call() {
-                        DownloadResult result = new DownloadResult();
-                        result.mAttemptNumber = finalAttemptCount;
-                        result.mTaskID = taskId;
-                        result.mResultCount = 0;
-                        try {
-                            Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null);
-                            if ( curEntry != null ) {
-                                if (curEntry.moveToFirst()) {
-                                    final String feedID = curEntry.getString(0);
-                                    FeedFilters filters = new FeedFilters(feedID);
-                                    if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
-                                        ContentResolver cr = getContext().getContentResolver();
-                                        cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
-                                        result.mResultCount = 1;
+                    final int finalAttemptCount = attemptCount;
+                    futures.add(executor.submit(new Callable<DownloadResult>() {
+                        @Override
+                        public DownloadResult call() {
+                            DownloadResult result = new DownloadResult();
+                            result.mAttemptNumber = finalAttemptCount;
+                            result.mTaskID = taskId;
+                            result.mResultCount = 0;
+                            try {
+                                try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(entryId), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
+                                    if (curEntry.moveToFirst()) {
+                                        final String feedID = curEntry.getString(0);
+                                        FeedFilters filters = new FeedFilters(feedID);
+                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
+                                            ContentResolver cr = getContext().getContentResolver();
+                                            cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
+                                            result.mResultCount = 1;
+                                        }
                                     }
                                 }
-                                curEntry.close();
+                            } catch (Exception e) {
+                                Status().SetError("", "", "", e);
                             }
-                        } catch ( Exception e ) {
-                            Status().SetError( "", "", "", e );
+                            return result;
                         }
-                        return result;
-                    }
-                }) );
+                    }));
+                }
+
+                FinishExecutionService(statusText, status, futures);
             }
-
-            FinishExecutionService( statusText, status, futures );
-
-            cursor.close();
         } finally {
             SetNotifyEnabled( true );
             notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
@@ -759,10 +747,10 @@ public class FetcherService extends IntentService {
     public static AutoDownloadEntryImages IsAutoDownloadImages(String feedId) {
         final ContentResolver cr = getContext().getContentResolver();
         AutoDownloadEntryImages result = AutoDownloadEntryImages.Yes;
-        Cursor curFeed = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[] { FeedColumns.IS_IMAGE_AUTO_LOAD }, null, null, null );
-        if ( curFeed.moveToFirst() )
-            result = curFeed.isNull( 0 ) || curFeed.getInt( 0 ) == 1 ? AutoDownloadEntryImages.Yes : AutoDownloadEntryImages.No;
-        curFeed.close();
+        try ( Cursor curFeed = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[] { FeedColumns.IS_IMAGE_AUTO_LOAD }, null, null, null ) ) {
+            if (curFeed.moveToFirst())
+                result = curFeed.isNull(0) || curFeed.getInt(0) == 1 ? AutoDownloadEntryImages.Yes : AutoDownloadEntryImages.No;
+        }
         return result;
     }
 
@@ -780,184 +768,186 @@ public class FetcherService extends IntentService {
         boolean success = false;
         ContentResolver cr = getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
-        Cursor entryCursor = cr.query(entryUri, null, null, null, null);
+        try ( Cursor entryCursor = cr.query(entryUri, null, null, null, null) ) {
 
-        if (entryCursor.moveToFirst()) {
-            int linkPos = entryCursor.getColumnIndex(LINK);
-            String link = entryCursor.getString(linkPos);
-            String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
-            {
-                Pattern rx = Pattern.compile("\\{(.+)\\}");
-                final Matcher matcher = rx.matcher(linkToLoad);
+            if (entryCursor.moveToFirst()) {
+                int linkPos = entryCursor.getColumnIndex(LINK);
+                String link = entryCursor.getString(linkPos);
+                String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
+                {
+                    Pattern rx = Pattern.compile("\\{(.+)\\}");
+                    final Matcher matcher = rx.matcher(linkToLoad);
 
-                if (matcher.find()) {
-                    Calendar date = Calendar.getInstance();
-                    linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                    if (matcher.find()) {
+                        Calendar date = Calendar.getInstance();
+                        linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                    }
                 }
-            }
 
-            if ( isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor )) ) { // If we didn't already mobilized it
-                int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
-                final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
-                Connection connection = null;
+                if (isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor))) { // If we didn't already mobilized it
+                    int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
+                    final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+                    Connection connection = null;
 
-                try {
+                    try {
 
-                    // Try to find a text indicator for better content extraction
-                    String contentIndicator = null;
-                    String text = entryCursor.getString(abstractHtmlPos);
-                    if (!TextUtils.isEmpty(text)) {
-                        text = Html.fromHtml(text).toString();
-                        if (text.length() > 60) {
-                            contentIndicator = text.substring(20, 40);
-                        }
-                    }
-
-                    connection = new Connection( linkToLoad, OKHTTP );
-
-                    String mobilizedHtml;
-                    Status().ChangeProgress(R.string.extractContent);
-
-                    if (FetcherService.isCancelRefresh())
-                        return false;
-                    Document doc = Jsoup.parse(connection.getInputStream(), null, "");
-                    {
-                        for( Element el: doc.getElementsByTag("meta")) {
-                            if (el.hasAttr("content") &&
-                                el.hasAttr("http-equiv") &&
-                                el.attr("http-equiv").equals("refresh")) {
-                                String s = el.attr("content");
-                                link = s.replaceFirst("\\d+;URL=", "");
-                                connection.disconnect();
-                                connection = new Connection(link, OKHTTP);
-                                doc = Jsoup.parse(connection.getInputStream(), null, "");
-                                break;
+                        // Try to find a text indicator for better content extraction
+                        String contentIndicator = null;
+                        String text = entryCursor.getString(abstractHtmlPos);
+                        if (!TextUtils.isEmpty(text)) {
+                            text = Html.fromHtml(text).toString();
+                            if (text.length() > 60) {
+                                contentIndicator = text.substring(20, 40);
                             }
                         }
-                    }
-                    final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
-                    String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
-                    //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
-                    if ( isCorrectTitle ) {
-                        Elements titleEls = doc.getElementsByTag("title");
-                        if (!titleEls.isEmpty())
-                            title = titleEls.first().text();
-                    }
 
-                    String dateText = "";
-                    if (isParseDateFromHTML) {
-                        Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
-                        if ( element != null ) {
-                            for (Element el : element.getAllElements())
-                                if (el.hasText())
-                                    dateText += el.ownText() + " ";
-                            dateText = dateText.trim();
-                        } else {
-                            try {
-                                dateText = doc.getElementsByTag("time").first().attr( "datetime" );
-                            } catch ( Exception ignored) {
+                        connection = new Connection(linkToLoad, OKHTTP);
 
-                            }
-                        }
-                    }
-                    Dog.v( "date = " + dateText );
+                        String mobilizedHtml;
+                        Status().ChangeProgress(R.string.extractContent);
 
-                    ArrayList<String> categoryList = new ArrayList<>();
-                    mobilizedHtml = ArticleTextExtractor.extractContent(doc,
-                                                                        link,
-                                                                        contentIndicator,
-                                                                        filters,
-                                                                        mobilize,
-                                                                        categoryList,
-                                                                        !String.valueOf( feedId ).equals( GetExtrenalLinkFeedID() ),
-                                                                        entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES) ) == 1);
-
-                    Status().ChangeProgress("");
-
-                    if (mobilizedHtml != null) {
-                        ContentValues values = new ContentValues();
-                        if ( !categoryList.isEmpty() )
-                            values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList ) );
-                        else
-                            values.putNull( EntryColumns.CATEGORIES );
-                        if ( !dateText.isEmpty() ){
-                            final String format = ArticleTextExtractor.getDataForUrlFromPref(link, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, "") );
-                            Date date = null;
-                            if ( !format.isEmpty()  ) {
-                                try {
-                                    date = new SimpleDateFormat(format, Locale.getDefault()).parse(dateText);
-                                } catch ( ParseException e ) {
-                                    Status().SetError( format, String.valueOf( feedId ), String.valueOf( entryId ), e );
-                                }
-                            }// else
-                            //    date = parseDate( dateText, 0 );
-                            if ( date != null )
-                                values.put(EntryColumns.DATE, date.getTime());
-                        }
-                        FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
-
-
+                        if (FetcherService.isCancelRefresh())
+                            return false;
+                        Document doc = Jsoup.parse(connection.getInputStream(), null, "");
                         {
-                            boolean isOneWebPage = false;
-                            final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
-                            final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
-                            if (!jsonText.isEmpty())
-                                try {
-                                    JSONObject jsonOptions = new JSONObject(jsonText);
-                                    isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                            for (Element el : doc.getElementsByTag("meta")) {
+                                if (el.hasAttr("content") &&
+                                    el.hasAttr("http-equiv") &&
+                                    el.attr("http-equiv").equals("refresh")) {
+                                    String s = el.attr("content");
+                                    link = s.replaceFirst("\\d+;URL=", "");
+                                    connection.disconnect();
+                                    connection = new Connection(link, OKHTTP);
+                                    doc = Jsoup.parse(connection.getInputStream(), null, "");
+                                    break;
                                 }
-
-                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                            if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage )
-                                values.put(EntryColumns.TITLE, title);
+                            }
                         }
-                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
-                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
-                            HtmlUtils.replaceImageURLs( mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount );
-
-                        String mainImgUrl;
-                        if (!imgUrlsToDownload.isEmpty() )
-                            mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
-                        else
-                            mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
-
-                        if (mainImgUrl != null)
-                            values.put(EntryColumns.IMAGE_URL, mainImgUrl);
-
-                        if ( filters != null && filters.isEntryFiltered( title, "", link, mobilizedHtml, categoryList.toArray(new String[0]) ) ) {
-                            cr.delete( entryUri, null, null );
-                        } else {
-                            if ( filters != null && filters.isMarkAsStarred( title, "", link, mobilizedHtml, categoryList.toArray(new String[0]) ) )
-                                values.put(EntryColumns.IS_FAVORITE, 1);
-                            cr.update(entryUri, values, null, null);
-                            if ( !imgUrlsToDownload.isEmpty() )
-                                addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
+                        final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
+                        String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
+                        //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
+                        if (isCorrectTitle) {
+                            Elements titleEls = doc.getElementsByTag("title");
+                            if (!titleEls.isEmpty())
+                                title = titleEls.first().text();
                         }
-                        success = true;
+
+                        String dateText = "";
+                        if (isParseDateFromHTML) {
+                            Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
+                            if (element != null) {
+                                for (Element el : element.getAllElements())
+                                    if (el.hasText())
+                                        dateText += el.ownText() + " ";
+                                dateText = dateText.trim();
+                            } else {
+                                try {
+                                    dateText = doc.getElementsByTag("time").first().attr("datetime");
+                                } catch (Exception ignored) {
+
+                                }
+                            }
+                        }
+                        Dog.v("date = " + dateText);
+
+                        ArrayList<String> categoryList = new ArrayList<>();
+                        mobilizedHtml = ArticleTextExtractor.extractContent(doc,
+                                                                            link,
+                                                                            contentIndicator,
+                                                                            filters,
+                                                                            mobilize,
+                                                                            categoryList,
+                                                                            !String.valueOf(feedId).equals(GetExtrenalLinkFeedID()),
+                                                                            entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1);
+                        Status().ChangeProgress("");
+
+                        if (mobilizedHtml != null) {
+                            if ( title.isEmpty() )
+                                title = extractTitle( mobilizedHtml );
+
+                            ContentValues values = new ContentValues();
+                            if (!categoryList.isEmpty())
+                                values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));
+                            else
+                                values.putNull(EntryColumns.CATEGORIES);
+                            if (!dateText.isEmpty()) {
+                                final String format = ArticleTextExtractor.getDataForUrlFromPref(link, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""));
+                                Date date = null;
+                                if (!format.isEmpty()) {
+                                    try {
+                                        date = new SimpleDateFormat(format, Locale.getDefault()).parse(dateText);
+                                    } catch (ParseException e) {
+                                        Status().SetError(format, String.valueOf(feedId), String.valueOf(entryId), e);
+                                    }
+                                }// else
+                                //    date = parseDate( dateText, 0 );
+                                if (date != null)
+                                    values.put(EntryColumns.DATE, date.getTime());
+                            }
+                            FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
+
+
+                            {
+                                boolean isOneWebPage = false;
+                                final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
+                                final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
+                                if (!jsonText.isEmpty())
+                                    try {
+                                        JSONObject jsonOptions = new JSONObject(jsonText);
+                                        isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                                if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage)
+                                    values.put(EntryColumns.TITLE, title);
+                            }
+                            ArrayList<String> imgUrlsToDownload = new ArrayList<>();
+                            if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
+                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
+
+                            String mainImgUrl;
+                            if (!imgUrlsToDownload.isEmpty())
+                                mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
+                            else
+                                mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
+
+                            if (mainImgUrl != null)
+                                values.put(EntryColumns.IMAGE_URL, mainImgUrl);
+
+                            if (filters != null && filters.isEntryFiltered(title, "", link, mobilizedHtml, categoryList.toArray(new String[0]))) {
+                                cr.delete(entryUri, null, null);
+                            } else {
+                                if (filters != null && filters.isMarkAsStarred(title, "", link, mobilizedHtml, categoryList.toArray(new String[0])))
+                                    PutFavorite(values, true);
+                                cr.update(entryUri, values, null, null);
+                                if (!imgUrlsToDownload.isEmpty())
+                                    addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
+                            }
+                            success = true;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (isShowError) {
+                            String title = "";
+                            Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
+                            if (cursor.moveToFirst() && cursor.isNull(0))
+                                title = cursor.getString(0);
+                            cursor.close();
+                            Status().SetError(title + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
+                        }
+                    } finally {
+                        if (connection != null) {
+                            connection.disconnect();
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if ( isShowError ) {
-                        String title = "";
-                        Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[]{ FeedColumns.NAME }, null, null, null);
-                        if ( cursor.moveToFirst() && cursor.isNull( 0 ) )
-                            title = cursor.getString( 0 );
-                        cursor.close();
-                        Status().SetError(title + ": ", String.valueOf( feedId ), String.valueOf( entryId ), e);
-                    }
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
+                } else { // We already mobilized it
+                    success = true;
+                    //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                 }
-            } else { // We already mobilized it
-                success = true;
-                //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
             }
         }
-        entryCursor.close();
         return success;
     }
 
@@ -1040,7 +1030,8 @@ public class FetcherService extends IntentService {
                                              final boolean isStarred,
                                              AutoDownloadEntryImages autoDownloadEntryImages,
                                              boolean isParseDateFromHTML,
-                                             boolean isLoadingLinkStatus) {
+                                             boolean isLoadingLinkStatus,
+                                             boolean setReadDate ) {
         boolean load;
         Dog.v( "LoadLink " + url );
 
@@ -1053,6 +1044,8 @@ public class FetcherService extends IntentService {
                 if (load) {
                     ContentValues values = new ContentValues();
                     values.put(EntryColumns.DATE, (new Date()).getTime());
+                    if ( setReadDate )
+                        values.put(EntryColumns.READ_DATE, (new Date()).getTime());
                     cr.update(entryUri, values, null, null);//operations.add(ContentProviderOperation.newUpdate(entryUri).withValues(values).build());
                 }
             } else {
@@ -1065,12 +1058,13 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.AUTHOR, NULL);
                 //values.put(EntryColumns.ENCLOSURE, NULL);
                 values.put(EntryColumns.DATE, (new Date()).getTime());
+                if ( setReadDate )
+                    values.put(EntryColumns.READ_DATE, (new Date()).getTime());
                 values.put(LINK, url);
                 values.put(EntryColumns.IS_WITH_TABLES, 0);
                 values.put(EntryColumns.IMAGES_SIZE, 0);
                 if ( isStarred )
-                    values.put(EntryColumns.IS_FAVORITE, 1);
-
+                    PutFavorite(values, true);
                 //values.put(EntryColumns.MOBILIZED_HTML, enclosureString);
                 //values.put(EntryColumns.ENCLOSURE, enclosureString);
                 entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
@@ -1138,41 +1132,39 @@ public class FetcherService extends IntentService {
         final String statusText = getContext().getString(R.string.AllImages);
         int status = obs.Start(statusText, false); try {
 
-            ContentResolver cr = getContext().getContentResolver();
-            Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
-                    TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null);
             ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
-            while (cursor != null && cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
-                final long taskId = cursor.getLong(0);
-                final long entryId = cursor.getLong(1);
-                final String entryLink = cursor.getString(4);
-                final String imgPath = cursor.getString(2);
-                int attemptNum = 0;
-                if (!cursor.isNull(3)) {
-                    attemptNum = cursor.getInt(3);
-                }
-                final int finalNbAttempt = attemptNum;
-                futures.add( executor.submit(new Callable<DownloadResult>() {
-                    @Override
-                    public DownloadResult call() {
-                        DownloadResult result = new DownloadResult();
-                        result.mAttemptNumber = finalNbAttempt;
-                        result.mTaskID = taskId;
-                        result.mResultCount = 0;
-                        try {
-                            if ( NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false) )
-                                result.mResultCount = 1;
-                        } catch ( Exception e ) {
-                            Status().SetError( "", "", "", e );
-                        }
-                        return result;
+            ContentResolver cr = getContext().getContentResolver();
+            try ( Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
+                    TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null) ) {
+                while (cursor != null && cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
+                    final long taskId = cursor.getLong(0);
+                    final long entryId = cursor.getLong(1);
+                    final String entryLink = cursor.getString(4);
+                    final String imgPath = cursor.getString(2);
+                    int attemptNum = 0;
+                    if (!cursor.isNull(3)) {
+                        attemptNum = cursor.getInt(3);
                     }
-                }) );
+                    final int finalNbAttempt = attemptNum;
+                    futures.add( executor.submit(new Callable<DownloadResult>() {
+                        @Override
+                        public DownloadResult call() {
+                            DownloadResult result = new DownloadResult();
+                            result.mAttemptNumber = finalNbAttempt;
+                            result.mTaskID = taskId;
+                            result.mResultCount = 0;
+                            try {
+                                if ( NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false) )
+                                    result.mResultCount = 1;
+                            } catch ( Exception e ) {
+                                Status().SetError( "", "", "", e );
+                            }
+                            return result;
+                        }
+                    }) );
+                }
             }
             FinishExecutionService( statusText, status, futures);
-
-            cursor.close();
-
 
         } finally { obs.End( status ); }
 
@@ -1215,11 +1207,13 @@ public class FetcherService extends IntentService {
         if (!operations.isEmpty()) {
             new Thread() {
                 @Override public void run() {
-                    Status().ChangeProgress(R.string.applyOperations);
+                    int status = Status().Start( R.string.applyOperations, false );
                     try {
                         MainApplication.getContext().getContentResolver().applyBatch(FeedData.AUTHORITY, operations);
                     } catch (Throwable ignored) {
 
+                    } finally {
+                        Status().End( status );
                     }
                 }
             }.start();
@@ -1309,39 +1303,39 @@ public class FetcherService extends IntentService {
         }
         int status = Status().Start(getContext().getString(R.string.deleteOldEntries), false);
         ContentResolver cr = getContext().getContentResolver();
-        final Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
+        try ( Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                                        new String[]{_ID, FeedColumns.OPTIONS},
-                                       FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL + DB_OR + FeedColumns._ID + "=" + GetExtrenalLinkFeedID(), null, null);
-        try {
-            //mIsDeletingOld = true;
-            int index = 1;
-            while (cursor.moveToNext() && !isCancelRefresh()) {
-                index++;
-                Status().ChangeProgress( String.format( "%d / %d", index, cursor.getCount() ) );
-                long keepDateBorderTime = defaultKeepDateBorderTime;
-                final String jsonText = cursor.isNull( 1 ) ? "" : cursor.getString(1);
-                if ( !jsonText.isEmpty() )
-                    try {
-                        JSONObject jsonOptions = new JSONObject(jsonText);
-                        if (jsonOptions.has(CUSTOM_KEEP_TIME))
-                            keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                                       FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL + DB_OR + FeedColumns._ID + "=" + GetExtrenalLinkFeedID(), null, null) ) {
+            try {
+                //mIsDeletingOld = true;
+                int index = 1;
+                while (cursor.moveToNext() && !isCancelRefresh()) {
+                    index++;
+                    Status().ChangeProgress(String.format("%d / %d", index, cursor.getCount()));
+                    long keepDateBorderTime = defaultKeepDateBorderTime;
+                    final String jsonText = cursor.isNull(1) ? "" : cursor.getString(1);
+                    if (!jsonText.isEmpty())
+                        try {
+                            JSONObject jsonOptions = new JSONObject(jsonText);
+                            if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                                keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    final long feedID = cursor.getLong(0);
+                    final boolean isDeleteRead = PrefUtils.getBoolean("delete_read_articles", false);
+                    if (keepDateBorderTime > 0 || isDeleteRead) {
+                        final String deleteRead = isDeleteRead ? DB_OR + WHERE_READ : "";
+                        String where = "(" + EntryColumns.DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
+                        // Delete the entries, the cache files will be deleted by the content provider
+                        cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
                     }
-                final long feedID = cursor.getLong(0);
-                final boolean isDeleteRead = PrefUtils.getBoolean( "delete_read_articles", false );
-                if ( keepDateBorderTime > 0 || isDeleteRead ) {
-                    final String deleteRead = isDeleteRead ? DB_OR + WHERE_READ : "";
-                    String where = "(" + EntryColumns.DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
-                    // Delete the entries, the cache files will be deleted by the content provider
-                    cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
                 }
+                EntryUrlVoc.INSTANCE.reinit(true);
+            } finally {
+                Status().ChangeProgress("");
+                Status().End(status);
             }
-            EntryUrlVoc.INSTANCE.reinit( true );
-        } finally {
-            Status().ChangeProgress( "" );
-            Status().End(status);
-            cursor.close();
         }
     }
 
@@ -1350,45 +1344,43 @@ public class FetcherService extends IntentService {
         int status = Status().Start( statusText, false ); try {
             final ExecutorService executorInner = CreateExecutorService(GetThreadCount()); try {
                 ContentResolver cr = getContentResolver();
-                final Cursor cursor;
                 String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
                 final String[] projection = new String[]{FeedColumns._ID, FeedColumns.LAST_UPDATE, FeedColumns.OPTIONS};
-                if (groupID != null)
-                    cursor = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), projection, null, null, null);
-                else
-                    cursor = cr.query(FeedColumns.CONTENT_URI, projection, where, null, null);
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
-                while (cursor.moveToNext()) {
-                    if ( isFromAutoRefresh ) {
-                        final JSONObject jsonOptions = getJsonObject(cursor);
-                        int pos = cursor.getColumnIndex(FeedColumns.LAST_UPDATE);
-                        long lastUpdate = !cursor.isNull( pos ) ? cursor.getLong( pos ) : 0;
-                        long interval = getTimeIntervalInMSecs(REFRESH_INTERVAL, DEFAULT_INTERVAL);
-                        if (jsonOptions.has(CUSTOM_REFRESH_INTERVAL)) {
-                            try {
-                                interval = jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                try ( final Cursor cursor = groupID != null ?
+                    cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(groupID), projection, null, null, null) :
+                    cr.query(FeedColumns.CONTENT_URI, projection, where, null, null) ) {
+                    while (cursor.moveToNext()) {
+                        if (isFromAutoRefresh) {
+                            final JSONObject jsonOptions = getJsonObject(cursor);
+                            int pos = cursor.getColumnIndex(FeedColumns.LAST_UPDATE);
+                            long lastUpdate = !cursor.isNull(pos) ? cursor.getLong(pos) : 0;
+                            long interval = getTimeIntervalInMSecs(REFRESH_INTERVAL, DEFAULT_INTERVAL);
+                            if (jsonOptions.has(CUSTOM_REFRESH_INTERVAL)) {
+                                try {
+                                    interval = jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                            if (lastUpdate != 0 && System.currentTimeMillis() - lastUpdate < interval)
+                                continue;
                         }
-                        if ( lastUpdate != 0 && System.currentTimeMillis() - lastUpdate < interval )
-                            continue;
+                        final String feedId = cursor.getString(0);
+                        futures.add(executor.submit(() -> {
+                            DownloadResult result = new DownloadResult();
+                            result.mResultCount = 0;
+                            try {
+                                if (!isCancelRefresh())
+                                    result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
+                            } catch (Exception e) {
+                                Status().SetError("", "", "", e);
+                            }
+                            return result;
+                        }));
                     }
-                    final String feedId = cursor.getString(0);
-                    futures.add(executor.submit(() -> {
-                        DownloadResult result = new DownloadResult();
-                        result.mResultCount = 0;
-                        try {
-                            if (!isCancelRefresh())
-                                result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
-                        } catch (Exception e) {
-                            Status().SetError( "", "", "", e );
-                        }
-                        return result;
-                    }));
                 }
-                cursor.close();
-                return FinishExecutionService( statusText, status,  futures );
+                return FinishExecutionService( statusText, status, futures );
             } finally {
                 executorInner.shutdown();
             }
@@ -1415,48 +1407,49 @@ public class FetcherService extends IntentService {
             return 0;
 
         ContentResolver cr = getContentResolver();
-        Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), null, null, null, null);
+        try ( Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), null, null, null, null) ) {
 
-        if (cursor.moveToFirst()) {
-            int urlPosition = cursor.getColumnIndex(FeedColumns.URL);
-            int idPosition = cursor.getColumnIndex(_ID);
-            int titlePosition = cursor.getColumnIndex(FeedColumns.NAME);
-            //if ( cursor.isNull( cursor.getColumnIndex(FeedColumns.REAL_LAST_UPDATE) ) ) {
-            //    keepDateBorderTime = 0;
-            //}
-            boolean isRss = true;
-            boolean isOneWebPage = false;
-            try {
+            if (cursor.moveToFirst()) {
+                int urlPosition = cursor.getColumnIndex(FeedColumns.URL);
+                int idPosition = cursor.getColumnIndex(_ID);
+                int titlePosition = cursor.getColumnIndex(FeedColumns.NAME);
+                //if ( cursor.isNull( cursor.getColumnIndex(FeedColumns.REAL_LAST_UPDATE) ) ) {
+                //    keepDateBorderTime = 0;
+                //}
+                boolean isRss = true;
+                boolean isOneWebPage = false;
+                try {
 
-                JSONObject jsonOptions = getJsonObject(cursor);
-                isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
-                isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+                    JSONObject jsonOptions = getJsonObject(cursor);
+                    isRss = !jsonOptions.has(IS_RSS) || jsonOptions.getBoolean(IS_RSS);
+                    isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
 
-                if (jsonOptions.has(CUSTOM_KEEP_TIME))
-                    keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
+                    if (jsonOptions.has(CUSTOM_KEEP_TIME))
+                        keepDateBorderTime = jsonOptions.getDouble(CUSTOM_KEEP_TIME) == 0 ? 0 : System.currentTimeMillis() - (long) (jsonOptions.getDouble(CUSTOM_KEEP_TIME) * MILLS_IN_DAY);
 
-                final String feedID = cursor.getString(idPosition);
-                final String feedUrl = cursor.getString(urlPosition);
-                final boolean isLoadImages  = NetworkUtils.needDownloadPictures() && ( IsAutoDownloadImages( feedID ) == AutoDownloadEntryImages.Yes );
-                final int status = Status().Start(cursor.getString(titlePosition), false); try {
-                    if ( isRss )
-                        newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, feedID);
-                    else if ( isOneWebPage )
-                        newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages, 0 );
-                    else {
-                        newCount = HTMLParser.Parse(executor, feedID, feedUrl, jsonOptions, 0);
-                        FetcherService.addEntriesToMobilize(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedId));
+                    final String feedID = cursor.getString(idPosition);
+                    final String feedUrl = cursor.getString(urlPosition);
+                    final boolean isLoadImages = NetworkUtils.needDownloadPictures() && (IsAutoDownloadImages(feedID) == AutoDownloadEntryImages.Yes);
+                    final int status = Status().Start(cursor.getString(titlePosition), false);
+                    try {
+                        if (isRss)
+                            newCount = ParseRSSAndAddEntries(feedUrl, cursor, keepDateBorderTime, feedID);
+                        else if (isOneWebPage)
+                            newCount = OneWebPageParser.INSTANCE.parse(keepDateBorderTime, feedID, feedUrl, jsonOptions, isLoadImages, 0);
+                        else {
+                            newCount = HTMLParser.Parse(executor, feedID, feedUrl, jsonOptions, 0);
+                            FetcherService.addEntriesToMobilize(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedId));
+                        }
+                    } finally {
+                        Status().End(status);
                     }
-                } finally {
-                    Status().End(status);
+                    newNumber(feedID, DrawerAdapter.NewNumberOperType.Insert, newCount);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                newNumber(feedID, DrawerAdapter.NewNumberOperType.Insert, newCount );
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
+            }
         }
-        cursor.close();
         return newCount;
     }
 
@@ -1668,14 +1661,13 @@ public class FetcherService extends IntentService {
 
                     } else {
                         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-                        parseXml(reader, handler);
-
+                        Xml.parse( CleanRSS( xmlText ), handler);
                     }
                     break;
                 }
 
                 case FETCHMODE_REENCODE: {
-                    int start = xmlText != null ? xmlText.indexOf(ENCODING) : -1;
+                    int start = xmlText.indexOf(ENCODING);
 
                     if (start > -1) {
                         parseXml( new StringReader(new String(outputStream.toByteArray(),
@@ -1789,14 +1781,12 @@ public class FetcherService extends IntentService {
         int status = Status().Start("deleteAllFeedEntries", true);
         try {
             final ContentResolver cr = getContext().getContentResolver();
-            final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null );
-            if ( cursor != null  ){
+            try (final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null ) ) {
                 while ( cursor.moveToNext() ) {
                     Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
                     FileUtils.INSTANCE.deleteMobilizedFile(cursor.getString(1));
                     EntryUrlVoc.INSTANCE.remove(  cursor.getString(1) );
                 }
-                cursor.close();
             }
             Status().ChangeProgress( "" );
             cr.delete(entriesUri, condition, null);
@@ -1812,8 +1802,7 @@ public class FetcherService extends IntentService {
         try {
 
             final ContentResolver cr = getContext().getContentResolver();
-            final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null );
-            if ( cursor != null  ){
+            try( final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null ) ) {
                 SetNotifyEnabled( false ); try {
                     while (cursor.moveToNext()) {
 
@@ -1828,7 +1817,6 @@ public class FetcherService extends IntentService {
                     SetNotifyEnabled( true );
                     notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
                 }
-                cursor.close();
             }
             Status().ChangeProgress( "" );
         } finally {
@@ -1962,20 +1950,20 @@ public class FetcherService extends IntentService {
 
             final HashMap<String, Long> mapEntryLinkHashToID = new HashMap<>();
             final HashMap<String, Long> mapEntryLinkHashToFeedID = new HashMap<>();
-            Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{_ID, LINK, FEED_ID}, null, null, null);
-            while (cursor.moveToNext()) {
-                final String linkHash = FileUtils.INSTANCE.getLinkHash(cursor.getString(1));
-                mapEntryLinkHashToID.put(linkHash, cursor.getLong(0));
-                mapEntryLinkHashToFeedID.put(linkHash, cursor.getLong(2));
+            try( Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{_ID, LINK, FEED_ID}, null, null, null) ) {
+                while (cursor.moveToNext()) {
+                    final String linkHash = FileUtils.INSTANCE.getLinkHash(cursor.getString(1));
+                    mapEntryLinkHashToID.put(linkHash, cursor.getLong(0));
+                    mapEntryLinkHashToFeedID.put(linkHash, cursor.getLong(2));
+                }
             }
-            cursor.close();
 
             final HashMap<Long, Long> mapFeedIDToGroupID = new HashMap<>();
-            cursor = getContentResolver().query(FeedColumns.CONTENT_URI, new String[]{_ID, GROUP_ID}, GROUP_ID + DB_IS_NOT_NULL, null, null);
-            while (cursor.moveToNext())
-                if (!cursor.isNull(1))
-                    mapFeedIDToGroupID.put(cursor.getLong(0), cursor.getLong(1));
-            cursor.close();
+            try( Cursor cursor = getContentResolver().query(FeedColumns.CONTENT_URI, new String[]{_ID, GROUP_ID}, GROUP_ID + DB_IS_NOT_NULL, null, null) ) {
+                while (cursor.moveToNext())
+                    if (!cursor.isNull(1))
+                        mapFeedIDToGroupID.put(cursor.getLong(0), cursor.getLong(1));
+            }
 
             File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
             if (isCancelRefresh())

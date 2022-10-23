@@ -97,9 +97,12 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -115,6 +118,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -131,10 +135,12 @@ import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -152,6 +158,7 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
@@ -169,6 +176,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowEntryText;
     private final boolean mShowUnread;
     private final HomeActivity mActivity;
+    private boolean mIsAutoSetAsRead = false;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
     FeedFilters mFilters = null;
@@ -192,6 +200,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private int mIsNewPos;
     private int mTextLenPos;
     private int mCategoriesPos;
+    private int mFeedOptionsPos = -1;
     public static int mEntryActivityStartingStatus = 0;
     public boolean mIgnoreClearContentVocOnCursorChange = false;
     public boolean mIsNewTask = false;
@@ -274,6 +283,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.starImgView = view.findViewById(R.id.favorite_icon);
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
+            holder.videoImgView = view.findViewById(R.id.video_icon);
             holder.readImgView.setVisibility(PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE); //
             holder.textLayout = view.findViewById(R.id.textLayout);
             holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
@@ -626,8 +636,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
 
         {
-            final int max = PrefUtils.getIntFromText( "atricle_list_size_progressbar_maxsize", 50 ) * KBYTE;
-            if ( max > 0 ) {
+            final int max = PrefUtils.getIntFromText( "article_list_size_progressbar_maxsize", 50 ) * KBYTE;
+            if ( max > 0 && ( mShowFeedInfo || !mIsAutoSetAsRead ) ) {
                 holder.textSizeProgressBar.setMax( max );
                 holder.textSizeProgressBar.setProgress( (int)textSize );
                 holder.textSizeProgressBar.setVisibility(View.VISIBLE );
@@ -648,11 +658,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) ;
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
+        final String abstractText = cursor.getString(mAbstractPos);
+
         final boolean showTextPreview = PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
-            cursor.getString(mAbstractPos) != null && !isTextShown( holder );
+            abstractText != null && !isTextShown( holder );
         holder.textPreviewTextView.setVisibility( showTextPreview ? View.VISIBLE : View.GONE );
         if ( showTextPreview ) {
-            String s = getBoldText(GetHtmlAligned(cursor.getString(mAbstractPos))).toString();
+            String s = getBoldText(GetHtmlAligned(abstractText)).toString();
             s = s.replace( "\n", " " );
             s = s.replace( holder.titleTextView.getText().toString(), "" );
             s = s.replace( "￼", "" );
@@ -675,6 +687,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.textPreviewTextView.setVisibility( View.GONE );
         }
 
+        holder.videoImgView.setVisibility(View.GONE);
 
         UpdateStarImgView(holder);
         holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
@@ -715,7 +728,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( !mShowEntryText )
                 holder.collapseBtnBottom.setVisibility( View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
-            final String html = cursor.getString(mAbstractPos) == null ? "" : GetHtmlAligned(cursor.getString(mAbstractPos));
+            final String html = abstractText == null ? "" : GetHtmlAligned(abstractText);
             holder.textTextView.setLinkTextColor( Theme.GetColorInt(LINK_COLOR, R.string.default_link_color) );
             //holder.textTextView.setTextIsSelectable( true );
             SetupEntryText(holder, getBoldText(html), NeedToOpenArticle( html ) || HasMoreText( holder ) );
@@ -728,6 +741,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetContentImage(context, holder.contentImgView2, 1, content.mImageUrlList, feedTitle);
                     SetContentImage(context, holder.contentImgView3, 2, content.mImageUrlList, feedTitle);
                     SetupEntryText(holder, content.mText, content.mNeedToOpenArticle  || HasMoreText( holder ));
+
                     if ( mNeedScrollToTopExpandedArticle ) {
                         mNeedScrollToTopExpandedArticle = false;
                         UiUtils.RunOnGuiThread(() -> EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID))), 100);
@@ -754,6 +768,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         } else
             holder.textTextView.setVisibility(View.GONE);
+
+        holder.videoImgView.setVisibility( abstractText != null && abstractText.contains( "<video" ) ? View.VISIBLE : View.GONE );
 
         /*Display display = ((WindowManager) context.getSystemService( Context.WINDOW_SERVICE ) ).getDefaultDisplay();
         int or = display.getOrientation();
@@ -799,6 +815,18 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private Spanned getBoldText(String html) {
         String result = PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html;
         return Html.fromHtml(result);
+    }
+
+    private boolean isAlsoSetAsRead( Cursor cursor ) {
+        if ( cursor.isNull( mFeedOptionsPos ) )
+            return false;
+        try {
+            JSONObject json = new JSONObject( cursor.getString( mFeedOptionsPos ) );
+            return json.has( AUTO_SET_AS_READ ) && json.getBoolean( AUTO_SET_AS_READ );
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static String CategoriesToOutput(String categories) {
@@ -868,8 +896,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             temp = temp.replaceAll( "<p[^>]+>", "" );
             temp = temp.replace( "</p>", "" ).trim();
             temp = temp.replace( "<b>", "" );
-            temp = temp.replace( "</b>", "" ).trim();
-            temp = temp.replaceAll( "<[^>]+>(\\s)?+</[^>]+>", "" );
+            temp = temp.replace( "</b>",  "" ).trim();
+            temp = temp.replaceAll( "<[^>/]+>(\\s)+?</[^>]+>", "" );
 
             while ( temp.startsWith( "<br>" ) )
                 temp = temp.replaceFirst( "<br>", "" ).trim();
@@ -1159,7 +1187,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if (isRead)
                 needUpdate = mMarkAsReadList.add(entryUri.toString());
             else
-                needUpdate = mMarkAsReadList.remove(entryUri.toString());
+                needUpdate = (mDBReadMap.containsKey( entryId ) && mDBReadMap.get( entryId )) || mMarkAsReadList.remove(entryUri.toString());
         }
         if ( needUpdate )
             DrawerAdapter.newNumber(feedID, DrawerAdapter.NewNumberOperType.Update, isRead );
@@ -1205,8 +1233,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     SetNotifyEnabled( false );
                 try {
                     ContentValues values = new ContentValues();
-                    values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
-
+                    PutFavorite( values, isFavorite );
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
                     cr.update(entryUri, values, null, null);
                     if (!isFavorite) {
@@ -1291,11 +1318,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
             mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
             mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
+            mFeedOptionsPos = cursor.getColumnIndex(FeedColumns.OPTIONS);
             {
                 int col = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
                 if ( col != -1 && cursor.moveToFirst() )
                     mIsLoadImages = !cursor.isNull( col ) && cursor.getInt( col ) == 1;
             }
+            mIsAutoSetAsRead = isAlsoSetAsRead( cursor );
         }
     }
 
@@ -1327,6 +1356,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ImageView starImgView;
         ImageView mobilizedImgView;
         ImageView readImgView;
+        ImageView videoImgView;
         ImageView newImgView;
         ImageView readToggleSwypeBtnView;
         ImageView starToggleSwypeBtnView;

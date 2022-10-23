@@ -69,6 +69,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -92,6 +93,7 @@ import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -103,6 +105,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
+
+    private static final int FAVORITES_DRAWER_PAS = 2;
+    private static final int LAST_READ_DRAWER_POS = 4;
+
     public View mPageUpBtn = null;
     public View mPageUpBtnFS = null;
     private int mStatus = 0;
@@ -198,6 +204,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
+                    Dog.v(String.format( "newNumber onDrawerOpened" ) );
                     mDrawerAdapter.notifyDataSetChanged();
                     mDrawerAdapter.updateNumbersAsync();
                 }
@@ -401,13 +408,15 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     mDrawerAdapter.notifyDataSetChanged();
             }
             if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
-                selectDrawerItem( 2 );
+                selectDrawerItem(FAVORITES_DRAWER_PAS);
             else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
                 selectDrawerItem( 0 );
             else if ( !mEntriesFragment.mIsSingleLabel && intent.getData().equals(CONTENT_URI ) )
                 selectDrawerItem( 1 );
             else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
                 selectDrawerItem( 3 );
+            else if ( intent.getData().equals( LAST_READ_CONTENT_URI ) )
+                selectDrawerItem( LAST_READ_DRAWER_POS );
             else {
                 if ( mDrawerAdapter == null )
                     mNewFeedUri = intent.getData();
@@ -615,15 +624,18 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             case 0:
                 newUri = UNREAD_ENTRIES_CONTENT_URI;
                 mTitle = getString( R.string.unread_entries );
-
                 break;
             case 1:
                 newUri = CONTENT_URI;
                 mTitle = getString( R.string.all_entries );
                 break;
-            case 2:
+            case FAVORITES_DRAWER_PAS:
                 newUri = FAVORITES_CONTENT_URI;
                 mTitle = getString( R.string.favorites );
+                break;
+            case LAST_READ_DRAWER_POS:
+                newUri = LAST_READ_CONTENT_URI;
+                mTitle = getString( R.string.last_read );
                 break;
             case EXTERNAL_ENTRY_POS:
                 newUri = ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );
@@ -689,8 +701,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 case 1:
                     SetActionbarIndicator( R.drawable.cup_new_pot );
                     break;
-                case 2:
+                case FAVORITES_DRAWER_PAS:
                     SetActionbarIndicator( R.drawable.cup_new_star);
+                    break;
+                case LAST_READ_DRAWER_POS:
+                    SetActionbarIndicator( R.drawable.cup_new_load_now);
                     break;
                 case 3:
                     SetActionbarIndicator( R.drawable.cup_new_load_later );
