@@ -149,6 +149,7 @@
     <string name="no_entries">没有文章</string>
     <string name="downloadOneImage">下载图片</string>
     <string name="favorites">已加星标</string>
+    <string name="last_read">最后阅读</string>
     <string name="context_menu_share_starred">分享星标条目</string>
     <string name="menu_star">加星标</string>
     <string name="menu_unstar">取消星标</string>
@@ -560,7 +561,7 @@
     <string name="articleWasUnstarred">已移除了一篇文章的星标</string>
     <string name="articleNotFound">找不到一篇文章 :(</string>
     <string name="article_list_size_progressbar_maxsize">"最大文本大小 "</string>
-    <string name="article_list_size_progressbar_maxsize_descr">以 KB 显示水平指示器 (0表示关闭)</string>
+    <string name="article_list_size_progressbar_maxsize_descr">kB 为单位，针对水平指示器(0 表示关闭)。开启了“自动将文章标记为已读源”的订阅源看不到该选项。</string>
     <string name="setting_edit_feed_force_portrait_orientation">编辑新闻源竖屏方向</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">在编辑Feed窗口中强制使用竖屏方向 - 检查您的手机是否有窄屏</string>
     <string name="name">名称</string>

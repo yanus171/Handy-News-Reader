@@ -151,6 +151,7 @@
     <string name="no_entries">Нет новостей</string>
     <string name="downloadOneImage">Загрузить изображение</string>
     <string name="favorites">Избранное</string>
+    <string name="last_read">Последнее прочитанное</string>
     <string name="context_menu_share_starred">Поделиться избранными новостями</string>
     <string name="menu_star">В избранное</string>
     <string name="menu_unstar">Убрать из избранного</string>
