@@ -257,6 +257,9 @@ public class ArticleTextExtractor {
                                        StringUtils.getDateTimeString(parseDate(item.getString("timePublished"), 0L).getTime() ),
                                        item.getString("message")) );
                     }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                    result.append( e.getLocalizedMessage() );
                 } catch (JSONException e) {
                     e.printStackTrace();
                     result.append( e.getLocalizedMessage() );

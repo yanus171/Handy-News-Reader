@@ -533,14 +533,17 @@ public class EntryView extends WebView implements Handler.Callback {
         if ( !layout.equals( "Hidden" ) ) {
             content.append(BUTTON_SECTION_START);
             if (!feedID.equals(FetcherService.GetExtrenalLinkFeedID())) {
-                content.append(BUTTON_START(layout));
 
                 if (!canSwitchToFullText) {
+                    content.append(BUTTON_START(layout));
                     content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
+                    content.append(BUTTON_END(layout));
                 } else if (hasOriginalText) {
+                    content.append(BUTTON_START(layout));
                     content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
+                    content.append(BUTTON_END(layout));
                 }
-                content.append(BUTTON_END(layout));
+
             }
 
             if (canSwitchToFullText)
@@ -980,7 +983,8 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     public void UpdateImages( final boolean downloadImages ) {
-        StatusStartPageLoading();
+        if ( !downloadImages )
+            StatusStartPageLoading();
         new Thread() {
             @Override
             public void run() {
@@ -988,13 +992,11 @@ public class EntryView extends WebView implements Handler.Callback {
                 synchronized (EntryView.this) {
                     mData = data;
                 }
-                UiUtils.RunOnGuiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ( !IsStatusStartPageLoading() )
-                            mScrollY = getScrollY();
+                UiUtils.RunOnGuiThread(() -> {
+                    if ( !IsStatusStartPageLoading() )
+                        mScrollY = getScrollY();
+                    if ( !downloadImages )
                         LoadData();
-                    }
                 });
             }
         }.start();
