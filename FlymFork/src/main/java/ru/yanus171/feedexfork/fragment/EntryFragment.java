@@ -1114,12 +1114,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                         entriesCursor.close();
                     }
-                    try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(getCurrentEntryID()), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
-                        if (curEntry.moveToFirst()) {
-                            final String feedID = curEntry.getString(0);
-                            mFilters = new FeedFilters(feedID);
+                    if ( getCurrentEntryID() != -1 )
+                        try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(getCurrentEntryID()), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
+                            if (curEntry.moveToFirst()) {
+                                final String feedID = curEntry.getString(0);
+                                mFilters = new FeedFilters(feedID);
+                            }
                         }
-                    }
                 } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
                     mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
                     mCurrentPagerPos = 0;
