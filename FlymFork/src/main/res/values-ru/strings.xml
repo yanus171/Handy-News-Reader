@@ -563,7 +563,6 @@
     <string name="articleWasUnstarred">Статья убрана из избранного</string>
     <string name="articleNotFound">Статья не найдена :(</string>
     <string name="article_list_size_progressbar_maxsize">"Максимальный размер текста "</string>
-    <string name="article_list_size_progressbar_maxsize_descr">В кБ для горизонтального индикатора</string>
     <string name="setting_edit_feed_force_portrait_orientation">Портретная ориентацию окна редактирования</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Принудительная портретная ориентация экрана в окне настроек канала - отметьте галку, если у Вас узкий экран телефона</string>
     <string name="name">Название</string>
