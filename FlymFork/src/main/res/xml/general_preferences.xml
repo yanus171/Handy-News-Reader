@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-    xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference" >
+    xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference">
 
     <PreferenceScreen
         android:icon="@drawable/prefs_info"
@@ -94,6 +94,36 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:layout="@layout/preference_items"
+        android:summary="@string/settings_category_feed_list_summary"
+        android:icon="@drawable/prefs_article_list"
+        android:title="@string/settings_category_feed_list">
+        <CheckBoxPreference
+            android:key="show_read_article_count"
+            android:defaultValue="false"
+            android:title="@string/show_read_article_count"
+            android:summary="@string/show_read_article_count_descr"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_group_entries_count"
+            android:title="@string/show_group_entrries_count"
+            android:summary="@string/show_group_entries_count_descr" />
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_last_read"/>
+        <ru.yanus171.feedexfork.view.LabelSelectPreference
+            android:key="lastReadHideLabelList"
+            android:title="@string/setting_last_read_hide_label_list"
+            android:summary="@string/setting_last_read_hide_label_list_summary"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="last_read_count"
+            android:inputType="number"
+            android:defaultValue="20"
+            android:title="@string/setting_last_read_article_count"
+            android:summary="@string/setting_last_read_article_count_descr"/>
+
+    </PreferenceScreen>
 
     <PreferenceScreen
         android:layout="@layout/preference_items"
@@ -171,18 +201,6 @@
             android:key="show_new_icon"
             android:summary="@string/show_new_icon_descr"
             android:title="@string/show_new_icon"/>
-
-        <CheckBoxPreference
-            android:key="show_read_article_count"
-            android:defaultValue="false"
-            android:title="@string/show_read_article_count"
-            android:summary="@string/show_read_article_count_descr"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="show_group_entries_count"
-            android:title="@string/show_group_entrries_count"
-            android:summary="@string/show_group_entries_count_descr" />
 
         <CheckBoxPreference
             android:defaultValue="true"
@@ -633,7 +651,7 @@
         android:title="@string/settings_category_advanced">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_advanced"/>
+            android:title="@string/settings_category_labels"/>
 
         <PreferenceScreen
             android:layout="@layout/preference_items"
@@ -648,6 +666,11 @@
             android:defaultValue="false"
             android:title="@string/settings_labels_sort_alphabetical"
             android:summary="@string/settings_labels_sort_alphabetical_descr"/>
+
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_advanced"/>
+
         <CheckBoxPreference
             android:key="feeds_sort_alphabetical"
             android:defaultValue="false"

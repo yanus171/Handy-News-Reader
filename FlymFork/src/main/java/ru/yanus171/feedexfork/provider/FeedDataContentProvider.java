@@ -81,12 +81,17 @@ import ru.yanus171.feedexfork.provider.FeedData.LabelColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.view.LabelSelectPreference;
 
 import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.provider.FeedData.ENTRY_LABELS_WITH_ENTRIES;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.READ_DATE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_LAST_READ;
 import static ru.yanus171.feedexfork.utils.PrefUtils.IsFeedsABCSort;
+import static ru.yanus171.feedexfork.view.ListSelectPreference.DefaultSeparator;
 
 public class FeedDataContentProvider extends ContentProvider {
 
@@ -379,8 +384,7 @@ public class FeedDataContentProvider extends ContentProvider {
                 break;
             }
             case URI_LAST_READ:{
-                queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
-                queryBuilder.appendWhere(EntryColumns.WHERE_LAST_READ);
+                // later
                 break;
             }
             case URI_UNREAD_ENTRIES: {
@@ -444,9 +448,11 @@ public class FeedDataContentProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
-        if ( matchCode == URI_LAST_READ )
-            queryBuilder.setTables( "(SELECT * FROM ( " + FeedData.ENTRIES_TABLE_WITH_FEED_INFO + ") ORDER BY " + READ_DATE + DB_DESC + " LIMIT 20)" );
-
+        if ( matchCode == URI_LAST_READ ) {
+            queryBuilder.setTables("(SELECT * FROM ( " + FeedData.ENTRIES_TABLE_WITH_FEED_INFO + ") ORDER BY " + READ_DATE + DB_DESC + " LIMIT " + PrefUtils.getIntFromText("last_read_count",  20) + ")" );
+            queryBuilder.appendWhere( WHERE_LAST_READ + DB_AND + EntryColumns._ID + " NOT IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
+                                       " WHERE " + EntryLabelColumns.LABEL_ID + " IN ( " + LabelSelectPreference.GetIDList( "lastReadHideLabelList", DefaultSeparator) + "))" );
+        }
         Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
