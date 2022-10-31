@@ -556,8 +556,6 @@
     <string name="list_was_scrolled_to_bottom">Défilé vers le bas</string>
     <string name="articleWasUnstarred">Un article a été supprimé des favoris</string>
     <string name="articleNotFound">Un article n\'a pas été trouvé :(</string>
-    <string name="article_list_size_progressbar_maxsize">"Taille maximum du texte "</string>
-    <string name="article_list_size_progressbar_maxsize_descr">En kB pour l\'indicateur horizontal (0 pour désactiver)</string>
     <string name="setting_edit_feed_force_portrait_orientation">Modifier l\'orientation portrait du flux</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forcer l\'orientation de l\'écran en portrait dans la fenêtre d\'édition d\'un flux - vérifiez si votre téléphone a un écran étroit</string>
     <string name="name">Nom</string>
