@@ -552,8 +552,6 @@
     <string name="list_was_scrolled_to_bottom">Przewinięto na dół</string>
     <string name="articleWasUnstarred">Artykuł został odgwiazdkowany</string>
     <string name="articleNotFound">Artykuł nie został znaleziony :(</string>
-    <string name="article_list_size_progressbar_maxsize">"Maks. rozmiar tekstu"</string>
-    <string name="article_list_size_progressbar_maxsize_descr">W kB dla poziomego wskaźnika (0 by wyłączyć)</string>
     <string name="setting_edit_feed_force_portrait_orientation">Pionowa orientacja Edycji Kanału</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Wymusza pionową orientację ekranu w oknie Edycji Kanału - zaznacz, jeśli Twój telefon ma wąski ekran</string>
     <string name="name">Nazwa</string>
