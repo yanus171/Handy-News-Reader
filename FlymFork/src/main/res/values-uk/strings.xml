@@ -659,4 +659,12 @@
     <string name="settings_category_connection">З\'єднання</string>
     <string name="couldNotCreateDownloadsSubfolder">Не вдалося створити теку в теці Завантаження</string>
     <string name="article_text_expand_controls">Розгорнути текст статті</string>
+    <string name="settings_category_labels">Мітки</string>
+    <string name="settings_category_feed_list">Список каналів</string>
+    <string name="settings_category_last_read">Останній прочитаний розділ</string>
+    <string name="setting_last_read_hide_label_list">Список прихованих міток в останньому прочитаному</string>
+    <string name="setting_last_read_hide_label_list_summary">Не показувати обрані мітки в останньому прочитаному розділі</string>
+    <string name="setting_last_read_article_count">Число статей</string>
+    <string name="setting_last_read_article_count_descr">Число видимих статей в останньому прочитаному розділі</string>
+    <string name="settings_category_feed_list_summary">Налаштування вигляду списку каналів та останнього прочитаного розділу</string>
 </resources>
