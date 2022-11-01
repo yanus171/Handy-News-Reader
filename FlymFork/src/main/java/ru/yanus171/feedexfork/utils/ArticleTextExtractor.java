@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -654,11 +655,16 @@ public class ArticleTextExtractor {
 //            }
 //        }
 //    }
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private static boolean isUsefull(Element el) {
+        return el.outerHtml().toLowerCase().contains( "mathjax" );
+    }
     private static void removeScriptsAndStyles(Element doc) {
         Elements scripts = doc.getElementsByTag("script");
-        for (Element item : scripts) {
-            item.remove();
-        }
+        for (Element item : scripts)
+            if ( !isUsefull( item ) )
+                item.remove();
+
 
         if (FetcherService.isCancelRefresh())
             return;
@@ -672,9 +678,9 @@ public class ArticleTextExtractor {
             return;
 
         Elements styles = doc.getElementsByTag("style");
-        for (Element style : styles) {
-            style.remove();
-        }
+        for (Element style : styles)
+            if ( !isUsefull( style ) )
+                style.remove();
 
     }
 

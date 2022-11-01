@@ -68,6 +68,7 @@ public class HtmlUtils {
             .addTags("s")
             .addTags("time")
             .addAttributes("track", "src", "kind", "srclang", "label")
+            .addAttributes("script", "src", "type")
             .addProtocols("img", "src", "http", "https", "data");
 
     public static final String URL_SPACE = "%20";
@@ -212,10 +213,12 @@ public class HtmlUtils {
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
                     final File file = new File( imgFilePath );
                     final boolean isImageToAdd = maxImageDownloadCount == 0 || ( index <= maxImageDownloadCount );
-                    final String imgFileTag =
+                    String imgFileTag =
                         GetLinkStartTag(imgFilePath) +
                         imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
                         LINK_TAG_END;
+                    if ( PrefUtils.isImageWhiteBackground() )
+                        imgFileTag = imgFileTag.replace( "<img", "<img style=\"background-color:white\"" );
                     if ( isShowImages ) {
                         final boolean isFileExists = mImageFileVoc.isExists( file.getPath() );
                         if ( !isFileExists && isImageToAdd )
