@@ -755,7 +755,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 case R.id.menu_reload_full_text_without_mobilizer: {
 
                     int status = FetcherService.Status().Start("Reload fulltext", true); try {
-                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -764,7 +764,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     int status = FetcherService.Status().Start("Reload with|out tables", true); try {
                         SetIsWithTables( !mIsWithTables );
                         item.setChecked( mIsWithTables );
-                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -773,8 +773,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                     int status = FetcherService.Status().Start("Reload fulltext", true); try {
                         GetSelectedEntryView().mIsEditingMode = true;
-                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true );
+                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true, false );
 
+                    } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+
+                case R.id.menu_reload_full_text_with_scripts: {
+
+                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                        LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true, true );
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -979,7 +987,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         int status = FetcherService.Status().Start("Reload fulltext", true);
         GetSelectedEntryView().mIsEditingMode = false;
         try {
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true, false );
         } finally { FetcherService.Status().End( status ); }
     }
 
@@ -1289,11 +1297,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
             });
         } else /*--if (!isRefreshing())*/ {
-            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, false );
+            LoadFullText( ArticleTextExtractor.MobilizeType.Yes, false, false );
         }
     }
 
-    private void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize, final boolean isForceReload ) {
+    private void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize, final boolean isForceReload, final boolean withScripts ) {
         final BaseActivity activity = (BaseActivity) getActivity();
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1307,14 +1315,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     int status = FetcherService.Status().Start(getActivity().getString(R.string.loadFullText), true); try {
-                        FetcherService.mobilizeEntry(getCurrentEntryID(),
-                                                     mFilters,
-                                                     mobilize,
-                                                     FetcherService.AutoDownloadEntryImages.Yes,
-                                                     true,
-                                                     true,
-                                                     isForceReload,
-                                                     true );
+                        FetcherService.mobilizeEntry( getCurrentEntryID(),
+                                                      mFilters,
+                                                      mobilize,
+                                                      FetcherService.AutoDownloadEntryImages.Yes,
+                                                      true,
+                                                      true,
+                                                      isForceReload,
+                                                      true,
+                                                      withScripts );
                     } finally { FetcherService.Status().End( status ); }
                 }
             }.start();

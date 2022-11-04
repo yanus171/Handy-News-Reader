@@ -145,7 +145,7 @@ object HTMLParser {
         val listItem = ArrayList<Item>()
         val categoryList = ArrayList<String>()
         val content = ArticleTextExtractor.extractContent(doc, feedUrl, null, filters,
-                ArticleTextExtractor.MobilizeType.Yes, categoryList, false, false)
+                ArticleTextExtractor.MobilizeType.Yes, categoryList, false, false, false)
         doc = Jsoup.parse(content)
         run {
             val list: Elements = doc.select("a")

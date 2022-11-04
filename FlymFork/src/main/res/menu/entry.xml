@@ -150,6 +150,10 @@
                 android:icon="@drawable/ic_sync_problem"
                 android:title="@string/menu_reload_full_text_without_mobilizer" />
             <item
+                android:id="@+id/menu_reload_full_text_with_scripts"
+                android:icon="@drawable/ic_sync_problem"
+                android:title="@string/menu_reload_full_text_with_scripts" />
+            <item
                 android:id="@+id/menu_reload_with_tables_toggle"
                 android:checkable="true"
                 android:icon="@drawable/ic_view_module"

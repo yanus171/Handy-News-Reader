@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,7 +90,8 @@ public class ArticleTextExtractor {
                                         MobilizeType mobilize,
                                         ArrayList<String> tagList,
                                         boolean isFindBestElement,
-                                        boolean isWithTables ) throws Exception {
+                                        boolean isWithTables,
+                                        boolean withScripts) throws Exception {
         return extractContent(Jsoup.parse(input, null, ""),
                               url,
                               contentIndicator,
@@ -99,7 +99,8 @@ public class ArticleTextExtractor {
                               mobilize,
                               tagList,
                               isFindBestElement,
-                              isWithTables);
+                              isWithTables,
+                              withScripts);
     }
 
     public static String extractContent(Document doc,
@@ -109,14 +110,15 @@ public class ArticleTextExtractor {
                                         MobilizeType mobilize,
                                         ArrayList<String> categoryList,
                                         boolean isFindBestElement,
-                                        boolean isWithTables) {
+                                        boolean isWithTables,
+                                        boolean withScripts ) {
         if (doc == null)
             throw new NullPointerException("missing document");
 
         FetcherService.Status().AddBytes(doc.html().length());
 
         // now remove the clutter
-        prepareDocument(doc, mobilize);
+        prepareDocument(doc, mobilize, withScripts);
 
         {
             Elements elList = doc.getElementsByAttribute( "id" );
@@ -631,11 +633,11 @@ public class ArticleTextExtractor {
      * @param doc document to prepare. Passed as reference, and changed inside
      *            of function
      */
-    private static void prepareDocument(Element doc, MobilizeType mobilize) {
+    private static void prepareDocument(Element doc, MobilizeType mobilize, boolean withScripts) {
         // stripUnlikelyCandidates(doc);
         if ( mobilize == MobilizeType.Yes )
             removeSelectsAndOptions(doc);
-        removeScriptsAndStyles(doc);
+        removeScriptsAndStyles(doc, withScripts);
     }
 
     /**
@@ -655,49 +657,38 @@ public class ArticleTextExtractor {
 //            }
 //        }
 //    }
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean isUsefull(Element el) {
-        return el.outerHtml().toLowerCase().contains( "mathjax" );
-    }
-    private static void removeScriptsAndStyles(Element doc) {
+    private static void removeScriptsAndStyles(Element doc, boolean withScripts) {
         Elements scripts = doc.getElementsByTag("script");
-        for (Element item : scripts)
-            if ( !isUsefull( item ) )
+        if ( !withScripts )
+            for (Element item : scripts)
                 item.remove();
-
 
         if (FetcherService.isCancelRefresh())
             return;
 
         Elements noscripts = doc.getElementsByTag("noscript");
-        for (Element item : noscripts) {
+        for (Element item : noscripts)
             item.remove();
-        }
 
         if (FetcherService.isCancelRefresh())
             return;
 
         Elements styles = doc.getElementsByTag("style");
         for (Element style : styles)
-            if ( !isUsefull( style ) )
-                style.remove();
-
+            style.remove();
     }
 
     private static void removeSelectsAndOptions(Element doc) {
-        Elements scripts = doc.getElementsByTag("select");
-        for (Element item : scripts) {
+        Elements selects = doc.getElementsByTag("select");
+        for (Element item : selects)
             item.remove();
-        }
 
         if (FetcherService.isCancelRefresh())
             return;
 
         Elements noscripts = doc.getElementsByTag("option");
-        for (Element item : noscripts) {
+        for (Element item : noscripts)
             item.remove();
-        }
-
     }
 
     /**

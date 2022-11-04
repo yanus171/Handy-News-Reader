@@ -80,9 +80,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,7 +98,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.parser.FeedFilters;
-import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
@@ -183,47 +179,53 @@ public class EntryView extends WebView implements Handler.Callback {
         final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
         if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
             mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
+        String mainFontSize = PrefUtils.getFontSizeText(0 );
+        String textAlign = getAlign(text);
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} "
-            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}"
-            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
-            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
-            + "* {max-width: 100%; word-break: break-word}"
-            + "h1, h2 {font-weight: normal; line-height: 120%} "
-            + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
-            + "h2 {font-size: 120%} "
-            + "}body{color: #000; text-align: justify; background-color: #fff;}"
-            + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} \n"
+            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}\n"
+            + "body { font-size: " + mainFontSize + "; max-width: 100%; margin: " + getMargins() + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
+            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
+            + "* {word-break: break-word}\n"//+ "* {max-width: 100%; word-break: break-word}\n"
+            + "h1, h2 {font-weight: normal; line-height: 120%}\n "
+            + "h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
+            + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
+            + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
+            + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
             + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
-            (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}"
-            + "h1 {color: inherit; text-decoration: none}"
-            + "img {display: inline;max-width: 100%;height: auto; } "
-            + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}"
-            + "pre {white-space: pre-wrap;} "
-            + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
-            + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
-            + "hr {width: 100%; color: #777777; align: center; size: 1} "
-            + "p.button {text-align: center} "
-            + "p {font-family: \"MainFont\"; margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
+            (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
+            + "h1 {color: inherit; text-decoration: none}\n"
+            + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
+            //+ ".inverted .math {color: white; background-color: black; } "
+            + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
+            + "pre {white-space: pre-wrap;}\n "
+            + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em}\n "
+            + "td {font-weight: " + getFontBold() + "; text-align:" + textAlign + "}\n "
+            + "hr {width: 100%; color: #777777; align: center; size: 1}\n "
+            + "p.button {text-align: center}\n "
+            + "math {color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "}\n "
+            + "p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.8em 0 0.8em 0; text-align:" + textAlign + "}\n "
             + getCustomFontClassStyle("p", url, customFontInfo)
             + getCustomFontClassStyle("span", url, customFontInfo)
             + getCustomFontClassStyle("div", url, customFontInfo)
-            + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
-            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
-            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
-            + "div.bottom-page {display: block; min-height: 80vh} "
-            + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
-            + "div {text-align:" + getAlign(text) + "} "
+            + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 }\n "
+            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em}\n "
+            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0}\n "
+            + "div.bottom-page {display: block; min-height: 80vh}\n "
+            + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center}\n "
+            + "div {text-align:" + textAlign + "}\n "
             //+ "* { -webkit-tap-highlight-color: rgba(" + Theme.GetToolBarColorRGBA() + "); } "
-            + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "
-            + ".button-section p {font-family: \"MainFont\"; margin: 0.1cm 0 0.2cm 0} "
-            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-            + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS + " i { font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS_CATEGORY + " i {font-size: 100%; color: #FFFFFF; background-color: #00AAAA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS_DATE + " i {font-size: 100%; color: #FFFFFF; background-color: #0000AA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS_HIDDEN + " i {font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "}\n "
+            + ".button-section p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.1cm 0 0.2cm 0}\n "
+            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}\n"
+            + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm}\n "
+            + "." + TAG_BUTTON_CLASS + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_CLASS_DATE + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + ", ." + TAG_BUTTON_CLASS_HIDDEN
+            + " { font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm}\n "
+            + "." + TAG_BUTTON_CLASS + " i { background-color: " + Theme.GetToolBarColor() + "}\n "
+            + "." + TAG_BUTTON_CLASS_CATEGORY + " i {background-color: #00AAAA}\n "
+            + "." + TAG_BUTTON_CLASS_DATE + " i {background-color: #0000AA}\n "
+            + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {background-color: #00AA00}\n "
+            + "." + TAG_BUTTON_CLASS_HIDDEN + " i {background-color: #888888}\n "
             + "</style><meta name='viewport' content='width=device-width'/></head>";
     }
 
@@ -456,10 +458,10 @@ public class EntryView extends WebView implements Handler.Callback {
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
         // Text zoom level from preferences
-        int fontSize = PrefUtils.getFontSize();
-        if (fontSize != 0) {
-            getSettings().setTextZoom(100 + (fontSize * 15));
-        }
+        //int fontSize = PrefUtils.getFontSize();
+        //if (fontSize != 0) {
+            getSettings().setTextZoom(100);
+        //}
 
 
         final String finalContentText = contentText;

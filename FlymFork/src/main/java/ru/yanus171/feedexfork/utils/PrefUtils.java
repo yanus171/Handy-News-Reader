@@ -123,6 +123,9 @@ public class PrefUtils {
     public static int getFontSize() {
         return PrefUtils.getIntFromText( "fontsize", 0);
     }
+    public static String getFontSizeText(int delta ) {
+        return String.format( "%dpt", 13 + getFontSize() + delta );
+    }
     public static int getFontSizeEntryList() {
         return PrefUtils.getIntFromText("fontsize_entrylist", 0);
     }

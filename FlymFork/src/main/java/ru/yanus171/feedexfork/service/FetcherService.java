@@ -718,7 +718,7 @@ public class FetcherService extends IntentService {
                                     if (curEntry.moveToFirst()) {
                                         final String feedID = curEntry.getString(0);
                                         FeedFilters filters = new FeedFilters(feedID);
-                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
+                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false, false)) {
                                             ContentResolver cr = getContext().getContentResolver();
                                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                                             result.mResultCount = 1;
@@ -764,7 +764,8 @@ public class FetcherService extends IntentService {
                                         final boolean isCorrectTitle,
                                         final boolean isShowError,
                                         final boolean isForceReload,
-                                        boolean isParseDateFromHTML) {
+                                        boolean isParseDateFromHTML,
+                                        final boolean withScripts ) {
         boolean success = false;
         ContentResolver cr = getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
@@ -858,7 +859,8 @@ public class FetcherService extends IntentService {
                                                                             mobilize,
                                                                             categoryList,
                                                                             !String.valueOf(feedId).equals(GetExtrenalLinkFeedID()),
-                                                                            entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1);
+                                                                            entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
+                                                                            withScripts);
                         Status().ChangeProgress("");
 
                         if (mobilizedHtml != null) {
@@ -1077,7 +1079,7 @@ public class FetcherService extends IntentService {
 
             if ( load && !FetcherService.isCancelRefresh() ) {
                 final long entryId = Long.parseLong(entryUri.getLastPathSegment());
-                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, isParseDateFromHTML);
+                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, isParseDateFromHTML, false);
             }
             return new Pair<>(entryUri, load);
         } finally {
