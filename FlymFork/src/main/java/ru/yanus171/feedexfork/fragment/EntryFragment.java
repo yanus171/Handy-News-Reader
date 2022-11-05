@@ -1091,36 +1091,34 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 if ( !IsExternalLink( uri ) ) {
                     mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
+                    if ( mBaseUri.toString().endsWith( "-1" ) )
+                        mBaseUri = Uri.parse(mBaseUri.toString().replace("-1", "" ));
                     Dog.v(String.format("EntryFragment.setData( %s ) baseUri = %s", uri.toString(), mBaseUri));
                     try {
                         mInitialEntryId = Long.parseLong(uri.getLastPathSegment());
                     } catch (Exception unused) {
                         mInitialEntryId = -1;
                     }
-
-
                     String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
 
                     final ContentResolver cr = MainApplication.getContext().getContentResolver();
                     // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-                    Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, mWhereSQL, null, EntryColumns.DATE + entriesOrder);
-
-                    if (entriesCursor != null && entriesCursor.getCount() > 0) {
-                        synchronized ( this ) {
-                            mEntriesIds = new Entry[entriesCursor.getCount()];
-                        }
-                        int i = 0;
-                        while (entriesCursor.moveToNext()) {
-                            SetEntryID( i, entriesCursor.getLong(0), entriesCursor.getString(1) );
-                            if (GetEntry( i ).mID == mInitialEntryId) {
-                                mCurrentPagerPos = i; // To immediately display the good entry
-                                mLastPagerPos = i;
-                                CancelStarNotification(getCurrentEntryID());
+                    try ( Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, mWhereSQL, null, EntryColumns.DATE + entriesOrder) ) {
+                        if (entriesCursor != null && entriesCursor.getCount() > 0) {
+                            synchronized (this) {
+                                mEntriesIds = new Entry[entriesCursor.getCount()];
                             }
-                            i++;
+                            int i = 0;
+                            while (entriesCursor.moveToNext()) {
+                                SetEntryID(i, entriesCursor.getLong(0), entriesCursor.getString(1));
+                                if (GetEntry(i).mID == mInitialEntryId) {
+                                    mCurrentPagerPos = i; // To immediately display the good entry
+                                    mLastPagerPos = i;
+                                    CancelStarNotification(getCurrentEntryID());
+                                }
+                                i++;
+                            }
                         }
-
-                        entriesCursor.close();
                     }
                     if ( getCurrentEntryID() != -1 )
                         try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(getCurrentEntryID()), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
