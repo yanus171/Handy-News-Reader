@@ -813,6 +813,12 @@
             android:title="@string/main_font_css_text_title"
             android:summary="@string/main_font_css_text_title_description"/>
         <EditTextPreference
+            android:key="custom_css_text"
+            android:inputType="text"
+            android:defaultValue=""
+            android:title="@string/setting_custom_css_text"
+            android:summary="@string/setting_custom_css_text_description"/>
+        <EditTextPreference
             android:key="global_class_list_to_remove_from_article_text"
             android:title="@string/global_class_list_to_remove_from_article_text"
             android:inputType="text|textMultiLine"

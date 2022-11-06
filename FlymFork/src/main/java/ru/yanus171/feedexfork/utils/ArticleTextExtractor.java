@@ -229,8 +229,8 @@ public class ArticleTextExtractor {
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret.toString();
             Document tempDoc = Jsoup.parse(ret.toString(), NetworkUtils.getUrlDomain(url));
-            rootElement = FindBestElement(tempDoc, url, contentIndicator, isFindBestElement);
-            AddTagButtons(tempDoc, url, rootElement);
+            //rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
+            AddTagButtons(tempDoc, url, null);
             ret = new StringBuilder(tempDoc.toString());
         }
 

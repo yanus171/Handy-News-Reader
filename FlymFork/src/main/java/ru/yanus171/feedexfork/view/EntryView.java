@@ -226,6 +226,7 @@ public class EntryView extends WebView implements Handler.Callback {
             + "." + TAG_BUTTON_CLASS_DATE + " i {background-color: #0000AA}\n "
             + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {background-color: #00AA00}\n "
             + "." + TAG_BUTTON_CLASS_HIDDEN + " i {background-color: #888888}\n "
+            + PrefUtils.getString( "custom_css_text", "" )
             + "</style><meta name='viewport' content='width=device-width'/></head>";
     }
 
