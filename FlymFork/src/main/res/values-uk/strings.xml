@@ -667,4 +667,7 @@
     <string name="setting_last_read_article_count">Число статей</string>
     <string name="setting_last_read_article_count_descr">Число видимих статей в останньому прочитаному розділі</string>
     <string name="settings_category_feed_list_summary">Налаштування вигляду списку каналів та останнього прочитаного розділу</string>
+    <string name="menu_reload_full_text_with_scripts">З скриптами</string>
+    <string name="setting_custom_css_text">Власний текст CSS</string>
+    <string name="setting_custom_css_text_description">Текст, який буде включений в CSS розділ до будь-якої html статті</string>
 </resources>
