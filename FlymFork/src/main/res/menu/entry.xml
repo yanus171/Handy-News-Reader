@@ -159,6 +159,11 @@
                 android:icon="@drawable/ic_view_module"
                 android:title="@string/menu_reload_with_tables_toggle" />
             <item
+                android:id="@+id/menu_reload_full_text_with_debug_toggle"
+                android:checkable="true"
+                android:icon="@drawable/ic_developer_mode"
+                android:title="@string/menu_reload_full_text_with_debug" />
+            <item
                 android:id="@+id/menu_load_all_images"
                 android:icon="@drawable/ic_photo_size_select_actual"
                 android:title="@string/menu_load_all_images" />

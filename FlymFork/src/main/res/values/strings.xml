@@ -694,6 +694,7 @@
     <string name="settings_category_feed_list_summary">Appearance of feed list and last read section settings</string>
     <string name="menu_reload_full_text_with_scripts">With scripts</string>
     <string name="setting_custom_css_text">Custom CSS text</string>
-    <string name="setting_custom_css_text_description">Text which will be included in any article html CSS section</string>
+    <string name="setting_custom_css_text_description">Text which will be included in any article html CSS section. With this you can customize the format of the article text in any way. See https://www.w3schools.com/css/css_intro.asp for beginning</string>
+    <string name="menu_reload_full_text_with_debug">With debug</string>
 
 </resources>

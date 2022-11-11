@@ -157,6 +157,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mWasAutoUnStar = false;
 
     public long mEntryId = -1;
+    public boolean mHasScripts = false;
     private String mEntryLink = "";
     public Runnable mScrollChangeListener = null;
     private int mLastContentLength = 0;
@@ -172,7 +173,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mIsEditingMode = false;
     public long mLastSetHTMLTime = 0;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
-    private String mTitle;
+    public String mTitle;
 
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
@@ -184,8 +185,9 @@ public class EntryView extends WebView implements Handler.Callback {
         return "<head><style type='text/css'> "
             + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} \n"
             + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}\n"
-            + "body { font-size: " + mainFontSize + "; max-width: 100%; margin: " + getMargins() + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
-            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
+            + "body { font-family: \"MainFont\"; font-size: " + mainFontSize + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
+            + "font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; "
+            + "max-width: 100%; margin: " + getMargins() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
             + "* {word-break: break-word}\n"//+ "* {max-width: 100%; word-break: break-word}\n"
             + "h1, h2 {font-weight: normal; line-height: 120%}\n "
             + "h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
@@ -407,10 +409,10 @@ public class EntryView extends WebView implements Handler.Callback {
         final String categories = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
         //final String feedTitle = filters.removeTextFromTitle( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
-        String feedTitle =
+        String title =
             newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
         if ( filters != null )
-            feedTitle = filters.removeText(feedTitle, DB_APPLIED_TO_TITLE );
+            title = filters.removeText(title, DB_APPLIED_TO_TITLE );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -448,7 +450,7 @@ public class EntryView extends WebView implements Handler.Callback {
         }
 
         mActivity = activity;
-        if (!mLoadTitleOnly && contentText.length() == mLastContentLength) {
+        if (!mLoadTitleOnly && contentText.length() == mLastContentLength ) {
             EndStatus();
             return isFullTextShown;
         }
@@ -468,7 +470,8 @@ public class EntryView extends WebView implements Handler.Callback {
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
-        final String finalTitle = feedTitle;
+        final String finalTitle = title;
+
         new Thread() {
             @Override
             public void run() {
@@ -479,17 +482,12 @@ public class EntryView extends WebView implements Handler.Callback {
                     mImagesToDl = imagesToDl;
                     mData = data;
                     mDataWithWebLinks = dataWithLinks;
+                    mHasScripts = dataWithLinks.contains( "<script" );
                 }
-                UiUtils.RunOnGuiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        LoadData();
-                    }
-                });
+                UiUtils.RunOnGuiThread(() -> LoadData());
             }
         }.start();
-        mActivity.SetTaskTitle( feedTitle );
-        mTitle = feedTitle;
+        mTitle = title;
         timer.End();
         return isFullTextShown;
     }

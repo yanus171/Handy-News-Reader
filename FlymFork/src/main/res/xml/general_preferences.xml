@@ -808,13 +808,13 @@
             android:title="@string/settings_category_other"/>
         <EditTextPreference
             android:key="main_font_css_text"
-            android:inputType="text"
+            android:inputType="text|textMultiLine"
             android:defaultValue="letter-spacing: 0.02em"
             android:title="@string/main_font_css_text_title"
             android:summary="@string/main_font_css_text_title_description"/>
         <EditTextPreference
             android:key="custom_css_text"
-            android:inputType="text"
+            android:inputType="text|textMultiLine"
             android:defaultValue=""
             android:title="@string/setting_custom_css_text"
             android:summary="@string/setting_custom_css_text_description"/>

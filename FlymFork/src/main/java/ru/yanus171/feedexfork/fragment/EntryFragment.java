@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -162,6 +163,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
     public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
+    public static final String STATE_RELOAD_WITH_DEBUG = "STATE_RELOAD_WITH_DEBUG";
     public boolean mIgnoreNextLoading = false;
 
 
@@ -191,6 +193,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private static EntryView mLeakEntryView = null;
     private String mWhereSQL;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
+    public int mLastScreenState = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -339,7 +342,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         else
                             DisableTapActionsIfVideo( view );
                         view.mLoadTitleOnly = false;
-
                     }
                     final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                     Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
@@ -483,7 +485,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1, mStatusText);
     }
 
-
     public void NextEntry() {
         if ( mEntryPager.getCurrentItem() < mEntryPager.getAdapter().getCount() - 1  )
             mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1 );
@@ -539,8 +540,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mSetupChanged = false;
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
+        mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         HideTapZonesText(getView().getRootView());
         refreshUI( null );
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
+            EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
+            if (entryView.mHasScripts) {
+                mEntryPager.setAdapter(mEntryPagerAdapter); //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                mEntryPager.setCurrentItem(mCurrentPagerPos);
+            }
+        }
+        mLastScreenState = newConfig.orientation;
     }
 
 
@@ -627,6 +642,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
+        menu.findItem(R.id.menu_reload_full_text_with_debug_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
         menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(isArticleTapEnabled());
 
         EntryView view = GetSelectedEntryView();
@@ -765,6 +781,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         SetIsWithTables( !mIsWithTables );
                         item.setChecked( mIsWithTables );
                         LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
+                    } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+                case R.id.menu_reload_full_text_with_debug_toggle: {
+                    int status = FetcherService.Status().Start("Reload with|out debug", true); try {
+                        PrefUtils.toggleBoolean( STATE_RELOAD_WITH_DEBUG, false );
+                        item.setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
+                        getActivity().invalidateOptionsMenu();
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
@@ -1156,8 +1180,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
     private void refreshUI(Cursor entryCursor) {
         EntryView view = GetSelectedEntryView();
-        if ( view != null )
-            mBtnEndEditing.setVisibility( view.mIsEditingMode ? View.VISIBLE : View.GONE );
+        if ( view != null ) {
+            mBtnEndEditing.setVisibility(view.mIsEditingMode ? View.VISIBLE : View.GONE);
+            getBaseActivity().SetTaskTitle( view.mTitle );
+        }
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         try {
 			if (entryCursor != null ) {

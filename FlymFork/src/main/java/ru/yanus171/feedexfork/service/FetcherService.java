@@ -161,6 +161,7 @@ import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
@@ -180,6 +181,8 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChan
 import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
@@ -767,6 +770,7 @@ public class FetcherService extends IntentService {
                                         boolean isParseDateFromHTML,
                                         final boolean withScripts ) {
         boolean success = false;
+        ClearContentStepToFile();
         ContentResolver cr = getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
         try ( Cursor entryCursor = cr.query(entryUri, null, null, null, null) ) {
@@ -824,6 +828,8 @@ public class FetcherService extends IntentService {
                                 }
                             }
                         }
+                        ClearContentStepToFile();
+                        SaveContentStepToFile( doc, "Jsoup.parse.connection.getInputStream" );
                         final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
                         String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
                         //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
@@ -1401,7 +1407,7 @@ public class FetcherService extends IntentService {
     }
 
     private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime) {
-
+        PrefUtils.putBoolean( STATE_RELOAD_WITH_DEBUG, false );
 
         int newCount = 0;
 

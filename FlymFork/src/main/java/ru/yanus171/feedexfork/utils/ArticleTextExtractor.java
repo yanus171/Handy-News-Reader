@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +25,9 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
+import static ru.yanus171.feedexfork.utils.DebugApp.CreateFileUri;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
@@ -71,6 +74,8 @@ public class ArticleTextExtractor {
     public static final String HANDY_NEWS_READER_COMMENTS_CLASS = "Handy_News_Reader_comments";
     public static final String P_HR = "</p><hr>";
     public static final String EMPTY_TAG = "EMPTY_TAG";
+    public static final String CONTENT_STEP_TO_FILE_SUBDIR = "content";
+    private static int mContentStepFileIndex = 0;
 
     public enum MobilizeType {Yes, No, Tags}
     //public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
@@ -103,6 +108,31 @@ public class ArticleTextExtractor {
                               withScripts);
     }
 
+    public static void ClearContentStepToFile() {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        mContentStepFileIndex = 0;
+        File dir = new File(MainApplication.getContext().getCacheDir() + "/" + CONTENT_STEP_TO_FILE_SUBDIR);
+        dir.mkdirs();
+        for( File file: dir.listFiles() )
+            file.delete();
+    }
+    public static void SaveContentStepToFile( Element content, String stepName ) {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        SaveContentStepToFile( content.toString(), stepName );
+    }
+    public static void SaveContentStepToFile( StringBuilder content, String stepName ) {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        SaveContentStepToFile( content.toString(), stepName );
+    }
+    public static void SaveContentStepToFile( String content, String stepName ) {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        mContentStepFileIndex++;
+        CreateFileUri(MainApplication.getContext().getCacheDir().getAbsolutePath() + "/" + CONTENT_STEP_TO_FILE_SUBDIR, mContentStepFileIndex + "_" + stepName + ".html", content );
+    }
     public static String extractContent(Document doc,
                                         final String url,
                                         String contentIndicator,
@@ -119,7 +149,6 @@ public class ArticleTextExtractor {
 
         // now remove the clutter
         prepareDocument(doc, mobilize, withScripts);
-
         {
             Elements elList = doc.getElementsByAttribute( "id" );
             for (Element item : elList)
@@ -171,7 +200,7 @@ public class ArticleTextExtractor {
                 }
             }
         }
-
+        SaveContentStepToFile( doc, "before FindBestElement RemoveHiddenElements" );
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
             rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
@@ -182,16 +211,19 @@ public class ArticleTextExtractor {
             rootElement = doc;
 
 
+        SaveContentStepToFile( doc, "before remove title" );
 
         Elements title = rootElement.getElementsByClass("title");
         for (Element entry : title)
-            if (entry.tagName().toLowerCase().equals("h1")) {
+            if (entry.tagName().equalsIgnoreCase("h1")) {
                 title.first().remove();
                 break;
             }
 
 
         StringBuilder ret = new StringBuilder(rootElement.toString());
+        SaveContentStepToFile( ret, "after toString" );
+
         if (ogImage != null && !ret.toString().contains(ogImage)) {
             ret.insert(0, "<img src=\"" + ogImage + "\"><br>\n");
         }
@@ -217,10 +249,12 @@ public class ArticleTextExtractor {
             }
 
             ret.append(AddHabrComments(url));
+            SaveContentStepToFile( ret, "after load comments" );
         }
 
         if ( !isWithTables ) {
             ret = new StringBuilder(RemoveTables(ret.toString()));
+            SaveContentStepToFile( ret, "after RemoveTables" );
         }
 
         final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
@@ -232,6 +266,7 @@ public class ArticleTextExtractor {
             //rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
             AddTagButtons(tempDoc, url, null);
             ret = new StringBuilder(tempDoc.toString());
+            SaveContentStepToFile( ret, "improveHtmlContent TAGS" );
         }
 
         return ret.toString();
@@ -638,6 +673,7 @@ public class ArticleTextExtractor {
         if ( mobilize == MobilizeType.Yes )
             removeSelectsAndOptions(doc);
         removeScriptsAndStyles(doc, withScripts);
+        SaveContentStepToFile( doc, "after prepareDocument" );
     }
 
     /**

@@ -331,9 +331,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     public void SetTaskTitle(String text) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            setTaskDescription( new ActivityManager.TaskDescription(text, R.drawable.ic_cup, Theme.GetToolBarColorInt() ) );
+            setTaskDescription( new ActivityManager.TaskDescription( text, R.drawable.ic_cup, Theme.GetToolBarColorInt() ) );
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            setTaskDescription( new ActivityManager.TaskDescription(text ) );
+            setTaskDescription( new ActivityManager.TaskDescription( text ) );
     }
 
 }
