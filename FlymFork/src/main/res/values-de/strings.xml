@@ -662,4 +662,7 @@
     <string name="setting_last_read_article_count">Artikelanzahl</string>
     <string name="setting_last_read_article_count_descr">Anzeige der Artikelanzahl im Zuletzt-gelesen-Abschnitt</string>
     <string name="settings_category_feed_list_summary">Aussehen der Feed-Liste und Einstellungen des Zuletzt-gelesen-Abschnitts</string>
+    <string name="menu_reload_full_text_with_scripts">Mit Skripten</string>
+    <string name="setting_custom_css_text">Eigener CSS-Text</string>
+    <string name="setting_custom_css_text_description">Text, der in alle html-CSS-Abschnitte eingeschlossen wird</string>
 </resources>
