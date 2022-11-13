@@ -89,11 +89,10 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HT
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.unescapeTitle;
 
 public class RssAtomParser extends DefaultHandler {
-    private static final String AND_SHARP = "&#";
     private static final String HTML_TEXT = "text/html";
-    private static final String HTML_TAG_REGEX = "<(.|\n)*?>";
 
     private static final String TAG_RSS = "rss";
     private static final String TAG_RDF = "rdf";
@@ -223,18 +222,6 @@ public class RssAtomParser extends DefaultHandler {
         mFeedBaseUrl = NetworkUtils.getBaseUrl(url);
     }
 
-    private static String unescapeTitle(String title) {
-        String result = title.replace(Constants.AMP_SG, Constants.AMP).replaceAll(HTML_TAG_REGEX, "").replace(Constants.HTML_LT, Constants.LT)
-                .replace(Constants.HTML_GT, Constants.GT).replace(Constants.HTML_QUOT, Constants.QUOT)
-                .replace(Constants.HTML_APOS, Constants.APOSTROPHE)
-                .replace(Constants.HTML_APOSTROPHE, Constants.APOSTROPHE);
-
-        if (result.contains(AND_SHARP)) {
-            return Html.fromHtml(result, null, null).toString();
-        } else {
-            return result;
-        }
-    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -460,6 +447,11 @@ public class RssAtomParser extends DefaultHandler {
                     if (mDescription != null) {
                         // Improve the description
                         improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), entryLinkString, mFilters, mCategoryList, ArticleTextExtractor.MobilizeType.Yes, true);
+
+                        if ( improvedTitle.isEmpty() ) {
+                            improvedTitle = HtmlUtils.extractTitle(improvedContent);
+                            values.put(EntryColumns.TITLE, improvedTitle);
+                        }
                         imagesUrls = new ArrayList<>();
                         if ( mainImageUrl != null ) {
                             imagesUrls.add(mainImageUrl);

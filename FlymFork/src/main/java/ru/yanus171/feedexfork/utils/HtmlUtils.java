@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,9 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READE
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
 
 public class HtmlUtils {
+    private static final String HTML_TAG_REGEX = "<(.|\n)*?>";
+    private static final String AND_SHARP = "&#";
+    private static final String NBSP = "&nbsp;";
 
     private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
             .addTags("iframe", "video", "audio", "source", "track", "hr", "ruby", "rp", "rt" )
@@ -429,7 +433,19 @@ public class HtmlUtils {
             }
             title = title.trim();
         }
-        return title;
+        return unescapeTitle(title);
+    }
+    public static String unescapeTitle(String title) {
+        String result = title.replace(Constants.AMP_SG, Constants.AMP).replaceAll(HTML_TAG_REGEX, "").replace(Constants.HTML_LT, Constants.LT)
+            .replace(Constants.HTML_GT, Constants.GT).replace(Constants.HTML_QUOT, Constants.QUOT)
+            .replace(Constants.HTML_APOS, Constants.APOSTROPHE)
+            .replace(Constants.HTML_APOSTROPHE, Constants.APOSTROPHE);
+
+        if (result.contains(AND_SHARP) || result.contains(NBSP)) {
+            return Html.fromHtml(result, null, null).toString();
+        } else {
+            return result;
+        }
     }
 
 }
