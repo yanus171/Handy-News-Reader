@@ -563,6 +563,7 @@
     <string name="articleWasUnstarred">Статья убрана из избранного</string>
     <string name="articleNotFound">Статья не найдена :(</string>
     <string name="article_list_size_progressbar_maxsize">"Максимальный размер текста "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">В кБ для горизонтального индикатора (0 для отключения). Он скрыт для лент с включенной опцией автоматической отметки статей как прочитанных</string>
     <string name="setting_edit_feed_force_portrait_orientation">Портретная ориентацию окна редактирования</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Принудительная портретная ориентация экрана в окне настроек канала - отметьте галку, если у Вас узкий экран телефона</string>
     <string name="name">Название</string>
@@ -658,8 +659,21 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="setting_ignore_all_ssl_errors">Игнорировать все ошибки SSL</string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Установите этот флажок, если у вас возникают проблемы с сертификатом при загрузке веб-контента. !!! ВНИМАНИЕ !!! Это может сделать ваше устройство небезопасным :(</string>
     <string name="connection_timeout">Таймаут соединения</string>
+    <string name="connection_timeout_summary">В миллисекундах. Как долго мы должны ждать подключения к интернету</string>
     <string name="settings_category_connection">Подключение</string>
     <string name="couldNotCreateDownloadsSubfolder">Не удалось создать подпапку в папке Загрузки</string>
     <string name="article_text_expand_controls">Разворачивание текста статьи</string>
     <string name="article_text_expand_controls_descr">Возможность развернуть текст статьи в списке. Если галка установлена, нажатие в любое место статьи, кроме ее заголовка, разворачивает или сворачивает текст статьи вместо открытия ее в отдельном окне</string>
+    <string name="settings_category_labels">Метки</string>
+    <string name="settings_category_feed_list">Список лент</string>
+    <string name="settings_category_last_read">Последний прочитанный раздел</string>
+    <string name="setting_last_read_hide_label_list">Список скрытых меток в последнем прочитанном</string>
+    <string name="setting_last_read_hide_label_list_summary">Не показывать выбранные метки в последнем прочитанном разделе</string>
+    <string name="setting_last_read_article_count">Количество статей</string>
+    <string name="setting_last_read_article_count_descr">Количество видимых статей в последнем прочитанном разделе</string>
+    <string name="settings_category_feed_list_summary">Внешний вид списка лент и настройки последнего прочитанного раздела</string>
+    <string name="menu_reload_full_text_with_scripts">Со скриптами</string>
+    <string name="setting_custom_css_text">Пользовательский текст CSS</string>
+    <string name="setting_custom_css_text_description">Текст, который будет включен в любой раздел html CSS статьи. С его помощью вы можете настроить формат текста статьи любым образом. Для начала ознакомьтесь с https://www.w3schools.com/css/css_intro.asp</string>
+    <string name="menu_reload_full_text_with_debug">С отладкой</string>
 </resources>
