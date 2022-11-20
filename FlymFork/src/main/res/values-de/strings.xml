@@ -665,4 +665,5 @@
     <string name="menu_reload_full_text_with_scripts">Mit Skripten</string>
     <string name="setting_custom_css_text">Eigener CSS-Text</string>
     <string name="setting_custom_css_text_description">Text, der in alle html-CSS-Abschnitte eingeschlossen wird</string>
+    <string name="menu_reload_full_text_with_debug">Mit Fehlersuche</string>
 </resources>
