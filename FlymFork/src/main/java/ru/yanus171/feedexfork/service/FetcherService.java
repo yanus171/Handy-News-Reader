@@ -138,6 +138,7 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
@@ -146,6 +147,7 @@ import ru.yanus171.feedexfork.view.StorageItem;
 import static android.content.Intent.EXTRA_TEXT;
 import static android.provider.BaseColumns._ID;
 import static java.lang.Thread.MIN_PRIORITY;
+import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
@@ -153,6 +155,7 @@ import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
 import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
+import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
 import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
@@ -161,6 +164,7 @@ import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
@@ -183,6 +187,7 @@ import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSe
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.convertXMLSymbols;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
@@ -760,6 +765,79 @@ public class FetcherService extends IntentService {
     public enum AutoDownloadEntryImages {Yes, No}
 
     @SuppressLint("Range")
+    public static boolean loadLocalFile( final long entryId, String link ) throws IOException {
+        boolean result = false;
+        if (!FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2"))
+            return result;
+        Timer timer = new Timer( "loadLocalFile " + link );
+        try (InputStream is = MainApplication.getContext().getContentResolver().openInputStream(Uri.parse(link))) {
+            ClearContentStepToFile();
+            Status().ChangeProgress( "Jsoup.parse" );
+            Document doc = Jsoup.parse(is, null, "");
+            SaveContentStepToFile( doc, "Jsoup.parse" );
+
+            Status().ChangeProgress( "images" );
+            Elements list = doc.getElementsByTag("image");
+            list.addAll( doc.getElementsByTag("img") );
+            for (Element el : list ) {
+                Elements images = doc.getElementsByAttributeValue( "id", el.attr( "l:href" ).replace( "#", "" ));
+                if ( images.isEmpty() )
+                    continue;
+                el.insertChildren( -1, images.first() );
+            }
+            SaveContentStepToFile( doc, "binary_move" );
+
+            Status().ChangeProgress( "title" );
+            String title = "";
+            for ( Element el: doc.getElementsByTag( "title" ) ) {
+                title = el.text()
+                    .replace( "\n", " " )
+                    .replace( "\r", "" )
+                    .replace( "<p>", "" )
+                    .replace( "</p>", "" );
+                break;
+            }
+            SaveContentStepToFile( doc, "title" );
+            for (Element el : doc.getElementsByTag("title"))
+                el.tagName( "h1" );
+            SaveContentStepToFile( doc, "h1" );
+
+            Status().ChangeProgress( "binary" );
+            for (Element el : doc.getElementsByTag("binary")) {
+                if (!el.hasAttr("content-type"))
+                    continue;
+                el.tagName("img");
+                el.attr("src", "data:" + el.attr("content-type") + ";base64," + el.ownText().replace( "\n", "" ));
+                el.text("");
+            }
+            SaveContentStepToFile( doc, "binary_to_img" );
+
+            Status().ChangeProgress( "doc.toString()" );
+            String content = doc.toString();
+            //content = content.replaceAll( "[^\\s]{50,}", "" );
+
+            Status().ChangeProgress( "replace 0" );
+            content = content.replace( "&#x0;", "" );
+            SaveContentStepToFile( content, "after_remove_0" );
+
+            Status().ChangeProgress( "convertXMLSymbols" );
+            content = convertXMLSymbols(content);
+            if ( title.isEmpty() ) {
+                Status().ChangeProgress( "extractTitle" );
+                title = Html.fromHtml(extractTitle(content)).toString();
+            }
+            ContentValues values = new ContentValues();
+            values.put(EntryColumns.TITLE, title );
+            Status().ChangeProgress( "saveMobilizedHTML" );
+            FileUtils.INSTANCE.saveMobilizedHTML(link, content, values);
+            MainApplication.getContext().getContentResolver().update(EntryColumns.CONTENT_URI( entryId ), values, null, null);
+            Status().ChangeProgress("");
+            result = true;
+        }
+        timer.End();
+        return result;
+    }
+    @SuppressLint("Range")
     public static boolean mobilizeEntry(final long entryId,
                                         FeedFilters filters,
                                         final ArticleTextExtractor.MobilizeType mobilize,
@@ -773,48 +851,50 @@ public class FetcherService extends IntentService {
         ClearContentStepToFile();
         ContentResolver cr = getContext().getContentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
+        long feedId = -1;
         try ( Cursor entryCursor = cr.query(entryUri, null, null, null, null) ) {
 
             if (entryCursor.moveToFirst()) {
                 int linkPos = entryCursor.getColumnIndex(LINK);
                 String link = entryCursor.getString(linkPos);
-                String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
-                {
-                    Pattern rx = Pattern.compile("\\{(.+)\\}");
-                    final Matcher matcher = rx.matcher(linkToLoad);
+                try {
+                    feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+                    if (IsLocalFile(Uri.parse(link)))
+                        return loadLocalFile(entryId, link);
+                    String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
+                    String contentIndicator = null;
+                    {
+                        Pattern rx = Pattern.compile("\\{(.+)\\}");
+                        final Matcher matcher = rx.matcher(linkToLoad);
 
-                    if (matcher.find()) {
-                        Calendar date = Calendar.getInstance();
-                        linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
-                    }
-                }
-
-                if (isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor))) { // If we didn't already mobilized it
-                    int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
-                    final long feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
-                    Connection connection = null;
-
-                    try {
-
-                        // Try to find a text indicator for better content extraction
-                        String contentIndicator = null;
-                        String text = entryCursor.getString(abstractHtmlPos);
-                        if (!TextUtils.isEmpty(text)) {
-                            text = Html.fromHtml(text).toString();
-                            if (text.length() > 60) {
-                                contentIndicator = text.substring(20, 40);
-                            }
+                        if (matcher.find()) {
+                            Calendar date = Calendar.getInstance();
+                            linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
                         }
+                    }
 
-                        connection = new Connection(linkToLoad, OKHTTP);
+                    if (isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor))) { // If we didn't already mobilized it
+                        int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
 
-                        String mobilizedHtml;
-                        Status().ChangeProgress(R.string.extractContent);
+                        Connection connection = null;
+                        Document doc = null;
+                        try {
+                            // Try to find a text indicator for better content extraction
+                            String text = entryCursor.getString(abstractHtmlPos);
+                            if (!TextUtils.isEmpty(text)) {
+                                text = Html.fromHtml(text).toString();
+                                if (text.length() > 60) {
+                                    contentIndicator = text.substring(20, 40);
+                                }
+                            }
 
-                        if (FetcherService.isCancelRefresh())
-                            return false;
-                        Document doc = Jsoup.parse(connection.getInputStream(), null, "");
-                        {
+                            connection = new Connection(linkToLoad, OKHTTP);
+
+                            Status().ChangeProgress(R.string.extractContent);
+
+                            if (FetcherService.isCancelRefresh())
+                                return false;
+                            doc = Jsoup.parse(connection.getInputStream(), null, "");
                             for (Element el : doc.getElementsByTag("meta")) {
                                 if (el.hasAttr("content") &&
                                     el.hasAttr("http-equiv") &&
@@ -827,9 +907,14 @@ public class FetcherService extends IntentService {
                                     break;
                                 }
                             }
+                        } finally {
+                            if (connection != null)
+                                connection.disconnect();
                         }
+
+
                         ClearContentStepToFile();
-                        SaveContentStepToFile( doc, "Jsoup.parse.connection.getInputStream" );
+                        SaveContentStepToFile(doc, "Jsoup.parse.connection.getInputStream");
                         final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
                         String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
                         //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
@@ -858,22 +943,22 @@ public class FetcherService extends IntentService {
                         Dog.v("date = " + dateText);
 
                         ArrayList<String> categoryList = new ArrayList<>();
-                        mobilizedHtml = ArticleTextExtractor.extractContent(doc,
-                                                                            link,
-                                                                            contentIndicator,
-                                                                            filters,
-                                                                            mobilize,
-                                                                            categoryList,
-                                                                            !String.valueOf(feedId).equals(GetExtrenalLinkFeedID()),
-                                                                            entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
-                                                                            withScripts);
+                        String mobilizedHtml = ArticleTextExtractor.extractContent(doc,
+                                                                                   link,
+                                                                                   contentIndicator,
+                                                                                   filters,
+                                                                                   mobilize,
+                                                                                   categoryList,
+                                                                                   !String.valueOf(feedId).equals(GetExtrenalLinkFeedID()),
+                                                                                   entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
+                                                                                   withScripts);
                         Status().ChangeProgress("");
 
+                        ContentValues values = new ContentValues();
                         if (mobilizedHtml != null) {
-                            if ( title.isEmpty() )
-                                title = extractTitle( mobilizedHtml );
+                            if (title.isEmpty())
+                                title = extractTitle(mobilizedHtml);
 
-                            ContentValues values = new ContentValues();
                             if (!categoryList.isEmpty())
                                 values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));
                             else
@@ -892,67 +977,61 @@ public class FetcherService extends IntentService {
                                 if (date != null)
                                     values.put(EntryColumns.DATE, date.getTime());
                             }
-                            FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
+                        }
+                        FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
+                        {
+                            boolean isOneWebPage = false;
+                            final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
+                            final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
+                            if (!jsonText.isEmpty())
+                                try {
+                                    JSONObject jsonOptions = new JSONObject(jsonText);
+                                    isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
+                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                            if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage)
+                                values.put(EntryColumns.TITLE, title);
+                        }
+                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
+                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
+                            HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
 
-                            {
-                                boolean isOneWebPage = false;
-                                final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
-                                final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
-                                if (!jsonText.isEmpty())
-                                    try {
-                                        JSONObject jsonOptions = new JSONObject(jsonText);
-                                        isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                        String mainImgUrl;
+                        if (!imgUrlsToDownload.isEmpty())
+                            mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
+                        else
+                            mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
 
-                                final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                                if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage)
-                                    values.put(EntryColumns.TITLE, title);
-                            }
-                            ArrayList<String> imgUrlsToDownload = new ArrayList<>();
-                            if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
-                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
+                        if (mainImgUrl != null)
+                            values.put(EntryColumns.IMAGE_URL, mainImgUrl);
 
-                            String mainImgUrl;
+                        if (filters != null && filters.isEntryFiltered(title, "", link, mobilizedHtml, categoryList.toArray(new String[0]))) {
+                            cr.delete(entryUri, null, null);
+                        } else {
+                            if (filters != null && filters.isMarkAsStarred(title, "", link, mobilizedHtml, categoryList.toArray(new String[0])))
+                                PutFavorite(values, true);
+                            cr.update(entryUri, values, null, null);
                             if (!imgUrlsToDownload.isEmpty())
-                                mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
-                            else
-                                mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
-
-                            if (mainImgUrl != null)
-                                values.put(EntryColumns.IMAGE_URL, mainImgUrl);
-
-                            if (filters != null && filters.isEntryFiltered(title, "", link, mobilizedHtml, categoryList.toArray(new String[0]))) {
-                                cr.delete(entryUri, null, null);
-                            } else {
-                                if (filters != null && filters.isMarkAsStarred(title, "", link, mobilizedHtml, categoryList.toArray(new String[0])))
-                                    PutFavorite(values, true);
-                                cr.update(entryUri, values, null, null);
-                                if (!imgUrlsToDownload.isEmpty())
-                                    addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
-                            }
-                            success = true;
+                                addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        if (isShowError) {
-                            String title = "";
-                            Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
-                            if (cursor.moveToFirst() && cursor.isNull(0))
-                                title = cursor.getString(0);
-                            cursor.close();
-                            Status().SetError(title + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
-                        }
-                    } finally {
-                        if (connection != null) {
-                            connection.disconnect();
-                        }
+                        success = true;
+                    } else { // We already mobilized it
+                        success = true;
+                        //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                     }
-                } else { // We already mobilized it
-                    success = true;
-                    //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (isShowError && feedId != -1 ) {
+                        String title = "";
+                        Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
+                        if (cursor.moveToFirst() && cursor.isNull(0))
+                            title = cursor.getString(0);
+                        cursor.close();
+                        Status().SetError(title + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
+                    }
                 }
             }
         }

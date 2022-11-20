@@ -19,6 +19,15 @@
 
 package ru.yanus171.feedexfork.utils;
 
+import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -30,7 +39,6 @@ import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
-import org.jsoup.safety.Whitelist;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,26 +53,18 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 
-import static android.provider.BaseColumns._ID;
-import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
-
 public class HtmlUtils {
     private static final String HTML_TAG_REGEX = "<(.|\n)*?>";
     private static final String AND_SHARP = "&#";
     private static final String NBSP = "&nbsp;";
 
-    private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
+    private static final Safelist JSOUP_WHITELIST = Safelist.relaxed()
             .addTags("iframe", "video", "audio", "source", "track", "hr", "ruby", "rp", "rt" )
             .addAttributes("iframe", "src", "frameborder", "height", "width")
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
-            .addAttributes("img", "data-original")
+            .addAttributes("img", "src", "data-original")
             .addAttributes("a", "data-fancybox-href")
             //.addAttributes("math", "xmlns")
             //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
@@ -167,10 +167,7 @@ public class HtmlUtils {
             SaveContentStepToFile( content, "improveHtmlContent MULTIPLE_BR_PATTERN" );
             if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
                 // xml
-                content = content.replace("&lt;", "<");
-                content = content.replace("&gt;", ">");
-                content = content.replace("&amp;", "&");
-                content = content.replace("&quot;", "\"");
+                content = convertXMLSymbols(content);
                 SaveContentStepToFile( content, "improveHtmlContent convert_xml_symbols" );
             }
         }
@@ -198,6 +195,15 @@ public class HtmlUtils {
         return content;
     }
 
+    @NonNull
+    public static String convertXMLSymbols(String content) {
+        content = content.replace("&lt;", "<");
+        content = content.replace("&gt;", ">");
+        content = content.replace("&amp;", "&");
+        content = content.replace("&quot;", "\"");
+        return content;
+    }
+
     private static final String LINK_TAG_END = "</a>";
 
     private static String GetLinkStartTag(String imgPath) {
@@ -216,6 +222,8 @@ public class HtmlUtils {
                                           final ArrayList<String> imagesToDl,
                                           final ArrayList<Uri> externalImageList,
                                           final int maxImageDownloadCount) {
+        if (IsLocalFile(Uri.parse(entryLink)))
+            return content;
         final int status = Status().Start("Reading images", true); try {
 
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
@@ -232,7 +240,7 @@ public class HtmlUtils {
                     index++;
                     String srcUrl = matcher.group(1);
                     srcUrl = srcUrl.replace(" ", URL_SPACE);
-                    if ( srcUrl.startsWith( "data:image/" ) )
+                    if ( srcUrl.startsWith( "data:" ) )
                         continue;
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);

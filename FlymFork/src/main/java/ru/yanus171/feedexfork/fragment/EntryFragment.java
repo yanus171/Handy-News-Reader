@@ -130,6 +130,10 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
+import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
+import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
+import static ru.yanus171.feedexfork.Constants.HTTPS_SCHEME;
+import static ru.yanus171.feedexfork.Constants.HTTP_SCHEME;
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
@@ -226,8 +230,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 !IsExternalLink( uri );
     }
 
-    private boolean IsExternalLink( Uri uri ) {
-        return uri == null || uri.toString().startsWith( "http" );
+    public static boolean IsExternalLink( Uri uri ) {
+        return uri == null ||
+            uri.toString().startsWith( HTTP_SCHEME ) ||
+            uri.toString().startsWith( HTTPS_SCHEME ) ||
+            IsLocalFile( uri );
+    }
+    public static boolean IsLocalFile( Uri uri ) {
+        return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "documents" ) ||
+            uri.toString().startsWith( FILE_SCHEME );
     }
     private BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
@@ -1332,6 +1343,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         // since we have acquired the networkInfo, we use it for basic checks
         if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
+            GetSelectedEntryView().InvalidateContentCache();
             //FetcherService.addEntriesToMobilize(new Long[]{mEntriesIds[mCurrentPagerPos]});
             //activity.startService(new Intent(activity, FetcherService.class)
             //                      .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));

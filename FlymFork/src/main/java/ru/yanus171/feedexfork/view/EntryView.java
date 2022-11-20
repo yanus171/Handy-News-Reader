@@ -122,6 +122,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
@@ -652,12 +653,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                //synchronized (EntryView.this) {
-                    //if ( progress == 100 )
-                    //    EndStatus();
-                    //else if (mStatus != 0 )
-                    //    FetcherService.Status().Change(mStatus, getContext().getString(R.string.web_page_loading) + " " + progress + " %");
-                //}
+                Status().ChangeProgress( String.format( "%d %% ...", progress ) );
             }
 
 
@@ -710,25 +706,24 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Status().ChangeProgress( "started..." );
+                mContentWasLoaded = false;
                 StatusStartPageLoading();
                 ScheduleScrollTo(view);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                Status().ChangeProgress( "finished." );
                 if (!mLoadTitleOnly)
                     mContentWasLoaded = true;
                 if ( mActivity.mEntryFragment != null )
                     mActivity.mEntryFragment.DisableTapActionsIfVideo( EntryView.this );
-                //else
-                //    EndStatus();
-                //if ( mActivity.mEntryFragment.getCurrentEntryID() == mEntryId )
-                    StatusStartPageLoading();
                 ScheduleScrollTo(view);
             }
 
             private void ScheduleScrollTo(final WebView view) {
-                Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
+                //Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
                 final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
@@ -919,8 +914,10 @@ public class EntryView extends WebView implements Handler.Callback {
 
     private void EndStatus() {
         synchronized (EntryView.this) {
+            if ( !mContentWasLoaded && !mLoadTitleOnly )
+                return;
             if (mStatus != 0)
-                FetcherService.Status().End(mStatus);
+                Status().End(mStatus);
             mStatus = 0;
         }
     }
@@ -940,7 +937,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     private void ScrollToY() {
-        Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+        //Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
         if (GetScrollY() > 0)
             EntryView.this.scrollTo(0, GetScrollY());
     }
@@ -969,7 +966,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        FetcherService.Status().HideByScroll();
+        Status().HideByScroll();
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
         if ( mActivity.mEntryFragment != null )
@@ -1004,7 +1001,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     public void UpdateTags() {
-        final int status = FetcherService.Status().Start(getContext().getString(R.string.last_update), true);
+        final int status = Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement(doc, mEntryLink, "", true);
         AddTagButtons(doc, mEntryLink, root);
@@ -1014,7 +1011,7 @@ public class EntryView extends WebView implements Handler.Callback {
         }
         mScrollY = getScrollY();
         LoadData();
-        FetcherService.Status().End(status);
+        Status().End(status);
     }
 
     private void LoadData() {
@@ -1032,7 +1029,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public void StatusStartPageLoading() {
         synchronized (EntryView.this) {
             if (mStatus == 0)
-                mStatus = FetcherService.Status().Start(R.string.web_page_loading, true);
+                mStatus = Status().Start(R.string.web_page_loading, true);
         }
     }
     private boolean IsStatusStartPageLoading() {
@@ -1231,7 +1228,7 @@ public class EntryView extends WebView implements Handler.Callback {
             return;
         mScrollPartY = GetViewScrollPartY();
         if ( mScrollPartY > 0.0001 ) {
-            Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
+            //Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
 //            new Thread() {
 //                @Override
 //                public void run() {
@@ -1265,7 +1262,7 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
     @Override
     public void run() {
         EntryView.mLastNotifyObserversScheduled.remove( mId );
-        Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
+        //Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
         if (new Date().getTime() - EntryView.mLastNotifyObserversTime.get( mId ) > EntryView.NOTIFY_OBSERVERS_DELAY_MS)
             EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink, false) );
         else

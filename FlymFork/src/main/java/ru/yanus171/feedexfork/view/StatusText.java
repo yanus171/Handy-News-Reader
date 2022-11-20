@@ -293,10 +293,11 @@ public class StatusText implements Observer {
             ChangeProgress(MainApplication.getContext().getString( textID ));
         }
         public void ChangeDB(String text) {
-            synchronized ( mList ) {
-                mDBText = text;
-            }
-            UpdateText();
+            return;
+//            synchronized ( mList ) {
+//                mDBText = text;
+//            }
+//            UpdateText();
         }
         public void SetNotificationTitle(String text, PendingIntent cancelPI) {
             synchronized ( mList ) {

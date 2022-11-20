@@ -133,6 +133,9 @@ public class ArticleTextExtractor {
         mContentStepFileIndex++;
         CreateFileUri(MainApplication.getContext().getCacheDir().getAbsolutePath() + "/" + CONTENT_STEP_TO_FILE_SUBDIR, mContentStepFileIndex + "_" + stepName + ".html", content );
     }
+    public static boolean isFb2( String link ) {
+        return link.endsWith( ".fb2" );
+    }
     public static String extractContent(Document doc,
                                         final String url,
                                         String contentIndicator,
