@@ -666,6 +666,8 @@
     <string name="setting_last_read_article_count">文章数量</string>
     <string name="setting_last_read_article_count_descr">最后读取部分可见的文章计数</string>
     <string name="settings_category_feed_list_summary">源列表和最后阅读部分设置的外观</string>
+    <string name="menu_reload_full_text_with_scripts">带脚本</string>
     <string name="setting_custom_css_text">自定义 CSS 文本</string>
     <string name="setting_custom_css_text_description">将被包含在任意文章 html css 中的文本</string>
+    <string name="menu_reload_full_text_with_debug">带调试信息</string>
 </resources>
