@@ -561,7 +561,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onConfigurationChanged(newConfig);
         if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
             EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
-            if (entryView.mHasScripts) {
+            if (entryView != null && entryView.mHasScripts) {
                 mEntryPager.setAdapter(mEntryPagerAdapter); //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                 mEntryPager.setCurrentItem(mCurrentPagerPos);
             }
