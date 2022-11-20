@@ -670,4 +670,5 @@
     <string name="menu_reload_full_text_with_scripts">З скриптами</string>
     <string name="setting_custom_css_text">Власний текст CSS</string>
     <string name="setting_custom_css_text_description">Текст, який буде включений в CSS розділ до будь-якої html статті</string>
+    <string name="menu_reload_full_text_with_debug">З налагодженням</string>
 </resources>
