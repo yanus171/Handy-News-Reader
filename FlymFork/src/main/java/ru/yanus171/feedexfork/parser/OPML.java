@@ -373,7 +373,7 @@ public class OPML {
             EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
             EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
             EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR,
-            EntryColumns.IS_WITH_TABLES, EntryColumns.READ_DATE};
+            EntryColumns.IS_WITH_TABLES, EntryColumns.READ_DATE, EntryColumns.IS_LANDSCAPE };
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -418,6 +418,7 @@ public class OPML {
                 WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
                 WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
                 WriteText(writer, cur, EntryColumns.READ_DATE, 15);
+                WriteBoolValue(writer, cur, EntryColumns.IS_LANDSCAPE, 16);
                 writer.write(CLOSING);
             }
             writer.write("\t");
@@ -640,6 +641,7 @@ public class OPML {
                 values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
                 values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
                 values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
+                values.put(EntryColumns.IS_LANDSCAPE, GetText( attributes, EntryColumns.IS_LANDSCAPE));
 
                 final Long id = Long.valueOf(cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(mFeedId ), values).getLastPathSegment());
                 if ( attributes.getIndex(_ID) != -1 )

@@ -351,7 +351,7 @@
     <string name="entry_marked_favourite">Artykuł został dodany do Ulubionych</string>
     <string name="new_feed_was_added">Nowy kanał został dodany</string>
     <string name="entry_marked_unread">Artykuł został oznaczony jako nieprzeczytany</string>
-    <string name="lock_orientation">Orientacja pozioma</string>
+    <string name="force_landscape_orientation">Orientacja pozioma</string>
     <string name="markAsStarred">Oznacz jako Ulubione</string>
     <string name="markedAsStarred">Artykuł został dodany do Ulubionych:</string>
     <string name="deleteAllEntries">Usunąć wszystkie niezagwiazdkowane artykuły?</string>

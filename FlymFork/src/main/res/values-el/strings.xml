@@ -346,7 +346,7 @@
     <string name="entry_marked_favourite">Το άρθρο προστέθηκε στα αγαπημένα</string>
     <string name="new_feed_was_added">Νέα ροή προστέθηκε</string>
     <string name="entry_marked_unread">Το άρθρο σημειώθηκε ως αδιάβαστο</string>
-    <string name="lock_orientation">Οριζόντιος προσανατολισμός</string>
+    <string name="force_landscape_orientation">Οριζόντιος προσανατολισμός</string>
     <string name="markAsStarred">Σημείωση με αστέρι</string>
     <string name="markedAsStarred">Το άρθρο σημειώθηκε με αστέρι: </string>
     <string name="deleteAllEntries">Διαγραφή όλων των άρθρων χωρίς αστέρι;</string>

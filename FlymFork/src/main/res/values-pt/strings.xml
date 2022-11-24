@@ -346,7 +346,7 @@
     <string name="entry_marked_favourite">O artigo foi adicionado aos Favoritos</string>
     <string name="new_feed_was_added">Novo feed foi adicionado</string>
     <string name="entry_marked_unread">O artigo foi marcado como não lido</string>
-    <string name="lock_orientation">Orientação paisagem</string>
+    <string name="force_landscape_orientation">Orientação paisagem</string>
     <string name="markAsStarred">Marcar como favorito</string>
     <string name="markedAsStarred">O artigo foi marcado como favorito: </string>
     <string name="deleteAllEntries">Excluir todos os artigos visíveis e não favoritos</string>

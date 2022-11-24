@@ -373,7 +373,7 @@
     <string name="entry_marked_favourite">The article has been added to Favorites</string>
     <string name="new_feed_was_added">New feed was added</string>
     <string name="entry_marked_unread">The article has been marked as unread</string>
-    <string name="lock_orientation">Landscape orientation</string>
+    <string name="force_landscape_orientation">Landscape orientation</string>
     <string name="markAsStarred">Mark as starred</string>
     <string name="markedAsStarred">The article has been marked as starred: </string>
     <string name="deleteAllEntries">Delete all non-starred displayed articles?</string>

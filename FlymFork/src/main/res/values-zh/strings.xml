@@ -358,7 +358,7 @@
     <string name="entry_marked_favourite">文章被添加到收藏夹</string>
     <string name="new_feed_was_added">添加了新订阅源</string>
     <string name="entry_marked_unread">文章被标记为未读</string>
-    <string name="lock_orientation">横向</string>
+    <string name="force_landscape_orientation">横向</string>
     <string name="markAsStarred">添加星标</string>
     <string name="markedAsStarred">文章被标为加星: </string>
     <string name="deleteAllEntries">删除所有未加星标显示的文章吗？</string>

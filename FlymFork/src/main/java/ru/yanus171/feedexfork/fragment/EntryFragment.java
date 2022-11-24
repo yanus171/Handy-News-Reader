@@ -171,7 +171,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public boolean mIgnoreNextLoading = false;
 
 
-    private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private int mCurrentPagerPos = -1, mLastPagerPos = -1;
@@ -179,15 +179,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private long mInitialEntryId = -1;
     private Entry[] mEntriesIds = new Entry[1];
 
-    private boolean mFavorite, mIsWithTables, mIsFullTextShown = true;
+    private boolean mFavorite, mIsWithTables, mIsForceLandscape = false, mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
 
     private View mStarFrame = null;
     private StatusText mStatusText = null;
-
-    private boolean mLockLandOrientation = false;
 
     public boolean mMarkAsUnreadOnFinish = false;
     private boolean mRetrieveFullText = false;
@@ -386,8 +384,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
 
-        mLockLandOrientation = getBoolean(STATE_LOCK_LAND_ORIENTATION, false );
-
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
         mStarFrame = rootView.findViewById(R.id.frameStar);
         final ImageView frameStarImage  = rootView.findViewById(R.id.frameStarImage);
@@ -481,10 +477,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     private void SetOrientation() {
-		int or = mLockLandOrientation ?
+		int or = mIsForceLandscape ?
 			   ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 			   ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-		if ( mLockLandOrientation && or != getActivity().getRequestedOrientation() )
+		if ( mIsForceLandscape && or != getActivity().getRequestedOrientation() )
 			getActivity().setRequestedOrientation( or );
     }
 
@@ -561,7 +557,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onConfigurationChanged(newConfig);
         if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
             EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
-            if (entryView != null && entryView.mHasScripts) {
+            if (entryView != null && !mIsForceLandscape && entryView.mHasScripts) {
                 mEntryPager.setAdapter(mEntryPagerAdapter); //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                 mEntryPager.setCurrentItem(mCurrentPagerPos);
             }
@@ -577,7 +573,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if (entryView != null) {
             //PrefUtils.putInt(PrefUtils.LAST_ENTRY_SCROLL_Y, entryView.getScrollY());
             entryView.SaveScrollPos();
-            PrefUtils.putBoolean(STATE_LOCK_LAND_ORIENTATION, mLockLandOrientation);
         }
 
         mEntryPagerAdapter.onPause();
@@ -645,10 +640,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        menu.findItem(R.id.menu_lock_land_orientation).setChecked(mLockLandOrientation);
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked(mIsForceLandscape);
 
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
@@ -905,9 +900,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
 
-                case R.id.menu_lock_land_orientation: {
-                    mLockLandOrientation = !mLockLandOrientation;
-                    item.setChecked(mLockLandOrientation);
+                case R.id.menu_force_landscape_orientation_toggle: {
+                    SetIsLandscape( !mIsForceLandscape);
+                    item.setChecked(mIsForceLandscape);
                     SetOrientation();
                     break;
                 }
@@ -1036,6 +1031,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         cr.update(uri, values, null, null);
         getActivity().invalidateOptionsMenu();
+    }
+    private void SetIsLandscape(final boolean isLandscape) {
+        if ( mIsForceLandscape == isLandscape )
+            return;
+        mIsForceLandscape = isLandscape;
+        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+        ContentValues values = new ContentValues();
+        values.put(EntryColumns.IS_LANDSCAPE, mIsForceLandscape ? 1 : 0);
+        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        cr.update(uri, values, null, null);
+        getActivity().invalidateOptionsMenu();
+        SetOrientation();
     }
     private void SetIsFavorite(final boolean favorite, boolean showToast) {
         if ( mFavorite == favorite )
@@ -1204,6 +1211,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
                 mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
+                SetIsLandscape( entryCursor.getInt(mIsLandscapePos) == 1 );
                 //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
 
                 activity.invalidateOptionsMenu();
@@ -1650,6 +1658,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         mLinkPos = cursor.getColumnIndex(EntryColumns.LINK);
                         mIsFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
                         mIsWithTablePos= cursor.getColumnIndex(EntryColumns.IS_WITH_TABLES);
+                        mIsLandscapePos= cursor.getColumnIndex(EntryColumns.IS_LANDSCAPE);
                         mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
                         mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
                         mIsWasAutoUnStarPos = cursor.getColumnIndex(EntryColumns.IS_WAS_AUTO_UNSTAR);

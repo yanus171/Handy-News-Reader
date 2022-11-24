@@ -343,7 +343,7 @@
     <string name="entry_marked_favourite">تمَّ إضافة المقال إلى المميّزة</string>
     <string name="new_feed_was_added">تمَّ إضافة خلاصه جديدة</string>
     <string name="entry_marked_unread">تمَّ تحديد المقال كغير مقروء</string>
-    <string name="lock_orientation">الوضعُ الأُفُقي</string>
+    <string name="force_landscape_orientation">الوضعُ الأُفُقي</string>
     <string name="markAsStarred">تَحْديدٌ كَمُمَيَّزٍ</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
     <string name="deleteAllEntries">حَذْفُ كُلِّ المَقَالَاتِ عَدَا المُمَيَّزَةَ بِنَجْمَةٍ؟</string>
