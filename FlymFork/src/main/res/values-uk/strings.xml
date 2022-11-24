@@ -357,7 +357,6 @@
     <string name="entry_marked_favourite">Стаття додана в обране</string>
     <string name="new_feed_was_added">Додана нова стрічка</string>
     <string name="entry_marked_unread">Стаття помічена як непрочитана</string>
-    <string name="lock_orientation">Горизонтальна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною: </string>
     <string name="deleteAllEntries">Вилучити всі статті крім обраних?</string>
