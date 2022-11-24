@@ -360,7 +360,6 @@
     <string name="entry_marked_favourite">Статья добавлена в избранное</string>
     <string name="new_feed_was_added">Добавлена новая лента</string>
     <string name="entry_marked_unread">Статья отмечена как непрочитанная</string>
-    <string name="lock_orientation">Горизонтальная ориентацию</string>
     <string name="markAsStarred">Поместить в избранное</string>
     <string name="markedAsStarred">Статья помечена избранной</string>
     <string name="deleteAllEntries">Удалить все неотмеченные статьи?</string>
