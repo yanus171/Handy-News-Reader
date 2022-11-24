@@ -297,7 +297,6 @@
     <string name="entry_marked_favourite">El artículo fue añadido a Favoritos</string>
     <string name="new_feed_was_added">Nuevo feed añadido</string>
     <string name="entry_marked_unread">El artículo fue marcado como no leído</string>
-    <string name="lock_orientation">Orientación horizontal</string>
     <string name="markAsStarred">Marcar como destacado</string>
     <string name="markedAsStarred">El artículo fue marcado como destacado: </string>
     <string name="deleteAllEntries">¿Borrar todos los artículos no destacados que se muestran?</string>
