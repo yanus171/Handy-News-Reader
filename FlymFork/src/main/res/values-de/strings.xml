@@ -356,7 +356,6 @@
     <string name="entry_marked_favourite">Artikel wurde zu den Favoriten hinzugefügt</string>
     <string name="new_feed_was_added">Neuer Feed wurde hinzugefügt</string>
     <string name="entry_marked_unread">Artikel wurde als ungelesen markiert</string>
-    <string name="lock_orientation">Querformat</string>
     <string name="markAsStarred">Automatisch als Favorit markieren</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
     <string name="deleteAllEntries">Feed zurücksetzen und dabei alle nicht als Favorit markierten Artikel löschen?</string>
