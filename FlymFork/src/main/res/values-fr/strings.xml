@@ -354,7 +354,6 @@
     <string name="entry_marked_favourite">L\'article a été ajouté aux Favoris</string>
     <string name="new_feed_was_added">Nouveau flux ajouté</string>
     <string name="entry_marked_unread">L\'article a été marqué comme non lu</string>
-    <string name="lock_orientation">Orientation paysage</string>
     <string name="markAsStarred">Ajouter aux favoris</string>
     <string name="markedAsStarred">L\'article a été ajouté aux favoris : </string>
     <string name="deleteAllEntries">Supprimer tous les articles non favoris ?</string>
