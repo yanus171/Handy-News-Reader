@@ -350,7 +350,6 @@ maksimum per umpan<br/>
     <string name="entry_marked_favourite">Artikel telah ditambahkan ke Favorit</string>
     <string name="new_feed_was_added">Umpan baru telah ditambahkan</string>
     <string name="entry_marked_unread">Artikel telah ditandai belum dibaca</string>
-    <string name="lock_orientation">Orientasi lanskap</string>
     <string name="markAsStarred">Tandai sebagai favorit</string>
     <string name="markedAsStarred">Artikel telah ditandai sebagai favorit: </string>
     <string name="deleteAllEntries">Hapus semua artikel tanpa tanda favorit yang ditampilkan?</string>
