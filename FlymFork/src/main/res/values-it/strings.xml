@@ -355,7 +355,6 @@
     <string name="entry_marked_favourite">L\'articolo è stato aggiunto ai Preferiti</string>
     <string name="new_feed_was_added">Nuovo feed è stato aggiunto</string>
     <string name="entry_marked_unread">L\'articolo è stato contrassegnato come non letto</string>
-    <string name="lock_orientation">Orientamento orizzontale</string>
     <string name="markAsStarred">Aggiungi Preferito</string>
     <string name="markedAsStarred">L\'articolo è stato contrassegnato come preferito: </string>
     <string name="deleteAllEntries">Elimina tutti i feed non preferiti</string>
