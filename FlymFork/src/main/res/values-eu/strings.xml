@@ -335,7 +335,6 @@
     <string name="entry_marked_favourite">Artikulua gogokoetara gehitu da</string>
     <string name="new_feed_was_added">Jario berria gehitu da</string>
     <string name="entry_marked_unread">Artikulua irakurri gabeko gisa markatu da</string>
-    <string name="lock_orientation">Orientazio horizontala</string>
     <string name="markAsStarred">Markatu izardun gisa</string>
     <string name="markedAsStarred">Artikulua izardun gisa markatu da: </string>
     <string name="deleteAllEntries">Ezabatu izarrik gabeko erakutsitako artikulu guztiak</string>
