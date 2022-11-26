@@ -1,6 +1,6 @@
 <i>"Rester en contact avec tous Mes Intérêts n'a jamais été aussi facile".</i>
 
-<b><i>Handy News Reader</i> : sans publicité/logiciel libre sous licence <i>GNU GPL</i> .</b>
+<b><i>Handy Reading</i> : sans publicité/logiciel libre sous licence <i>GNU GPL</i> .</b>
 
 <ul>
 	<li><b>concevez le Magazine de Vos Rêves !</b></li>

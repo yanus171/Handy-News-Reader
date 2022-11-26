@@ -1,6 +1,6 @@
 <h1><em>"Staying in touch with all Your Interests never has been so easy".</em></h1>
 
-<h2 style="font-variant: small-caps;">Handy News Reader: <sup>no ads/free software under <em>GNU GPL license</em></sup></h2>
+<h2 style="font-variant: small-caps;">Handy Reading: <sup>no ads/free software under <em>GNU GPL license</em></sup></h2>
 <ul>
 	<li>make up Your Dream Magazine!</li>
 	<li>interesting articles straight into Your hands</li>

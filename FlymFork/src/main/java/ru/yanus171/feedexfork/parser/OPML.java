@@ -150,7 +150,7 @@ public class OPML {
 
     public static String GetAutoBackupOPMLFileName() { return getContext().getCacheDir().getAbsolutePath() + "/" + AUTO_BACKUP_OPML_FILENAME; }
 
-    private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy News Reader export</title>\n<dateCreated>";
+    private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>Handy Reading export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
     private static final String OUTLINE_TITLE = "\t<outline title='";
     private static final String OUTLINE_XMLURL = "' type='rss' xmlUrl='";

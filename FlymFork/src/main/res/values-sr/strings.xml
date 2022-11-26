@@ -23,7 +23,7 @@
 <resources>
 
     <!-- GENERAL -->
-    <string name="about_flym">О Handy News Reader / Help / Contact developer</string>
+    <string name="about_flym">О Handy Reading / Help / Contact developer</string>
     <string name="welcome_title">Добро дошли у Флим. Желите ли да додате довод?</string>
     <string name="never">никад</string>
     <string name="last_update">Ажурирано</string>
@@ -86,17 +86,6 @@
     <string name="to_group_above">Изнад групе</string>
     <string name="to_group_into">У групу</string>
     <string name="add_custom_feed">Додај довод или тражи нови</string>
-    <string name="google_news_title">Теме Гугл Вести</string>
-    <string name="google_news_indicator">Изаберите теме за додавање. Неке од тема можда нису доступне на вашем језику.</string>
-    <string name="google_news_top_stories">Најбоље приче</string>
-    <string name="google_news_world">Свет</string>
-    <string name="google_news_business">Посао</string>
-    <string name="google_news_technology">Технологија</string>
-    <string name="google_news_entertainment">Забава</string>
-    <string name="google_news_sports">Спорт</string>
-    <string name="google_news_science">Наука</string>
-    <string name="google_news_health">Здравље</string>
-    <string name="google_news_custom_topic">Enter custom topic</string>
 
     <!-- ENTRIES -->
     <string name="unread_entries">Unread</string>

@@ -1,6 +1,6 @@
 <i>"Pozostawanie w kontakcie z wszystkimi Moimi Zainteresowaniami nigdy nie było tak łatwe.".</i>
 
-<b><i>Handy News Reader</i>: wolne (od reklam) oprogramowanie na licencji <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: wolne (od reklam) oprogramowanie na licencji <i>GNU GPL</i>.</b>
 
 <ul>
 	<li><b>stwórz Swoje Wymarzone Czasopismo!</b></li>

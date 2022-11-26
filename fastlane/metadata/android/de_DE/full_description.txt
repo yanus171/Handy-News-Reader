@@ -1,6 +1,6 @@
 <i>"Nie war es so einfach, alle meine Interessen zu verfolgen."</i>
 
-<b><i>Handy News Reader</i>: werbefrei / freie Software lizenziert nach <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: werbefrei / freie Software lizenziert nach <i>GNU GPL</i>.</b>
 
 <ul>
 	<li><b>gestalten Sie Ihr Traum-Magazin!</b></li>

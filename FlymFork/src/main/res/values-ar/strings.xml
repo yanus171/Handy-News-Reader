@@ -72,16 +72,16 @@
     ***translatorList***
     <br/>
     ]]></string>
-    <string name="app_name">Handy News Reader</string>
+    <string name="app_name">Handy Reading</string>
     <string name="about_title_version">الإصدار</string>
-    <string name="about_handy_news_reader">حَوْلَ Handy News Reader</string>
+    <string name="about_handy_news_reader">حَوْلَ Handy Reading</string>
     <string name="about_handy_news_reader_descr">التَّرْخيصُ والدَّعْمُ وَاَلْتَرْجَماتُ، إِلَخْ</string>
-    <string name="welcome_title">مرحباً بك مع Handy News Reader. أتَرغَب بإضافة خلاصة؟</string>
+    <string name="welcome_title">مرحباً بك مع Handy Reading. أتَرغَب بإضافة خلاصة؟</string>
     <string name="never">مُطْلَقًا</string>
     <string name="last_update">تَحْديث</string>
     <string name="menu_settings">الإعدادات</string>
     <string name="menu_refresh">تحيين</string>
-    <string name="flym_feeds">خلاصات Handy News Reader</string>
+    <string name="flym_feeds">خلاصات Handy Reading</string>
     <string name="error">خطأ</string>
     <string name="network_error">أنت غير متّصل.</string>
     <string name="loading">جارِ التحميل…</string>
@@ -159,7 +159,7 @@
     <string name="menu_mark_as_unread">تحديده كغير مقروء</string>
     <string name="menu_reload_full_text">إعادة تحميل النص الكامل</string>
     <string name="menu_reload_full_text_without_mobilizer">بِدُونِ تَعْبِئَةٍ</string>
-    <string name="share_favorites_title">Handy News Reader: المقالات المُميّزة</string>
+    <string name="share_favorites_title">Handy Reading: المقالات المُميّزة</string>
     <string name="link_was_copied_to_clipboard">تَمَّ نُسَخُ الرّابِطِ</string>
     <string name="get_full_text">تحميل النص الكامل</string>
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
