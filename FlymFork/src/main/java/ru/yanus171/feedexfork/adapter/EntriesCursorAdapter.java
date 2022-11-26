@@ -117,6 +117,7 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -138,6 +139,7 @@ import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -146,10 +148,13 @@ import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotificati
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
+import static ru.yanus171.feedexfork.utils.PrefUtils.IsShowArticleBigImagesEnabled;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
 import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
@@ -261,7 +266,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         final String feedId = cursor.getString(mFeedIdPos);
         //final long entryID = cursor.getLong(mIdPos);
         final String feedTitle = cursor.getString(mFeedTitlePos);
-        final boolean isExpandArticleText = PrefUtils.getBoolean( "settings_show_article_text_expand_controls", false );
+        final boolean isExpandArticleText = getBoolean( "settings_show_article_text_expand_controls", false );
 
         if (view.getTag(R.id.holder) == null) {
             final ViewHolder holder = new ViewHolder();
@@ -278,6 +283,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.authorTextView = SetupSmallTextView(view, R.id.textAuthor);
             holder.imageSizeTextView = SetupSmallTextView(view, R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
+            holder.mainBigImgView = view.findViewById(R.id.main_big_icon);
             //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.layoutControls = view.findViewById(R.id.layout_controls);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
@@ -343,7 +349,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             holder.collapseBtnBottom.setOnClickListener( collapseListener );
 
-            final View.OnClickListener manageLabels = PrefUtils.getBoolean( "label_setup_by_tap_on_date", false ) ?
+            final View.OnClickListener manageLabels = getBoolean( "label_setup_by_tap_on_date", false ) ?
                 view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
                 null;
 
@@ -501,7 +507,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     if (Math.abs(paddingX) > minX || Math.abs(paddingY) > minY)
                         isPress = false;
 
-                    final boolean prefVibrate = PrefUtils.getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
+                    final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
                     if (prefVibrate && Math.abs(paddingX) > Math.abs(paddingY) && paddingX >= threshold) {
                         if (!wasVibrateRead) {
                             vibrator.vibrate(VIBRATE_DURATION);
@@ -563,7 +569,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         Calendar currentDate = Calendar.getInstance();
         final boolean isTextShown = isExpandArticleText && isTextShown(holder);
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
-        if ( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
+        if ( getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
             holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
         else
             holder.titleTextView.setText(titleText);
@@ -578,14 +584,40 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.collapsedBtn.setVisibility( mShowEntryText || !isExpandArticleText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextExpanded() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         SetFont(holder.titleTextView, 1 );
-        holder.mainImgView.setVisibility( mIsLoadImages ? View.VISIBLE : View.GONE  );
-        if ( !isTextShown && PrefUtils.getBoolean( "setting_show_article_icon", true ) ) {
+        final boolean showBigImage = getBoolean(SHOW_ARTICLE_BIG_IMAGE, false) && IsShowArticleBigImagesEnabled( mUri );;
+        holder.mainImgView.setVisibility( View.GONE );
+        holder.mainBigImgView.setVisibility( View.GONE );
+        if ( !isTextShown && getBoolean( "setting_show_article_icon", true ) ) {
             String mainImgUrl = cursor.getString(mMainImgPos);
             mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
 
-            ColorGenerator generator = ColorGenerator.DEFAULT;
-            int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            if ( mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
+            //ColorGenerator generator = ColorGenerator.DEFAULT;
+            //int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
+            if ( showBigImage && mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
+                holder.mainBigImgView.setVisibility( View.VISIBLE );
+                String finalMainImgUrl = mainImgUrl;
+                holder.mainBigImgView.setOnClickListener(v_ -> EntryView.ShowImageMenu(finalMainImgUrl, feedTitle, v_.getContext() ));
+                Glide.with(context).load(mainImgUrl)
+                    .fitCenter()
+                    .addListener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            if ( mIsLoadImages ) {
+                                holder.mainBigImgView.setVisibility(View.GONE);
+                                return true;
+                            } else
+                                return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.mainBigImgView.setVisibility( View.VISIBLE );
+                            holder.mainImgView.setVisibility( View.GONE );
+                            return false;
+                        }
+                    })
+                    .into(holder.mainBigImgView);
+            } else if ( mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
                 final int dim = UiUtils.dpToPixel(70);
                 //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
                 //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
@@ -602,7 +634,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             } else
                                 return false;
                         }
-
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             holder.mainImgView.setVisibility( View.VISIBLE );
@@ -613,14 +644,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     //.placeholder(letterDrawable)
                     //.error(letterDrawable)
                     .into(holder.mainImgView);
-            } else {
-                Glide.with(context).clear(holder.mainImgView);
-                //holder.mainImgView.setImageDrawable(letterDrawable);
             }
-        } else
-            holder.mainImgView.setVisibility( View.GONE );
-
-
+        }
         holder.isMobilized = FileUtils.INSTANCE.isMobilized( cursor.getString(mUrlPos), cursor, mMobilizedPos, mIdPos );
 
         final long textSize = cursor.isNull( mTextLenPos ) ? FileUtils.INSTANCE.LinkToFile( cursor.getString( mUrlPos ) ).length() : cursor.getInt( mTextLenPos );
@@ -655,12 +680,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.authorTextView.setText( cursor.getString( mAuthorPos ) );
         UpdateReadView( holder, view );
 
-        final boolean showUrl = PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ) ;
+        final boolean showUrl = getBoolean( SHOW_ARTICLE_URL, false ) ;
         holder.urlTextView.setVisibility( showUrl ? View.VISIBLE : View.GONE );
 
         final String abstractText = cursor.getString(mAbstractPos);
 
-        final boolean showTextPreview = PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
+        final boolean showTextPreview = getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) &&
             abstractText != null && !isTextShown( holder );
         holder.textPreviewTextView.setVisibility( showTextPreview ? View.VISIBLE : View.GONE );
         if ( showTextPreview ) {
@@ -690,7 +715,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.videoImgView.setVisibility(View.GONE);
 
         UpdateStarImgView(holder);
-        holder.mobilizedImgView.setVisibility(PrefUtils.getBoolean( "show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
+        holder.mobilizedImgView.setVisibility(getBoolean("show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
 
         UpdateReadView(holder, view);
         holder.readImgView.setOnClickListener(new View.OnClickListener() {
@@ -707,7 +732,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         });
 
         holder.categoriesTextView.setVisibility(View.GONE);
-        if ( PrefUtils.getBoolean( SHOW_ARTICLE_CATEGORY, true ) ) {
+        if ( getBoolean( SHOW_ARTICLE_CATEGORY, true ) ) {
             final String categories = cursor.isNull(mCategoriesPos) ? "" : cursor.getString(mCategoriesPos);
             if (!categories.isEmpty()) {
                 holder.categoriesTextView.setVisibility(View.VISIBLE);
@@ -717,12 +742,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         UpdateLabelText(holder);
 
-        holder.contentImgView1.setVisibility( View.GONE );
-        holder.contentImgView2.setVisibility( View.GONE );
-        holder.contentImgView3.setVisibility( View.GONE );
         holder.openArticle.setVisibility(View.GONE );
         holder.collapseBtnBottom.setVisibility(View.GONE );
         holder.showMore.setVisibility( View.GONE );
+        holder.contentImgView1.setVisibility( View.GONE );
+        holder.contentImgView2.setVisibility( View.GONE );
+        holder.contentImgView3.setVisibility( View.GONE );
         if ( isTextShown ) {
             holder.openArticle.setVisibility(View.VISIBLE );
             if ( !mShowEntryText )
@@ -768,7 +793,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         } else
             holder.textTextView.setVisibility(View.GONE);
-
         holder.videoImgView.setVisibility( abstractText != null && abstractText.contains( "<video" ) ? View.VISIBLE : View.GONE );
 
         /*Display display = ((WindowManager) context.getSystemService( Context.WINDOW_SERVICE ) ).getDefaultDisplay();
@@ -777,7 +801,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setSingleLine();
             holder.mainImgView.setMaxHeight(  );
         }*/
-        final boolean isNew = PrefUtils.getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInMarkAsReadList(EntryUri(holder.entryID).toString());
+        final boolean isNew = getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInMarkAsReadList(EntryUri(holder.entryID).toString());
         holder.newImgView.setVisibility( isNew ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
@@ -813,7 +837,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private Spanned getBoldText(String html) {
-        String result = PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html;
+        String result = getBoolean(PrefUtils.ENTRY_FONT_BOLD, false ) ? "<b>" + html + "</b>" : html;
         return Html.fromHtml(result);
     }
 
@@ -1352,6 +1376,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView authorTextView;
         TextView imageSizeTextView;
         ImageView mainImgView;
+        ImageView mainBigImgView;
         //View mainImgLayout;
         ImageView starImgView;
         ImageView mobilizedImgView;

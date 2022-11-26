@@ -55,6 +55,11 @@
                 android:checkable="true"
                 android:title="@string/show_article_text_preview"/>
             <item
+                android:id="@+id/menu_show_article_big_image_toggle"
+                android:icon="@drawable/ic_photo_size_select_actual"
+                android:checkable="true"
+                android:title="@string/show_article_big_image"/>
+            <item
                 android:id="@+id/menu_show_article_category_toggle"
                 android:checkable="true"
                 android:title="@string/show_article_category"/>

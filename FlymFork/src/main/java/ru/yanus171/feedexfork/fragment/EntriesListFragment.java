@@ -126,6 +126,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FA
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
@@ -720,7 +721,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void onPrepareOptionsMenu (Menu menu) {
         menu.findItem( R.id.menu_show_article_url_toggle).setChecked(PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ));
         menu.findItem( R.id.menu_show_article_category_toggle).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_CATEGORY, true ));
-        menu.findItem( R.id.menu_show_article_text_preview_toggle).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW, true ));
+        menu.findItem( R.id.menu_show_article_text_preview_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW, true ));
+        menu.findItem( R.id.menu_show_article_big_image_toggle ).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_BIG_IMAGE, false ));
         menu.findItem( R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
         menu.findItem( R.id.menu_show_entry_text ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
@@ -728,7 +730,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_full_screen ).setChecked(HomeActivity.GetIsStatusBarEntryListHidden() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!HomeActivity.GetIsActionBarEntryListHidden() );
         menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
-
+        menu.findItem( R.id.menu_show_article_big_image_toggle ).setEnabled( !mShowTextInEntryList && PrefUtils.IsShowArticleBigImagesEnabled( mCurrentUri ) );
     }
     @SuppressLint("Range")
     @Override
@@ -851,6 +853,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_show_article_text_preview_toggle: {
                 PrefUtils.toggleBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false );
                 item.setChecked( PrefUtils.getBoolean( SHOW_ARTICLE_TEXT_PREVIEW, false ) );
+                mEntriesCursorAdapter.notifyDataSetChanged();
+                return true;
+            }
+            case R.id.menu_show_article_big_image_toggle: {
+                PrefUtils.toggleBoolean( SHOW_ARTICLE_BIG_IMAGE, false );
+                item.setChecked( PrefUtils.getBoolean( SHOW_ARTICLE_BIG_IMAGE, false ) );
                 mEntriesCursorAdapter.notifyDataSetChanged();
                 return true;
             }

@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
@@ -34,7 +35,13 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 
 import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.Theme.DARK;
 import static ru.yanus171.feedexfork.utils.Theme.LIGHT;
 import static ru.yanus171.feedexfork.utils.Theme.BLACK;
@@ -72,6 +79,7 @@ public class PrefUtils {
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
     public static final String SHOW_ARTICLE_URL = "settings_show_article_url";
     public static final String SHOW_ARTICLE_TEXT_PREVIEW = "settings_show_article_text_preview";
+    public static final String SHOW_ARTICLE_BIG_IMAGE = "settings_show_article_big_image";
     public static final String SHOW_ARTICLE_CATEGORY = "settings_show_article_category";
     //public static final String TEXT_COLOR_BRIGHTNESS = "text_color_brightness";
     public static final String MAX_IMAGE_DOWNLOAD_COUNT = "max_image_download_count";
@@ -308,7 +316,12 @@ public class PrefUtils {
             return getInt(key, result);
         }
     }
-
+    public static boolean IsShowArticleBigImagesEnabled( Uri uri ) {
+        return
+            uri != LAST_READ_CONTENT_URI &&
+            uri != FAVORITES_CONTENT_URI &&
+            !ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() ).equals(uri);
+    }
     @NonNull
     public static ArrayList<String> GetRemoveClassList() {
         final ArrayList<String> removeClassList = new ArrayList<>();
