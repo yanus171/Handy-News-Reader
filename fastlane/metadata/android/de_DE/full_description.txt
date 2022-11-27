@@ -1,6 +1,6 @@
 <i>"Nie war es so einfach, alle meine Interessen zu verfolgen."</i>
 
-<b><i>Handy Reading</i>: werbefrei / freie Software lizenziert nach <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>gestalten Sie Ihr Traum-Magazin!</b></li>
@@ -10,15 +10,16 @@
 
 ...genießen Sie Ihr Leben <b>ohne Ablenkung und bleiben Sie gleichzeitig auf dem Laufenden mit Ihren Interessen</b>. Konzentrieren Sie sich auf das Wesentliche...
 
-Lernen Sie <i>Handy NR</i> kennen - eine offline-orientierte <i>RSS</i>-Leseapp mit vielen Funktionen, die <b>Rücksicht auf Ihre Zeit und Ihre innere Ruhe nimmt</b>: sie vermeidet die Reizüberflutung, die heutzutage so verbreitet ist, wenn man an Mobilgeräte denkt.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Funktionen</u>:</b>
-	<li><b><u>vollständige Artikel</u></b>: kein externer Browser nötig, um den kompletten Text lesen zu können,</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b><u>bequemes</u> Lesen</b>: Artikelwechsel mit den Lautstärketasten oder durch Wischen, <i>Tipp-Zonen</i>, speichern der aktuellen Leseposition <u>pro Artikel</u>,</li>
-	<li><b>Benachrichtigung bei wichtigen Artikeln</b>: Sie werden nichts mehr verpassen, was Ihnen wichtig ist,</li>
+  <li><b>Benachrichtigung bei wichtigen Artikeln</b>: Sie werden nichts mehr verpassen, was Ihnen wichtig ist,</li>
 	<li><b><i>"Später lesen"</i></b>: Sie können schnell durch die Artikel blättern und dabei <b>diejenigen als Favorit markieren, welche Sie später in Ihrer Freizeit lesen</b> oder einfach nur aufheben möchten,</li>
-	<li><b><i>"Automatisch aus den Favoriten entfernen"</i></b> - wenn ein Favorit gelesen wurde, kann er automatisch aus den <i>'Favoriten'</i> (=<i>'Später lesen'</i>) entfernt werden,</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Automatisch aus den Favoriten entfernen"</i></b> - wenn ein Favorit gelesen wurde, kann er automatisch aus den <i>'Favoriten'</i> (=<i>'Später lesen'</i>) entfernt werden,</li>
 	<li><b>bereit, offline zu gehen</b> - tauchen Sie ohne Ablenkung ein: einmal aktualisiert, muss nichts zusätzlich geladen werden - es funktioniert wirklich ohne Internet :),</li>
 	<li><b>sparen Sie Datenvolumen</b>: gehen Sie nur für neue Artikel online - Sie kontrollieren, was und in welchem Umfang geladen werden soll,</li>
 	<li><b>Gestensteuerung</b>: z.B. wischen Sie von oben nach unten, um Artikel zu den <i>Favoriten</i> hinzuzufügen oder daraus zu entfernen; wischen Sie am linken Displayrand, um die Helligkeit einzustellen,</li>
