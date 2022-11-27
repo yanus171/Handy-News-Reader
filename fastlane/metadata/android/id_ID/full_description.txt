@@ -1,6 +1,6 @@
 <i>"Tetap bisa mengikuti semua Minat Aku tidak pernah semudah ini".</i>
 
-<b><i>Handy Reading</i>: tanpa iklan/perangkat lunak bebas di bawah lisensi <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>ciptakan Majalah Impian Anda!</b></li>
@@ -10,15 +10,16 @@
 
 ...nikmati Hidup Anda <b>yang bebas gangguan - dan terkini sesuai minat Anda</b> secara bersamaan. Fokus pada Esensi...
 
-Perkenalkan <i>Handy NR</i> - si kaya fitur, pembaca <i>RSS</i> berorientasi offline yang <b>menghargai Waktu Anda dan Kedamaian Batin Anda</b>: pemakainya terhindar dari pengalih perhatian dan gangguan yang begitu lazim saat ini ketika Anda memakai perangkat seluler.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Fitur</u>:</b>
-	<li><b><u>artikel lengkap</u> di tangan</b>: tidak perlu memakai peramban web eksternal untuk mendapatkan teks lengkap,</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b><u>nyaman</u> membaca</b>: berganti artikel dengan tombol volume atau usapan, <i>Zona Usap</i>, mengingat posisi bacaan <u>per artikel</u>,</li>
-	<li><b>notifikasi artikel penting</b>: Anda tidak akan ketinggalan lagi sesuatu yang Anda anggap sangat penting,</li>
+  <li><b>notifikasi artikel penting</b>: Anda tidak akan ketinggalan lagi sesuatu yang Anda anggap sangat penting,</li>
 	<li><b><i>"Baca Nanti"</i></b>: Anda bisa dengan cepat membolak-balik artikel - <b>menandai (beri bintang) artikel pilihan untuk dibaca nanti</b> pada waktu luang Anda - atau sekadar menyimpannya,</li>
-	<li><b><i>"Hapus Kalau Selesai"</i></b> - setelah Anda selesai dengan artikel yang diberi bintang - bisa secara otomatis dihapus dari kumpulan <i>'Favorit'</i> (=<i>'Baca Nanti'</i>),</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Hapus Kalau Selesai"</i></b> - setelah Anda selesai dengan artikel yang diberi bintang - bisa secara otomatis dihapus dari kumpulan <i>'Favorit'</i> (=<i>'Baca Nanti'</i>),</li>
 	<li><b>siap tak ada sinyal</b> - jelajahi bacaan menarik tanpa gangguan: sekali diperbarui, tidak perlu memuat apa-apa lagi - aplikasi ini bisa jalan tanpa Internet :),</li>
 	<li><b>hemat paket data</b>: perlu online hanya saat ambil artikel baru - tidak perlu setiap kali ambil versi lengkapnya; kontrol apa yang harus diunduh - dan sampai tingkatan mana,</li>
 	<li><b>ramah gestur</b>: e.g. usap atas bawah untuk tambah/hapus artikel dari <i>Favorit</i>, usap sepanjang tepi kiri layar untuk atur kecerahan teks,</li>
