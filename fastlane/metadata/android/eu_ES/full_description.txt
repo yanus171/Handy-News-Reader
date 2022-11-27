@@ -1,6 +1,6 @@
 <i>"Nire interes guztietan egunean jartzea ez da inoiz hain erraza izan".</i>
 
-<b><i>Berri irakurle trebea</i>: iragarkirik ez, doan, software librea <i>GNU GPL</i> lizentziapean.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>Egin zure ametsetako aldizkaria!</b></li>
@@ -10,15 +10,16 @@
 
 ...gozatu zure bizitza <b>distrakziorik gabe, eta zure interesen inguruan egunean zaudela</b> aldi berean. Jarri arreta mamian...
 
-Hona <i>Berri irakurle trebea</i>, ezaugarrietan aberatsa den eta lineaz kanpo erabiltzeko pentsatuta dagoen <i>RSS</i> irakurle bat, <b>zure denbora eta bakea aintzat duena</b>: gaur egun mugikorretan ohikoa den ez bezala arreta deitzea eta distraitzea eragozten du.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Ezaugarriak</u>:</b>
-	<li><b><u>artikulu osoak</u> eskura</b>: ez dago kanpo nabigatzaile baten beharrik testu osoa irakurtzeko,</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b>irakurketa <u>erosoa</u></b>: aldatu artikuluak bolumen botoiekin edo pasatu hatza, <i>sakatze zonak</i>, irakurketaren posizioa gogoratzen du <u>artikuluko</u>,</li>
-	<li><b>artikulu garrantzitsuetarako jakinarazpenak</b>: Ez duzu garrantzitsutzat jotzen duzun ezer galduko,</li>
+  <li><b>artikulu garrantzitsuetarako jakinarazpenak</b>: Ez duzu garrantzitsutzat jotzen duzun ezer galduko,</li>
 	<li><b><i>"Irakurri geroago"</i></b>: Azkar gainbegiratu ditzakezu artikuluak, <b>eta izar batekin markatu aukeratutakoak gero irakurtzeko</b>denbora duzunean, edo besterik gabe gordetzeko,</li>
-	<li><b><i>"Kendu amaitutakoan"</i></b>, behin artikuluarekin amaitu duzula, automatikoki kendu daiteke <i>'gogokoetatik'</i> (=<i>'Irakurri geroago'</i>) nahiez gero,</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Kendu amaitutakoan"</i></b>, behin artikuluarekin amaitu duzula, automatikoki kendu daiteke <i>'gogokoetatik'</i> (=<i>'Irakurri geroago'</i>) nahiez gero,</li>
 	<li><b>lineaz kanpo erabiltzeko prest</b>, murgildu irakuketan distrakziorik gabe: behin eguneratuta ez dago ezer gehiago deskargatzeko beharrik, internet gabe ibiliko da :),</li>
 	<li><b>aurreztu banda zabalera</b>: konektatu soilik artikulu beriak eskuratzeko, ez bere bertsio osoa eskuratzeko artikulu bakoitzeko, kontrolatu zer deskargatzen den, eta zein neurritan,</li>
 	<li><b>keinuekin erabilgarria</b>: e.g. pasatu hatza gora artikulua <i>gogoko</i>etara gehitzeko edo gogokoetatik kentzeko, pasatu hatza pantailaren ezkerreko ertzetik distira doitzeko,</li>
