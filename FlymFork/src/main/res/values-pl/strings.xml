@@ -72,17 +72,17 @@
     ***translatorList***
     <br/>
     ]]></string>
-    <string name="app_name">Handy News Reader</string>
+    <string name="app_name">Handy Reading</string>
     <string name="about_title_version">wersja</string>
-    <string name="about_handy_news_reader">O Handy News Reader</string>
+    <string name="about_handy_news_reader">O Handy Reading</string>
     <string name="about_handy_news_reader_descr">Licencja, wsparcie, tłumaczenia, itp.</string>
-    <string name="welcome_title">Witaj w Handy News Reader. Chciał(a)byś dodać nowe źródło treści?</string>
+    <string name="welcome_title">Witaj w Handy Reading. Chciał(a)byś dodać nowe źródło treści?</string>
     <string name="never">nigdy</string>
     <string name="last_update">Aktualizacja</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież</string>
-    <string name="flym_feeds">Źródła Handy News Reader</string>
+    <string name="flym_feeds">Źródła Handy Reading</string>
     <string name="error">Błąd</string>
     <string name="network_error">Jesteś off-line.</string>
     <string name="loading">Wczytuję…</string>
@@ -163,7 +163,7 @@
     <string name="menu_mark_as_unread">Oznacz jako nieprzeczytane</string>
     <string name="menu_reload_full_text">Pełna treść</string>
     <string name="menu_reload_full_text_without_mobilizer">Bez Mobilizera</string>
-    <string name="share_favorites_title">Handy News Reader: Ulubione artykuły</string>
+    <string name="share_favorites_title">Handy Reading: Ulubione artykuły</string>
     <string name="link_was_copied_to_clipboard">Link skopiowany</string>
     <string name="get_full_text">Wczytuj pełne artykuły</string>
     <string name="show_text_in_entry_list">Pokazuj oryginalny tekst na liście artykułów</string>
@@ -351,6 +351,7 @@
     <string name="entry_marked_favourite">Artykuł został dodany do Ulubionych</string>
     <string name="new_feed_was_added">Nowy kanał został dodany</string>
     <string name="entry_marked_unread">Artykuł został oznaczony jako nieprzeczytany</string>
+    <string name="force_landscape_orientation">Orientacja pozioma</string>
     <string name="markAsStarred">Oznacz jako Ulubione</string>
     <string name="markedAsStarred">Artykuł został dodany do Ulubionych:</string>
     <string name="deleteAllEntries">Usunąć wszystkie niezagwiazdkowane artykuły?</string>

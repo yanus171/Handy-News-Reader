@@ -76,17 +76,17 @@
     ***translatorList***
     <br/>
     ]]></string>
-    <string name="app_name">Handy News Reader</string>
+    <string name="app_name">Handy Reading</string>
     <string name="about_title_version">version</string>
-    <string name="about_handy_news_reader">À propos de Handy News Reader</string>
+    <string name="about_handy_news_reader">À propos de Handy Reading</string>
     <string name="about_handy_news_reader_descr">Licence, aide et contacter le développeur </string>
-    <string name="welcome_title">Bienvenue sur Handy News Reader. Voulez vous ajouter un flux ?</string>
+    <string name="welcome_title">Bienvenue sur Handy Reading. Voulez vous ajouter un flux ?</string>
     <string name="never">jamais</string>
     <string name="last_update">Mise à jour</string>
     <string name="colon">\u00A0:\u00A0</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
-    <string name="flym_feeds">Flux Handy News Reader</string>
+    <string name="flym_feeds">Flux Handy Reading</string>
     <string name="error">Erreur</string>
     <string name="network_error">Vous êtes hors ligne.</string>
     <string name="loading">Chargement en cours…</string>
@@ -167,7 +167,7 @@
     <string name="menu_mark_as_unread">Marquer comme non lu</string>
     <string name="menu_reload_full_text">Recharger tout le texte</string>
     <string name="menu_reload_full_text_without_mobilizer">Recharger sans Mobilizer</string>
-    <string name="share_favorites_title">Handy News Reader: articles favoris</string>
+    <string name="share_favorites_title">Handy Reading: articles favoris</string>
     <string name="link_was_copied_to_clipboard">Lien copié</string>
     <string name="get_full_text">Récupérer complètement les articles</string>
     <string name="show_text_in_entry_list">Afficher le texte original sur la liste des articles</string>
@@ -354,6 +354,7 @@
     <string name="entry_marked_favourite">L\'article a été ajouté aux Favoris</string>
     <string name="new_feed_was_added">Nouveau flux ajouté</string>
     <string name="entry_marked_unread">L\'article a été marqué comme non lu</string>
+    <string name="force_landscape_orientation">Orientation paysage</string>
     <string name="markAsStarred">Ajouter aux favoris</string>
     <string name="markedAsStarred">L\'article a été ajouté aux favoris : </string>
     <string name="deleteAllEntries">Supprimer tous les articles non favoris ?</string>

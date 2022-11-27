@@ -95,6 +95,18 @@
                                 android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
                         </LinearLayout>
+                        <ImageView
+                            android:id="@+id/main_big_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/ic_photo_size_select_actual"
+                            android:scaleType="fitCenter" />
+
 
                         <LinearLayout
                             android:id="@+id/layout_controls"

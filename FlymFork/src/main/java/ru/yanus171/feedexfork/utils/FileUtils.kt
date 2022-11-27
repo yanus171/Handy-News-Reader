@@ -30,6 +30,7 @@ import android.os.Environment
 import android.provider.BaseColumns
 import android.provider.BaseColumns._ID
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import ru.yanus171.feedexfork.MainApplication
@@ -122,6 +123,24 @@ object FileUtils {
         return result
     }
 
+    fun getFileName(uri: Uri): String? {
+        var result: String? = null
+        if (uri.scheme == "content") {
+            MainApplication.getContext().contentResolver.query(uri, null, null, null, null).use { cursor ->
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.path
+            val cut = result!!.lastIndexOf('/')
+            if (cut != -1) {
+                result = result!!.substring(cut + 1)
+            }
+        }
+        return result
+    }
     fun GetDefaultStoragePath() = MainApplication.getContext().filesDir
 
     private fun MakeDirs(result: File) {

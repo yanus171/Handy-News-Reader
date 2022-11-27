@@ -62,7 +62,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 41;
+    private static final int DATABASE_VERSION = 42;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -205,6 +205,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 41)
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.READ_DATE + ' ' + FeedData.TYPE_DATE_TIME);
+
+        if (oldVersion < 42)
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_LANDSCAPE + ' ' + FeedData.TYPE_BOOLEAN);
 
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {

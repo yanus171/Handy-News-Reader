@@ -453,6 +453,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         HideTapZonesText(findViewById(R.id.layout_root));
         if ( mDrawerLayout != null )
             mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
+        SetTaskTitle( mTitle );
         timer.End();
     }
 
@@ -670,7 +671,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 break;
 
         }
-
         //if (!newUri.equals(mEntriesFragment.getUri()))
         mEntriesFragment.setData(newUri,
                 showFeedInfo,

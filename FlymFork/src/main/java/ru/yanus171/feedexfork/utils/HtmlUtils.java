@@ -19,17 +19,26 @@
 
 package ru.yanus171.feedexfork.utils;
 
+import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
-import org.jsoup.safety.Whitelist;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,22 +53,18 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 
-import static android.provider.BaseColumns._ID;
-import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
-
 public class HtmlUtils {
+    private static final String HTML_TAG_REGEX = "<(.|\n)*?>";
+    private static final String AND_SHARP = "&#";
+    private static final String NBSP = "&nbsp;";
 
-    private static final Whitelist JSOUP_WHITELIST = Whitelist.relaxed()
+    private static final Safelist JSOUP_WHITELIST = Safelist.relaxed()
             .addTags("iframe", "video", "audio", "source", "track", "hr", "ruby", "rp", "rt" )
             .addAttributes("iframe", "src", "frameborder", "height", "width")
             .addAttributes("video", "src", "controls", "height", "width", "poster")
             .addAttributes("audio", "src", "controls")
             .addAttributes("source", "src", "type")
-            .addAttributes("img", "data-original")
+            .addAttributes("img", "src", "data-original")
             .addAttributes("a", "data-fancybox-href")
             //.addAttributes("math", "xmlns")
             //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
@@ -68,6 +73,7 @@ public class HtmlUtils {
             .addTags("s")
             .addTags("time")
             .addAttributes("track", "src", "kind", "srclang", "label")
+            .addAttributes("script", "src", "type")
             .addProtocols("img", "src", "http", "https", "data");
 
     public static final String URL_SPACE = "%20";
@@ -102,25 +108,36 @@ public class HtmlUtils {
             return content;
 
         content = TEMPLATE_PATTERN.matcher(content).replaceAll( "" );
+        SaveContentStepToFile( content, "improveHtmlContent 1" );
         content = ADS_PATTERN.matcher(content).replaceAll("");
+        SaveContentStepToFile( content, "improveHtmlContent 2" );
         // remove some ads
         content = ADS_PATTERN.matcher(content).replaceAll("");
+        SaveContentStepToFile( content, "improveHtmlContent 3" );
         // remove lazy loading images stuff
         //content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$1");
         content = LAZY_LOADING_PATTERN2.matcher(content).replaceAll("");
+        SaveContentStepToFile( content, "improveHtmlContent 4" );
         //content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
         //content = ReplaceImagesWithDataOriginal(content, "<span[^>]+class..lazy-image-placeholder[^>]+src=\"([^\"]+)\"[^>]+>");
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-src=\"([^\"]+)\"([^>]+)?>");
+        SaveContentStepToFile( content, "improveHtmlContent 5" );
         content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+?)\\s.+\"+[^>]+></a>" );
+        SaveContentStepToFile( content, "improveHtmlContent 6" );
         content = ReplaceImagesWithALink(content);
+        SaveContentStepToFile( content, "improveHtmlContent 7" );
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"([^>]+)?>");
+        SaveContentStepToFile( content, "improveHtmlContent 8" );
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?'(.+?)'(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<i+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?i>");
 
         content = extractVideos(content);
+        SaveContentStepToFile( content, "improveHtmlContent 9" );
         content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
+        SaveContentStepToFile( content, "improveHtmlContent 10" );
         content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
+        SaveContentStepToFile( content, "improveHtmlContent 11" );
         // clean by JSoup
         final Safelist whiteList =
                 ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?
@@ -130,35 +147,38 @@ public class HtmlUtils {
                 :
                 JSOUP_WHITELIST;
         content = Jsoup.clean(content, baseUri, whiteList  );
-
+        SaveContentStepToFile( content, "improveHtmlContent Jsoup.clean" );
 
         if ( isAutoFullTextRoot ) {
             // remove empty or bad images
             content = EMPTY_IMAGE_PATTERN.matcher(content).replaceAll("");
+            SaveContentStepToFile( content, "improveHtmlContent EMPTY_IMAGE_PATTERN" );
             content = BAD_IMAGE_PATTERN.matcher(content).replaceAll("");
+            SaveContentStepToFile( content, "improveHtmlContent BAD_IMAGE_PATTERN" );
             //// remove empty links
             //content = EMPTY_LINK_PATTERN.matcher(content).replaceAll("");
             // fix non http image paths
             content = NON_HTTP_IMAGE_PATTERN.matcher(content).replaceAll(" $1=$2http://");
+            SaveContentStepToFile( content, "improveHtmlContent NON_HTTP_IMAGE_PATTERN" );
             // remove trailing BR & too much BR
             //content = START_BR_PATTERN.matcher(content).replaceAll("");
             //content = END_BR_PATTERN.matcher(content).replaceAll("");
             content = MULTIPLE_BR_PATTERN.matcher(content).replaceAll("<br><br>");
+            SaveContentStepToFile( content, "improveHtmlContent MULTIPLE_BR_PATTERN" );
             if ( PrefUtils.getBoolean( "setting_convert_xml_symbols_before_parsing", true ) ) {
                 // xml
-                content = content.replace("&lt;", "<");
-                content = content.replace("&gt;", ">");
-                content = content.replace("&amp;", "&");
-                content = content.replace("&quot;", "\"");
+                content = convertXMLSymbols(content);
+                SaveContentStepToFile( content, "improveHtmlContent convert_xml_symbols" );
             }
-
         }
         content = content.replace( "&#39;", "'" );
 
         if ( filters != null )
             content = filters.removeText(content, DB_APPLIED_TO_CONTENT );
+        SaveContentStepToFile( content, "improveHtmlContent filters.removeText" );
 
         content = content.replaceAll( "<p>([\\n\\s\\t]*?)</p>", "" );
+        SaveContentStepToFile( content, "improveHtmlContent 12" );
 
         Matcher m = VIDEO_CHANNEL_URL.matcher( baseUri );
         if ( m.find() ) {
@@ -167,8 +187,20 @@ public class HtmlUtils {
                 .replace( "222", "ube" )
                 .replace( "1111", "yout" );
         }
+        SaveContentStepToFile( content, "improveHtmlContent VIDEO_CHANNEL_URL" );
 
         content = extractCategoryList( content, categoryList );
+        SaveContentStepToFile( content, "improveHtmlContent extractCategoryList end" );
+
+        return content;
+    }
+
+    @NonNull
+    public static String convertXMLSymbols(String content) {
+        content = content.replace("&lt;", "<");
+        content = content.replace("&gt;", ">");
+        content = content.replace("&amp;", "&");
+        content = content.replace("&quot;", "\"");
         return content;
     }
 
@@ -190,6 +222,8 @@ public class HtmlUtils {
                                           final ArrayList<String> imagesToDl,
                                           final ArrayList<Uri> externalImageList,
                                           final int maxImageDownloadCount) {
+        if (IsLocalFile(Uri.parse(entryLink)))
+            return content;
         final int status = Status().Start("Reading images", true); try {
 
             // TODO <a href([^>]+)>([^<]+)<img(.)*?</a>
@@ -206,16 +240,18 @@ public class HtmlUtils {
                     index++;
                     String srcUrl = matcher.group(1);
                     srcUrl = srcUrl.replace(" ", URL_SPACE);
-                    if ( srcUrl.startsWith( "data:image/" ) )
+                    if ( srcUrl.startsWith( "data:" ) )
                         continue;
                     final String imgWebTag = matcher.group(0);
                     final String imgFilePath = NetworkUtils.getDownloadedImagePath(entryLink, srcUrl);
                     final File file = new File( imgFilePath );
                     final boolean isImageToAdd = maxImageDownloadCount == 0 || ( index <= maxImageDownloadCount );
-                    final String imgFileTag =
+                    String imgFileTag =
                         GetLinkStartTag(imgFilePath) +
                         imgWebTag.replace(srcUrl, Constants.FILE_SCHEME + imgFilePath) +
                         LINK_TAG_END;
+                    if ( PrefUtils.isImageWhiteBackground() )
+                        imgFileTag = imgFileTag.replace( "<img", "<img style=\"background-color:white\"" );
                     if ( isShowImages ) {
                         final boolean isFileExists = mImageFileVoc.isExists( file.getPath() );
                         if ( !isFileExists && isImageToAdd )
@@ -405,7 +441,19 @@ public class HtmlUtils {
             }
             title = title.trim();
         }
-        return title;
+        return unescapeTitle(title);
+    }
+    public static String unescapeTitle(String title) {
+        String result = title.replace(Constants.AMP_SG, Constants.AMP).replaceAll(HTML_TAG_REGEX, "").replace(Constants.HTML_LT, Constants.LT)
+            .replace(Constants.HTML_GT, Constants.GT).replace(Constants.HTML_QUOT, Constants.QUOT)
+            .replace(Constants.HTML_APOS, Constants.APOSTROPHE)
+            .replace(Constants.HTML_APOSTROPHE, Constants.APOSTROPHE);
+
+        if (result.contains(AND_SHARP) || result.contains(NBSP)) {
+            return Html.fromHtml(result, null, null).toString();
+        } else {
+            return result;
+        }
     }
 
 }

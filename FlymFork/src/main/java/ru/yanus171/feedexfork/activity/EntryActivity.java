@@ -23,15 +23,18 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.Date;
@@ -61,9 +64,11 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 
+import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
@@ -88,6 +93,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_entry);
 
         mEntryFragment = (EntryFragment) getSupportFragmentManager().findFragmentById(R.id.entry_fragment);
@@ -104,7 +110,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                 final String title = text.substring(0, m.start());
                 LoadAndOpenLink(url, title, TEXT);
             }
-        } else if (intent.getScheme() != null && intent.getScheme().startsWith("http")) {
+        } else if (intent.getScheme() != null && IsExternalLink( intent.getData() ) ){
             final String url = intent.getDataString();
             final String title = intent.getDataString();
             LoadAndOpenLink(url, title, TEXT);

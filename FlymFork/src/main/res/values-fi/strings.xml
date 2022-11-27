@@ -29,11 +29,11 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="welcome_title">Tervetuloa Handy News Reader:iin. Haluaisitko lisätä syötteen?</string>
+    <string name="welcome_title">Tervetuloa Handy Reading:iin. Haluaisitko lisätä syötteen?</string>
     <string name="never">ei koskaan</string>
     <string name="menu_settings">Asetukset</string>
     <string name="menu_refresh">Päivitä</string>
-    <string name="flym_feeds">Handy News Reader-syötteet</string>
+    <string name="flym_feeds">Handy Reading-syötteet</string>
     <string name="error">Virhe</string>
     <string name="network_error">Ei verkkoyhteyttä</string>
     <string name="loading">Lataa…</string>
@@ -98,7 +98,7 @@
     <string name="menu_full_screen">Koko ruutu</string>
     <string name="menu_copy_clipboard">Kopioi linkki</string>
     <string name="menu_mark_as_unread">Merkitse lukemattomaksi</string>
-    <string name="share_favorites_title">Handy News Reader: tähdellä merkityt</string>
+    <string name="share_favorites_title">Handy Reading: tähdellä merkityt</string>
     <string name="get_full_text">Hae koko teksti</string>
     <string name="original_text">Näytä alkuperäinen teksti</string>
     <string name="see_enclosure">Avaa liite</string>

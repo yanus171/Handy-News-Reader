@@ -78,9 +78,9 @@
     ***translatorList***
     <br/>
     ]]></string>
-    <string name="app_name">Удобное чтение новостей</string>
+    <string name="app_name">Удобное чтение</string>
     <string name="about_title_version">версия</string>
-    <string name="about_handy_news_reader">Об Удобном Чтении Новостей</string>
+    <string name="about_handy_news_reader">Об Удобном Чтении</string>
     <string name="about_handy_news_reader_descr">Лицензия, поддержка, переводы и т.д.</string>
     <string name="welcome_title">Добавить ленту?</string>
     <string name="never">никогда</string>
@@ -360,7 +360,7 @@
     <string name="entry_marked_favourite">Статья добавлена в избранное</string>
     <string name="new_feed_was_added">Добавлена новая лента</string>
     <string name="entry_marked_unread">Статья отмечена как непрочитанная</string>
-    <string name="force_landscape_orientation">Альбомная ориентация</string>
+    <string name="force_landscape_orientation">Горизонтальная ориентацию</string>
     <string name="markAsStarred">Поместить в избранное</string>
     <string name="markedAsStarred">Статья помечена избранной</string>
     <string name="deleteAllEntries">Удалить все неотмеченные статьи?</string>

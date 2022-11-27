@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +25,9 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.service.FetcherService;
 
+import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
+import static ru.yanus171.feedexfork.utils.DebugApp.CreateFileUri;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
@@ -71,6 +74,8 @@ public class ArticleTextExtractor {
     public static final String HANDY_NEWS_READER_COMMENTS_CLASS = "Handy_News_Reader_comments";
     public static final String P_HR = "</p><hr>";
     public static final String EMPTY_TAG = "EMPTY_TAG";
+    public static final String CONTENT_STEP_TO_FILE_SUBDIR = "content";
+    private static int mContentStepFileIndex = 0;
 
     public enum MobilizeType {Yes, No, Tags}
     //public static final String BEST_ELEMENT_ATTR = "BEST_ELEMENT";
@@ -90,7 +95,8 @@ public class ArticleTextExtractor {
                                         MobilizeType mobilize,
                                         ArrayList<String> tagList,
                                         boolean isFindBestElement,
-                                        boolean isWithTables ) throws Exception {
+                                        boolean isWithTables,
+                                        boolean withScripts) throws Exception {
         return extractContent(Jsoup.parse(input, null, ""),
                               url,
                               contentIndicator,
@@ -98,9 +104,38 @@ public class ArticleTextExtractor {
                               mobilize,
                               tagList,
                               isFindBestElement,
-                              isWithTables);
+                              isWithTables,
+                              withScripts);
     }
 
+    public static void ClearContentStepToFile() {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        mContentStepFileIndex = 0;
+        File dir = new File(MainApplication.getContext().getCacheDir() + "/" + CONTENT_STEP_TO_FILE_SUBDIR);
+        dir.mkdirs();
+        for( File file: dir.listFiles() )
+            file.delete();
+    }
+    public static void SaveContentStepToFile( Element content, String stepName ) {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        SaveContentStepToFile( content.toString(), stepName );
+    }
+    public static void SaveContentStepToFile( StringBuilder content, String stepName ) {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        SaveContentStepToFile( content.toString(), stepName );
+    }
+    public static void SaveContentStepToFile( String content, String stepName ) {
+        if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
+            return;
+        mContentStepFileIndex++;
+        CreateFileUri(MainApplication.getContext().getCacheDir().getAbsolutePath() + "/" + CONTENT_STEP_TO_FILE_SUBDIR, mContentStepFileIndex + "_" + stepName + ".html", content );
+    }
+    public static boolean isFb2( String link ) {
+        return link.endsWith( ".fb2" );
+    }
     public static String extractContent(Document doc,
                                         final String url,
                                         String contentIndicator,
@@ -108,15 +143,15 @@ public class ArticleTextExtractor {
                                         MobilizeType mobilize,
                                         ArrayList<String> categoryList,
                                         boolean isFindBestElement,
-                                        boolean isWithTables) {
+                                        boolean isWithTables,
+                                        boolean withScripts ) {
         if (doc == null)
             throw new NullPointerException("missing document");
 
         FetcherService.Status().AddBytes(doc.html().length());
 
         // now remove the clutter
-        prepareDocument(doc, mobilize);
-
+        prepareDocument(doc, mobilize, withScripts);
         {
             Elements elList = doc.getElementsByAttribute( "id" );
             for (Element item : elList)
@@ -168,7 +203,7 @@ public class ArticleTextExtractor {
                 }
             }
         }
-
+        SaveContentStepToFile( doc, "before FindBestElement RemoveHiddenElements" );
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
             rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
@@ -179,16 +214,19 @@ public class ArticleTextExtractor {
             rootElement = doc;
 
 
+        SaveContentStepToFile( doc, "before remove title" );
 
         Elements title = rootElement.getElementsByClass("title");
         for (Element entry : title)
-            if (entry.tagName().toLowerCase().equals("h1")) {
+            if (entry.tagName().equalsIgnoreCase("h1")) {
                 title.first().remove();
                 break;
             }
 
 
         StringBuilder ret = new StringBuilder(rootElement.toString());
+        SaveContentStepToFile( ret, "after toString" );
+
         if (ogImage != null && !ret.toString().contains(ogImage)) {
             ret.insert(0, "<img src=\"" + ogImage + "\"><br>\n");
         }
@@ -214,10 +252,12 @@ public class ArticleTextExtractor {
             }
 
             ret.append(AddHabrComments(url));
+            SaveContentStepToFile( ret, "after load comments" );
         }
 
         if ( !isWithTables ) {
             ret = new StringBuilder(RemoveTables(ret.toString()));
+            SaveContentStepToFile( ret, "after RemoveTables" );
         }
 
         final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
@@ -226,9 +266,10 @@ public class ArticleTextExtractor {
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret.toString();
             Document tempDoc = Jsoup.parse(ret.toString(), NetworkUtils.getUrlDomain(url));
-            rootElement = FindBestElement(tempDoc, url, contentIndicator, isFindBestElement);
-            AddTagButtons(tempDoc, url, rootElement);
+            //rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
+            AddTagButtons(tempDoc, url, null);
             ret = new StringBuilder(tempDoc.toString());
+            SaveContentStepToFile( ret, "improveHtmlContent TAGS" );
         }
 
         return ret.toString();
@@ -630,11 +671,12 @@ public class ArticleTextExtractor {
      * @param doc document to prepare. Passed as reference, and changed inside
      *            of function
      */
-    private static void prepareDocument(Element doc, MobilizeType mobilize) {
+    private static void prepareDocument(Element doc, MobilizeType mobilize, boolean withScripts) {
         // stripUnlikelyCandidates(doc);
         if ( mobilize == MobilizeType.Yes )
             removeSelectsAndOptions(doc);
-        removeScriptsAndStyles(doc);
+        removeScriptsAndStyles(doc, withScripts);
+        SaveContentStepToFile( doc, "after prepareDocument" );
     }
 
     /**
@@ -654,44 +696,38 @@ public class ArticleTextExtractor {
 //            }
 //        }
 //    }
-    private static void removeScriptsAndStyles(Element doc) {
+    private static void removeScriptsAndStyles(Element doc, boolean withScripts) {
         Elements scripts = doc.getElementsByTag("script");
-        for (Element item : scripts) {
-            item.remove();
-        }
+        if ( !withScripts )
+            for (Element item : scripts)
+                item.remove();
 
         if (FetcherService.isCancelRefresh())
             return;
 
         Elements noscripts = doc.getElementsByTag("noscript");
-        for (Element item : noscripts) {
+        for (Element item : noscripts)
             item.remove();
-        }
 
         if (FetcherService.isCancelRefresh())
             return;
 
         Elements styles = doc.getElementsByTag("style");
-        for (Element style : styles) {
+        for (Element style : styles)
             style.remove();
-        }
-
     }
 
     private static void removeSelectsAndOptions(Element doc) {
-        Elements scripts = doc.getElementsByTag("select");
-        for (Element item : scripts) {
+        Elements selects = doc.getElementsByTag("select");
+        for (Element item : selects)
             item.remove();
-        }
 
         if (FetcherService.isCancelRefresh())
             return;
 
         Elements noscripts = doc.getElementsByTag("option");
-        for (Element item : noscripts) {
+        for (Element item : noscripts)
             item.remove();
-        }
-
     }
 
     /**

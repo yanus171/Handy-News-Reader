@@ -265,6 +265,7 @@ public class FeedData {
         public static final String IS_NEW = "new";
         public static final String IS_WAS_AUTO_UNSTAR = "was_auto_unstar";
         public static final String IS_WITH_TABLES = "with_tables";
+        public static final String IS_LANDSCAPE = "landscape";
         public static final String IMAGES_SIZE = "images_size";
         public static final String CATEGORIES = "categories";
 
@@ -291,6 +292,7 @@ public class FeedData {
                              EntryColumns.IS_NEW,
                              EntryColumns.IS_WAS_AUTO_UNSTAR,
                              EntryColumns.IS_WITH_TABLES,
+                             EntryColumns.IS_LANDSCAPE,
                              EntryColumns.IMAGES_SIZE,
                              EntryColumns.TITLE,
                              EntryColumns.DATE,
@@ -314,6 +316,7 @@ public class FeedData {
                         EntryColumns.IS_NEW,
                         EntryColumns.IS_WAS_AUTO_UNSTAR,
                         EntryColumns.IS_WITH_TABLES,
+                        EntryColumns.IS_LANDSCAPE,
                         EntryColumns.IMAGES_SIZE,
                         EntryColumns.TITLE,
                         EntryColumns.DATE,
@@ -345,7 +348,7 @@ public class FeedData {
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {FEED_ID, TYPE_EXTERNAL_ID}, {TITLE, TYPE_TEXT},
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
-                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN},
+                {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN}, {IS_LANDSCAPE, TYPE_BOOLEAN},
                 {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT},  {READ_DATE, TYPE_DATE_TIME} };
 
         public static Uri ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {

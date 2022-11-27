@@ -51,6 +51,7 @@ public final class Constants {
   public static final String HTTP_SCHEME = "http://";
   public static final String HTTPS_SCHEME = "https://";
   public static final String FILE_SCHEME = "file://";
+  public static final String CONTENT_SCHEME = "content://";
 
   public static final String HTML_LT = "&lt;";
   public static final String HTML_GT = "&gt;";

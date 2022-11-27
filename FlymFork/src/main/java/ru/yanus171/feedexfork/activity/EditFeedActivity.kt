@@ -89,6 +89,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FilterColumns
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.*
+import ru.yanus171.feedexfork.utils.HtmlUtils.unescapeTitle
 import ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
@@ -967,7 +968,7 @@ internal class GetSiteAlternateListLoader(context: Context?, private val mUrl: S
                             url = "$mUrl/$url"
                         }
                         val titleMatcher = TITLE_PATTERN.matcher(line)
-                        val title = if (titleMatcher.find()) titleMatcher.group(1) else url
+                        val title = if (titleMatcher.find()) unescapeTitle( titleMatcher.group(1) ) else url
                         val map = HashMap<String, String>()
                         map[EditFeedActivity.ITEM_TITLE] = title
                         map[EditFeedActivity.ITEM_DESC] = url

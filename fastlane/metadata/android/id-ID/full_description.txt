@@ -1,6 +1,6 @@
 <i>"Tetap bisa mengikuti semua Minat Aku tidak pernah semudah ini".</i>
 
-<b><i>Handy News Reader</i>: tanpa iklan/perangkat lunak bebas di bawah lisensi <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: tanpa iklan/perangkat lunak bebas di bawah lisensi <i>GNU GPL</i>.</b>
 
 <ul>
 	<li><b>ciptakan Majalah Impian Anda!</b></li>

@@ -71,18 +71,18 @@
 	<h3>Übersetzer:</h3>
     ***translatorList***
     <br/>
-    <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">    ]]></string>
-    <string name="app_name">Handy News Reader</string>
+    ]]></string>
+    <string name="app_name">Handy Reading</string>
     <string name="about_title_version">Version</string>
-    <string name="about_handy_news_reader">Über Handy News Reader</string>
+    <string name="about_handy_news_reader">Über Handy Reading</string>
     <string name="about_handy_news_reader_descr">Lizenz, Support, Übersetzungen usw.</string>
-    <string name="welcome_title">Willkommen bei Handy News Reader. Möchten Sie einen Feed hinzufügen?</string>
+    <string name="welcome_title">Willkommen bei Handy Reading. Möchten Sie einen Feed hinzufügen?</string>
     <string name="never">niemals</string>
     <string name="last_update">Aktualisierung</string>
     <string name="colon">:\u00a0</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
-    <string name="flym_feeds">Handy News Reader Feeds</string>
+    <string name="flym_feeds">Handy Reading Feeds</string>
     <string name="error">Fehler</string>
     <string name="network_error">Das Gerät ist offline.</string>
     <string name="loading">Lade…</string>
@@ -167,7 +167,7 @@
     <string name="menu_mark_as_unread">Als ungelesen markieren</string>
     <string name="menu_reload_full_text">Gesamten Text</string>
     <string name="menu_reload_full_text_without_mobilizer">Ohne Mobilizer neu laden</string>
-    <string name="share_favorites_title">Handy News Reader: Favoriten</string>
+    <string name="share_favorites_title">Handy Reading: Favoriten</string>
     <string name="link_was_copied_to_clipboard">Link kopiert</string>
     <string name="get_full_text">Gesamten Artikel laden</string>
     <string name="show_text_in_entry_list">Originaltext in der Artikelliste zeigen.</string>

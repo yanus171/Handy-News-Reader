@@ -1,6 +1,6 @@
 <i>"Staying in touch with all My Interests never has been so easy".</i>
 
-<b><i>Handy News Reader</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>make up Your Dream Magazine!</b></li>

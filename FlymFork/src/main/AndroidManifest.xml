@@ -187,6 +187,22 @@
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
+
+            <intent-filter
+                android:icon="@drawable/cup_new_load_now"
+                android:label="@string/loadLink">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*fb2" />
+            </intent-filter>
+
             <intent-filter
                 android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">

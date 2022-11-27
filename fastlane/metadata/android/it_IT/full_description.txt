@@ -1,6 +1,6 @@
 <i>"Rimanere in contatto con tutti i tuoi interessi non è mai stato così semplice".</i>
 
-<b><i>Handy News Reader</i>: software gratuito senza pubblicità, con licenza <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: software gratuito senza pubblicità, con licenza <i>GNU GPL</i>.</b>
 
 <ul>
 	<li><b>crea la tua rivista!</b></li>

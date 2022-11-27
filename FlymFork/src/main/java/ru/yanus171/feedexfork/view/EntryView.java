@@ -80,9 +80,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,7 +98,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.parser.FeedFilters;
-import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
@@ -126,6 +122,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
@@ -161,6 +158,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mWasAutoUnStar = false;
 
     public long mEntryId = -1;
+    public boolean mHasScripts = false;
     private String mEntryLink = "";
     public Runnable mScrollChangeListener = null;
     private int mLastContentLength = 0;
@@ -176,54 +174,62 @@ public class EntryView extends WebView implements Handler.Callback {
     public boolean mIsEditingMode = false;
     public long mLastSetHTMLTime = 0;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
-    private String mTitle;
+    public String mTitle;
 
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
         final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
         if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
             mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
+        String mainFontSize = PrefUtils.getFontSizeText(0 );
+        String textAlign = getAlign(text);
         return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} "
-            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}"
-            + "body {max-width: 100%; margin: " + getMargins() + "; text-align:" + getAlign(text) + "; font-weight: " + getFontBold() + "; "
-            + "font-family: \"MainFont\"; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "; line-height: 120%} "
-            + "* {max-width: 100%; word-break: break-word}"
-            + "h1, h2 {font-weight: normal; line-height: 120%} "
-            + "h1 {font-size: 140%; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em} "
-            + "h2 {font-size: 120%} "
-            + "}body{color: #000; text-align: justify; background-color: #fff;}"
-            + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}"
+            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} \n"
+            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}\n"
+            + "body { font-family: \"MainFont\"; font-size: " + mainFontSize + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
+            + "font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; "
+            + "max-width: 100%; margin: " + getMargins() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
+            + "* {word-break: break-word}\n"//+ "* {max-width: 100%; word-break: break-word}\n"
+            + "h1, h2 {font-weight: normal; line-height: 120%}\n "
+            + "h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
+            + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
+            + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
+            + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
             + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
-            (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}"
-            + "h1 {color: inherit; text-decoration: none}"
-            + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "} "
-            + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}"
-            + "pre {white-space: pre-wrap;} "
-            + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em} "
-            + "td {font-weight: " + getFontBold() + "; text-align:" + getAlign(text) + "} "
-            + "hr {width: 100%; color: #777777; align: center; size: 1} "
-            + "p.button {text-align: center} "
-            + "p {font-family: \"MainFont\"; margin: 0.8em 0 0.8em 0; text-align:" + getAlign(text) + "} "
+            (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
+            + "h1 {color: inherit; text-decoration: none}\n"
+            + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
+            //+ ".inverted .math {color: white; background-color: black; } "
+            + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
+            + "pre {white-space: pre-wrap;}\n "
+            + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em}\n "
+            + "td {font-weight: " + getFontBold() + "; text-align:" + textAlign + "}\n "
+            + "hr {width: 100%; color: #777777; align: center; size: 1}\n "
+            + "p.button {text-align: center}\n "
+            + "math {color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "}\n "
+            + "p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.8em 0 0.8em 0; text-align:" + textAlign + "}\n "
             + getCustomFontClassStyle("p", url, customFontInfo)
             + getCustomFontClassStyle("span", url, customFontInfo)
             + getCustomFontClassStyle("div", url, customFontInfo)
-            + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 } "
-            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em} "
-            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0} "
-            + "div.bottom-page {display: block; min-height: 80vh} "
-            + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center} "
-            + "div {text-align:" + getAlign(text) + "} "
+            + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 }\n "
+            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em}\n "
+            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0}\n "
+            + "div.bottom-page {display: block; min-height: 80vh}\n "
+            + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center}\n "
+            + "div {text-align:" + textAlign + "}\n "
             //+ "* { -webkit-tap-highlight-color: rgba(" + Theme.GetToolBarColorRGBA() + "); } "
-            + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "} "
-            + ".button-section p {font-family: \"MainFont\"; margin: 0.1cm 0 0.2cm 0} "
-            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}"
-            + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS + " i { font-size: 100%; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS_CATEGORY + " i {font-size: 100%; color: #FFFFFF; background-color: #00AAAA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS_DATE + " i {font-size: 100%; color: #FFFFFF; background-color: #0000AA; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {font-size: 100%; color: #FFFFFF; background-color: #00AA00; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
-            + "." + TAG_BUTTON_CLASS_HIDDEN + " i {font-size: 100%; color: #FFFFFF; background-color: #888888; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm} "
+            + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "}\n "
+            + ".button-section p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.1cm 0 0.2cm 0}\n "
+            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}\n"
+            + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm}\n "
+            + "." + TAG_BUTTON_CLASS + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_CLASS_DATE + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + ", ." + TAG_BUTTON_CLASS_HIDDEN
+            + " { font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm}\n "
+            + "." + TAG_BUTTON_CLASS + " i { background-color: " + Theme.GetToolBarColor() + "}\n "
+            + "." + TAG_BUTTON_CLASS_CATEGORY + " i {background-color: #00AAAA}\n "
+            + "." + TAG_BUTTON_CLASS_DATE + " i {background-color: #0000AA}\n "
+            + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {background-color: #00AA00}\n "
+            + "." + TAG_BUTTON_CLASS_HIDDEN + " i {background-color: #888888}\n "
+            + PrefUtils.getString( "custom_css_text", "" )
             + "</style><meta name='viewport' content='width=device-width'/></head>";
     }
 
@@ -404,10 +410,10 @@ public class EntryView extends WebView implements Handler.Callback {
         final String categories = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
         final long timestamp = newCursor.getLong(newCursor.getColumnIndex(FeedData.EntryColumns.DATE));
         //final String feedTitle = filters.removeTextFromTitle( newCursor.getString(newCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
-        String feedTitle =
+        String title =
             newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
         if ( filters != null )
-            feedTitle = filters.removeText(feedTitle, DB_APPLIED_TO_TITLE );
+            title = filters.removeText(title, DB_APPLIED_TO_TITLE );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
         mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
@@ -445,7 +451,7 @@ public class EntryView extends WebView implements Handler.Callback {
         }
 
         mActivity = activity;
-        if (!mLoadTitleOnly && contentText.length() == mLastContentLength) {
+        if (!mLoadTitleOnly && contentText.length() == mLastContentLength ) {
             EndStatus();
             return isFullTextShown;
         }
@@ -456,16 +462,17 @@ public class EntryView extends WebView implements Handler.Callback {
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor()));
         // Text zoom level from preferences
-        int fontSize = PrefUtils.getFontSize();
-        if (fontSize != 0) {
-            getSettings().setTextZoom(100 + (fontSize * 15));
-        }
+        //int fontSize = PrefUtils.getFontSize();
+        //if (fontSize != 0) {
+            getSettings().setTextZoom(100);
+        //}
 
 
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
-        final String finalTitle = feedTitle;
+        final String finalTitle = title;
+
         new Thread() {
             @Override
             public void run() {
@@ -476,17 +483,12 @@ public class EntryView extends WebView implements Handler.Callback {
                     mImagesToDl = imagesToDl;
                     mData = data;
                     mDataWithWebLinks = dataWithLinks;
+                    mHasScripts = dataWithLinks.contains( "<script" );
                 }
-                UiUtils.RunOnGuiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        LoadData();
-                    }
-                });
+                UiUtils.RunOnGuiThread(() -> LoadData());
             }
         }.start();
-        mActivity.SetTaskTitle( feedTitle );
-        mTitle = feedTitle;
+        mTitle = title;
         timer.End();
         return isFullTextShown;
     }
@@ -651,12 +653,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                //synchronized (EntryView.this) {
-                    //if ( progress == 100 )
-                    //    EndStatus();
-                    //else if (mStatus != 0 )
-                    //    FetcherService.Status().Change(mStatus, getContext().getString(R.string.web_page_loading) + " " + progress + " %");
-                //}
+                Status().ChangeProgress( String.format( "%d %% ...", progress ) );
             }
 
 
@@ -709,25 +706,24 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Status().ChangeProgress( "started..." );
+                mContentWasLoaded = false;
                 StatusStartPageLoading();
                 ScheduleScrollTo(view);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                Status().ChangeProgress( "finished." );
                 if (!mLoadTitleOnly)
                     mContentWasLoaded = true;
                 if ( mActivity.mEntryFragment != null )
                     mActivity.mEntryFragment.DisableTapActionsIfVideo( EntryView.this );
-                //else
-                //    EndStatus();
-                //if ( mActivity.mEntryFragment.getCurrentEntryID() == mEntryId )
-                    StatusStartPageLoading();
                 ScheduleScrollTo(view);
             }
 
             private void ScheduleScrollTo(final WebView view) {
-                Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
+                //Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
                 final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
@@ -918,8 +914,10 @@ public class EntryView extends WebView implements Handler.Callback {
 
     private void EndStatus() {
         synchronized (EntryView.this) {
+            if ( !mContentWasLoaded && !mLoadTitleOnly )
+                return;
             if (mStatus != 0)
-                FetcherService.Status().End(mStatus);
+                Status().End(mStatus);
             mStatus = 0;
         }
     }
@@ -939,7 +937,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     private void ScrollToY() {
-        Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+        //Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
         if (GetScrollY() > 0)
             EntryView.this.scrollTo(0, GetScrollY());
     }
@@ -968,7 +966,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        FetcherService.Status().HideByScroll();
+        Status().HideByScroll();
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
         if ( mActivity.mEntryFragment != null )
@@ -1003,7 +1001,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     public void UpdateTags() {
-        final int status = FetcherService.Status().Start(getContext().getString(R.string.last_update), true);
+        final int status = Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         Element root = FindBestElement(doc, mEntryLink, "", true);
         AddTagButtons(doc, mEntryLink, root);
@@ -1013,7 +1011,7 @@ public class EntryView extends WebView implements Handler.Callback {
         }
         mScrollY = getScrollY();
         LoadData();
-        FetcherService.Status().End(status);
+        Status().End(status);
     }
 
     private void LoadData() {
@@ -1031,7 +1029,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public void StatusStartPageLoading() {
         synchronized (EntryView.this) {
             if (mStatus == 0)
-                mStatus = FetcherService.Status().Start(R.string.web_page_loading, true);
+                mStatus = Status().Start(R.string.web_page_loading, true);
         }
     }
     private boolean IsStatusStartPageLoading() {
@@ -1230,7 +1228,7 @@ public class EntryView extends WebView implements Handler.Callback {
             return;
         mScrollPartY = GetViewScrollPartY();
         if ( mScrollPartY > 0.0001 ) {
-            Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
+            //Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
 //            new Thread() {
 //                @Override
 //                public void run() {
@@ -1264,7 +1262,7 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
     @Override
     public void run() {
         EntryView.mLastNotifyObserversScheduled.remove( mId );
-        Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
+        //Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
         if (new Date().getTime() - EntryView.mLastNotifyObserversTime.get( mId ) > EntryView.NOTIFY_OBSERVERS_DELAY_MS)
             EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink, false) );
         else
