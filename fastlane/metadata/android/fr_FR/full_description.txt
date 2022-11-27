@@ -1,6 +1,6 @@
 <i>"Rester en contact avec tous Mes Intérêts n'a jamais été aussi facile".</i>
 
-<b><i>Handy Reading</i> : sans publicité/logiciel libre sous licence <i>GNU GPL</i> .</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>concevez le Magazine de Vos Rêves !</b></li>
@@ -10,15 +10,16 @@
 
 ...profitez de Votre Vie à la fois <b>sans distraction - et à jour sur Vos intérêts</b>. Allez à l'Essentiel...
 
-Découvrez <i>Handy NR</i> - un lecteur <i>RSS</i> hors-ligne aux nombreuses fonctionnalités, qui <b>respecte Votre Temps autant que Votre Tranquillité</b> : il évite de changer d\'attention et les distractions qui sont si familières aujourd\'hui sur les appareils mobiles.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Fonctionnalités</u>:</b>
-	<li><b><u>articles complets</u> à portée de main</b>: pas besoin d\'utiliser un navigateur web externe pour accéder au texte intégral.</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b>lecture <u>pratique</u></b>: changement d\'article par boutons de volume ou balayage, <i>Zones d\'appui</i>, rappel de la position de lecture <u>pour chaque article</u>,</li>
-	<li><b>notification d\'articles importants</b>: Vous ne manquerez plus rien que Vous trouvez particulièrement important,</li>
+  <li><b>notification d\'articles importants</b>: Vous ne manquerez plus rien que Vous trouvez particulièrement important,</li>
 	<li><b><i>"A lire plus tard"</i></b>: Vous pouvez rapidement faire défiler les articles - <b>en marquant (par étoile) ceux à lire plus tard</b> dans Votre temps libre - ou simplement à conserver,</li>
-	<li><b><i>"Supprimer une fois terminé"</i></b> - une fois que Vous avez terminé un article - il peut être automatiquement supprimé des <i>'Favoris'</i> (=<i>'A lire plus tard'</i>),</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Supprimer une fois terminé"</i></b> - une fois que Vous avez terminé un article - il peut être automatiquement supprimé des <i>'Favoris'</i> (=<i>'A lire plus tard'</i>),</li>
 	<li><b>prêt à passer hors ligne</b> - plongez dans une lecture intéressante sans distractions : une fois mis à jour, il n'y a pas besoin de chargement supplémentaire - ça marchera vraiment sans Internet :),</li>
 	<li><b>économisez la bande passante</b>: ne vous connectez que pour les nouveaux articles - pas pour charger leur version complète à chaque fois ; contrôlez ce qui doit être téléchargé - et à quel degré,</li>
 	<li><b>adapté aux mouvements sur l\'écran</b>: par ex. glisser vers le haut pour ajouter/supprimer un article aux <i>Favoris</i>, glisser le long du bord gauche de l\'écran pour ajuster la luminosité du texte,</li>
