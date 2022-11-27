@@ -658,4 +658,16 @@
     <string name="couldNotCreateDownloadsSubfolder">无法在下载文件夹中创建子文件夹</string>
     <string name="article_text_expand_controls">文章文本扩展</string>
     <string name="article_text_expand_controls_descr">展开文章列表中文章文本的能力。勾选后，除去轻按文章列表，所有其他轻按操作会展开或收起文章文本，而不是在单独窗口中打开文章</string>
+    <string name="settings_category_labels">标签</string>
+    <string name="settings_category_feed_list">新闻源列表</string>
+    <string name="settings_category_last_read">最后阅读部分</string>
+    <string name="setting_last_read_hide_label_list">最后阅读隐藏标签列表</string>
+    <string name="setting_last_read_hide_label_list_summary">不在最后阅读部分显示选中的标签</string>
+    <string name="setting_last_read_article_count">文章数量</string>
+    <string name="setting_last_read_article_count_descr">最后读取部分可见的文章计数</string>
+    <string name="settings_category_feed_list_summary">源列表和最后阅读部分设置的外观</string>
+    <string name="menu_reload_full_text_with_scripts">带脚本</string>
+    <string name="setting_custom_css_text">自定义 CSS 文本</string>
+    <string name="setting_custom_css_text_description">将被包含在任意文章 html css 中的文本</string>
+    <string name="menu_reload_full_text_with_debug">带调试信息</string>
 </resources>

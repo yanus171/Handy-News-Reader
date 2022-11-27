@@ -31,7 +31,7 @@
 <resources>
     <string name="about_us_content" translatable="true"><![CDATA[    <h2>Lizenz und Informationen</h2>
     <p>Dieses Programm ist Free/Libre Open-Source Software: Sie können sie nach den, von der Free Software Foundation veröffentlichten Bedingungen der GNU General Public License in der Version 3 oder (auf Wunsch) jeder späteren Version dieser Lizenz weiterverbreiten oder verändern. Siehe <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
-    <p>Diese App is basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. In diesem Fork wurden folgende Funktionen ergänzt:</p>
+    <p>Diese App basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. In diesem Fork wurden folgende Funktionen ergänzt:</p>
     
 	• Erweiterung von Feed-Gruppen<br/>
     • unsichtbare Tasten zum Blättern im Vollbildmodus<br/>
@@ -146,6 +146,7 @@
     <string name="no_entries">Keine Artikel</string>
     <string name="downloadOneImage">Bild herunterladen</string>
     <string name="favorites">Favoriten</string>
+    <string name="last_read">Zuletzt gelesen</string>
     <string name="context_menu_share_starred">Favoriten teilen</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
@@ -653,4 +654,16 @@
     <string name="couldNotCreateDownloadsSubfolder">Unterordner in Downloads konnte nicht erstellt werden</string>
     <string name="article_text_expand_controls">Artikeltext erweitern</string>
     <string name="article_text_expand_controls_descr">Eine Möglichkeit, den Artikeltext in der Artikelliste aufzuklappen. Wenn markiert wird jedes Tippen, außer auf den Titel, den Text auf- oder zuklappen, anstatt den Artikel in einem separaten Fenster zu öffnen.</string>
+    <string name="settings_category_labels">Kategorien</string>
+    <string name="settings_category_feed_list">Feed-Liste</string>
+    <string name="settings_category_last_read">Zuletzt-gelesen-Abschnitt</string>
+    <string name="setting_last_read_hide_label_list">Liste ausgeblendeter Kategorien in »Zuletzt gelesen«</string>
+    <string name="setting_last_read_hide_label_list_summary">Ausgewählte Kategorien im Zuletzt-gelesen-Abschnitt nicht anzeigen</string>
+    <string name="setting_last_read_article_count">Artikelanzahl</string>
+    <string name="setting_last_read_article_count_descr">Anzeige der Artikelanzahl im Zuletzt-gelesen-Abschnitt</string>
+    <string name="settings_category_feed_list_summary">Aussehen der Feed-Liste und Einstellungen des Zuletzt-gelesen-Abschnitts</string>
+    <string name="menu_reload_full_text_with_scripts">Mit Skripten</string>
+    <string name="setting_custom_css_text">Eigener CSS-Text</string>
+    <string name="setting_custom_css_text_description">Text, der in alle html-CSS-Abschnitte eingeschlossen wird</string>
+    <string name="menu_reload_full_text_with_debug">Mit Fehlersuche</string>
 </resources>
