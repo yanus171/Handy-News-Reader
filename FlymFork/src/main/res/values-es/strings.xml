@@ -29,16 +29,16 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="app_name">Handy Reading</string>
+    <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">Versión</string>
-    <string name="about_handy_news_reader">Acerca de Handy Reading</string>
+    <string name="about_handy_news_reader">Acerca de Handy News Reader</string>
     <string name="about_handy_news_reader_descr">Licencia, ayuda y cómo contactar al desarrollador </string>
-    <string name="welcome_title">Welcome to Handy Reading. Would you like to add one feed?</string>
+    <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
     <string name="never">nunca</string>
     <string name="last_update">Actualizar</string>
     <string name="menu_settings">Configuración</string>
     <string name="menu_refresh">Actualizar</string>
-    <string name="flym_feeds">Fuentes de Handy Reading</string>
+    <string name="flym_feeds">Fuentes de Handy News Reader</string>
     <string name="error">Error</string>
     <string name="network_error">No se ha configurado la red</string>
     <string name="loading">Cargando…</string>
@@ -116,7 +116,7 @@
     <string name="menu_mark_as_unread">Marcar como no leído</string>
     <string name="menu_reload_full_text">Recargar el texto completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Recargar sin movilizador</string>
-    <string name="share_favorites_title">Handy Reading: Entradas destacadas</string>
+    <string name="share_favorites_title">Handy News Reader: Entradas destacadas</string>
     <string name="link_was_copied_to_clipboard">Enlace copiado</string>
     <string name="get_full_text">Descargar el texto completo</string>
     <string name="show_text_in_entry_list">Mostrar texto original en la lista de artículos.</string>
@@ -297,7 +297,6 @@
     <string name="entry_marked_favourite">El artículo fue añadido a Favoritos</string>
     <string name="new_feed_was_added">Nuevo feed añadido</string>
     <string name="entry_marked_unread">El artículo fue marcado como no leído</string>
-    <string name="force_landscape_orientation">Orientación horizontal</string>
     <string name="markAsStarred">Marcar como destacado</string>
     <string name="markedAsStarred">El artículo fue marcado como destacado: </string>
     <string name="deleteAllEntries">¿Borrar todos los artículos no destacados que se muestran?</string>
