@@ -1,6 +1,6 @@
 <i>"Manter-se em contato com todos os meus interesses nunca foi tão fácil".</i>
 
-<b><i>Leitor de Notícias Conveniente</i>: sem anúncios / software livre com licença <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>crie uma revista dos seus sonhos!</b></li>
@@ -10,15 +10,16 @@
 
 ...aproveite sua vida <b>ficando livre de distrações - e atualizado com seus interesses</b> ao mesmo tempo. Com foco no que é essencial...
 
-Conheça o <i>LN Conveniente</i> - um leitor de notícias <i>RSS</i> rico em recursos, orientado para leitura offline, leitor que <b>respeita tanto o seu tempo quanto sua paz interna</b>: evita distrações e não chama a atenção, coisas tão familiares hoje quando você pensa em dispositivos móveis.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Características</u>:</b>
-	<li><b><u>artigos completos</u> à mão</b>: sem necessidade de usar um navegador externo para acessar o texto completo,</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b>leitura</b><u>conveniente</u>: alterne artigos pelos botões de volume, deslizando ou por <i>Zonas de Toque</i>, lembrando a posição de leitura <u>por artigo</u>,</li>
-	<li><b>notificação de artigos importantes</b>: Você não perderá mais nada que achar especialmente importante,</li>
+  <li><b>notificação de artigos importantes</b>: Você não perderá mais nada que achar especialmente importante,</li>
 	<li><b><i>"Ler Mais Tarde"</i></b>: Você pode mover-se rapidamente pelos artigos - <b>marcando favoritos (estrela) os artigos para leitura posterior</b> no seu tempo livre - ou apenas para salvar,</li>
-	<li><b><i>"Remover quando finalizado"</i></b> - uma vez que você concluiu determinado artigo - ele pode ser automaticamente removido da lista dos <i>'Favoritos'</i> (=<i>'Ler Mais Tarde'</i>),</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Remover quando finalizado"</i></b> - uma vez que você concluiu determinado artigo - ele pode ser automaticamente removido da lista dos <i>'Favoritos'</i> (=<i>'Ler Mais Tarde'</i>),</li>
 	<li><b>pronto para ficar off-line</b> - mergulhe numa leitura interessante sem distrações: uma vez atualizada, não há necessidade de carregamento adicional - ele realmente funciona sem Internet :),</li>
 	<li><b>preserve a largura de banda</b>: entre on-line apenas para novos artigos - não para carregar a versão completa todas as vezes; controle o que deve ser baixado - e em que grau,</li>
 	<li><b>uso de gestos</b>: ex. deslize de cima para baixo para adicionar/remover um artigo dos <i>Favoritos</i>, deslize ao longo da borda esquerda da tela para ajustar o brilho do texto,</li>
