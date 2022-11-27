@@ -76,16 +76,16 @@
     ***translatorList***
     <br/>
     ]]></string>
-    <string name="app_name">Handy Reading</string>
+    <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">版本</string>
     <string name="about_handy_news_reader">关于</string>
     <string name="about_handy_news_reader_descr">许可证、帮助、翻译等</string>
-    <string name="welcome_title">欢迎使用 Handy Reading. 您想要添加一个订阅源吗?</string>
+    <string name="welcome_title">欢迎使用 Handy News Reader. 您想要添加一个订阅源吗?</string>
     <string name="never">从不</string>
     <string name="last_update">更新</string>
     <string name="menu_settings">设置</string>
     <string name="menu_refresh">刷新</string>
-    <string name="flym_feeds">Handy Reading 订阅源</string>
+    <string name="flym_feeds">Handy News Reader 订阅源</string>
     <string name="error">错误</string>
     <string name="network_error">您处于离线状态</string>
     <string name="loading">载入中…</string>
@@ -170,7 +170,7 @@
     <string name="menu_mark_as_unread">标记为未读</string>
     <string name="menu_reload_full_text">重新加载全文</string>
     <string name="menu_reload_full_text_without_mobilizer">不以移动版视图重新加载</string>
-    <string name="share_favorites_title">Handy Reading：星标条目</string>
+    <string name="share_favorites_title">Handy News Reader：星标条目</string>
     <string name="link_was_copied_to_clipboard">链接已复制</string>
     <string name="get_full_text">加载整篇文章</string>
     <string name="show_text_in_entry_list">在文章列表中显示原文</string>
@@ -670,4 +670,6 @@
     <string name="setting_custom_css_text">自定义 CSS 文本</string>
     <string name="setting_custom_css_text_description">将被包含在任意文章 html css 中的文本</string>
     <string name="menu_reload_full_text_with_debug">带调试信息</string>
+    <string name="show_article_big_image">文章大图</string>
+    <string name="show_article_big_image_descr">显示全屏宽度文章图片而不是小图标</string>
 </resources>
