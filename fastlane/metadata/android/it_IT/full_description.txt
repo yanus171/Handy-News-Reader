@@ -1,6 +1,6 @@
 <i>"Rimanere in contatto con tutti i tuoi interessi non è mai stato così semplice".</i>
 
-<b><i>Handy Reading</i>: software gratuito senza pubblicità, con licenza <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>crea la tua rivista!</b></li>
@@ -10,15 +10,16 @@
 
 ... <b>libero da distrazioni e mantenendo aggiornati i tuoi interessi</b>. Concentrati su ciò che è essenziale...
 
-<i>Handy NR</i> è un lettore <i>RSS</i> offline ricco di funzionalità, che <b>rispetta il tuo tempo e la tua pace interiore</b>, evitando le distrazioni che si presentano comunemente utilizzando i dispositivi mobili.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Caratteristiche</u>:</b>
-	<li><b><u>articoli completi</u></b>: senza bisogno di usare un browser esterno per leggerne il contenuto,</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b><u>Lettura comoda</u></b>: è possibile cambiare articolo tramite swipe o utilizzando i pulsanti per il volume, <i>Aree di Tocco</i>, ricorda la posizione di lettura <u>per ogni articolo</u>,</li>
-	<li><b>notifiche per gli articoli importanti</b>: non ti perderai più nulla di ciò che ritieni particolarmente importante,</li>
+  <li><b>notifiche per gli articoli importanti</b>: non ti perderai più nulla di ciò che ritieni particolarmente importante,</li>
 	<li><b><i>"Leggi Dopo"</i></b>: Puoi scorrere rapidamente tra gli articoli <b>marcando (con una stella) quelli che vuoi leggere più tardi</b> o conservare,</li>
-	<li><b><i>"Rimuovi alla fine della Lettura"</i></b>: una volta finita la lettura di un articolo, questo può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggi Dopo'</i>),</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Rimuovi alla fine della Lettura"</i></b>: una volta finita la lettura di un articolo, questo può essere automaticamente rimosso dai <i>'Preferiti'</i> (=<i>'Leggi Dopo'</i>),</li>
 	<li><b>Lettura Offline</b>: una volta aggiornato, l'articolo completo sarà disponibile anche senza connessione Internet,</li>
 	<li><b>usa meno dati</b>: vai online solo per recuperare nuovi articoli, non per caricare la loro versione completa; gestisci cosa deve essere scaricato e in quale maniera,</li>
 	<li><b>supporto per i gesti</b>: es. scorri dall'alto verso il basso per aggiungere/rimuovere un articolo dai <i>Preferiti</i>, scorri lungo il bordo sinistro dello schermo per regolare la luminosità del testo,</li>
