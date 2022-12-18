@@ -698,5 +698,6 @@
     <string name="menu_reload_full_text_with_debug">With debug</string>
     <string name="show_article_big_image">Article big image</string>
     <string name="show_article_big_image_descr">Show full screen width aritcle image instead of small icon</string>
+    <string name="withoutLabel">Without label</string>
 
 </resources>
