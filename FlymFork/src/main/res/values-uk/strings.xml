@@ -659,6 +659,7 @@
     <string name="settings_category_connection">З\'єднання</string>
     <string name="couldNotCreateDownloadsSubfolder">Не вдалося створити теку в теці Завантаження</string>
     <string name="article_text_expand_controls">Розгорнути текст статті</string>
+    <string name="article_text_expand_controls_descr">Можливість розширення тексту статті в списку статей. Якщо позначено, усі дії натискання, крім назви статті, розгортають або згортають текст статті замість відкриття статті в окремому вікні</string>
     <string name="settings_category_labels">Мітки</string>
     <string name="settings_category_feed_list">Список каналів</string>
     <string name="settings_category_last_read">Останній прочитаний розділ</string>
@@ -671,4 +672,6 @@
     <string name="setting_custom_css_text">Власний текст CSS</string>
     <string name="setting_custom_css_text_description">Текст, який буде включений в CSS розділ до будь-якої html статті</string>
     <string name="menu_reload_full_text_with_debug">З налагодженням</string>
+    <string name="show_article_big_image">Велике зображення статті</string>
+    <string name="show_article_big_image_descr">Показувати велике зображення статті на всю ширину екрана замість маленької іконки</string>
 </resources>
