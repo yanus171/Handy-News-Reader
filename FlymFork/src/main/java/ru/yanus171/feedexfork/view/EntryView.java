@@ -842,7 +842,7 @@ public class EntryView extends WebView implements Handler.Callback {
             new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
             new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
                 File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title) );
+                FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title), true );
             }),
             new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
         };

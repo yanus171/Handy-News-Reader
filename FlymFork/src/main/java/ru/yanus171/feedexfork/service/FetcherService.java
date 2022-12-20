@@ -314,7 +314,14 @@ public class FetcherService extends IntentService {
         }
         return batteryPct < lowLevelPct;
     }
-
+    private void moveBackupFileVersion( String fileName, int index ) throws IOException {
+        final File sourceFile = new File( index == 0 ? fileName : String.format( "%s.%d", fileName, index ) );
+        final File destFile = new File( String.format( "%s.%d", fileName, index + 1 ) );
+        if ( !sourceFile.exists() )
+            return;
+        FileUtils.INSTANCE.copy(sourceFile, destFile);
+        FileUtils.INSTANCE.copyFileToDownload(destFile.getPath(), false);
+    }
     @Override
     public void onHandleIntent(final Intent intent) {
         if (intent == null) // No intent, we quit
@@ -329,8 +336,11 @@ public class FetcherService extends IntentService {
             LongOper(R.string.exportingToFile, () -> {
                 try {
                     final String sourceFileName = OPML.GetAutoBackupOPMLFileName();
+                    moveBackupFileVersion( sourceFileName, 2 );
+                    moveBackupFileVersion( sourceFileName, 1 );
+                    moveBackupFileVersion( sourceFileName, 0 );
                     OPML.exportToFile( sourceFileName, true );
-                    FileUtils.INSTANCE.copyFileToDownload( sourceFileName );
+                    FileUtils.INSTANCE.copyFileToDownload(sourceFileName, true);
                     PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
                 } catch (IOException e) {
                     e.printStackTrace();

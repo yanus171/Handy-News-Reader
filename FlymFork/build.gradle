@@ -13,8 +13,8 @@ android {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 31
-        versionCode 286
-        versionName '0.18.3'
+        versionCode 287
+        versionName '0.18.4'
     }
     lintOptions {
         checkReleaseBuilds false

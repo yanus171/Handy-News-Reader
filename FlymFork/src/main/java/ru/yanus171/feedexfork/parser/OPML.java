@@ -720,7 +720,7 @@ public class OPML {
                 final String name = "/HandyNewsReader_" + dateTimeStr + ( isBackup ? ".backup" : ".opml" );
                 final String fileName =  getContext().getCacheDir().getAbsolutePath() + "/" + name;
                 OPML.exportToFile( fileName, isBackup );
-                FileUtils.INSTANCE.copyFileToDownload( fileName );
+                FileUtils.INSTANCE.copyFileToDownload( fileName, true );
             } catch (IOException e) {
                 e.printStackTrace();
                 activity.runOnUiThread(() -> UiUtils.showMessage(activity, R.string.error_feed_export));

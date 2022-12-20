@@ -62,15 +62,15 @@ object FileUtils {
         inChannel.transferTo(0, inChannel.size(), outChannel)
         inStream.close()
         outStream.close()
+        Dog.v( String.format( "File copied %s -> %s", src.path, dst.path ) )
     }
 
-    public fun copyFileToDownload( fileName: String ) {
-        copyFileToDownload( fileName, File( fileName ).name )
+    fun copyFileToDownload( fileName: String, isToast: Boolean ){
+        copyFileToDownload( fileName, File( fileName ).name, isToast )
     }
-    public fun copyFileToDownload( fileName: String, destName: String ) {
+    public fun copyFileToDownload( fileName: String, destName: String, isToast: Boolean ) {
         val context = MainApplication.getContext();
         val name = destName
-
         if (Build.VERSION.SDK_INT >= 29) {
             val resolver = context.contentResolver
             val contentValues = ContentValues()
@@ -99,12 +99,13 @@ object FileUtils {
             val destFile = File(dir, name)
             copy(File(fileName), destFile)
         }
-        UiUtils.RunOnGuiThread {
-            Toast.makeText(MainApplication.getContext(),
-                    String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), name, SUB_FOLDER ),
-                    Toast.LENGTH_LONG).show()
-        }
-
+        //Dog.v( String.format( "File copied to download %s -> %s", fileName, destName ) )
+        if ( isToast )
+            UiUtils.RunOnGuiThread {
+                Toast.makeText(MainApplication.getContext(),
+                        String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), name, SUB_FOLDER ),
+                        Toast.LENGTH_LONG).show()
+            }
     }
 
 
