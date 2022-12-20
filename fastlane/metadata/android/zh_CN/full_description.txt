@@ -1,6 +1,6 @@
 <i>"与我所有的兴趣保持联系从未如此简单".</i>
 
-<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Handy Reading</i>: 无广告/自由软件，在<i>GNU GPL</i> 许可证下发布。</b>
 
 <ul>
 	<li><b>组成您的梦想杂志！</b></li>
@@ -10,7 +10,7 @@
 
 ...享受您的生活 <b>关注您的兴趣爱好</b> 同时。 聚焦于本质...
 
-Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
+介绍 <i>Handy Reading</i> - 一款功能丰富, 面向离线的 <i>RSS, web 内容和书籍</i> 阅读器，<b>尊重您的时间和内心的平静</b>: 避免当下提到移动设备时，就会想到的转移注意力和分心等问题。
 
 <ul>
 <b><u>功能</u>:</b>
@@ -18,7 +18,7 @@ Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web conten
 	<li><b><u>方便阅读</u></b>：通过音量按钮或轻扫切换文章，<i>轻点区域</i>，记住每篇文章的阅读位置</u>，</li><b>，</li>
   <li><b>重要文章通知</b>: 您将不再错过任何您认为特别重要的事情。</li>
 	<li><b><b><i>"稍后再读"</i></i></b>：您可以快速翻阅文章--<b>标记（标记）选择的文章，以便日后在闲暇时阅读</b>--或者只是为了保存，</li>
-	<li><b>FB2 books</b>support</u>,</li>
+	<li><b>FB2 格式书籍</b>支持</u>,</li>
   <li><b><i>"完成后删除"</i></i></b> - 一旦你完成了这样的文章，它可能会自动从<i>'收藏夹'</i> (=<i>'稍后再读'</i>)设置中删除，</li></li> 
 	<li><b>可以脱机了</b> - 潜入到有趣的阅读中，不分心：一旦更新后，不需要额外加载任何东西---它真的可以在没有网络的情况下进行。
 	<li><b>节省带宽</b>：只为新文章上线----而不是每次加载完整版本的文章；控制应该下载的内容----以及下载的程度，</li>
