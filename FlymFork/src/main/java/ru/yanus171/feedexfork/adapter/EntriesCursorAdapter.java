@@ -211,7 +211,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public boolean mIsNewTask = false;
     private boolean mNeedScrollToTopExpandedArticle = false;
     private static Cursor mCursor = null;
-
+    HashMap<Long, Integer> mItemPositionVoc = new HashMap<>();
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, HomeActivity activity) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
@@ -234,10 +234,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         return super.getView(position, convertView, parent);
     }
     public int getItemPosition( long ID ) {
-        for( int i = 0; i < getCount(); i++ )
-            if ( getItemId( i ) == ID )
-                return i;
-        return -1;
+        return mItemPositionVoc.containsKey( ID ) ? mItemPositionVoc.get( ID ) : -1;
     }
     public static Uri EntryUri( long id ) {
         return EntryColumns.CONTENT_URI( id ); //ContentUris.withAppendedId(mUri, id);
@@ -1349,6 +1346,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     mIsLoadImages = !cursor.isNull( col ) && cursor.getInt( col ) == 1;
             }
             mIsAutoSetAsRead = isAlsoSetAsRead( cursor );
+
+            mItemPositionVoc.clear();
+            for( int i = 0; i < getCount(); i++ )
+                mItemPositionVoc.put( getItemId( i ), i );
         }
     }
 
