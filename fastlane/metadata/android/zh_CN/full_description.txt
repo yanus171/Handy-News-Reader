@@ -14,7 +14,7 @@
 
 <ul>
 <b><u>功能</u>:</b>
-	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
+	<li><b><u>全文</u> 唾手可得</b>: 无需使用外部浏览器获取全文,</li>
 	<li><b><u>方便阅读</u></b>：通过音量按钮或轻扫切换文章，<i>轻点区域</i>，记住每篇文章的阅读位置</u>，</li><b>，</li>
   <li><b>重要文章通知</b>: 您将不再错过任何您认为特别重要的事情。</li>
 	<li><b><b><i>"稍后再读"</i></i></b>：您可以快速翻阅文章--<b>标记（标记）选择的文章，以便日后在闲暇时阅读</b>--或者只是为了保存，</li>
