@@ -655,4 +655,7 @@
     <string name="settings_category_labels">Etichette</string>
     <string name="settings_category_feed_list">Elenco feed</string>
     <string name="settings_category_last_read">Ultima sezione di lettura</string>
+    <string name="setting_last_read_article_count">Conteggio articoli</string>
+    <string name="menu_reload_full_text_with_debug">Con debug</string>
+    <string name="withoutLabel">Senza etichetta</string>
 </resources>
