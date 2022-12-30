@@ -668,4 +668,5 @@
     <string name="menu_reload_full_text_with_debug">Mit Fehlersuche</string>
     <string name="show_article_big_image">Großes Artikelbild</string>
     <string name="show_article_big_image_descr">Artikelbild in voller Bildschirmbreite anstelle eines kleinen Symbols anzeigen</string>
+    <string name="withoutLabel">Ohne Kategorie</string>
 </resources>
