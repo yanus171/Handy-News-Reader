@@ -653,6 +653,8 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public void onProgressChanged(WebView view, int progress) {
+                if ( mContentWasLoaded )
+                    return;
                 Status().ChangeProgress( String.format( "%d %% ...", progress ) );
             }
 
