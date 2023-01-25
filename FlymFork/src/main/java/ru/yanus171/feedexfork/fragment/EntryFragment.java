@@ -152,6 +152,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 
@@ -235,7 +236,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             IsLocalFile( uri );
     }
     public static boolean IsLocalFile( Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "documents" ) ||
+        return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "document" ) ||
             uri.toString().startsWith( FILE_SCHEME );
     }
     private BaseActivity getBaseActivity() {
@@ -1121,6 +1122,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void setData(final Uri uri) {
         mCurrentPagerPos = -1;
         mBaseUri = null;
+        Dog.v( TAG, "setData " + uri.toString() );
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -1130,7 +1132,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
                 //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
-
                 if ( !IsExternalLink( uri ) ) {
                     mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
                     if ( mBaseUri.toString().endsWith( "-1" ) )
