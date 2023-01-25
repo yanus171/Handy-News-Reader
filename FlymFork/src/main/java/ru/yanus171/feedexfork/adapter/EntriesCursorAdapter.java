@@ -440,7 +440,6 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         isPress = false;
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            //Dog.v("onTouch ACTION_UP");
                             if ( currentx > MIN_X_TO_VIEW_ARTICLE &&
                                 Math.abs(paddingX) < minX &&
                                 Math.abs(paddingY) < minY &&

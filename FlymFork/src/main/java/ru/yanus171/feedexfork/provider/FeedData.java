@@ -211,7 +211,11 @@ public class FeedData {
 
         public static final Uri GROUPS_AND_ROOT_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/groups_and_root");
     }
-
+    public static ContentValues getGroupExpandedValues() {
+        ContentValues values = new ContentValues();
+        values.put(FeedColumns.IS_GROUP_EXPANDED, 1);
+        return values;
+    }
     public static class FilterColumns implements BaseColumns {
         static final String TABLE_NAME = "filters";
 

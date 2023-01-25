@@ -698,7 +698,7 @@ public class FeedDataContentProvider extends ContentProvider {
 
         if (!TextUtils.isEmpty(selection)) {
             if (where.length() > 0) {
-                where.append(Constants.DB_AND).append(selection);
+                where.append(Constants.DB_AND).append( "(" + selection + ")" );
             } else {
                 where.append(selection);
             }
