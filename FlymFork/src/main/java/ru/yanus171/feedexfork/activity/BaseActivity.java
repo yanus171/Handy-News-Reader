@@ -46,7 +46,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import ru.yanus171.feedexfork.Constants;
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.service.ReadingService;
 import ru.yanus171.feedexfork.utils.Brightness;
@@ -73,6 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private int mLastStep = 0;
     public ProgressBar mProgressBarRefresh = null;
     private static int mActivityCount = 0;
+    private View mMarginRight = null;
+    private View mMarginLeft = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,7 +228,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             mLabelDate.setText( "" );
             mLabelRemaining = UiUtils.SetupSmallTextView(mRootView, R.id.textRemaining);
             mLabelRemaining.setText( "" );
-
+            mMarginRight = mRootView.findViewById(R.id.marginRight);
+            mMarginLeft = mRootView.findViewById(R.id.marginLeft);
         }
         if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null )
             return;
@@ -257,6 +259,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( color );
             if ( mProgressBarRefresh != null )
                 mProgressBarRefresh.setBackgroundColor( color );
+        }
+        {
+            final int value = PrefUtils.getIntFromText("article_text_footer_offset", 0);
+            mMarginRight.setMinimumWidth(UiUtils.mmToPixel(value));
+            mMarginLeft.setMinimumWidth(UiUtils.mmToPixel(value));
         }
     }
 

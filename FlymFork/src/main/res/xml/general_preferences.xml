@@ -351,6 +351,13 @@
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:defaultValue="0"
+                android:inputType="number"
+                android:key="article_text_footer_offset"
+                android:summary="@string/article_text_footer_margin_summary"
+                android:title="@string/article_text_footer_margin" />
+
         </PreferenceCategory>
 
         <PreferenceCategory
