@@ -1418,37 +1418,42 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     }
 
-    public int GetFirstUnReadPos() {
-        for (int i = 0; i < getCount(); i++) {
-            Cursor cursor = (Cursor) getItem(i);
-            if ( !EntryColumns.IsRead( cursor, mIsReadPos ) )
-                return i;
-        }
-        return getCount();
-    }
     public int GetTopNewPos() {
-        for (int i = 0; i < getCount(); i++) {
-            Cursor cursor = (Cursor) getItem(i);
-            if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
-                return i;
+        try {
+            for (int i = 0; i < getCount(); i++) {
+                Cursor cursor = (Cursor) getItem(i);
+                if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
+                    return i;
+            }
+        } catch ( IllegalStateException e ) {
+            e.printStackTrace();
         }
         return getCount() - 1;
     }
     public int GetBottomNewPos() {
-        for (int i = getCount() - 1; i >= 0; i--) {
-            Cursor cursor = (Cursor) getItem(i);
-            if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
-                return i;
+        try {
+            for (int i = getCount() - 1; i >= 0; i--) {
+                Cursor cursor = (Cursor) getItem(i);
+                if (EntryColumns.IsNew(cursor, mIsNewPos))
+                    return i;
+            }
+        } catch ( IllegalStateException e ) {
+            e.printStackTrace();
         }
         return 0;
     }
     public int GetPosByID( long id ) {
         if ( !isEmpty() ) {
-            final int fiID = mIdPos;//((Cursor) getItem(0)).getColumnIndex(EntryColumns._ID);
-            for (int i = 0; i < getCount(); i++) {
-                Cursor cursor = (Cursor) getItem(i);
-                if (cursor.getLong(fiID) == id)
-                    return i;
+            try {
+                final int fiID = mIdPos;//((Cursor) getItem(0)).getColumnIndex(EntryColumns._ID);
+                for (int i = 0; i < getCount(); i++) {
+                    Cursor cursor = (Cursor) getItem(i);
+                    if (cursor.getLong(fiID) == id) {
+                        return i;
+                    }
+                }
+            } catch ( IllegalStateException e ) {
+                e.printStackTrace();
             }
         }
         return -1;

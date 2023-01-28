@@ -563,6 +563,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mListView == null )
             return;
         int value = mListView.getFirstVisiblePosition();
+        if ( getActivity() == null )
+            return;
         getBaseActivity().UpdateHeader(max,
                                        value,
                                        getHeaderStep(),
