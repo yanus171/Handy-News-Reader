@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+    xmlns:startActivity="ru.yanus171.feedexfork.views.StartActivityPreference"
     xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference">
 
     <PreferenceScreen
@@ -569,6 +570,19 @@
                 android:dependency="refresh.enabled"
                 android:summary="@string/settings_refresh_only_selected_summary"
                 android:title="@string/settings_refresh_only_selected"/>
+            <ru.yanus171.feedexfork.view.StartActivityPreference
+                android:key="refresh_only_selected_select_all"
+                android:dependency="refresh.only_selected"
+                android:title="@string/refresh_only_selected_select_all"
+                android:summary="@string/refresh_only_selected_select_all_summary"
+                startActivity:oper="refresh_only_selected_select_all" />
+            <ru.yanus171.feedexfork.view.StartActivityPreference
+                android:key="refresh_only_selected_select_none"
+                android:dependency="refresh.only_selected"
+                android:title="@string/refresh_only_selected_select_none"
+                android:summary="@string/refresh_only_selected_select_none_summary"
+                startActivity:oper="refresh_only_selected_select_none" />
+
 
             <CheckBoxPreference
                 android:defaultValue="false"
