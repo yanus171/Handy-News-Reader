@@ -675,4 +675,6 @@
     <string name="show_article_big_image">Велике зображення статті</string>
     <string name="show_article_big_image_descr">Показувати велике зображення статті на всю ширину екрана замість маленької іконки</string>
     <string name="withoutLabel">Без мітки</string>
+    <string name="article_text_footer_margin">Відступ від краю</string>
+    <string name="article_text_footer_margin_summary">Відступ (в мм) від лівого та правого краю, щоб протидіяти заокругленням кутів</string>
 </resources>
