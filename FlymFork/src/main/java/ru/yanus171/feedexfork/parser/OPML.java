@@ -111,7 +111,24 @@ import static androidx.core.content.FileProvider.getUriForFile;
 import static ru.yanus171.feedexfork.Constants.FALSE;
 import static ru.yanus171.feedexfork.Constants.TRUE;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ABSTRACT;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.AUTHOR;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.DATE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FETCH_DATE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.GUID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGE_URL;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_LANDSCAPE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_NEW;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_WITH_TABLES;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.READ_DATE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FETCH_MODE;
@@ -369,11 +386,11 @@ public class OPML {
         return TRUE.equals( attr.getValue( "", attrName ) );
     }
 
-    private static final String[] ENTRIES_PROJECTION = new String[]{EntryColumns.TITLE, EntryColumns.LINK,
-            EntryColumns.IS_NEW, EntryColumns.IS_READ, EntryColumns.SCROLL_POS, EntryColumns.ABSTRACT,
-            EntryColumns.AUTHOR, EntryColumns.DATE, EntryColumns.FETCH_DATE, EntryColumns.IMAGE_URL,
-            EntryColumns.IS_FAVORITE, EntryColumns._ID, EntryColumns.GUID, EntryColumns.IS_WAS_AUTO_UNSTAR,
-            EntryColumns.IS_WITH_TABLES, EntryColumns.READ_DATE, EntryColumns.IS_LANDSCAPE };
+    private static final String[] ENTRIES_PROJECTION = new String[]{TITLE, LINK,
+            IS_NEW, IS_READ, SCROLL_POS, ABSTRACT,
+            AUTHOR, DATE, FETCH_DATE, IMAGE_URL,
+            IS_FAVORITE, EntryColumns._ID, GUID, IS_WAS_AUTO_UNSTAR,
+            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE };
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -393,20 +410,20 @@ public class OPML {
         if (cur != null && cur.getCount() != 0) {
             while (cur.moveToNext()) {
                 writer.write("\t");
-                writer.write(String.format( TAG_START, TAG_ENTRY, EntryColumns.TITLE) );
+                writer.write(String.format( TAG_START, TAG_ENTRY, TITLE) );
                 writer.write(cur.isNull( 0 ) ? "" : TextUtils.htmlEncode(cur.getString(0)));
-                WriteEncodedText(writer, cur, EntryColumns.LINK, 1);
-                WriteBoolValue(writer, cur, EntryColumns.IS_NEW, 2);
-                WriteBoolValue(writer, cur, EntryColumns.IS_READ, 3);
-                WriteText(writer, cur, EntryColumns.SCROLL_POS, 4);
+                WriteEncodedText(writer, cur, LINK, 1);
+                WriteBoolValue(writer, cur, IS_NEW, 2);
+                WriteBoolValue(writer, cur, IS_READ, 3);
+                WriteText(writer, cur, SCROLL_POS, 4);
                 if ( saveAbstract ) {
-                    WriteEncodedText(writer, cur, EntryColumns.ABSTRACT, 5);
+                    WriteEncodedText(writer, cur, ABSTRACT, 5);
                 }
-                WriteEncodedText(writer, cur, EntryColumns.AUTHOR, 6);
-                WriteText(writer, cur, EntryColumns.DATE, 7);
-                WriteText(writer, cur, EntryColumns.FETCH_DATE, 8);
-                WriteEncodedText(writer, cur, EntryColumns.IMAGE_URL, 9);
-                WriteBoolValue(writer, cur, EntryColumns.IS_FAVORITE, 10);
+                WriteEncodedText(writer, cur, AUTHOR, 6);
+                WriteText(writer, cur, DATE, 7);
+                WriteText(writer, cur, FETCH_DATE, 8);
+                WriteEncodedText(writer, cur, IMAGE_URL, 9);
+                WriteBoolValue(writer, cur, IS_FAVORITE, 10);
                 WriteLongValue(writer, cur, EntryColumns._ID, 11);
                 //                if ( !saveAbstract && cur.getInt(10) == 1 ) {
 //                    //writer.write(String.format(ATTR_VALUE, EntryColumns.MOBILIZED_HTML));
@@ -414,11 +431,11 @@ public class OPML {
 //                    final String text = GetMobilizedText( entryID );
 //                    writer.write(text == null ? "" : TextUtils.htmlEncode(text));
 //                }
-                WriteEncodedText(writer, cur, EntryColumns.GUID, 12);
-                WriteBoolValue(writer, cur, EntryColumns.IS_WAS_AUTO_UNSTAR, 13);
-                WriteBoolValue(writer, cur, EntryColumns.IS_WITH_TABLES, 14);
-                WriteText(writer, cur, EntryColumns.READ_DATE, 15);
-                WriteBoolValue(writer, cur, EntryColumns.IS_LANDSCAPE, 16);
+                WriteEncodedText(writer, cur, GUID, 12);
+                WriteBoolValue(writer, cur, IS_WAS_AUTO_UNSTAR, 13);
+                WriteBoolValue(writer, cur, IS_WITH_TABLES, 14);
+                WriteText(writer, cur, READ_DATE, 15);
+                WriteBoolValue(writer, cur, IS_LANDSCAPE, 16);
                 writer.write(CLOSING);
             }
             writer.write("\t");
@@ -538,6 +555,13 @@ public class OPML {
             mEditor = PreferenceManager.getDefaultSharedPreferences( getContext() ).edit();
         }
 
+        private void putString( ContentValues values, String fieldName, Attributes attributes, String attrName ) {
+            final String s = GetText( attributes, attrName);
+            if ( s != null && !s.isEmpty() )
+                values.put(fieldName, s );
+            else
+                values.putNull( fieldName );
+        }
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) {
             ContentResolver cr = getContext().getContentResolver();
@@ -558,7 +582,7 @@ public class OPML {
                         ContentValues values = new ContentValues();
                         values.put(IS_GROUP, true);
                         values.put(NAME, title);
-                        values.put(PRIORITY, GetText( attributes, PRIORITY));
+                        putString( values, PRIORITY, attributes, PRIORITY );
 
                         Cursor cursor = cr.query(GROUPS_CONTENT_URI, null, NAME + Constants.DB_ARG, new String[]{title}, null);
 
@@ -582,11 +606,11 @@ public class OPML {
                     values.put(SHOW_TEXT_IN_ENTRY_LIST, GetBool( attributes, SHOW_TEXT_IN_ENTRY_LIST));
                     values.put(IS_AUTO_REFRESH, GetBool( attributes, IS_AUTO_REFRESH));
                     values.put(IS_IMAGE_AUTO_LOAD, GetBool( attributes, IS_IMAGE_AUTO_LOAD));
-                    values.put(OPTIONS, GetText( attributes, OPTIONS));
-                    values.put(LAST_UPDATE, GetText( attributes, LAST_UPDATE));
-                    values.put(REAL_LAST_UPDATE, GetText( attributes, REAL_LAST_UPDATE));
-                    values.put(PRIORITY, GetText( attributes, PRIORITY));
-                    values.put(FETCH_MODE, GetText( attributes, FETCH_MODE));
+                    putString( values, OPTIONS, attributes, OPTIONS);
+                    putString( values, LAST_UPDATE, attributes, LAST_UPDATE);
+                    putString( values, REAL_LAST_UPDATE, attributes, REAL_LAST_UPDATE);
+                    putString( values, PRIORITY, attributes, PRIORITY);
+                    putString( values, FETCH_MODE, attributes, FETCH_MODE);
 
                     if ( String.valueOf( FetcherService.FETCHMODE_EXERNAL_LINK ).equals( attributes.getValue( FETCH_MODE ) ) )
                         mFeedId = FetcherService.GetExtrenalLinkFeedID();
@@ -624,24 +648,24 @@ public class OPML {
                 }
             } else if (TAG_ENTRY.equals(localName) && mFeedEntered && mFeedId != null) {
                 ContentValues values = new ContentValues();
-                values.put(EntryColumns.IS_NEW, GetBool( attributes, EntryColumns.IS_NEW));
-                values.put(EntryColumns.IS_READ, GetBool( attributes, EntryColumns.IS_READ));
-                values.put(EntryColumns.IS_FAVORITE, GetBool( attributes, EntryColumns.IS_FAVORITE));
-                values.put(EntryColumns.ABSTRACT, GetText( attributes, EntryColumns.ABSTRACT));
-                final String link = GetText( attributes, EntryColumns.LINK );
-                final String mobHtml = GetText( attributes, EntryColumns.MOBILIZED_HTML);
+                values.put(IS_NEW, GetBool(attributes, IS_NEW));
+                values.put(IS_READ, GetBool(attributes, IS_READ));
+                values.put(IS_FAVORITE, GetBool(attributes, IS_FAVORITE));
+                putString( values, ABSTRACT, attributes, ABSTRACT);
+                final String link = GetText( attributes, LINK );
+                final String mobHtml = GetText( attributes, MOBILIZED_HTML);
                 FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
-                values.put(EntryColumns.FETCH_DATE, GetText( attributes, EntryColumns.FETCH_DATE));
-                values.put(EntryColumns.READ_DATE, GetText( attributes, EntryColumns.READ_DATE));
-                values.put(EntryColumns.DATE, GetText( attributes, EntryColumns.DATE));
-                values.put(EntryColumns.TITLE, GetText( attributes, EntryColumns.TITLE));
-                values.put(EntryColumns.SCROLL_POS, GetText( attributes, EntryColumns.SCROLL_POS ));
-                values.put(EntryColumns.AUTHOR, GetText( attributes, EntryColumns.AUTHOR) );
-                values.put(EntryColumns.IMAGE_URL, GetText( attributes, EntryColumns.IMAGE_URL));
-                values.put(EntryColumns.GUID, GetText( attributes, EntryColumns.GUID));
-                values.put(EntryColumns.IS_WAS_AUTO_UNSTAR, GetText( attributes, EntryColumns.IS_WAS_AUTO_UNSTAR));
-                values.put(EntryColumns.IS_WITH_TABLES, GetText( attributes, EntryColumns.IS_WITH_TABLES));
-                values.put(EntryColumns.IS_LANDSCAPE, GetText( attributes, EntryColumns.IS_LANDSCAPE));
+                putString( values, FETCH_DATE, attributes, FETCH_DATE);
+                putString( values, READ_DATE, attributes, READ_DATE);
+                putString( values, DATE, attributes, DATE);
+                putString( values, TITLE, attributes, TITLE);
+                putString( values, SCROLL_POS, attributes, SCROLL_POS );
+                putString( values, AUTHOR, attributes, AUTHOR );
+                putString( values, IMAGE_URL, attributes, IMAGE_URL);
+                putString( values, GUID, attributes, GUID);
+                putString( values, IS_WAS_AUTO_UNSTAR, attributes, IS_WAS_AUTO_UNSTAR);
+                putString( values, IS_WITH_TABLES, attributes, IS_WITH_TABLES);
+                putString( values, IS_LANDSCAPE, attributes, IS_LANDSCAPE);
 
                 final Long id = Long.valueOf(cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(mFeedId ), values).getLastPathSegment());
                 if ( attributes.getIndex(_ID) != -1 )
@@ -649,8 +673,8 @@ public class OPML {
             } else if (TAG_LABEL.equals(localName)) {
                 mLabelOrder++;
                 ContentValues values = new ContentValues();
-                values.put(LabelColumns.NAME, GetText( attributes, LabelColumns.NAME));
-                values.put(LabelColumns.COLOR, GetText( attributes, LabelColumns.COLOR));
+                putString( values, LabelColumns.NAME, attributes, LabelColumns.NAME);
+                putString( values, LabelColumns.COLOR, attributes, LabelColumns.COLOR);
                 values.put(LabelColumns.ORDER, mLabelOrder);
                 Uri newUri = cr.insert(LabelColumns.CONTENT_URI, values);
                 mLabelID = newUri.getPathSegments().size() == 2 ? Long.valueOf( newUri.getLastPathSegment() ) : null;
