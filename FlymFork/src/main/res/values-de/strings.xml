@@ -669,4 +669,6 @@
     <string name="show_article_big_image">Großes Artikelbild</string>
     <string name="show_article_big_image_descr">Artikelbild in voller Bildschirmbreite anstelle eines kleinen Symbols anzeigen</string>
     <string name="withoutLabel">Ohne Kategorie</string>
+    <string name="article_text_footer_margin">Kantenversatz</string>
+    <string name="article_text_footer_margin_summary">Ränder (in mm) am linken und rechten Rand zur Vermeidung von runden Bildschirmecken\"</string>
 </resources>
