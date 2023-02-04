@@ -128,11 +128,11 @@ public class PrefUtils {
 
     public static final int BASE_TEXT_FONT_SIZE = 18;
 
-    public static int getFontSize() {
-        return PrefUtils.getIntFromText( "fontsize", 0);
+    public static float getFontSize() {
+        return PrefUtils.getFloatFromText( "fontsize", 0);
     }
     public static String getFontSizeText(int delta ) {
-        return String.format( "%dpt", 13 + getFontSize() + delta );
+        return String.format( "%fpt", 13 + getFontSize() + delta );
     }
     public static int getFontSizeEntryList() {
         return PrefUtils.getIntFromText("fontsize_entrylist", 0);
@@ -203,6 +203,15 @@ public class PrefUtils {
         int result = defValue;
         try {
             result = Integer.parseInt( getString( key, String.valueOf( defValue ) ) );
+        } catch ( NumberFormatException e ) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public static float getFloatFromText(String key, float defValue) {
+        float result = defValue;
+        try {
+            result = Float.parseFloat( getString( key, String.valueOf( defValue ) ) );
         } catch ( NumberFormatException e ) {
             e.printStackTrace();
         }
