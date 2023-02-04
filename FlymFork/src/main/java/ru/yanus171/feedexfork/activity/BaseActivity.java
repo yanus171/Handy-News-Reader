@@ -1,22 +1,10 @@
-/**
- * Flym
- * <p/>
- * Copyright (c) 2012-2015 Frederic Julian
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p/>
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package ru.yanus171.feedexfork.activity;
+
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.READING_NOTIFICATION;
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -31,13 +19,14 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -52,13 +41,6 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
-
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
-import static ru.yanus171.feedexfork.MainApplication.getContext;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.PrefUtils.READING_NOTIFICATION;
-import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -173,18 +155,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         PrefUtils.putBoolean(keyActionBarHidden, actionBarHidden);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (statusBarHidden)
-                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                                                     View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                                                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                mDecorView.setSystemUiVisibility(getFullScreenFlags());
             else
                 mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
-        } //else
-          //  setFullScreenOld(statusBarHidden)
-
+        }
         if (getSupportActionBar() != null) {
 
             if (actionBarHidden)
@@ -194,6 +169,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         UpdateHeader(mLastMax, mLastProgress, mLastStep, statusBarHidden, actionBarHidden);
         invalidateOptionsMenu();
+    }
+
+    private int getFullScreenFlags() {
+        int result = View.SYSTEM_UI_FLAG_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        if ( !PrefUtils.getBoolean( "show_navigation_bar_in_fullscreen", false ) )
+            result = result | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        return result;
+
     }
 
     private View mHeaderLayout = null;

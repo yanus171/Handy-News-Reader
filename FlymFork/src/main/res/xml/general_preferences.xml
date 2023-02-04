@@ -697,7 +697,6 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_advanced"/>
-
         <CheckBoxPreference
             android:key="feeds_sort_alphabetical"
             android:defaultValue="false"
@@ -719,7 +718,6 @@
             android:key="openLinkInBrowserTapAction"
             android:title="@string/open_link_in_browser_tap_action"
             android:summary="@string/open_link_in_browser_tap_action_descr"/>
-
         <CheckBoxPreference
             android:key="settings_show_progress_info"
             android:defaultValue="false"
@@ -730,12 +728,16 @@
             android:defaultValue="true"
             android:title="@string/settings_show_circle_progress"
             android:summary="@string/settings_show_circle_progress_summary"/>
-
         <CheckBoxPreference
             android:key="setting_edit_feed_force_portrait_orientation"
             android:defaultValue="false"
             android:title="@string/setting_edit_feed_force_portrait_orientation"
             android:summary="@string/setting_edit_feed_force_portrait_orientation_summary"/>
+        <CheckBoxPreference
+            android:key="show_navigation_bar_in_fullscreen"
+            android:defaultValue="false"
+            android:title="@string/show_navigation_bar_in_fullscreen"
+            android:summary="@string/show_navigation_bar_in_fullscreen_summary"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

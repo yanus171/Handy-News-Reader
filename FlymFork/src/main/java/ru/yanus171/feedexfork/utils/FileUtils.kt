@@ -90,6 +90,12 @@ object FileUtils {
                                     String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$name"),
                                     Toast.LENGTH_LONG ).show()
                 }
+            } catch ( e: NullPointerException ) {
+                UiUtils.RunOnGuiThread {
+                    Toast.makeText( MainApplication.getContext(),
+                            String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$name"),
+                            Toast.LENGTH_LONG ).show()
+                }
             }
 
         } else {

@@ -62,7 +62,7 @@ class FileVoc(val mFolder: File ) {
             else if ( !mIsInitialized )
                 mIsInProcess = true
         }
-        Thread() {
+        Thread {
             synchronized(mVoc) {
                 val status = FetcherService.Status().Start("Reading folder $mFolder", true)
                 mVoc.clear()

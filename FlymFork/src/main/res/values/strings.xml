@@ -706,5 +706,7 @@
     <string name="refresh_only_selected_select_none">Select none</string>
     <string name="refresh_only_selected_select_none_summary">Remove auto refresh checkbox from all feeds</string>
     <string name="feed_count_were_edited">feeds were edited</string>
+    <string name="show_navigation_bar_in_fullscreen">Show navigation in full screen</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Show navigation bar in full screen mode</string>
 
 </resources>

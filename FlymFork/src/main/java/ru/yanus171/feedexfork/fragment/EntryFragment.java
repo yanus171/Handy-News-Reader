@@ -1122,7 +1122,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void setData(final Uri uri) {
         mCurrentPagerPos = -1;
         mBaseUri = null;
-        Dog.v( TAG, "setData " + uri.toString() );
+        Dog.v( TAG, "setData " + uri );
 
         new AsyncTask<Void, Void, Void>() {
             @Override

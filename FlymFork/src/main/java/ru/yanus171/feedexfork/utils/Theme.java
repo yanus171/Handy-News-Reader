@@ -127,9 +127,15 @@ public class Theme {
 		//else
 		//	return IsLight() ? getTextColorLightTheme() : getTextColorDarkTheme();
 	}
+	public static int GetTextColorInt() {
+		return GetColorInt(TEXT_COLOR, R.string.default_text_color);
+	}
 
 	public static String GetBackgroundColor() {
 		return Theme.GetColor( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
+	}
+	public static int GetBackgroundColorInt() {
+		return Theme.GetColorInt( TEXT_COLOR_BACKGROUND, R.string.default_text_color_background );
 	}
 
 
