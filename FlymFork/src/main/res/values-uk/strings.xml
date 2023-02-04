@@ -682,4 +682,6 @@
     <string name="refresh_only_selected_select_none">Зняти вибір</string>
     <string name="refresh_only_selected_select_none_summary">Не оновлювати всі стрічки автоматично</string>
     <string name="feed_count_were_edited">стрічки були змінені</string>
+    <string name="show_navigation_bar_in_fullscreen">Навігація на весь екран</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Показати панель навігації в повноекранному режимі</string>
 </resources>
