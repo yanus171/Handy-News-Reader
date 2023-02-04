@@ -671,4 +671,9 @@
     <string name="withoutLabel">Ohne Kategorie</string>
     <string name="article_text_footer_margin">Kantenversatz</string>
     <string name="article_text_footer_margin_summary">Ränder (in mm) am linken und rechten Rand zur Vermeidung von runden Bildschirmecken\"</string>
+    <string name="refresh_only_selected_select_all">Alles auswählen</string>
+    <string name="refresh_only_selected_select_all_summary">Alle Feeds für die automatische Aktualisierung auswählen</string>
+    <string name="refresh_only_selected_select_none">Auswahl aufheben</string>
+    <string name="refresh_only_selected_select_none_summary">Kontrollkästchen zur automatischen Aktualisierung für alle Feeds entfernen</string>
+    <string name="feed_count_were_edited">Feeds wurden bearbeitet</string>
 </resources>
