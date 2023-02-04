@@ -35,8 +35,6 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 
 import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
@@ -172,6 +170,9 @@ public class PrefUtils {
 
     public static boolean IsShowReadCheckbox() {
         return getBoolean( "show_read_checkbox", false );
+    }
+    public static boolean IsShowUnStarredCheckbox() {
+        return getBoolean( "show_unstarred_checkbox", true );
     }
 
     public static boolean getBoolean(String key, boolean defValue) {

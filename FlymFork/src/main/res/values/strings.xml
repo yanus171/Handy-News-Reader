@@ -708,5 +708,7 @@
     <string name="feed_count_were_edited">feeds were edited</string>
     <string name="show_navigation_bar_in_fullscreen">Show navigation in full screen</string>
     <string name="show_navigation_bar_in_fullscreen_summary">Show navigation bar in full screen mode</string>
+    <string name="show_unstarred_checkbox">No star icon</string>
+    <string name="show_unstarred_checkbox_descr">Show small empty star icon to indicate that article is not in favorites</string>
 
 </resources>

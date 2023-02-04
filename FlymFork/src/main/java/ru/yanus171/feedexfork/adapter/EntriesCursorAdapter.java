@@ -88,7 +88,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -102,7 +101,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -117,9 +115,7 @@ import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -134,12 +130,10 @@ import ru.yanus171.feedexfork.view.MenuItem;
 import static android.view.View.TEXT_DIRECTION_ANY_RTL;
 import static android.view.View.TEXT_DIRECTION_RTL;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
-import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -163,7 +157,6 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
-import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.EntryView.getAlign;
 import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
@@ -284,6 +277,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             //holder.mainImgLayout = view.findViewById(R.id.main_icon_layout);
             holder.layoutControls = view.findViewById(R.id.layout_controls);
             holder.starImgView = view.findViewById(R.id.favorite_icon);
+            holder.starImgView.setVisibility(PrefUtils.IsShowUnStarredCheckbox() ? View.VISIBLE : View.GONE); //
             holder.mobilizedImgView = view.findViewById(R.id.mobilized_icon);
             holder.readImgView = view.findViewById(R.id.read_icon);
             holder.videoImgView = view.findViewById(R.id.video_icon);
@@ -1135,7 +1129,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private void UpdateStarImgView(ViewHolder holder) {
         int startID = Theme.GetResID( STARRED_ARTICLE_INDICATOR_RES_ID );
 //        if ( holder.isFavorite )
-            holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_indicator_nonstar);
+        boolean v = PrefUtils.IsShowUnStarredCheckbox() || holder.isFavorite;
+            holder.starImgView.setVisibility( v ? View.VISIBLE : View.GONE );
+            if ( v )
+                holder.starImgView.setImageResource(holder.isFavorite ? startID : R.drawable.ic_indicator_nonstar);
             holder.starToggleSwypeBtnView.setImageResource(holder.isFavorite ? R.drawable.ic_star_border_grey : R.drawable.ic_star_grey);
 //        else
 //            holder.starImgView.setImageResource(R.drawable.ic_star_border_grey);

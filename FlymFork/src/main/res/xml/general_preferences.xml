@@ -177,26 +177,26 @@
             android:title="@string/article_text_expand_controls"
             android:summary="@string/article_text_expand_controls_descr"
             />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="display_oldest_first"
             android:summary="@string/settings_display_oldest_first_description"
             android:title="@string/settings_display_oldest_first"/>
-
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="show_mark_all_as_read_button"
             android:summary="@string/show_mark_all_as_read_button_summary"
             android:title="@string/show_mark_all_as_read_button"/>
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="show_read_checkbox"
             android:summary="@string/show_read_checkbox_descr"
             android:title="@string/show_read_checkbox"/>
-
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_unstarred_checkbox"
+            android:summary="@string/show_unstarred_checkbox_descr"
+            android:title="@string/show_unstarred_checkbox"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="show_full_text_indicator"
