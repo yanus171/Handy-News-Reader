@@ -677,4 +677,9 @@
     <string name="withoutLabel">Без мітки</string>
     <string name="article_text_footer_margin">Відступ від краю</string>
     <string name="article_text_footer_margin_summary">Відступ (в мм) від лівого та правого краю, щоб протидіяти заокругленням кутів</string>
+    <string name="refresh_only_selected_select_all">Вибрати все</string>
+    <string name="refresh_only_selected_select_all_summary">Обрати всі стрічки для автоматичного оновлення</string>
+    <string name="refresh_only_selected_select_none">Зняти вибір</string>
+    <string name="refresh_only_selected_select_none_summary">Не оновлювати всі стрічки автоматично</string>
+    <string name="feed_count_were_edited">стрічки були змінені</string>
 </resources>
