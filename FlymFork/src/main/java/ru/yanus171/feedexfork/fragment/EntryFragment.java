@@ -235,10 +235,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             uri.toString().startsWith( HTTPS_SCHEME ) ||
             IsLocalFile( uri );
     }
-    public static boolean IsLocalFile( Uri uri ) {
+    public static boolean IsLocalFile(Uri uri ) {
         return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "document" ) ||
-            uri.toString().startsWith( FILE_SCHEME );
+            uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
     }
+
     private BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
     }
