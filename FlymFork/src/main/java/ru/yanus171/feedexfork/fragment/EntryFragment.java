@@ -247,8 +247,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     //@Override
     //public View inflateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
         SetupZoneSizes();
@@ -259,7 +258,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       (TextView) rootView.findViewById( R.id.progressText),
                                       FetcherService.Status());
 
-    rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
+        rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( isArticleTapEnabled() ) {
                 EntryActivity activity = (EntryActivity) getActivity();
                 activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );

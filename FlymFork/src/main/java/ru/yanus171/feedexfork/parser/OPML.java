@@ -62,6 +62,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Xml;
 import android.widget.Toast;
@@ -390,7 +391,7 @@ public class OPML {
             IS_NEW, IS_READ, SCROLL_POS, ABSTRACT,
             AUTHOR, DATE, FETCH_DATE, IMAGE_URL,
             IS_FAVORITE, EntryColumns._ID, GUID, IS_WAS_AUTO_UNSTAR,
-            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE };
+            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE, MOBILIZED_HTML, _ID };
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -436,6 +437,13 @@ public class OPML {
                 WriteBoolValue(writer, cur, IS_WITH_TABLES, 14);
                 WriteText(writer, cur, READ_DATE, 15);
                 WriteBoolValue(writer, cur, IS_LANDSCAPE, 16);
+                final boolean isFavourite = cur.getInt( 10 ) == 1;
+                final String link = cur.getString( 1 );
+                if ( cur.getInt( 10 ) == 1 && FileUtils.INSTANCE.isMobilized( link, cur, 17, 18 ) ) {
+                    writer.write(String.format(ATTR_VALUE, MOBILIZED_HTML));
+                    writer.write(TextUtils.htmlEncode(FileUtils.INSTANCE.loadMobilizedHTML(link, cur)));
+                }
+
                 writer.write(CLOSING);
             }
             writer.write("\t");
@@ -652,9 +660,8 @@ public class OPML {
                 values.put(IS_READ, GetBool(attributes, IS_READ));
                 values.put(IS_FAVORITE, GetBool(attributes, IS_FAVORITE));
                 putString( values, ABSTRACT, attributes, ABSTRACT);
+                putString( values, LINK, attributes, LINK);
                 final String link = GetText( attributes, LINK );
-                final String mobHtml = GetText( attributes, MOBILIZED_HTML);
-                FileUtils.INSTANCE.saveMobilizedHTML( link, mobHtml, values );
                 putString( values, FETCH_DATE, attributes, FETCH_DATE);
                 putString( values, READ_DATE, attributes, READ_DATE);
                 putString( values, DATE, attributes, DATE);
@@ -666,6 +673,8 @@ public class OPML {
                 putString( values, IS_WAS_AUTO_UNSTAR, attributes, IS_WAS_AUTO_UNSTAR);
                 putString( values, IS_WITH_TABLES, attributes, IS_WITH_TABLES);
                 putString( values, IS_LANDSCAPE, attributes, IS_LANDSCAPE);
+                if ( attributes.getIndex( MOBILIZED_HTML ) >= 0 )
+                    FileUtils.INSTANCE.saveMobilizedHTML(link, attributes.getValue(MOBILIZED_HTML), values);
 
                 final Long id = Long.valueOf(cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(mFeedId ), values).getLastPathSegment());
                 if ( attributes.getIndex(_ID) != -1 )
@@ -811,9 +820,9 @@ public class OPML {
             }
             case PERMISSIONS_REQUEST_IMPORT_FROM_OPML: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    importFromOpml( activity );
-                }
+                //if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //    importFromOpml( activity );
+                //}
             }
         }
     }

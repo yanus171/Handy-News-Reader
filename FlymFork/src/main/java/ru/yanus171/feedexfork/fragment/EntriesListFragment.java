@@ -512,7 +512,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             SetListViewAdapter();
         }
 
-        if (PrefUtils.getBoolean(PrefUtils.DISPLAY_TIP, true) && mListView instanceof ListView ) {
+        if ( false /*PrefUtils.getBoolean(PrefUtils.DISPLAY_TIP, true)*/ && mListView instanceof ListView ) {
             final TextView header = CreateTextView(mListView.getContext());
             header.setMinimumHeight(UiUtils.dpToPixel(70));
             int footerPadding = UiUtils.dpToPixel(10);
