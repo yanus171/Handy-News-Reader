@@ -684,4 +684,6 @@
     <string name="feed_count_were_edited">стрічки були змінені</string>
     <string name="show_navigation_bar_in_fullscreen">Навігація на весь екран</string>
     <string name="show_navigation_bar_in_fullscreen_summary">Показати панель навігації в повноекранному режимі</string>
+    <string name="show_unstarred_checkbox">Без зірочки</string>
+    <string name="show_unstarred_checkbox_descr">Показувати невелику порожню іконку зірочки, що вказує на те, що стаття не в обраному</string>
 </resources>
