@@ -679,9 +679,15 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="show_article_big_image">Большая картинка статьи</string>
     <string name="show_article_big_image_descr">Показывать полноэкранное изображение статьи вместо маленького значка</string>
     <string name="withoutLabel">Без метки</string>
+    <string name="article_text_footer_margin">Смещение края</string>
+    <string name="article_text_footer_margin_summary">Поля (в мм) левого и правого краев для устройств со скруглениями экрана</string>
     <string name="refresh_only_selected_select_all">Выбрать все</string>
     <string name="refresh_only_selected_select_all_summary">Выбрать все ленты для автообновления</string>
     <string name="refresh_only_selected_select_none">Отменить выбор</string>
     <string name="refresh_only_selected_select_none_summary">Отменить выбор всех лент для автообновления</string>
     <string name="feed_count_were_edited">ленты были изменены</string>
+    <string name="show_navigation_bar_in_fullscreen">Показать элементы управления в полноэкранном режиме</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Показывать панель управления в полноэкранном режиме</string>
+    <string name="show_unstarred_checkbox">Не в избранном</string>
+    <string name="show_unstarred_checkbox_descr">Отображать маленький пустой значок звездочки для указания, что статья не в избранном</string>
 </resources>
