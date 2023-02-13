@@ -110,11 +110,9 @@ import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_ASC;
 import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
-import static ru.yanus171.feedexfork.Constants.URL_LIST;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
@@ -514,7 +512,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             SetListViewAdapter();
         }
 
-        if (PrefUtils.getBoolean(PrefUtils.DISPLAY_TIP, true) && mListView instanceof ListView ) {
+        if ( false /*PrefUtils.getBoolean(PrefUtils.DISPLAY_TIP, true)*/ && mListView instanceof ListView ) {
             final TextView header = CreateTextView(mListView.getContext());
             header.setMinimumHeight(UiUtils.dpToPixel(70));
             int footerPadding = UiUtils.dpToPixel(10);
@@ -565,6 +563,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mListView == null )
             return;
         int value = mListView.getFirstVisiblePosition();
+        if ( getActivity() == null )
+            return;
         getBaseActivity().UpdateHeader(max,
                                        value,
                                        getHeaderStep(),
@@ -753,12 +753,20 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     final boolean temp = mShowUnReadOnly;
                     mShowUnReadOnly = false;
                     final HashSet<Long> tempLabelsID = mLabelsID;
+                    final HashSet<Long> labeledArticlesID = new HashSet<>();
                     for ( Label label: LabelVoc.INSTANCE.getList() ) {
-                        starredList.append( label.mName + ": \n" );
+                        starredList.append( "\n" + label.mName + ": \n" );
                         starredList.append( "----------------------------------------\n" );
                         SetSingleLabel( label.mID );
-                        AddAtriclesLinks(starredList);
+                        AddAtricleLinks(starredList, labeledArticlesID);
                     }
+                    starredList.append( "\n" + getContext().getString( R.string.withoutLabel ) + ": \n" );
+                    starredList.append( "----------------------------------------\n" );
+                    try ( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns._ID, EntryColumns.TITLE, EntryColumns.LINK}, null, null,
+                                                                                  EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ){
+                        AddAtricleLinks(cursor, starredList, null, labeledArticlesID );
+                    }
+
                     mShowUnReadOnly = temp;
                     mLabelsID = tempLabelsID;
                     final Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -1036,15 +1044,21 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return super.onOptionsItemSelected(item);
     }
 
-    private void AddAtriclesLinks(StringBuilder starredList) {
-        Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
-                                                                EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC));
-        if (cursor != null) {
-            int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
-            int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
-            while (cursor.moveToNext())
-                starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
-            cursor.close();
+    private void AddAtricleLinks(StringBuilder starredList, HashSet<Long> articlesID) {
+        try( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns._ID, EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
+                                                                EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ) {
+            AddAtricleLinks(cursor, starredList, articlesID, null );
+        }
+    }
+    private void AddAtricleLinks(Cursor cursor, StringBuilder starredList, HashSet<Long> articlesID, HashSet<Long> articlesToIgnoreID) {
+        int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
+        int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
+        int idPos = cursor.getColumnIndex(EntryColumns._ID);
+        while (cursor.moveToNext()) {
+            starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
+            final long id = cursor.getLong(idPos);
+            if (articlesID != null && (articlesToIgnoreID == null || articlesToIgnoreID.contains( id )) )
+                articlesID.add( id );
         }
     }
 

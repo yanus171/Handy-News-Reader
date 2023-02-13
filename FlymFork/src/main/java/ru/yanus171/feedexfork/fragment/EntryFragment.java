@@ -152,6 +152,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 
@@ -234,10 +235,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             uri.toString().startsWith( HTTPS_SCHEME ) ||
             IsLocalFile( uri );
     }
-    public static boolean IsLocalFile( Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "documents" ) ||
-            uri.toString().startsWith( FILE_SCHEME );
+    public static boolean IsLocalFile(Uri uri ) {
+        return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "document" ) ||
+            uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
     }
+
     private BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
     }
@@ -245,8 +247,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     //@Override
     //public View inflateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
         SetupZoneSizes();
@@ -257,7 +258,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       (TextView) rootView.findViewById( R.id.progressText),
                                       FetcherService.Status());
 
-    rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
+        rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( isArticleTapEnabled() ) {
                 EntryActivity activity = (EntryActivity) getActivity();
                 activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
@@ -376,6 +377,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             if ( !isArticleTapEnabled() )
                 return true;
             final EntryView view = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
+            view.AddNavigationHistoryStep();
             view.ScrollTo( (int) view.GetContentHeight() - view.getHeight() );
             Toast.makeText( v.getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
             return true;
@@ -652,7 +654,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(isArticleTapEnabled());
 
         EntryView view = GetSelectedEntryView();
-        menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
+        menu.findItem(R.id.menu_go_back).setVisible( view != null && view.CanGoBack() );
     }
 
     @Override
@@ -1121,6 +1123,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void setData(final Uri uri) {
         mCurrentPagerPos = -1;
         mBaseUri = null;
+        Dog.v( TAG, "setData " + uri );
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -1130,7 +1133,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
                 //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
-
                 if ( !IsExternalLink( uri ) ) {
                     mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
                     if ( mBaseUri.toString().endsWith( "-1" ) )

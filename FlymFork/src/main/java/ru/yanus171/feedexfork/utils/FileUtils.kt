@@ -19,20 +19,17 @@
 
 package ru.yanus171.feedexfork.utils
 
-import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.database.Cursor
-import android.database.sqlite.SQLiteConstraintException
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.provider.BaseColumns
 import android.provider.BaseColumns._ID
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import ru.yanus171.feedexfork.Constants.DB_AND
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc
 import ru.yanus171.feedexfork.R
@@ -62,49 +59,66 @@ object FileUtils {
         inChannel.transferTo(0, inChannel.size(), outChannel)
         inStream.close()
         outStream.close()
+        Dog.v( String.format( "File copied %s -> %s", src.path, dst.path ) )
     }
 
-    public fun copyFileToDownload( fileName: String ) {
-        copyFileToDownload( fileName, File( fileName ).name )
+    fun copyFileToDownload( fileName: String, isToast: Boolean ){
+        copyFileToDownload( fileName, File( fileName ).name, isToast )
     }
-    public fun copyFileToDownload( fileName: String, destName: String ) {
+
+    public fun copyFileToDownload( fileName: String, destName: String, isToast: Boolean ) {
         val context = MainApplication.getContext();
-        val name = destName
-
         if (Build.VERSION.SDK_INT >= 29) {
             val resolver = context.contentResolver
-            val contentValues = ContentValues()
             val relPath = Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER;
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, relPath )
+            run {
+                val cursor = resolver.query( MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                        arrayOf(MediaStore.Downloads._ID),
+                        MediaStore.MediaColumns.DISPLAY_NAME + "='" + destName + "' " + DB_AND +
+                                MediaStore.MediaColumns.RELATIVE_PATH + " LIKE '" + relPath + "%' ", null, null)
+                if ( cursor!!.moveToFirst() ) {
+                    val uri = Uri.withAppendedPath(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cursor.getString(0))
+                    cursor.close()
+                    resolver.delete(uri, null, null)
+                }
+
+            }
             try {
-                if (Build.VERSION.SDK_INT >= 30)
-                    resolver.delete(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-                            MediaStore.MediaColumns.DISPLAY_NAME + " = '" + name + "'", null)
+                val contentValues = ContentValues()
+                contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, destName)
+                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, relPath)
                 val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
-                copyFile( FileProvider.getUriForFile( context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName) ),
-                          uri!! )
+                copyFile( FileProvider.getUriForFile( context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName) ), uri!!)
             } catch ( e: IllegalStateException ) {
                 UiUtils.RunOnGuiThread {
                     Toast.makeText( MainApplication.getContext(),
-                                    String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$name"),
+                                    String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$destName"),
                                     Toast.LENGTH_LONG ).show()
                 }
+                return
+            } catch ( e: NullPointerException ) {
+                UiUtils.RunOnGuiThread {
+                    Toast.makeText( MainApplication.getContext(),
+                            String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$destName"),
+                            Toast.LENGTH_LONG ).show()
+                }
+                return
             }
 
         } else {
             val dir = File( getPublicDir().path + "/" + SUB_FOLDER );
             if ( !dir.exists() && !dir.mkdir() )
                 throw IOException( MainApplication.getContext().getString(R.string.couldNotCreateDownloadsSubfolder) + ": " + dir.path )
-            val destFile = File(dir, name)
+            val destFile = File(dir, destName)
             copy(File(fileName), destFile)
         }
-        UiUtils.RunOnGuiThread {
-            Toast.makeText(MainApplication.getContext(),
-                    String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), name, SUB_FOLDER ),
-                    Toast.LENGTH_LONG).show()
-        }
-
+        //Dog.v( String.format( "File copied to download %s -> %s", fileName, destName ) )
+        if ( isToast )
+            UiUtils.RunOnGuiThread {
+                Toast.makeText(MainApplication.getContext(),
+                        String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), destName, SUB_FOLDER),
+                        Toast.LENGTH_LONG).show()
+            }
     }
 
 

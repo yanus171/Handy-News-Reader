@@ -44,6 +44,53 @@
 
 package ru.yanus171.feedexfork.service;
 
+import static android.content.Intent.EXTRA_TEXT;
+import static android.provider.BaseColumns._ID;
+import static java.lang.Thread.MIN_PRIORITY;
+import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
+import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
+import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
+import static ru.yanus171.feedexfork.Constants.GROUP_ID;
+import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
+import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
+import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
+import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
+import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.convertXMLSymbols;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
+import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
+
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Notification;
@@ -118,7 +165,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
-import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.parser.HTMLParser;
 import ru.yanus171.feedexfork.parser.OPML;
@@ -142,58 +188,6 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
-import ru.yanus171.feedexfork.view.StorageItem;
-
-import static android.content.Intent.EXTRA_TEXT;
-import static android.provider.BaseColumns._ID;
-import static java.lang.Thread.MIN_PRIORITY;
-import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
-import static ru.yanus171.feedexfork.Constants.DB_AND;
-import static ru.yanus171.feedexfork.Constants.DB_IS_NOT_NULL;
-import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
-import static ru.yanus171.feedexfork.Constants.DB_OR;
-import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
-import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
-import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
-import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
-import static ru.yanus171.feedexfork.Constants.GROUP_ID;
-import static ru.yanus171.feedexfork.Constants.URL_LIST;
-import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
-import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
-import static ru.yanus171.feedexfork.MainApplication.getContext;
-import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
-import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
-import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
-import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
-import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
-import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
-import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.convertXMLSymbols;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
-import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
-import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
-import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
-import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
-import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
 @SuppressLint("Range")
 public class FetcherService extends IntentService {
@@ -314,7 +308,14 @@ public class FetcherService extends IntentService {
         }
         return batteryPct < lowLevelPct;
     }
-
+    private void moveBackupFileVersion( String fileName, int index ) throws IOException {
+        final File sourceFile = new File( index == 0 ? fileName : String.format( "%s.%d", fileName, index ) );
+        final File destFile = new File( String.format( "%s.%d", fileName, index + 1 ) );
+        if ( !sourceFile.exists() )
+            return;
+        FileUtils.INSTANCE.copy(sourceFile, destFile);
+        FileUtils.INSTANCE.copyFileToDownload(destFile.getPath(), false);
+    }
     @Override
     public void onHandleIntent(final Intent intent) {
         if (intent == null) // No intent, we quit
@@ -329,8 +330,11 @@ public class FetcherService extends IntentService {
             LongOper(R.string.exportingToFile, () -> {
                 try {
                     final String sourceFileName = OPML.GetAutoBackupOPMLFileName();
+                    moveBackupFileVersion( sourceFileName, 2 );
+                    moveBackupFileVersion( sourceFileName, 1 );
+                    moveBackupFileVersion( sourceFileName, 0 );
                     OPML.exportToFile( sourceFileName, true );
-                    FileUtils.INSTANCE.copyFileToDownload( sourceFileName );
+                    FileUtils.INSTANCE.copyFileToDownload(sourceFileName, true);
                     PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -765,11 +769,11 @@ public class FetcherService extends IntentService {
     public enum AutoDownloadEntryImages {Yes, No}
 
     @SuppressLint("Range")
-    public static boolean loadLocalFile( final long entryId, String link ) throws IOException {
+    public static boolean loadFB2LocalFile(final long entryId, String link ) throws IOException {
         boolean result = false;
         if (!FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2"))
             return result;
-        Timer timer = new Timer( "loadLocalFile " + link );
+        Timer timer = new Timer( "loadFB2LocalFile " + link );
         try (InputStream is = MainApplication.getContext().getContentResolver().openInputStream(Uri.parse(link))) {
             ClearContentStepToFile();
             Status().ChangeProgress( "Jsoup.parse" );
@@ -826,6 +830,10 @@ public class FetcherService extends IntentService {
                 Status().ChangeProgress( "extractTitle" );
                 title = Html.fromHtml(extractTitle(content)).toString();
             }
+
+            content = AddFB2TableOfContent( content );
+
+
             ContentValues values = new ContentValues();
             values.put(EntryColumns.TITLE, title );
             Status().ChangeProgress( "saveMobilizedHTML" );
@@ -836,6 +844,24 @@ public class FetcherService extends IntentService {
         }
         timer.End();
         return result;
+    }
+    private static String AddFB2TableOfContent(String content) {
+        final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = PATTERN.matcher(content);
+        StringBuilder tc = new StringBuilder();
+        int i = 1;
+        String TC_START = "TC_START";
+        while (matcher.find()) {
+            String match = matcher.group();
+            String newText = "<div id=\"tc" + i + "\" >" + match + "</div>";
+            if ( i == 1 )
+                newText = TC_START + newText;
+            content = content.replace(match, newText);
+            tc.append("<p><a href=\"#tc").append(i).append("\">").append(matcher.group(2)).append("</a></p>");
+            i++;
+        }
+        content = content.replaceFirst( TC_START, tc.toString() );
+        return content;
     }
     @SuppressLint("Range")
     public static boolean mobilizeEntry(final long entryId,
@@ -860,7 +886,7 @@ public class FetcherService extends IntentService {
                 try {
                     feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
                     if (IsLocalFile(Uri.parse(link)))
-                        return loadLocalFile(entryId, link);
+                        return loadFB2LocalFile(entryId, link);
                     String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
                     String contentIndicator = null;
                     {

@@ -18,6 +18,7 @@ import ru.yanus171.feedexfork.utils.DebugApp
 import ru.yanus171.feedexfork.utils.FileUtils
 import ru.yanus171.feedexfork.utils.Theme
 import ru.yanus171.feedexfork.utils.Theme.CreateDialog
+import ru.yanus171.feedexfork.utils.UiUtils
 import java.io.*
 import java.util.*
 
@@ -142,9 +143,11 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
             } catch (e: IOException) {
                 DebugApp.ShowError( null, e, context )
             }
-            Toast.makeText(MainApplication.getContext(),
-                    String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),
-                    Toast.LENGTH_LONG).show()
+            UiUtils.RunOnGuiThread {
+                Toast.makeText(MainApplication.getContext(),
+                        String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),
+                        Toast.LENGTH_LONG).show()
+            }
             return result
         }
         // ----------------------------------------------------------------

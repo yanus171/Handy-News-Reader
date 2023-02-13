@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+    xmlns:startActivity="ru.yanus171.feedexfork.views.StartActivityPreference"
     xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference">
 
     <PreferenceScreen
@@ -176,26 +177,26 @@
             android:title="@string/article_text_expand_controls"
             android:summary="@string/article_text_expand_controls_descr"
             />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="display_oldest_first"
             android:summary="@string/settings_display_oldest_first_description"
             android:title="@string/settings_display_oldest_first"/>
-
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="show_mark_all_as_read_button"
             android:summary="@string/show_mark_all_as_read_button_summary"
             android:title="@string/show_mark_all_as_read_button"/>
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="show_read_checkbox"
             android:summary="@string/show_read_checkbox_descr"
             android:title="@string/show_read_checkbox"/>
-
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_unstarred_checkbox"
+            android:summary="@string/show_unstarred_checkbox_descr"
+            android:title="@string/show_unstarred_checkbox"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="show_full_text_indicator"
@@ -351,6 +352,13 @@
                 colorPreference:istransparency="true"
                 colorPreference:sampletextShort="@string/settings_color_clock_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_clock_sample_long" />
+            <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+                android:defaultValue="0"
+                android:inputType="number"
+                android:key="article_text_footer_offset"
+                android:summary="@string/article_text_footer_margin_summary"
+                android:title="@string/article_text_footer_margin" />
+
         </PreferenceCategory>
 
         <PreferenceCategory
@@ -562,6 +570,19 @@
                 android:dependency="refresh.enabled"
                 android:summary="@string/settings_refresh_only_selected_summary"
                 android:title="@string/settings_refresh_only_selected"/>
+            <ru.yanus171.feedexfork.view.StartActivityPreference
+                android:key="refresh_only_selected_select_all"
+                android:dependency="refresh.only_selected"
+                android:title="@string/refresh_only_selected_select_all"
+                android:summary="@string/refresh_only_selected_select_all_summary"
+                startActivity:oper="refresh_only_selected_select_all" />
+            <ru.yanus171.feedexfork.view.StartActivityPreference
+                android:key="refresh_only_selected_select_none"
+                android:dependency="refresh.only_selected"
+                android:title="@string/refresh_only_selected_select_none"
+                android:summary="@string/refresh_only_selected_select_none_summary"
+                startActivity:oper="refresh_only_selected_select_none" />
+
 
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -676,7 +697,6 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_advanced"/>
-
         <CheckBoxPreference
             android:key="feeds_sort_alphabetical"
             android:defaultValue="false"
@@ -698,7 +718,6 @@
             android:key="openLinkInBrowserTapAction"
             android:title="@string/open_link_in_browser_tap_action"
             android:summary="@string/open_link_in_browser_tap_action_descr"/>
-
         <CheckBoxPreference
             android:key="settings_show_progress_info"
             android:defaultValue="false"
@@ -709,12 +728,16 @@
             android:defaultValue="true"
             android:title="@string/settings_show_circle_progress"
             android:summary="@string/settings_show_circle_progress_summary"/>
-
         <CheckBoxPreference
             android:key="setting_edit_feed_force_portrait_orientation"
             android:defaultValue="false"
             android:title="@string/setting_edit_feed_force_portrait_orientation"
             android:summary="@string/setting_edit_feed_force_portrait_orientation_summary"/>
+        <CheckBoxPreference
+            android:key="show_navigation_bar_in_fullscreen"
+            android:defaultValue="false"
+            android:title="@string/show_navigation_bar_in_fullscreen"
+            android:summary="@string/show_navigation_bar_in_fullscreen_summary"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

@@ -496,8 +496,8 @@ public class ArticleTextExtractor {
                                     el.attr(className, "1");
                                 result = new Element("p");
                                 result.insertChildren(0, elements.clone());
+                                elements.remove();
                             }
-                            elements.remove();
                         } else if ( HANDY_NEWS_READER_ROOT_CLASS.equals( className ) )
                             result = doc;
                     }

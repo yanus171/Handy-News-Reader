@@ -698,5 +698,17 @@
     <string name="menu_reload_full_text_with_debug">With debug</string>
     <string name="show_article_big_image">Article big image</string>
     <string name="show_article_big_image_descr">Show full screen width aritcle image instead of small icon</string>
+    <string name="withoutLabel">Without label</string>
+    <string name="article_text_footer_margin">Edge offset</string>
+    <string name="article_text_footer_margin_summary">Margins (in mm) of left and right edges to fight screen round corners"</string>
+    <string name="refresh_only_selected_select_all">Select all</string>
+    <string name="refresh_only_selected_select_all_summary">Select all feeds for auto refresh</string>
+    <string name="refresh_only_selected_select_none">Select none</string>
+    <string name="refresh_only_selected_select_none_summary">Remove auto refresh checkbox from all feeds</string>
+    <string name="feed_count_were_edited">feeds were edited</string>
+    <string name="show_navigation_bar_in_fullscreen">Show navigation in full screen</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Show navigation bar in full screen mode</string>
+    <string name="show_unstarred_checkbox">No star icon</string>
+    <string name="show_unstarred_checkbox_descr">Show small empty star icon to indicate that article is not in favorites</string>
 
 </resources>

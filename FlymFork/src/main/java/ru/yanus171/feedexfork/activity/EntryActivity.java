@@ -19,24 +19,35 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
+import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
@@ -48,12 +59,10 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.service.ReadingService;
-import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -63,23 +72,6 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
-
-import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
-import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
-import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
-import static ru.yanus171.feedexfork.utils.PrefUtils.READING_NOTIFICATION;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
-import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 
 public class EntryActivity extends BaseActivity implements Observer {
 
@@ -143,7 +135,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                     }
                 });
 
-        if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
+        if (PrefUtils.getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
             setFullScreen(true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
          else
             setFullScreen(false, false, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
@@ -163,11 +155,20 @@ public class EntryActivity extends BaseActivity implements Observer {
         mBrightness.mTapAction = () -> mEntryFragment.PageDown();
     }
 
-    private void LoadAndOpenLink(final String url, final String title, final String text) {
+    private void LoadAndOpenLink(final String finalUrl, final String title, final String text) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                String url = finalUrl;
+                if (IsLocalFile(Uri.parse(url))) {
+                    final Uri uri = Uri.parse(url);
+                    final File fileInCache = new File(MainApplication.getContext().getCacheDir(), FileSelectDialog.Companion.getFileName(uri));
+                    if ( !fileInCache.exists() )
+                        FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), MainApplication.getContext());
+                    url = FileProvider.getUriForFile( EntryActivity.this, FeedData.PACKAGE_NAME + ".fileprovider", fileInCache ).toString();
+                }
+
                 Uri entryUri = GetEntryUri(url);
                 if (entryUri == null) {
                     final String feedID = GetExtrenalLinkFeedID();
@@ -323,35 +324,6 @@ public class EntryActivity extends BaseActivity implements Observer {
         if (mEntryFragment != null)
             mEntryFragment.UpdateFooter();
     }
-
-//    public void setFullScreenWithNavBar() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE |
-//                    //View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-//                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//
-//        } else {
-//            setFullScreenOld(true);
-//        }
-//
-//    }
-//
-//    private void setFullScreenOld(boolean fullScreen) {
-//        if (fullScreen) {
-//
-//            if (GetIsStatusBarHidden()) {
-//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//            } else {
-//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            }
-//        } else {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }
-//    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Dog.d("onKeyDown isTracking = " + event.isTracking());

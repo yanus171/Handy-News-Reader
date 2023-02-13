@@ -18,6 +18,7 @@ import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.UiUtils.*
+import ru.yanus171.feedexfork.view.EntryView.TAG
 import java.util.*
 
 public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {

@@ -9,6 +9,11 @@
     tools:showIn="@layout/fragment_entry_list">
 
 
+    <TextView
+        android:id="@+id/marginLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -67,5 +72,10 @@
         android:textSize="8dp"
         android:paddingStart="2dp"
         android:paddingEnd="2dp" />
+    <TextView
+        android:id="@+id/marginRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
 
 </LinearLayout>

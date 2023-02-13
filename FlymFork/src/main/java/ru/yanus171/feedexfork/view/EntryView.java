@@ -67,6 +67,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -190,8 +191,8 @@ public class EntryView extends WebView implements Handler.Callback {
             + "font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; "
             + "max-width: 100%; margin: " + getMargins() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
             + "* {word-break: break-word}\n"//+ "* {max-width: 100%; word-break: break-word}\n"
-            + "h1, h2 {font-weight: normal; line-height: 120%}\n "
-            + "h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
+            + "title, h1, h2 {font-weight: normal; line-height: 120%}\n "
+            + "title, h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; text-align:center; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
             + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
             + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
             + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
@@ -651,15 +652,23 @@ public class EntryView extends WebView implements Handler.Callback {
                 return result;
             }
 
+            @SuppressLint("DefaultLocale")
             @Override
             public void onProgressChanged(WebView view, int progress) {
+                if ( mContentWasLoaded )
+                    return;
                 Status().ChangeProgress( String.format( "%d %% ...", progress ) );
             }
 
 
         });
 
-        setWebViewClient(new WebViewClient() {
+        setWebViewClient( new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
@@ -677,7 +686,7 @@ public class EntryView extends WebView implements Handler.Callback {
                         hash = URLDecoder.decode(hash);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
-                            mHistoryAchorScrollY.push(getScrollY());
+                            AddNavigationHistoryStep();
                         }
                     } else if (url.contains(NO_MENU)) {
                         getContext().startActivity(GetShowInBrowserIntent(url.replace(NO_MENU, "")));
@@ -710,16 +719,24 @@ public class EntryView extends WebView implements Handler.Callback {
                 mContentWasLoaded = false;
                 StatusStartPageLoading();
                 ScheduleScrollTo(view);
+                super.onPageStarted( view, url, favicon );
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Status().ChangeProgress( "finished." );
-                if (!mLoadTitleOnly)
-                    mContentWasLoaded = true;
-                if ( mActivity.mEntryFragment != null )
-                    mActivity.mEntryFragment.DisableTapActionsIfVideo( EntryView.this );
-                ScheduleScrollTo(view);
+                super.onPageFinished( view, url );
+                Dog.v( "onPageFinished url = " + url );
+                if ( url.equals( "about:blank" ) ) {
+                    Status().ChangeProgress("finished.");
+                    if (!mLoadTitleOnly)
+                        mContentWasLoaded = true;
+                    if (mActivity.mEntryFragment != null)
+                        mActivity.mEntryFragment.DisableTapActionsIfVideo(EntryView.this);
+                    ScheduleScrollTo(view);
+                } else { // anchor selected
+                    AddNavigationHistoryStep();
+                    DoNotShowMenu();
+                }
             }
 
             private void ScheduleScrollTo(final WebView view) {
@@ -729,31 +746,23 @@ public class EntryView extends WebView implements Handler.Callback {
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
                 if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                     if ( isSearch ) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                        if (Build.VERSION.SDK_INT >= 16)
                             findAllAsync(searchText);
                         else
                             findAll(searchText);
-                        UiUtils.RunOnGuiThread(() -> view.clearMatches(), 5000 );
+                        UiUtils.RunOnGuiThread(view::clearMatches, 5000 );
                     } else {
-                        UiUtils.RunOnGuiThread(() -> {
-                                                   if (mActivity.mEntryFragment != null)
-                                                       mActivity.mEntryFragment.UpdateFooter();
-                                               });
+                        UiUtils.RunOnGuiThread(() ->
+                           {
+                               if (mActivity.mEntryFragment != null)
+                                   mActivity.mEntryFragment.UpdateFooter();
+                           });
                         ScrollToY();
                     }
                     DownLoadImages();
                     EndStatus();
-                } else {
-                    view.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ScheduleScrollTo(view);
-                        }
-                        // Delay the scrollTo to make it work
-                    }, 150);
-                    if ( !isSearch )
-                        ScrollToY();
-                }
+                } else
+                    view.postDelayed(() -> ScheduleScrollTo(view), 150);
                 mLastContentHeight = newContentHeight;
             }
         });
@@ -842,7 +851,7 @@ public class EntryView extends WebView implements Handler.Callback {
             new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
             new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
                 File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title) );
+                FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title), true );
             }),
             new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
         };
@@ -937,7 +946,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     private void ScrollToY() {
-        //Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+        Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
         if (GetScrollY() > 0)
             EntryView.this.scrollTo(0, GetScrollY());
     }
@@ -1072,8 +1081,12 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     public void GoTop() {
-        mHistoryAchorScrollY.push(getScrollY());
+        AddNavigationHistoryStep();
         scrollTo(0, 0);
+    }
+
+    public void AddNavigationHistoryStep() {
+        mHistoryAchorScrollY.push(getScrollY());
     }
 
 

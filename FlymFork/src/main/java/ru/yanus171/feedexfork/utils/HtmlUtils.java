@@ -41,6 +41,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -120,6 +121,8 @@ public class HtmlUtils {
         SaveContentStepToFile( content, "improveHtmlContent 4" );
         //content = DATA_SRC_PATTERN.matcher(content).replaceAll(" src=$1");
         //content = ReplaceImagesWithDataOriginal(content, "<span[^>]+class..lazy-image-placeholder[^>]+src=\"([^\"]+)\"[^>]+>");
+        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-lazy-src=\"([^\"]+)\"([^>]+)?>");
+        SaveContentStepToFile( content, "improveHtmlContent 4 data-lazy-src" );
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-src=\"([^\"]+)\"([^>]+)?>");
         SaveContentStepToFile( content, "improveHtmlContent 5" );
         content = ReplaceImagesWithDataOriginal(content, "<a[^>]+><img[^>]+srcset=\"[^\"]+,(.+?)\\s.+\"+[^>]+></a>" );
@@ -128,6 +131,8 @@ public class HtmlUtils {
         SaveContentStepToFile( content, "improveHtmlContent 7" );
         content = ReplaceImagesWithDataOriginal(content, "<img[^>]+data-original=\"([^\"]+)\"([^>]+)?>");
         SaveContentStepToFile( content, "improveHtmlContent 8" );
+        content = ReplaceImagesWithDataOriginal(content, "<img[^>]+?url=([^>]+?)&amp;[^>]+?>", true);
+
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<a+?background-image.+?url.+?'(.+?)'(.|\\n|\\t|\\s)+?a>");
         //content = ReplaceImagesWithDataOriginal(content, "<i+?background-image.+?url.+?quot;(.+?).quot;(.|\\n|\\t|\\s)+?i>");
@@ -327,11 +332,17 @@ public class HtmlUtils {
     }
 
     private static String ReplaceImagesWithDataOriginal(String content, String regex) {
+        return ReplaceImagesWithDataOriginal(content, regex, false);
+    }
+    private static String ReplaceImagesWithDataOriginal(String content, String regex, boolean urlDecode) {
         final Pattern IMG_DATA_ORIGINAL = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = IMG_DATA_ORIGINAL.matcher( content );//createMatcherWithTimeout( content, IMG_DATA_ORIGINAL, 2000, 100 );
         while (matcher.find()) {
             String match = matcher.group();
-            String newText = "<img src=\"" + matcher.group(1) + "\" />";
+            String src = matcher.group(1);
+            if ( urlDecode )
+                src = URLDecoder.decode( src );
+            String newText = "<img src=\"" + src + "\" />";
             content = content.replace(match, newText);
         }
         return content;

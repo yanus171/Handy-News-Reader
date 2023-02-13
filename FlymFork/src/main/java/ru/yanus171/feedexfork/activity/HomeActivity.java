@@ -22,6 +22,7 @@ package ru.yanus171.feedexfork.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -70,6 +72,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.AutoJobService;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -77,7 +80,9 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.Constants.DB_IS_FALSE;
 import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
 import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
@@ -95,8 +100,11 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_GROUP_EXPANDED;
+import static ru.yanus171.feedexfork.provider.FeedData.getGroupExpandedValues;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
 @SuppressWarnings("ConstantConditions")
@@ -205,8 +213,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
                     Dog.v(String.format( "newNumber onDrawerOpened" ) );
-                    mDrawerAdapter.notifyDataSetChanged();
-                    mDrawerAdapter.updateNumbersAsync();
+                    if ( mDrawerAdapter != null ) {
+                        mDrawerAdapter.notifyDataSetChanged();
+                        mDrawerAdapter.updateNumbersAsync();
+                    }
                 }
 
                 @Override
@@ -404,8 +414,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             if ( intent.hasExtra(LABEL_ID_EXTRA) ) {
                 mEntriesFragment.SetSingleLabel(intent.getLongExtra(LABEL_ID_EXTRA, 0));
                 PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
-                if ( mDrawerAdapter != null )
-                    mDrawerAdapter.notifyDataSetChanged();
+                notifyDrawableAdapter();
             }
             if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
                 selectDrawerItem(FAVORITES_DRAWER_PAS);
@@ -418,21 +427,26 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             else if ( intent.getData().equals( LAST_READ_CONTENT_URI ) )
                 selectDrawerItem( LAST_READ_DRAWER_POS );
             else {
-                if ( mDrawerAdapter == null )
-                    mNewFeedUri = intent.getData();
-                else if ( mEntriesFragment.mIsSingleLabel ) {
-                    selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
+                if ( mEntriesFragment.mIsSingleLabel ) {
+                    PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
+                    notifyDrawableAdapter();
+                    if ( mDrawerAdapter != null )
+                        selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
                 } else {
-                    long feedID = 0;
+                    final long feedID;
                     if ( intent.hasExtra( EXTRA_LINK ) ) {
-                        Cursor cur = getContentResolver().query( FeedColumns.CONTENT_URI, new String[]{ FeedColumns._ID }, FeedColumns.URL + " = '" + intent.getStringExtra( EXTRA_LINK ) +"'", null, null );
-                        if ( cur.moveToNext() )
-                            feedID = cur.getLong( 0 );
-                        cur.close();
+                        feedID = EntryUrlVoc.INSTANCE.get( intent.getStringExtra( EXTRA_LINK ) );
                     } else
                         feedID = GetFeedID(intent.getData());
-                    selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
+                    Log.v( TAG, "HomeActivity feedID = "  + feedID );
+                    if ( expandFeedGroup(feedID) )
+                        getLoaderManager().restartLoader(LOADER_ID, null, this);
+                    else if ( mDrawerAdapter != null )
+                        selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
+                    if ( mDrawerAdapter == null )
+                        mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID);
                 }
+
             }
             if ( IsRememberLast()  )
                 PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
@@ -455,6 +469,28 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
         SetTaskTitle( mTitle );
         timer.End();
+    }
+
+    private boolean expandFeedGroup(long feedID) {
+        boolean result = false;
+        Cursor cur = getContentResolver().query(FeedColumns.CONTENT_URI(feedID), new String[]{ FeedColumns.GROUP_ID }, null, null, null );
+        if ( cur.moveToNext() ) {
+            final long groupID = cur.getLong(0 );
+            if ( groupID > 0 ) {
+                int records = getContentResolver().update( FeedColumns.CONTENT_URI(groupID),
+                                                           getGroupExpandedValues(),
+                                                           IS_GROUP_EXPANDED + DB_IS_FALSE  + DB_OR + IS_GROUP_EXPANDED + DB_IS_NULL,
+                                                           null);
+                result = records > 0;
+            }
+        }
+        cur.close();
+        return result;
+    }
+
+    private void notifyDrawableAdapter() {
+        if ( mDrawerAdapter != null )
+            mDrawerAdapter.notifyDataSetChanged();
     }
 
     private long GetFeedID(Uri uri) {
@@ -545,16 +581,16 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                         new String[]{FeedColumns._ID, FeedColumns.URL, FeedColumns.NAME,
                                 FeedColumns.IS_GROUP, FeedColumns.ICON_URL, FeedColumns.LAST_UPDATE,
                                 FeedColumns.ERROR, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
-                                FeedColumns.IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
+                                IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + DB_OR +
                                      FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
                                      FeedColumns.GROUP_ID + "=0" + DB_OR +
                                      FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
                                 " FROM " + FeedColumns.TABLE_NAME +
-                                " WHERE " + FeedColumns.IS_GROUP_EXPANDED + Constants.DB_IS_TRUE + "))" + FeedData.getWhereNotExternal(),
+                                " WHERE " + IS_GROUP_EXPANDED + DB_IS_TRUE + "))" + FeedData.getWhereNotExternal(),
                         null,
                         null);
-        cursorLoader.setUpdateThrottle(Constants.UPDATE_THROTTLE_DELAY);
+        //cursorLoader.setUpdateThrottle(Constants.UPDATE_THROTTLE_DELAY);
         mStatus = Status().Start( R.string.feed_list_loading, true );
         return cursorLoader;
     }
@@ -580,13 +616,21 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             needSelect = true;
         }
 
+        //Dog.v( TAG, "onLoadFinished mNewFeedUri = " + mNewFeedUri.toString() );
+
         if ( !mNewFeedUri.equals( Uri.EMPTY ) ) {
             if ( mEntriesFragment.IsAllLabels() ) {
                 mCurrentDrawerPos = LABEL_GROUP_POS;
             } else if ( mEntriesFragment.mIsSingleLabel ) {
                 mCurrentDrawerPos = DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID());
             } else {
-                mCurrentDrawerPos = mDrawerAdapter.getItemPosition(GetFeedID(mNewFeedUri));
+                final long feedID = GetFeedID(mNewFeedUri);
+                //Dog.v( TAG, "onLoadFinished feedID = " + feedID + ", mNewFeedUri = " + mNewFeedUri.toString() );
+                if ( expandFeedGroup(feedID) ) {
+                    getLoaderManager().restartLoader(LOADER_ID, null, this);
+                    return;
+                }
+                mCurrentDrawerPos = mDrawerAdapter.getItemPosition(feedID);
             }
             needSelect = true;
             mDrawerList.smoothScrollToPosition( mCurrentDrawerPos );
