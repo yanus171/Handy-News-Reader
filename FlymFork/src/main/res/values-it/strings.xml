@@ -75,16 +75,16 @@
     <b> Traduttori: </ b> <br/>
     *** translatorList ***
     <br/>    ]]></string>
-    <string name="app_name">Handy Reading</string>
+    <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versione</string>
-    <string name="about_handy_news_reader">Informazioni su Handy Reading</string>
+    <string name="about_handy_news_reader">Informazioni su Handy News Reader</string>
     <string name="about_handy_news_reader_descr">Licenza, aiuto e come contattare lo sviluppatore </string>
-    <string name="welcome_title">Benvenuto in Handy Reading. Vuoi aggiungere un feed?</string>
+    <string name="welcome_title">Benvenuto in Handy News Reader. Vuoi aggiungere un feed?</string>
     <string name="never">mai</string>
     <string name="last_update">Aggiornamento</string>
     <string name="menu_settings">Impostazioni</string>
     <string name="menu_refresh">Aggiorna</string>
-    <string name="flym_feeds">Feed di Handy Reading</string>
+    <string name="flym_feeds">Feed di Handy News Reader</string>
     <string name="error">Errore</string>
     <string name="network_error">Nessuna connessione disponibile</string>
     <string name="loading">Caricamento in corso…</string>
@@ -131,6 +131,7 @@
     <string name="feed_search">Cerca Feed</string>
     <string name="web_page_search_duckduckgo">Cerca sul Web (DuckDuckGo)</string>
     <string name="select_file">Seleziona File (dalla cartella feedex dall\'impostazione aggiuntiva di archiviazione)</string>
+    <string name="select_file_from_subfolder">Seleziona il file della cartella Downloads/handy_news_reader:</string>
     <string name="question_delete_feed">Cancellare il feed?</string>
     <string name="question_delete_group">Cancellare il gruppo e tutti i suoi feed?</string>
     <string name="question_delete_filter">Cancellare il filtro?</string>
@@ -147,6 +148,7 @@
     <string name="no_entries">Nessun Articolo</string>
     <string name="downloadOneImage">Scarica Immagine</string>
     <string name="favorites">Preferiti</string>
+    <string name="last_read">Ultima lettura</string>
     <string name="context_menu_share_starred">Condividi Articoli Preferiti</string>
     <string name="menu_star">Aggiungi ai preferiti</string>
     <string name="menu_unstar">Rimuovi dai preferiti</string>
@@ -167,7 +169,7 @@
     <string name="menu_mark_as_unread">Segna come Non Letto</string>
     <string name="menu_reload_full_text">Ricarica Testo Completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Ricarica senza Mobilizer</string>
-    <string name="share_favorites_title">Handy Reading: articoli preferiti</string>
+    <string name="share_favorites_title">Handy News Reader: articoli preferiti</string>
     <string name="link_was_copied_to_clipboard">Collegamento copiato</string>
     <string name="get_full_text">Carica Testo Completo</string>
     <string name="show_text_in_entry_list">Mostra testo originale nella lista degli articoli</string>
@@ -650,4 +652,12 @@
     <string name="settings_category_connection">Connessione</string>
     <string name="couldNotCreateDownloadsSubfolder">Impossibile creare la sottocartella in Downloads</string>
     <string name="article_text_expand_controls">Espansione testo articolo</string>
+    <string name="settings_category_labels">Etichette</string>
+    <string name="settings_category_feed_list">Elenco feed</string>
+    <string name="settings_category_last_read">Ultima sezione di lettura</string>
+    <string name="setting_last_read_article_count">Conteggio articoli</string>
+    <string name="menu_reload_full_text_with_scripts">Con script</string>
+    <string name="setting_custom_css_text">Testo CSS personalizzato</string>
+    <string name="menu_reload_full_text_with_debug">Con debug</string>
+    <string name="withoutLabel">Senza etichetta</string>
 </resources>

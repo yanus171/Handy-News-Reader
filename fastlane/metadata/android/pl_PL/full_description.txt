@@ -1,6 +1,6 @@
 <i>"Pozostawanie w kontakcie z wszystkimi Moimi Zainteresowaniami nigdy nie było tak łatwe.".</i>
 
-<b><i>Handy Reading</i>: wolne (od reklam) oprogramowanie na licencji <i>GNU GPL</i>.</b>
+<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
 
 <ul>
 	<li><b>stwórz Swoje Wymarzone Czasopismo!</b></li>
@@ -10,15 +10,16 @@
 
 ...ciesz się życiem <b>będąc wolnym od rozpraszaczy - oraz na bieżąco z Twoimi zainteresowaniami</b> jednocześnie. Skoncentruj się na Esencji...
 
-Poznaj <i>Handy NR</i> - bogaty w funkcje, zorientowany na pracę off-line czytnik <i>RSS</i> który <b>szanuje Twój Czas, jak i Pokój Wewnętrzny</b>: unika przełączania uwagi oraz rozpraszaczy tak powszechnych, gdy pomyśleć o urządzeniach mobilnych.
+Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
 <ul>
 <b><u>Funkcje</u>:</b>
-	<li><b><u>pełne artykuły</u> pod ręką</b>: bez potrzeby angażowania zewnętrznej przeglądarki, by zobaczyć pełny tekst,</li>
+	<li><b><u>reading any web content in same convin</u> at hand</b>: no need to use an external web-browser to reach full text,</li>
 	<li><b><u>wygodna</u> lektura</b>: przełączanie artykułów przyciskami głośności lub przeciągnięciem, <i>Strefy Aktywne</i>, zapamiętywanie pozycji czytania <u>każdego artykułu z osobna</u>,</li>
-	<li><b>powiadomienia o ważnych artykułach</b>: nigdy więcej nie przegapisz niczego ważnego,</li>
+  <li><b>powiadomienia o ważnych artykułach</b>: nigdy więcej nie przegapisz niczego ważnego,</li>
 	<li><b><i>"Przeczytaj Później"</i></b>: Możesz szybko przewertować artykuły - <b>oznaczając wybrane do przeczytania później</b> w wolnym czasie - lub by po prostu zachować,</li>
-	<li><b><i>"Usuń po przeczytaniu"</i></b> - gdy skończysz czytać jeden z wcześniej wybranych artykułów - zostanie on automatycznie usunięty z zestawu <i>'Ulubionych'</i> (=<i>'Przeczytaj Później'</i>),</li>
+	<li><b>FB2 books</b>support</u>,</li>
+  <li><b><i>"Usuń po przeczytaniu"</i></b> - gdy skończysz czytać jeden z wcześniej wybranych artykułów - zostanie on automatycznie usunięty z zestawu <i>'Ulubionych'</i> (=<i>'Przeczytaj Później'</i>),</li>
 	<li><b>gotowy do pracy off-line</b> - zanurz się interesującej lekturze bez rozpraszaczy: po aktualizacji nie ma potrzeby dodatkowego ładowania czegokolwiek - naprawdę obejdzie się bez Internetu :),</li>
 	<li><b>oszczędzaj transfer</b>: przejdź on-line tylko po nowe artykuły - nie by każdorazowo ładować ich pełną wersję; kontroluj co powinno być pobierane - i do jakiego stopnia,</li>
 	<li><b>wspierający gesty</b>: np. przesuń z góry w dół by dodać/usunąć artykuł z <i>Ulubionych</i>, przesuń wzdłuż lewej krawędzi ekranu by dostosować jasność,</li>

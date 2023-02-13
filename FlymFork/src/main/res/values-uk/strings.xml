@@ -53,21 +53,21 @@
  <br/>
   Якщо є проблеми з застосунком тоді: <br/>
  • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
- • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy Reading problem">розробнику</a></b>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader problem">розробнику</a></b> 
  <br/>
  <br/>
  <b><big>Ваша підтримка</big></b>
  <br/>
  Якщо є  ідеї з додаванням нових можливостей: <br/>
  • звертайтесь на <b><a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a></b> або <br/>
- • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy Reading idea">розробнику</a></b><br/>
+ • напишіть <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader idea">розробнику</a></b><br/>
  <br/>
  <b>Якщо застосунок виявився корисним, оцініть, будь ласка, на <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a>.</b><br/>
  <br/>
  <b><big>Переклади</big></b>
  <br/>
  Ви можете допомогти з перекладом на Вашу мову <b><a href="https://crowdin.com/project/handy-news-reader\">Crowdin</a></b>.<br/>
- Якщо Вашої мови немає, тоді напишіть, будь ласка <b><a href="mailto:workyalex@mail.ru?subject=Handy Reading translation">розробнику</a></b>.<br/>
+ Якщо Вашої мови немає, тоді напишіть, будь ласка <b><a href="mailto:workyalex@mail.ru?subject=Handy News Reader translation">розробнику</a></b>.<br/>
  <br/>
  <b><big>Подяка</big></b>
  <br/> <b>Розробники:</b><br/>
@@ -357,7 +357,7 @@
     <string name="entry_marked_favourite">Стаття додана в обране</string>
     <string name="new_feed_was_added">Додана нова стрічка</string>
     <string name="entry_marked_unread">Стаття помічена як непрочитана</string>
-    <string name="force_landscape_orientation">Горизонтальна орієнтація</string>
+    <string name="force_landscape_orientation">Альбомна орієнтація</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною: </string>
     <string name="deleteAllEntries">Вилучити всі статті крім обраних?</string>
@@ -659,6 +659,7 @@
     <string name="settings_category_connection">З\'єднання</string>
     <string name="couldNotCreateDownloadsSubfolder">Не вдалося створити теку в теці Завантаження</string>
     <string name="article_text_expand_controls">Розгорнути текст статті</string>
+    <string name="article_text_expand_controls_descr">Можливість розширення тексту статті в списку статей. Якщо позначено, усі дії натискання, крім назви статті, розгортають або згортають текст статті замість відкриття статті в окремому вікні</string>
     <string name="settings_category_labels">Мітки</string>
     <string name="settings_category_feed_list">Список каналів</string>
     <string name="settings_category_last_read">Останній прочитаний розділ</string>
@@ -671,4 +672,18 @@
     <string name="setting_custom_css_text">Власний текст CSS</string>
     <string name="setting_custom_css_text_description">Текст, який буде включений в CSS розділ до будь-якої html статті</string>
     <string name="menu_reload_full_text_with_debug">З налагодженням</string>
+    <string name="show_article_big_image">Велике зображення статті</string>
+    <string name="show_article_big_image_descr">Показувати велике зображення статті на всю ширину екрана замість маленької іконки</string>
+    <string name="withoutLabel">Без мітки</string>
+    <string name="article_text_footer_margin">Відступ від краю</string>
+    <string name="article_text_footer_margin_summary">Відступ (в мм) від лівого та правого краю, щоб протидіяти заокругленням кутів</string>
+    <string name="refresh_only_selected_select_all">Вибрати все</string>
+    <string name="refresh_only_selected_select_all_summary">Обрати всі стрічки для автоматичного оновлення</string>
+    <string name="refresh_only_selected_select_none">Зняти вибір</string>
+    <string name="refresh_only_selected_select_none_summary">Не оновлювати всі стрічки автоматично</string>
+    <string name="feed_count_were_edited">стрічки були змінені</string>
+    <string name="show_navigation_bar_in_fullscreen">Навігація на весь екран</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Показати панель навігації в повноекранному режимі</string>
+    <string name="show_unstarred_checkbox">Без зірочки</string>
+    <string name="show_unstarred_checkbox_descr">Показувати невелику порожню іконку зірочки, що вказує на те, що стаття не в обраному</string>
 </resources>

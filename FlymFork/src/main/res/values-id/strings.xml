@@ -80,16 +80,16 @@ maksimum per umpan<br/>
     ***translatorList***
     <br/>
     ]]></string>
-    <string name="app_name">Handy Reading</string>
+    <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versi</string>
-    <string name="about_handy_news_reader">Tentang Handy Reading</string>
+    <string name="about_handy_news_reader">Tentang Handy News Reader</string>
     <string name="about_handy_news_reader_descr">Lisensi, dukungan, terjemahan, dll.</string>
-    <string name="welcome_title">Selamat datang di Handy Reading. Apakah Anda ingin menambahkan feed?</string>
+    <string name="welcome_title">Selamat datang di Handy News Reader. Apakah Anda ingin menambahkan feed?</string>
     <string name="never">jangan pernah</string>
     <string name="last_update">Pembaruan</string>
     <string name="menu_settings">Pengaturan</string>
     <string name="menu_refresh">Segarkan</string>
-    <string name="flym_feeds">Feed Handy Reading</string>
+    <string name="flym_feeds">Feed Handy News Reader</string>
     <string name="error">Galat</string>
     <string name="network_error">Anda sedang luring</string>
     <string name="loading">Memuat…</string>
@@ -98,6 +98,7 @@ maksimum per umpan<br/>
     <string name="drawer_close">Tutup laci navigasi</string>
     <!-- FEEDS -->
     <string name="feeds">Umpan</string>
+    <string name="menu_article_web_search">Cari Web Artikel</string>
     <string name="menu_add_feed">Cari Artikel Web</string>
     <string name="no_feeds">Tak ada umpan</string>
     <string name="no_filters">Tidak ada aturan</string>
@@ -150,6 +151,7 @@ maksimum per umpan<br/>
     <string name="no_entries">Tanpa artikel</string>
     <string name="downloadOneImage">Unduh gambar</string>
     <string name="favorites">Favorit</string>
+    <string name="last_read">Terakhir dibaca</string>
     <string name="context_menu_share_starred">Bagikan entri favorit</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Batal favorit</string>
@@ -167,7 +169,7 @@ maksimum per umpan<br/>
     <string name="menu_mark_as_unread">Tandai belum dibaca</string>
     <string name="menu_reload_full_text">Teks lengkap</string>
     <string name="menu_reload_full_text_without_mobilizer">Tanpa Mobilizer</string>
-    <string name="share_favorites_title">Handy Reading: entri favorit</string>
+    <string name="share_favorites_title">Handy News Reader: entri favorit</string>
     <string name="link_was_copied_to_clipboard">Tautan disalin</string>
     <string name="get_full_text">Muat artikel lengkap</string>
     <string name="show_text_in_entry_list">Tampilkan teks orisinal pada daftar artikel</string>
@@ -350,7 +352,7 @@ maksimum per umpan<br/>
     <string name="entry_marked_favourite">Artikel telah ditambahkan ke Favorit</string>
     <string name="new_feed_was_added">Umpan baru telah ditambahkan</string>
     <string name="entry_marked_unread">Artikel telah ditandai belum dibaca</string>
-    <string name="force_landscape_orientation">Orientasi lanskap</string>
+    <string name="force_landscape_orientation">Orientasi mendatar</string>
     <string name="markAsStarred">Tandai sebagai favorit</string>
     <string name="markedAsStarred">Artikel telah ditandai sebagai favorit: </string>
     <string name="deleteAllEntries">Hapus semua artikel tanpa tanda favorit yang ditampilkan?</string>
@@ -484,6 +486,8 @@ maksimum per umpan<br/>
     <string name="article_reading_notification_hint">Tahan aplikasi di memori ketika sedang membaca sebuah artikel</string>
     <string name="auto_set_as_read">Setel otomatis artikel sudah dibaca ketika judul terlihat di senarai</string>
     <string name="removeText">Hapus teks</string>
+    <string name="yes">Iya</string>
+    <string name="no">Tidak</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d artikel-artikel baru.</item>
     </plurals>
