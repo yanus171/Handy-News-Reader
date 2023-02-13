@@ -377,6 +377,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             if ( !isArticleTapEnabled() )
                 return true;
             final EntryView view = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
+            view.AddNavigationHistoryStep();
             view.ScrollTo( (int) view.GetContentHeight() - view.getHeight() );
             Toast.makeText( v.getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
             return true;
@@ -653,7 +654,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(isArticleTapEnabled());
 
         EntryView view = GetSelectedEntryView();
-        menu.findItem(R.id.menu_go_back).setVisible( view != null && view.canGoBack() );
+        menu.findItem(R.id.menu_go_back).setVisible( view != null && view.CanGoBack() );
     }
 
     @Override

@@ -769,11 +769,11 @@ public class FetcherService extends IntentService {
     public enum AutoDownloadEntryImages {Yes, No}
 
     @SuppressLint("Range")
-    public static boolean loadLocalFile( final long entryId, String link ) throws IOException {
+    public static boolean loadFB2LocalFile(final long entryId, String link ) throws IOException {
         boolean result = false;
         if (!FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2"))
             return result;
-        Timer timer = new Timer( "loadLocalFile " + link );
+        Timer timer = new Timer( "loadFB2LocalFile " + link );
         try (InputStream is = MainApplication.getContext().getContentResolver().openInputStream(Uri.parse(link))) {
             ClearContentStepToFile();
             Status().ChangeProgress( "Jsoup.parse" );
@@ -830,6 +830,10 @@ public class FetcherService extends IntentService {
                 Status().ChangeProgress( "extractTitle" );
                 title = Html.fromHtml(extractTitle(content)).toString();
             }
+
+            content = AddFB2TableOfContent( content );
+
+
             ContentValues values = new ContentValues();
             values.put(EntryColumns.TITLE, title );
             Status().ChangeProgress( "saveMobilizedHTML" );
@@ -840,6 +844,24 @@ public class FetcherService extends IntentService {
         }
         timer.End();
         return result;
+    }
+    private static String AddFB2TableOfContent(String content) {
+        final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = PATTERN.matcher(content);
+        StringBuilder tc = new StringBuilder();
+        int i = 1;
+        String TC_START = "TC_START";
+        while (matcher.find()) {
+            String match = matcher.group();
+            String newText = "<div id=\"tc" + i + "\" >" + match + "</div>";
+            if ( i == 1 )
+                newText = TC_START + newText;
+            content = content.replace(match, newText);
+            tc.append("<p><a href=\"#tc").append(i).append("\">").append(matcher.group(2)).append("</a></p>");
+            i++;
+        }
+        content = content.replaceFirst( TC_START, tc.toString() );
+        return content;
     }
     @SuppressLint("Range")
     public static boolean mobilizeEntry(final long entryId,
@@ -864,7 +886,7 @@ public class FetcherService extends IntentService {
                 try {
                     feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
                     if (IsLocalFile(Uri.parse(link)))
-                        return loadLocalFile(entryId, link);
+                        return loadFB2LocalFile(entryId, link);
                     String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
                     String contentIndicator = null;
                     {
