@@ -432,6 +432,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     notifyDrawableAdapter();
                     if ( mDrawerAdapter != null )
                         selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
+                    mNewFeedUri = CONTENT_URI;
                 } else {
                     final long feedID;
                     if ( intent.hasExtra( EXTRA_LINK ) ) {
