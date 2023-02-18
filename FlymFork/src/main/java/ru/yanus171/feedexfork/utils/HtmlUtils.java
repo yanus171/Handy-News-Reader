@@ -67,6 +67,7 @@ public class HtmlUtils {
             .addAttributes("source", "src", "type")
             .addAttributes("img", "src", "data-original")
             .addAttributes("a", "data-fancybox-href")
+            .addAttributes("section", "class")
             //.addAttributes("math", "xmlns")
             //.addTags( "math", "mglyph", "mi", "mn", "mo", "mtext", "mspace", "ms", "mrow", "mfrac", "msqrt", "mroot", "mstyle", "msub", "msup", "munder", "mover", "semantics" )
             .addAttributes( ":all", "id", "name", "class", "displaystyle", "scriptlevel" )

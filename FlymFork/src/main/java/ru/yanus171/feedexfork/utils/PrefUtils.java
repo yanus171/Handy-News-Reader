@@ -130,10 +130,10 @@ public class PrefUtils {
         return PrefUtils.getFloatFromText( "fontsize", 0);
     }
     public static String getFontSizeText(int delta ) {
-        return String.format( "%fpt", 13 + getFontSize() + delta );
+        return String.format( "%fpt", 13 + getFontSize() + delta ).replace(",", ".");
     }
-    public static int getFontSizeEntryList() {
-        return PrefUtils.getIntFromText("fontsize_entrylist", 0);
+    public static float getFontSizeEntryList() {
+        return PrefUtils.getFloatFromText( "fontsize_entrylist", 0);
     }
     public static boolean IsLabelABCSort() {
         return PrefUtils.getBoolean("labels_sort_alphabetical", false);
