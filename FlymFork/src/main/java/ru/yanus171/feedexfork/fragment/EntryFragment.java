@@ -456,7 +456,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         });
 
         SetStarFrameWidth(0);
-        UpdateFooter();
+        UpdateHeader();
         SetOrientation();
 
         return rootView;
@@ -1299,7 +1299,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         activity.setImmersiveFullScreen(fullScreen);
     }*/
 
-    public void UpdateFooter() {
+    public void UpdateHeader() {
         EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
         int webViewHeight = 0;
         int contentHeight = 0;
@@ -1764,7 +1764,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
 
                     }
-                    UpdateFooter();
+                    UpdateHeader();
                 }
             }
         }

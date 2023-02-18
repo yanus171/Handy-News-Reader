@@ -751,14 +751,13 @@ public class EntryView extends WebView implements Handler.Callback {
                         else
                             findAll(searchText);
                         UiUtils.RunOnGuiThread(view::clearMatches, 5000 );
-                    } else {
+                    } else
                         UiUtils.RunOnGuiThread(() ->
                            {
                                if (mActivity.mEntryFragment != null)
-                                   mActivity.mEntryFragment.UpdateFooter();
+                                   mActivity.mEntryFragment.UpdateHeader();
+                               ScrollToY();
                            });
-                        ScrollToY();
-                    }
                     DownLoadImages();
                     EndStatus();
                 } else
@@ -979,7 +978,7 @@ public class EntryView extends WebView implements Handler.Callback {
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
         if ( mActivity.mEntryFragment != null )
-            mActivity.mEntryFragment.UpdateFooter();
+            mActivity.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
         if (mScrollChangeListener != null)
             mScrollChangeListener.run();

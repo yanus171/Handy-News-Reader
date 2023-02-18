@@ -322,7 +322,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     public void setFullScreen() {
         setFullScreen( GetIsStatusBarHidden(), GetIsActionBarHidden());
         if (mEntryFragment != null)
-            mEntryFragment.UpdateFooter();
+            mEntryFragment.UpdateHeader();
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
