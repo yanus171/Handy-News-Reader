@@ -197,10 +197,40 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.fb2.zip" />
+                <data android:pathPattern=".*\\.zip" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="application/zip"/>
+                <data android:mimeType="application/fb2"/>
+                <data android:mimeType="application/fb2.zip"/>
+                <data android:mimeType="application/fb2+zip"/>
+                <data android:mimeType="application/fb2+xml"/>
+                <data android:mimeType="application/x-fictionbook"/>
+                <data android:mimeType="application/x-fictionbook+xml"/>
+            </intent-filter>
+
+            <intent-filter
+                android:icon="@drawable/cup_new_load_now"
+                android:label="@string/loadLink">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:host="*" />
                 <data android:mimeType="*/*" />
                 <data android:pathPattern=".*fb2" />
+                <data android:pathPattern=".*\\.zip" />
             </intent-filter>
 
             <intent-filter

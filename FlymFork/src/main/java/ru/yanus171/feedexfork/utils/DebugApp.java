@@ -43,8 +43,6 @@ import ru.yanus171.feedexfork.activity.SendErrorActivity;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 
-import static androidx.core.content.FileProvider.getUriForFile;
-
 //****************************************************************************
 public class DebugApp {
 	private static final String TAG = "HandyNews";
@@ -399,7 +397,7 @@ public class DebugApp {
 
 		try (Writer out = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(file.getAbsolutePath()), "UTF-8"))) {
 			out.write(text);
-			result = getUriForFile(MainApplication.getContext(), FeedData.PACKAGE_NAME + ".fileprovider", file );
+			result = FileUtils.INSTANCE.getUriForFile( file );
 		} catch (UnsupportedEncodingException e) {
 			AddErrorToLog(null, e);
 		} catch (IOException e) {

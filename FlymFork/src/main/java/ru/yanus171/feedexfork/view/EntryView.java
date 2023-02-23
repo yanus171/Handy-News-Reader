@@ -889,7 +889,7 @@ public class EntryView extends WebView implements Handler.Callback {
             File extTmpFile = new File(context.getCacheDir(), file.getName());
             FileUtils.INSTANCE.copy(file, extTmpFile);
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
+            Uri contentUri = FileUtils.INSTANCE.getUriForFile( extTmpFile );
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "image/*");
             final String packageName = GetPackageNameForAction( "openImageTapAction" );
@@ -907,7 +907,7 @@ public class EntryView extends WebView implements Handler.Callback {
             File file = new File(url.replace(Constants.FILE_SCHEME, ""));
             File extTmpFile = new File(context.getCacheDir(), file.getName());
             FileUtils.INSTANCE.copy(file, extTmpFile);
-            Uri contentUri = getUriForFile(context, FeedData.PACKAGE_NAME + ".fileprovider", extTmpFile);
+            Uri contentUri = FileUtils.INSTANCE.getUriForFile( extTmpFile );
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setAction(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_STREAM, contentUri);

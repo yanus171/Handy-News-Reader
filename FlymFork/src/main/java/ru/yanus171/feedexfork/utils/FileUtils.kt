@@ -88,7 +88,7 @@ object FileUtils {
                 contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, destName)
                 contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, relPath)
                 val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
-                copyFile( FileProvider.getUriForFile( context, FeedData.PACKAGE_NAME + ".fileprovider", File(fileName) ), uri!!)
+                copyFile( getUriForFile( File(fileName) ), uri!!)
             } catch ( e: IllegalStateException ) {
                 UiUtils.RunOnGuiThread {
                     Toast.makeText( MainApplication.getContext(),
@@ -369,7 +369,9 @@ object FileUtils {
         return result
     }
 
-
+    fun getUriForFile(file: File): Uri {
+        return FileProvider.getUriForFile(MainApplication.getContext(), FeedData.PACKAGE_NAME + ".fileprovider", file)
+    }
 }
 
 object Companion {

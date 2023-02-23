@@ -236,7 +236,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             IsLocalFile( uri );
     }
     public static boolean IsLocalFile(Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) && uri.toString().contains( "document" ) ||
+        return uri.toString().startsWith( CONTENT_SCHEME ) && ( uri.toString().contains( "document" ) ||uri.toString().contains( "media" ) ) ||
             uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
     }
 
@@ -244,19 +244,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return (BaseActivity) getActivity();
     }
 
-    //@Override
-    //public View inflateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
         SetupZoneSizes();
 
-        mStatusText = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
-                                      (TextView)rootView.findViewById( R.id.errorText ),
-                                      (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
-                                      (TextView) rootView.findViewById( R.id.progressText),
-                                      FetcherService.Status());
+        mStatusText = new StatusText( rootView.findViewById(R.id.statusText ),
+                                      rootView.findViewById(R.id.errorText ),
+                                      rootView.findViewById(R.id.progressBarLoader),
+                                      rootView.findViewById(R.id.progressText),
+                                      FetcherService.Status() );
 
         rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( isArticleTapEnabled() ) {

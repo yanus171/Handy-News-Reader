@@ -47,11 +47,19 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.regex.Matcher;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -155,18 +163,56 @@ public class EntryActivity extends BaseActivity implements Observer {
         mBrightness.mTapAction = () -> mEntryFragment.PageDown();
     }
 
+    private Uri extractFileToZip(Uri sourceUri, String destFolder)
+    {
+        InputStream is;
+        ZipInputStream zis;
+        try {
+            String filename;
+            is = MainApplication.getContext().getContentResolver().openInputStream(sourceUri);
+            zis = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry ze;
+            byte[] buffer = new byte[1024];
+            int count;
+
+            while ((ze = zis.getNextEntry()) != null)
+            {
+                filename = ze.getName();
+                if (ze.isDirectory())
+                    continue;
+                final File destFile = new File( destFolder, filename );
+                FileOutputStream fout = new FileOutputStream(destFile );
+                while ((count = zis.read(buffer)) != -1)
+                    fout.write(buffer, 0, count);
+                fout.close();
+                zis.closeEntry();
+                return FileUtils.INSTANCE.getUriForFile( destFile );
+            }
+            zis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Uri.EMPTY;
+    }
+
     private void LoadAndOpenLink(final String finalUrl, final String title, final String text) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
                 String url = finalUrl;
+                String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
                 if (IsLocalFile(Uri.parse(url))) {
-                    final Uri uri = Uri.parse(url);
-                    final File fileInCache = new File(MainApplication.getContext().getCacheDir(), FileSelectDialog.Companion.getFileName(uri));
+                    Uri uri = Uri.parse(url);
+                    if ( FileSelectDialog.Companion.getFileName(uri).endsWith( ".zip" ) ) {
+                        uri = extractFileToZip( uri, cacheDir );
+                    }
+                    final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
                     if ( !fileInCache.exists() )
                         FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), MainApplication.getContext());
-                    url = FileProvider.getUriForFile( EntryActivity.this, FeedData.PACKAGE_NAME + ".fileprovider", fileInCache ).toString();
+                    url = FileUtils.INSTANCE.getUriForFile( fileInCache ).toString();
                 }
 
                 Uri entryUri = GetEntryUri(url);
@@ -206,13 +252,10 @@ public class EntryActivity extends BaseActivity implements Observer {
     }
 
     private void RestartLoadersOnGUI() {
-        UiUtils.RunOnGuiThread(new Runnable() {
-            @Override
-            public void run() {
-                if ( mEntryFragment != null )
-                    mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
-            }
-        } );
+        UiUtils.RunOnGuiThread(() -> {
+            if ( mEntryFragment != null )
+                mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
+        });
     }
 
     @Override
