@@ -65,6 +65,7 @@ import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
+import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
@@ -998,8 +999,8 @@ public class FetcherService extends IntentService {
                                     } catch (ParseException e) {
                                         Status().SetError(format, String.valueOf(feedId), String.valueOf(entryId), e);
                                     }
-                                }// else
-                                //    date = parseDate( dateText, 0 );
+                                } else
+                                    date = parseDate( dateText, 0 );
                                 if (date != null)
                                     values.put(EntryColumns.DATE, date.getTime());
                             }
