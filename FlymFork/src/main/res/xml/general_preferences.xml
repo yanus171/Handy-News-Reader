@@ -902,5 +902,20 @@
             android:key="setting_convert_xml_symbols_before_parsing"
             android:title="Convert xml symbols before parsing"/>
 
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/debug"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_debug_info_on_crash"
+            android:title="@string/send_debug_info_on_crash"
+            android:summary="@string/send_debug_info_on_crash_summary"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="copy_debug_info_to_clipboard"
+            android:dependency="send_debug_info_on_crash"
+            android:title="@string/copy_debug_info_to_clipboard"
+            android:summary="@string/copy_debug_info_to_clipboard_summary"/>
+
     </PreferenceScreen>
 </PreferenceScreen>

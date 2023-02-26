@@ -48,9 +48,7 @@ public class DebugApp {
 	private static final String TAG = "HandyNews";
 	private static final int cPad = 10;
 	private static StringBuilder ErrorLog = new StringBuilder();
-	private static boolean DebugMode = true;
 	private static final int c1024 = 1024;
-	private static boolean ShowImmediately = false;
 
 	class Info {
 		String VersionName;
@@ -116,9 +114,9 @@ public class DebugApp {
 				User = android.os.Build.USER;
 
 			} catch (NameNotFoundException e) {
-				// e.printStackTrace();
+				e.printStackTrace();
 			} catch (NullPointerException e) {
-
+				e.printStackTrace();
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -136,12 +134,12 @@ public class DebugApp {
 			ReturnVal += "\n";
 			ReturnVal += "Android Version : " + AndroidVersion;
 			ReturnVal += "\n";
-			// ReturnVal += "Board : " + Board;
-			// ReturnVal += "\n";
-			// ReturnVal += "Brand : " + Brand;
-			// ReturnVal += "\n";
-			// ReturnVal += "Device : " + Device;
-			// ReturnVal += "\n";
+			ReturnVal += "Board : " + Board;
+			ReturnVal += "\n";
+			ReturnVal += "Brand : " + Brand;
+			ReturnVal += "\n";
+			ReturnVal += "Device : " + Device;
+			ReturnVal += "\n";
 			// ReturnVal += "Display : " + Display;
 			// ReturnVal += "\n";
 			// ReturnVal += "Finger Print : " + FingerPrint;
@@ -150,10 +148,10 @@ public class DebugApp {
 			// ReturnVal += "\n";
 			// ReturnVal += "ID : " + ID;
 			// ReturnVal += "\n";
-			// ReturnVal += "Model : " + Model;
-			// ReturnVal += "\n";
-			// ReturnVal += "Product : " + Product;
-			// ReturnVal += "\n";
+			ReturnVal += "Model : " + Model;
+			ReturnVal += "\n";
+			ReturnVal += "Product : " + Product;
+			ReturnVal += "\n";
 			// ReturnVal += "Tags : " + Tags;
 			// ReturnVal += "\n";
 			// ReturnVal += "Time : " + Time;
@@ -202,66 +200,37 @@ public class DebugApp {
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		//SaveExceptionToFile(st.toString());
-		if (DebugMode) {
-			//EventLog.Save();
-		}
-		if (ShowImmediately) {
-			final Throwable finalThrowable = throwable;
-			new Thread() {
-				@Override
-				public void run() {
-					Looper.prepare();
-					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					builder.setMessage(finalThrowable.getMessage() + "\n" + finalThrowable.getLocalizedMessage());
-					builder.setPositiveButton("OK", new Dialog.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-							System.exit(1);
-						}
-					});
-					builder.create().show();
-					Looper.loop();
-				}
-			}.start();
-		} else {
-			final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-			emailIntent.setType("plain/text");
-			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "workyalex@mail.ru" });
-			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HandyNews error stacktrace");
-			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, st.toString());
+		final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+		emailIntent.setType("plain/text");
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "workyalex@mail.ru" });
+		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HandyNews error stacktrace");
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, st.toString());
+		if ( PrefUtils.getBoolean( "copy_debug_info_to_clipboard", true ) )
 			((ClipboardManager) context.getSystemService(android.content.Context.CLIPBOARD_SERVICE))
-					.setText(st.toString());
-			UiUtils.RunOnGuiThread(new Runnable() {
-				@Override
-				public void run() {
-					Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show();
-				}
-			});
-			context.startActivity(
-					Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
-		}
-		//if (mOldHandler != null) {
-			// mOldHandler.uncaughtException(thread, throwable);
-		//}
-		//MainService.SetNonNormalExit();
+				.setText(st.toString());
+		UiUtils.RunOnGuiThread(() -> Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show());
+		context.startActivity(
+				Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
 		System.exit(1);
 	}
 
 	// ****************************************************************************
 	public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-		//Thread.UncaughtExceptionHandler mOldHandler = null;
+		Thread.UncaughtExceptionHandler mOldHandler;
 		Context mContext;
 
 		public UncaughtExceptionHandler(Context context) {
-			//mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
+			mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
 			mContext = context;
 		}
 
 
 		@Override
 		public void uncaughtException(Thread thread, Throwable throwable) {
-			SendException( throwable, mContext );
+			if ( PrefUtils.getBoolean( "send_debug_info_on_crash", true ) )
+				SendException( throwable, mContext );
+			else
+				mOldHandler.uncaughtException( thread, throwable );
 		}
 	}
 

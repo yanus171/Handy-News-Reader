@@ -19,7 +19,7 @@ object EntryUrlVoc {
     }
     fun set(url: String, id: Long ) {
         initInThread()
-        synchronized( mVoc) {
+        synchronized( mVoc ) {
             mVoc[getKey( url )] = id
         }
     }
@@ -44,7 +44,7 @@ object EntryUrlVoc {
             if ( mIsInitialized )
                 return
         }
-        Thread() {
+        Thread {
             init_()
         }.start()
     }
@@ -60,7 +60,8 @@ object EntryUrlVoc {
                     null)
             if (cursor != null) {
                 while (cursor.moveToNext())
-                    mVoc[getKey(cursor.getString(1))] = cursor.getLong(0)
+                    if ( !cursor.isNull(1) )
+                        mVoc[getKey(cursor.getString(1))] = cursor.getLong(0)
                 cursor.close()
             }
             FetcherService.Status().End(status)

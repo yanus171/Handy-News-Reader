@@ -710,5 +710,10 @@
     <string name="show_navigation_bar_in_fullscreen_summary">Show navigation bar in full screen mode</string>
     <string name="show_unstarred_checkbox">No star icon</string>
     <string name="show_unstarred_checkbox_descr">Show small empty star icon to indicate that article is not in favorites</string>
+    <string name="debug">Debug</string>
+    <string name="send_debug_info_on_crash">Send debug info on crash</string>
+    <string name="send_debug_info_on_crash_summary">Suggest to send a mail with debug info to developer when app crashes</string>
+    <string name="copy_debug_info_to_clipboard">Copy debug info to clipboard</string>
+    <string name="copy_debug_info_to_clipboard_summary">When app crashes</string>
 
 </resources>

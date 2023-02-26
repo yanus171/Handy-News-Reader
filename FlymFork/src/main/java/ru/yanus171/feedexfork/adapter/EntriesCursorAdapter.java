@@ -1280,8 +1280,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     @Override
     public void changeCursor(Cursor cursor) {
         //SetIsReadMakredList();
-        reinit(cursor);
         super.changeCursor(cursor);
+        reinit(cursor);
     }
 
     @Override
@@ -1291,6 +1291,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     @Override
     public Cursor swapCursor(Cursor newCursor) {
+        Cursor result = super.swapCursor(newCursor);
         if ( mIgnoreClearContentVocOnCursorChange )
             mIgnoreClearContentVocOnCursorChange = false;
         else {
@@ -1298,7 +1299,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mMapFavourite.clear();
         }
         reinit(newCursor);
-        return super.swapCursor(newCursor);
+        return result;
     }
 
     @Override
@@ -1316,36 +1317,37 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void reinit(Cursor cursor) {
-        if (cursor != null && cursor.getCount() > 0) {
-            mCursor = cursor;
-            mIdPos = cursor.getColumnIndex(EntryColumns._ID);
-            mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
-            mFeedTitlePos = cursor.getColumnIndex(FeedColumns.NAME);
-            mUrlPos = cursor.getColumnIndex(EntryColumns.LINK);
-            mMainImgPos = cursor.getColumnIndex(EntryColumns.IMAGE_URL);
-            mDatePos = cursor.getColumnIndex(EntryColumns.DATE);
-            mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
-            mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
-            mImageSizePos = cursor.getColumnIndex(EntryColumns.IMAGES_SIZE);
-            mFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
-            mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
-            mMobilizedPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
-            mAbstractPos = cursor.getColumnIndex(EntryColumns.ABSTRACT);
-            mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
-            mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
-            mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
-            mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
-            mFeedOptionsPos = cursor.getColumnIndex(FeedColumns.OPTIONS);
-            {
-                int col = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
-                if ( col != -1 && cursor.moveToFirst() )
-                    mIsLoadImages = !cursor.isNull( col ) && cursor.getInt( col ) == 1;
+        mItemPositionVoc.clear();
+        for( int i = 0; i < getCount(); i++ )
+            mItemPositionVoc.put( getItemId( i ), i );
+        mDBReadMap.clear();
+        if (cursor == null )
+            return;
+        mCursor = cursor;
+        mIdPos = cursor.getColumnIndex(EntryColumns._ID);
+        mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
+        mFeedTitlePos = cursor.getColumnIndex(FeedColumns.NAME);
+        mUrlPos = cursor.getColumnIndex(EntryColumns.LINK);
+        mMainImgPos = cursor.getColumnIndex(EntryColumns.IMAGE_URL);
+        mDatePos = cursor.getColumnIndex(EntryColumns.DATE);
+        mIsReadPos = cursor.getColumnIndex(EntryColumns.IS_READ);
+        mAuthorPos = cursor.getColumnIndex(EntryColumns.AUTHOR);
+        mImageSizePos = cursor.getColumnIndex(EntryColumns.IMAGES_SIZE);
+        mFavoritePos = cursor.getColumnIndex(EntryColumns.IS_FAVORITE);
+        mIsNewPos = cursor.getColumnIndex(EntryColumns.IS_NEW);
+        mMobilizedPos = cursor.getColumnIndex(EntryColumns.MOBILIZED_HTML);
+        mAbstractPos = cursor.getColumnIndex(EntryColumns.ABSTRACT);
+        mFeedNamePos = cursor.getColumnIndex(FeedColumns.NAME);
+        mFeedIdPos = cursor.getColumnIndex(EntryColumns.FEED_ID);
+        mCategoriesPos = cursor.getColumnIndex(EntryColumns.CATEGORIES);
+        mTextLenPos = cursor.getColumnIndex("TEXT_LEN");
+        mFeedOptionsPos = cursor.getColumnIndex(FeedColumns.OPTIONS);
+        {
+            int col = cursor.getColumnIndex(FeedColumns.IS_IMAGE_AUTO_LOAD);
+            if ( col != -1 && cursor.moveToFirst() ) {
+                mIsLoadImages = !cursor.isNull(col) && cursor.getInt(col) == 1;
+                mIsAutoSetAsRead = isAlsoSetAsRead( cursor );
             }
-            mIsAutoSetAsRead = isAlsoSetAsRead( cursor );
-
-            mItemPositionVoc.clear();
-            for( int i = 0; i < getCount(); i++ )
-                mItemPositionVoc.put( getItemId( i ), i );
         }
     }
 
