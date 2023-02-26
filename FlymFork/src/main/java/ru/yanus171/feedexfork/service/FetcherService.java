@@ -1750,7 +1750,7 @@ public class FetcherService extends IntentService {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             String xmlText = ReadAll(inputStream, outputStream);
 
-            if ( xmlText.isEmpty() ) {
+            if ( xmlText.isEmpty() || connection.getCode() != HttpURLConnection.HTTP_OK ) {
                 connection.disconnect();
                 connection = new Connection( feedUrl, NATIVE );
                 inputStream = connection.getInputStream();
@@ -1767,15 +1767,12 @@ public class FetcherService extends IntentService {
 
                         int index2 = contentType.indexOf(';', index);
 
-                        parseXml(//cursor.getString(urlPosition),
-                                inputStream,
-                                Xml.findEncodingByName(index2 > -1 ? contentType.substring(index + 8, index2) : contentType.substring(index + 8)),
-                                handler);
+                        parseXml( inputStream,
+                                  Xml.findEncodingByName(index2 > -1 ? contentType.substring(index + 8, index2) : contentType.substring(index + 8)),
+                                  handler);
 
-                    } else {
-                        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+                    } else
                         Xml.parse( CleanRSS( xmlText ), handler);
-                    }
                     break;
                 }
 
@@ -1802,7 +1799,7 @@ public class FetcherService extends IntentService {
                                 } catch (Exception ignored) {
                                 }
                             } else {
-                                StringReader reader = new StringReader(new String(outputStream.toByteArray()));
+                                StringReader reader = new StringReader(outputStream.toString());
                                 parseXml(reader, handler);
                             }
                         }

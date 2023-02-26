@@ -121,6 +121,14 @@ class Connection(url: String, var mIsOKHttp: Boolean = true) {
         } else
             return "";
     }
+
+    fun getCode(): Int {
+        return if (IsOkHttp())
+            mResponse!!.code
+        else
+            mConnection!!.responseCode
+    }
+
     fun IsOkHttp(): Boolean {
         return mIsOKHttp && Build.VERSION.SDK_INT >= 21
     }
