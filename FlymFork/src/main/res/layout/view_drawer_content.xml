@@ -28,16 +28,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickEditFeeds"
-            android:src="@drawable/ic_edit" />
+            android:onClick="onClickArticleWebSearch"
+            android:src="@drawable/ic_add_circle" />
 
         <ImageButton
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickOPMLImport"
-            android:src="@drawable/ic_import_from_backup" />
+            android:onClick="onClickEditFeeds"
+            android:src="@drawable/ic_edit" />
 
         <ImageButton
             style="?android:attr/buttonBarButtonStyle"

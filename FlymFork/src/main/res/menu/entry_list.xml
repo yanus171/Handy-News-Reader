@@ -33,7 +33,7 @@
         <menu>
             <item
                 android:id="@+id/menu_article_web_search"
-                android:icon="@drawable/ic_add_circle_outline"
+                android:icon="@drawable/ic_add_circle"
                 android:title="@string/menu_article_web_search" />
             <item
                 android:id="@+id/menu_delete_old"
@@ -135,6 +135,10 @@
                         android:id="@+id/menu_create_backup"
                         android:icon="@drawable/ic_file_download"
                         android:title="@string/create_backup"/>
+                    <item
+                        android:id="@+id/menu_import_from_backup"
+                        android:icon="@drawable/ic_import_from_backup"
+                        android:title="@string/menu_import_from_backup_file"/>
                     <item
                         android:id="@+id/menu_full_screen"
                         android:checkable="true"

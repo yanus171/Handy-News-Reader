@@ -57,6 +57,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.List;
 
 import ru.yanus171.feedexfork.Constants;
@@ -65,6 +66,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -94,6 +96,8 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
+import static ru.yanus171.feedexfork.parser.OPML.importFromOpml;
 import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
@@ -104,6 +108,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_GROUP_EXPA
 import static ru.yanus171.feedexfork.provider.FeedData.getGroupExpandedValues;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
 
@@ -537,14 +542,17 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public void onClickEditFeeds(View view) {
         startActivity(new Intent(this, EditFeedsListActivity.class));
     }
-    public void onClickOPMLImport(View view) {
-        OPML.OnMenuExportImportClick(this, OPML.ExportImport.Import );
+    public void onClickArticleWebSearch(View view) {
+        startActivity( new Intent( Intent.ACTION_WEB_SEARCH )
+                       .setPackage( this.getPackageName() )
+                       .setClass( this, ArticleWebSearchActivity.class) );
     }
 
     public void onClickAdd(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         startActivity(new Intent(Intent.ACTION_INSERT).setData(FeedColumns.CONTENT_URI));
     }
+
 
     public void onClickSettings(View view) {
         startActivity(new Intent(this, GeneralPrefsActivity.class));
@@ -789,15 +797,18 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mImageFileVoc.init1();
         mHTMLFileVoc.init1();
-        OPML.OnRequestPermissionResult(this, requestCode, grantResults);
+        //OPML.OnRequestPermissionResult(this, requestCode, grantResults);
 
-        //        if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
-//            // If request is cancelled, the result arrays are empty.
-//            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-//                 new File(OPML.GetAutoBackupOPMLFileName()).exists() )
-//                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_IMPORT )
-//                                                 .putExtra( Constants.EXTRA_FILENAME, OPML.GetAutoBackupOPMLFileName() ) );
-//        }
+        //if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
+            // If request is cancelled, the result arrays are empty.
+            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                 new File(FileSelectDialog.Companion.getPublicDir().getAbsolutePath() + "/" + SUB_FOLDER, AUTO_BACKUP_OPML_FILENAME).exists() )
+                Theme.CreateDialog( this )
+                    .setMessage( R.string.import_from_backup_after_permission_granted )
+                    .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> importFromOpml( HomeActivity.this ) )
+                    .setNegativeButton(android.R.string.no, null )
+                    .create().show();
+        //}
     }
 
     @Override

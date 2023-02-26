@@ -902,6 +902,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ), false );
                 return true;
             }
+            case R.id.menu_import_from_backup: {
+                OPML.OnMenuExportImportClick(getActivity(), OPML.ExportImport.Import );
+                return true;
+            }
             case R.id.menu_add_feed_shortcut: {
                 if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
                     //Adding shortcut for MainActivity on Home screen

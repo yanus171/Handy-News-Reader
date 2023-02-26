@@ -761,7 +761,7 @@ public class OPML {
         }).execute();
     }
 
-    static private void importFromOpml( final Activity activity ) {
+    static public void importFromOpml( final Activity activity ) {
         FileSelectDialog.Companion.startFilePickerIntent(activity, "*/*", REQUEST_PICK_OPML_FILE);
     }
     private static void RequestPermissions(Activity activity, ExportImport operType) {

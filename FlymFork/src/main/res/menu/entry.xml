@@ -23,7 +23,7 @@
 <!--        android:title="@string/menu_add_feed" />-->
     <item
         android:id="@+id/menu_article_web_search"
-        android:icon="@drawable/ic_add_circle_outline"
+        android:icon="@drawable/ic_add_circle"
         android:title="@string/menu_article_web_search" />
     <item
         android:id="@+id/menu_go_back"

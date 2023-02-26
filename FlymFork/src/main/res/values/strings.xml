@@ -106,7 +106,7 @@
     <string name="menu_import_export">Export and import</string>
     <string name="menu_import">Import from an .opml file</string>
     <string name="menu_export">Export to an .opml file</string>
-    <string name="storage_request_explanation">To be able to import or export the feeds from or to a file, you must allow the application to access to the storage memory</string>
+    <string name="storage_request_explanation">To be able to import or export the feeds and app settings from or to a file, you must allow the application to access to the storage memory</string>
     <string name="error_feed_error">The feed website is unreachable</string>
     <string name="error_feed_process">The feed can not be processed</string>
     <string name="error_feed_url_exists">The address already exists</string>
@@ -715,5 +715,7 @@
     <string name="send_debug_info_on_crash_summary">Suggest to send a mail with debug info to developer when app crashes</string>
     <string name="copy_debug_info_to_clipboard">Copy debug info to clipboard</string>
     <string name="copy_debug_info_to_clipboard_summary">When app crashes</string>
+    <string name="import_from_backup_after_permission_granted">Do you want to import feeds and app settings from auto backup file?</string>
+    <string name="menu_import_from_backup_file">Import from backup file</string>
 
 </resources>
