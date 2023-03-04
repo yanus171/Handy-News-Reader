@@ -104,7 +104,7 @@
     <string name="menu_import_export">Ex- und Importieren</string>
     <string name="menu_import">OPML-Datei importieren</string>
     <string name="menu_export">OPML-Datei exportieren</string>
-    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung für den Speicherzugriff.</string>
+    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
     <string name="error_feed_error">Zugriff auf Feed-Adresse nicht möglich.</string>
     <string name="error_feed_process">Der Feed kann nicht verarbeitet werden.</string>
     <string name="error_feed_url_exists">Diese Adresse existiert bereits.</string>
@@ -676,4 +676,11 @@
     <string name="refresh_only_selected_select_none">Auswahl aufheben</string>
     <string name="refresh_only_selected_select_none_summary">Kontrollkästchen zur automatischen Aktualisierung für alle Feeds entfernen</string>
     <string name="feed_count_were_edited">Feeds wurden bearbeitet</string>
+    <string name="debug">Fehlersuche</string>
+    <string name="send_debug_info_on_crash">Bei Absturz Informationen zur Fehlersuche versenden</string>
+    <string name="send_debug_info_on_crash_summary">Bei einem Absturz der App vorschlagen, eine Mail mit informationen zur Fehlersuche an den Entwickler zu senden</string>
+    <string name="copy_debug_info_to_clipboard">Fehlersuche-Info in die Zwischenablage kopieren</string>
+    <string name="copy_debug_info_to_clipboard_summary">Wenn die App abstürzt</string>
+    <string name="import_from_backup_after_permission_granted">Möchten Sie Feeds und App-Einstellungen aus der automatischen Sicherung importieren?</string>
+    <string name="menu_import_from_backup_file">Aus Sicherung importieren</string>
 </resources>
