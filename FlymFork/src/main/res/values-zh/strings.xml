@@ -684,4 +684,11 @@
     <string name="show_navigation_bar_in_fullscreen_summary">在全屏模式下显示导航栏</string>
     <string name="show_unstarred_checkbox">没有星星图标</string>
     <string name="show_unstarred_checkbox_descr">显示小的中空星星图标表明该文章不在收藏夹中</string>
+    <string name="debug">调试</string>
+    <string name="send_debug_info_on_crash">崩溃时发送调试信息</string>
+    <string name="send_debug_info_on_crash_summary">建议在应用崩溃时向开发者发送含有调试信息的邮件</string>
+    <string name="copy_debug_info_to_clipboard">复制调试信息到剪贴板</string>
+    <string name="copy_debug_info_to_clipboard_summary">当应用程序崩溃时</string>
+    <string name="import_from_backup_after_permission_granted">您想从自动备份文件导入源和应用设置吗？</string>
+    <string name="menu_import_from_backup_file">从备份文件导入</string>
 </resources>
