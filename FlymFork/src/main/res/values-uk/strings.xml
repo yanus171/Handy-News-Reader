@@ -686,4 +686,11 @@
     <string name="show_navigation_bar_in_fullscreen_summary">Показати панель навігації в повноекранному режимі</string>
     <string name="show_unstarred_checkbox">Без зірочки</string>
     <string name="show_unstarred_checkbox_descr">Показувати невелику порожню іконку зірочки, що вказує на те, що стаття не в обраному</string>
+    <string name="debug">Налагодження</string>
+    <string name="send_debug_info_on_crash">Надсилати інформацію для налагодження під час збою</string>
+    <string name="send_debug_info_on_crash_summary">Пропонувати надіслати повідомлення на пошту з налагоджувальною інформацією для розробника при збої програми</string>
+    <string name="copy_debug_info_to_clipboard">Копіювати дані налагодження в буфер обміну</string>
+    <string name="copy_debug_info_to_clipboard_summary">При збої програми</string>
+    <string name="import_from_backup_after_permission_granted">Бажаєте імпортувати стрічки та налаштування застосунку з файлу автоматичної резервної копії?</string>
+    <string name="menu_import_from_backup_file">Імпортувати з файлу резервної копії</string>
 </resources>
