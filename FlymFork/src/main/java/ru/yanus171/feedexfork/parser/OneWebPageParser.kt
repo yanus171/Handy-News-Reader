@@ -63,7 +63,7 @@ object OneWebPageParser {
                     return 1;
                 val articleList = doc.getElementsByClass(articleClassName)
                 val feedEntriesUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID)
-                val feedBaseUrl = NetworkUtils.getBaseUrl(feedUrl)
+                val feedBaseUrl = feedUrl
                 val filters = FeedFilters(feedID)
                 var now = Date().time
                 for (elArticle in articleList) {

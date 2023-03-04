@@ -221,7 +221,7 @@ public class RssAtomParser extends DefaultHandler {
 
         mFilters = new FeedFilters(id);
 
-        mFeedBaseUrl = NetworkUtils.getBaseUrl(url);
+        mFeedBaseUrl = url;
     }
 
 

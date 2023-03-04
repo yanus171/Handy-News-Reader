@@ -144,6 +144,7 @@ public class HtmlUtils {
         SaveContentStepToFile( content, "improveHtmlContent 10" );
         content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
         SaveContentStepToFile( content, "improveHtmlContent 11" );
+
         // clean by JSoup
         final Safelist whiteList =
                 ( mobType == ArticleTextExtractor.MobilizeType.Tags ) ?

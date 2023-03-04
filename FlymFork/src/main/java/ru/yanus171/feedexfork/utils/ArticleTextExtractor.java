@@ -201,6 +201,9 @@ public class ArticleTextExtractor {
             }
         }
         SaveContentStepToFile( doc, "before FindBestElement RemoveHiddenElements" );
+
+        AddColumnClassToTableCells(doc, url);
+
         Element rootElement = doc;
         if ( mobilize == MobilizeType.Yes) {
             rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
@@ -219,7 +222,6 @@ public class ArticleTextExtractor {
                 title.first().remove();
                 break;
             }
-
 
         StringBuilder ret = new StringBuilder(rootElement.toString());
         SaveContentStepToFile( ret, "after toString" );
@@ -258,7 +260,7 @@ public class ArticleTextExtractor {
         }
 
         final boolean isAutoFullTextRoot = getFullTextRootElementFromPref(doc, url) == null;
-        ret = new StringBuilder(HtmlUtils.improveHtmlContent(ret.toString(), NetworkUtils.getBaseUrl(url), filters, categoryList, mobilize, isAutoFullTextRoot));
+        ret = new StringBuilder(HtmlUtils.improveHtmlContent(ret.toString(), url, filters, categoryList, mobilize, isAutoFullTextRoot));
 
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret.toString();
@@ -270,6 +272,22 @@ public class ArticleTextExtractor {
         }
 
         return ret.toString();
+    }
+
+    private static void AddColumnClassToTableCells(Element rootElement, String url) {
+        int colNumber = 0;
+        final String prefix = url //NetworkUtils.getBaseUrl_(url)
+            .replace( "https://", "" )
+            .replace( "http://", "" )
+            .replace( "/", "_" );
+        for ( Element el: rootElement.getAllElements() ) {
+            if (el.tagName().equals("tr"))
+                colNumber = 0;
+            else if (el.tagName().equals("td")) {
+                colNumber++;
+                el.attr("class", prefix + "_" + colNumber);
+            }
+        }
     }
 
     private static String AddHabrComments(String url) {

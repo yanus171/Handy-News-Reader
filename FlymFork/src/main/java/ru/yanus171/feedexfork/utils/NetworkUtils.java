@@ -43,6 +43,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -225,8 +226,8 @@ public class NetworkUtils {
         return downloadPictures;
     }
 
-    public static String getBaseUrl(String link) {
-        String baseUrl = link;
+//    public static String getBaseUrl(String link) {
+//        String baseUrl = link;
 //        Pattern p = Pattern.compile("(http?.://[^/]+)");
 //        Matcher m = p.matcher(baseUrl);
 //        if (m.find())
@@ -239,8 +240,8 @@ public class NetworkUtils {
 //                baseUrl = link.substring(0, index + 1);
 //            }
 //        }
-        return baseUrl;
-    }
+//        return baseUrl;
+//    }
 
     public static String getUrlDomain(String link) {
         String result = link;

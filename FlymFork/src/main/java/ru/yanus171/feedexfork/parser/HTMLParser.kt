@@ -140,7 +140,7 @@ object HTMLParser {
             }
         }
 
-        val urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", NetworkUtils.getBaseUrl(feedUrl))
+        val urlNextPage = OneWebPageParser.getUrl(doc, urlNextPageClassName, "a", "href", feedUrl)
 
         val listItem = ArrayList<Item>()
         val categoryList = ArrayList<String>()

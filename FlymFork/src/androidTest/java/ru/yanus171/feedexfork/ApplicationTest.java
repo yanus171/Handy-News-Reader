@@ -30,7 +30,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         HttpURLConnection connection = NetworkUtils.setupConnection(link);
 
         String mobilizedHtml = ArticleTextExtractor.extractContent(connection.getInputStream(), link, "ou rassemblement ayant pour objet le projet de construction d",  ArticleTextExtractor.Mobilize.Yes);
-        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link));
+        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, link);
         if (mobilizedHtml.contains("Doit se conformer")) {
             throw new Exception("got comment part");
         }
@@ -42,7 +42,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
         String mobilizedHtml = ArticleTextExtractor.extractContent(connection.getInputStream(), "ฝนฟ้าคะนอง ฝนหนักบาง",  ArticleTextExtractor.Mobilize.Yes);
         System.out.println(mobilizedHtml);
-        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link));
+        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, link);
         if (!mobilizedHtml.contains("http://www.thairath.co.th/media/NjpUs24nCQKx5e1D74racLG80eobXUM1FQb68fZ0eH7.jpg")) {
             throw new Exception("no og image");
         }
@@ -55,7 +55,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         String mobilizedHtml = ArticleTextExtractor.extractContent(connection.getInputStream(), link, "Ch. 654 Dec 04, 2015", ArticleTextExtractor.Mobilize.Yes);
         System.out.println(mobilizedHtml);
         //noinspection UnusedAssignment
-        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, NetworkUtils.getBaseUrl(link));
+        mobilizedHtml = HtmlUtils.improveHtmlContent(mobilizedHtml, link);
     }
 
     public void testRssAtomParserPubdate() throws Exception {
