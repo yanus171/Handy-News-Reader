@@ -15,8 +15,8 @@
         <item>3 días</item>
     </string-array>
     <string-array name="settings_keep_times">
-        <item>1 hour</item>
-        <item>12 hours</item>
+        <item>1 hora</item>
+        <item>12 horas</item>
         <item>1 día</item>
         <item>2 días</item>
         <item>4 días</item>
@@ -26,5 +26,29 @@
         <item>2 meses</item>
         <item>3 meses</item>
         <item>Infinito</item>
+    </string-array>
+    <string-array name="settings_volume_buttons_action">
+        <item>Predeterminado</item>
+        <item>Cambiar al artículo siguiente | anterior</item>
+        <item>Página arriba | abajo</item>
+    </string-array>
+    <string-array name="settings_preload_image_modes">
+        <item>Nunca</item>
+        <item>Sólo por Wi-Fi</item>
+        <item>Siempre</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Claro</item>
+        <item>Oscuro</item>
+        <item>Negro</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Horizontal</item>
+        <item>Vertical</item>
+        <item>No mostrar los botones</item>
+    </string-array>
+    <string-array name="settings_datetime_format">
+        <item>Predeterminado del sistema</item>
+        <item>Tiempo restante</item>
     </string-array>
 </resources>
