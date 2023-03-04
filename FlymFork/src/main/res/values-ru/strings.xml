@@ -690,4 +690,11 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="show_navigation_bar_in_fullscreen_summary">Показывать панель навигации в полноэкранном режиме</string>
     <string name="show_unstarred_checkbox">Пустая звездочка</string>
     <string name="show_unstarred_checkbox_descr">Отображать маленькую пустую звездочку для указания, что статья не в избранном</string>
+    <string name="debug">Отладка</string>
+    <string name="send_debug_info_on_crash">Отправка отладочной информации при сбое</string>
+    <string name="send_debug_info_on_crash_summary">Предлагать отправить письмо с отладочной информацией разработчику при сбое приложения</string>
+    <string name="copy_debug_info_to_clipboard">Скопировать отладочную информацию в буфер обмена</string>
+    <string name="copy_debug_info_to_clipboard_summary">При сбое приложения</string>
+    <string name="import_from_backup_after_permission_granted">Вы хотите импортировать ленты и настройки приложения из файла автоматической резервной копии?</string>
+    <string name="menu_import_from_backup_file">Импортировать из файла резервной копии</string>
 </resources>
