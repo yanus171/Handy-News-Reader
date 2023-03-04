@@ -461,12 +461,13 @@
             android:summary="@string/brightness_gesture_descr"
             android:title="@string/brightness_gesture"/>
 
-        <CheckBoxPreference
-            android:defaultValue="false"
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="brightness_programmatic_dim_max"
             android:dependency="brightness_gesture_enabled"
-            android:key="brightness_with_dim_activity"
-            android:summary="@string/brightness_with_dim_activity_descr"
-            android:title="@string/brightness_with_dim_activity"/>
+            android:inputType="number"
+            android:defaultValue="20"
+            android:title="@string/brightness_programmatic_dim_max"
+            android:summary="@string/brightness_programmatic_dim_max_descr"/>
 
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="settings_brightness_read_from_system_period_min"

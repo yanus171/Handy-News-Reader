@@ -290,7 +290,7 @@
     <string name="brightness_gesture">Brightness change gesture</string>
     <string name="brightness_gesture_descr">Check this to adjust the brightness by swiping up/down along the left edge of the screen</string>
     <string name="brightness_with_dim_activity">Software overlay</string>
-    <string name="brightness_with_dim_activity_descr">Dim brightness by reducing transparency of the window background color (check it if the brightness change doesn\'t work)</string>
+    <string name="brightness_with_dim_activity_descr">Additional programmatic brightness dim (less than 50%)</string>
 
     <string name="settings_category_notification">Notifications</string>
     <string name="settings_category_notification_summary"></string>
@@ -717,5 +717,7 @@
     <string name="copy_debug_info_to_clipboard_summary">When app crashes</string>
     <string name="import_from_backup_after_permission_granted">Do you want to import feeds and app settings from auto backup file?</string>
     <string name="menu_import_from_backup_file">Import from backup file</string>
+    <string name="brightness_programmatic_dim_max">Max programmatic dim value</string>
+    <string name="brightness_programmatic_dim_max_descr">The maximum additional programmatic brightness dim value (0-no additional dim, 100 - full darkness)</string>
 
 </resources>

@@ -121,6 +121,7 @@ public class PrefUtils {
 
     public static final String FIRST_LAUNCH_TIME = "first_launch_time";
 
+    public static final String BRIGHTNESS_PROGRAMMATIC_DIM_MAX = "brightness_programmatic_dim_max";
 
     public static final String SHOW_READ_ARTICLE_COUNT = "show_read_article_count";
 

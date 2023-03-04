@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.Window
 import android.widget.TextView
 import ru.yanus171.feedexfork.R
+import ru.yanus171.feedexfork.utils.PrefUtils.BRIGHTNESS_PROGRAMMATIC_DIM_MAX
 import ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize
 import ru.yanus171.feedexfork.utils.UiUtils.SetSize
 import java.util.*
@@ -19,6 +20,9 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+
+
+private const val MAX_ALPHA = 255F
 
 class Brightness(private val mActivity: Activity, rootView: View) {
     private val mDimFrame: View = rootView.findViewById(R.id.dimFrame)
@@ -75,20 +79,18 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                                 val delta : Float = paddingY.toFloat() / mDimFrame.height.toFloat()
                                 val coeff : Float = max(0.1F, (min(1F, abs(delta))) * 2)
                                 var currentAlpha : Float = (mInitialAlpha + delta * 255F * coeff.toDouble().pow(3.0)).toFloat()
-                                if (currentAlpha > 255)
-                                    currentAlpha = 255F
-                                else if (currentAlpha < 1)
+                                if (currentAlpha < 1)
                                     currentAlpha = 1F
                                 //Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
                                 setBrightness(currentAlpha)
                                 mInfo?.visibility = View.VISIBLE
                                 mInfo?.text = String.format("%s: %.1f %%",
                                         mInfo?.context?.getString(R.string.brightness),
-                                        if (currentAlpha >= 255F / 100F) {
-                                            (255 - currentAlpha) / 255.toFloat() * 100
-                                        } else {
+                                        if (mCurrentAlpha >= MAX_ALPHA / 100F)
+                                            (MAX_ALPHA - mCurrentAlpha) / MAX_ALPHA.toFloat() * 100
+                                        else
                                             100F
-                                        })
+                                        )
                             }
                             return true
                         }
@@ -139,17 +141,24 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     //    }
 
     @SuppressLint("DefaultLocale")
-    private fun setBrightness(currentAlpha: Float) {
-        mCurrentAlpha = currentAlpha
-        Dog.d(String.format("setBrightness currentAlpha=%.2f", currentAlpha))
-        if (PrefUtils.getBoolean("brightness_with_dim_activity", false)) {
-            SetWindowBrightness(0F)
-            val newColor = Color.argb(currentAlpha.toInt(), 0, 0, 0)
+    private fun setBrightness(currentAlpha_: Float) {
+        var currentAlpha = currentAlpha_
+        //Dog.d(String.format("setBrightness currentAlpha=%.2f", currentAlpha))
+        mDimFrame.setBackgroundColor(Color.TRANSPARENT)
+        val maxCoeff = PrefUtils.getIntFromText(BRIGHTNESS_PROGRAMMATIC_DIM_MAX, 20 ) / 100F;
+        if ( currentAlpha > MAX_ALPHA ) {
+            SetWindowBrightness( MAX_ALPHA )
+            if ( maxCoeff < 0 )
+                PrefUtils.putString(BRIGHTNESS_PROGRAMMATIC_DIM_MAX, "0" )
+            else if ( maxCoeff > 100 )
+                PrefUtils.putString(BRIGHTNESS_PROGRAMMATIC_DIM_MAX, "100" )
+            currentAlpha = min( MAX_ALPHA * (1 + maxCoeff ), currentAlpha )
+            val newColor = Color.argb( ( currentAlpha - MAX_ALPHA ).toInt(), 0, 0, 0)
             mDimFrame.setBackgroundColor(newColor)
-        } else {
-            mDimFrame.setBackgroundColor(Color.TRANSPARENT)
-            SetWindowBrightness(currentAlpha)
-        }
+        } else
+            SetWindowBrightness( currentAlpha )
+        //Dog.v( TAG, "setBrightness maxCoeff= $maxCoeff, $currentAlpha, $currentAlpha_" )
+        mCurrentAlpha = currentAlpha
     }
 
     private fun SetWindowBrightness(currentAlpha: Float) {
