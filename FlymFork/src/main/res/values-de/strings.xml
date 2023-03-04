@@ -278,7 +278,7 @@
     <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
-    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
+    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch Reduktion der Transparenz des Fensterhintergrundes. Bitte ausprobieren, wenn das Einstellen der Helligkeit nicht funktioniert</string>
     <string name="settings_category_notification">Benachrichtigungen</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
