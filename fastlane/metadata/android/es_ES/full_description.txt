@@ -1,14 +1,14 @@
-<i>"Staying in touch with all My Interests never has been so easy".</i>
+<i>"Estar en contacto con todos mis intereses nunca ha sido tan fácil".</i>
 
-<b><i>Handy Reading</i>: no ads/free software under <i>GNU GPL</i> license.</b>
+<b><i>Lectura útil</i>: no hay publicidad/software libre bajo la licencia <i>GNU GPL</i>.</b>
 
 <ul>
-	<li><b>make up Your Dream Magazine!</b></li>
-	<li><b>interesting articles straight into Your hands</b></li>
-	<li><b>finally enjoy reading</b></li>
+	<li><b>¡crea la Revista de tus Sueños!</b></li>
+	<li><b>artículos interesantes directamente en tus manos</b></li>
+	<li><b>por fin disfruta leyendo</b></li>
 </ul>
 
-...enjoy Your Life <b>being distraction-free - and up-to-date with Your interests</b> in the same time. Focus on the Essence...
+...disfruta tu vida <b>sin distracciones poniéndote al día de tus intereses</b> al mismo tiempo. Concéntrate en lo esencial...
 
 Meet <i>Handy Reading</i> - a feature-rich, off-line oriented <i>RSS, web content and books</i> reader which <b>respects Your Time as well as Your Inner Peace</b>: it avoids switching attention and distractions which are so familiar today when You think of mobile devices.
 
