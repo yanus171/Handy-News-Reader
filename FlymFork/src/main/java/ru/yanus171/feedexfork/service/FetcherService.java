@@ -525,7 +525,8 @@ public class FetcherService extends IntentService {
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
         try (Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null ) ) {
             while (cursor.moveToNext())
-                mapEntryLinkHash.add(FileUtils.INSTANCE.getLinkHash(cursor.getString(0)));
+                if ( !cursor.isNull( 0 ) )
+                    mapEntryLinkHash.add(FileUtils.INSTANCE.getLinkHash(cursor.getString(0)));
         }
         deleteGhostHtmlFiles( mapEntryLinkHash );
         deleteGhostImages( mapEntryLinkHash );
@@ -2063,6 +2064,8 @@ public class FetcherService extends IntentService {
             final HashMap<String, Long> mapEntryLinkHashToFeedID = new HashMap<>();
             try( Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{_ID, LINK, FEED_ID}, null, null, null) ) {
                 while (cursor.moveToNext()) {
+                    if ( cursor.isNull( 1 ) )
+                        continue;
                     final String linkHash = FileUtils.INSTANCE.getLinkHash(cursor.getString(1));
                     mapEntryLinkHashToID.put(linkHash, cursor.getLong(0));
                     mapEntryLinkHashToFeedID.put(linkHash, cursor.getLong(2));
