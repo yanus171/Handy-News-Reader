@@ -1011,8 +1011,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public void UpdateTags() {
         final int status = Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
-        Element root = FindBestElement(doc, mEntryLink, "", true);
-        AddTagButtons(doc, mEntryLink, root);
+        AddTagButtons(doc, mEntryLink);
         final String data = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
         synchronized (EntryView.this) {
             mData = data;

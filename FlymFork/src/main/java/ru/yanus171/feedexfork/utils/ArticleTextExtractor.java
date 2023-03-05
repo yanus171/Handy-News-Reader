@@ -265,8 +265,7 @@ public class ArticleTextExtractor {
         if ( mobilize == MobilizeType.Tags ) {
             mLastLoadedAllDoc = ret.toString();
             Document tempDoc = Jsoup.parse(ret.toString(), NetworkUtils.getUrlDomain(url));
-            //rootElement = FindBestElement(doc, url, contentIndicator, isFindBestElement);
-            AddTagButtons(tempDoc, url, null);
+            AddTagButtons(tempDoc, url);
             ret = new StringBuilder(tempDoc.toString());
             SaveContentStepToFile( ret, "improveHtmlContent TAGS" );
         }
@@ -279,7 +278,7 @@ public class ArticleTextExtractor {
         final String prefix = url //NetworkUtils.getBaseUrl_(url)
             .replace( "https://", "" )
             .replace( "http://", "" )
-            .replace( "/", "_" );
+            .replace( "/", "_" ) + "_" + "col";
         for ( Element el: rootElement.getAllElements() ) {
             if (el.tagName().equals("tr"))
                 colNumber = 0;
@@ -402,7 +401,7 @@ public class ArticleTextExtractor {
         return bestMatchElement;
     }
 
-    public static void AddTagButtons(Document doc, String url, Element bestMatchElement) {
+    public static void AddTagButtons(Document doc, String url) {
         doc.addClass( HANDY_NEWS_READER_ROOT_CLASS );
 
         String fullTextRootElementFromPrefClassName = getUrlClassNameFromPref( url, CONTENT_TEXT_ROOT_EXTRACT_RULES );
@@ -427,7 +426,7 @@ public class ArticleTextExtractor {
                     final boolean isHidden = removeClassList.contains(className);
                     final boolean isCategory = categoriesAllElements != null && categoriesAllElements.contains( el );
                     final boolean isDate = dateElement != null && dateElement.equals( el );
-                    final boolean isTextRoot = el.equals( bestMatchElement ) ||
+                    final boolean isTextRoot =
                         el.hasAttr( HANDY_NEWS_READER_ROOT_CLASS ) ||
                         el.classNames().contains( fullTextRootElementFromPrefClassName );
                     AddTagButton(el, className, url, isHidden, isTextRoot, isCategory, isDate );

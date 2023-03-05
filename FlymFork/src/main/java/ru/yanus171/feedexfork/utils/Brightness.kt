@@ -77,7 +77,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                                 //if( abs(paddingY) <= abs(paddingX) )
                                 //    view1.parent.requestDisallowInterceptTouchEvent(true)
                                 val delta : Float = paddingY.toFloat() / mDimFrame.height.toFloat()
-                                val coeff : Float = max(0.1F, (min(1F, abs(delta))) * 2)
+                                val coeff : Float = max(0.1F, (min(1F, abs(delta))) * if (mInitialAlpha < MAX_ALPHA) 2 else 8)
                                 var currentAlpha : Float = (mInitialAlpha + delta * 255F * coeff.toDouble().pow(3.0)).toFloat()
                                 if (currentAlpha < 1)
                                     currentAlpha = 1F
@@ -86,8 +86,8 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                                 mInfo?.visibility = View.VISIBLE
                                 mInfo?.text = String.format("%s: %.1f %%",
                                         mInfo?.context?.getString(R.string.brightness),
-                                        if (mCurrentAlpha >= MAX_ALPHA / 100F)
-                                            (MAX_ALPHA - mCurrentAlpha) / MAX_ALPHA.toFloat() * 100
+                                        if ( mCurrentAlpha >= MAX_ALPHA / 100F )
+                                            ( MAX_ALPHA - mCurrentAlpha ) / MAX_ALPHA.toFloat() * 100
                                         else
                                             100F
                                         )
