@@ -176,6 +176,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public long mLastSetHTMLTime = 0;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
     public String mTitle;
+    private boolean mIsScrollScheduled = false;
 
     private static String GetCSS(final String text, final String url, boolean isEditingMode) {
         String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
@@ -718,28 +719,29 @@ public class EntryView extends WebView implements Handler.Callback {
                 Status().ChangeProgress( "started..." );
                 mContentWasLoaded = false;
                 StatusStartPageLoading();
-                ScheduleScrollTo(view);
                 super.onPageStarted( view, url, favicon );
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished( view, url );
-                Dog.v( "onPageFinished url = " + url );
+                //Dog.v( "EntryView.onPageFinished url = " + url );
                 if ( url.equals( "about:blank" ) ) {
                     Status().ChangeProgress("finished.");
                     if (!mLoadTitleOnly)
                         mContentWasLoaded = true;
                     if (mActivity.mEntryFragment != null)
                         mActivity.mEntryFragment.DisableTapActionsIfVideo(EntryView.this);
-                    ScheduleScrollTo(view);
+                    if ( !mIsScrollScheduled )
+                        ScheduleScrollTo(view, new Date().getTime() );
                 } else { // anchor selected
                     AddNavigationHistoryStep();
                     DoNotShowMenu();
                 }
             }
 
-            private void ScheduleScrollTo(final WebView view) {
+            private void ScheduleScrollTo(final WebView view, long startTime) {
+                mIsScrollScheduled = false;
                 //Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
                 final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
@@ -757,16 +759,20 @@ public class EntryView extends WebView implements Handler.Callback {
                                if (mActivity.mEntryFragment != null)
                                    mActivity.mEntryFragment.UpdateHeader();
                                ScrollToY();
+                               if ( new Date().getTime() - startTime < 2000 )
+                                   ScheduleScrollTo( view, startTime );
                            });
                     DownLoadImages();
                     EndStatus();
-                } else
-                    view.postDelayed(() -> ScheduleScrollTo(view), 150);
+                } else {
+                    mIsScrollScheduled = true;
+                    view.postDelayed(() -> ScheduleScrollTo(view, startTime), 150);
+                }
                 mLastContentHeight = newContentHeight;
             }
         });
 
-        setOnTouchListener(new View.OnTouchListener() {
+        setOnTouchListener(new OnTouchListener() {
             private float mPressedY;
             private float mPressedX;
 
@@ -810,6 +816,14 @@ public class EntryView extends WebView implements Handler.Callback {
             }
         });
 
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            postVisualStateCallback(1, new VisualStateCallback() {
+//                @Override
+//                public void onComplete(long l) {
+//                    Dog.v( TAG, "EntriView.postVisualStateCallback.onComplete" );
+//                }
+//            });
+//        }
         //setNestedScrollingEnabled( true );
         timer.End();
     }
@@ -819,7 +833,7 @@ public class EntryView extends WebView implements Handler.Callback {
         final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)) );
         final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
         final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
-            LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<Long>(), null, (checkedLabels) -> {
+            LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<>(), null, (checkedLabels) -> {
                 Intent intent_ = new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
                 ArrayList<String> list = new ArrayList<>();
                 for (long labelID : checkedLabels)

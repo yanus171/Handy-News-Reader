@@ -1344,21 +1344,19 @@ public class FetcherService extends IntentService {
             ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
                 for( final String imgPath: imageList ) {
-                    futures.add( executor.submit( new Callable<DownloadResult>() {
-                        @Override
-                        public DownloadResult call() {
-                            DownloadResult result = new DownloadResult();
-                            result.mResultCount = 0;
-                            if ( !isCancelRefresh() && isEntryIDActive( entryId ) ) {
-                                try {
-                                    if ( NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false) )
-                                        result.mResultCount = 1;
-                                } catch (Exception e) {
-                                    obs.SetError(entryLink, feedId, String.valueOf(entryId), e);
-                                }
+                    futures.add( executor.submit(() -> {
+                        DownloadResult result = new DownloadResult();
+                        result.mResultCount = 0;
+                        try {
+                            if (!isCancelRefresh() && isEntryIDActive(entryId)) {
+                                if (NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false))
+                                    result.mResultCount = 1;
                             }
-                            return result;
-                        }}));
+                        } catch (Exception e) {
+                            obs.SetError(entryLink, feedId, String.valueOf(entryId), e);
+                        }
+                        return result;
+                    }));
                 }
                 downloadedCount = FinishExecutionService(statusText, status, futures );
                 //Dog.v( "downloadedCount = " + downloadedCount );
