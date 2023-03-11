@@ -732,8 +732,11 @@ public class EntryView extends WebView implements Handler.Callback {
                         mContentWasLoaded = true;
                     if (mActivity.mEntryFragment != null)
                         mActivity.mEntryFragment.DisableTapActionsIfVideo(EntryView.this);
-                    if ( !mIsScrollScheduled )
-                        ScheduleScrollTo(view, new Date().getTime() );
+                    if ( !mIsScrollScheduled ) {
+                        if (mContentWasLoaded)
+                            DownLoadImages();
+                        ScheduleScrollTo(view, new Date().getTime());
+                    }
                 } else { // anchor selected
                     AddNavigationHistoryStep();
                     DoNotShowMenu();
@@ -742,7 +745,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
             private void ScheduleScrollTo(final WebView view, long startTime) {
                 mIsScrollScheduled = false;
-                //Dog.v(TAG, "EntryView.ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
+                //Dog.v(TAG, "ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
                 final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
@@ -762,7 +765,7 @@ public class EntryView extends WebView implements Handler.Callback {
                                if ( new Date().getTime() - startTime < 2000 )
                                    ScheduleScrollTo( view, startTime );
                            });
-                    DownLoadImages();
+                    //DownLoadImages();
                     EndStatus();
                 } else {
                     mIsScrollScheduled = true;
@@ -959,7 +962,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     private void ScrollToY() {
-        Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+        Dog.v(TAG, "ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
         if (GetScrollY() > 0)
             EntryView.this.scrollTo(0, GetScrollY());
     }
@@ -991,7 +994,7 @@ public class EntryView extends WebView implements Handler.Callback {
         Status().HideByScroll();
         //int contentHeight = (int) Math.floor(GetContentHeight());
         //int webViewHeight = getMeasuredHeight();
-        if ( mActivity.mEntryFragment != null )
+        if ( mActivity != null && mActivity.mEntryFragment != null )
             mActivity.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
         if (mScrollChangeListener != null)
@@ -1005,6 +1008,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public void UpdateImages( final boolean downloadImages ) {
         if ( !downloadImages )
             StatusStartPageLoading();
+        Dog.v( TAG, "UpdateImages" );
         new Thread() {
             @Override
             public void run() {
@@ -1036,7 +1040,8 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     private void LoadData() {
-        if (mContentWasLoaded && GetViewScrollPartY() > 0)
+        Dog.v( TAG, "LoadDate" );
+        if ( mContentWasLoaded && GetViewScrollPartY() > 0 )
             mScrollPartY = GetViewScrollPartY();
         //StatusStartPageLoading();
         final String data;
@@ -1066,7 +1071,7 @@ public class EntryView extends WebView implements Handler.Callback {
         UiUtils.RunOnGuiThread(new Runnable() {
             @Override
             public void run() {
-                Dog.d( String.format( "NotifyToUpdate( %d )", entryId ) );
+                Dog.v( TAG, String.format( "NotifyToUpdate( %d )", entryId ) );
                 EntryView.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink, restorePosition) );//ScheduledNotifyObservers(entryId, entryLink);
             }
         }, 0 );//NOTIFY_OBSERVERS_DELAY_MS);
@@ -1268,7 +1273,7 @@ public class EntryView extends WebView implements Handler.Callback {
                     } finally {
                         SetNotifyEnabled( true );
                     }
-                    //Dog.v("EntryView", String.format("EntryView.SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
+                    //Dog.v(TAG, String.format("SaveScrollPos (entry %d) update scrollPos = %f", mEntryId, mScrollPartY));
 //                }
 //            }.start();
         }
@@ -1287,7 +1292,7 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
     @Override
     public void run() {
         EntryView.mLastNotifyObserversScheduled.remove( mId );
-        //Dog.v( EntryView.TAG,"EntryView.ScheduledNotifyObservers() run");
+        //Dog.v( EntryView.TAG,"ScheduledNotifyObservers() run");
         if (new Date().getTime() - EntryView.mLastNotifyObserversTime.get( mId ) > EntryView.NOTIFY_OBSERVERS_DELAY_MS)
             EntryView.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink, false) );
         else
