@@ -627,7 +627,10 @@
     <string name="fiveMinute">Minuten</string>
     <string name="yearsShort">Jahre</string>
     <string name="monthsShort">Monate</string>
+    <string name="weeksShort">Wo</string>
     <string name="daysShort">T</string>
+    <string name="hoursShort">Std</string>
+    <string name="minutesShort">Min</string>
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">vor</string>
     <string name="error_add_customm_font">Hinzufügen einer benutzerdefinierten Schriftart fehlgeschlagen</string>
@@ -676,6 +679,10 @@
     <string name="refresh_only_selected_select_none">Auswahl aufheben</string>
     <string name="refresh_only_selected_select_none_summary">Kontrollkästchen zur automatischen Aktualisierung für alle Feeds entfernen</string>
     <string name="feed_count_were_edited">Feeds wurden bearbeitet</string>
+    <string name="show_navigation_bar_in_fullscreen">Navigation bei Vollbild</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Navigationsleiste im Vollbildmodus anzeigen</string>
+    <string name="show_unstarred_checkbox">Symbol für »Kein Favorit«</string>
+    <string name="show_unstarred_checkbox_descr">Kleinen ungefüllten Stern als Zeichen anzeigen, dass Artikel nicht zu den Favoriten gehört</string>
     <string name="debug">Fehlersuche</string>
     <string name="send_debug_info_on_crash">Bei Absturz Informationen zur Fehlersuche versenden</string>
     <string name="send_debug_info_on_crash_summary">Bei einem Absturz der App vorschlagen, eine Mail mit informationen zur Fehlersuche an den Entwickler zu senden</string>
