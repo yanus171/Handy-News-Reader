@@ -744,17 +744,20 @@ public class EntryView extends WebView implements Handler.Callback {
             }
 
             private void ScheduleScrollTo(final WebView view, long startTime) {
-                mIsScrollScheduled = false;
                 //Dog.v(TAG, "ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
                 final String searchText = mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
-                if (newContentHeight > 0 && newContentHeight == mLastContentHeight) {
+                if ( !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                     if ( isSearch ) {
-                        if (Build.VERSION.SDK_INT >= 16)
-                            findAllAsync(searchText);
-                        else
-                            findAll(searchText);
+                        //Dog.v(TAG, "ScheduleScrollTo() isSearchText" );
+                        UiUtils.RunOnGuiThread(() -> {
+                            if (Build.VERSION.SDK_INT >= 16)
+                                findAllAsync(searchText);
+                            else
+                                findAll(searchText);
+
+                        } );
                         UiUtils.RunOnGuiThread(view::clearMatches, 5000 );
                     } else
                         UiUtils.RunOnGuiThread(() ->
@@ -762,16 +765,23 @@ public class EntryView extends WebView implements Handler.Callback {
                                if (mActivity.mEntryFragment != null)
                                    mActivity.mEntryFragment.UpdateHeader();
                                ScrollToY();
-                               if ( new Date().getTime() - startTime < 2000 )
-                                   ScheduleScrollTo( view, startTime );
                            });
-                    //DownLoadImages();
+                    if ( new Date().getTime() - startTime < 1000 )
+                        PostDelayed( view, startTime );
                     EndStatus();
-                } else {
-                    mIsScrollScheduled = true;
-                    view.postDelayed(() -> ScheduleScrollTo(view, startTime), 150);
-                }
+                } else
+                    PostDelayed( view, startTime );
                 mLastContentHeight = newContentHeight;
+            }
+
+            void PostDelayed( final WebView view, long startTime ) {
+                if ( !mIsScrollScheduled ) {
+                    mIsScrollScheduled = true;
+                    view.postDelayed(() -> {
+                        mIsScrollScheduled = false;
+                        ScheduleScrollTo(view, startTime);
+                    }, 350);
+                }
             }
         });
 

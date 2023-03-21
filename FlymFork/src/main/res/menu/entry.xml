@@ -6,12 +6,29 @@
         android:id="@+id/menu_star"
         android:icon="@drawable/ic_star_border"
         android:title="@string/menu_star"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_reload_full_text_toolbar"
         android:icon="@drawable/ic_sync"
         android:title="@string/menu_reload_full_text"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search"
+        android:title="@android:string/search_go"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:id="@+id/menu_search_next"
+        android:icon="@drawable/ic_keyboard_arrow_down_gray"
+        app:showAsAction="always"
+        android:title="Next"/>
+    <item
+        android:id="@+id/menu_search_previous"
+        android:icon="@drawable/ic_keyboard_arrow_up"
+        app:showAsAction="always"
+        android:title="Previuos"/>
+
 
     <item
         android:id="@+id/menu_mark_as_unread"

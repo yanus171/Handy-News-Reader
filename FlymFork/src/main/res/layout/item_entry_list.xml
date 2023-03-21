@@ -375,7 +375,7 @@
             android:gravity="left"
             android:layout_gravity="left"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_keyboard_arrow_up" />
+            android:src="@drawable/ic_keyboard_arrow_up_small" />
 
         <TextView
             android:id="@+id/textSourceShowMore"

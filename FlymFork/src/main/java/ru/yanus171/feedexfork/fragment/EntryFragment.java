@@ -64,6 +64,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -76,6 +77,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
@@ -125,6 +127,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
+import ru.yanus171.feedexfork.view.AppSelectPreference;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
@@ -197,7 +200,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private String mWhereSQL;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
     public int mLastScreenState = -1;
-
+    private String mSearchText = "";
+    MenuItem mSearchNextItem = null;
+    MenuItem mSearchPreviousItem = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
@@ -635,6 +640,56 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
             updateMenuWithIcon(item);
         }
+
+        final MenuItem searchItem = menu.findItem(R.id.menu_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        mSearchNextItem = menu.findItem(R.id.menu_search_next);
+        mSearchPreviousItem = menu.findItem(R.id.menu_search_previous);
+        mSearchNextItem.setVisible( false );
+        mSearchPreviousItem.setVisible( false );
+
+        // Use a custom search icon for the SearchView in AppBar
+        int searchImgId = androidx.appcompat.R.id.search_button;
+        ImageView v = searchView.findViewById(searchImgId);
+        v.setImageResource(R.drawable.ic_search);
+
+        if (!mSearchText.isEmpty()) {
+            searchItem.expandActionView();
+            // Without that, it just does not work
+            searchView.post(() -> {
+                searchView.setQuery(mSearchText, false);
+                searchView.clearFocus();
+            });
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mSearchText = newText;
+                mSearchNextItem.setVisible( false );
+                mSearchPreviousItem.setVisible( false );
+
+                if (!TextUtils.isEmpty(newText)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                        GetSelectedEntryView().findAllAsync( newText );
+                    else
+                        GetSelectedEntryView().findAll( newText );
+                }
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(() -> {
+            mSearchText = "";
+            mSearchNextItem.setVisible( false );
+            mSearchPreviousItem.setVisible( false );
+            GetSelectedEntryView().clearMatches();
+            return false;
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -951,6 +1006,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     final String feedId = getCurrentFeedID();
                     if (!feedId.isEmpty() && !feedId.equals(FetcherService.GetExtrenalLinkFeedID()))
                         startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedId)));
+                    break;
+                }
+
+                case R.id.menu_search_next: {
+                    GetSelectedEntryView().findNext( true );
+                    break;
+                }
+
+                case R.id.menu_search_previous: {
+                    GetSelectedEntryView().findNext( false );
                     break;
                 }
 
@@ -1822,6 +1887,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 FetcherService.addActiveEntryID(entry.mID);
                 getLoaderManager().restartLoader(position, null, EntryFragment.this);
             }
+
             return view;
         }
     }
@@ -1885,7 +1951,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return;
             if ( mRetrieveFullText && !mIsFullTextShown )
                 return;
-            if ( !PrefUtils.getBoolean("entry_auto_unstart_at_bottom", true) )
+            if ( !getBoolean("entry_auto_unstart_at_bottom", true) )
                 return;
             if ( view.mWasAutoUnStar )
                 return;
@@ -1906,6 +1972,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 SetIsFavorite(false, true );
             }
         };
+
+        if (Build.VERSION.SDK_INT >= 16)
+            view.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
+                if ( mSearchNextItem == null || mSearchPreviousItem == null )
+                    return;
+                mSearchNextItem.setVisible( numberOfMatches > 1 );
+                mSearchPreviousItem.setVisible( numberOfMatches > 1 );
+            });
         view.StatusStartPageLoading();
         return view;
     }
