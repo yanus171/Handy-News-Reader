@@ -51,6 +51,7 @@ import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
@@ -88,6 +89,9 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_OPTIONS = 10;
     private static final int POS_IMAGESIZE = 11;
 
+    public static final int ALL_ENTRY_POS = 0;
+    public static final int UNREAD_ENTRY_POS = 1;
+    public static final int STARRED_ENTRY_POS = 2;
     public static final int EXTERNAL_ENTRY_POS = 3;
     public static final int LAST_READ_ENTRY_POS = 4;
     public static final int LABEL_GROUP_POS = 5;
@@ -250,15 +254,19 @@ public class DrawerAdapter extends BaseAdapter {
 
         ArrayList<Label> labelList = getLabelList();
 
-        if (position == 0 || position == 1 || position == 2 || position == EXTERNAL_ENTRY_POS || position == LAST_READ_ENTRY_POS ) {
+        if ( position == ALL_ENTRY_POS ||
+             position == UNREAD_ENTRY_POS ||
+             position == STARRED_ENTRY_POS ||
+             position == EXTERNAL_ENTRY_POS ||
+             position == LAST_READ_ENTRY_POS ) {
             switch (position) {
-                case 0:
+                case ALL_ENTRY_POS:
                     holder.titleTxt.setText(R.string.unread_entries);
                     holder.iconView.setImageResource(R.drawable.cup_new_unread);
                     SetCount(KEY_AllUnreadNumber, holder.unreadTxt);
                     SetImageSizeText(holder, KEY_AllUnreadImagesSize);
                     break;
-                case 1:
+                case UNREAD_ENTRY_POS:
                     holder.titleTxt.setText(R.string.all_entries);
                     holder.iconView.setImageResource(R.drawable.cup_new_pot);
                     SetCount(KEY_AllNumber, holder.unreadTxt);
@@ -276,7 +284,7 @@ public class DrawerAdapter extends BaseAdapter {
                         holder.tasksTxt.setText(getContext().getString(R.string.tasks_to_download) + ": " + taskInfo);
                     }
                     break;
-                case 2:
+                case STARRED_ENTRY_POS:
                     holder.titleTxt.setText(R.string.favorites);
                     holder.iconView.setImageResource(R.drawable.cup_new_star);
                     SetCount(KEY_FavoritesUnreadNumber, holder.unreadTxt);
@@ -427,10 +435,11 @@ public class DrawerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
+        if ( position < FIRST_ENTRY_POS() )
+            return Long.parseLong(FetcherService.GetExtrenalLinkFeedID());
         if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
             return mFeedsCursor.getLong(POS_ID);
         }
-
         return -1;
     }
 

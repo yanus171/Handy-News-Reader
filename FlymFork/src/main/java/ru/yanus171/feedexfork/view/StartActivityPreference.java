@@ -6,14 +6,17 @@ import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
 import static ru.yanus171.feedexfork.Constants.DB_OR;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_AUTO_REFRESH;
 import static ru.yanus171.feedexfork.provider.FeedData.PACKAGE_NAME;
+import static ru.yanus171.feedexfork.provider.FeedData.getOldContentValues;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.preference.Preference;
 import android.util.AttributeSet;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
@@ -36,7 +39,9 @@ public class StartActivityPreference extends Preference {
 			SelectAllFeedsForAutoRefresh();
 		else if (Oper.equals("refresh_only_selected_select_none"))
 			SelectNoneFeedsForAutoRefresh();
-}
+		else if (Oper.equals("edit_global_filter"))
+			getContext().startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedData.FeedColumns.CONTENT_URI(FetcherService.GetExtrenalLinkFeedID())));
+	}
 	private void SelectAllFeedsForAutoRefresh() {
 		Theme.CreateDialog( getContext() )
 			.setMessage( getContext().getString( R.string.refresh_only_selected_select_all_summary ) + " ?" )

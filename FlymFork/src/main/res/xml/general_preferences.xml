@@ -827,6 +827,11 @@
             android:title="@string/settings_font_rules"
             android:summary="@string/settings_font_rules_description"/>
         <EditTextPreference
+            android:key="global_class_list_to_remove_from_article_text"
+            android:title="@string/global_class_list_to_remove_from_article_text"
+            android:inputType="text|textMultiLine"
+            android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
+        <EditTextPreference
             android:key="comments_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue=""
@@ -848,56 +853,17 @@
             android:defaultValue=""
             android:title="@string/setting_custom_css_text"
             android:summary="@string/setting_custom_css_text_description"/>
-        <EditTextPreference
-            android:key="global_class_list_to_remove_from_article_text"
-            android:title="@string/global_class_list_to_remove_from_article_text"
-            android:inputType="text|textMultiLine"
-            android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="thread_count"
             android:inputType="numberDecimal"
             android:defaultValue="9"
             android:title="@string/settings_thread_count"
             android:summary="@string/settings_thread_count_description"/>
-        <PreferenceScreen
+        <ru.yanus171.feedexfork.view.StartActivityPreference
+            android:key="open_global_filter"
             android:title="@string/global_filter"
-            android:summary="@string/global_filter_descr">
-            <PreferenceCategory
-                android:layout="@layout/preference_category"
-                android:title="@string/markAsStarred">
-                <CheckBoxPreference
-                    android:key="global_marks_as_star_filter_on"
-                    android:defaultValue="false"
-                    android:title="@string/turnOn"/>
-                <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                    android:key="global_marks_as_star_filter_rule"
-                    android:dependency="global_marks_as_star_filter_on"
-                    android:title="@string/rule_text"
-                    android:inputType="text|textMultiLine"
-                    android:summary="@string/global_marks_as_star_filter_rule_descr"/>
-                <CheckBoxPreference
-                    android:key="global_marks_as_star_filter_rule_is_regex"
-                    android:dependency="global_marks_as_star_filter_on"
-                    android:defaultValue="false"
-                    android:title="@string/filter_is_regex"/>
-                <CheckBoxPreference
-                    android:key="global_marks_as_star_filter_apply_to_title"
-                    android:dependency="global_marks_as_star_filter_on"
-                    android:defaultValue="false"
-                    android:title="@string/filter_apply_to_title"
-                    android:summary= "@string/global_marks_as_star_filter_apply_to_title_descr"/>
-
-            </PreferenceCategory>
-            <PreferenceCategory
-                android:layout="@layout/preference_category"
-                android:title="@string/removeText">
-                <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-                    android:key="global_removeText_filter_rule"
-                    android:title="@string/rule_text"
-                    android:inputType="text|textMultiLine"
-                    android:summary="@string/global_removeText_filter_rule_descr"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
+            android:summary="@string/global_filter_descr"
+            startActivity:oper="edit_global_filter"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="setting_convert_xml_symbols_before_parsing"

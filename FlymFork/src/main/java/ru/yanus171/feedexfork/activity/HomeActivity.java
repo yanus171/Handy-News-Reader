@@ -182,20 +182,17 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             selectDrawerItem(position);
             CloseDrawer();
         });
-        mDrawerList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if ( position == DrawerAdapter.LABEL_GROUP_POS ) {
-                    startActivity(new Intent(getApplicationContext(), LabelListActivity.class ));
-                    return true;
-                } else if ( DrawerAdapter.isLabelPos( position ) ) {
+        mDrawerList.setOnItemLongClickListener((parent, view, position, id) -> {
+            if ( position == DrawerAdapter.LABEL_GROUP_POS ) {
+                startActivity(new Intent(getApplicationContext(), LabelListActivity.class ));
+                return true;
+            } else if ( DrawerAdapter.isLabelPos( position ) ) {
 
-                } else if (id > 0) {
-                    startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
-                    return true;
-                }
-                return false;
+            } else if (id > 0) {
+                startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
+                return true;
             }
+            return false;
         });
 
         mCurrentDrawerPos = 0;

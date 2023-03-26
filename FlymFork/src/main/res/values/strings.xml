@@ -386,8 +386,8 @@
     <string name="loadTypeWebPageSearch"><b>Search the Web </b> <font color="gray"> (DuckDuckGo - find and load one article)</font></string>
     <string name="loadTypeOneWebPage"><b>Web Page - Divide</b><font color="gray"> (divide one web page content into many articles using HTML tags class names)</font></string>
     <string name="loadType">Load type:</string>
-    <string name="global_filter">Global filter&#8230;</string>
-    <string name="global_filter_descr">A filter that apply to every feed - leave filter text (and regex text) empty to disable</string>
+    <string name="global_filter">Global filter</string>
+    <string name="global_filter_descr">A filter that apply to every feed</string>
     <string name="global_marks_as_star_filter_apply_to_title_descr">otherwise apply to content</string>
     <string name="rule_text">Rule text</string>
     <string name="global_marks_as_star_filter_rule_descr">a rule per line</string>
@@ -719,5 +719,7 @@
     <string name="menu_import_from_backup_file">Import from backup file</string>
     <string name="brightness_programmatic_dim_max">Max programmatic dim value</string>
     <string name="brightness_programmatic_dim_max_descr">The maximum additional programmatic brightness dim value (0-no additional dim, 100 - full darkness)</string>
+    <string name="edit_feed_title_external">Edit</string>
+    <string name="filter_hint_external">The items of this global filter are added to any feed filter. Reject items of global filter exclude triggered articles from web search results. This screen is also accessible by long tap on All, Unread, Favorites, Last read or Without feed items in feed list) </string>
 
 </resources>

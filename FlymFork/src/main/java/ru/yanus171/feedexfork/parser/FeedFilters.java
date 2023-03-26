@@ -13,6 +13,7 @@ import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -30,9 +31,12 @@ public class FeedFilters {
 
     public FeedFilters(String feedId) {
         init( GetCursor(feedId), true );
+        if ( !feedId.equals( FetcherService.GetExtrenalLinkFeedID() ) )
+            init( GetCursor(FetcherService.GetExtrenalLinkFeedID() ), true );
     }
     public FeedFilters(Cursor c) {
         init( c, false );
+        init( GetCursor(FetcherService.GetExtrenalLinkFeedID() ), true );
     }
     public void init( Cursor cursor, boolean closeCursor ) {
         if ( cursor.moveToFirst() )
@@ -46,39 +50,6 @@ public class FeedFilters {
                 r.isRemoveText = cursor.getInt(5) == 1;
                 mFilters.add(r);
             } while ( cursor.moveToNext() );
-
-        if ( PrefUtils.getBoolean( "global_marks_as_star_filter_on", false ) ) {
-            String[] list = TextUtils.split( PrefUtils.getString( "global_marks_as_star_filter_rule",
-                                                            "-------||||||-______" ),
-                                    "\n"  );
-            for ( String rule: list ) {
-                if ( rule.trim().isEmpty() )
-                    continue;
-                Rule r = new Rule();
-                r.filterText = rule;
-                r.isRegex = PrefUtils.getBoolean("global_marks_as_star_filter_rule_is_regex", false);
-                r.mApplyType = PrefUtils.getBoolean("global_marks_as_star_filter_apply_to_title", true) ? DB_APPLIED_TO_TITLE : DB_APPLIED_TO_CONTENT;
-                r.isAcceptRule = false;
-                r.isMarkAsStarred = true;
-                mFilters.add(r);
-            }
-        }
-
-        {
-            String[] list = TextUtils.split(PrefUtils.getString("global_removeText_filter_rule", "-------||||||-______"), "\n");
-            for (String rule : list) {
-                if (rule.trim().isEmpty())
-                    continue;
-                Rule r = new Rule();
-                r.filterText = rule;
-                r.isRegex = true;
-                r.mApplyType = DB_APPLIED_TO_CONTENT;
-                r.isAcceptRule = false;
-                r.isMarkAsStarred = false;
-                r.isRemoveText = true;
-                mFilters.add(r);
-            }
-        }
         if ( closeCursor )
             cursor.close();
     }

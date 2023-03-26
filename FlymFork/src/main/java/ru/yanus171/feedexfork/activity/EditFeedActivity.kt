@@ -311,14 +311,15 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         mIsAutoRefreshCb.setOnCheckedChangeListener { compoundButton, b -> mIsAutoImageLoadCb.isEnabled = b }
         mIsAutoRefreshCb.isChecked = false
         mIsAutoRefreshCb.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false)) View.VISIBLE else View.GONE
-        mLoadTypeRG.setOnCheckedChangeListener({ _, _ -> ShowControls() })
+        mLoadTypeRG.setOnCheckedChangeListener { _, _ -> ShowControls() }
+        val isExternal = this !is ArticleWebSearchActivity && intent.data!!.lastPathSegment == FetcherService.GetExtrenalLinkFeedID()
         mTabHost.setup()
         mTabHost.addTab(mTabHost.newTabSpec("feedTab").setIndicator(getString(R.string.tab_feed_title)).setContent(R.id.feed_tab))
-        mTabHost.addTab(mTabHost.newTabSpec("filtersTab").setIndicator(getString(R.string.tab_filters_title)).setContent(R.id.filters_tab))
+        mTabHost.addTab(mTabHost.newTabSpec("filtersTab").setIndicator(if (isExternal) "" else getString( R.string.tab_filters_title) ).setContent(R.id.filters_tab))
         SetupFont(findViewById(R.id.feed_tab))
-        mTabHost.setOnTabChangedListener({ invalidateOptionsMenu() })
+        mTabHost.setOnTabChangedListener { invalidateOptionsMenu() }
         if (savedInstanceState != null) {
-            mTabHost.setCurrentTab(savedInstanceState.getInt(STATE_CURRENT_TAB))
+            mTabHost.currentTab = savedInstanceState.getInt(STATE_CURRENT_TAB)
         }
         val adapter: ResourceCursorAdapter = object : ResourceCursorAdapter(this,
                 android.R.layout.simple_spinner_item,
@@ -361,7 +362,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         } else if (Intent.ACTION_WEB_SEARCH == intent.action) {
             if (intent.hasExtra(SearchManager.QUERY)) mUrlEditText.setText(intent.getStringExtra(SearchManager.QUERY))
         } else if (Intent.ACTION_EDIT == intent.action) {
-            setTitle(R.string.edit_feed_title)
+            setTitle(if (isExternal) R.string.global_filter else R.string.edit_feed_title)
             tabWidget.visibility = View.VISIBLE
             mFiltersCursorAdapter = FiltersCursorAdapter(this, Constants.EMPTY_CURSOR)
             mFiltersListView.setAdapter(mFiltersCursorAdapter)
@@ -462,6 +463,14 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         else if ( IsAdd() )
             checkIfTelegram()
         if (PrefUtils.getBoolean("setting_edit_feed_force_portrait_orientation", false)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+
+        if ( isExternal ) {
+            mTabHost.tabWidget.getChildTabViewAt(0).visibility = View.GONE;
+            mTabHost.currentTab = 1
+            val text = findViewById<TextView>(R.id.filter_hint).text.toString()
+            findViewById<TextView>(R.id.filter_hint).text = text + "\n" + getString( R.string.filter_hint_external )
+        }
+
     }
     @SuppressLint("SetTextI18n")
     private fun checkIfTelegram() {
@@ -516,7 +525,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         mRetrieveFulltextCb.isEnabled = (isRss || isOneWebPage) && !isWebPageSearch
         findViewById<LinearLayout>(R.id.feed_edit_controls).visibility = if (isWebPageSearch) View.GONE else View.VISIBLE
         findViewById<View>(R.id.layout_next_page).visibility = if (isRss) View.GONE else View.VISIBLE
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         UpdateSpinnerGroup()
         UpdateSpinnerKeepTime()
         mOneWebPageLayout.visibility = if (isOneWebPage) View.VISIBLE else View.GONE
@@ -1030,6 +1039,7 @@ internal class GetWebSearchDuckDuckGoResultsLoader(context: Context?, private va
             try {
                 val data = ArrayList<String?>()
                 val doc = conn.parse
+                val globalFilters = FeedFilters( FetcherService.GetExtrenalLinkFeedID() )
                 for (el in doc!!.getElementsByClass("results_links")) {
                     try {
                         val title = el.getElementsByClass("result__title").text()
@@ -1039,6 +1049,8 @@ internal class GetWebSearchDuckDuckGoResultsLoader(context: Context?, private va
                         val descr = el.getElementsByClass("result__snippet").text()
                         var icon = el.getElementsByClass("result__icon__img").first()!!.attr("src")
                         if (!icon.startsWith("https:")) icon = "https:$icon"
+                        if ( globalFilters.isEntryFiltered( title, "", url, descr, null ) )
+                            continue
                         AddItem(results, data, "", title, url, descr, icon)
                     } catch (e: Exception) {
                         e.printStackTrace()
