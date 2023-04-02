@@ -22,7 +22,6 @@ package ru.yanus171.feedexfork.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +39,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,18 +58,16 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.List;
 
-import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;
-import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.service.AutoJobService;
+import ru.yanus171.feedexfork.service.AutoWorker;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
@@ -240,12 +236,12 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
         if (Build.VERSION.SDK_INT >= 21 )
-            AutoJobService.init(this);
+            AutoWorker.Companion.init();
 
 
         if (PrefUtils.getBoolean(PrefUtils.REFRESH_ON_OPEN_ENABLED, false)) {
             if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
-                FetcherService.StartService(new Intent(HomeActivity.this, FetcherService.class).setAction(FetcherService.ACTION_REFRESH_FEEDS), true);
+                FetcherService.Start(new Intent(HomeActivity.this, FetcherService.class).setAction(FetcherService.ACTION_REFRESH_FEEDS), true);
             }
         }
 

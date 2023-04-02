@@ -60,13 +60,12 @@ import android.text.TextUtils;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.service.AutoJobService;
+import ru.yanus171.feedexfork.service.AutoWorker;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.ColorPreference;
-import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATA_FOLDER;
 
@@ -79,7 +78,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
             Activity activity = getActivity();
             if (activity != null) {
                 if (Build.VERSION.SDK_INT >= 21 )
-                    AutoJobService.init(activity);
+                    AutoWorker.Companion.init();
             }
             return true;
         }

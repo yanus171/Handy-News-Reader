@@ -783,7 +783,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_start_auto_refersh: {
-                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
                 return true;
             }
 
@@ -843,11 +843,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_delete_old: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_DELETE_OLD ), false );
                 return true;
             }
             case R.id.menu_reload_all_texts: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT )
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_RELOAD_ALL_TEXT )
                                                  .setData( mCurrentUri )
                                                  .putExtra( WHERE_SQL_EXTRA, GetWhereSQL() ), false );
                 return true;
@@ -899,7 +899,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_create_auto_backup: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ), false );
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_AUTO_BACKUP ), false );
                 return true;
             }
             case R.id.menu_import_from_backup: {
@@ -1139,15 +1139,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null && !PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
             int uriMatcher = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             if ( uriMatcher == FeedDataContentProvider.URI_ENTRIES_FOR_FEED  ) {
-                FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
+                FetcherService.Start(new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.FEED_ID, mCurrentUri.getPathSegments().get(1)), true);
             } else if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_GROUP ) {
-                FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
+                FetcherService.Start(new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.GROUP_ID, mCurrentUri.getPathSegments().get(1)), true);
             } else {
-                FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
+                FetcherService.Start(new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS), true);
             }
         }

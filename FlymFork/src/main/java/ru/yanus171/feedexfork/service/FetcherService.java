@@ -79,8 +79,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
-import static ru.yanus171.feedexfork.service.AutoJobService.DEFAULT_INTERVAL;
-import static ru.yanus171.feedexfork.service.AutoJobService.getTimeIntervalInMSecs;
+import static ru.yanus171.feedexfork.service.AutoWorker.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
@@ -96,6 +95,7 @@ import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -161,7 +161,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
@@ -250,7 +249,7 @@ public class FetcherService extends IntentService {
     }
 
     public static boolean hasMobilizationTask(long entryId) {
-        Cursor cursor = getContext().getContentResolver().query(TaskColumns.CONTENT_URI, TaskColumns.PROJECTION_ID,
+        Cursor cursor = contentResolver().query(TaskColumns.CONTENT_URI, TaskColumns.PROJECTION_ID,
                 TaskColumns.ENTRY_ID + '=' + entryId + DB_AND + TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null);
 
         boolean result = cursor.getCount() > 0;
@@ -268,12 +267,12 @@ public class FetcherService extends IntentService {
                 values[i].put(TaskColumns.IMG_URL_TO_DL, images.get(i));
             }
 
-            getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+            contentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
         }
     }
 
     public static void addEntriesToMobilize( Uri uri ) {
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
+        ContentResolver cr = contentResolver();
 
         ArrayList<Long> entriesId = new ArrayList<>();
         Cursor c = cr.query(uri, new String[]{EntryColumns._ID, EntryColumns.LINK, MOBILIZED_HTML},
@@ -290,7 +289,7 @@ public class FetcherService extends IntentService {
             values[i].put(TaskColumns.ENTRY_ID, entriesId.get(i));
         }
 
-        getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+        contentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
     }
 
     static boolean isBatteryLow() {
@@ -309,7 +308,7 @@ public class FetcherService extends IntentService {
         }
         return batteryPct < lowLevelPct;
     }
-    private void moveBackupFileVersion( String fileName, int index ) throws IOException {
+    private static void moveBackupFileVersion(String fileName, int index) throws IOException {
         final File sourceFile = new File( index == 0 ? fileName : String.format( "%s.%d", fileName, index ) );
         final File destFile = new File( String.format( "%s.%d", fileName, index + 1 ) );
         if ( !sourceFile.exists() )
@@ -319,9 +318,12 @@ public class FetcherService extends IntentService {
     }
     @Override
     public void onHandleIntent(final Intent intent) {
+        Process( intent, this );
+    }
+    public static void Process(final Intent intent, Service service) {
         if (intent == null) // No intent, we quit
             return;
-        if ( MainApplication.getContext() == null )
+        if ( getContext() == null )
             return;
         Status().ClearError();
 
@@ -336,12 +338,12 @@ public class FetcherService extends IntentService {
                     moveBackupFileVersion( sourceFileName, 0 );
                     OPML.exportToFile( sourceFileName, true );
                     FileUtils.INSTANCE.copyFileToDownload(sourceFileName, true);
-                    PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
+                    PrefUtils.putLong(AutoWorker.LAST_JOB_OCCURRED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
                 } catch (IOException e) {
                     e.printStackTrace();
-                    DebugApp.SendException( e, FetcherService.this );
+                    DebugApp.SendException( e, getContext() );
                 }
-            });
+            }, service);
             return;
         } else if (intent.hasExtra(Constants.FROM_IMPORT)) {
             LongOper(R.string.importingFromFile, () -> {
@@ -352,35 +354,32 @@ public class FetcherService extends IntentService {
                     else if ( intent.hasExtra( EXTRA_URI ) )
                         OPML.importFromFile( Uri.parse( intent.getStringExtra( EXTRA_URI ) ), isRemoveExistingFeeds );
                 } catch (Exception e) {
-                    DebugApp.SendException(e, FetcherService.this);
+                    DebugApp.SendException(e, getContext());
                 }
-            });
+            }, service);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
-            LongOper(R.string.menu_delete_old, new Runnable() {
-                @Override
-                public void run() {
-                    SetNotifyEnabled( false );
-                    try {
-                        long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
-                        long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
-                        deleteOldEntries(keepDateBorderTime);
-                        deleteGhost();
-                        if (PrefUtils.CALCULATE_IMAGES_SIZE())
-                            CalculateImageSizes();
-                        if (Build.VERSION.SDK_INT >= 21)
-                            PrefUtils.putLong(AutoJobService.LAST_JOB_OCCURED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
-                    } finally {
-                        SetNotifyEnabled( true );
-                        notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
-                    }
+            LongOper(R.string.menu_delete_old, () -> {
+                SetNotifyEnabled( false );
+                try {
+                    long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
+                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+                    deleteOldEntries(keepDateBorderTime);
+                    deleteGhost();
+                    if (PrefUtils.CALCULATE_IMAGES_SIZE())
+                        CalculateImageSizes();
+                    if (Build.VERSION.SDK_INT >= 21)
+                        PrefUtils.putLong(AutoWorker.LAST_JOB_OCCURRED + PrefUtils.DELETE_OLD_INTERVAL, System.currentTimeMillis());
+                } finally {
+                    SetNotifyEnabled( true );
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
                 }
-            });
+            }, service);
             return;
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
             LongOper(R.string.reloading_all_texts, () -> {
                 SetNotifyEnabled(false);
-                try (Cursor cursor = getContext().getContentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra(WHERE_SQL_EXTRA), null, null)) {
+                try (Cursor cursor = contentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra(WHERE_SQL_EXTRA), null, null)) {
                     ContentValues[] values = new ContentValues[cursor.getCount()];
                     while (cursor.moveToNext()) {
                         final long entryId = cursor.getLong(0);
@@ -389,7 +388,7 @@ public class FetcherService extends IntentService {
                         values[cursor.getPosition()] = new ContentValues();
                         values[cursor.getPosition()].put(TaskColumns.ENTRY_ID, entryId);
                     }
-                    getContext().getContentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
+                    contentResolver().bulkInsert(TaskColumns.CONTENT_URI, values);
                 } finally {
                     SetNotifyEnabled(true);
                     notifyChangeOnAllUris(URI_ENTRIES_FOR_FEED, null);
@@ -402,7 +401,7 @@ public class FetcherService extends IntentService {
                 } finally {
                     executor.shutdown();
                 }
-            });
+            }, service);
             return;
         }
 
@@ -418,112 +417,106 @@ public class FetcherService extends IntentService {
                 executor.shutdown();
             }
         } else if (ACTION_LOAD_LINK.equals(intent.getAction())) {
-            LongOper(R.string.loadingLink, new Runnable() {
-                @Override
-                public void run() {
-                    ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
-                        Pair<Uri,Boolean> result = LoadLink(GetExtrenalLinkFeedID(),
-                                 intent.getStringExtra(Constants.URL_TO_LOAD),
-                                 intent.getStringExtra(Constants.TITLE_TO_LOAD),
-                                 null,
-                                 FetcherService.ForceReload.No,
-                                 true,
-                                 true,
-                                 intent.getBooleanExtra(EXTRA_STAR, false),
-                                 AutoDownloadEntryImages.Yes,
-                                 false,
-                                 true,
-                                                            true);
-                        if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
-                            HashSet<Long> labels = new HashSet<>();
-                            for ( String item: intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) )
-                                labels.add( Long.parseLong( item ) );
-                            LabelVoc.INSTANCE.setEntry(Long.parseLong(result.first.getLastPathSegment() ), labels );
-                        }
-                        downloadAllImages(executor);
-                    } finally { executor.shutdown(); }
-                }
-            } );
-        } else { // == Constants.ACTION_REFRESH_FEEDS
-            LongOper(R.string.RefreshFeeds, new Runnable() {
-                @Override
-                public void run() {
-                    long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
-                    long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
-
-                    String feedId = intent.getStringExtra(Constants.FEED_ID);
-                    String groupId = intent.getStringExtra(Constants.GROUP_ID);
-
-                    mMarkAsStarredFoundList.clear();
-                    int newCount = 0;
-                    ExecutorService executor = CreateExecutorService(GetThreadCount()); try {
-                        if ( isFromAutoRefresh )
-                            SetNotifyEnabled( false );
-                        try {
-                            newCount = (feedId == null ?
-                                    refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
-                                    refreshFeed( executor, feedId, keepDateBorderTime ));
-                            if ( newCount > 0 )
-                                EntryUrlVoc.INSTANCE.reinit( false );
-                        } finally {
-                            if (mMarkAsStarredFoundList.size() > 5) {
-                                ArrayList<String> list = new ArrayList<>();
-                                for (MarkItem item : mMarkAsStarredFoundList)
-                                    list.add(item.mCaption);
-                                ShowEventNotification(TextUtils.join(", ", list),
-                                                      R.string.markedAsStarred,
-                                                      new Intent(FetcherService.this, HomeActivity.class),
-                                                      Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
-                            } else if (mMarkAsStarredFoundList.size() > 0)
-                                for (MarkItem item : mMarkAsStarredFoundList) {
-                                    Uri entryUri = GetEntryUri(item.mLink);
-
-                                    int ID = -1;
-                                    try {
-                                        if (entryUri != null)
-                                            ID = Integer.parseInt(entryUri.getLastPathSegment());
-                                    } catch (Throwable ignored) {
-
-                                    }
-
-                                    ShowEventNotification(item.mCaption,
-                                                          R.string.markedAsStarred,
-                                                          GetEntryActivityIntent(Intent.ACTION_VIEW, entryUri),
-                                                          ID, createCancelStarPI( item.mLink, ID ));
-                                }
-                            if ( isFromAutoRefresh ) {
-                                SetNotifyEnabled( true );
-                                notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
-                            }
-                        }
-
-                        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true) && newCount > 0)
-                            ShowEventNotification(getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
-                                                  R.string.flym_feeds,
-                                                  new Intent(FetcherService.this, HomeActivity.class),
-                                                  Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT,
-                                                  null);
-                        else if (Constants.NOTIF_MGR != null)
-                            Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
-
-                        if ( isFromAutoRefresh || newCount > 0 ) {
-                            mobilizeAllEntries(executor);
-                            downloadAllImages(executor);
-                        }
-                    } finally {
-                        executor.shutdown();
+            LongOper(R.string.loadingLink, () -> {
+                ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
+                    Pair<Uri,Boolean> result = LoadLink(GetExtrenalLinkFeedID(),
+                             intent.getStringExtra(Constants.URL_TO_LOAD),
+                             intent.getStringExtra(Constants.TITLE_TO_LOAD),
+                             null,
+                             ForceReload.No,
+                             true,
+                             true,
+                             intent.getBooleanExtra(EXTRA_STAR, false),
+                             AutoDownloadEntryImages.Yes,
+                             false,
+                             true,
+                                                        true);
+                    if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
+                        HashSet<Long> labels = new HashSet<>();
+                        for ( String item: intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) )
+                            labels.add( Long.parseLong( item ) );
+                        LabelVoc.INSTANCE.setEntry(Long.parseLong(result.first.getLastPathSegment() ), labels );
                     }
-                    if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
-                        PrefUtils.putLong( AutoJobService.LAST_JOB_OCCURED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
+                    downloadAllImages(executor);
+                } finally { executor.shutdown(); }
+            }, service );
+        } else { // == Constants.ACTION_REFRESH_FEEDS
+            LongOper(R.string.RefreshFeeds, () -> {
+                long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
+                long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
+
+                String feedId = intent.getStringExtra(Constants.FEED_ID);
+                String groupId = intent.getStringExtra(Constants.GROUP_ID);
+
+                mMarkAsStarredFoundList.clear();
+                int newCount = 0;
+                ExecutorService executor = CreateExecutorService(GetThreadCount()); try {
+                    if ( isFromAutoRefresh )
+                        SetNotifyEnabled( false );
+                    try {
+                        newCount = (feedId == null ?
+                                refreshFeeds( executor, keepDateBorderTime, groupId, isFromAutoRefresh) :
+                                refreshFeed( executor, feedId, keepDateBorderTime ));
+                        if ( newCount > 0 )
+                            EntryUrlVoc.INSTANCE.reinit( false );
+                    } finally {
+                        if (mMarkAsStarredFoundList.size() > 5) {
+                            ArrayList<String> list = new ArrayList<>();
+                            for (MarkItem item : mMarkAsStarredFoundList)
+                                list.add(item.mCaption);
+                            ShowEventNotification(TextUtils.join(", ", list),
+                                                  R.string.markedAsStarred,
+                                                  new Intent(getContext(), HomeActivity.class),
+                                                  Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
+                        } else if (mMarkAsStarredFoundList.size() > 0)
+                            for (MarkItem item : mMarkAsStarredFoundList) {
+                                Uri entryUri = GetEntryUri(item.mLink);
+
+                                int ID = -1;
+                                try {
+                                    if (entryUri != null)
+                                        ID = Integer.parseInt(entryUri.getLastPathSegment());
+                                } catch (Throwable ignored) {
+
+                                }
+
+                                ShowEventNotification(item.mCaption,
+                                                      R.string.markedAsStarred,
+                                                      GetEntryActivityIntent(Intent.ACTION_VIEW, entryUri),
+                                                      ID, createCancelStarPI( item.mLink, ID ));
+                            }
+                        if ( isFromAutoRefresh ) {
+                            SetNotifyEnabled( true );
+                            notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
+                        }
+                    }
+
+                    if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true) && newCount > 0)
+                        ShowEventNotification(getContext().getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
+                                              R.string.flym_feeds,
+                                              new Intent(getContext(), HomeActivity.class),
+                                              Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT,
+                                              null);
+                    else if (Constants.NOTIF_MGR != null)
+                        Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+
+                    if ( isFromAutoRefresh || newCount > 0 ) {
+                        mobilizeAllEntries(executor);
+                        downloadAllImages(executor);
+                    }
+                } finally {
+                    executor.shutdown();
                 }
-            } );
+                if ( isFromAutoRefresh && Build.VERSION.SDK_INT >= 21 )
+                    PrefUtils.putLong(AutoWorker.LAST_JOB_OCCURRED + PrefUtils.REFRESH_INTERVAL, System.currentTimeMillis() );
+            }, service );
         }
     }
 
-    private void deleteGhost() {
+    private static void deleteGhost() {
         final int status = Status().Start( R.string.deleting_ghost_entries, false );
         final HashSet<String> mapEntryLinkHash = new HashSet<>();
-        try (Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null ) ) {
+        try (Cursor cursor = contentResolver().query(EntryColumns.CONTENT_URI, new String[] {LINK}, null, null, null ) ) {
             while (cursor.moveToNext())
                 if ( !cursor.isNull( 0 ) )
                     mapEntryLinkHash.add(FileUtils.INSTANCE.getLinkHash(cursor.getString(0)));
@@ -535,7 +528,7 @@ public class FetcherService extends IntentService {
     }
 
 
-    private void deleteGhostHtmlFiles( final HashSet<String> mapEntryLink ) {
+    private static void deleteGhostHtmlFiles(final HashSet<String> mapEntryLink) {
         if ( isCancelRefresh() )
             return;
         int deletedCount = 0;
@@ -546,7 +539,7 @@ public class FetcherService extends IntentService {
                 if ( !mapEntryLink.contains( fileName ) ) {
                     if ( new File( folder, fileName ).delete() )
                         deletedCount++;
-                    Status().ChangeProgress(getString(R.string.deleteFullTexts) + String.format( " %d", deletedCount ) );
+                    Status().ChangeProgress(String(R.string.deleteFullTexts) + String.format( " %d", deletedCount ) );
                     if (FetcherService.isCancelRefresh())
                         break;
 
@@ -556,18 +549,18 @@ public class FetcherService extends IntentService {
         //Status().End( status );
     }
 
-    private void deleteGhostImages(  final HashSet<String> setEntryLinkHash ) {
+    private static void deleteGhostImages(final HashSet<String> setEntryLinkHash) {
         if ( isCancelRefresh() )
             return;
         HashSet<String> setEntryLinkHashFavorities = new HashSet<>();
-        try (Cursor cursor = getContentResolver().query( EntryColumns.FAVORITES_CONTENT_URI, new String[] {LINK}, null, null, null ) ){
+        try (Cursor cursor = contentResolver().query( EntryColumns.FAVORITES_CONTENT_URI, new String[] {LINK}, null, null, null ) ){
             while (cursor.moveToNext())
                 setEntryLinkHashFavorities.add(cursor.getString(0));
         }
         int deletedCount = 0;
-        final File folder = FileUtils.INSTANCE.GetImagesFolder();
+        //final File folder = FileUtils.INSTANCE.GetImagesFolder();
         File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles();
-        final int status = Status().Start( getString(R.string.image_count) + String.format(": %d", files.length), false ); try {
+        final int status = Status().Start( String(R.string.image_count) + String.format(": %d", files.length), false ); try {
             final int FIRST_COUNT_TO_DELETE = files.length - 8000;
             if (FIRST_COUNT_TO_DELETE > 500)
                 Arrays.sort(files, new Comparator<File>() {
@@ -590,7 +583,7 @@ public class FetcherService extends IntentService {
                      list.length >= 2 && !setEntryLinkHash.contains(linkHash) ){
                     if (mImageFileVoc.removeFile(fileName))
                         deletedCount++;
-                    Status().ChangeProgress(getString(R.string.deleteImages) + String.format(" %d", deletedCount));
+                    Status().ChangeProgress(String(R.string.deleteImages) + String.format(" %d", deletedCount));
                     if (FetcherService.isCancelRefresh())
                         break;
                 }
@@ -601,12 +594,13 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private void LongOper( int textID, Runnable oper ) {
-        LongOper( getString( textID ), oper );
+    private static void LongOper(int textID, Runnable oper, Service service) {
+        LongOper( String( textID ), oper, service );
     }
 
-    private void LongOper( String title, Runnable oper ) {
-        startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, createCancelPI()));
+    private static void LongOper(String title, Runnable oper, Service service) {
+        if ( service != null )
+            service.startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, createCancelPI()));
         Status().SetNotificationTitle( title, createCancelPI() );
         PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
         synchronized (mCancelRefresh) {
@@ -617,11 +611,12 @@ public class FetcherService extends IntentService {
         } catch (Exception e) {
             e.printStackTrace();
             //Toast.makeText( this, getString( R.string.error ) + ": " + e.getMessage(), Toast.LENGTH_LONG ).show();
-            DebugApp.SendException( e, this );
+            DebugApp.SendException( e, getContext() );
         } finally {
             Status().SetNotificationTitle( "", null );
             PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
-            stopForeground(true);
+            if ( service != null )
+                service.stopForeground(true);
             synchronized (mCancelRefresh) {
                 mCancelRefresh = false;
             }
@@ -636,7 +631,7 @@ public class FetcherService extends IntentService {
     }
 
     private static boolean mIsWiFi = false;
-    private boolean GetIsWifi() {
+    private static boolean GetIsWifi() {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI );
@@ -649,7 +644,7 @@ public class FetcherService extends IntentService {
             if ( !mIsWiFi && Status().mBytesRecievedLast > PrefUtils.getMaxSingleRefreshTraffic() * 1024 * 1024 )
                 return true;
             //if (mCancelRefresh) {
-            //    MainApplication.getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
+            //    contentResolver().delete( TaskColumns.CONTENT_URI, null, null );
             //}
             return mCancelRefresh;
         }
@@ -702,11 +697,11 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private void mobilizeAllEntries( ExecutorService executor) {
-        final String statusText = getString(R.string.mobilizeAll);
+    private static void mobilizeAllEntries(ExecutorService executor) {
+        final String statusText = String(R.string.mobilizeAll);
         int status = Status().Start(statusText, false);
         SetNotifyEnabled( false ); try {
-            final ContentResolver cr = getContentResolver();
+            final ContentResolver cr = contentResolver();
             Status().ChangeProgress("");
             try ( Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.NUMBER_ATTEMPT},
                     TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NULL, null, null) ) {
@@ -733,7 +728,7 @@ public class FetcherService extends IntentService {
                                         final String feedID = curEntry.getString(0);
                                         FeedFilters filters = new FeedFilters(feedID);
                                         if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false, false)) {
-                                            ContentResolver cr = getContext().getContentResolver();
+                                            ContentResolver cr = contentResolver();
                                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                                             result.mResultCount = 1;
                                         }
@@ -759,7 +754,7 @@ public class FetcherService extends IntentService {
     }
 
     public static AutoDownloadEntryImages IsAutoDownloadImages(String feedId) {
-        final ContentResolver cr = getContext().getContentResolver();
+        final ContentResolver cr = contentResolver();
         AutoDownloadEntryImages result = AutoDownloadEntryImages.Yes;
         try ( Cursor curFeed = cr.query( FeedColumns.CONTENT_URI( feedId ), new String[] { FeedColumns.IS_IMAGE_AUTO_LOAD }, null, null, null ) ) {
             if (curFeed.moveToFirst())
@@ -776,7 +771,7 @@ public class FetcherService extends IntentService {
         if (!FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2"))
             return result;
         Timer timer = new Timer( "loadFB2LocalFile " + link );
-        try (InputStream is = MainApplication.getContext().getContentResolver().openInputStream(Uri.parse(link))) {
+        try (InputStream is = contentResolver().openInputStream(Uri.parse(link))) {
             ClearContentStepToFile();
             Status().ChangeProgress( "Jsoup.parse" );
             Document doc = Jsoup.parse(is, null, "");
@@ -840,7 +835,7 @@ public class FetcherService extends IntentService {
             values.put(EntryColumns.TITLE, title );
             Status().ChangeProgress( "saveMobilizedHTML" );
             FileUtils.INSTANCE.saveMobilizedHTML(link, content, values);
-            MainApplication.getContext().getContentResolver().update(EntryColumns.CONTENT_URI( entryId ), values, null, null);
+            contentResolver().update(EntryColumns.CONTENT_URI( entryId ), values, null, null);
             Status().ChangeProgress("");
             result = true;
         }
@@ -877,7 +872,7 @@ public class FetcherService extends IntentService {
                                         final boolean withScripts ) {
         boolean success = false;
         ClearContentStepToFile();
-        ContentResolver cr = getContext().getContentResolver();
+        ContentResolver cr = contentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
         long feedId = -1;
         try ( Cursor entryCursor = cr.query(entryUri, null, null, null, null) ) {
@@ -1088,28 +1083,28 @@ public class FetcherService extends IntentService {
         return new Intent(getContext(), FetcherService.class).putExtra(extra, true );
     }
     public static void StartServiceLoadExternalLink(String url, String title, boolean star, ArrayList<String> labelIDs) {
-        FetcherService.StartService( new Intent(getContext(), FetcherService.class )
+        FetcherService.Start(new Intent(getContext(), FetcherService.class )
                 .setAction( ACTION_LOAD_LINK )
                 .putExtra(Constants.URL_TO_LOAD, url)
                 .putExtra(Constants.TITLE_TO_LOAD, title)
                 .putExtra(EXTRA_LABEL_ID_LIST, labelIDs)
                 .putExtra( EXTRA_STAR, star ), false );
     }
-    public PendingIntent createCancelStarPI( String link, int notificationID ) {
-        Intent intent = new Intent(this, BroadcastActionReciever.class);
+    public static PendingIntent createCancelStarPI(String link, int notificationID) {
+        Intent intent = new Intent(getContext(), BroadcastActionReciever.class);
         intent.setAction( Action );
         intent.putExtra("UnstarArticle", true );
         intent.putExtra( EXTRA_TEXT, link );
         intent.putExtra( EXTRA_ID, notificationID );
-        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(getContext(), GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     public enum ForceReload {Yes, No}
 //    public static void OpenLink( Uri entryUri ) {
 //        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());
-//        Intent intent = new Intent(MainApplication.getContext(), HomeActivity.class);
+//        Intent intent = new Intent(getContext(), HomeActivity.class);
 //        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-//        MainApplication.getContext().startActivity( intent );
+//        getContext().startActivity( intent );
 //    }
 
     public static Uri GetEntryUri( final String url ) {
@@ -1120,7 +1115,7 @@ public class FetcherService extends IntentService {
 //        Uri entryUri = null;
 //        String url1 = url.replace("https:", "http:");
 //        String url2 = url.replace("http:", "https:");
-//        ContentResolver cr = MainApplication.getContext().getContentResolver();
+//        ContentResolver cr = contentResolver();
 //        Cursor cursor = cr.query(EntryColumns.CONTENT_URI,
 //                new String[]{_ID, EntryColumns.FEED_ID},
 //                LINK + "='" + url1 + "'" + DB_OR + LINK + "='" + url2 + "'",
@@ -1150,7 +1145,7 @@ public class FetcherService extends IntentService {
         boolean load;
         Dog.v( "LoadLink " + url );
 
-        final ContentResolver cr = getContext().getContentResolver();
+        final ContentResolver cr = contentResolver();
         final int status = isLoadingLinkStatus ? FetcherService.Status().Start(getContext().getString(R.string.loadingLink), false) : -1;
         try {
             Uri entryUri = GetEntryUri( url );
@@ -1216,7 +1211,7 @@ public class FetcherService extends IntentService {
         synchronized ( mExtrenalLinkFeedID ) {
             if (mExtrenalLinkFeedID.isEmpty()) {
 
-                ContentResolver cr = getContext().getContentResolver();
+                ContentResolver cr = contentResolver();
                 Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                         FeedColumns.PROJECTION_ID,
                         FeedColumns.FETCH_MODE + "=" + FetcherService.FETCHMODE_EXERNAL_LINK, null, null);
@@ -1248,7 +1243,7 @@ public class FetcherService extends IntentService {
         int status = obs.Start(statusText, false); try {
 
             ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
-            ContentResolver cr = getContext().getContentResolver();
+            ContentResolver cr = contentResolver();
             try ( Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
                     TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null) ) {
                 while (cursor != null && cursor.moveToNext() && !isCancelRefresh() && !isDownloadImageCursorNeedsRequery()) {
@@ -1324,7 +1319,7 @@ public class FetcherService extends IntentService {
                 @Override public void run() {
                     int status = Status().Start( R.string.applyOperations, false );
                     try {
-                        MainApplication.getContext().getContentResolver().applyBatch(FeedData.AUTHORITY, operations);
+                        contentResolver().applyBatch(FeedData.AUTHORITY, operations);
                     } catch (Throwable ignored) {
 
                     } finally {
@@ -1401,11 +1396,11 @@ public class FetcherService extends IntentService {
         return threadCount;
     }
 
-    private void deleteOldEntries(final long defaultKeepDateBorderTime) {
+    private static void deleteOldEntries(final long defaultKeepDateBorderTime) {
         if ( isCancelRefresh() )
             return;
         {
-            //int status = Status().Start(MainApplication.getContext().getString(R.string.clearingWebViewChache), false);
+            //int status = Status().Start(String(R.string.clearingWebViewChache), false);
             UiUtils.RunOnGuiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1415,7 +1410,7 @@ public class FetcherService extends IntentService {
             //Status().End( status );
         }
         int status = Status().Start(getContext().getString(R.string.deleteOldEntries), false);
-        ContentResolver cr = getContext().getContentResolver();
+        ContentResolver cr = contentResolver();
         try ( Cursor cursor = cr.query(FeedColumns.CONTENT_URI,
                                        new String[]{_ID, FeedColumns.OPTIONS},
                                        FeedColumns.LAST_UPDATE + Constants.DB_IS_NOT_NULL + DB_OR + FeedColumns._ID + "=" + GetExtrenalLinkFeedID(), null, null) ) {
@@ -1452,11 +1447,11 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
+    private static int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
         String statusText = "";
         int status = Status().Start( statusText, false ); try {
             final ExecutorService executorInner = CreateExecutorService(GetThreadCount()); try {
-                ContentResolver cr = getContentResolver();
+                ContentResolver cr = contentResolver();
                 String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
                 final String[] projection = new String[]{FeedColumns._ID, FeedColumns.LAST_UPDATE, FeedColumns.OPTIONS};
                 ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
@@ -1468,7 +1463,7 @@ public class FetcherService extends IntentService {
                             final JSONObject jsonOptions = getJsonObject(cursor);
                             int pos = cursor.getColumnIndex(FeedColumns.LAST_UPDATE);
                             long lastUpdate = !cursor.isNull(pos) ? cursor.getLong(pos) : 0;
-                            long interval = getTimeIntervalInMSecs(REFRESH_INTERVAL, DEFAULT_INTERVAL);
+                            long interval = AutoWorker.Companion.getTimeIntervalInMSecs( REFRESH_INTERVAL, DEFAULT_INTERVAL);
                             if (jsonOptions.has(CUSTOM_REFRESH_INTERVAL)) {
                                 try {
                                     interval = jsonOptions.getLong(CUSTOM_REFRESH_INTERVAL);
@@ -1501,7 +1496,7 @@ public class FetcherService extends IntentService {
     }
 
     @NotNull
-    private JSONObject getJsonObject(Cursor cursor) {
+    private static JSONObject getJsonObject(Cursor cursor) {
         JSONObject jsonOptions = new JSONObject();
         try {
             jsonOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedColumns.OPTIONS)));
@@ -1511,7 +1506,7 @@ public class FetcherService extends IntentService {
         return jsonOptions;
     }
 
-    private int refreshFeed( ExecutorService executor, String feedId, long keepDateBorderTime) {
+    private static int refreshFeed(ExecutorService executor, String feedId, long keepDateBorderTime) {
         PrefUtils.putBoolean( STATE_RELOAD_WITH_DEBUG, false );
 
         int newCount = 0;
@@ -1519,7 +1514,7 @@ public class FetcherService extends IntentService {
         if ( GetExtrenalLinkFeedID().equals( feedId ) )
             return 0;
 
-        ContentResolver cr = getContentResolver();
+        ContentResolver cr = contentResolver();
         try ( Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), null, null, null, null) ) {
 
             if (cursor.moveToFirst()) {
@@ -1567,18 +1562,18 @@ public class FetcherService extends IntentService {
     }
 
 
-    private void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
+    private static void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
+        PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //
                 .setSmallIcon(R.mipmap.ic_launcher) //
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher)) //
+                .setLargeIcon(BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.ic_launcher)) //
                 //.setTicker(text) //
                 .setWhen(System.currentTimeMillis()) //
                 .setAutoCancel(true) //
-                .setContentTitle(getString(captionID)) //
+                .setContentTitle(String(captionID)) //
                 .setLights(0xffffffff, 0, 0);
         if (Build.VERSION.SDK_INT >= 26 ) {
             if (ID == Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT)
@@ -1611,7 +1606,7 @@ public class FetcherService extends IntentService {
     //private Uri getEntryUri(String entryLink) {
     //    return EntryColumns.CONTENT_URI(EntryUrlVoc.INSTANCE.get( entryLink ));
 //        Uri entryUri = null;
-//        Cursor cursor = MainApplication.getContext().getContentResolver().query(
+//        Cursor cursor = contentResolver().query(
 //                EntryColumns.CONTENT_URI, //ENTRIES_FOR_FEED_CONTENT_URI(feedID),
 //                new String[]{_ID},
 //                LINK + "='" + entryLink + "'",
@@ -1664,8 +1659,13 @@ public class FetcherService extends IntentService {
         return content;
     }
 
-
-    private int ParseRSSAndAddEntries(String feedUrl, Cursor cursor, long keepDateBorderTime, String feedId) {
+    private static ContentResolver contentResolver() {
+        return getContext().getContentResolver();
+    }
+    private static String String( int ID ) {
+        return getContext().getString( ID );
+    }
+    private static int ParseRSSAndAddEntries(String feedUrl, Cursor cursor, long keepDateBorderTime, String feedId) {
         RssAtomParser handler = null;
 
         int fetchModePosition = cursor.getColumnIndex(FeedColumns.FETCH_MODE);
@@ -1677,7 +1677,7 @@ public class FetcherService extends IntentService {
         int iconUrlPosition = cursor.getColumnIndex(FeedColumns.ICON_URL);
 
         Connection connection = null;
-        ContentResolver cr = getContext().getContentResolver();
+        ContentResolver cr = contentResolver();
         try {
 
             connection = new Connection( feedUrl, OKHTTP);
@@ -1817,9 +1817,9 @@ public class FetcherService extends IntentService {
                 // resets the fetch mode to determine it again later
                 values.put(FeedColumns.FETCH_MODE, 0);
 
-                values.put(FeedColumns.ERROR, getString(R.string.error_feed_error));
+                values.put(FeedColumns.ERROR, String(R.string.error_feed_error));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
-                FetcherService.Status().SetError( cursor.getString(titlePosition) + ": " + getString(R.string.error_feed_error), feedId, "", e);
+                FetcherService.Status().SetError( cursor.getString(titlePosition) + ": " + String(R.string.error_feed_error), feedId, "", e);
             }
         } catch(Exception e){
             if (handler == null || (!handler.isDone() && !handler.isCancelled())) {
@@ -1828,7 +1828,7 @@ public class FetcherService extends IntentService {
                 // resets the fetch mode to determine it again later
                 values.put(FeedColumns.FETCH_MODE, 0);
 
-                values.put(FeedColumns.ERROR, e.getMessage() != null ? e.getMessage() : getString(R.string.error_feed_process));
+                values.put(FeedColumns.ERROR, e.getMessage() != null ? e.getMessage() : String(R.string.error_feed_process));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
 
                 FetcherService.Status().SetError(cursor.getString(titlePosition) + ": " + e.toString(),
@@ -1839,9 +1839,9 @@ public class FetcherService extends IntentService {
             try {
                 if (handler != null ) {
                     if (handler.getFeedLink() != null)
-                        NetworkUtils.retrieveFavicon(this, new URL(handler.getFeedLink()), feedId);
+                        NetworkUtils.retrieveFavicon(getContext(), new URL(handler.getFeedLink()), feedId);
                     else
-                        NetworkUtils.retrieveFavicon(this, new URL( feedUrl ), feedId);
+                        NetworkUtils.retrieveFavicon(getContext(), new URL( feedUrl ), feedId);
                 }
             } catch (Throwable ignored) {
             }
@@ -1854,7 +1854,7 @@ public class FetcherService extends IntentService {
     }
 
     @NotNull
-    private String ReadAll(InputStream inputStream, ByteArrayOutputStream outputStream) throws IOException {
+    private static String ReadAll(InputStream inputStream, ByteArrayOutputStream outputStream) throws IOException {
         String xmlText;
         byte[] byteBuffer = new byte[4096];
         int n;
@@ -1882,7 +1882,7 @@ public class FetcherService extends IntentService {
 
     public static void cancelRefresh () {
         synchronized (mCancelRefresh) {
-            getContext().getContentResolver().delete( TaskColumns.CONTENT_URI, null, null );
+            contentResolver().delete( TaskColumns.CONTENT_URI, null, null );
             mCancelRefresh = true;
         }
     }
@@ -1890,7 +1890,7 @@ public class FetcherService extends IntentService {
     public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
         int status = Status().Start("deleteAllFeedEntries", true);
         try {
-            final ContentResolver cr = getContext().getContentResolver();
+            final ContentResolver cr = contentResolver();
             try (final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID, EntryColumns.LINK}, condition, null, null ) ) {
                 while ( cursor.moveToNext() ) {
                     Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
@@ -1911,7 +1911,7 @@ public class FetcherService extends IntentService {
         int status = Status().Start("unstarAllFeedEntries", true);
         try {
 
-            final ContentResolver cr = getContext().getContentResolver();
+            final ContentResolver cr = contentResolver();
             try( final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null ) ) {
                 SetNotifyEnabled( false ); try {
                     while (cursor.moveToNext()) {
@@ -1950,7 +1950,7 @@ public class FetcherService extends IntentService {
 //
 //                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
 //
-//                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+//                    ContentResolver cr = contentResolver();
 //                    ContentValues values = new ContentValues();
 //                    values.put(_ID, testFeedID);
 //                    values.put(FeedColumns.NAME, "testFeed");
@@ -1980,7 +1980,7 @@ public class FetcherService extends IntentService {
 //
 //                    deleteAllFeedEntries(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( testFeedID) );
 //
-//                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+//                    ContentResolver cr = contentResolver();
 //                    ContentValues values = new ContentValues();
 //                    values.put(_ID, testFeedID);
 //                    values.put(FeedColumns.NAME, "testFeedSmall");
@@ -2004,7 +2004,7 @@ public class FetcherService extends IntentService {
 //
 //        }
 
-    public static void StartService(Intent intent, boolean requiresNetwork) {
+    public static void Start(Intent intent, boolean requiresNetwork ) {
         final Context context = getContext();
 
         final boolean isFromAutoRefresh = intent.getBooleanExtra(Constants.FROM_AUTO_REFRESH, false);
@@ -2047,12 +2047,12 @@ public class FetcherService extends IntentService {
                 .setAction( FetcherService.ACTION_REFRESH_FEEDS );
     }
 
-    void CalculateImageSizes() {
+    static void CalculateImageSizes() {
         final int status = Status().Start(R.string.setting_calculate_image_sizes, false ); try {
             {
                 ContentValues values = new ContentValues();
                 values.put( IMAGES_SIZE, 0 );
-                getContentResolver().update( FeedColumns.CONTENT_URI, values, null, null );
+                contentResolver().update( FeedColumns.CONTENT_URI, values, null, null );
             }
 
             final HashMap<Long, Long> mapEntryIDToSize = new HashMap<>();
@@ -2060,7 +2060,7 @@ public class FetcherService extends IntentService {
 
             final HashMap<String, Long> mapEntryLinkHashToID = new HashMap<>();
             final HashMap<String, Long> mapEntryLinkHashToFeedID = new HashMap<>();
-            try( Cursor cursor = getContentResolver().query(EntryColumns.CONTENT_URI, new String[]{_ID, LINK, FEED_ID}, null, null, null) ) {
+            try( Cursor cursor = contentResolver().query(EntryColumns.CONTENT_URI, new String[]{_ID, LINK, FEED_ID}, null, null, null) ) {
                 while (cursor.moveToNext()) {
                     if ( cursor.isNull( 1 ) )
                         continue;
@@ -2071,7 +2071,7 @@ public class FetcherService extends IntentService {
             }
 
             final HashMap<Long, Long> mapFeedIDToGroupID = new HashMap<>();
-            try( Cursor cursor = getContentResolver().query(FeedColumns.CONTENT_URI, new String[]{_ID, GROUP_ID}, GROUP_ID + DB_IS_NOT_NULL, null, null) ) {
+            try( Cursor cursor = contentResolver().query(FeedColumns.CONTENT_URI, new String[]{_ID, GROUP_ID}, GROUP_ID + DB_IS_NOT_NULL, null, null) ) {
                 while (cursor.moveToNext())
                     if (!cursor.isNull(1))
                         mapFeedIDToGroupID.put(cursor.getLong(0), cursor.getLong(1));
@@ -2138,7 +2138,7 @@ public class FetcherService extends IntentService {
             if (!operations.isEmpty())
                 try {
                     //SetNotifyEnabled( false );
-                    getContentResolver().applyBatch(FeedData.AUTHORITY, operations);
+                    contentResolver().applyBatch(FeedData.AUTHORITY, operations);
                     //SetNotifyEnabled( true );
                     //getContentResolver().notifyChange(FeedColumns.GROUPED_FEEDS_CONTENT_URI, null);
                 } catch (Exception e) {
@@ -2150,11 +2150,12 @@ public class FetcherService extends IntentService {
         }
 
     }
-    private PendingIntent createCancelPI() {
-        Intent intent = new Intent(this, BroadcastActionReciever.class);
+    public static PendingIntent createCancelPI() {
+        Context context = getContext();
+        Intent intent = new Intent(context, BroadcastActionReciever.class);
         intent.setAction( Action );
         intent.putExtra("FetchingServiceStart", true );
-        return PendingIntent.getBroadcast(this, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(context, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
 }

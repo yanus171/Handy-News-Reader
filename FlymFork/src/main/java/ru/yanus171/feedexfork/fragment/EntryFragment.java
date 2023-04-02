@@ -64,12 +64,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -127,7 +125,6 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
-import ru.yanus171.feedexfork.view.AppSelectPreference;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
@@ -1293,7 +1290,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             //--showSwipeProgress();
                             // If the service is not started, start it here to avoid an infinite loading
                             if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
-                                FetcherService.StartService( new Intent(MainApplication.getContext(), FetcherService.class)
+                                FetcherService.Start(new Intent(MainApplication.getContext(), FetcherService.class)
                                         .setAction(FetcherService.ACTION_MOBILIZE_FEEDS), true);
                         }
                     }

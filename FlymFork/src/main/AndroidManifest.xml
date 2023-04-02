@@ -51,11 +51,6 @@
         <!-- <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" /> -->
         <!-- </intent-filter> -->
         <!-- </service> -->
-        <service
-            android:name=".service.AutoJobService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service android:name=".service.FetcherService" />
 
