@@ -104,7 +104,7 @@
     <string name="menu_import_export">Ex- und Importieren</string>
     <string name="menu_import">OPML-Datei importieren</string>
     <string name="menu_export">OPML-Datei exportieren</string>
-    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung für den Speicherzugriff.</string>
+    <string name="storage_request_explanation">Für den Import und Export von Feeds benötigt diese App die Berechtigung auf den Speicher zuzugreifen.</string>
     <string name="error_feed_error">Zugriff auf Feed-Adresse nicht möglich.</string>
     <string name="error_feed_process">Der Feed kann nicht verarbeitet werden.</string>
     <string name="error_feed_url_exists">Diese Adresse existiert bereits.</string>
@@ -278,7 +278,7 @@
     <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
-    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch das Reduzieren der Transparenz des Fensterhintergrundes. Bitte einstellen und testen, wenn das Einstellen der Helligkeit nicht funktioniert</string>
+    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch Reduktion der Transparenz des Fensterhintergrundes. Bitte ausprobieren, wenn das Einstellen der Helligkeit nicht funktioniert</string>
     <string name="settings_category_notification">Benachrichtigungen</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
@@ -627,7 +627,10 @@
     <string name="fiveMinute">Minuten</string>
     <string name="yearsShort">Jahre</string>
     <string name="monthsShort">Monate</string>
+    <string name="weeksShort">Wo</string>
     <string name="daysShort">T</string>
+    <string name="hoursShort">Std</string>
+    <string name="minutesShort">Min</string>
     <string name="timeIntervalInFuture">in</string>
     <string name="timeIntervalInPast">vor</string>
     <string name="error_add_customm_font">Hinzufügen einer benutzerdefinierten Schriftart fehlgeschlagen</string>
@@ -676,4 +679,15 @@
     <string name="refresh_only_selected_select_none">Auswahl aufheben</string>
     <string name="refresh_only_selected_select_none_summary">Kontrollkästchen zur automatischen Aktualisierung für alle Feeds entfernen</string>
     <string name="feed_count_were_edited">Feeds wurden bearbeitet</string>
+    <string name="show_navigation_bar_in_fullscreen">Navigation bei Vollbild</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Navigationsleiste im Vollbildmodus anzeigen</string>
+    <string name="show_unstarred_checkbox">Symbol für »Kein Favorit«</string>
+    <string name="show_unstarred_checkbox_descr">Kleinen ungefüllten Stern als Zeichen anzeigen, dass Artikel nicht zu den Favoriten gehört</string>
+    <string name="debug">Fehlersuche</string>
+    <string name="send_debug_info_on_crash">Bei Absturz Informationen zur Fehlersuche versenden</string>
+    <string name="send_debug_info_on_crash_summary">Bei einem Absturz der App vorschlagen, eine Mail mit informationen zur Fehlersuche an den Entwickler zu senden</string>
+    <string name="copy_debug_info_to_clipboard">Fehlersuche-Info in die Zwischenablage kopieren</string>
+    <string name="copy_debug_info_to_clipboard_summary">Wenn die App abstürzt</string>
+    <string name="import_from_backup_after_permission_granted">Möchten Sie Feeds und App-Einstellungen aus der automatischen Sicherung importieren?</string>
+    <string name="menu_import_from_backup_file">Aus Sicherung importieren</string>
 </resources>

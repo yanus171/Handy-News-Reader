@@ -30,51 +30,51 @@
 -->
 <resources>
     <string name="about_us_content" translatable="true"><![CDATA[<b> <big> Licenza e informazioni </ big> </ b> <br/>
-    Questo programma è un software libero: è possibile ridistribuirlo e / o modificarlo secondo i termini della GNU General Public License pubblicata dalla Free Software Foundation, sia la versione 3 della licenza, sia (a propria scelta) qualsiasi versione successiva. Vedi http://www.gnu.org/licenses <br/>
+    Questo programma è un software libero: è possibile ridistribuirlo e/o modificarlo secondo i termini della GNU General Public License pubblicata dalla Free Software Foundation, sia la versione 3 della licenza, sia (a propria scelta) qualsiasi versione successiva. Vedi http://www.gnu.org/licenses <br/>
     <br/>
-    Questa app è basata su \'Flym RSS Reader \', copyright 2013-2016 di Frédéric Julian. Tra le funzionalità aggiunte a questo fork sono: <br/>
+    Questa app è basata su \'Flym RSS Reader\', copyright 2013-2016 di Frédéric Julian. Tra le funzionalità aggiunte a questo fork sono: <br/>
     <br/>
     • espansione del gruppo di feed <br/>
-    • pulsanti pagina su / giù invisibili a schermo intero <br/>
+    • pulsanti pagina su/giù invisibili a schermo intero <br/>
     • numero massimo di download di immagini per feed <br/>
     • possibilità di annullare il processo di aggiornamento <br/>
     • e molto altro <br/>
     <br/>
-    <b> <big> Dove puoi trovarci </ big> </ b>
-    <br/>
-    • Visita il nostro <b> <a href="https://handynewsreader.blogspot.com"> sito web </a> </ b> per notizie e informazioni <br/>
-    • Puoi scaricare questa app su <b> <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork"> Google Play </a> </ b> <br/>
-    • Puoi scaricare questa app su <b> <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/"> F-Droid </a> </ b> <br />
-    • C\'è anche una discussione su <b> <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126"> forum XDA </ a> </ b> <br/>
-    • Fonti che puoi trovare su <b> <a href="https://github.com/yanus171/Handy-News-Reader"> GitHub </a> </ b> <br/>
-    <br/>
-    <b> <big> Il nostro supporto </ big> </ b>
-    <br/>
-    <br /> <br /> <br /> <br /> <br /> Se incappi in un problema con l\'app
-    • aprire un issue sulla <b> <a href="https://github.com/yanus171/Handy-News-Reader/issues"> pagina dei problemi di GitHub </a> </ b> o <br/>
-    • invia una <b> <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem"> e-mail allo sviluppatore </a> </ b> <br/>
-    <br/>
-    <b> <big> Il tuo supporto </ big> </ b>
-    <br/>
-    Se hai un\'idea per una nuova funzione puoi: <br/>
-    • aprire un issue su <b> <a href="https://github.com/yanus171/Handy-News-Reader/issues"> pagina dei problemi di GitHub </a> </ b> o <br/>
-    • invia una <b> <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea"> e-mail allo sviluppatore </a> </ b> <br/>
-    <br/>
-    <b> Se ritieni che questa app sia utile, votala su <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork"> Google Play </a>. </ b> <br/>
-    <br/>
-    <B> <big> Traduzioni </ big> </ b>
-    <br/>
-    Puoi aiutare nella traduzione nella tua lingua su <b> <a href="https://crowdin.com/project/handy-news-reader"> Crowdin </a> </ b>. <br/>
-    Se la tua lingua non è disponibile, invia una <b> <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation"> e-mail allo sviluppatore </a> < / b>. <br/>
-    <br/>
-    <b> <big> Riconoscimenti </ big> </ b>
-    <br/>
-    <b> Sviluppatori: </ b> <br/>
-    *** developerList ***
-    <br/>
-    <b> Traduttori: </ b> <br/>
-    *** translatorList ***
-    <br/>    ]]></string>
+
+    <h2>Puoi trovarci su:</h2>
+
+    • il nostro <b><a href=\"https://handynewsreader.blogspot.com\">sito web</a></b> (notizie e info)<br/>
+    • <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play Store</a><br/>
+    • <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/>
+    • <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a><br/>
+    • <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a>
+
+
+    <h2>Il nostro aiuto</h2>
+    <p>Se riscontri un problema con l'app, puoi:</p>
+    • controllare se è spiegata nelle nostre <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a><br/>
+    • aprire una issue sulla nostra <a href="https://github.com/yanus171/Handy-News-Reader/issues">pagina GitHub</a><br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">scrivere una email allo sviluppatore</a><br/>
+
+    <h2>Il tuo aiuto</h2>
+    <p>Se hai un'idea per una nuova funzionalità, puoi:</p>
+    • aprire una issue sulla nostra <a href="https://github.com/yanus171/Handy-News-Reader/issues">pagina GitHub</a><br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">scrivere una email allo sviluppatore</a>
+
+	<p>Se la trovi utile, per favore recensiscila su <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></p>
+    Puoi anche <a href=\"https://github.com/yanus171/Handy-News-Reader\">fare una donazione</a> </b> (link in fondo)
+
+    <h2>Translations</h2>
+	<p>Puoi aiutare la traduzione nella tua lingua su <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> Se la tua lingua non è presente, scrivi <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">una email allo sviluppatore</a></b></p>
+
+    <h2>Riconoscimenti</h2>
+    <h3>Sviluppatori:</h3>
+    ***developerList***
+    <br/><br/>
+	<h3>Traduttori:</h3>
+    ***translatorList***
+    <br/>
+    ]]></string>
     <string name="app_name">Handy News Reader</string>
     <string name="about_title_version">versione</string>
     <string name="about_handy_news_reader">Informazioni su Handy News Reader</string>
@@ -99,7 +99,7 @@
     <string name="no_filters">Nessuna Regola</string>
     <string name="context_menu_add">Aggiungi</string>
     <string name="context_menu_delete">Elimina</string>
-    <string name="edit_feed_title">Modifica Feed</string>
+    <string name="edit_feed_title">Modifica feed</string>
     <string name="new_feed_title">Nuovo feed</string>
     <string name="context_menu_edit">Modifica</string>
     <string name="menu_add_group">Aggiungi Gruppo</string>
@@ -128,7 +128,7 @@
     <string name="filter_apply_to_content">Applica al Contenuto</string>
     <string name="accept">ACCETTA</string>
     <string name="reject">RIFIUTA</string>
-    <string name="feed_search">Cerca Feed</string>
+    <string name="feed_search">Cerca feed</string>
     <string name="web_page_search_duckduckgo">Cerca sul Web (DuckDuckGo)</string>
     <string name="select_file">Seleziona File (dalla cartella feedex dall\'impostazione aggiuntiva di archiviazione)</string>
     <string name="select_file_from_subfolder">Seleziona il file della cartella Downloads/handy_news_reader:</string>
@@ -141,14 +141,14 @@
     <string name="to_group_message">Would You like to put this feed inside or outside this group?</string>
     <string name="to_group_above">Fuori dal Gruppo</string>
     <string name="to_group_into">Dentro il Gruppo</string>
-    <string name="add_custom_feed">Aggiungi Feed o Cercane Uno</string>
+    <string name="add_custom_feed">Aggiungi feed o cercane uno</string>
     <!-- ENTRIES -->
     <string name="unread_entries">Non letti</string>
     <string name="all_entries">Tutti</string>
     <string name="no_entries">Nessun Articolo</string>
     <string name="downloadOneImage">Scarica Immagine</string>
     <string name="favorites">Preferiti</string>
-    <string name="last_read">Ultima lettura</string>
+    <string name="last_read">Ultimi letti</string>
     <string name="context_menu_share_starred">Condividi Articoli Preferiti</string>
     <string name="menu_star">Aggiungi ai preferiti</string>
     <string name="menu_unstar">Rimuovi dai preferiti</string>
@@ -160,18 +160,18 @@
     <string name="menu_actionbar_visible">Barra delle azioni</string>
     <string name="menu_font_bold">Grassetto</string>
     <string name="menu_copy_clipboard">Copia Collegamento</string>
-    <string name="menu_cancel_refresh">Annulla Aggiornamento</string>
+    <string name="menu_cancel_refresh">Annulla aggiornamento</string>
     <string name="menu_delete_non_starred">Elimina Elementi non Preferiti per questo Feed</string>
     <string name="menu_toogle_unread_all">Non Letti/Tutti</string>
-    <string name="menu_load_all_images">Carica Tutte le Immagini</string>
+    <string name="menu_load_all_images">Carica tutte le immagini</string>
     <string name="menu_mark_as_favorite">Aggiungi Preferito</string>
     <string name="menu_mark_as_unfavorite">Rimuovi Preferito</string>
     <string name="menu_mark_as_unread">Segna come Non Letto</string>
-    <string name="menu_reload_full_text">Ricarica Testo Completo</string>
+    <string name="menu_reload_full_text">Ricarica testo completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Ricarica senza Mobilizer</string>
     <string name="share_favorites_title">Handy News Reader: articoli preferiti</string>
     <string name="link_was_copied_to_clipboard">Collegamento copiato</string>
-    <string name="get_full_text">Carica Testo Completo</string>
+    <string name="get_full_text">Carica testo completo</string>
     <string name="show_text_in_entry_list">Mostra testo originale nella lista degli articoli</string>
     <string name="original_text">Mostra Testo Originale</string>
     <string name="see_enclosure">Carica Allegati</string>
@@ -195,93 +195,93 @@
     <string name="settings_category_common">Impostazioni Generali</string>
     <string name="settings_category_common_summary">Tema</string>
     <string name="theme">Tema</string>
-    <string name="customColors">Colori Personalizzati</string>
+    <string name="customColors">Colori personalizzati</string>
     <string name="fontColorsNotFromThemeSummary">altrimenti usa i colori del tema</string>
     <string name="textColor">Colore del testo</string>
     <string name="settings_color_text_sample_short">Testo</string>
     <string name="settings_color_text_sample_long">\u201cQuando si sta corteggiando una bella ragazza un\'ora sembra un secondo. Quando ci si siede su cenere incandescente un secondo sembra un\'ora. La relatività è questa.\u201d\n(Albert Einstein)</string>
-    <string name="settings_category_refresh">Aggiornamento Automatico</string>
-    <string name="settings_category_refresh_summary">Aggiornamento Automatico e per quanto Tempo Tenere gli Articoli</string>
-    <string name="settings_refresh_enabled">Attiva Aggiornamento Automatico</string>
+    <string name="settings_category_refresh">Aggiornamento automatico</string>
+    <string name="settings_category_refresh_summary">Auto-aggiornamento e periodo di mantenimento degli articoli</string>
+    <string name="settings_refresh_enabled">Attiva aggiornamento automatico</string>
     <string name="settings_refresh_interval">Intervallo</string>
-    <string name="settings_min_update_battery_level">Livello Minimo Batteria</string>
+    <string name="settings_min_update_battery_level">Livello minimo batteria</string>
     <string name="settings_refresh_only_selected">Solo Selezionati</string>
-    <string name="settings_refresh_only_selected_summary">Aggiorna automaticamente solo i feed spuntati</string>
-    <string name="settings_refresh_on_open">Aggiorna Feed all\'Avvio dell\'App</string>
+    <string name="settings_refresh_only_selected_summary">Aggiorna automaticamente solo i feed scelti</string>
+    <string name="settings_refresh_on_open">Aggiorna feed all\'avvio dell\'app</string>
     <string name="settings_refresh_on_open_description">Aggiorna tutti i feed all\'apertura dell\'applicazione</string>
     <string name="settings_refresh_wifi_only">Aggiorna solo in Wi-Fi</string>
-    <string name="settings_refresh_wifi_only_description">Automatic refresh will only be done if Wi-Fi connection is available</string>
-    <string name="settings_keep_time">Tempo di Archiviazione</string>
+    <string name="settings_refresh_wifi_only_description">L\'aggiornamento automatico viene eseguito solo quando si è connessi ad una rete WiFi</string>
+    <string name="settings_keep_time">Tempo di archiviazione</string>
     <string name="settings_preload_image_mode">Scarica le immagini in anticipo</string>
-    <string name="settings_max_image_download_count">Numero Massimo di Immagini da Scaricare</string>
+    <string name="settings_max_image_download_count">Numero massimo di immagini da scaricare</string>
     <string name="settings_max_image_download_count_description">Per un articolo</string>
     <string name="settings_max_image_download_size_kb">Dimensione massima immagine</string>
     <string name="settings_max_image_download_size_kb_summary">(in KB). Non scaricare automaticamente immagini più grandi di</string>
-    <string name="max_single_refresh_traffic_mb">Traffico Massimo per Singolo Aggiornamento</string>
-    <string name="max_single_refresh_traffic_mb_descr">L\'aggiornamento si fermerà quando il traffico raggiunge il valore massimo (in MB), quando non si sta utilizzando una connessione Wi-Fi</string>
-    <string name="settings_load_comments">Carica Commenti</string>
+    <string name="max_single_refresh_traffic_mb">Traffico massimo per singolo aggiornamento</string>
+    <string name="max_single_refresh_traffic_mb_descr">L\'aggiornamento si interrompe quando il traffico raggiunge il limite (in MB) e non si è connessi in Wi-Fi</string>
+    <string name="settings_load_comments">Carica commenti</string>
     <string name="settings_load_comments_description">Testo completo nell\'articolo</string>
-    <string name="settings_category_article_list">Lista Articoli</string>
-    <string name="settings_category_article_list_summary">Aspetto della Lista Articoli</string>
+    <string name="settings_category_article_list">Lista articoli</string>
+    <string name="settings_category_article_list_summary">Aspetto della lista degli articoli</string>
     <string name="settings_font_size">Dimensione testo</string>
-    <string name="show_article_icon">Mostra Icona Articolo</string>
+    <string name="show_article_icon">Mostra icona articolo</string>
     <string name="show_article_icon_descr">Disattivare per guadagnare spazio sullo schermo</string>
-    <string name="show_article_url">Mostra URL Articolo</string>
-    <string name="settings_display_oldest_first">Ordine Articoli</string>
+    <string name="show_article_url">Mostra URL articolo</string>
+    <string name="settings_display_oldest_first">Ordine articoli</string>
     <string name="settings_display_oldest_first_description">Mostra prima gli articoli più vecchi</string>
     <string name="show_mark_all_as_read_button">Pulsante \"Segna tutto come Letto\"</string>
     <string name="show_mark_all_as_read_button_summary">Mostra il pulsante \"Segna tutto come Letto\", altrimenti l\'opzione sarà disponibile nel menu</string>
-    <string name="show_read_checkbox">Indicatore Articoli Letti</string>
+    <string name="show_read_checkbox">Indicatore articoli letti</string>
     <string name="show_read_checkbox_descr">Mostra l\'icona di una spunta per indicare che l\'articolo è stato letto</string>
-    <string name="show_full_text_indicator">Indicatore Testo Completo</string>
+    <string name="show_full_text_indicator">Indicatore testo completo</string>
     <string name="show_full_text_indicator_descr">Mostra l\'icona di un floppy per indicare che è stato caricato l\'articolo completo</string>
     <string name="show_new_icon">Indicatore Nuovo Articolo</string>
     <string name="show_new_icon_descr">Mostra l\'icona (+) per indicare i nuovi articoli</string>
-    <string name="show_read_article_count">Mostra Numero Articoli Letti</string>
+    <string name="show_read_article_count">Mostra conteggio articoli letti</string>
     <string name="show_read_article_count_descr">Nella lista dei feed</string>
-    <string name="show_group_entrries_count">Numero Totale Articoli per ogni Gruppo</string>
+    <string name="show_group_entrries_count">Conteggio articoli per ogni gruppo</string>
     <string name="textColorRead">Articoli Letti</string>
-    <string name="textColorRead_descr">Colori degli articoli letti</string>
+    <string name="textColorRead_descr">Colore di testo e sfondo degli articoli letti</string>
     <string name="settings_color_text_read_sample_short">Leggi</string>
     <string name="settings_color_text_read_sample_long">Articoli Letti</string>
-    <string name="settings_category_article_text">Testo Articoli</string>
+    <string name="settings_category_article_text">Testo articoli</string>
     <string name="settings_category_article_text_summary">Aspetto del testo degli articoli</string>
     <string name="settings_display_images">Carica Immagini</string>
     <string name="settings_display_images_description">Mostra le immagini negli articoli</string>
-    <string name="settings_display_entries_fullscreen">Lettura Articoli a Schermo Intero</string>
+    <string name="settings_display_entries_fullscreen">Apri articoli a schermo intero</string>
     <string name="settings_entry_margins">Margini</string>
     <string name="settings_entry_margins_description">Sinistra/destra</string>
     <string name="entry_text_align_justify">Testo Giustificato</string>
     <string name="entry_text_align_justify_description">Altrimenti allinea a sinistra</string>
-    <string name="linkColor">Colore del link</string>
-    <string name="linkColor_descr">Colori dei collegamenti</string>
+    <string name="linkColor">Colore dei link</string>
+    <string name="linkColor_descr">Colore di testo e sfondo dei collegamenti</string>
     <string name="settings_color_link_sample_short">Link</string>
     <string name="settings_color_link_sample_long">Colori Collegamenti</string>
     <string name="underline_links">Sottolinea Collegamenti</string>
-    <string name="article_text_show_clock">Mostra Orologio</string>
+    <string name="article_text_show_clock">Visualizza orologio</string>
     <string name="article_text_show_clock_description">Nella modalità schermo intero, mostra l\'ora in alto a destra</string>
-    <string name="settings_informations_size">Dimensione Testo Informazioni Aggiuntive</string>
-    <string name="article_text_information_color">Colori Informazioni Aggiuntive</string>
-    <string name="article_text_information_color_descr">Colore del testo e dello sfondo delle informazioni aggiuntive</string>
+    <string name="settings_informations_size">Dimensione testo delle info aggiuntive</string>
+    <string name="article_text_information_color">Colore delle info aggiuntive</string>
+    <string name="article_text_information_color_descr">Colore di testo e sfondo delle informazioni aggiuntive</string>
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
-    <string name="article_text_show_progress">Barra Avanzamento Lettura</string>
-    <string name="article_text_progress_height">Spessore Barra Avanzamento</string>
-    <string name="article_text_progress_color">Colore Barra Avanzamento</string>
+    <string name="article_text_show_progress">Barra di avanzamento lettura</string>
+    <string name="article_text_progress_height">Spessore barra di avanzamento</string>
+    <string name="article_text_progress_color">Colore barra di avanzamento</string>
     <string name="settings_category_operation">Operazione</string>
     <string name="settings_category_operation_summary">Impostazioni operazioni</string>
-    <string name="tap_zone_size">Dimensione Zona Tocco</string>
+    <string name="tap_zone_size">Dimensione zone tocco</string>
     <string name="tap_zone_size_descr">Altezza/larghezza in millimetri delle zone di tocco</string>
-    <string name="settings_show_tap_zones">Zone Tocco Visibili</string>
+    <string name="settings_show_tap_zones">Zone tocco visibili</string>
     <string name="settings_show_tap_zone_description">Saranno identificabili tramite dei quadrati semitrasparenti</string>
-    <string name="settings_tapZones">Anteprima Zone Tocco</string>
-    <string name="settings_volume_buttons_action">Azione Pulsanti Volume</string>
-    <string name="brightness_gesture">Cambia Luminosità con i Gesti</string>
+    <string name="settings_tapZones">Anteprima zone tocco</string>
+    <string name="settings_volume_buttons_action">Azione pulsanti volume</string>
+    <string name="brightness_gesture">Modifica luminosità con i gesti</string>
     <string name="brightness_gesture_descr">Sarà possibile regolare la luminosità scorrendo in alto/basso lungo il bordo sinistro dello schermo</string>
     <string name="brightness_with_dim_activity">Overlay Software</string>
     <string name="brightness_with_dim_activity_descr">Diminuisce la luminosità riducendo la trasparenza del colore dello sfondo della finestra (attivalo in caso dovesse funzionasse l\'impostazione precedente)</string>
     <string name="settings_category_notification">Notifiche</string>
-    <string name="settings_notifications_enabled">Attiva Notifiche</string>
+    <string name="settings_notifications_enabled">Attiva notifiche</string>
     <string name="settings_notifications_enabled_description">Attiva le notifiche all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_ringtone">Suoneria</string>
     <string name="settings_notifications_ringtone_none">Nessuna</string>
@@ -289,10 +289,10 @@
     <string name="settings_notifications_vibrate_description">Attiva la vibrazione all\'arrivo di nuovi articoli</string>
     <string name="settings_notifications_light">LED di Notifica</string>
     <string name="settings_notifications_light_description">Usa il LED di notifica quando si trovano nuovi articoli</string>
-    <string name="page_up_down_90_pct">Scorri Pagina al 90%</string>
-    <string name="page_up_down_90_pct_descr">Per mantenere alcune righe della pagina precedente. La funzione è disattivata, scorrerà l\'intera pagina verrà</string>
+    <string name="page_up_down_90_pct">Scorri pagina al 90%</string>
+    <string name="page_up_down_90_pct_descr">(tocca alto|basso dello schermo) per mantenere alcune righe della pagina precedente. Se disattivata, verrà scorsa l\'intera pagina</string>
     <string name="settings_remember_last_entry">Ricorda l\'ultimo articolo</string>
-    <string name="settings_remeber_last_entry_description">All\'avvio apri l\'ultimo articolo visualizzato, altrimenti la lista degli aricoli non letti</string>
+    <string name="settings_remeber_last_entry_description">All\'avvio apri l\'ultimo articolo visualizzato, altrimenti la lista degli articoli non letti</string>
     <string name="auto_unstart_at_bottom">Rimuovi Preferito quando Letto</string>
     <string name="auto_unstart_at_bottom_descr">Rimuovi un articolo dai preferiti al termine della lettura (quando è stato raggiunto il fondo)</string>
     <string name="settings_category_advanced">Avanzate</string>
@@ -352,7 +352,7 @@
     <string name="show_progress_info">Informazioni tecniche dettagliate sui progressi</string>
     <string name="show_progress_info_descr">Mostra informazioni dettagliate sull\'operazione corrente</string>
     <string name="vibrate_on_article_list_entry_swype">Vibra allo scorrimento</string>
-    <string name="vibrate_on_article_list_entry_swype_summary">Nella lista degli articoli e nella finestra di testo dell\'articolo mentre si preme</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Vibra quando imposti un articolo come preferito</string>
     <string name="entry_marked_unfavourite">L\'articolo è stato rimosso dai Preferiti</string>
     <string name="entry_marked_favourite">L\'articolo è stato aggiunto ai Preferiti</string>
     <string name="new_feed_was_added">Nuovo feed è stato aggiunto</string>
@@ -419,7 +419,7 @@
     <string name="entry_text_title_link">Link del titolo</string>
     <string name="entry_text_title_link_description">permette di aprire la pagina nel browser premendo sul titolo</string>
     <string name="delete_read_articles">Elimina articoli letti</string>
-    <string name="delete_read_articles_descr">indipendentemente dagli articoli mantienilo</string>
+    <string name="delete_read_articles_descr">indipendentemente dall\'intervallo di mantenimento</string>
     <string name="data_folder">Cartella dati</string>
     <string name="data_folder_descr">Dove memorizzare i testi e le immagini degli articoli scaricati</string>
     <string name="internalMemoryCache">Memoria interna (Cache)</string>
@@ -428,7 +428,7 @@
     <string name="show_html">Mostra HTML</string>
     <string name="image_white_background">Immagine di sfondo bianco</string>
     <string name="reload_fulltext_after_tag_editing">Ricarica il testo dopo la modifica dei tag</string>
-    <string name="reload_fulltext_after_tag_editing_descr">se deselezionato il testo completo non sarà ricaricato dopo ogni modifica di un tag (mostra|nascondi|root), quindi sarebbe facile fare più modifiche. In questo caso dovresti avviare manualmente il ricaricamento completo dopo la modifica completata</string>
+    <string name="reload_fulltext_after_tag_editing_descr">se deselezionato il testo completo non sarà ricaricato dopo ogni modifica di un tag (mostra|nascondi|root), quindi è più facile fare modifiche multiple (dovrai avviare manualmente il ricaricamento completo dopo la modifica)</string>
     <string name="article_menu_show_by_tap">Mostra menù articolo con tocco</string>
     <string name="article_list_loading">Caricamento elenco articoli</string>
     <string name="article_opening">Apertura articolo</string>
@@ -442,24 +442,24 @@
     <string name="new_entry_shortcut_added">La scorciatoia del nuovo articolo è stata creata nella schermata Home</string>
     <string name="menu_reload_with_tables_toggle">Con tabelle</string>
     <string name="menu_display_options">Mostra opzioni</string>
-    <string name="menu_reload">Ricaricando...</string>
+    <string name="menu_reload">Ricarica</string>
     <string name="article_tap_enabled">Azioni tocco attivate</string>
-    <string name="article_tap_enabled_summary">sulle zone con un tocco e in aree non collegate (per la visualizzazione del menù)</string>
+    <string name="article_tap_enabled_summary">sulle zone di tocco e in aree non collegate (per visualizzare il menù negli articoli)</string>
     <string name="menu_calculate_image_sizes">Calcola dimensioni immagini</string>
-    <string name="setting_calculate_image_sizes">Dimensione dell\'immagine nella memoria</string>
+    <string name="setting_calculate_image_sizes">Dimensione delle immagini in memoria</string>
     <string name="setting_calculate_image_sizes_descr">Calcola e mostra la dimensione delle immagini caricate sulla memoria per articolo, feed, gruppo ed ecc (i numeri vengono aggiornati durante l\'aggiornamento)</string>
     <string name="settings_category_theme">Tema</string>
     <string name="settings_category_header">Intestazione di pagina</string>
     <string name="tasks_to_download">Da caricare</string>
     <string name="settings_current_setting">Impostazioni correnti</string>
     <string name="unable_to_load_article_icon">Impossibile caricare l\'icona dell\'articolo</string>
-    <string name="settings_delete_old_interval">Elimina il vecchio intervallo</string>
-    <string name="settings_delete_old_interval_descr">Quando elimina i vecchi articoli e calcola la dimensione delle immagini di gruppo, e quelle del feed sulla sdcard</string>
+    <string name="settings_delete_old_interval">Intervallo eliminazione articoli</string>
+    <string name="settings_delete_old_interval_descr">Intervallo dopo cui eliminare i vecchi articoli</string>
     <string name="menu_delete_old">Elimina articoli vecchi</string>
-    <string name="settings_category_delete_old">Elimina i vecchi</string>
+    <string name="settings_category_delete_old">Elimina obsoleti</string>
     <string name="tool_bar_color">Colore barra degli strumenti</string>
-    <string name="tool_bar_color_desc">questo colore è già utilizzato anche per i pulsanti di testo dell\'articolo e per la barra di stato</string>
-    <string name="one_webpage_hint">il contenuto dell\'url è deviato in articoli dal nome della classe root, dovrebbe anche impostare il nome della classe per il titolo dell\'articolo, la data e l\'immagine</string>
+    <string name="tool_bar_color_desc">Colore usato per i pulsanti all\'interno dell\'articolo e per la barra di stato</string>
+    <string name="one_webpage_hint">Suggerimento: il contenuto della pagina è diviso in articoli in base alla classe HTML del feed. Dovresti anche impostare il nome della classe per titolo, data e l\'immagine dell\'articolo. Per trovare la classe, carica l\'articolo di interesse e passa alla modalità Ricarica con i tag, dove puoi trovare i nomi di classe per gli elementi</string>
     <string name="one_webpage_article_classname_label">Articolo</string>
     <string name="one_webpage_edittext_classname_hint">Nome della classe</string>
     <string name="one_webpage_url_classname_label">Url</string>
@@ -486,11 +486,11 @@
     <string name="unread_article">Articoli Non Letti</string>
     <string name="reading_article">Lettura di un articolo</string>
     <string name="reading_notification">Notifica lettura articoli</string>
-    <string name="reading_notification_descr">Notifica permanente della barra di stato per impedire che l\'app venga fermata dal sistema - per accelerare l\'avvio dell\'app dopo un lungo ritardo</string>
+    <string name="reading_notification_descr">Notifica permanente per impedire che l\'app venga terminata dal sistema e per accelerare l\'avvio dell\'app dopo un lungo inutilizzo</string>
     <string name="feed_list_loading">Caricamento lista feed</string>
     <string name="article_text_show_battery">Visualizza il livello della batteria</string>
     <string name="settings_category_header_descr">Per il testo dell\'articolo e la lista degli articoli</string>
-    <string name="article_text_buttons_layout">Disposizione del pulsante</string>
+    <string name="article_text_buttons_layout">Disposizione dei pulsanti</string>
     <string name="article_text_buttons_layout_descr">Orientamento e visibilità dei pulsanti alla fine di un articolo</string>
     <string name="article_reading_notification_hint">Per mantenere l\'app in memoria durante la lettura di un articolo</string>
     <string name="auto_set_as_read">Imposta automaticamente l\'articolo come letto quando il titolo è visibile nella lista</string>
@@ -512,8 +512,8 @@
     <string name="settings_date_extract_rules">Regole di estrazione data</string>
     <string name="set_date">Imposta come data</string>
     <string name="clearingWebViewChache">Pulisci cache di WebView</string>
-    <string name="article_text_show_date">Mostra Data</string>
-    <string name="article_text_show_date_description">Il giorno del mese e un giorno della settimana</string>
+    <string name="article_text_show_date">Visualizza la data</string>
+    <string name="article_text_show_date_description">Il giorno del mese e della settimana</string>
     <string name="remove_existing_feeds_question">Rimuovere i feed esistenti prima dell\'importazione?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
@@ -524,7 +524,7 @@
     <string name="defaultFontFamily">Predefinita di Sistema</string>
     <string name="fontTextSample">Testo</string>
     <string name="fontFamily">Carattere</string>
-    <string name="fontFamilySummary">Famiglia di caratteri di quasi tutti il testo presente nell\'app. Puoi aggiungere file .TTF nella cartella: </string>
+    <string name="fontFamilySummary">Carattere di quasi tutti i testi nell\'app. Puoi aggiungere caratteri .TTF personalizzati selezionandoli in fondo alla lista </string>
     <string name="settings_font_rules">Carattere</string>
     <string name="settings_font_rules_description">Per impostare caratteri personalizzati per classi separate nei testi degli articoli per dominio</string>
     <string name="bold">Grassetto</string>
@@ -542,7 +542,7 @@
     <string name="megabytes">MB</string>
     <string name="create_start_auto_refersh">Avvia aggiornamento automatico</string>
     <string name="settings_thread_count">Quantità thread</string>
-    <string name="settings_thread_count_description">(1-100) Il conteggio delle operazioni parallele eseguite simultaneamente durante l\'aggiornamento dell\'articolo. I piccoli valori rendono meno attività CPU e meno consumo di memoria dell\'aggiornamento. I grandi valori lo rendono più veloce. Il valore ottimale dipende dalla quantità dei core CPU del dispositivo</string>
+    <string name="settings_thread_count_description">(1-100) Conteggio delle operazioni simultanee eseguite durante l\'aggiornamento degli articoli. I valori piccoli permettono meno attività CPU e meno consumo di memoria, mentre valori grandi lo rendono più veloce. Il valore ottimale dipende dai core CPU del dispositivo</string>
     <string name="main_font_css_text_title">Testo principale stile CSS del carattere</string>
     <string name="main_font_css_text_title_description">per impostare lo spessore del carattere, la spaziatura delle lettere, ecc., per il testo dell\'articolo</string>
     <string name="btn_reload_full_text">Ricarica testo completo</string>
@@ -559,7 +559,8 @@
     <string name="list_was_scrolled_to_bottom">Scorri in basso</string>
     <string name="articleWasUnstarred">Un articolo non era preferito</string>
     <string name="articleNotFound">Un articolo non è stato trovato :(</string>
-    <string name="article_list_size_progressbar_maxsize">"Dimensione Del Testo Massima "</string>
+    <string name="article_list_size_progressbar_maxsize">"Dimensione massima del testo "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">In kB per l\'indicatore orizzontale (0 per spegnerlo). È nascosto per i feed con attiva la marcatura automatica come letti</string>
     <string name="setting_edit_feed_force_portrait_orientation">Modifica orientamento verticale feed</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forza l\'orientamento dello schermo verticale nella finestra Modifica Feed - controlla se il telefono ha lo schermo piccolo</string>
     <string name="name">Nome</string>
@@ -588,14 +589,14 @@
     <string name="fileCopied">File %s copiato</string>
     <string name="fileCopiedToDownloadsFolder">File %s copiato nella sottocartella %s di Downloads</string>
     <string name="unableToCopyFile">Impossibile copiare il file %s</string>
-    <string name="label_setup_by_tap_on_date">Impostazione etichetta toccando la data</string>
+    <string name="label_setup_by_tap_on_date">Imposta etichetta toccando la data</string>
     <string name="label_setup_by_tap_on_date_descr">Autore e URL nell\'elenco degli articoli</string>
-    <string name="downloadAllImagesStarted">Tutte le immagini stanno venendo scaricate</string>
+    <string name="downloadAllImagesStarted">Scaricamento di tutte le immagini</string>
     <string name="operationCanceled">Un\'operazione è stata annullata</string>
     <string name="comments">Commenti: </string>
     <string name="video_tag_found_in_article">È stata trovata un\'etichetta video nel testo dell\'articolo</string>
-    <string name="disable_tap_actions_when_video">Disabilita l\'azione del tocco con il video</string>
-    <string name="disable_tap_actions_when_video_descr">Disabilita temporaneamente l\'azione del tocco nell\'articolo quando contiene un video</string>
+    <string name="disable_tap_actions_when_video">Disabilita l\'azione di tocco con i video</string>
+    <string name="disable_tap_actions_when_video_descr">Disabilita temporaneamente l\'azione di tocco nell\'articolo quando questo contiene un video</string>
     <string name="addFeedTelegramPatternFound">L\'url sembra essere un feed di telegram. Vuoi ottimizzare automaticamente le impostazioni del feed per il canale telegram?</string>
     <string name="feedWasAutoConfigured">Il feed è stato configurato automaticamente</string>
     <string name="settings_labels_sort_alphabetical">Ordinamento etichetta ABC</string>
@@ -634,30 +635,60 @@
     <string name="timeIntervalInFuture">pollice</string>
     <string name="timeIntervalInPast">fa</string>
     <string name="error_add_customm_font">Aggiunta del carattere personalizzato non riuscita</string>
-    <string name="article_text_footer_show_remaining">Rimanenza</string>
-    <string name="article_text_footer_show_remaining_description">"Mostra il contatore rimanente di pagine da scorrere in basso "</string>
+    <string name="article_text_footer_show_remaining">Restante</string>
+    <string name="article_text_footer_show_remaining_description">"Mostra il contatore delle pagine ancora da scorrere in basso "</string>
     <string name="open_image">Apri immagine</string>
     <string name="copy_to_downloads">Copia negli scaricamenti</string>
     <string name="sendErrorConfirm">Si è verificato un errore durante l\'operazione. Inviarlo allo sviluppatore?</string>
     <string name="wrongFontFileSelected">"Il file dei caratteri dovrebbe terminare con ttf "</string>
     <string name="show_article_text_preview">Anteprima testo</string>
-    <string name="show_article_text_preview_descr">Mostra diverse prime righe di testo dell\'articolo</string>
+    <string name="show_article_text_preview_descr">Mostra alcune righe del testo dell\'articolo</string>
     <string name="show_more">Mostra altro…</string>
     <string name="appListLoading">Caricamento dell\'elenco delle applicazioni</string>
     <string name="open_image_tap_action">Apri applicazione immagine</string>
     <string name="open_link_in_browser_tap_action">Applicazione browser</string>
+    <string name="open_image_tap_action_descr">App da utilizzare per vedere le immagini, non perdere tempo con il popup di selezione delle app</string>
+    <string name="open_link_in_browser_tap_action_descr">App da utilizzare come browser, non perdere tempo con il popup di selezione delle app</string>
     <string name="not_selected">Non selezionato</string>
     <string name="setting_ignore_all_ssl_errors">Ignora tutti gli errori SSL</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Abilitalo se riscontri problemi di certificati nel caricamento dei contenuti web. !!! ATTENZIONE !!! Può rendere il dispositivo non sicuro :(</string>
     <string name="connection_timeout">Timeout connessione</string>
+    <string name="connection_timeout_summary">In millisec. Quanto attendere per la connessione internet</string>
     <string name="settings_category_connection">Connessione</string>
     <string name="couldNotCreateDownloadsSubfolder">Impossibile creare la sottocartella in Downloads</string>
     <string name="article_text_expand_controls">Espansione testo articolo</string>
+    <string name="article_text_expand_controls_descr">Possibilità di espandere il testo degli articoli in lista. Se attivo, tutti i tocchi su un articolo, a parte sul titolo, espandono o riducono il testo invece di aprire una finestra separata</string>
     <string name="settings_category_labels">Etichette</string>
     <string name="settings_category_feed_list">Elenco feed</string>
-    <string name="settings_category_last_read">Ultima sezione di lettura</string>
+    <string name="settings_category_last_read">Sezione Ultimi letti</string>
+    <string name="setting_last_read_hide_label_list">Nascondi etichetta Ultimi letti</string>
+    <string name="setting_last_read_hide_label_list_summary">Non mostrare le etichette selezionate nella sezione Ultimi letti</string>
     <string name="setting_last_read_article_count">Conteggio articoli</string>
+    <string name="setting_last_read_article_count_descr">Conteggio articoli visibili nella sezione Ultimi letti</string>
+    <string name="settings_category_feed_list_summary">Aspetto della lista dei feed e della sezione Ultimi letti</string>
     <string name="menu_reload_full_text_with_scripts">Con script</string>
     <string name="setting_custom_css_text">Testo CSS personalizzato</string>
+    <string name="setting_custom_css_text_description">Testo da includere in ogni sezione html CSS. Puoi personalizzare il formato del testo dell\'articolo in qualsiasi modo. Vedi https://www.w3schools.com/css/css_intro.asp per iniziare</string>
     <string name="menu_reload_full_text_with_debug">Con debug</string>
+    <string name="show_article_big_image">Immagine articolo grande</string>
+    <string name="show_article_big_image_descr">Mostra l\'immagine dell\'articolo a larghezza intera al posto dell\'icona</string>
     <string name="withoutLabel">Senza etichetta</string>
+    <string name="article_text_footer_margin">Margini</string>
+    <string name="article_text_footer_margin_summary">Margini (in mm) dei bordi laterali, per compensare i bordi arrotondati dello schermo</string>
+    <string name="refresh_only_selected_select_all">Seleziona tutti</string>
+    <string name="refresh_only_selected_select_all_summary">Aggiorna automaticamente tutti i feed</string>
+    <string name="refresh_only_selected_select_none">Deseleziona tutto</string>
+    <string name="refresh_only_selected_select_none_summary">Disabilita l\'aggiornamento automatico su tutti i feed</string>
+    <string name="feed_count_were_edited">feed modificati</string>
+    <string name="show_navigation_bar_in_fullscreen">Mostra navigazione a schermo intero</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Mostra barra di navigazione a schermo intero</string>
+    <string name="show_unstarred_checkbox">Icona non Preferiti</string>
+    <string name="show_unstarred_checkbox_descr">Mostra una stellina vuota per indicare che l\'articolo non è nei preferiti</string>
+    <string name="debug">Debug</string>
+    <string name="send_debug_info_on_crash">Invia info di debug sui crash</string>
+    <string name="send_debug_info_on_crash_summary">In caso di crash, propone l\'invio di un\'email con le info di debug allo sviluppatore</string>
+    <string name="copy_debug_info_to_clipboard">Copia info di debug negli appunti</string>
+    <string name="copy_debug_info_to_clipboard_summary">Quando l\'app termina inaspettatamente</string>
+    <string name="import_from_backup_after_permission_granted">Vuoi importare i feed e le impostazioni delle app dal file di backup automatico?</string>
+    <string name="menu_import_from_backup_file">Importa da un file di backup</string>
 </resources>

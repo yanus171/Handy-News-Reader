@@ -29,11 +29,54 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="app_name">Handy News Reader</string>
-    <string name="about_title_version">Versión</string>
-    <string name="about_handy_news_reader">Acerca de Handy News Reader</string>
-    <string name="about_handy_news_reader_descr">Licencia, ayuda y cómo contactar al desarrollador </string>
-    <string name="welcome_title">Welcome to Handy News Reader. Would you like to add one feed?</string>
+    <string name="about_us_content" translatable="true"><![CDATA[    <h2>License and Information</h2>
+    <p>This program is Free/Libre Open-Source Software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
+    <p>This app is based on \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Among features added to this fork are:</p>
+    
+	• feed group expanding<br/>
+    • invisible fullscreen page up|down buttons<br/>
+    • max image per feed download count<br/>
+    • ability to cancel refresh process<br/>
+    • and much more
+
+    <h2>You Can Find Us at:</h2>
+
+    • our <b><a href=\"https://handynewsreader.blogspot.com\">website</a></b> (news and info)<br/>
+    • <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play Store</a><br/>
+    • <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/>
+    • <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a><br/>
+    • <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a>
+
+    <h2>Our Support</h2>
+    <p>If you stumble upon a problem with the app, You can:</p>
+    • check if that problem has been addressed within our <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a><br/>
+    • open an issue on <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a><br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">email the developer</a><br/>
+	
+    <h2>Your Support</h2>
+    <p>If you have an idea for a new feature you can:</p>
+    • open an issue on <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a><br/>
+    • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">email the developer</a>
+
+	<p>If you find this app useful please rate it at <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></p>
+    You can also <a href=\"https://github.com/yanus171/Handy-News-Reader\">make a donation</a> </b> (link at the end of the description)
+ 
+    <h2>Translations</h2>
+	<p>You can help in translation to your own language at <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> If your language isn\'t available then please send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail to the developer</a></b></p>
+
+    <h2>Acknowledgments</h2>
+    <h3>Developers:</h3>
+    ***developerList***
+    <br/><br/>
+	<h3>Translators:</h3>
+    ***translatorList***
+    <br/>
+    ]]></string>
+    <string name="app_name">Handy Reading</string>
+    <string name="about_title_version">versión</string>
+    <string name="about_handy_news_reader">Acerca de Handy Reading</string>
+    <string name="about_handy_news_reader_descr">Licencia, soporte, traducciones, etc.</string>
+    <string name="welcome_title">Bienvenido a Handy Reading. ¿Te gustaría añadir una fuente?</string>
     <string name="never">nunca</string>
     <string name="last_update">Actualizar</string>
     <string name="menu_settings">Configuración</string>
@@ -47,9 +90,11 @@
     <string name="drawer_close">Cerrar cajón de navegación</string>
     <!-- FEEDS -->
     <string name="feeds">Fuentes</string>
+    <string name="menu_article_web_search">Búsqueda de artículo web</string>
     <string name="menu_add_feed">fuente</string>
     <string name="no_feeds">No hay fuentes</string>
     <string name="no_filters">No hay filtros</string>
+    <string name="context_menu_add">Añadir</string>
     <string name="context_menu_delete">Eliminar</string>
     <string name="edit_feed_title">Modificar fuente</string>
     <string name="new_feed_title">Nueva fuente</string>
@@ -83,6 +128,7 @@
     <string name="feed_search">Buscar fuentes</string>
     <string name="web_page_search_duckduckgo">Búsqueda de página web (Duck Duck Go)</string>
     <string name="select_file">Seleccionar archivo</string>
+    <string name="select_file_from_subfolder">Selecciona fichero en carpeta Downloads/handy_news_reader:</string>
     <string name="question_delete_feed">¿Seguro que quiere eliminar esta fuente?</string>
     <string name="question_delete_group">¿Seguro que quiere eliminar este grupo de fuentes?</string>
     <string name="question_delete_filter">¿Seguor que quiere eliminar este filtro?</string>
@@ -99,10 +145,14 @@
     <string name="no_entries">No hay entradas</string>
     <string name="downloadOneImage">Descargar la imagen</string>
     <string name="favorites">Destacadas</string>
+    <string name="last_read">Última lectura</string>
     <string name="context_menu_share_starred">Compartir entradas seleccionadas</string>
     <string name="menu_star">Destaca</string>
     <string name="menu_unstar">No destacar</string>
     <string name="menu_share">Compartir</string>
+    <string name="menu_mark_all_as_unread">Marcar todo como no leído</string>
+    <string name="menu_mark_upper_as_read">Marcar lo de arriba como leido</string>
+    <string name="menu_mark_lower_as_read">Marcar lo de debajo como leído</string>
     <string name="menu_full_screen">Pantalla completa</string>
     <string name="menu_actionbar_visible">Barra de acción</string>
     <string name="menu_font_bold">Negrita</string>
@@ -131,6 +181,7 @@
     <string name="tip_sentence">Tip: slide left to mark as read</string>
     <string name="undo">Deshacer</string>
     <string name="marked_as_read">Marcar como leido</string>
+    <string name="removed_from_favorites">Eliminado de favoritos</string>
     <string name="image_count">Recuento de imágenes</string>
     <!-- WIDGET -->
     <string name="red">Rojo</string>
@@ -267,7 +318,9 @@
     <string name="parseXml">Analizando XML</string>
     <string name="setupConnection">Configurar conexión</string>
     <string name="settings_fulltext_extract_rules">Texto completo</string>
+    <string name="settings_fulltext_extract_rules_description">Cada línea es una regla que específica el nombre de la clase HTML con la que comienza el texto completo del artículo (se requiere conocimiento básico de HTML). Esta configuración se actualiza automáticamente en el modo de edición de contenido del artículo</string>
     <string name="settings_category_extract_rules">Categoría</string>
+    <string name="settings_date_extract_rules_description">Establecido para cada sitio (se necesita conocimiento básico de HTML)</string>
     <string name="settings_tap_zones_dialogtitle">sólo para información, cambios no disponibles</string>
     <string name="downloadNext">", Siguiente "</string>
     <string name="downloadAll">", Todo"</string>
@@ -285,7 +338,11 @@
     <string name="actionBarToggle">Activar/desactivar barra de acción</string>
     <string name="standard">Normal</string>
     <string name="fontsize_entrylist">Tamaño de fuente en la lista de artículos</string>
+    <string name="confirmation">Confirmación</string>
     <string name="question_delete_entry">¿Eliminar este artículo?</string>
+    <string name="question_mark_upper_as_read">¿Marcar artículos de encima como leídos?</string>
+    <string name="question_mark_lower_as_read">¿Marcar artículos por debajo como leídos?</string>
+    <string name="question_mark_all_as_unread">¿Marcar todos los artículos como no leídos?</string>
     <string name="share_all_text">Compartir texto completo</string>
     <string name="group">Grupo</string>
     <string name="auto_image_load">Carga de imágenes automática</string>
@@ -297,6 +354,7 @@
     <string name="entry_marked_favourite">El artículo fue añadido a Favoritos</string>
     <string name="new_feed_was_added">Nuevo feed añadido</string>
     <string name="entry_marked_unread">El artículo fue marcado como no leído</string>
+    <string name="force_landscape_orientation">Orientación horizontal</string>
     <string name="markAsStarred">Marcar como destacado</string>
     <string name="markedAsStarred">El artículo fue marcado como destacado: </string>
     <string name="deleteAllEntries">¿Borrar todos los artículos no destacados que se muestran?</string>
@@ -315,6 +373,7 @@
     <string name="rule_text">Texto de la regla</string>
     <string name="global_marks_as_star_filter_rule_descr">una regla por línea</string>
     <string name="customKeepTime">Los artículos personalizados tienen tiempo</string>
+    <string name="custom_refresh_interval">Intervalo de actualización personalizado</string>
     <string name="menu_toggle_theme">Cambiar tema</string>
     <string name="turnOn">Encender</string>
     <string name="brightness">Brillo</string>
@@ -341,6 +400,7 @@
     <string name="auto_refresh_requires_charging">Sólo mientras se carga</string>
     <string name="global_class_list_to_remove_from_article_text">Eliminar reglas de texto</string>
     <string name="global_class_list_to_remove_from_article_text_summary">nombre de la clase por línea</string>
+    <string name="global_date_class_list_summary">Nombre de la clase en cada línea. Los elementos de estas clases se usan como fecha del artículo en feeds del tipo Página Web - Enlaces</string>
     <string name="hide">Ocultar</string>
     <string name="show">Mostrar</string>
     <string name="setFullTextRoot">Seleccionar como raíz de texto completo</string>
@@ -352,28 +412,39 @@
     <string name="new_feed_shortcut_added">Se ha creado un nuevo acceso directo en la pantalla de inicio</string>
     <string name="new_feed_shortcut_add_failed">Su lanzador no puede crear un acceso directo</string>
     <string name="custom_data_folder">Ruta personalizada de archivos externos</string>
+    <string name="custom_data_folder_descr">(vacío - usar por defecto) ruta de la carpeta donde almacenar imágenes descargadas y copia de seguridad</string>
     <string name="entry_text_title_link">Enlace del título</string>
     <string name="entry_text_title_link_description">permite abrir la página web en el navegador pulsando en el título</string>
     <string name="delete_read_articles">Eliminar artículos leídos</string>
+    <string name="delete_read_articles_descr">mantener la hora sin importar los artículos</string>
     <string name="data_folder">Carpeta de datos</string>
     <string name="data_folder_descr">Dónde guardar textos e imágenes de artículos descargados</string>
+    <string name="internalMemoryCache">Memoria interna (Cache)</string>
+    <string name="internalMemoryData">Memoria interna (Datos)</string>
     <string name="externalMemory">Memoria externa</string>
     <string name="show_html">Mostrar HTML</string>
     <string name="image_white_background">Fondo blanco de la imagen</string>
     <string name="reload_fulltext_after_tag_editing">Recargar texto después de editar etiquetas</string>
+    <string name="reload_fulltext_after_tag_editing_descr">al marcar, se volverá a cargar el texto completo después de cada edición de etiqueta (mostrar|ocultar|root), para facilitar introducir múltiples cambios (si no, necesita recargar manualmente el texto completo cuando termine de editar)</string>
     <string name="article_menu_show_by_tap">Mostrar el menú de artículos con un toque</string>
     <string name="article_list_loading">Cargando lista de artículos</string>
     <string name="article_opening">Apertura del artículo</string>
     <string name="web_page_loading">Página cargando</string>
+    <string name="article_menu_show_by_tap_descr">Cuando la barra de acción está oculta - si no el menú sólo aparece en la barra de acción</string>
     <string name="menu_go_back">Volver</string>
     <string name="menu_go_top">Desplazar hasta arriba</string>
     <string name="menu_close">Cerrar</string>
     <string name="reading_file_list">Leyendo lista de archivos</string>
     <string name="add_entry_shortcut">Añadir acceso directo al artículo</string>
+    <string name="new_entry_shortcut_added">Se ha creado un nuevo acceso directo al artículo en la pantalla de inicio</string>
+    <string name="menu_reload_with_tables_toggle">Con tablas</string>
     <string name="menu_display_options">Mostrar opciones</string>
     <string name="menu_reload">Actualizar</string>
     <string name="article_tap_enabled">Acciones de toque activadas</string>
+    <string name="article_tap_enabled_summary">en Zonas de toque y en áreas sin vínculos (para mostrar menú en el texto del artículo)</string>
     <string name="menu_calculate_image_sizes">Calcular tamaño de imágenes</string>
+    <string name="setting_calculate_image_sizes">Tamaño de imágenes en el almacenamiento</string>
+    <string name="setting_calculate_image_sizes_descr">También durante la operación Eliminar antiguos, calcular y mostrar el espacio en el almacenamiento de las imágenes cargadas, por artículo, fuente, grupo, etc. Estos números se actualizan durante la eliminación de los artículos antiguos - por lo que la duración de la operación podría ampliarse significativamente</string>
     <string name="settings_category_theme">Tema</string>
     <string name="settings_category_header">Encabezado de página</string>
     <string name="settings_current_setting">Configuración actual</string>
@@ -408,22 +479,30 @@
     <string name="search_in_yandex">Buscar vía Yandex</string>
     <string name="search_in_google">Buscar a través de Google</string>
     <string name="long_operation">Operación larga</string>
+    <string name="unread_article">Artículo(s) sin leer</string>
     <string name="reading_article">Leyendo un artículo</string>
     <string name="reading_notification">Notificación de lectura de artículo</string>
     <string name="reading_notification_descr">Notificación de barra de estado persistente para evitar que el sistema cierre la aplicación - para acelerar el inicio de la aplicación después de un largo retraso</string>
+    <string name="feed_list_loading">Carga de lista de canales</string>
     <string name="article_text_show_battery">Mostrar nivel de batería</string>
+    <string name="settings_category_header_descr">Para las pantallas del texto del artículo y de la lista de artículos. </string>
     <string name="article_text_buttons_layout">Diseño del botón</string>
+    <string name="article_text_buttons_layout_descr">Orientación y visibilidad de los botones al final de un artículo</string>
+    <string name="article_reading_notification_hint">Mantener la aplicación en memoria para acelerar el arranque en frío</string>
     <string name="auto_set_as_read">Establecer automáticamente el artículo como leído una vez que su título ha sido visible en la lista</string>
     <string name="removeText">Eliminar texto</string>
     <string name="set_category">Establecer como categoría</string>
     <string name="menu_more_options">Más opciones</string>
+    <string name="reset_feed_and_delete_all_articles">Restablecer la fuente y eliminar artículos no destacados</string>
     <string name="filter_apply_to_author">Aplicar al autor</string>
     <string name="filter_apply_to_category">Aplicar a la categoría</string>
     <string name="filter_apply_to_url">Aplicar a la URL</string>
+    <string name="open_tag_menu_hint">Elija una parte de la URL a usar como clave para la regla</string>
     <string name="open_tag_menu_dialog_title">"Establecer una regla para la clase "</string>
     <string name="show_article_category">"Mostrar categoría de artículo"</string>
     <string name="article_text_information">Información adicional del encabezado</string>
     <string name="article_text_progress">Leyendo barra de progreso en el encabezado</string>
+    <string name="global_removeText_filter_rule_descr">Expr. regular (una por línea) aplicada al contenido del artículo</string>
     <string name="parsing_web_page_links">Página</string>
     <string name="global_date_class_list">Lista de clases de fechas</string>
     <string name="settings_date_extract_rules">Fecha</string>
@@ -431,10 +510,82 @@
     <string name="clearingWebViewChache">Borrando caché de WebView</string>
     <string name="article_text_show_date">Mostrar fecha</string>
     <string name="article_text_show_date_description">El día del mes y un día de la semana</string>
+    <string name="remove_existing_feeds_question">¿Eliminar fuentes existentes antes de importar?</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="remove_existing_feeds_confirmation">Esto eliminará TODOS los artículos existentes de TODOS los canales (excepto marcados como “Leer más tarde”), incluso los destacados. ¿Estás seguro?</string>
+    <string name="yes_I_realize_btn_caption">¡Sí, me doy cuenta!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Ohh… Me equivoqué. ¡Sáqueme de aquí rápido!</string>
+    <string name="create_backup">Crear un nuevo archivo del respaldo</string>
+    <string name="defaultFontFamily">Predeterminado del sistema</string>
+    <string name="fontTextSample">Texto</string>
+    <string name="fontFamily">Fuente</string>
+    <string name="fontFamilySummary">Familia de fuentes de casi todos los textos de la aplicación. Puede añadir archivos ttf de fuentes personalizadas seleccionando el elemento inferior de la lista de fuentes </string>
+    <string name="settings_font_rules">Fuente personalizada</string>
+    <string name="settings_font_rules_description">Para establecer fuentes personalizadas para clases separadas en los textos del artículo por dominio. Deje vacío el nombre de la clase para aplicar la fuente al texto completo. Formato: site_url:class=Nombre del archivo de fuente = texto CSS (por ejemplo: font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
+    <string name="bold">Negrita</string>
+    <string name="font_rules_dialog_title">site_url:class=Nombre del archivo de fuente = texto CSS. Por ejemplo: font-weight: 400; font-size: 12; letter-spacing: 0.1em</string>
+    <string name="settings_main_image_extract_rules">Imagen principal</string>
+    <string name="settings_main_image_extract_rules_description">"Para cada dominio, nombre de la clase donde encontrar la imagen principal del artículo, para utilizarla como icono del artículo y para insertarla al principio del artículo (en lugar de og:image). Esto puede ser útil si la imagen del artículo está fuera de la sección del artículo de texto completo "</string>
+    <string name="settings_category_content_extract_rules">Reglas de extracción de contenido</string>
+    <string name="settings_category_content_extract_rules_summary">Nombres de las clases HTML para identificar diferentes partes del artículo. Algunos de estos ajustes se actualizan automáticamente en el modo de edición de artículos</string>
+    <string name="settings_category_other">Otros</string>
+    <string name="menu_edit_article_title">Editar título</string>
+    <string name="import_completed">Importación completada</string>
+    <string name="settings_comments_extract_rules">Comentarios</string>
+    <string name="settings_comments_extract_rules_description">Reglas para encontrar las secciones de comentarios del artículo</string>
+    <string name="filter_by_labels">Filtrar por etiquetas</string>
+    <string name="all">Todo</string>
+    <string name="all_labels">Todas las etiquetas</string>
+    <string name="filter_label_title">Filtro</string>
+    <string name="menu_edit_feed">Editar fuente</string>
+    <string name="addCustomFont">Añadir fuente personalizada…</string>
+    <string name="fileCopied">Archivo %s copiado</string>
+    <string name="fileCopiedToDownloadsFolder">Archivo %s copiado en la subcarpeta %s de Downloads</string>
+    <string name="unableToCopyFile">No se puede copiar el archivo %s</string>
+    <string name="label_setup_by_tap_on_date">Configurar etiqueta tocando en fecha</string>
+    <string name="label_setup_by_tap_on_date_descr">Autor y URL en la lista de artículos</string>
+    <string name="downloadAllImagesStarted">Descarga de todas las imágenes iniciada</string>
+    <string name="operationCanceled">Una operación ha sido cancelada</string>
+    <string name="comments">Comentarios: </string>
+    <string name="video_tag_found_in_article">Se ha encontrado una etiqueta de vídeo en el texto del artículo</string>
+    <string name="disable_tap_actions_when_video">Desactivar acción de toque con vídeo</string>
+    <string name="disable_tap_actions_when_video_descr">Deshabilitar temporalmente la acción de toque en el texto de resumen del artículo cuando contiene un vídeo</string>
+    <string name="addFeedTelegramPatternFound">La URL parece ser de telegram. ¿Quieres configurar automáticamente las opciones de la fuente para un canal de telegram?</string>
+    <string name="feedWasAutoConfigured">La fuente fue configurada automáticamente</string>
+    <string name="settings_labels_sort_alphabetical">Orden ABC de etiquetas</string>
+    <string name="settings_labels_sort_alphabetical_descr">Ordenar etiquetas alfabéticamente. De lo contrario, ordenar manualmente</string>
+    <string name="settings_feeds_sort_alphabetical">Orden ABC de fuentes</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Ordenar fuentes y grupos alfabéticamente. De lo contrario, ordenar manualmente</string>
+    <string name="web_search_keyword">Palabra clave o url del sitio web</string>
+    <string name="web_search_title">Búsqueda web de artículo</string>
+    <string name="settings_datetime_format">Formato de fecha/hora</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">One new entry</item>
         <item quantity="other">%d new entries</item>
     </plurals>
+    <string name="rightNow">ahora mismo</string>
+    <string name="oneWeek">semana</string>
+    <string name="twoFourWeek">semanas</string>
+    <string name="fiveWeek">semanas</string>
+    <string name="oneMonth">mes</string>
+    <string name="twoFourMonth">meses</string>
+    <string name="fiveMonth">meses</string>
+    <string name="oneDay">día</string>
+    <string name="twoFourDay">días</string>
+    <string name="fiveDay">días</string>
+    <string name="oneHour">hora</string>
+    <string name="twoFourHour">horas</string>
+    <string name="fiveHour">horas</string>
+    <string name="oneMinute">minuto</string>
+    <string name="twoFourMinute">minutos</string>
+    <string name="fiveMinute">minutos</string>
+    <string name="yearsShort">años</string>
+    <string name="monthsShort">meses</string>
+    <string name="weeksShort">s</string>
+    <string name="daysShort">d</string>
+    <string name="show_navigation_bar_in_fullscreen">Mostrar navegación en pantalla completa</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Mostrar barra de navegación en modo de pantalla completa</string>
+    <string name="show_unstarred_checkbox">Sin icono de estrella</string>
+    <string name="show_unstarred_checkbox_descr">Mostrar pequeño icono de estrella vacía para indicar que el artículo no está en favoritos</string>
 </resources>
