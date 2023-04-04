@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <cache-path path="/" name="cache_root" />
-    <external-files-path path="/feedex/fonts/" name="fonts" />
-    <external-path path="/feedex/fonts/" name="fonts1" />
+    <external-files-path path="/feedex/images/" name="ext_images" />
+    <external-path path="/feedex/fonts/" name="ext_fonts1" />
+    <external-files-path path="/feedex/fonts/" name="ext_fonts" />
+
+    <files-path path="/feedex/images/" name="images" />
+    <files-path path="/feedex/fonts/" name="fonts" />
 </paths>
