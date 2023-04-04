@@ -690,4 +690,5 @@
     <string name="copy_debug_info_to_clipboard_summary">Wenn die App abstürzt</string>
     <string name="import_from_backup_after_permission_granted">Möchten Sie Feeds und App-Einstellungen aus der automatischen Sicherung importieren?</string>
     <string name="menu_import_from_backup_file">Aus Sicherung importieren</string>
+    <string name="edit_feed_title_external">Bearbeiten</string>
 </resources>
