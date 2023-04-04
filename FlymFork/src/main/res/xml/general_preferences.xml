@@ -676,6 +676,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_advanced_summary"
+        android:key="prefs_advanced"
         android:icon="@drawable/prefs_advanced"
         android:title="@string/settings_category_advanced">
         <PreferenceCategory

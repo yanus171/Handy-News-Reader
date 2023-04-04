@@ -73,16 +73,13 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.DATA_FOLDER;
 public class GeneralPrefsFragment extends PreferenceFragment implements  PreferenceScreen.OnPreferenceClickListener {
     public static Boolean mSetupChanged = false;
 
-    private Preference.OnPreferenceChangeListener mOnRefreshChangeListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            Activity activity = getActivity();
-            if (activity != null) {
-                if (Build.VERSION.SDK_INT >= 21 )
-                    AutoWorker.Companion.init();
-            }
-            return true;
+    private final Preference.OnPreferenceChangeListener mOnRefreshChangeListener = (preference, newValue) -> {
+        Activity activity = getActivity();
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT >= 21 )
+                AutoWorker.Companion.init();
         }
+        return true;
     };
 
     @SuppressLint("ApplySharedPref")
@@ -103,7 +100,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
 
         if ( Build.VERSION.SDK_INT > 28 )
-            findPreference("use_standard_file_manager").setEnabled( false );
+            RemovePref( "prefs_advanced", "use_standard_file_manager" );
         if ( Build.VERSION.SDK_INT > 30 )
             RemovePref( "notificationScreen", "reading_notification" );
         
@@ -149,12 +146,9 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         for ( int i = 0; i < screen.getPreferenceCount(); i++ ) {
             if (screen.getPreference(i) instanceof PreferenceScreen ||
                     screen.getPreference(i) instanceof ColorPreference)
-                screen.getPreference(i).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        SetupBrightness(preference, activity);
-                        return false;
-                    }
+                screen.getPreference(i).setOnPreferenceClickListener(preference -> {
+                    SetupBrightness(preference, activity);
+                    return false;
                 });
             if (screen.getPreference(i) instanceof PreferenceScreen)
                 ApplyBrightness((PreferenceScreen) screen.getPreference(i), activity);
