@@ -717,7 +717,7 @@
     <string name="copy_debug_info_to_clipboard_summary">When app crashes</string>
     <string name="import_from_backup_after_permission_granted">Do you want to import feeds and app settings from auto backup file?</string>
     <string name="menu_import_from_backup_file">Import from backup file</string>
-    <string name="brightness_programmatic_dim_max">Max programmatic dim value</string>
+    <string name="brightness_programmatic_dim_max">Max dim value</string>
     <string name="brightness_programmatic_dim_max_descr">The maximum additional programmatic brightness dim value (0-no additional dim, 100 - full darkness)</string>
     <string name="edit_feed_title_external">Edit</string>
     <string name="filter_hint_external">The items of this global filter are added to any feed filter. Reject items of global filter exclude triggered articles from web search results. This screen is also accessible by long tap on All, Unread, Favorites, Last read or Without feed items in feed list) </string>
