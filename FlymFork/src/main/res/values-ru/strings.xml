@@ -697,6 +697,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="copy_debug_info_to_clipboard_summary">При сбое приложения</string>
     <string name="import_from_backup_after_permission_granted">Вы хотите импортировать ленты и настройки приложения из файла автоматической резервной копии?</string>
     <string name="menu_import_from_backup_file">Импортировать из файла резервной копии</string>
-    <string name="brightness_programmatic_dim_max">Максимальное программируемое значение яркости</string>
-    <string name="brightness_programmatic_dim_max_descr">Максимальное значение дополнительной программной яркости (0 - нет дополнительной яркости, 100 - полная темнота)</string>
+    <string name="brightness_programmatic_dim_max">Дополнительное затемнение</string>
+    <string name="brightness_programmatic_dim_max_descr">Максимальное значение дополнительного программного затемнения (0 - нет, 100 - полная темнота)</string>
+    <string name="edit_feed_title_external">Редактировать</string>
+    <string name="filter_hint_external">Элементы этого глобального фильтра добавляются в фильтр каждой ленты. Элементы \"Не загружать\" глобального фильтра исключают также статьи из результатов веб-поиска. Этот экран также доступен при длительном нажатии на все вспомогательыне элементы списка лент (Все, Непрочитанные, Избранные, и др.)</string>
 </resources>
