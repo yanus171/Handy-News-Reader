@@ -485,6 +485,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_notification_summary"
+        android:key="notificationScreen"
         android:icon="@drawable/prefs_notifications"
         android:title="@string/settings_category_notification">
         <PreferenceCategory

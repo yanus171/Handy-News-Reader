@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -84,6 +85,7 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         }
     };
 
+    @SuppressLint("ApplySharedPref")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,34 +104,45 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
         if ( Build.VERSION.SDK_INT > 28 )
             findPreference("use_standard_file_manager").setEnabled( false );
+        if ( Build.VERSION.SDK_INT > 30 )
+            RemovePref( "notificationScreen", "reading_notification" );
+        
+        findPreference(PrefUtils.THEME).setOnPreferenceChangeListener((preference1, newValue) -> {
+            PrefUtils.putString(preference1.getKey(), (String) newValue);
+            PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
+            Process.killProcess(Process.myPid()); // Restart the app
+            // this return statement will never be reached
+            return true;
+        });
 
-        Preference.OnPreferenceChangeListener onRestartPreferenceChangeListener = new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PrefUtils.putString(preference.getKey(), (String) newValue);
-                PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
-                Process.killProcess(Process.myPid()); // Restart the app
-                // this return statement will never be reached
-                return true;
-            }
-        };
-        findPreference(PrefUtils.THEME).setOnPreferenceChangeListener(onRestartPreferenceChangeListener);
-
-        preference = findPreference(PrefUtils.LANGUAGE);
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PrefUtils.putString(PrefUtils.LANGUAGE, (String)newValue);
-                PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
-                android.os.Process.killProcess(android.os.Process.myPid()); // Restart the app
-                // this return statement will never be reached
-                return true;
-            }
+        findPreference(PrefUtils.LANGUAGE).setOnPreferenceChangeListener((preference12, newValue) -> {
+            PrefUtils.putString(PrefUtils.LANGUAGE, (String)newValue);
+            PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
+            Process.killProcess(Process.myPid()); // Restart the app
+            // this return statement will never be reached
+            return true;
         });
 
 
         if ( PrefUtils.getBoolean(PrefUtils.BRIGHTNESS_GESTURE_ENABLED, false ) )
             ApplyBrightness( getPreferenceScreen(), (BaseActivity) getActivity());
+    }
+
+    // -------------------------------------------------------------------------
+    private void RemovePref(String keyScreen, String keyPref) {
+        PreferenceScreen screen;
+        if (keyScreen == null) {
+            screen = getPreferenceScreen();
+        } else {
+            screen = (PreferenceScreen) findPreference(keyScreen);
+        }
+
+        if (screen != null) {
+            Preference pref = findPreference(keyPref);
+            if (pref != null) {
+                screen.removePreference(pref);
+            }
+        }
     }
 
     private static void ApplyBrightness(PreferenceScreen screen, final BaseActivity activity ) {

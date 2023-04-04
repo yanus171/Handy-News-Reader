@@ -1766,7 +1766,6 @@ public class FetcherService extends IntentService {
                         int index = contentType.indexOf(CHARSET);
 
                         int index2 = contentType.indexOf(';', index);
-
                         parseXml( inputStream,
                                   Xml.findEncodingByName(index2 > -1 ? contentType.substring(index + 8, index2) : contentType.substring(index + 8)),
                                   handler);

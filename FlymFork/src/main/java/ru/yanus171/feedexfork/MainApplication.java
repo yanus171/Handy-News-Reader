@@ -105,7 +105,7 @@ public class MainApplication extends Application {
                 NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
                 notificationManager.createNotificationChannel(channel);
             }
-            {
+            if ( Build.VERSION.SDK_INT <= 30 ) {
                 NotificationChannel channel = new NotificationChannel(READING_NOTIFICATION_CHANNEL_ID, context.getString(R.string.reading_article), NotificationManager.IMPORTANCE_LOW);
                 channel.setDescription(context.getString(R.string.reading_article));
                 NotificationManager notificationManager = context.getSystemService(NotificationManager.class);

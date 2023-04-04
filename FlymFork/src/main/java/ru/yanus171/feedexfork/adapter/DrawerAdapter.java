@@ -107,7 +107,7 @@ public class DrawerAdapter extends BaseAdapter {
     private static final String COLON = getContext().getString(R.string.colon);
 
     private static final int CACHE_MAX_ENTRIES = 100;
-    private final Map<Long, String> mFormattedDateCache = new LinkedHashMap<Long, String>(CACHE_MAX_ENTRIES + 1, .75F, true) {
+    public final Map<Long, String> mFormattedDateCache = new LinkedHashMap<Long, String>(CACHE_MAX_ENTRIES + 1, .75F, true) {
         @Override
         public boolean removeEldestEntry(Map.Entry<Long, String> eldest) {
             return size() > CACHE_MAX_ENTRIES;
@@ -540,7 +540,6 @@ public class DrawerAdapter extends BaseAdapter {
         }.execute();
     }
     private void updateNumbers() {
-
         EntriesListFragment.SetItemsAsRead( TakeMarkAsReadList( false ) );
 
         ContentResolver cr = mContext.getContentResolver();

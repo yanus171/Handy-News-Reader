@@ -212,6 +212,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 public void onDrawerOpened(@NonNull View drawerView) {
                     Dog.v(String.format( "newNumber onDrawerOpened" ) );
                     if ( mDrawerAdapter != null ) {
+                        mDrawerAdapter.mFormattedDateCache.clear();
                         mDrawerAdapter.notifyDataSetChanged();
                         mDrawerAdapter.updateNumbersAsync();
                     }
