@@ -459,8 +459,9 @@
     <string name="menu_reload_with_tables_toggle">With tables</string>
     <string name="menu_display_options">Display options</string>
     <string name="menu_reload">Reload</string>
+    <string name="disable_all_tap_actions">Disable all tap actions</string>
     <string name="article_tap_enabled">Tap actions enabled</string>
-    <string name="article_tap_enabled_summary">on Tap Zones and in non-link areas (for menu show in article text)</string>
+    <string name="article_tap_enabled_summary">on Tap Zones and in non-link areas </string>
     <string name="menu_calculate_image_sizes">Calculate images size</string>
     <string name="setting_calculate_image_sizes">Images size on storage</string>
     <string name="setting_calculate_image_sizes_descr">Also during the Delete old operation calculate and show loaded images sum size on storage per article, feed, group, etc. These numbers are updated during deletion of the old articles - so the operation duration could be significantly enlarged</string>
@@ -571,7 +572,7 @@
     <string name="unstarAllArtcilesComfirm">UNSTAR ALL visible STARRED articles. Are you sure?</string>
     <string name="unstarAllArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
     <string name="tap_actions_were_enabled">Tap actions were enabled</string>
-    <string name="tap_actions_were_disabled">Tap actions were disabled! Tap top right to enable</string>
+    <string name="tap_actions_were_disabled">All tap actions were temporary disabled! Tap top right to enable</string>
     <string name="list_was_scrolled_to_top">Scrolled to the top</string>
     <string name="list_was_scrolled_to_bottom">Scrolled to the bottom</string>
     <string name="articleWasUnstarred">An article has been unstarred</string>

@@ -152,8 +152,10 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 
 
@@ -219,11 +221,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
-    private boolean isArticleTapEnabled() {
-        return PrefUtils.isTapEnabled(false);
-    }
     private void SetupZoneSizes() {
-        TapZonePreviewPreference.SetupZoneSizes( getBaseActivity().mRootView, false, false );
+        TapZonePreviewPreference.SetupZones(getBaseActivity().mRootView, false, false );
     }
 
     private boolean IsCreateViewPager( Uri uri ) {
@@ -263,7 +262,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 EntryActivity activity = (EntryActivity) getActivity();
                 activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
             } else
-                EnabledTapActions();
+                EnableTapActions();
         });
         rootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
             if ( isArticleTapEnabled() ) {
@@ -271,7 +270,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 SetupZoneSizes();
                 Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
             } else
-                EnabledTapActions();
+                EnableTapActions();
             return true;
         });
 
@@ -462,7 +461,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return rootView;
     }
 
-    private void EnabledTapActions() {
+    private void EnableTapActions() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         SetupZoneSizes();
         Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
@@ -550,7 +549,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
-        HideTapZonesText(getView().getRootView());
+        UpdateTapZonesTextAndVisibility(getView().getRootView());
         refreshUI( null );
     }
 
@@ -701,7 +700,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
         menu.findItem(R.id.menu_reload_full_text_with_debug_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
-        menu.findItem(R.id.menu_menu_by_tap_enabled).setChecked(isArticleTapEnabled());
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.CanGoBack() );
@@ -975,12 +973,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
                     break;
                 }
-                case R.id.menu_menu_by_tap_enabled: {
-                    PrefUtils.toggleBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                    item.setChecked( isArticleTapEnabled() );
+                case R.id.menu_disable_all_tap_actions: {
+                    PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                     SetupZoneSizes();
-                    if ( !isArticleTapEnabled() )
-                        Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+                    Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
                     break;
                 }
 
@@ -1827,6 +1823,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     UpdateHeader();
                 }
             }
+            SetupZoneSizes();
         }
 
         void onResume() {
@@ -2012,7 +2009,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                   !PATTERN_IFRAME.matcher(view.mDataWithWebLinks).find() );
         }
 
-        if ( tapActionsEnabled != PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ) ) {
+        if ( tapActionsEnabled != isArticleTapEnabledTemp() ) {
             PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, tapActionsEnabled );
             SetupZoneSizes();
             Toast.makeText(MainApplication.getContext(),

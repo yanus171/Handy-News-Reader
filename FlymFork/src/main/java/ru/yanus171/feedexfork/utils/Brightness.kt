@@ -34,8 +34,8 @@ class Brightness(private val mActivity: Activity, rootView: View) {
     init {
         mInfo?.visibility = View.GONE
         mCurrentAlpha = PrefUtils.getFloat(PrefUtils.LAST_BRIGHTNESS_FLOAT, mCurrentAlpha)
-        UiUtils.HideButtonText(rootView, R.id.brightnessSliderLeft, true)
-        UiUtils.HideButtonText(rootView, R.id.brightnessSliderRight, true)
+        UiUtils.UpdateButtonVisibility(rootView, R.id.brightnessSliderLeft, false)
+        UiUtils.UpdateButtonVisibility(rootView, R.id.brightnessSliderRight, false)
         SetSize(rootView, R.id.brightnessSliderLeft, (GetTapZoneSize() * 1.5).toInt(), MATCH_PARENT)
         SetSize(rootView, R.id.brightnessSliderRight, (GetTapZoneSize() * 1.5).toInt(), MATCH_PARENT)
 

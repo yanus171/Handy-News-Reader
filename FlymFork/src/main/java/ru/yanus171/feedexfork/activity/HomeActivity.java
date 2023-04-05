@@ -106,7 +106,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.HideTapZonesText;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
 
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -264,7 +264,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
-        TapZonePreviewPreference.SetupZoneSizes(findViewById(R.id.layout_root), false, true);
+        TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false, true);
 
         {
             final View.OnClickListener listener = view -> {
@@ -307,6 +307,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( mEntriesFragment.mListView.getCount() == 0 )
                     return false;
                 mEntriesFragment.mListView.setSelection( 0 );
+                mEntriesFragment.UpdateTopTapZoneVisibility();
                 Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT ).show();
                 return true;
             });
@@ -327,6 +328,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 if ( mEntriesFragment.mListView.getCount() == 0 )
                     return false;
                 mEntriesFragment.mListView.setSelection( mEntriesFragment.mListView.getCount() - 1 );
+                mEntriesFragment.UpdateTopTapZoneVisibility();
                 Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
                 return true;
             }
@@ -363,13 +365,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
-        findViewById(R.id.leftTopBtn).setVisibility( actionBarHidden ? View.GONE : View.VISIBLE );
-        findViewById(R.id.leftTopBtnFS).setVisibility( !actionBarHidden ? View.GONE : View.VISIBLE );
-        findViewById(R.id.rightTopBtn).setVisibility( actionBarHidden ? View.GONE : View.VISIBLE );
-        findViewById(R.id.rightTopBtnFS).setVisibility( !actionBarHidden ? View.GONE : View.VISIBLE );
-        mPageUpBtn.setVisibility( actionBarHidden ? View.GONE : View.VISIBLE );
-        mPageUpBtnFS.setVisibility( !actionBarHidden ? View.GONE : View.VISIBLE );
         setFullScreen( statusBarHidden, actionBarHidden, STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
+        TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false, true);
     }
 
     private void PageUpDown( int downOrUp ) {
@@ -460,11 +457,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         if ( GeneralPrefsFragment.mSetupChanged ) {
             Timer.Start( LOADER_ID, "HomeActivity.restartLoader LOADER_ID" );
             getLoaderManager().restartLoader(LOADER_ID, null, this);
+            TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false, true);
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );
         setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
-        HideTapZonesText(findViewById(R.id.layout_root));
         if ( mDrawerLayout != null )
             mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
         SetTaskTitle( mTitle );

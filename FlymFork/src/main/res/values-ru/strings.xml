@@ -446,6 +446,7 @@
     <string name="menu_reload_with_tables_toggle">Таблицы</string>
     <string name="menu_display_options">Отображение</string>
     <string name="menu_reload">Загрузка</string>
+    <string name="disable_all_tap_actions">Отключить все нажатия</string>
     <string name="article_tap_enabled">Действия по нажатию</string>
     <string name="article_tap_enabled_summary">На тап зоны и на текст статьи (для показа меню)</string>
     <string name="menu_calculate_image_sizes">Расчет размера картниок</string>

@@ -44,6 +44,40 @@
 
 package ru.yanus171.feedexfork.view;
 
+import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
+import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_HIDDEN;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
+import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
+import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
+import static ru.yanus171.feedexfork.view.FontSelectPreference.DefaultFontFamily;
+import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalUrl;
+import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -78,7 +112,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -111,40 +144,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
-
-import static androidx.core.content.FileProvider.getUriForFile;
-import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
-import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
-import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
-import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
-import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.FindBestElement;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_HIDDEN;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
-import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
-import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
-import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
-import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
-import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
-import static ru.yanus171.feedexfork.view.FontSelectPreference.DefaultFontFamily;
-import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalUrl;
 
 public class EntryView extends WebView implements Handler.Callback {
 
@@ -198,7 +197,7 @@ public class EntryView extends WebView implements Handler.Callback {
             + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
             + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
             + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
-            (PrefUtils.getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
+            (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
             + "h1 {color: inherit; text-decoration: none}\n"
             + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
             //+ ".inverted .math {color: white; background-color: black; } "
@@ -289,14 +288,14 @@ public class EntryView extends WebView implements Handler.Callback {
 
 
     private static String getFontBold() {
-        if (PrefUtils.getBoolean(PrefUtils.ENTRY_FONT_BOLD, false))
+        if (getBoolean(PrefUtils.ENTRY_FONT_BOLD, false))
             return "bold;";
         else
             return "normal;";
     }
 
     private static String getMargins() {
-        if (PrefUtils.getBoolean(PrefUtils.ENTRY_MAGRINS, true))
+        if (getBoolean(PrefUtils.ENTRY_MAGRINS, true))
             return "4%";
         else
             return "0.1cm";
@@ -305,7 +304,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public static String getAlign(String text) {
         if (isTextRTL(text))
             return "right";
-        else if (PrefUtils.getBoolean(PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false))
+        else if (getBoolean(PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false))
             return "justify";
         else
             return "left";
@@ -510,7 +509,7 @@ public class EntryView extends WebView implements Handler.Callback {
             link = "";
         }
 
-        if (PrefUtils.getBoolean("entry_text_title_link", true))
+        if (getBoolean("entry_text_title_link", true))
             content.append(String.format(TITLE_START_WITH_LINK, link + NO_MENU)).append(title).append(TITLE_END_WITH_LINK);
         else
             content.append(TITLE_START).append(title).append(TITLE_END);
@@ -817,8 +816,8 @@ public class EntryView extends WebView implements Handler.Callback {
                             Math.abs(event.getX() - mPressedX) < TOUCH_PRESS_POS_DELTA &&
                             Math.abs(event.getY() - mPressedY) < TOUCH_PRESS_POS_DELTA &&
                             System.currentTimeMillis() - mLastTimeScrolled > 500 &&
-                            PrefUtils.isTapEnabled(false ) &&
-                            EntryActivity.GetIsActionBarHidden() &&
+                            isArticleTapEnabledTemp() &&
+                            //EntryActivity.GetIsActionBarHidden() &&
                             !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
@@ -1250,7 +1249,7 @@ public class EntryView extends WebView implements Handler.Callback {
     }
     public void PageChange(int delta, StatusText statusText) {
         ScrollTo((int) (getScrollY() + delta * (getHeight() - statusText.GetHeight()) *
-                                                       (PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
+                                                       (getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
         //if ( delta > 0 )
         //    ( (AppBarLayout) findViewById(R.id.appbar) ).setExpanded(false );
     }
