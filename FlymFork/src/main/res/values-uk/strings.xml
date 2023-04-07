@@ -696,4 +696,5 @@
     <string name="brightness_programmatic_dim_max">Макс. рівень затемнення</string>
     <string name="brightness_programmatic_dim_max_descr">Максимальний додатковий рівень затемнення яскравості (0-без додаткового затемнення, 100-повна темрява)</string>
     <string name="edit_feed_title_external">Редагувати</string>
+    <string name="unknown">Невідомо</string>
 </resources>
