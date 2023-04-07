@@ -695,4 +695,5 @@
     <string name="brightness_programmatic_dim_max_descr">Valore massimo della riduzione della luminosità programmata (0-senza riduzione, 100-completamente oscurato)</string>
     <string name="edit_feed_title_external">Modifica</string>
     <string name="filter_hint_external">Gli elementi di questo filtro globale vengono aggiunti ad ogni feed. Escludere certi elementi del filtro globale li toglie dai risultati della ricerca web. Questa schermata è accessibile con un tap prolungato su Tutti, Non Letti, Preferiti, Ultimi letti nella lista del feed) </string>
+    <string name="unknown">Sconosciuto</string>
 </resources>
