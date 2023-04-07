@@ -278,7 +278,7 @@
     <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
-    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch Reduktion der Transparenz des Fensterhintergrundes. Bitte ausprobieren, wenn das Einstellen der Helligkeit nicht funktioniert</string>
+    <string name="brightness_with_dim_activity_descr">Zusätzlich einstellbarer Dimmer (unter 50 %)</string>
     <string name="settings_category_notification">Benachrichtigungen</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
@@ -690,5 +690,8 @@
     <string name="copy_debug_info_to_clipboard_summary">Wenn die App abstürzt</string>
     <string name="import_from_backup_after_permission_granted">Möchten Sie Feeds und App-Einstellungen aus der automatischen Sicherung importieren?</string>
     <string name="menu_import_from_backup_file">Aus Sicherung importieren</string>
+    <string name="brightness_programmatic_dim_max">Dimmer-Höchstwert</string>
+    <string name="brightness_programmatic_dim_max_descr">Höchstwert für zusätzlichen Dimmer (0 - nicht zusätzlich gedimmt, 100 - komplett verdunkelt)</string>
     <string name="edit_feed_title_external">Bearbeiten</string>
+    <string name="unknown">Unbekannt</string>
 </resources>
