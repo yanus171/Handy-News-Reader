@@ -443,6 +443,7 @@
     <string name="menu_reload_with_tables_toggle">Con tabelle</string>
     <string name="menu_display_options">Mostra opzioni</string>
     <string name="menu_reload">Ricarica</string>
+    <string name="disable_all_tap_actions">Disabilita tutte le azioni al tocco</string>
     <string name="article_tap_enabled">Azioni tocco attivate</string>
     <string name="article_tap_enabled_summary">sulle zone di tocco e in aree non collegate (per visualizzare il menù negli articoli)</string>
     <string name="menu_calculate_image_sizes">Calcola dimensioni immagini</string>
