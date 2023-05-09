@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -27,10 +28,12 @@ import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
+import android.database.CursorWindow;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.StrictMode;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -54,6 +57,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CO
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
+import androidx.annotation.RequiresApi;
+
 public class MainApplication extends Application {
 
     private static Context mContext;
@@ -70,9 +75,12 @@ public class MainApplication extends Application {
     public static final String READING_NOTIFICATION_CHANNEL_ID = "reading_channel";
     public static final String UNREAD_NOTIFICATION_CHANNEL_ID = "unread_channel";
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate() {
         super.onCreate();
+        enlargeCursorWindowSize();
+
         mContext = getApplicationContext();
         AppSelectPreference.Init();
         Status();
@@ -157,6 +165,16 @@ public class MainApplication extends Application {
                           .build() );
 
             shortcutManager.setDynamicShortcuts(list);
+        }
+    }
+
+    private void enlargeCursorWindowSize() {
+        try {
+            @SuppressLint("DiscouragedPrivateApi") Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize" );
+            field.setAccessible( true );
+            field.set( null, 100 * 1024 *  1024 );
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
