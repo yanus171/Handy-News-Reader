@@ -443,6 +443,7 @@
     <string name="menu_reload_with_tables_toggle">З таблицями</string>
     <string name="menu_display_options">Параметри відображення</string>
     <string name="menu_reload">Завантажити</string>
+    <string name="disable_all_tap_actions">Вимкнути всі дії при натисканнях</string>
     <string name="article_tap_enabled">Дії дотиком увімкнено</string>
     <string name="article_tap_enabled_summary">для зон натискань та інших, крім посилань (для показу меню)</string>
     <string name="menu_calculate_image_sizes">Розрахунок розмірів зображень</string>
