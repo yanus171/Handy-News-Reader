@@ -319,6 +319,8 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     public static boolean isTextRTL(String text) {
+        if ( text == null )
+            return false;
         String[] list = TextUtils.split(text, " ");
         for (String item : list)
             if (isWordRTL(item))
