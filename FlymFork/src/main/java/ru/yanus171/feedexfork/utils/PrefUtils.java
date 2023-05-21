@@ -198,7 +198,11 @@ public class PrefUtils {
     }
     public static int getInt(String key, int defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
-        return settings.getInt(key, defValue);
+        try {
+            return settings.getInt(key, defValue);
+        } catch ( ClassCastException ignore ) {
+            return (int) settings.getLong(key, defValue);
+        }
     }
     public static Float getFloat(String key, Float defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
@@ -230,7 +234,11 @@ public class PrefUtils {
 
     public static long getLong(String key, long defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
-        return settings.getLong(key, defValue);
+        try {
+            return settings.getLong(key, defValue);
+        } catch ( ClassCastException ignore ) {
+            return settings.getInt(key, (int) defValue);
+        }
     }
 
     public static void putLong(String key, long value) {
