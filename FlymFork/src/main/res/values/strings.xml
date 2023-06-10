@@ -216,6 +216,7 @@
     <string name="settings_refresh_wifi_only">Refresh only over Wi-Fi</string>
     <string name="settings_refresh_wifi_only_description">Automatic refresh will only be done if Wi-Fi connection is available</string>
     <string name="settings_keep_time">Articles preservation time</string>
+    <string name="settings_keep_time_descr">During refresh operation do not load articles with date older than this duration</string>
     <string name="settings_preload_image_mode">Preload images</string>
     <string name="settings_max_image_download_count">Max image download count</string>
     <string name="settings_max_image_download_count_description">Per one article</string>
@@ -471,7 +472,7 @@
     <string name="settings_current_setting">Current setting</string>
     <string name="unable_to_load_article_icon">Unable to load article icon</string>
     <string name="settings_delete_old_interval">Articles age check interval</string>
-    <string name="settings_delete_old_interval_descr">When to delete old articles</string>
+    <string name="settings_delete_old_interval_descr">How often check and delete old (including already read) articles</string>
     <string name="menu_delete_old">Delete old articles</string>
     <string name="settings_category_delete_old">Delete old</string>
     <string name="tool_bar_color">Toolbar color</string>
@@ -723,5 +724,6 @@
     <string name="edit_feed_title_external">Edit</string>
     <string name="filter_hint_external">The items of this global filter are added to any feed filter. Reject items of global filter exclude triggered articles from web search results. This screen is also accessible by long tap on All, Unread, Favorites, Last read or Without feed items in feed list) </string>
     <string name="unknown">Unknown</string>
+    <string name="tableOfContent">Table of contents</string>
 
 </resources>

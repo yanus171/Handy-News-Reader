@@ -161,6 +161,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
@@ -785,20 +786,10 @@ public class FetcherService extends IntentService {
                 if ( images.isEmpty() )
                     continue;
                 el.insertChildren( -1, images.first() );
+                el.attr( "align", "middle" );
             }
             SaveContentStepToFile( doc, "binary_move" );
 
-            Status().ChangeProgress( "title" );
-            String title = "";
-            for ( Element el: doc.getElementsByTag( "title" ) ) {
-                title = el.text()
-                    .replace( "\n", " " )
-                    .replace( "\r", "" )
-                    .replace( "<p>", "" )
-                    .replace( "</p>", "" );
-                break;
-            }
-            SaveContentStepToFile( doc, "title" );
             for (Element el : doc.getElementsByTag("title"))
                 el.tagName( "h1" );
             SaveContentStepToFile( doc, "h1" );
@@ -813,9 +804,35 @@ public class FetcherService extends IntentService {
             }
             SaveContentStepToFile( doc, "binary_to_img" );
 
+
+            removeElementsWithTag(doc, "id");
+            removeElementsWithTag(doc, "genre");
+            removeElementsWithTag(doc, "lang" );
+            removeElementsWithTag(doc, "src-lang" );
+            removeElementsWithTag(doc, "translator" );
+            removeElementsWithTag(doc, "document-info" );
+            removeElementsWithTag(doc, "publish-info" );
+            removeElementsWithTag(doc, "custom-info" );
+            removeElementsWithTag(doc, "home-page" );
+            final String title = doc.getElementsByTag( "author" ).first().text() + ". " + doc.getElementsByTag( "book-title" ).first().text();
+            removeElementsWithTag(doc, "first-name" );
+            removeElementsWithTag(doc, "last-name" );
+            removeElementsWithTag(doc, "author" );
+            removeElementsWithTag(doc, "book-title" );
+
             Status().ChangeProgress( "doc.toString()" );
             String content = doc.toString();
             //content = content.replaceAll( "[^\\s]{50,}", "" );
+            content = content.replace( "<style>", "" );
+            content = content.replace( "</style>", "" );
+            content = content.replace( "<empty-line", "<br" );
+            content = content.replace( "emphasis>", "i>" );
+            //content = content.replace( "</i>, ", ",</i>" );
+            content = content.replace( "strong>", "b>" );
+            content = content.replace( "strikethrough>.", "del>" );
+            content = content.replaceAll( "\\n\\s+<", "<" );
+            //content = content.replace( "\n\r<", "<" );
+            //content = content.replace( "\r\n<", "<" );
 
             Status().ChangeProgress( "replace 0" );
             content = content.replace( "&#x0;", "" );
@@ -823,13 +840,8 @@ public class FetcherService extends IntentService {
 
             Status().ChangeProgress( "convertXMLSymbols" );
             content = convertXMLSymbols(content);
-            if ( title.isEmpty() ) {
-                Status().ChangeProgress( "extractTitle" );
-                title = Html.fromHtml(extractTitle(content)).toString();
-            }
 
             content = AddFB2TableOfContent( content );
-
 
             ContentValues values = new ContentValues();
             values.put(EntryColumns.TITLE, title );
@@ -842,6 +854,12 @@ public class FetcherService extends IntentService {
         timer.End();
         return result;
     }
+
+    private static void removeElementsWithTag(Document doc, String tag) {
+        for ( Element item: doc.getElementsByTag( tag ) )
+            item.remove();
+    }
+
     private static String AddFB2TableOfContent(String content) {
         final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
         Matcher matcher = PATTERN.matcher(content);
@@ -850,14 +868,17 @@ public class FetcherService extends IntentService {
         String TC_START = "TC_START";
         while (matcher.find()) {
             String match = matcher.group();
-            String newText = "<div id=\"tc" + i + "\" >" + match + "</div>";
+            String newText = "<div id=\"tc" + i + "\" >" + match.replaceAll( "<?p>", "") + "</div>";
             if ( i == 1 )
                 newText = TC_START + newText;
             content = content.replace(match, newText);
-            tc.append("<p><a href=\"#tc").append(i).append("\">").append(matcher.group(2)).append("</a></p>");
+            String caption = matcher.group(2).replaceAll( "<.*?>", "");
+            tc.append("<p class=\"toc\"><a href=\"#tc").append(i).append("\">").append(caption).append("</a></p>");
             i++;
         }
-        content = content.replaceFirst( TC_START, tc.toString() );
+        if ( tc.length() > 0 )
+            tc.insert( 0, String.format("<h2>%s</h2>", MainApplication.getContext().getString( R.string.tableOfContent )) );
+        content = content.replaceFirst( TC_START, "<div class=\"toc\">" + tc + "</div>" );
         return content;
     }
     @SuppressLint("Range")

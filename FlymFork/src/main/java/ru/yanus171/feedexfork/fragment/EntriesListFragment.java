@@ -550,13 +550,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
     public void UpdateTopTapZoneVisibility() {
-        if ( getBoolean( PREF_TAP_ENABLED, true ) ) {
-            final boolean atTop = mListView.getFirstVisiblePosition() == 0;
-            if ( GetActivity().mPageUpBtn != null )
-                GetActivity().mPageUpBtn.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtn, false, true )  ? View.VISIBLE : View.GONE );
-            if ( GetActivity().mPageUpBtnFS != null )
-                GetActivity().mPageUpBtnFS.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtnFS, false, true ) ? View.VISIBLE : View.GONE );
-        }
+        final boolean atTop = mListView.getFirstVisiblePosition() == 0;
+        if ( GetActivity().mPageUpBtn != null )
+            GetActivity().mPageUpBtn.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtn, false, true )  ? View.VISIBLE : View.GONE );
+        if ( GetActivity().mPageUpBtnFS != null )
+            GetActivity().mPageUpBtnFS.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtnFS, false, true ) ? View.VISIBLE : View.GONE );
     }
 
 

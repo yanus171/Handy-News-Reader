@@ -658,7 +658,8 @@
                 android:entryValues="@array/settings_keep_time_values"
                 android:inputType="number"
                 android:key="keeptime"
-                android:title="@string/settings_keep_time"/>
+                android:title="@string/settings_keep_time"
+                android:summary="@string/settings_keep_time_descr"/>
             <CheckBoxPreference
                 android:key="delete_read_articles"
                 android:title="@string/delete_read_articles"
