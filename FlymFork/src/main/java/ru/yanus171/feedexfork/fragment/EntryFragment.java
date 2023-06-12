@@ -1118,6 +1118,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 cr.update(uri, values, null, null);
                 if ( !mFavorite )
                     LabelVoc.INSTANCE.removeLabels( entryID );
+                UiUtils.RunOnGuiThread( ()-> getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this) );
             }
         }.start();
         getActivity().invalidateOptionsMenu();
