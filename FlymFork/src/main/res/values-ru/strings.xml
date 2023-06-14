@@ -215,6 +215,7 @@
     <string name="settings_refresh_wifi_only">Обновлять только по WiFi</string>
     <string name="settings_refresh_wifi_only_description">Автоматическое обновление будет выполняться только при включенном WiFi</string>
     <string name="settings_keep_time">Время хранения новостей</string>
+    <string name="settings_keep_time_descr">Во время обновления не загружать статьи старше этой даты</string>
     <string name="settings_preload_image_mode">Предзагрузка картинок</string>
     <string name="settings_max_image_download_count">Макс. число картинок при загрузке</string>
     <string name="settings_max_image_download_count_description">на одну статью</string>
@@ -703,4 +704,5 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="edit_feed_title_external">Редактировать</string>
     <string name="filter_hint_external">Элементы этого глобального фильтра добавляются в фильтр каждой ленты. Элементы \"Не загружать\" глобального фильтра исключают также статьи из результатов веб-поиска. Этот экран также доступен при длительном нажатии на все вспомогательыне элементы списка лент (Все, Непрочитанные, Избранные, и др.)</string>
     <string name="unknown">Неизвестно</string>
+    <string name="tableOfContent">Содержание</string>
 </resources>
