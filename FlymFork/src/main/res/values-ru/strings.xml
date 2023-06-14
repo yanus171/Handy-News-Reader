@@ -285,7 +285,7 @@
     <string name="brightness_with_dim_activity_descr">Включите, если иначе изменение яркости не работает</string>
     <string name="settings_category_notification">Уведомления</string>
     <string name="settings_notifications_enabled">Включить</string>
-    <string name="settings_notifications_enabled_description">Уведоления о новых загруженных статьях</string>
+    <string name="settings_notifications_enabled_description">Показывать уведомления</string>
     <string name="settings_notifications_ringtone">Звук</string>
     <string name="settings_notifications_ringtone_none">Нет</string>
     <string name="settings_notifications_vibrate">Вибрация</string>

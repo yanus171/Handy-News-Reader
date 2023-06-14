@@ -55,6 +55,9 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
 import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
+import static ru.yanus171.feedexfork.Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED;
+import static ru.yanus171.feedexfork.Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT;
+import static ru.yanus171.feedexfork.MainApplication.MARKED_AS_STARRED_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.UNREAD_NOTIFICATION_CHANNEL_ID;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
@@ -88,6 +91,7 @@ import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
+import static ru.yanus171.feedexfork.utils.PrefUtils.NOTIFICATIONS_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
 import static ru.yanus171.feedexfork.view.StatusText.GetPendingIntentRequestCode;
 
@@ -468,7 +472,7 @@ public class FetcherService extends IntentService {
                             ShowEventNotification(TextUtils.join(", ", list),
                                                   R.string.markedAsStarred,
                                                   new Intent(getContext(), HomeActivity.class),
-                                                  Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
+                                                  NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
                         } else if (mMarkAsStarredFoundList.size() > 0)
                             for (MarkItem item : mMarkAsStarredFoundList) {
                                 Uri entryUri = GetEntryUri(item.mLink);
@@ -492,14 +496,14 @@ public class FetcherService extends IntentService {
                         }
                     }
 
-                    if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_ENABLED, true) && newCount > 0)
+                    if ( newCount > 0 )
                         ShowEventNotification(getContext().getResources().getQuantityString(R.plurals.number_of_new_entries, newCount, newCount),
                                               R.string.flym_feeds,
                                               new Intent(getContext(), HomeActivity.class),
-                                              Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT,
+                                              NOTIFICATION_ID_NEW_ITEMS_COUNT,
                                               null);
                     else if (Constants.NOTIF_MGR != null)
-                        Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+                        Constants.NOTIF_MGR.cancel(NOTIFICATION_ID_NEW_ITEMS_COUNT);
 
                     if ( isFromAutoRefresh || newCount > 0 ) {
                         mobilizeAllEntries(executor);
@@ -693,8 +697,8 @@ public class FetcherService extends IntentService {
     public static void CancelStarNotification( long entryID ) {
         if ( Constants.NOTIF_MGR != null ) {
             Constants.NOTIF_MGR.cancel((int) entryID);
-            Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
-            Constants.NOTIF_MGR.cancel(Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT);
+            Constants.NOTIF_MGR.cancel(NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED);
+            Constants.NOTIF_MGR.cancel(NOTIFICATION_ID_NEW_ITEMS_COUNT);
         }
     }
 
@@ -1584,6 +1588,8 @@ public class FetcherService extends IntentService {
 
 
     private static void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
+        if ( Build.VERSION.SDK_INT < 26 || !PrefUtils.getBoolean(NOTIFICATIONS_ENABLED, true) )
+            return;
         PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
@@ -1594,26 +1600,23 @@ public class FetcherService extends IntentService {
                 //.setTicker(text) //
                 .setWhen(System.currentTimeMillis()) //
                 .setAutoCancel(true) //
-                .setContentTitle(String(captionID)) //
-                .setLights(0xffffffff, 0, 0);
+                .setContentTitle(String(captionID)); //
         if (Build.VERSION.SDK_INT >= 26 ) {
-            if (ID == Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT)
+            if (ID == NOTIFICATION_ID_NEW_ITEMS_COUNT)
                 builder.setChannelId(UNREAD_NOTIFICATION_CHANNEL_ID);
-            else
-                builder.setChannelId(OPERATION_NOTIFICATION_CHANNEL_ID);
+            else if ( ID == NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED )
+                builder.setChannelId(MARKED_AS_STARRED_NOTIFICATION_CHANNEL_ID);
             if ( cancelPI != null )
                 builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, getContext().getString(android.R.string.cancel), cancelPI);
+        } else {
+            if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false))
+                builder.setVibrate(new long[]{0, 1000});
+            String ringtone = PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, null);
+            if (ringtone != null && ringtone.length() > 0)
+                builder.setSound(Uri.parse(ringtone));
+            if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_LIGHT, false))
+                builder.setLights(0xffffffff, 300, 1000);
         }
-        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_VIBRATE, false))
-            builder.setVibrate(new long[]{0, 1000});
-
-        String ringtone = PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, null);
-        if (ringtone != null && ringtone.length() > 0)
-            builder.setSound(Uri.parse(ringtone));
-
-        if (PrefUtils.getBoolean(PrefUtils.NOTIFICATIONS_LIGHT, false))
-            builder.setLights(0xffffffff, 300, 1000);
-
         Notification nf;
         if (Build.VERSION.SDK_INT < 16)
             nf = builder.setContentText(text).build();

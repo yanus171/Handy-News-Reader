@@ -92,7 +92,6 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
         addPreferencesFromResource(R.xml.general_preferences);
 
-        setRingtoneSummary();
 
         Preference preference = findPreference(PrefUtils.REFRESH_ENABLED);
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
@@ -103,7 +102,12 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
             RemovePref( "prefs_advanced", "use_standard_file_manager" );
         if ( Build.VERSION.SDK_INT > 30 )
             RemovePref( "notificationScreen", "reading_notification" );
-        
+        if ( Build.VERSION.SDK_INT >= 26 )
+            RemovePref(null, "notificationScreen");
+        else {
+            setRingtoneSummary();
+            RemovePref(null, "show_notification_setup");
+        }
         findPreference(PrefUtils.THEME).setOnPreferenceChangeListener((preference1, newValue) -> {
             PrefUtils.putString(preference1.getKey(), (String) newValue);
             PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
@@ -179,6 +183,8 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
     }
 
     private void setRingtoneSummary() {
+        if ( Build.VERSION.SDK_INT >= 26 )
+            return;
         Preference ringtone_preference = findPreference(PrefUtils.NOTIFICATIONS_RINGTONE);
         Uri ringtoneUri = Uri.parse(PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, ""));
         if (TextUtils.isEmpty(ringtoneUri.toString())) {

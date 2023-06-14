@@ -19,6 +19,10 @@
 
 package ru.yanus171.feedexfork;
 
+import static android.app.NotificationManager.IMPORTANCE_LOW;
+
+import static androidx.core.app.NotificationManagerCompat.IMPORTANCE_HIGH;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -74,6 +78,7 @@ public class MainApplication extends Application {
     public static final String OPERATION_NOTIFICATION_CHANNEL_ID = "operation_channel";
     public static final String READING_NOTIFICATION_CHANNEL_ID = "reading_channel";
     public static final String UNREAD_NOTIFICATION_CHANNEL_ID = "unread_channel";
+    public static final String MARKED_AS_STARRED_NOTIFICATION_CHANNEL_ID = "mark_as_starred_channel";
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -106,25 +111,11 @@ public class MainApplication extends Application {
 
 
         if (Build.VERSION.SDK_INT >= 26) {
-            Context context = MainApplication.getContext();
-            {
-                NotificationChannel channel = new NotificationChannel(OPERATION_NOTIFICATION_CHANNEL_ID, context.getString(R.string.long_operation), NotificationManager.IMPORTANCE_LOW);
-                channel.setDescription(context.getString(R.string.long_operation));
-                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-                notificationManager.createNotificationChannel(channel);
-            }
-            if ( Build.VERSION.SDK_INT <= 30 ) {
-                NotificationChannel channel = new NotificationChannel(READING_NOTIFICATION_CHANNEL_ID, context.getString(R.string.reading_article), NotificationManager.IMPORTANCE_LOW);
-                channel.setDescription(context.getString(R.string.reading_article));
-                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-                notificationManager.createNotificationChannel(channel);
-            }
-            {
-                NotificationChannel channel = new NotificationChannel(UNREAD_NOTIFICATION_CHANNEL_ID, context.getString(R.string.unread_article), NotificationManager.IMPORTANCE_HIGH);
-                channel.setDescription(context.getString(R.string.unread_article));
-                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-                notificationManager.createNotificationChannel(channel);
-            }
+            createNotificationChannel(OPERATION_NOTIFICATION_CHANNEL_ID, R.string.long_operation, IMPORTANCE_LOW);
+            createNotificationChannel(UNREAD_NOTIFICATION_CHANNEL_ID, R.string.unread_article, IMPORTANCE_HIGH);
+            createNotificationChannel(MARKED_AS_STARRED_NOTIFICATION_CHANNEL_ID, R.string.markAsStarred, IMPORTANCE_HIGH);
+            if ( Build.VERSION.SDK_INT <= 30 )
+                createNotificationChannel(READING_NOTIFICATION_CHANNEL_ID, R.string.reading_article, IMPORTANCE_LOW);
         }
 
         mImageFileVoc.init1();
@@ -166,6 +157,14 @@ public class MainApplication extends Application {
 
             shortcutManager.setDynamicShortcuts(list);
         }
+    }
+
+    private void createNotificationChannel(String channelId, int captionID, int importance) {
+        Context context = MainApplication.getContext();
+        NotificationChannel channel = new NotificationChannel(channelId, context.getString(captionID), importance);
+        channel.setDescription(context.getString(captionID));
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private void enlargeCursorWindowSize() {

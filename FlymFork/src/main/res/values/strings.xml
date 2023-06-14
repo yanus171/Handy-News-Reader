@@ -296,7 +296,7 @@
     <string name="settings_category_notification">Notifications</string>
     <string name="settings_category_notification_summary"></string>
     <string name="settings_notifications_enabled">Enable notifications</string>
-    <string name="settings_notifications_enabled_description">Enable notifications in case of new articles</string>
+    <string name="settings_notifications_enabled_description">Enable app notifications</string>
     <string name="settings_notifications_ringtone">Ringtone</string>
     <string name="settings_notifications_ringtone_none">None</string>
     <string name="settings_notifications_vibrate">Vibrate</string>
@@ -725,5 +725,8 @@
     <string name="filter_hint_external">The items of this global filter are added to any feed filter. Reject items of global filter exclude triggered articles from web search results. This screen is also accessible by long tap on All, Unread, Favorites, Last read or Without feed items in feed list) </string>
     <string name="unknown">Unknown</string>
     <string name="tableOfContent">Table of contents</string>
+    <string name="show_notification_setup_summary">Show system setup dialog for the app notifications</string>
+    <string name="new_articles_notification">New article notification</string>
+    <string name="performance">Performance</string>
 
 </resources>

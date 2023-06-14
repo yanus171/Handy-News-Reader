@@ -349,6 +349,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         mTextViewFilterLabels.setVisibility((mIsSingleLabel || mIsSearch || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
         mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
+        mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
     }
 
     @Override
@@ -401,8 +402,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 markAllAsRead();
             }
         });
-        if ( !PrefUtils.getBoolean("show_mark_all_as_read_button", true) )
-            mFab.hide();
 
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
         mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
