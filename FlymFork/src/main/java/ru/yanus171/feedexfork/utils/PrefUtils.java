@@ -149,10 +149,13 @@ public class PrefUtils {
 
     public static final String PREF_TAP_ENABLED = "article_tap_enabled";
     public static final String PREF_ARTICLE_TAP_ENABLED_TEMP = "article_tap_enabled_temp";
-    public static Boolean isTapEnabled(boolean isArticleList ) {
-        return PrefUtils.getBoolean(PREF_TAP_ENABLED, true ) && (isArticleList || PrefUtils.getBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true ));
+    public static Boolean isArticleTapEnabled() {
+        return PrefUtils.getBoolean( PREF_TAP_ENABLED, true ) &&
+            isArticleTapEnabledTemp();
     }
-
+    public static Boolean isArticleTapEnabledTemp() {
+        return PrefUtils.getBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, true );
+    }
     public static int getFontSizeFooterClock() {
         return PrefUtils.getIntFromText("article_text_footer_show_clock_fontsize", 0);
     }
@@ -195,7 +198,11 @@ public class PrefUtils {
     }
     public static int getInt(String key, int defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
-        return settings.getInt(key, defValue);
+        try {
+            return settings.getInt(key, defValue);
+        } catch ( ClassCastException ignore ) {
+            return (int) settings.getLong(key, defValue);
+        }
     }
     public static Float getFloat(String key, Float defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
@@ -227,7 +234,11 @@ public class PrefUtils {
 
     public static long getLong(String key, long defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
-        return settings.getLong(key, defValue);
+        try {
+            return settings.getLong(key, defValue);
+        } catch ( ClassCastException ignore ) {
+            return settings.getInt(key, (int) defValue);
+        }
     }
 
     public static void putLong(String key, long value) {

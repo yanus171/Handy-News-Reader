@@ -225,11 +225,19 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
 
     private fun SetupFilterDialog(dialogView: View, applyType: RadioGroup, removeTextRadio: RadioButton): RadioGroup {
         val actionType = dialogView.findViewById<RadioGroup>(R.id.actionTypeRadioGroup)
-        //val applyTitleButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyTitleRadio) as RadioButton
+
+        UiUtils.SetupSmallTextView(dialogView, R.id.regexCheckBox)
+        UiUtils.SetupSmallTextView(dialogView, R.id.acceptRadio)
+        UiUtils.SetupSmallTextView(dialogView, R.id.markAsStarredRadio)
+        UiUtils.SetupSmallTextView(dialogView, R.id.removeText)
+        UiUtils.SetupSmallTextView(dialogView, R.id.rejectRadio)
+
+        UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio)
+        UiUtils.SetupSmallTextView(dialogView, R.id.applyTitleRadio)
+        UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio)
         val applyAuthorButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyAuthorRadio) as RadioButton
         val applyCategoryButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyCategoryRadio) as RadioButton
         val applyUrlButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyUrlRadio) as RadioButton
-        //val applyContentButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio) as RadioButton
         actionType.setOnCheckedChangeListener { radioGroup, selectedID ->
             for (i in 0 until applyType.childCount) applyType.getChildAt(i).isEnabled = true
             if (selectedID == removeTextRadio.id) {
@@ -312,7 +320,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         mIsAutoRefreshCb.isChecked = false
         mIsAutoRefreshCb.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false)) View.VISIBLE else View.GONE
         mLoadTypeRG.setOnCheckedChangeListener { _, _ -> ShowControls() }
-        val isExternal = this !is ArticleWebSearchActivity && intent.data!!.lastPathSegment == FetcherService.GetExtrenalLinkFeedID()
+        val isExternal = this !is ArticleWebSearchActivity && intent.data != null && intent.data!!.lastPathSegment == FetcherService.GetExtrenalLinkFeedID()
         mTabHost.setup()
         mTabHost.addTab(mTabHost.newTabSpec("feedTab").setIndicator(getString(R.string.tab_feed_title)).setContent(R.id.feed_tab))
         mTabHost.addTab(mTabHost.newTabSpec("filtersTab").setIndicator(if (isExternal) "" else getString( R.string.tab_filters_title) ).setContent(R.id.filters_tab))
@@ -829,7 +837,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                         optionsJsonString)
                 if (result.second) {
                     UiUtils.toast(this@EditFeedActivity, R.string.new_feed_was_added)
-                    FetcherService.StartService(Intent(this@EditFeedActivity, FetcherService::class.java)
+                    FetcherService.Start(Intent(this@EditFeedActivity, FetcherService::class.java)
                             .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                             .putExtra(Constants.FEED_ID, result.first.lastPathSegment), true)
                     HomeActivity.mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(result.first.lastPathSegment)

@@ -51,11 +51,6 @@
         <!-- <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" /> -->
         <!-- </intent-filter> -->
         <!-- </service> -->
-        <service
-            android:name=".service.AutoJobService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service android:name=".service.FetcherService" />
 
@@ -212,8 +207,11 @@
                 <data android:mimeType="application/zip"/>
                 <data android:mimeType="application/fb2"/>
                 <data android:mimeType="application/fb2.zip"/>
+                <data android:mimeType="application/fb2.xml"/>
+                <data android:mimeType="application/xhtml+xml"/>
                 <data android:mimeType="application/fb2+zip"/>
                 <data android:mimeType="application/fb2+xml"/>
+                <data android:mimeType="text/*" />
                 <data android:mimeType="application/x-fictionbook"/>
                 <data android:mimeType="application/x-fictionbook+xml"/>
             </intent-filter>

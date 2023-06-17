@@ -47,10 +47,9 @@
         android:icon="@drawable/ic_arrow_back"
         android:title="@string/menu_go_back" />
     <item
-        android:id="@+id/menu_menu_by_tap_enabled"
+        android:id="@+id/menu_disable_all_tap_actions"
         android:icon="@drawable/ic_touch_app"
-        android:checkable="true"
-        android:title="@string/article_tap_enabled" />
+        android:title="@string/disable_all_tap_actions" />
     <item
         android:id="@+id/menu_share_group"
         android:icon="@drawable/ic_share"

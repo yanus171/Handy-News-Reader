@@ -333,10 +333,10 @@ public class FeedData {
                         FeedColumns.IS_IMAGE_AUTO_LOAD,
                         EntryColumns.READ_DATE};
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
-        public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ')';
-        public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ')';
-        public static final String WHERE_LAST_READ = "(" + READ_DATE + DB_IS_NOT_NULL + ')';
-        public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ')';
+        public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ")";
+        public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ")";
+        public static final String WHERE_LAST_READ = "(" + READ_DATE + DB_IS_NOT_NULL + ")";
+        public static final String WHERE_NOT_FAVORITE = "(" + IS_FAVORITE + DB_IS_NULL + DB_OR + IS_FAVORITE + DB_IS_FALSE + ")";
         public static final String WHERE_NEW = "(" + EntryColumns.IS_NEW + DB_IS_NULL + DB_OR + IS_NEW + DB_IS_TRUE  + ")";
 
         public static boolean IsNew( Cursor cursor, int fieldPos ) {

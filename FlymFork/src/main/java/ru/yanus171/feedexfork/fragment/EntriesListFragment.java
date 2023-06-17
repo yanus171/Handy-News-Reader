@@ -111,6 +111,8 @@ import static ru.yanus171.feedexfork.Constants.DB_ASC;
 import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
+import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
@@ -124,13 +126,16 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FA
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
     public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
@@ -344,6 +349,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         mTextViewFilterLabels.setVisibility((mIsSingleLabel || mIsSearch || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
         mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
+        mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
     }
 
     @Override
@@ -396,8 +402,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 markAllAsRead();
             }
         });
-        if ( !PrefUtils.getBoolean("show_mark_all_as_read_button", true) )
-            mFab.hide();
 
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
         mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
@@ -544,12 +548,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return rootView;
     }
 
-    private void UpdateTopTapZoneVisibility() {
-        HomeActivity activity = (HomeActivity) getActivity();
+    public void UpdateTopTapZoneVisibility() {
+        final boolean atTop = mListView.getFirstVisiblePosition() == 0;
         if ( GetActivity().mPageUpBtn != null )
-            GetActivity().mPageUpBtn.setVisibility( mListView.getFirstVisiblePosition() == 0 || activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
+            GetActivity().mPageUpBtn.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtn, false, true )  ? View.VISIBLE : View.GONE );
         if ( GetActivity().mPageUpBtnFS != null )
-            GetActivity().mPageUpBtnFS.setVisibility( mListView.getFirstVisiblePosition() == 0 || !activity.GetIsActionBarEntryListHidden() ? View.GONE : View.VISIBLE );
+            GetActivity().mPageUpBtnFS.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtnFS, false, true ) ? View.VISIBLE : View.GONE );
     }
 
 
@@ -568,8 +572,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         getBaseActivity().UpdateHeader(max,
                                        value,
                                        getHeaderStep(),
-                                       HomeActivity.GetIsStatusBarEntryListHidden(),
-                                       HomeActivity.GetIsActionBarEntryListHidden());
+                                       GetIsStatusBarEntryListHidden(),
+                                       GetIsActionBarEntryListHidden());
     }
 
     private int getHeaderStep() {
@@ -727,8 +731,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_show_entry_text ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_edit_feed ).setVisible( IsFeedUri( mCurrentUri ) );
-        menu.findItem( R.id.menu_full_screen ).setChecked(HomeActivity.GetIsStatusBarEntryListHidden() );
-        menu.findItem( R.id.menu_actionbar_visible ).setChecked(!HomeActivity.GetIsActionBarEntryListHidden() );
+        menu.findItem( R.id.menu_full_screen ).setChecked(GetIsStatusBarEntryListHidden() );
+        menu.findItem( R.id.menu_actionbar_visible ).setChecked(!GetIsActionBarEntryListHidden() );
         menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_big_image_toggle ).setEnabled( !mShowTextInEntryList && PrefUtils.IsShowArticleBigImagesEnabled( mCurrentUri ) );
     }
@@ -783,7 +787,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_start_auto_refersh: {
-                FetcherService.StartService(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true);
                 return true;
             }
 
@@ -843,11 +847,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_delete_old: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_DELETE_OLD ), false );
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_DELETE_OLD ), false );
                 return true;
             }
             case R.id.menu_reload_all_texts: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_RELOAD_ALL_TEXT )
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_RELOAD_ALL_TEXT )
                                                  .setData( mCurrentUri )
                                                  .putExtra( WHERE_SQL_EXTRA, GetWhereSQL() ), false );
                 return true;
@@ -899,7 +903,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_create_auto_backup: {
-                FetcherService.StartService( FetcherService.GetIntent( Constants.FROM_AUTO_BACKUP ), false );
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_AUTO_BACKUP ), false );
                 return true;
             }
             case R.id.menu_import_from_backup: {
@@ -997,14 +1001,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_full_screen: {
                 HomeActivity activity1 = (HomeActivity) getActivity();
-                activity1.setFullScreen(!HomeActivity.GetIsStatusBarEntryListHidden(), HomeActivity.GetIsActionBarEntryListHidden() );
-                item.setChecked( HomeActivity.GetIsStatusBarEntryListHidden() );
+                activity1.setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+                item.setChecked( GetIsStatusBarEntryListHidden() );
                 break;
             }
             case R.id.menu_actionbar_visible: {
                 HomeActivity activity1 = (HomeActivity) getActivity();
-                activity1.setFullScreen( HomeActivity.GetIsStatusBarEntryListHidden(), !HomeActivity.GetIsActionBarEntryListHidden() );
-                item.setChecked( !HomeActivity.GetIsActionBarEntryListHidden() );
+                activity1.setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
+                item.setChecked( !GetIsActionBarEntryListHidden() );
                 break;
             }
             case R.id.menu_filter_by_labels: {
@@ -1139,15 +1143,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null && !PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
             int uriMatcher = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             if ( uriMatcher == FeedDataContentProvider.URI_ENTRIES_FOR_FEED  ) {
-                FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
+                FetcherService.Start(new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.FEED_ID, mCurrentUri.getPathSegments().get(1)), true);
             } else if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == FeedDataContentProvider.URI_ENTRIES_FOR_GROUP ) {
-                FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
+                FetcherService.Start(new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                         .putExtra(Constants.GROUP_ID, mCurrentUri.getPathSegments().get(1)), true);
             } else {
-                FetcherService.StartService( new Intent(getActivity(), FetcherService.class)
+                FetcherService.Start(new Intent(getActivity(), FetcherService.class)
                         .setAction(FetcherService.ACTION_REFRESH_FEEDS), true);
             }
         }

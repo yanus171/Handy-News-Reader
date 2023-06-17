@@ -107,7 +107,7 @@ public class DrawerAdapter extends BaseAdapter {
     private static final String COLON = getContext().getString(R.string.colon);
 
     private static final int CACHE_MAX_ENTRIES = 100;
-    private final Map<Long, String> mFormattedDateCache = new LinkedHashMap<Long, String>(CACHE_MAX_ENTRIES + 1, .75F, true) {
+    public final Map<Long, String> mFormattedDateCache = new LinkedHashMap<Long, String>(CACHE_MAX_ENTRIES + 1, .75F, true) {
         @Override
         public boolean removeEldestEntry(Map.Entry<Long, String> eldest) {
             return size() > CACHE_MAX_ENTRIES;
@@ -383,7 +383,7 @@ public class DrawerAdapter extends BaseAdapter {
             if (read > 0)
                 holder.readTxt.setText(String.valueOf(read));
 
-            SetImageSizeText(holder, mFeedsCursor.getInt(POS_IMAGESIZE));
+            SetImageSizeText(holder, mFeedsCursor.getLong(POS_IMAGESIZE));
         }
         return convertView;
     }
@@ -411,7 +411,7 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     static private void SetImageSizeText(ViewHolder holder, String key) {
-        SetImageSizeText( holder, PrefUtils.getLong( key, 0 ) );
+        SetImageSizeText(holder, PrefUtils.getLong(key, 0));
     }
 
     static private String GetImageSizeText(long imageSize) {
@@ -540,7 +540,6 @@ public class DrawerAdapter extends BaseAdapter {
         }.execute();
     }
     private void updateNumbers() {
-
         EntriesListFragment.SetItemsAsRead( TakeMarkAsReadList( false ) );
 
         ContentResolver cr = mContext.getContentResolver();
@@ -591,9 +590,9 @@ public class DrawerAdapter extends BaseAdapter {
             cur.close();
         }
 
-        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, (label, cur) -> PrefUtils.putInt(KEY_LabelEntriesUnreadCount + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1)) );
-        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, (label, cur) -> PrefUtils.putInt(KEY_LabelEntriesReadCount + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1)) );
-        SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, (label, cur) -> PrefUtils.putLong(KEY_LabelEntriesImagesSize + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1)) );
+        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, KEY_LabelEntriesUnreadCount );
+        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, KEY_LabelEntriesReadCount );
+        SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, KEY_LabelEntriesImagesSize );
 
         {
             Cursor cur = cr.query( FeedData.FeedColumns.GROUPED_FEEDS_CONTENT_URI,
@@ -618,7 +617,10 @@ public class DrawerAdapter extends BaseAdapter {
         timer.End();
     }
 
-    private void SetLabelsNumber(String columnSQLFunc, String whereSQL, OnLabelReturnedFromCursor run ) {
+    private void SetLabelsNumber(String columnSQLFunc, String whereSQL, String key ) {
+        for ( Label label: LabelVoc.INSTANCE.getList() )
+            PrefUtils.putLong(key + label.mID, 0 );
+
         ContentResolver cr = mContext.getContentResolver();
         Cursor cur = cr.query(EntryLabelColumns.WITH_ENTRIES_URI,
                               new String[]{EntryLabelColumns.LABEL_ID, columnSQLFunc},
@@ -626,7 +628,7 @@ public class DrawerAdapter extends BaseAdapter {
         if (cur != null) {
             while (cur.moveToNext()) {
                 Label label = LabelVoc.INSTANCE.get(cur.getLong(0));
-                run.run( label, cur );
+                PrefUtils.putLong(key + label.mID, cur.isNull(1 ) ? 0 : cur.getLong(1));
                 LabelVoc.INSTANCE.set(label);
             }
             cur.close();

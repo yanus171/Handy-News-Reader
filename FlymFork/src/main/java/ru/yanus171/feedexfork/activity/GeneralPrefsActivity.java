@@ -57,7 +57,7 @@ import android.view.MenuItem;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;
-import ru.yanus171.feedexfork.service.AutoJobService;
+import ru.yanus171.feedexfork.service.AutoWorker;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.FontSelectPreference;
@@ -109,7 +109,7 @@ public class GeneralPrefsActivity extends BaseActivity {
     public void onBackPressed() {
         GeneralPrefsFragment.SetupChanged();
         if (Build.VERSION.SDK_INT >= 21 )
-            AutoJobService.init( this );
+            AutoWorker.Companion.init();
         Theme.ReInit();
         super.onBackPressed();
 

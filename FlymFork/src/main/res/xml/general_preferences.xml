@@ -480,49 +480,52 @@
 
     </PreferenceScreen>
 
+    <ru.yanus171.feedexfork.view.StartActivityPreference
+        android:key="show_notification_setup"
+        android:title="@string/settings_category_notification"
+        android:summary="@string/show_notification_setup_summary"
+        android:layout="@layout/preference_items"
+        android:icon="@drawable/prefs_notifications"
+        startActivity:className=""
+        startActivity:oper="show_notification_setup" />
+
     <PreferenceScreen
         android:layout="@layout/preference_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_notification_summary"
+        android:key="notificationScreen"
         android:icon="@drawable/prefs_notifications"
         android:title="@string/settings_category_notification">
         <PreferenceCategory
             android:layout="@layout/preference_category"
-            android:title="@string/settings_category_notification">
+            android:title="@string/settings_category_notification"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="notifications.enabled"
-                android:summary="@string/settings_notifications_enabled_description"
-                android:title="@string/settings_notifications_enabled"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="notifications.enabled"
+            android:summary="@string/settings_notifications_enabled_description"
+            android:title="@string/settings_notifications_enabled"/>
 
-            <RingtonePreference
-                android:dependency="notifications.enabled"
-                android:key="notifications.ringtone"
-                android:ringtoneType="notification"
-                android:title="@string/settings_notifications_ringtone"/>
+        <RingtonePreference
+            android:key="notifications.ringtone"
+            android:dependency="notifications.enabled"
+            android:ringtoneType="notification"
+            android:title="@string/settings_notifications_ringtone"/>
 
-            <CheckBoxPreference
-                android:dependency="notifications.enabled"
-                android:key="notifications.vibrate"
-                android:summary="@string/settings_notifications_vibrate_description"
-                android:title="@string/settings_notifications_vibrate"/>
+        <CheckBoxPreference
+            android:key="notifications.vibrate"
+            android:dependency="notifications.enabled"
+            android:summary="@string/settings_notifications_vibrate_description"
+            android:title="@string/settings_notifications_vibrate"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:dependency="notifications.enabled"
-                android:key="notifications.light"
-                android:summary="@string/settings_notifications_light_description"
-                android:title="@string/settings_notifications_light"/>
+        <CheckBoxPreference
+            android:key="notifications.light"
+            android:dependency="notifications.enabled"
+            android:defaultValue="true"
+            android:summary="@string/settings_notifications_light_description"
+            android:title="@string/settings_notifications_light"/>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="reading_notification"
-                android:summary="@string/reading_notification_descr"
-                android:title="@string/reading_notification" />
-
-        </PreferenceCategory>
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -631,7 +634,16 @@
                 android:key="load_comments"
                 android:title="@string/settings_load_comments"
                 android:summary="@string/settings_load_comments_description"/>
-
+            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:defaultValue="4"
+                android:entries="@array/settings_keep_times"
+                android:entryValues="@array/settings_keep_time_values"
+                android:inputType="number"
+                android:key="keeptime"
+                android:title="@string/settings_keep_time"
+                android:summary="@string/settings_keep_time_descr"/>
 
         </PreferenceCategory>
         <PreferenceCategory
@@ -649,15 +661,6 @@
                 android:key="delete_old_requires_charging"
                 android:defaultValue="false"
                 android:title="@string/auto_refresh_requires_charging"/>
-            <ru.yanus171.feedexfork.view.AutoSummaryListPreference
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:defaultValue="4"
-                android:entries="@array/settings_keep_times"
-                android:entryValues="@array/settings_keep_time_values"
-                android:inputType="number"
-                android:key="keeptime"
-                android:title="@string/settings_keep_time"/>
             <CheckBoxPreference
                 android:key="delete_read_articles"
                 android:title="@string/delete_read_articles"
@@ -675,6 +678,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:summary="@string/settings_category_advanced_summary"
+        android:key="prefs_advanced"
         android:icon="@drawable/prefs_advanced"
         android:title="@string/settings_category_advanced">
         <PreferenceCategory
@@ -838,6 +842,7 @@
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_comments_extract_rules"
             android:summary="@string/settings_comments_extract_rules_description"/>
+
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_other"/>
@@ -853,12 +858,6 @@
             android:defaultValue=""
             android:title="@string/setting_custom_css_text"
             android:summary="@string/setting_custom_css_text_description"/>
-        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
-            android:key="thread_count"
-            android:inputType="numberDecimal"
-            android:defaultValue="9"
-            android:title="@string/settings_thread_count"
-            android:summary="@string/settings_thread_count_description"/>
         <ru.yanus171.feedexfork.view.StartActivityPreference
             android:key="open_global_filter"
             android:title="@string/global_filter"
@@ -868,6 +867,21 @@
             android:defaultValue="true"
             android:key="setting_convert_xml_symbols_before_parsing"
             android:title="Convert xml symbols before parsing"/>
+
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/performance"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
+            android:key="thread_count"
+            android:inputType="numberDecimal"
+            android:defaultValue="9"
+            android:title="@string/settings_thread_count"
+            android:summary="@string/settings_thread_count_description"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="reading_notification"
+            android:summary="@string/reading_notification_descr"
+            android:title="@string/reading_notification" />
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

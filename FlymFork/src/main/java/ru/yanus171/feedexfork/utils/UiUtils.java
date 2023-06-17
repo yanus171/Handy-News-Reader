@@ -25,7 +25,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.util.Linkify;
@@ -40,18 +39,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.core.content.FileProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.EntryActivity;
-import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.view.FontSelectPreference;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -173,13 +167,13 @@ public class UiUtils {
             mHandler.removeCallbacks( r );
     }
 
-    public static void HideButtonText(View rootView, int ID, boolean transparent) {
+    public static void UpdateButtonVisibility(View rootView, int ID, boolean visible) {
         TextView btn = rootView.findViewById(ID);
         if ( btn != null ) {
-            if (transparent)
-                btn.setBackgroundColor(Color.TRANSPARENT);
-            else
+            if (visible)
                 btn.setBackgroundResource(R.drawable.round_background);
+            else
+                btn.setBackgroundColor(Color.TRANSPARENT);
             btn.setText("");
         }
     }

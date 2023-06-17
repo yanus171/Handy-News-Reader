@@ -44,6 +44,7 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -60,31 +61,28 @@ import android.text.TextUtils;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.BaseActivity;
-import ru.yanus171.feedexfork.service.AutoJobService;
+import ru.yanus171.feedexfork.service.AutoWorker;
 import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.ColorPreference;
-import ru.yanus171.feedexfork.view.StorageSelectPreference;
 
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATA_FOLDER;
 
 public class GeneralPrefsFragment extends PreferenceFragment implements  PreferenceScreen.OnPreferenceClickListener {
     public static Boolean mSetupChanged = false;
 
-    private Preference.OnPreferenceChangeListener mOnRefreshChangeListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            Activity activity = getActivity();
-            if (activity != null) {
-                if (Build.VERSION.SDK_INT >= 21 )
-                    AutoJobService.init(activity);
-            }
-            return true;
+    private final Preference.OnPreferenceChangeListener mOnRefreshChangeListener = (preference, newValue) -> {
+        Activity activity = getActivity();
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT >= 21 )
+                AutoWorker.Companion.init();
         }
+        return true;
     };
 
+    @SuppressLint("ApplySharedPref")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +92,6 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
 
         addPreferencesFromResource(R.xml.general_preferences);
 
-        setRingtoneSummary();
 
         Preference preference = findPreference(PrefUtils.REFRESH_ENABLED);
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
@@ -102,30 +99,29 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
         preference.setOnPreferenceChangeListener(mOnRefreshChangeListener);
 
         if ( Build.VERSION.SDK_INT > 28 )
-            findPreference("use_standard_file_manager").setEnabled( false );
+            RemovePref( "prefs_advanced", "use_standard_file_manager" );
+        if ( Build.VERSION.SDK_INT > 30 )
+            RemovePref( "notificationScreen", "reading_notification" );
+        if ( Build.VERSION.SDK_INT >= 26 )
+            RemovePref(null, "notificationScreen");
+        else {
+            setRingtoneSummary();
+            RemovePref(null, "show_notification_setup");
+        }
+        findPreference(PrefUtils.THEME).setOnPreferenceChangeListener((preference1, newValue) -> {
+            PrefUtils.putString(preference1.getKey(), (String) newValue);
+            PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
+            Process.killProcess(Process.myPid()); // Restart the app
+            // this return statement will never be reached
+            return true;
+        });
 
-        Preference.OnPreferenceChangeListener onRestartPreferenceChangeListener = new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PrefUtils.putString(preference.getKey(), (String) newValue);
-                PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
-                Process.killProcess(Process.myPid()); // Restart the app
-                // this return statement will never be reached
-                return true;
-            }
-        };
-        findPreference(PrefUtils.THEME).setOnPreferenceChangeListener(onRestartPreferenceChangeListener);
-
-        preference = findPreference(PrefUtils.LANGUAGE);
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PrefUtils.putString(PrefUtils.LANGUAGE, (String)newValue);
-                PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
-                android.os.Process.killProcess(android.os.Process.myPid()); // Restart the app
-                // this return statement will never be reached
-                return true;
-            }
+        findPreference(PrefUtils.LANGUAGE).setOnPreferenceChangeListener((preference12, newValue) -> {
+            PrefUtils.putString(PrefUtils.LANGUAGE, (String)newValue);
+            PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit().commit(); // to be sure all prefs are written
+            Process.killProcess(Process.myPid()); // Restart the app
+            // this return statement will never be reached
+            return true;
         });
 
 
@@ -133,16 +129,30 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
             ApplyBrightness( getPreferenceScreen(), (BaseActivity) getActivity());
     }
 
+    // -------------------------------------------------------------------------
+    private void RemovePref(String keyScreen, String keyPref) {
+        PreferenceScreen screen;
+        if (keyScreen == null) {
+            screen = getPreferenceScreen();
+        } else {
+            screen = (PreferenceScreen) findPreference(keyScreen);
+        }
+
+        if (screen != null) {
+            Preference pref = findPreference(keyPref);
+            if (pref != null) {
+                screen.removePreference(pref);
+            }
+        }
+    }
+
     private static void ApplyBrightness(PreferenceScreen screen, final BaseActivity activity ) {
         for ( int i = 0; i < screen.getPreferenceCount(); i++ ) {
             if (screen.getPreference(i) instanceof PreferenceScreen ||
                     screen.getPreference(i) instanceof ColorPreference)
-                screen.getPreference(i).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        SetupBrightness(preference, activity);
-                        return false;
-                    }
+                screen.getPreference(i).setOnPreferenceClickListener(preference -> {
+                    SetupBrightness(preference, activity);
+                    return false;
                 });
             if (screen.getPreference(i) instanceof PreferenceScreen)
                 ApplyBrightness((PreferenceScreen) screen.getPreference(i), activity);
@@ -173,6 +183,8 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
     }
 
     private void setRingtoneSummary() {
+        if ( Build.VERSION.SDK_INT >= 26 )
+            return;
         Preference ringtone_preference = findPreference(PrefUtils.NOTIFICATIONS_RINGTONE);
         Uri ringtoneUri = Uri.parse(PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, ""));
         if (TextUtils.isEmpty(ringtoneUri.toString())) {

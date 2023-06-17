@@ -75,6 +75,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void StartReadingServiceIfNeeded() {
+        if ( Build.VERSION.SDK_INT > 30 )
+            return;
         if ( ( mActivityCount == 0 || !isServiceRunning( ReadingService.class ) ) && PrefUtils.getBoolean(READING_NOTIFICATION, false ) ){
             Intent serviceIntent = new Intent(this, ReadingService.class);
             if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
