@@ -210,6 +210,7 @@
     <string name="settings_refresh_wifi_only">Nur über WLAN aktualisieren</string>
     <string name="settings_refresh_wifi_only_description">Die automatische Aktualisierung wird nur bei aktiver WLAN-Verbindung durchgeführt</string>
     <string name="settings_keep_time">Aufbewahrungszeit für Artikel</string>
+    <string name="settings_keep_time_descr">Während des Aktualisierungsvorgangs werden keine Artikel geladen, deren Datum älter als diese Dauer ist</string>
     <string name="settings_preload_image_mode">Bilder vorab laden</string>
     <string name="settings_max_image_download_count">Höchstzahl der heruntergeladenen Bilder</string>
     <string name="settings_max_image_download_count_description">Maximale Anzahl der Bilder pro Artikel\n</string>
@@ -278,7 +279,7 @@
     <string name="brightness_gesture">Geste zur Änderung der Helligkeit</string>
     <string name="brightness_gesture_descr">Wenn aktiviert, kann die Helligkeit durch Hoch- und Runterwischen am linken Rand des Artikels eingestellt werden</string>
     <string name="brightness_with_dim_activity">Software-Overlay</string>
-    <string name="brightness_with_dim_activity_descr">Verringert die Helligkeit durch Reduktion der Transparenz des Fensterhintergrundes. Bitte ausprobieren, wenn das Einstellen der Helligkeit nicht funktioniert</string>
+    <string name="brightness_with_dim_activity_descr">Zusätzlich einstellbarer Dimmer (unter 50 %)</string>
     <string name="settings_category_notification">Benachrichtigungen</string>
     <string name="settings_notifications_enabled">Benachrichtigungen aktivieren</string>
     <string name="settings_notifications_enabled_description">Ermöglicht Benachrichtigungen bei neuen Artikeln</string>
@@ -442,6 +443,7 @@
     <string name="menu_reload_with_tables_toggle">Mit Tabellen</string>
     <string name="menu_display_options">Anzeigeoptionen</string>
     <string name="menu_reload">Neu laden&#8230;</string>
+    <string name="disable_all_tap_actions">Alle Tipp-Aktionen deaktivieren</string>
     <string name="article_tap_enabled">Tipp-Aktionen aktivieren</string>
     <string name="article_tap_enabled_summary">in Tipp-Zonen und Textstellen ohne Links (zum Öffnen des Menüs bei ausgeblendeter Aktionsleiste)</string>
     <string name="menu_calculate_image_sizes">Größe der Bilder berechnen</string>
@@ -690,4 +692,9 @@
     <string name="copy_debug_info_to_clipboard_summary">Wenn die App abstürzt</string>
     <string name="import_from_backup_after_permission_granted">Möchten Sie Feeds und App-Einstellungen aus der automatischen Sicherung importieren?</string>
     <string name="menu_import_from_backup_file">Aus Sicherung importieren</string>
+    <string name="brightness_programmatic_dim_max">Dimmer-Höchstwert</string>
+    <string name="brightness_programmatic_dim_max_descr">Höchstwert für zusätzlichen Dimmer (0 - nicht zusätzlich gedimmt, 100 - komplett verdunkelt)</string>
+    <string name="edit_feed_title_external">Bearbeiten</string>
+    <string name="unknown">Unbekannt</string>
+    <string name="tableOfContent">Inhaltsverzeichnis</string>
 </resources>
