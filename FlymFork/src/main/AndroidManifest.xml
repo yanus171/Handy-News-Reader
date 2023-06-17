@@ -207,8 +207,11 @@
                 <data android:mimeType="application/zip"/>
                 <data android:mimeType="application/fb2"/>
                 <data android:mimeType="application/fb2.zip"/>
+                <data android:mimeType="application/fb2.xml"/>
+                <data android:mimeType="application/xhtml+xml"/>
                 <data android:mimeType="application/fb2+zip"/>
                 <data android:mimeType="application/fb2+xml"/>
+                <data android:mimeType="text/*" />
                 <data android:mimeType="application/x-fictionbook"/>
                 <data android:mimeType="application/x-fictionbook+xml"/>
             </intent-filter>

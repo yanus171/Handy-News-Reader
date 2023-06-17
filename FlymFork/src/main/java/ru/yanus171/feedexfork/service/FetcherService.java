@@ -823,6 +823,7 @@ public class FetcherService extends IntentService {
             removeElementsWithTag(doc, "last-name" );
             removeElementsWithTag(doc, "author" );
             removeElementsWithTag(doc, "book-title" );
+            removeElementsWithTag(doc, "stylesheet" );
 
             Status().ChangeProgress( "doc.toString()" );
             String content = doc.toString();
@@ -875,7 +876,7 @@ public class FetcherService extends IntentService {
             String newText = "<div id=\"tc" + i + "\" >" + match.replaceAll( "<?p>", "") + "</div>";
             if ( i == 1 )
                 newText = TC_START + newText;
-            content = content.replace(match, newText);
+            content = content.replaceFirst(match, newText);
             String caption = matcher.group(2).replaceAll( "<.*?>", "");
             tc.append("<p class=\"toc\"><a href=\"#tc").append(i).append("\">").append(caption).append("</a></p>");
             i++;
