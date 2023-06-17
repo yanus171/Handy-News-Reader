@@ -342,7 +342,8 @@ public class FetcherService extends IntentService {
                     moveBackupFileVersion( sourceFileName, 1 );
                     moveBackupFileVersion( sourceFileName, 0 );
                     OPML.exportToFile( sourceFileName, true );
-                    FileUtils.INSTANCE.copyFileToDownload(sourceFileName, true);
+                    final boolean showToast = PrefUtils.getBoolean( "autobackup.toast", true );
+                    FileUtils.INSTANCE.copyFileToDownload(sourceFileName, showToast);
                     PrefUtils.putLong(AutoWorker.LAST_JOB_OCCURRED + PrefUtils.AUTO_BACKUP_INTERVAL, System.currentTimeMillis() );
                 } catch (IOException e) {
                     e.printStackTrace();

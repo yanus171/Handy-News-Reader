@@ -790,6 +790,11 @@
             android:dependency="autobackup.enabled"
             android:title="@string/autobackup_interval"
             android:summary="@string/autobackup_interval_descr"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autobackup.toast"
+            android:title="@string/settings_autobackup_toast"
+            android:summary="@string/settings_autobackup_toast_descr"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

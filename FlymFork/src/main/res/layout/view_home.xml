@@ -21,8 +21,6 @@
                 android:background="@color/dark_theme_background" />
         </LinearLayout>
 
-
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"

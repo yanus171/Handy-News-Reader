@@ -726,7 +726,8 @@
     <string name="unknown">Unknown</string>
     <string name="tableOfContent">Table of contents</string>
     <string name="show_notification_setup_summary">Show system setup dialog for the app notifications</string>
-    <string name="new_articles_notification">New article notification</string>
     <string name="performance">Performance</string>
+    <string name="settings_autobackup_toast">Toast</string>
+    <string name="settings_autobackup_toast_descr">Show toast message when backup file successfully was copied to Downloads</string>
 
 </resources>
