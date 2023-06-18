@@ -23,6 +23,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentResolver;
@@ -91,6 +92,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -981,12 +983,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
 
                 case R.id.menu_show_html: {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetDataWithLinks() + "</root>";
-                        String htmlFormatted = NetworkUtils.formatXML( html );
-                        DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "html.html", html);
-                        MessageBox.Show(htmlFormatted);
-                    }
+                    showHTML();
                     break;
                 }
                 case R.id.menu_article_web_search: {
@@ -1056,6 +1053,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         return true;
+    }
+
+    private void showHTML() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            return;
+        final String html = "<root>" + mEntryPagerAdapter.GetEntryView(mCurrentPagerPos).GetDataWithLinks() + "</root>";
+        String htmlFormatted = NetworkUtils.formatXML( html );
+        Uri fileUri = DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "html.html", html);
+        FileUtils.INSTANCE.copyFileToDownload( new File(getContext().getCacheDir().getAbsolutePath(), "html.html" ).getPath(), true );
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(fileUri);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivity(intent);
+        } catch ( ActivityNotFoundException ignored ) {
+            MessageBox.Show(htmlFormatted);
+        }
     }
 
     @NotNull
