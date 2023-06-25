@@ -62,15 +62,18 @@ object FileUtils {
         Dog.v( String.format( "File copied %s -> %s", src.path, dst.path ) )
     }
 
-    fun copyFileToDownload( fileName: String, isToast: Boolean ){
-        copyFileToDownload( fileName, File( fileName ).name, isToast )
+    fun copyFileToDownload(fileName: String, isToast: Boolean ){
+        copyFileToDownload( fileName, File( fileName ).name, "", isToast )
+    }
+    fun copyFileToDownload(fileName: String, destSubFolder: String, isToast: Boolean ){
+        copyFileToDownload( fileName, File( fileName ).name, destSubFolder, isToast )
     }
 
-    public fun copyFileToDownload( fileName: String, destName: String, isToast: Boolean ) {
+    private fun copyFileToDownload(fileName: String, destName: String, destSubFolder: String, isToast: Boolean ) {
         val context = MainApplication.getContext();
         if (Build.VERSION.SDK_INT >= 29) {
             val resolver = context.contentResolver
-            val relPath = Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER;
+            val relPath = Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER + destSubFolder;
             run {
                 val cursor = resolver.query( MediaStore.Downloads.EXTERNAL_CONTENT_URI,
                         arrayOf(MediaStore.Downloads._ID),
@@ -106,7 +109,7 @@ object FileUtils {
             }
 
         } else {
-            val dir = File( getPublicDir().path + "/" + SUB_FOLDER );
+            val dir = File( getPublicDir().path + "/" + SUB_FOLDER + destSubFolder );
             if ( !dir.exists() && !dir.mkdir() )
                 throw IOException( MainApplication.getContext().getString(R.string.couldNotCreateDownloadsSubfolder) + ": " + dir.path )
             val destFile = File(dir, destName)
@@ -116,7 +119,7 @@ object FileUtils {
         if ( isToast )
             UiUtils.RunOnGuiThread {
                 Toast.makeText(MainApplication.getContext(),
-                        String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), destName, SUB_FOLDER),
+                        String.format(MainApplication.getContext().getString(R.string.fileCopiedToDownloadsFolder), destName, SUB_FOLDER + destSubFolder),
                         Toast.LENGTH_LONG).show()
             }
     }

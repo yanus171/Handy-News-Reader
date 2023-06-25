@@ -1,5 +1,8 @@
 package ru.yanus171.feedexfork.utils;
 
+import android.database.Cursor;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,11 +27,13 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
+import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.utils.DebugApp.CreateFileUri;
+import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
@@ -114,8 +120,19 @@ public class ArticleTextExtractor {
         mContentStepFileIndex = 0;
         File dir = new File(MainApplication.getContext().getCacheDir() + "/" + CONTENT_STEP_TO_FILE_SUBDIR);
         dir.mkdirs();
+        final String relPath = Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER + "/Content";
         for( File file: dir.listFiles() )
             file.delete();
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            MainApplication.getContext().getContentResolver().delete(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                                                                                         MediaStore.MediaColumns.RELATIVE_PATH + " LIKE '" + relPath + "%' ", null);
+        } else
+            try {
+                for (File file : new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + SUB_FOLDER + "/Content").listFiles())
+                    file.delete();
+            } catch ( Exception ignored ) {
+
+            }
     }
     public static void SaveContentStepToFile( Element content, String stepName ) {
         if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
@@ -131,7 +148,10 @@ public class ArticleTextExtractor {
         if (!PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ))
             return;
         mContentStepFileIndex++;
-        CreateFileUri(MainApplication.getContext().getCacheDir().getAbsolutePath() + "/" + CONTENT_STEP_TO_FILE_SUBDIR, mContentStepFileIndex + "_" + stepName + ".html", content );
+        String path = MainApplication.getContext().getCacheDir().getAbsolutePath() + "/" + CONTENT_STEP_TO_FILE_SUBDIR;
+        String fileName = mContentStepFileIndex + "_" + stepName + ".html";
+        CreateFileUri(path, fileName, content );
+        FileUtils.INSTANCE.copyFileToDownload( path + "/" + fileName, "/Content", false );
     }
     public static String extractContent(Document doc,
                                         final String url,

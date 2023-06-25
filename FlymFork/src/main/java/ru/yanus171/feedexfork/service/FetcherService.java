@@ -836,6 +836,7 @@ public class FetcherService extends IntentService {
             //content = content.replace( "</i>, ", ",</i>" );
             content = content.replace( "strong>", "b>" );
             content = content.replace( "strikethrough>.", "del>" );
+            content = content.replace( "xlink:href", "href" );
             content = content.replaceAll( "\\n\\s+<", "<" );
             //content = content.replace( "\n\r<", "<" );
             //content = content.replace( "\r\n<", "<" );
