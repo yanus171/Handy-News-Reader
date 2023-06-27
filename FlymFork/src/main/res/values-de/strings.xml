@@ -697,4 +697,6 @@
     <string name="edit_feed_title_external">Bearbeiten</string>
     <string name="unknown">Unbekannt</string>
     <string name="tableOfContent">Inhaltsverzeichnis</string>
+    <string name="show_notification_setup_summary">Systemdialog zur Einrichtung der App-Benachrichtigungen anzeigen</string>
+    <string name="performance">Leistungsfähigkeit</string>
 </resources>
