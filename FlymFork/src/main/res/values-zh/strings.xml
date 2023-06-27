@@ -700,6 +700,7 @@
     <string name="unknown">未知</string>
     <string name="tableOfContent">目录</string>
     <string name="show_notification_setup_summary">显示应用通知的系统设置对话框</string>
-    <string name="new_articles_notification">新文章通知</string>
     <string name="performance">性能</string>
+    <string name="settings_autobackup_toast">Toast 通知</string>
+    <string name="settings_autobackup_toast_descr">备份文件成功复制到下载时显示 toast 消息</string>
 </resources>
