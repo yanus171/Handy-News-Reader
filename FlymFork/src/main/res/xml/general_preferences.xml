@@ -289,7 +289,6 @@
             android:entryValues="@array/buttons_layout_values"
             android:title="@string/article_text_buttons_layout"
             android:summary="@string/article_text_buttons_layout_descr"/>
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="entry_text_title_link"

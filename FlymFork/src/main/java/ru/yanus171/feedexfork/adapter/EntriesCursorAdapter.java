@@ -585,8 +585,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             //int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
             if ( showBigImage && mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
                 holder.mainBigImgView.setVisibility( View.VISIBLE );
-                String finalMainImgUrl = mainImgUrl;
-                holder.mainBigImgView.setOnClickListener(v_ -> EntryView.ShowImageMenu(finalMainImgUrl, feedTitle, v_.getContext() ));
+                setupImageViewClick(holder.mainBigImgView, feedTitle, mainImgUrl);
                 Glide.with(context).load(mainImgUrl)
                     .fitCenter()
                     .addListener(new RequestListener<Drawable>() {
@@ -807,6 +806,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
             }
         }
+    }
+
+    static private void setupImageViewClick(ImageView view, String feedTitle, String mainImgUrl) {
+        String finalMainImgUrl = mainImgUrl;
+        view.setOnClickListener(v_ -> EntryView.OpenImage(finalMainImgUrl, v_.getContext() ));
+        view.setOnLongClickListener(v_ -> {
+            EntryView.ShowImageMenu(finalMainImgUrl, feedTitle, v_.getContext() );
+            return true;
+        });
     }
 
     private boolean isTextShown(ViewHolder holder) {
@@ -1078,7 +1086,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     //.override(dim)
                     .into(imageView);
             //imageView.setImageURI( uri );
-            imageView.setOnClickListener(view -> EntryView.ShowImageMenu(uri.toString(), feedTitle, view.getContext() ));
+            setupImageViewClick(imageView, feedTitle, uri.toString());
 
 //            new AsyncTask<Pair<Uri,ImageView>, Void, Void>() {
 //                private Bitmap uriToBitmap(Uri selectedFileUri) {

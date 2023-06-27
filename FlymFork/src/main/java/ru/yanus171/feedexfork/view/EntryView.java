@@ -667,6 +667,15 @@ public class EntryView extends WebView implements Handler.Callback {
 
         });
 
+        setOnLongClickListener(view -> {
+            HitTestResult hitTestResult = ((WebView) view).getHitTestResult();
+            if (hitTestResult.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE ) {
+                String link = hitTestResult.getExtra();
+                ShowImageMenu( link, mTitle, view.getContext() );
+                return true;
+            }
+            return false;
+        });
         setWebViewClient( new WebViewClient() {
 
             @Override
@@ -684,7 +693,7 @@ public class EntryView extends WebView implements Handler.Callback {
                 final Context context = getContext();
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
-                        ShowImageMenu(url, mTitle, context);
+                        OpenImage(url, context);
                     } else if (url.contains("#")) {
                         String hash = url.substring(url.indexOf('#') + 1);
                         hash = URLDecoder.decode(hash);
