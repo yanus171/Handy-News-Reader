@@ -138,6 +138,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.URL;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns._ID;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
@@ -459,7 +460,7 @@ public class OPML {
     }
 
     private static final String[] FILTERS_PROJECTION = new String[]{FilterColumns.FILTER_TEXT, FilterColumns.IS_REGEX,
-            FilterColumns.APPLY_TYPE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED, FilterColumns.IS_REMOVE_TEXT,};
+            FilterColumns.APPLY_TYPE, FilterColumns.IS_ACCEPT_RULE, FilterColumns.IS_MARK_STARRED, FilterColumns.IS_REMOVE_TEXT, FilterColumns.LABEL_ID_LIST};
 
     private static void ExportFilters(Writer writer, String feedID) throws IOException {
         Cursor cur = getContext().getContentResolver()
@@ -479,6 +480,8 @@ public class OPML {
                 writer.write(GetBoolText( cur, 4) );
                 writer.write(FILTER_IS_REMOVE_TEXT);
                 writer.write(GetBoolText( cur, 5) );
+                writer.write(LABEL_ID_LIST);
+                if ( !cur.isNull( 6 ) ) writer.write(TextUtils.htmlEncode(cur.getString(6)) );
                 writer.write(CLOSING);
             }
             writer.write("\t");
@@ -639,6 +642,7 @@ public class OPML {
                     values.put(FilterColumns.IS_ACCEPT_RULE, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_ACCEPT_RULE)));
                     values.put(FilterColumns.IS_MARK_STARRED, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_MARK_AS_STARRED)));
                     values.put(FilterColumns.IS_REMOVE_TEXT, TRUE.equals(attributes.getValue("", ATTRIBUTE_IS_REMOVE_TEXT)));
+                    values.put(FilterColumns.LABEL_ID_LIST, attributes.getValue("", LABEL_ID_LIST));
 
                     cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(mFeedId), values);
                 }

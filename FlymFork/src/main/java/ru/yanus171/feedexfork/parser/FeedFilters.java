@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -16,7 +17,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.DebugApp;
-import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_AUTHOR;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CATEGORY;
@@ -28,7 +29,6 @@ import static ru.yanus171.feedexfork.service.FetcherService.mMarkAsStarredFoundL
 public class FeedFilters {
 
     private final ArrayList<Rule> mFilters = new ArrayList<>();
-
     public FeedFilters(String feedId) {
         init( GetCursor(feedId), true );
         if ( !feedId.equals( FetcherService.GetExtrenalLinkFeedID() ) )
@@ -48,6 +48,8 @@ public class FeedFilters {
                 r.isAcceptRule = cursor.getInt(3) == 1;
                 r.isMarkAsStarred = cursor.getInt(4) == 1;
                 r.isRemoveText = cursor.getInt(5) == 1;
+                if ( !cursor.isNull( 6 ) )
+                    r.labelIDList = LabelVoc.INSTANCE.stringToList(cursor.getString(6) );
                 mFilters.add(r);
             } while ( cursor.moveToNext() );
         if ( closeCursor )
@@ -62,7 +64,8 @@ public class FeedFilters {
     @NotNull
     public static String[] getCursorProjection() {
         return new String[]{FeedData.FilterColumns.FILTER_TEXT, FeedData.FilterColumns.IS_REGEX,
-                FeedData.FilterColumns.APPLY_TYPE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED, FeedData.FilterColumns.IS_REMOVE_TEXT};
+                FeedData.FilterColumns.APPLY_TYPE, FeedData.FilterColumns.IS_ACCEPT_RULE, FeedData.FilterColumns.IS_MARK_STARRED,
+                FeedData.FilterColumns.IS_REMOVE_TEXT, FeedData.FilterColumns.LABEL_ID_LIST};
     }
 
     public static Uri getCursorUri(String feedId) {
@@ -102,11 +105,10 @@ public class FeedFilters {
 
     public boolean isMarkAsStarred(String title, String author, String url, String content, String[] categoryList) {
         final String categories = categoryList == null ? "" : TextUtils.join( ", ", categoryList );
-
         for (Rule r : mFilters)
             if ( r.isMarkAsStarred && r.isMatch( title, author, url, content, categories ) ) {
                 synchronized(mMarkAsStarredFoundList) {
-                    mMarkAsStarredFoundList.add( new MarkItem( title, url ));
+                    mMarkAsStarredFoundList.add( new MarkItem( title, url, r.labelIDList ));
                 }
                 return true;
             }
@@ -136,6 +138,7 @@ public class FeedFilters {
         int mApplyType;
         boolean isAcceptRule;
         boolean isMarkAsStarred = false;
+        public HashSet<Long> labelIDList;
         boolean isRemoveText = false;
 
         boolean isMatch(String title, String author, String url, String content, String categories) {

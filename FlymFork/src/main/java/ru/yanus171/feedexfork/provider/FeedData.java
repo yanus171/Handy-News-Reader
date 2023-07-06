@@ -51,9 +51,11 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 
 import static ru.yanus171.feedexfork.Constants.DB_AND;
@@ -225,6 +227,7 @@ public class FeedData {
         public static final String APPLY_TYPE = "isappliedtotitle";
         public static final String IS_ACCEPT_RULE = "isacceptrule";
         public static final String IS_MARK_STARRED = "ismarkstarred";
+        public static final String LABEL_ID_LIST = "label_id_list";
         public static final String IS_REMOVE_TEXT = "isremovetext";
 
         public static final int DB_APPLIED_TO_CONTENT = 0;
@@ -243,7 +246,7 @@ public class FeedData {
 
         public static final String[][] COLUMNS = new String[][]{{_ID, TYPE_PRIMARY_KEY}, {FEED_ID, TYPE_EXTERNAL_ID}, {FILTER_TEXT, TYPE_TEXT},
                 {IS_REGEX, TYPE_BOOLEAN}, {APPLY_TYPE, TYPE_BOOLEAN}, {IS_ACCEPT_RULE, TYPE_BOOLEAN}, {IS_MARK_STARRED, TYPE_BOOLEAN},
-            {IS_REMOVE_TEXT, TYPE_BOOLEAN}};
+            {IS_REMOVE_TEXT, TYPE_BOOLEAN}, {LABEL_ID_LIST, TYPE_TEXT}};
 
         public static final Uri CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/filters");
     }
@@ -457,7 +460,7 @@ public class FeedData {
 
 
     }
-    public static void PutFavorite(ContentValues values, boolean isFavorite ) {
+    public static void PutFavorite(ContentValues values, boolean isFavorite) {
         values.put(EntryColumns.IS_FAVORITE, isFavorite ? 1 : 0);
         if ( isFavorite )
             values.put(EntryColumns.READ_DATE, new Date().getTime());

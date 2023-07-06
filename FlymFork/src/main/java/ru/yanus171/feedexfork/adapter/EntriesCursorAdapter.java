@@ -828,7 +828,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private void UpdateLabelText(ViewHolder holder) {
-        boolean visible = holder.isFavorite && !LabelVoc.INSTANCE.getLabelIDs(holder.entryID ).isEmpty();
+        boolean visible = holder.isFavorite && !LabelVoc.INSTANCE.getLabelIDs( holder.entryID ).isEmpty();
         holder.labelTextView.setVisibility( visible ? View.VISIBLE : View.GONE );
         if ( visible )
             holder.labelTextView.setText(Html.fromHtml(LabelVoc.INSTANCE.getStringList(holder.entryID )) );

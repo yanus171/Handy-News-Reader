@@ -67,9 +67,9 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP
 import ru.yanus171.feedexfork.service.FetcherService.*
-import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.EntryUrlVoc.remove
+import ru.yanus171.feedexfork.utils.LabelVoc.setEntry
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*

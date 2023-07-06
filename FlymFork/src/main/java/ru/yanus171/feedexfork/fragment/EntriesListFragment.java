@@ -1077,10 +1077,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             for ( Long item: mLabelsID )
                 list.add( String.valueOf( item ) );
             PrefUtils.putString( STATE_LABEL_FILTER_LIST + mCurrentUri, TextUtils.join( ",", list ) );
-            UiUtils.RunOnGuiThread(() -> {
-                restartLoaders();
-                UpdateActions();
-            } );
+            restartLoaders();
+            UpdateActions();
             return null;
         } );
     }

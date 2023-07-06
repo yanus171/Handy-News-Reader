@@ -76,6 +76,7 @@ import org.json.JSONObject
 import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.Constants.HTTPS_SCHEME
 import ru.yanus171.feedexfork.Constants.HTTP_SCHEME
+import ru.yanus171.feedexfork.MainApplication.getContext
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
@@ -120,7 +121,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             return when (item.itemId) {
                 R.id.menu_edit -> {
-                    EditFilter()
+                    FilterEdit( getContext(), intent.data!!.lastPathSegment!! ).edit( mFiltersCursorAdapter)
                     mode.finish() // Action picked, so close the CAB
                     true
                 }
@@ -169,93 +170,6 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
     private lateinit var mNextPageMaxCount: EditText
     private lateinit var mOneWebPageLayout: LinearLayout
     private lateinit var mIsAutoSetAsRead: CheckBox
-    @SuppressLint("Range")
-    private fun EditFilter() {
-        val c = mFiltersCursorAdapter.cursor
-        if (c.moveToPosition(mFiltersCursorAdapter.selectedFilter)) {
-            val dialogView = layoutInflater.inflate(R.layout.dialog_filter_edit, null)
-            val filterText = dialogView.findViewById<EditText>(R.id.filterText)
-            val regexCheckBox = UiUtils.SetupSmallTextView(dialogView, R.id.regexCheckBox) as CheckBox
-            val acceptRadio = UiUtils.SetupSmallTextView(dialogView, R.id.acceptRadio) as RadioButton
-            val markAsStarredRadio = UiUtils.SetupSmallTextView(dialogView, R.id.markAsStarredRadio) as RadioButton
-            val removeTextRadio = UiUtils.SetupSmallTextView(dialogView, R.id.removeText) as RadioButton
-            val rejectRadio = UiUtils.SetupSmallTextView(dialogView, R.id.rejectRadio) as RadioButton
-            val applyType = dialogView.findViewById<RadioGroup>(R.id.applyTypeRadioGroup)
-            SetupFilterDialog(dialogView, applyType, removeTextRadio)
-            filterText.setText(c.getString(c.getColumnIndex(FilterColumns.FILTER_TEXT)))
-            regexCheckBox.isChecked = c.getInt(c.getColumnIndex(FilterColumns.IS_REGEX)) == 1
-            applyType.check(getAppliedTypeBtnId(c.getInt(c.getColumnIndex(FilterColumns.APPLY_TYPE))))
-            if (c.getInt(c.getColumnIndex(FilterColumns.IS_MARK_STARRED)) == 1) {
-                markAsStarredRadio.isChecked = true
-            } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_REMOVE_TEXT)) == 1) {
-                removeTextRadio.isChecked = true
-            } else if (c.getInt(c.getColumnIndex(FilterColumns.IS_ACCEPT_RULE)) == 1) {
-                acceptRadio.isChecked = true
-            } else {
-                rejectRadio.isChecked = true
-            }
-            val filterId = mFiltersCursorAdapter.getItemId(mFiltersCursorAdapter.selectedFilter)
-            AlertDialog.Builder(this@EditFeedActivity) //
-                    .setTitle(R.string.filter_edit_title) //
-                    .setView(dialogView) //
-                    .setPositiveButton(android.R.string.ok) { dialog, which ->
-                        object : Thread() {
-                            override fun run() {
-                                val filter = filterText.text.toString()
-                                if (!filter.isEmpty()) {
-                                    val cr = contentResolver
-                                    val values = ContentValues()
-                                    values.put(FilterColumns.FILTER_TEXT, filter)
-                                    values.put(FilterColumns.IS_REGEX, regexCheckBox.isChecked)
-                                    values.put(FilterColumns.APPLY_TYPE, getDBAppliedType(applyType.checkedRadioButtonId))
-                                    values.put(FilterColumns.IS_ACCEPT_RULE, acceptRadio.isChecked)
-                                    values.put(FilterColumns.IS_MARK_STARRED, markAsStarredRadio.isChecked)
-                                    values.put(FilterColumns.IS_REMOVE_TEXT, removeTextRadio.isChecked)
-                                    if (cr.update(FilterColumns.CONTENT_URI, values, FilterColumns._ID + '=' + filterId, null) > 0) {
-                                        cr.notifyChange(
-                                                FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(intent.data!!.lastPathSegment),
-                                                null)
-                                    }
-                                }
-                            }
-                        }.start()
-                    }.setNegativeButton(android.R.string.cancel, null).show()
-        }
-    }
-
-    private fun SetupFilterDialog(dialogView: View, applyType: RadioGroup, removeTextRadio: RadioButton): RadioGroup {
-        val actionType = dialogView.findViewById<RadioGroup>(R.id.actionTypeRadioGroup)
-
-        UiUtils.SetupSmallTextView(dialogView, R.id.regexCheckBox)
-        UiUtils.SetupSmallTextView(dialogView, R.id.acceptRadio)
-        UiUtils.SetupSmallTextView(dialogView, R.id.markAsStarredRadio)
-        UiUtils.SetupSmallTextView(dialogView, R.id.removeText)
-        UiUtils.SetupSmallTextView(dialogView, R.id.rejectRadio)
-
-        UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio)
-        UiUtils.SetupSmallTextView(dialogView, R.id.applyTitleRadio)
-        UiUtils.SetupSmallTextView(dialogView, R.id.applyContentRadio)
-        val applyAuthorButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyAuthorRadio) as RadioButton
-        val applyCategoryButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyCategoryRadio) as RadioButton
-        val applyUrlButton = UiUtils.SetupSmallTextView(dialogView, R.id.applyUrlRadio) as RadioButton
-        actionType.setOnCheckedChangeListener { radioGroup, selectedID ->
-            for (i in 0 until applyType.childCount) applyType.getChildAt(i).isEnabled = true
-            if (selectedID == removeTextRadio.id) {
-                applyAuthorButton.isEnabled = false
-                applyCategoryButton.isEnabled = false
-                applyUrlButton.isEnabled = false
-            }
-        }
-        return applyType
-    }
-
-    private fun getAppliedTypeBtnId(DBId: Int): Int {
-        return if (DBId == FilterColumns.DB_APPLIED_TO_CONTENT) R.id.applyContentRadio else if (DBId == FilterColumns.DB_APPLIED_TO_TITLE) R.id.applyTitleRadio else if (DBId == FilterColumns.DB_APPLIED_TO_AUTHOR) R.id.applyAuthorRadio else if (DBId == FilterColumns.DB_APPLIED_TO_CATEGORY) R.id.applyCategoryRadio else if (DBId == FilterColumns.DB_APPLIED_TO_URL) R.id.applyUrlRadio else R.id.applyTitleRadio
-    }
-
-    fun getDBAppliedType(btnID: Int): Int {
-        return if (btnID == R.id.applyContentRadio) FilterColumns.DB_APPLIED_TO_CONTENT else if (btnID == R.id.applyTitleRadio) FilterColumns.DB_APPLIED_TO_TITLE else if (btnID == R.id.applyAuthorRadio) FilterColumns.DB_APPLIED_TO_AUTHOR else if (btnID == R.id.applyCategoryRadio) FilterColumns.DB_APPLIED_TO_CATEGORY else if (btnID == R.id.applyUrlRadio) FilterColumns.DB_APPLIED_TO_URL else FilterColumns.DB_APPLIED_TO_TITLE
-    }
 
     private lateinit var mTabHost: TabHost
     private lateinit var mNameEditText: EditText
@@ -383,7 +297,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
             mFiltersListView.setOnItemClickListener { _, _, position, _ ->
                 mFiltersCursorAdapter.selectedFilter = position
                 mFiltersListView.invalidateViews()
-                EditFilter()
+                FilterEdit( this, intent.data!!.lastPathSegment!! ).edit( mFiltersCursorAdapter)
                 //return true;
             }
             loaderManager.initLoader(0, Bundle(), this)
@@ -657,28 +571,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                 true
             }
             R.id.menu_add_filter -> {
-                val dialogView = layoutInflater.inflate(R.layout.dialog_filter_edit, null)
-                val applyType = dialogView.findViewById<RadioGroup>(R.id.applyTypeRadioGroup)
-                val removeTextRadio = dialogView.findViewById<RadioButton>(R.id.removeText)
-                SetupFilterDialog(dialogView, applyType, removeTextRadio)
-                AlertDialog.Builder(this) //
-                        .setTitle(R.string.filter_add_title) //
-                        .setView(dialogView) //
-                        .setPositiveButton(android.R.string.ok) { dialog, id ->
-                            val filterText = (dialogView.findViewById<View>(R.id.filterText) as EditText).text.toString()
-                            if (filterText.length != 0) {
-                                val feedId = intent.data!!.lastPathSegment
-                                val values = ContentValues()
-                                values.put(FilterColumns.FILTER_TEXT, filterText)
-                                values.put(FilterColumns.IS_REGEX, (dialogView.findViewById<View>(R.id.regexCheckBox) as CheckBox).isChecked)
-                                values.put(FilterColumns.APPLY_TYPE, getDBAppliedType(applyType.checkedRadioButtonId))
-                                values.put(FilterColumns.IS_ACCEPT_RULE, (dialogView.findViewById<View>(R.id.acceptRadio) as RadioButton).isChecked)
-                                values.put(FilterColumns.IS_MARK_STARRED, (dialogView.findViewById<View>(R.id.markAsStarredRadio) as RadioButton).isChecked)
-                                values.put(FilterColumns.IS_REMOVE_TEXT, (dialogView.findViewById<View>(R.id.removeText) as RadioButton).isChecked)
-                                val cr = contentResolver
-                                cr.insert(FilterColumns.FILTERS_FOR_FEED_CONTENT_URI(feedId), values)
-                            }
-                        }.setNegativeButton(android.R.string.cancel) { dialog, id -> }.show()
+                FilterEdit( this, intent.data!!.lastPathSegment!! ).add()
                 true
             }
             R.id.menu_delete_feed -> {

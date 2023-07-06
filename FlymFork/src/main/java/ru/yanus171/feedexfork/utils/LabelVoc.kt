@@ -7,6 +7,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.graphics.Color
 import android.provider.BaseColumns
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -18,8 +19,8 @@ import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.utils.UiUtils.*
-import ru.yanus171.feedexfork.view.EntryView.TAG
 import java.util.*
+import kotlin.collections.ArrayList
 
 public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {
 
@@ -169,10 +170,23 @@ object LabelVoc {
         }
     }
 
+    fun stringToList(s: String ): HashSet<Long> {
+        val result = HashSet<Long>()
+        for( item in TextUtils.split( s, "," ) )
+            if ( get( item.trim().toLong() ) != null )
+                result.add( item.trim().toLong() )
+        return result;
+    }
+    fun listToString(list: HashSet<Long> ): String {
+        val result = ArrayList<String>()
+        for( item in list )
+            result.add( item.toString() )
+        return TextUtils.join( ",", result );
+    }
     fun getLabelIDs(entryID: Long): HashSet<Long> {
         initInThread()
         synchronized(mVoc) {
-            return mEntryVoc.get(entryID) ?: HashSet<Long>()
+            return mEntryVoc[entryID] ?: HashSet<Long>()
         }
     }
 
@@ -282,9 +296,7 @@ object LabelVoc {
                 checkedLabels += ALL_LABELS
             } else
                 checkedLabels -= ALL_LABELS
-            Thread {
-                action(checkedLabels)
-            }.start()
+            action(checkedLabels)
             adapterToNotify?.notifyDataSetChanged()
             dialog.dismiss()
         }

@@ -39,6 +39,23 @@
             android:checked="true"
             android:text="@string/markAsStarred"
             android:textColor="@android:color/holo_blue_dark"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:id="@+id/labelListCaptionTextView"
+                android:text="@string/with_labels"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelListTextView"
+                android:paddingLeft="10dp"
+                android:text="labels"/>
+        </LinearLayout>
 
     </RadioGroup>
 

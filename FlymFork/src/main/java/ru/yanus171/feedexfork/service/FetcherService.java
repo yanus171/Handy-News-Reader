@@ -232,6 +232,7 @@ public class FetcherService extends IntentService {
     //private static volatile Boolean mIsDeletingOld = false;
 
     public static final ArrayList<MarkItem> mMarkAsStarredFoundList = new ArrayList<>();
+    private final HashMap<String, HashSet<Long>> mLinkToLabelList = new HashMap<>();
 
     /* Allow different positions of the "rel" attribute w.r.t. the "href" attribute */
     public static final Pattern FEED_LINK_PATTERN = Pattern.compile(
@@ -466,10 +467,16 @@ public class FetcherService extends IntentService {
                         if ( newCount > 0 )
                             EntryUrlVoc.INSTANCE.reinit( false );
                     } finally {
+                        for (MarkItem item : mMarkAsStarredFoundList) {
+                            Long entryID = EntryUrlVoc.INSTANCE.get(item.mLink);
+                            if ( entryID != null )
+                                LabelVoc.INSTANCE.setEntry(entryID, item.mLabelIDList);
+                        }
                         if (mMarkAsStarredFoundList.size() > 5) {
                             ArrayList<String> list = new ArrayList<>();
                             for (MarkItem item : mMarkAsStarredFoundList)
                                 list.add(item.mCaption);
+
                             ShowEventNotification(TextUtils.join(", ", list),
                                                   R.string.markedAsStarred,
                                                   new Intent(getContext(), HomeActivity.class),

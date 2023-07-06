@@ -44,13 +44,16 @@
 
 package ru.yanus171.feedexfork.parser;
 
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
+import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.unescapeTitle;
+
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
-import android.text.Html;
 import android.text.TextUtils;
 
 import org.xml.sax.Attributes;
@@ -64,32 +67,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
-import ru.yanus171.feedexfork.service.MarkItem;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.EntryUrlVoc;
-import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
-import ru.yanus171.feedexfork.utils.NetworkUtils;
-
-import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
-import static ru.yanus171.feedexfork.Constants.DB_OR;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
-import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
-import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.unescapeTitle;
 
 public class RssAtomParser extends DefaultHandler {
     private static final String HTML_TEXT = "text/html";
@@ -676,7 +666,6 @@ public class RssAtomParser extends DefaultHandler {
         ContentResolver cr = MainApplication.getContext().getContentResolver();
 
         try {
-            HashSet<Long> entriesId = new HashSet<>();
             if (!mInserts.isEmpty()) {
                 ContentProviderResult[] results = cr.applyBatch(FeedData.AUTHORITY, mInserts);
                 if (mFetchImages) {
@@ -686,16 +675,6 @@ public class RssAtomParser extends DefaultHandler {
                             FetcherService.addImagesToDownload(results[i].uri.getLastPathSegment(), images);
                         }
                     }
-                }
-
-                if (mRetrieveFullText) {
-                    //long[] entriesId = new long[results.length];
-                    for (int i = 0; i < results.length; i++) {
-                        //entriesId[i] = Long.valueOf(results[i].uri.getLastPathSegment());
-                        entriesId.add(Long.valueOf(results[i].uri.getLastPathSegment()) );
-                    }
-
-
                 }
             }
             if (mRetrieveFullText)

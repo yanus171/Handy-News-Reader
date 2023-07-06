@@ -729,5 +729,7 @@
     <string name="performance">Performance</string>
     <string name="settings_autobackup_toast">Toast</string>
     <string name="settings_autobackup_toast_descr">Show toast message when backup file successfully was copied to Downloads</string>
+    <string name="with_labels">with labels:</string>
+    <string name="none">none</string>
 
 </resources>
