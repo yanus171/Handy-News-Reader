@@ -697,4 +697,7 @@
     <string name="edit_feed_title_external">Modifica</string>
     <string name="filter_hint_external">Gli elementi di questo filtro globale vengono aggiunti ad ogni feed. Escludere certi elementi del filtro globale li toglie dai risultati della ricerca web. Questa schermata è accessibile con un tap prolungato su Tutti, Non Letti, Preferiti, Ultimi letti nella lista del feed) </string>
     <string name="unknown">Sconosciuto</string>
+    <string name="tableOfContent">Tabella dei contenuti</string>
+    <string name="performance">Prestazioni</string>
+    <string name="settings_autobackup_toast">Avviso</string>
 </resources>

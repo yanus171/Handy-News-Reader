@@ -698,4 +698,7 @@
     <string name="brightness_programmatic_dim_max_descr">Максимальний додатковий рівень затемнення яскравості (0-без додаткового затемнення, 100-повна темрява)</string>
     <string name="edit_feed_title_external">Редагувати</string>
     <string name="unknown">Невідомо</string>
+    <string name="tableOfContent">Зміст</string>
+    <string name="show_notification_setup_summary">Показувати системний діалог для сповіщень застосунку</string>
+    <string name="performance">Продуктивність</string>
 </resources>
