@@ -469,7 +469,7 @@ public class FetcherService extends IntentService {
                     } finally {
                         for (MarkItem item : mMarkAsStarredFoundList) {
                             Long entryID = EntryUrlVoc.INSTANCE.get(item.mLink);
-                            if ( entryID != null )
+                            if ( entryID != null && !item.mLabelIDList.isEmpty() )
                                 LabelVoc.INSTANCE.setEntry(entryID, item.mLabelIDList);
                         }
                         if (mMarkAsStarredFoundList.size() > 5) {
