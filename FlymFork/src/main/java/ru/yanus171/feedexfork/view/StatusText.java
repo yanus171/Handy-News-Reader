@@ -34,7 +34,6 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
-import static ru.yanus171.feedexfork.utils.Theme.TEXT_COLOR_READ;
 
 /**
  * Created by Admin on 03.06.2016.
@@ -46,6 +45,7 @@ public class StatusText implements Observer {
     private static final String DELIMITER = " ";
     private static int PendingIntentRequestCode = 0;
     private final TextView mProgressText;
+    static private Date mLastClearStatusTime = null;
     private String mFeedID = "";
     private String mEntryID = "";
     private TextView mView;
@@ -71,6 +71,7 @@ public class StatusText implements Observer {
             FetcherObservable status = (FetcherObservable)observable;
             status.Clear();
             v.setVisibility(View.GONE);
+            mLastClearStatusTime = new Date();
         });
         mView.setLines( 2 );
         UiUtils.SetSmallFont( mView );
@@ -78,23 +79,17 @@ public class StatusText implements Observer {
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.START | Gravity.TOP);
         mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
-        mErrorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mErrorView.setOnClickListener(v -> {
             FetcherObservable status = (FetcherObservable)observable;
             status.ClearError();
             v.setVisibility(View.GONE);
-            }
         });
         UiUtils.SetSmallFont( mErrorView );
 
         mProgressBar = progressBar;
-        mProgressBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FetcherObservable status = (FetcherObservable)observable;
-                status.ToggleProgressTextVisibility();
-            }
+        mProgressBar.setOnClickListener(v -> {
+            FetcherObservable status = (FetcherObservable)observable;
+            status.ToggleProgressTextVisibility();
         });
 
         mProgressText = progressText;
@@ -132,8 +127,10 @@ public class StatusText implements Observer {
             errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
         final boolean showProgress = PrefUtils.getBoolean( "settings_show_circle_progress", true ) && Boolean.valueOf( list[4] );
         final String progressText = list[5];
-
-        if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ) || text.trim().isEmpty() )
+        final long CLEAR_STATUS_PERIOD = 1000 * 60;
+        if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false )
+            || text.trim().isEmpty()
+            || ( mLastClearStatusTime != null && new Date().getTime() - mLastClearStatusTime.getTime() < CLEAR_STATUS_PERIOD ) )
             mView.setVisibility(View.GONE);
         else {
             mView.setText(text);
@@ -171,9 +168,7 @@ public class StatusText implements Observer {
         }
 
         public void UpdateText() {
-            UiUtils.RunOnGuiThread(new Runnable() {
-                @Override
-                public void run() {
+            UiUtils.RunOnGuiThread(() -> {
                 synchronized ( mList ) {
                     ArrayList<String> s = new ArrayList<>();
                     for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )
@@ -206,7 +201,6 @@ public class StatusText implements Observer {
                     Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
 
 
-                }
                 }
             });
         }
