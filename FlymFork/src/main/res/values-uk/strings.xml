@@ -701,4 +701,6 @@
     <string name="tableOfContent">Зміст</string>
     <string name="show_notification_setup_summary">Показувати системний діалог для сповіщень застосунку</string>
     <string name="performance">Продуктивність</string>
+    <string name="with_labels">з мітками:</string>
+    <string name="none">немає</string>
 </resources>
