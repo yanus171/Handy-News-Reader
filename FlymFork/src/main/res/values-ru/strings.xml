@@ -707,4 +707,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="tableOfContent">Содержание</string>
     <string name="show_notification_setup_summary">Показывать системный диалог уведомлений</string>
     <string name="performance">Производительность</string>
+    <string name="settings_autobackup_toast">Всплывающее оповещение</string>
+    <string name="settings_autobackup_toast_descr">Показывать всплывающее оповещение, после успешного копирования резервной копии в Загрузки</string>
+    <string name="with_labels">с метками:</string>
+    <string name="none">нет</string>
 </resources>
