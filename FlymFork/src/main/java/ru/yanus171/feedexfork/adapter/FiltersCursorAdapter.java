@@ -72,10 +72,12 @@ public class FiltersCursorAdapter extends ResourceCursorAdapter {
         if (isMarkAsStarred) {
             isAcceptRuleTextView.setText(R.string.markAsStarred);
             isAcceptRuleTextView.setTextColor( context.getResources().getColor(android.R.color.holo_blue_dark) );
-            final HashSet<Long> labelIDList = LabelVoc.INSTANCE.stringToList( cursor.getString(mLabelIDListPosition) );
-            if ( !labelIDList.isEmpty() ) {
-                labelListTextView.setVisibility(View.VISIBLE);
-                labelListTextView.setText(Html.fromHtml(view.getContext().getString(R.string.with_labels) + " " + LabelVoc.INSTANCE.getStringList(labelIDList)));
+            if ( !cursor.isNull(mLabelIDListPosition) ) {
+                final HashSet<Long> labelIDList = LabelVoc.INSTANCE.stringToList(cursor.getString(mLabelIDListPosition));
+                if (!labelIDList.isEmpty()) {
+                    labelListTextView.setVisibility(View.VISIBLE);
+                    labelListTextView.setText(Html.fromHtml(view.getContext().getString(R.string.with_labels) + " " + LabelVoc.INSTANCE.getStringList(labelIDList)));
+                }
             }
         } else if (isAcceptRule) {
             isAcceptRuleTextView.setText(R.string.accept);
