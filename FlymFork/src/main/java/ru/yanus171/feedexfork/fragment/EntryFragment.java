@@ -1425,9 +1425,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         // since we have acquired the networkInfo, we use it for basic checks
         if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
             GetSelectedEntryView().InvalidateContentCache();
-            //FetcherService.addEntriesToMobilize(new Long[]{mEntriesIds[mCurrentPagerPos]});
-            //activity.startService(new Intent(activity, FetcherService.class)
-            //                      .setAction(FetcherService.ACTION_MOBILIZE_FEEDS));
             new Thread() {
                 @Override
                 public void run() {
@@ -1439,7 +1436,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                                       true,
                                                       true,
                                                       isForceReload,
-                                                      true,
                                                       withScripts );
                     } finally { FetcherService.Status().End( status ); }
                 }

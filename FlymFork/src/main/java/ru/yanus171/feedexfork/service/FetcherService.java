@@ -70,6 +70,7 @@ import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.DATE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FEED_ID;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
@@ -282,7 +283,7 @@ public class FetcherService extends IntentService {
 
         ArrayList<Long> entriesId = new ArrayList<>();
         Cursor c = cr.query(uri, new String[]{EntryColumns._ID, EntryColumns.LINK, MOBILIZED_HTML},
-                            MOBILIZED_HTML + DB_IS_NULL + DB_OR + MOBILIZED_HTML + " = '" + FileUtils.EMPTY_MOBILIZED_VALUE + "'", null, EntryColumns.DATE + Constants.DB_DESC);
+                            MOBILIZED_HTML + DB_IS_NULL + DB_OR + MOBILIZED_HTML + " = '" + FileUtils.EMPTY_MOBILIZED_VALUE + "'", null, DATE + Constants.DB_DESC);
         while (c.moveToNext()) {
             if (!FileUtils.INSTANCE.isMobilized( c.getString(1), c, 2, 0 ))
                 entriesId.add(c.getLong(0));
@@ -435,7 +436,6 @@ public class FetcherService extends IntentService {
                              true,
                              intent.getBooleanExtra(EXTRA_STAR, false),
                              AutoDownloadEntryImages.Yes,
-                             false,
                              true,
                                                         true);
                     if ( intent.hasExtra( EXTRA_LABEL_ID_LIST ) && intent.getStringArrayListExtra( EXTRA_LABEL_ID_LIST ) != null && result.first != null ) {
@@ -740,7 +740,7 @@ public class FetcherService extends IntentService {
                                     if (curEntry.moveToFirst()) {
                                         final String feedID = curEntry.getString(0);
                                         FeedFilters filters = new FeedFilters(feedID);
-                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false, false)) {
+                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
                                             ContentResolver cr = contentResolver();
                                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                                             result.mResultCount = 1;
@@ -895,6 +895,19 @@ public class FetcherService extends IntentService {
         content = content.replaceFirst( TC_START, "<div class=\"toc\">" + tc + "</div>" );
         return content;
     }
+    static boolean isOptionsAttrOn(Cursor entryCursor, String attrName) {
+        boolean result = false;
+        final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
+        final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
+        if (!jsonText.isEmpty())
+            try {
+                JSONObject jsonOptions = new JSONObject(jsonText);
+                result = jsonOptions.has(attrName) && jsonOptions.getBoolean(attrName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return result;
+    }
     @SuppressLint("Range")
     public static boolean mobilizeEntry(final long entryId,
                                         FeedFilters filters,
@@ -903,20 +916,20 @@ public class FetcherService extends IntentService {
                                         final boolean isCorrectTitle,
                                         final boolean isShowError,
                                         final boolean isForceReload,
-                                        boolean isParseDateFromHTML,
                                         final boolean withScripts ) {
         boolean success = false;
         ClearContentStepToFile();
         ContentResolver cr = contentResolver();
         Uri entryUri = EntryColumns.CONTENT_URI(entryId);
-        long feedId = -1;
+        String feedId = "";
         try ( Cursor entryCursor = cr.query(entryUri, null, null, null, null) ) {
 
             if (entryCursor.moveToFirst()) {
                 int linkPos = entryCursor.getColumnIndex(LINK);
                 String link = entryCursor.getString(linkPos);
                 try {
-                    feedId = entryCursor.getLong(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+                    feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+
                     if (IsLocalFile(Uri.parse(link)))
                         return loadFB2LocalFile(entryId, link);
                     String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
@@ -970,7 +983,6 @@ public class FetcherService extends IntentService {
                                 connection.disconnect();
                         }
 
-
                         ClearContentStepToFile();
                         SaveContentStepToFile(doc, "Jsoup.parse.connection.getInputStream");
                         final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
@@ -982,23 +994,9 @@ public class FetcherService extends IntentService {
                                 title = titleEls.first().text();
                         }
 
-                        String dateText = "";
-                        if (isParseDateFromHTML) {
-                            Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
-                            if (element != null) {
-                                for (Element el : element.getAllElements())
-                                    if (el.hasText())
-                                        dateText += el.ownText() + " ";
-                                dateText = dateText.trim();
-                            } else {
-                                try {
-                                    dateText = doc.getElementsByTag("time").first().attr("datetime");
-                                } catch (Exception ignored) {
+                        ContentValues values = new ContentValues();
 
-                                }
-                            }
-                        }
-                        Dog.v("date = " + dateText);
+                        setDate(entryId, feedId, entryCursor, link, doc, values);
 
                         ArrayList<String> categoryList = new ArrayList<>();
                         String mobilizedHtml = ArticleTextExtractor.extractContent(doc,
@@ -1007,12 +1005,11 @@ public class FetcherService extends IntentService {
                                                                                    filters,
                                                                                    mobilize,
                                                                                    categoryList,
-                                                                                   !String.valueOf(feedId).equals(GetExtrenalLinkFeedID()),
+                                                                                   !feedId.equals(GetExtrenalLinkFeedID()),
                                                                                    entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
                                                                                    withScripts);
                         Status().ChangeProgress("");
 
-                        ContentValues values = new ContentValues();
                         if (mobilizedHtml != null) {
                             if (title.isEmpty())
                                 title = extractTitle(mobilizedHtml);
@@ -1021,38 +1018,14 @@ public class FetcherService extends IntentService {
                                 values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));
                             else
                                 values.putNull(EntryColumns.CATEGORIES);
-                            if (!dateText.isEmpty()) {
-                                final String format = ArticleTextExtractor.getDataForUrlFromPref(link, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""));
-                                Date date = null;
-                                if (!format.isEmpty()) {
-                                    try {
-                                        date = new SimpleDateFormat(format, Locale.getDefault()).parse(dateText);
-                                    } catch (ParseException e) {
-                                        Status().SetError(format, String.valueOf(feedId), String.valueOf(entryId), e);
-                                    }
-                                } else
-                                    date = parseDate( dateText, 0 );
-                                if (date != null)
-                                    values.put(EntryColumns.DATE, date.getTime());
-                            }
+
                         }
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
-                        {
-                            boolean isOneWebPage = false;
-                            final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
-                            final String jsonText = entryCursor.isNull(optionsCol) ? "" : entryCursor.getString(optionsCol);
-                            if (!jsonText.isEmpty())
-                                try {
-                                    JSONObject jsonOptions = new JSONObject(jsonText);
-                                    isOneWebPage = jsonOptions.has(IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(IS_ONE_WEB_PAGE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
 
-                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                            if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOneWebPage)
-                                values.put(EntryColumns.TITLE, title);
-                        }
+                        final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                        if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOptionsAttrOn(entryCursor, IS_ONE_WEB_PAGE) )
+                            values.put(EntryColumns.TITLE, title);
+
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
                             HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
@@ -1082,7 +1055,7 @@ public class FetcherService extends IntentService {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (isShowError && feedId != -1 ) {
+                    if (isShowError && !feedId.isEmpty() ) {
                         String title = "";
                         Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
                         if (cursor.moveToFirst() && cursor.isNull(0))
@@ -1094,6 +1067,40 @@ public class FetcherService extends IntentService {
             }
         }
         return success;
+    }
+
+    private static void setDate(long entryId, String feedId, Cursor entryCursor, String link, Document doc, ContentValues values) {
+        String dateText = "";
+        if ( isOptionsAttrOn(entryCursor, IS_RSS) || feedId.equals(GetExtrenalLinkFeedID()) )
+            return;
+        Element element = ArticleTextExtractor.getDateElementFromPref(doc, link);
+        if (element != null) {
+            for (Element el : element.getAllElements())
+                if (el.hasText())
+                    dateText += el.ownText() + " ";
+            dateText = dateText.trim();
+        } else {
+            try {
+                dateText = doc.getElementsByTag("time").first().attr("datetime");
+            } catch (Exception ignored) {
+
+            }
+        }
+        if ( dateText.isEmpty() )
+            return;
+        Date date = null;
+        final String format = ArticleTextExtractor.getDataForUrlFromPref(link, PrefUtils.getString(PrefUtils.DATE_EXTRACT_RULES, ""));
+        if (!format.isEmpty()) {
+            try {
+                date = new SimpleDateFormat(format, Locale.getDefault()).parse(dateText);
+            } catch (ParseException e) {
+                Status().SetError(format, String.valueOf(feedId), String.valueOf(entryId), e);
+            }
+        } else
+            date = parseDate(dateText, 0);
+        if (date != null)
+            values.put(DATE, date.getTime());
+        Dog.v("date = " + dateText);
     }
 
     public static boolean isLinkToLoad( String link ) {
@@ -1174,7 +1181,6 @@ public class FetcherService extends IntentService {
                                              final boolean isShowError,
                                              final boolean isStarred,
                                              AutoDownloadEntryImages autoDownloadEntryImages,
-                                             boolean isParseDateFromHTML,
                                              boolean isLoadingLinkStatus,
                                              boolean setReadDate ) {
         boolean load;
@@ -1188,7 +1194,7 @@ public class FetcherService extends IntentService {
                 load = (forceReload == ForceReload.Yes);
                 if (load) {
                     ContentValues values = new ContentValues();
-                    values.put(EntryColumns.DATE, (new Date()).getTime());
+                    values.put(DATE, (new Date()).getTime());
                     if ( setReadDate )
                         values.put(EntryColumns.READ_DATE, (new Date()).getTime());
                     cr.update(entryUri, values, null, null);//operations.add(ContentProviderOperation.newUpdate(entryUri).withValues(values).build());
@@ -1202,7 +1208,7 @@ public class FetcherService extends IntentService {
                 //values.put(EntryColumns.IMAGE_URL, NULL);
                 //values.put(EntryColumns.AUTHOR, NULL);
                 //values.put(EntryColumns.ENCLOSURE, NULL);
-                values.put(EntryColumns.DATE, (new Date()).getTime());
+                values.put(DATE, (new Date()).getTime());
                 if ( setReadDate )
                     values.put(EntryColumns.READ_DATE, (new Date()).getTime());
                 values.put(LINK, url);
@@ -1222,7 +1228,7 @@ public class FetcherService extends IntentService {
 
             if ( load && !FetcherService.isCancelRefresh() ) {
                 final long entryId = Long.parseLong(entryUri.getLastPathSegment());
-                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, isParseDateFromHTML, false);
+                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, false);
             }
             return new Pair<>(entryUri, load);
         } finally {
@@ -1469,7 +1475,7 @@ public class FetcherService extends IntentService {
                     final boolean isDeleteRead = PrefUtils.getBoolean("delete_read_articles", false);
                     if (keepDateBorderTime > 0 || isDeleteRead) {
                         final String deleteRead = isDeleteRead ? DB_OR + WHERE_READ : "";
-                        String where = "(" + EntryColumns.DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
+                        String where = "(" + DATE + '<' + keepDateBorderTime + deleteRead + ")" + DB_AND + WHERE_NOT_FAVORITE;
                         // Delete the entries, the cache files will be deleted by the content provider
                         cr.delete(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), where, null);
                     }
