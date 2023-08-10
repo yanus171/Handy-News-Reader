@@ -240,7 +240,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         isLayoutVisible = SetupHeaderLabel(mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible);
         isLayoutVisible = SetupHeaderLabel(mLabelBattery, GetBatteryText(), "article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
         isLayoutVisible = SetupHeaderLabel(mLabelDate, GetDateText(), "article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
-        isLayoutVisible = SetupHeaderLabel(mLabelRemaining, GetRemainingText( progress, max, step ), "article_text_footer_show_remaining", isStatusBarHidden, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel(mLabelRemaining, GetRemainingText( progress, max, step ), "article_text_footer_show_remaining", true, isLayoutVisible);
         mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
         {
             final int color = !isToolBarHidden ? Theme.GetToolBarColorInt() :Color.TRANSPARENT;
@@ -255,8 +255,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean isStatusBarHidden, boolean isLayoutVisible) {
-        if ( PrefUtils.getBoolean(key, true ) && isStatusBarHidden ) {
+    private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean show, boolean isLayoutVisible) {
+        if ( PrefUtils.getBoolean(key, true ) && show ) {
             isLayoutVisible = true;
             textView.setVisibility( View.VISIBLE );
             textView.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
