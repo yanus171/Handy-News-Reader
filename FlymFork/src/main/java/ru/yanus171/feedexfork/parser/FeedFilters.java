@@ -138,7 +138,7 @@ public class FeedFilters {
         int mApplyType;
         boolean isAcceptRule;
         boolean isMarkAsStarred = false;
-        public HashSet<Long> labelIDList;
+        public HashSet<Long> labelIDList = new HashSet<>();
         boolean isRemoveText = false;
 
         boolean isMatch(String title, String author, String url, String content, String categories) {
