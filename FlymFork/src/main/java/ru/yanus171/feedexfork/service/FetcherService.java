@@ -1094,7 +1094,7 @@ public class FetcherService extends IntentService {
             try {
                 date = new SimpleDateFormat(format, Locale.getDefault()).parse(dateText);
             } catch (ParseException e) {
-                Status().SetError(format, String.valueOf(feedId), String.valueOf(entryId), e);
+                Status().SetError(format, feedId, String.valueOf(entryId), e);
             }
         } else
             date = parseDate(dateText, 0);
@@ -1235,15 +1235,6 @@ public class FetcherService extends IntentService {
             FetcherService.Status().End(status);
         }
         //stopForeground( true );
-    }
-
-    private static void downloadAllImages() {
-        ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount());
-        try {
-            downloadAllImages(executor);
-        } finally {
-            executor.shutdown();
-        }
     }
 
     private static String mExtrenalLinkFeedID = "";

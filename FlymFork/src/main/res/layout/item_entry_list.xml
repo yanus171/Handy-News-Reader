@@ -9,7 +9,18 @@
     android:paddingEnd="5dp"
     android:paddingRight="5dp"
     android:paddingBottom="0dp">
-
+    <TextView
+        android:id="@+id/textDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="Day"
+        android:textColor="@color/dark_theme_color_unread"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textIsSelectable="false" />
     <FrameLayout
         android:id="@+id/entry_list_layout_root"
         android:layout_width="match_parent"

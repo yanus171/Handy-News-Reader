@@ -45,6 +45,41 @@
 
 package ru.yanus171.feedexfork.adapter;
 
+import static android.view.View.TEXT_DIRECTION_ANY_RTL;
+import static android.view.View.TEXT_DIRECTION_RTL;
+import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
+import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
+import static ru.yanus171.feedexfork.utils.PrefUtils.IsShowArticleBigImagesEnabled;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.StringUtils.DATE_FORMAT;
+import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
+import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
+import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
+import static ru.yanus171.feedexfork.view.EntryView.getAlign;
+import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
+import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -101,6 +136,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -126,40 +162,6 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.MenuItem;
-
-import static android.view.View.TEXT_DIRECTION_ANY_RTL;
-import static android.view.View.TEXT_DIRECTION_RTL;
-import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
-import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
-import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
-import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHeaders;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
-import static ru.yanus171.feedexfork.utils.PrefUtils.IsShowArticleBigImagesEnabled;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
-import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.NEW_ARTICLE_INDICATOR_RES_ID;
-import static ru.yanus171.feedexfork.utils.Theme.STARRED_ARTICLE_INDICATOR_RES_ID;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
-import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
-import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
-import static ru.yanus171.feedexfork.view.EntryView.getAlign;
-import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
-import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -270,6 +272,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             } else {
                 holder.dateTextView = SetupSmallTextView(view, android.R.id.text2);
             }
+            holder.dayTextView = SetupTextView(view, R.id.textDay);
+            holder.dayTextView.setTextColor(Theme.GetTextColorReadInt());
             holder.authorTextView = SetupSmallTextView(view, R.id.textAuthor);
             holder.imageSizeTextView = SetupSmallTextView(view, R.id.imageSize);
             holder.mainImgView = view.findViewById(R.id.main_icon);
@@ -528,6 +532,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
             });
         }
+
 
         final ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
         holder.entryID = cursor.getLong(mIdPos);
@@ -806,6 +811,23 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
             }
         }
+
+        holder.dayTextView.setVisibility( View.GONE );
+        if ( !cursor.isFirst() ) {
+            cursor.moveToPrevious();
+            if ( !cursor.isNull( mDatePos ) ) {
+                Calendar prevDate = Calendar.getInstance();
+                prevDate.setTimeInMillis(cursor.getLong(mDatePos));
+                if ( date.get(Calendar.DATE) != prevDate.get(Calendar.DATE) ) {
+                    holder.dayTextView.setVisibility( View.VISIBLE );
+                    holder.dayTextView.setText( DATE_FORMAT.format( new Date(date.getTimeInMillis()) ) );
+                }
+            }
+            cursor.moveToNext();
+
+        }
+
+
     }
 
     static private void setupImageViewClick(ImageView view, String feedTitle, String mainImgUrl) {
@@ -1403,6 +1425,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         TextView showMore;
         View collapseBtnBottom;
         TextView bottomEmptyPage;
+        TextView dayTextView;
         boolean isRead;
         boolean isFavorite;
 
