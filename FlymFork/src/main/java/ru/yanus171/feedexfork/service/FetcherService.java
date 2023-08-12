@@ -1595,7 +1595,7 @@ public class FetcherService extends IntentService {
 
 
     private static void ShowEventNotification(String text, int captionID, Intent intent, int ID, PendingIntent cancelPI){
-        if ( Build.VERSION.SDK_INT < 26 || !PrefUtils.getBoolean(NOTIFICATIONS_ENABLED, true) )
+        if ( Build.VERSION.SDK_INT < 26 && !PrefUtils.getBoolean(NOTIFICATIONS_ENABLED, true) )
             return;
         PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
