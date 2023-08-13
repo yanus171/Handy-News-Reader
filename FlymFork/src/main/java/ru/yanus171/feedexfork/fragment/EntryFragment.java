@@ -1433,7 +1433,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                                       mFilters,
                                                       mobilize,
                                                       FetcherService.AutoDownloadEntryImages.Yes,
-                                                      true,
+                                                      false,
                                                       true,
                                                       isForceReload,
                                                       withScripts );

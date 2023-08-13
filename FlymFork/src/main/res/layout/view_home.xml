@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
+            android:visibility="gone"
             android:src="@drawable/ic_done_all_white_24dp" />
 
         <include layout="@layout/dim_frame" />

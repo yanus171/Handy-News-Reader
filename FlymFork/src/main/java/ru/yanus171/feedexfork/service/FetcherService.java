@@ -433,7 +433,6 @@ public class FetcherService extends IntentService {
                              null,
                              ForceReload.No,
                              true,
-                             true,
                              intent.getBooleanExtra(EXTRA_STAR, false),
                              AutoDownloadEntryImages.Yes,
                              true,
@@ -986,7 +985,7 @@ public class FetcherService extends IntentService {
                         ClearContentStepToFile();
                         SaveContentStepToFile(doc, "Jsoup.parse.connection.getInputStream");
                         final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
-                        String title = entryCursor.isNull(titleCol) ? null : entryCursor.getString(titleCol);
+                        String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
                         //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
                         if (isCorrectTitle) {
                             Elements titleEls = doc.getElementsByTag("title");
@@ -1011,7 +1010,7 @@ public class FetcherService extends IntentService {
                         Status().ChangeProgress("");
 
                         if (mobilizedHtml != null) {
-                            if (title.isEmpty())
+                            if (isCorrectTitle && title.isEmpty())
                                 title = extractTitle(mobilizedHtml);
 
                             if (!categoryList.isEmpty())
@@ -1022,10 +1021,13 @@ public class FetcherService extends IntentService {
                         }
                         FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
 
-                        final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                        if (entryCursor.isNull(titleCol) || (entryCursor.isNull(favCol) || entryCursor.getInt(favCol) == 0) && !isOptionsAttrOn(entryCursor, IS_ONE_WEB_PAGE) )
-                            values.put(EntryColumns.TITLE, title);
-
+                        {
+                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                            final boolean isFavorite = !entryCursor.isNull(favCol) && entryCursor.getInt(favCol) == 1;
+                            if ( !title.isEmpty() &&
+                                ( entryCursor.isNull(titleCol) || isCorrectTitle || ( !isFavorite && !isOptionsAttrOn(entryCursor, IS_ONE_WEB_PAGE) ) ) )
+                                values.put(EntryColumns.TITLE, title);
+                        }
                         ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                         if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
                             HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
@@ -1177,7 +1179,6 @@ public class FetcherService extends IntentService {
                                              final String title,
                                              FeedFilters filters,
                                              final ForceReload forceReload,
-                                             final boolean isCorrectTitle,
                                              final boolean isShowError,
                                              final boolean isStarred,
                                              AutoDownloadEntryImages autoDownloadEntryImages,
@@ -1228,7 +1229,7 @@ public class FetcherService extends IntentService {
 
             if ( load && !FetcherService.isCancelRefresh() ) {
                 final long entryId = Long.parseLong(entryUri.getLastPathSegment());
-                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, isCorrectTitle, isShowError, false, false);
+                mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, true, isShowError, false, false);
             }
             return new Pair<>(entryUri, load);
         } finally {
