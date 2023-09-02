@@ -1682,14 +1682,25 @@ public class FetcherService extends IntentService {
     @NotNull
     private static String CleanRSS(String content) {
         content = content.replace(" & ", " &amp; ");
-        content = content.replaceAll( "<[a-z]+?:", "<" );
-        content = content.replaceAll( "</[a-z]+?:", "</" );
-        content = content.replace( "&mdash;", "-" );
-        content = content.replace( "&ndash;", "-" );
+        content = content.replaceAll("<[a-z]+?:", "<");
+        content = content.replaceAll("</[a-z]+?:", "</");
+        content = content.replace("&mdash;", "-");
+        content = content.replace("&ndash;", "-");
         content = content.replace((char) 0x1F, ' ');
         content = content.replace((char) 0x02, ' ');
-        content = content.replace(String.valueOf((char)0x00), "");
-        return content;
+        content = content.replace(String.valueOf((char) 0x00), "");
+        { // remove duplicate attrs
+            Matcher matcher = Pattern.compile("xmlns:media=\"[^\"]+\"").matcher(content);
+            int count = 0;
+            while (matcher.find()) {
+                count++;
+                if ( count > 1 ) {
+                    content = matcher.replaceFirst("");
+                    break;
+                }
+            }
+            return content;
+        }
     }
 
     private static ContentResolver contentResolver() {
