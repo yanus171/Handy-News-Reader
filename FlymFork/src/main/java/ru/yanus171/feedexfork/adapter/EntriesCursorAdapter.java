@@ -590,7 +590,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             //int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
             if ( showBigImage && mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
                 holder.mainBigImgView.setVisibility( View.VISIBLE );
-                setupImageViewClick(holder.mainBigImgView, feedTitle, mainImgUrl);
+                //setupImageViewClick(holder.mainBigImgView, feedTitle, mainImgUrl);
                 Glide.with(context).load(mainImgUrl)
                     .fitCenter()
                     .addListener(new RequestListener<Drawable>() {

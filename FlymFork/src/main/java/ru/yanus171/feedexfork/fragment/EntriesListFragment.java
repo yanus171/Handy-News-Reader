@@ -19,6 +19,39 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import static android.provider.BaseColumns._ID;
+import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_ASC;
+import static ru.yanus171.feedexfork.Constants.DB_DESC;
+import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
+import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.DATE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
+import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
+import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
@@ -32,7 +65,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -72,6 +104,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
@@ -99,43 +132,13 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
-
-import static ru.yanus171.feedexfork.Constants.DB_AND;
-import static ru.yanus171.feedexfork.Constants.DB_ASC;
-import static ru.yanus171.feedexfork.Constants.DB_DESC;
-import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
-import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
-import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
-import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
-import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
     public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
@@ -216,7 +219,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
                 final String where = GetWhereSQL();
-                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: EntryColumns.DATE;
+                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: DATE;
                 CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, orderField + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
@@ -274,11 +277,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public String GetWhereSQL() {
         String labelSQL = "";
         if ( mLabelsID.contains( ALL_LABELS ) )
-            labelSQL = DB_AND + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
+            labelSQL = DB_AND + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
         else if ( !mLabelsID.isEmpty() ) {
             ArrayList<String> listCondition = new ArrayList<>();
             for( Long item: mLabelsID )
-                listCondition.add( "(" + EntryColumns._ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
+                listCondition.add( "(" + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
                     " WHERE " + EntryLabelColumns.LABEL_ID + " = " + item + "))" );
             labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
         }
@@ -766,8 +769,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     }
                     starredList.append( "\n" + getContext().getString( R.string.withoutLabel ) + ": \n" );
                     starredList.append( "----------------------------------------\n" );
-                    try ( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns._ID, EntryColumns.TITLE, EntryColumns.LINK}, null, null,
-                                                                                  EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ){
+                    try ( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, null, null,
+                                                                                  DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ){
                         AddAtricleLinks(cursor, starredList, null, labeledArticlesID );
                     }
 
@@ -1053,16 +1056,25 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
     private void AddAtricleLinks(StringBuilder starredList, HashSet<Long> articlesID) {
-        try( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{EntryColumns._ID, EntryColumns.TITLE, EntryColumns.LINK}, GetWhereSQL(), null,
-                                                                EntryColumns.DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ) {
+        try( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, GetWhereSQL(), null,
+                                                                     DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ) {
             AddAtricleLinks(cursor, starredList, articlesID, null );
         }
     }
     private void AddAtricleLinks(Cursor cursor, StringBuilder starredList, HashSet<Long> articlesID, HashSet<Long> articlesToIgnoreID) {
-        int titlePos = cursor.getColumnIndex(EntryColumns.TITLE);
-        int linkPos = cursor.getColumnIndex(EntryColumns.LINK);
-        int idPos = cursor.getColumnIndex(EntryColumns._ID);
+        int titlePos = cursor.getColumnIndex(TITLE);
+        int linkPos = cursor.getColumnIndex(LINK);
+        int idPos = cursor.getColumnIndex(_ID);
+        int datePos = cursor.getColumnIndex(DATE);
+        int lastDay = -1;
         while (cursor.moveToNext()) {
+            if ( !cursor.isNull( datePos ) ) {
+                Calendar date = Calendar.getInstance();
+                date.setTimeInMillis(cursor.getLong(datePos));
+                if (date.get(Calendar.DATE) != lastDay)
+                    starredList.append(StringUtils.getDateTimeString(cursor.getLong(datePos))).append(":\n\n");
+                lastDay = date.get(Calendar.DATE);
+            }
             starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
             final long id = cursor.getLong(idPos);
             if (articlesID != null && (articlesToIgnoreID == null || articlesToIgnoreID.contains( id )) )
@@ -1098,7 +1110,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                     ids.add(mJustMarkedAsReadEntries.getInt(0));
                                 }
                                 ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
+                                String where = _ID + " IN (" + TextUtils.join(",", ids) + ')';
                                 cr.update(EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), where, null);
 
                                 mJustMarkedAsReadEntries.close();
@@ -1117,7 +1129,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
                         mJustMarkedAsReadEntries.close();
                     }
-                    mJustMarkedAsReadEntries = cr.query(mCurrentUri, new String[]{BaseColumns._ID}, where, null, null);
+                    mJustMarkedAsReadEntries = cr.query(mCurrentUri, new String[]{_ID}, where, null, null);
                     if ( mCurrentUri != null && Constants.NOTIF_MGR != null  ) {
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT );
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED );
