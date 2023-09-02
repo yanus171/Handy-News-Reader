@@ -76,6 +76,7 @@ public class HtmlUtils {
             .addTags("time")
             .addAttributes("track", "src", "kind", "srclang", "label")
             .addAttributes("script", "src", "type")
+            .addAttributes("div", "data-src", "data-id", "data-query" )
             .addProtocols("img", "src", "http", "https", "data");
 
     public static final String URL_SPACE = "%20";

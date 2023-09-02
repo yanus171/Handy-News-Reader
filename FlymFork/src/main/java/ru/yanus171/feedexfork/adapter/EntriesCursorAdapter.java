@@ -812,19 +812,25 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             }
         }
 
-        holder.dayTextView.setVisibility( View.GONE );
-        if ( !cursor.isFirst() ) {
-            cursor.moveToPrevious();
-            if ( !cursor.isNull( mDatePos ) ) {
-                Calendar prevDate = Calendar.getInstance();
-                prevDate.setTimeInMillis(cursor.getLong(mDatePos));
-                if ( date.get(Calendar.DATE) != prevDate.get(Calendar.DATE) ) {
-                    holder.dayTextView.setVisibility( View.VISIBLE );
-                    holder.dayTextView.setText( DATE_FORMAT.format( new Date(date.getTimeInMillis()) ) );
-                }
-            }
-            cursor.moveToNext();
 
+        holder.dayTextView.setVisibility( View.GONE );
+        if ( !mActivity.mEntriesFragment.mIsSingleLabel ) {
+            if ( cursor.isFirst() ) {
+                holder.dayTextView.setVisibility(View.VISIBLE);
+                holder.dayTextView.setText(DATE_FORMAT.format(new Date(date.getTimeInMillis())));
+            } else {
+                cursor.moveToPrevious();
+                if (!cursor.isNull(mDatePos)) {
+                    Calendar prevDate = Calendar.getInstance();
+                    prevDate.setTimeInMillis(cursor.getLong(mDatePos));
+                    if (date.get(Calendar.DATE) != prevDate.get(Calendar.DATE)) {
+                        holder.dayTextView.setVisibility(View.VISIBLE);
+                        holder.dayTextView.setText(DATE_FORMAT.format(new Date(date.getTimeInMillis())));
+                    }
+                }
+                cursor.moveToNext();
+
+            }
         }
 
 

@@ -997,6 +997,9 @@ public class FetcherService extends IntentService {
 
                         setDate(entryId, feedId, entryCursor, link, doc, values);
 
+                        if (isCorrectTitle && title.isEmpty())
+                            title = extractTitle(doc.toString());
+
                         ArrayList<String> categoryList = new ArrayList<>();
                         String mobilizedHtml = ArticleTextExtractor.extractContent(doc,
                                                                                    link,
@@ -1010,8 +1013,6 @@ public class FetcherService extends IntentService {
                         Status().ChangeProgress("");
 
                         if (mobilizedHtml != null) {
-                            if (isCorrectTitle && title.isEmpty())
-                                title = extractTitle(mobilizedHtml);
 
                             if (!categoryList.isEmpty())
                                 values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));

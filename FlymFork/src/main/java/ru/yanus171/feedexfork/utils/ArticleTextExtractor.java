@@ -174,7 +174,6 @@ public class ArticleTextExtractor {
             for (Element item : elList)
                 if ( !item.hasAttr( "class" ) )
                     item.attr( "class", item.attr( "id") );
-
         }
 
         {
@@ -236,12 +235,8 @@ public class ArticleTextExtractor {
 
         SaveContentStepToFile( doc, "before remove title" );
 
-        Elements title = rootElement.getElementsByClass("title");
-        for (Element entry : title)
-            if (entry.tagName().equalsIgnoreCase("h1")) {
-                title.first().remove();
-                break;
-            }
+        rootElement.getElementsByTag("h1").remove();
+        rootElement.getElementsByTag("title").remove();
 
         StringBuilder ret = new StringBuilder(rootElement.toString());
         SaveContentStepToFile( ret, "after toString" );
