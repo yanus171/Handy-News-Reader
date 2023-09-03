@@ -212,6 +212,7 @@
     <string name="settings_refresh_wifi_only">Оновлювати тільки через WiFi</string>
     <string name="settings_refresh_wifi_only_description">Автоматичне оновлення буде виконуватись тільки коли є доступ до WiFi</string>
     <string name="settings_keep_time">Час зберігання новин</string>
+    <string name="settings_keep_time_descr">Під час оновлення не завантажувати статті старіше ніж</string>
     <string name="settings_preload_image_mode">Завчасно завантажувати зображення</string>
     <string name="settings_max_image_download_count">Макс. число завантажень зображень</string>
     <string name="settings_max_image_download_count_description">На одну статтю</string>
@@ -701,4 +702,8 @@
     <string name="tableOfContent">Зміст</string>
     <string name="show_notification_setup_summary">Показувати системний діалог для сповіщень застосунку</string>
     <string name="performance">Продуктивність</string>
+    <string name="settings_autobackup_toast">Спливаюче сповіщення</string>
+    <string name="settings_autobackup_toast_descr">Показувати сповіщення що спливає, коли файл резервної копії успішно скопійовано до теки завантажень</string>
+    <string name="with_labels">з мітками:</string>
+    <string name="none">немає</string>
 </resources>
