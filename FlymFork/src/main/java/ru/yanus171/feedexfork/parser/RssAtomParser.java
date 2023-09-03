@@ -408,7 +408,8 @@ public class RssAtomParser extends DefaultHandler {
                     mEntryDate = mPreviousEntryDate;
                     mEntryUpdateDate = mPreviousEntryUpdateDate;
                 }
-
+                if ( mTitle == null && mDescription != null )
+                    mTitle = new StringBuilder( HtmlUtils.extractTitle(mDescription.toString()) );
                 if (mTitle != null && (mEntryDate == null || (mEntryDate.after(mRealLastUpdateDate) && mEntryDate.after(mKeepDateBorder)))) {
                     ContentValues values = new ContentValues();
                     values.put(EntryColumns.SCROLL_POS, 0);

@@ -110,6 +110,11 @@
             android:key="show_group_entries_count"
             android:title="@string/show_group_entrries_count"
             android:summary="@string/show_group_entries_count_descr" />
+        <CheckBoxPreference
+            android:key="feeds_sort_alphabetical"
+            android:defaultValue="false"
+            android:title="@string/settings_feeds_sort_alphabetical"
+            android:summary="@string/settings_feeds_sort_alphabetical_descr"/>
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_last_read"/>
@@ -701,11 +706,6 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_advanced"/>
-        <CheckBoxPreference
-            android:key="feeds_sort_alphabetical"
-            android:defaultValue="false"
-            android:title="@string/settings_feeds_sort_alphabetical"
-            android:summary="@string/settings_feeds_sort_alphabetical_descr"/>
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
             android:defaultValue="system"
             android:entries="@array/settings_datetime_format"

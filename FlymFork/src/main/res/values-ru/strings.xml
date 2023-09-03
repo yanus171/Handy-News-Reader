@@ -608,7 +608,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="settings_labels_sort_alphabetical">Сортировка меток по алфавиту</string>
     <string name="settings_labels_sort_alphabetical_descr">Сортировать метки по алфавиту. Иначе ручная сортировка</string>
     <string name="settings_feeds_sort_alphabetical">Сортировка по алфавиту</string>
-    <string name="settings_feeds_sort_alphabetical_descr">Сортировать статьи и группы по алфавиту. Иначе ручная сортировка</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Сортировать ленты и группы по алфавиту. Иначе ручная сортировка</string>
     <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
     <string name="web_search_title">Веб поиск статьи</string>
     <string name="settings_datetime_format">Формат даты и времени</string>
