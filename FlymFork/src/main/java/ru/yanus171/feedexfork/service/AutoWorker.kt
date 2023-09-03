@@ -119,7 +119,8 @@ class AutoWorker(context: Context, workerParams: WorkerParameters) : Worker(cont
                     WorkManager.getInstance(context).enqueueUniquePeriodicWork(jobTag, ExistingPeriodicWorkPolicy.REPLACE, periodicSyncDataWork)
                     putString(LAST + keyInterval, currentInterval.toString())
                 }
-            }
+            } else
+                WorkManager.getInstance(context).cancelAllWorkByTag(jobTag)
         }
 
         private fun minCustomRefreshInterval(): Long {

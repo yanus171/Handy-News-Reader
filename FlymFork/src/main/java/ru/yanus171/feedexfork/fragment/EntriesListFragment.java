@@ -48,6 +48,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
+import static ru.yanus171.feedexfork.utils.StringUtils.DATE_FORMAT;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
@@ -105,6 +106,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
@@ -132,7 +134,6 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -1072,7 +1073,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 Calendar date = Calendar.getInstance();
                 date.setTimeInMillis(cursor.getLong(datePos));
                 if (date.get(Calendar.DATE) != lastDay)
-                    starredList.append(StringUtils.getDateTimeString(cursor.getLong(datePos))).append(":\n\n");
+                    starredList.append(DATE_FORMAT.format(new Date(cursor.getLong(datePos)))).append(":\n\n");
                 lastDay = date.get(Calendar.DATE);
             }
             starredList.append(cursor.getString(titlePos)).append("\n").append(cursor.getString(linkPos)).append("\n\n");
