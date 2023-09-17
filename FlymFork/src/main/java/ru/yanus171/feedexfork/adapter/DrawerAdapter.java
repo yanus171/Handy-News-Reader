@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -42,11 +43,14 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
@@ -57,6 +61,7 @@ import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
@@ -71,10 +76,14 @@ import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsRead
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 
 public class DrawerAdapter extends BaseAdapter {
+
+    private HomeActivity mActivity = null;
 
     private static final int POS_ID = 0;
     private static final int POS_URL = 1;
@@ -96,10 +105,83 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int LAST_READ_ENTRY_POS = 4;
     public static final int LABEL_GROUP_POS = 5;
     public static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
+    public static final String PREF_LABEL_ID_EXPANDED = "LABEL_ID_EXPANDED_";
+    public static final String CHILD_LABEL_KEY = "CHILD_LABEL_";
+    public static final String CHILD_LABEL_KEY_READ = "CHILD_LABEL_READ_";
+
     private final ProgressBar mProgressBar;
     public static boolean mIsNeedUpdateNumbers = true;
 
-    public static int FIRST_ENTRY_POS() { return LABEL_GROUP_POS + (PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) ? LabelVoc.INSTANCE.getList().size() : 0) + 1; }
+    public static boolean isLabelExpanded(long parentLabelID ) {
+        return PrefUtils.getBoolean( PREF_LABEL_ID_EXPANDED + parentLabelID, false );
+    }
+
+    public static int FIRST_ENTRY_POS() {
+        if ( !PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) )
+            return LABEL_GROUP_POS + 1;
+        int result = LABEL_GROUP_POS;
+        for ( Label label : LabelVoc.INSTANCE.getList() )
+            result += 1 + (isLabelExpanded(label.mID ) ? LabelVoc.INSTANCE.getChildrenIDs(label.mID ).size() : 0);
+        return result + 1;//LABEL_GROUP_POS + (? LabelVoc.INSTANCE.getList().size() : 0) + 1;
+    }
+    public static boolean isChildLabelPosition( int position ) {
+        int result = LABEL_GROUP_POS;
+        for ( Label parentLabel : LabelVoc.INSTANCE.getList() ) {
+            result += 1;
+            if ( position == result )
+                return false;
+            if ( isLabelExpanded(parentLabel.mID ) )
+                for ( long childLabelID : LabelVoc.INSTANCE.getChildrenIDs( parentLabel.mID ) )  {
+                    result++;
+                    if ( position == result )
+                        return true;
+                }
+        }
+        return false;
+    }
+    public static Long getParentLabelID(int position) {
+        int result = LABEL_GROUP_POS;
+        for ( Label parentLabel : LabelVoc.INSTANCE.getList() ) {
+            result += 1;
+            if ( position == result )
+                return parentLabel.mID;
+            if ( isLabelExpanded(parentLabel.mID ) )
+                for ( long childLabelID : LabelVoc.INSTANCE.getChildrenIDs( parentLabel.mID ) )  {
+                    result++;
+                    if ( position == result )
+                        return parentLabel.mID;
+                }
+        }
+        return -1L;
+    }
+    public static long getLabelIDByPosition( int position ) {
+        int result = LABEL_GROUP_POS;
+        for ( Label parentLabel : LabelVoc.INSTANCE.getList() ) {
+            result += 1;
+            if ( position == result )
+                return parentLabel.mID;
+            if ( isLabelExpanded(parentLabel.mID ) )
+                for ( long childLabelID : LabelVoc.INSTANCE.getChildrenIDs( parentLabel.mID ) )  {
+                    result++;
+                    if ( position == result )
+                        return childLabelID;
+                }
+        }
+        return -1;
+    }
+    static public int getParentLabelPositionByID( long labelID ) {
+        if ( !PrefUtils.getBoolean( PREF_IS_LABEL_GROUP_EXPANDED, false ) )
+            return -1;
+        int result = LABEL_GROUP_POS;
+        for ( Label label : LabelVoc.INSTANCE.getList() ) {
+            if ( label.mID == labelID )
+                return  result;
+            result += 1 + (isLabelExpanded(label.mID) ? LabelVoc.INSTANCE.getChildrenIDs(label.mID).size() : 0);
+        }
+        return -1;
+    }
+
+
 
     private static final int NORMAL_TEXT_COLOR = Color.parseColor("#EEEEEE");
     private static final int GROUP_TEXT_COLOR = Color.parseColor("#BBBBBB");
@@ -204,8 +286,9 @@ public class DrawerAdapter extends BaseAdapter {
 
     final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
 
-    public DrawerAdapter(Context context, Cursor feedCursor, ProgressBar progressBar) {
-        mContext = context;
+    public DrawerAdapter(HomeActivity activity, Cursor feedCursor, ProgressBar progressBar) {
+        mActivity = activity;
+        mContext = activity;
         mFeedsCursor = feedCursor;
         mProgressBar = progressBar;
     }
@@ -222,6 +305,8 @@ public class DrawerAdapter extends BaseAdapter {
 
             ViewHolder holder = new ViewHolder();
             holder.iconView = convertView.findViewById(android.R.id.icon);
+            holder.iconViewSmall = convertView.findViewById(R.id.icon_small);
+            holder.childExpandBtn = convertView.findViewById(R.id.icon_expand);
             holder.titleTxt = SetupTextView(convertView, android.R.id.text1);
             holder.stateTxt = SetupSmallTextView(convertView, android.R.id.text2);
             holder.imageSizeTxt = SetupSmallTextView(convertView, R.id.imageSize);
@@ -230,6 +315,8 @@ public class DrawerAdapter extends BaseAdapter {
             holder.tasksTxt = SetupSmallTextView(convertView, R.id.tasks);
             holder.autoRefreshIcon = convertView.findViewById(R.id.auto_refresh_icon);
             holder.separator = convertView.findViewById(R.id.separator);
+            holder.layoutSize = convertView.findViewById(R.id.layout_size);
+
             convertView.setTag(R.id.holder, holder);
         }
 
@@ -237,20 +324,26 @@ public class DrawerAdapter extends BaseAdapter {
 
         // default init
         holder.iconView.setImageDrawable(null);
+        holder.iconView.setVisibility( View.VISIBLE );
+        holder.iconViewSmall.setImageDrawable(null);
+        holder.iconViewSmall.setVisibility( View.GONE );
+        holder.childExpandBtn.setVisibility( View.GONE );
+        holder.childExpandBtn.setImageDrawable(null);
         holder.titleTxt.setText("");
         holder.titleTxt.setTextColor(NORMAL_TEXT_COLOR);
         holder.titleTxt.setAllCaps(false);
-        UiUtils.SetFont(holder.titleTxt, 1);
+        SetFont(holder.titleTxt, 1);
         holder.stateTxt.setVisibility(View.GONE);
         holder.unreadTxt.setText("");
-        UiUtils.SetFont(holder.unreadTxt, 1);
+        SetFont(holder.unreadTxt, 1);
         holder.readTxt.setText("");
-        UiUtils.SetFont(holder.readTxt, 1);
+        SetFont(holder.readTxt, 1);
         convertView.setPadding(0, 0, 0, 0);
         holder.separator.setVisibility(View.GONE);
         holder.autoRefreshIcon.setVisibility(View.GONE);
         holder.imageSizeTxt.setVisibility(View.GONE);
         holder.tasksTxt.setVisibility(View.GONE);
+        holder.layoutSize.setVisibility(View.VISIBLE);
 
         ArrayList<Label> labelList = getLabelList();
 
@@ -317,13 +410,43 @@ public class DrawerAdapter extends BaseAdapter {
             holder.titleTxt.setAllCaps(true);
             holder.separator.setVisibility(View.VISIBLE);
         } else if (isLabelPos(position)) {
-            Label label = labelList.get(getLabelPosition(position));
+            Label label = LabelVoc.INSTANCE.get(getLabelIDByPosition( position ));
             holder.titleTxt.setText(label.mName);
             holder.titleTxt.setTextColor(label.colorInt());
             holder.iconView.setImageResource(R.drawable.label_brown);
             SetCount( KEY_LabelEntriesUnreadCount + label.mID, holder.unreadTxt);
             SetCount( KEY_LabelEntriesReadCount + label.mID, holder.readTxt);
             SetImageSizeText(holder, KEY_LabelEntriesImagesSize + label.mID);
+            holder.childExpandBtn.setVisibility( View.INVISIBLE );
+            if ( !isChildLabelPosition( position ) && !LabelVoc.INSTANCE.getChildrenIDs( label.mID ).isEmpty() ) {
+                holder.iconView.setVisibility( View.VISIBLE );
+                holder.iconViewSmall.setVisibility(View.GONE);
+                holder.childExpandBtn.setVisibility( View.VISIBLE );
+                holder.childExpandBtn.setImageResource(isLabelExpanded(label.mID) ? R.drawable.ic_group_expanded_gray : R.drawable.ic_group_collapsed_gray);
+                holder.childExpandBtn.setOnClickListener(v -> {
+                    PrefUtils.putBoolean(PREF_LABEL_ID_EXPANDED + label.mID, !isLabelExpanded( label.mID));
+                    notifyDataSetChanged();
+                });
+            } else if ( isChildLabelPosition( position ) ) {
+                holder.iconView.setVisibility(View.GONE);
+                holder.iconViewSmall.setVisibility(View.VISIBLE);
+                holder.iconViewSmall.setImageResource( R.drawable.label_brown );
+                holder.childExpandBtn.setVisibility( View.GONE );
+                holder.tasksTxt.setVisibility(View.GONE);
+                holder.layoutSize.setVisibility(View.GONE);
+                long parentLabelID = getParentLabelID( position );
+                SetCount( CHILD_LABEL_KEY + parentLabelID + "_" + label.mID, holder.unreadTxt);
+                SetCount( CHILD_LABEL_KEY_READ + parentLabelID + "_" + label.mID, holder.readTxt);
+                holder.imageSizeTxt.setVisibility( View.GONE );
+                //convertView.setMinHeight(0); // Min Height
+                //convertView.setMinimumHeight(0); // Min Height
+                //convertView.setHeight(44); // Height
+//                SetSmallFont(holder.titleTxt);
+//                SetSmallFont(holder.unreadTxt);
+//                SetSmallFont(holder.readTxt);
+            }
+
+
         } else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS())) {
             holder.titleTxt.setText((mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME)));
 
@@ -385,6 +508,8 @@ public class DrawerAdapter extends BaseAdapter {
 
             SetImageSizeText(holder, mFeedsCursor.getLong(POS_IMAGESIZE));
         }
+
+        convertView.setBackgroundColor(position == mActivity.mDrawerList.getCheckedItemPosition() ? Theme.GetToolBarColorInt() : Color.TRANSPARENT );
         return convertView;
     }
 
@@ -449,14 +574,6 @@ public class DrawerAdapter extends BaseAdapter {
                 return i;
         return -1;
     }
-    static public int getLabelPositionByID( long labelID ) {
-        ArrayList<Label> list = LabelVoc.INSTANCE.getList();
-        for( int i = 0; i < list.size(); i++ )
-            if ( list.get(i).mID == labelID )
-                return LABEL_GROUP_POS + i + 1;
-        return -1;
-    }
-
     public Bitmap getItemIcon(int position) {
         if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()))
             return UiUtils.getFaviconBitmap( mFeedsCursor.getString( POS_ICON_URL ) );
@@ -467,16 +584,16 @@ public class DrawerAdapter extends BaseAdapter {
         if ( position == LABEL_GROUP_POS )
             return getContext().getString( R.string.labels_group_title );
         else if ( isLabelPos( position ) )
-            return getLabelList().get( getLabelPosition( position ) ).mName;
+            return LabelVoc.INSTANCE.get( getLabelIDByPosition( position ) ).mName;
         else if (mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()))
             return mFeedsCursor.isNull(POS_NAME) ? mFeedsCursor.getString(POS_URL) : mFeedsCursor.getString(POS_NAME);
 
         return null;
     }
 
-    private int getLabelPosition(int position) {
-        return position - LABEL_GROUP_POS - 1;
-    }
+//    private int getLabelPosition(int position) {
+//        return position - LABEL_GROUP_POS - 1;
+//    }
 
     public boolean isItemAGroup(int position) {
         return mFeedsCursor != null && mFeedsCursor.moveToPosition(position - FIRST_ENTRY_POS()) && mFeedsCursor.getInt(POS_IS_GROUP) == 1;
@@ -614,9 +731,30 @@ public class DrawerAdapter extends BaseAdapter {
             }
         }
 
+        SetChildLabelsNumbers();
+
         timer.End();
     }
-
+    private void SetChildLabelsNumbers() {
+        HashSet<Long> readEntriesMap = new HashSet<>();
+        {
+            ContentResolver cr = mContext.getContentResolver();
+            Cursor cur = cr.query(FeedData.EntryColumns.CONTENT_URI, new String[]{FeedData.TaskColumns._ID}, WHERE_READ, null, null);
+            while (cur.moveToNext())
+                readEntriesMap.add(cur.getLong(0));
+            cur.close();
+        }
+        {
+            HashMap<String, Integer> map = LabelVoc.INSTANCE.GetChildLabelsNumbers(false, readEntriesMap);
+            for (String key : map.keySet())
+                PrefUtils.putInt(CHILD_LABEL_KEY + key, map.get(key));
+        }
+        {
+            HashMap<String, Integer> map = LabelVoc.INSTANCE.GetChildLabelsNumbers(true, readEntriesMap);
+            for (String key : map.keySet())
+                PrefUtils.putInt(CHILD_LABEL_KEY_READ + key, map.get(key));
+        }
+    }
     private void SetLabelsNumber(String columnSQLFunc, String whereSQL, String key ) {
         for ( Label label: LabelVoc.INSTANCE.getList() )
             PrefUtils.putLong(key + label.mID, 0 );
@@ -636,7 +774,10 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
+        LinearLayout layoutSize;
         ImageView iconView;
+        ImageView iconViewSmall;
+        ImageView childExpandBtn;
         TextView titleTxt;
         TextView stateTxt;
         TextView imageSizeTxt;

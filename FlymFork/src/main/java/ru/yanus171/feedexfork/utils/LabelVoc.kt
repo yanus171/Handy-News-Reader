@@ -14,13 +14,13 @@ import android.widget.*
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.LabelListActivity
+import ru.yanus171.feedexfork.adapter.DrawerAdapter
 import ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS
 import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
-import ru.yanus171.feedexfork.utils.UiUtils.*
-import java.util.*
-import kotlin.collections.ArrayList
+import ru.yanus171.feedexfork.utils.UiUtils.SetFont
+import ru.yanus171.feedexfork.utils.UiUtils.dpToPixel
 
 public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {
 
@@ -55,12 +55,14 @@ object LabelVoc {
     private var mIsInitialized = false
     private val mVoc = HashMap<Long, Label>()
     private val mEntryVoc = HashMap<Long, HashSet<Long>>()
+    private val mChildVoc = HashMap<Long, HashSet<Long>>()
 
     private fun init_() {
         synchronized(mVoc) {
             if ( mIsInitialized )
                 return
             val status = FetcherService.Status().Start("Reading labels", true)
+
             mVoc.clear()
             run {
                 val cursor = MainApplication.getContext().contentResolver.query(
@@ -86,17 +88,51 @@ object LabelVoc {
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
                         val entryId = cursor.getLong(0)
+                        val labelId = cursor.getLong(1)
                         if ( !mEntryVoc.containsKey(entryId) )
-                            mEntryVoc[entryId] = HashSet<Long>()
-                        mEntryVoc[entryId]!!.add(cursor.getLong(1))
+                            mEntryVoc[entryId] = HashSet()
+                        mEntryVoc[entryId]!!.add(labelId)
+
                     }
                     cursor.close()
                 }
             }
 
+            updateChildVoc()
+
             FetcherService.Status().End(status)
             mIsInitialized = true
         }
+    }
+
+    private fun updateChildVoc() {
+        mChildVoc.clear()
+        for (labelIdList in mEntryVoc.values)
+            if (labelIdList.count() > 1)
+                for (parentLabelId in labelIdList) {
+                    if (!mChildVoc.containsKey(parentLabelId))
+                        mChildVoc[parentLabelId] = HashSet<Long>()
+                    for (childLabelId in labelIdList)
+                        if (parentLabelId != childLabelId) {
+                            mChildVoc[parentLabelId]!!.add(childLabelId)
+                        }
+                }
+    }
+
+    fun GetChildLabelsNumbers( forReadEntries: Boolean, readEntriesMap: HashSet<Long> ): HashMap<String, Int> {
+        var result = HashMap<String, Int>()
+        synchronized(mVoc) {
+            for ((entryID,labelIDList) in mEntryVoc)
+                for (key1 in labelIDList)
+                    for (key2 in labelIDList)
+                        if ( key1 != key2 && forReadEntries == readEntriesMap.contains( entryID ) ) {
+                            val key = "${key1}_${key2}"
+                            if ( !result.containsKey( key ) )
+                                result[key] = 0
+                            result[key] = result[key]!! + 1;
+                        }
+        }
+        return result
     }
 
 
@@ -130,7 +166,6 @@ object LabelVoc {
         initInThread()
         synchronized(mVoc) {
             mVoc[label.mID] = label
-
         }
     }
     fun deleteLabel(id: Long) {
@@ -138,12 +173,14 @@ object LabelVoc {
         synchronized(mVoc) {
             mVoc.remove(id)
             mEntryVoc.remove(id)
+            updateChildVoc()
         }
     }
     fun setEntry(entryID: Long, labels: HashSet<Long>) {
         initInThread()
         synchronized(mVoc) {
             mEntryVoc[entryID] = labels
+            updateChildVoc()
         }
         FeedDataContentProvider.SetNotifyEnabled(false)
         MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
@@ -335,6 +372,12 @@ object LabelVoc {
             return
         setEntry(entryID, java.util.HashSet())
         MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
+    }
+
+    fun getChildrenIDs(parentLabelID: Long): HashSet<Long> {
+        synchronized(mVoc) {
+            return if ( mChildVoc.containsKey( parentLabelID ) ) mChildVoc[parentLabelID]!! else HashSet()
+        }
     }
 
 

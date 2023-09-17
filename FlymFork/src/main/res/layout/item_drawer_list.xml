@@ -10,6 +10,25 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
+        android:src="@drawable/ic_photo_size_select_actual"
+        android:layout_margin="5dp"/>
+    <ImageView
+        android:id="@+id/icon_small"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_toRightOf="@android:id/icon"
+        android:src="@drawable/ic_photo_size_select_actual"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="5dp"/>
+
+    <ImageView
+        android:id="@+id/icon_expand"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/arrow_drop_down"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/icon_small"
         android:layout_margin="5dp"/>
 
 
@@ -20,13 +39,12 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@android:id/icon"
+        android:layout_toRightOf="@id/icon_expand"
         android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:orientation="vertical"
         android:layout_toStartOf="@+id/layoutCount"
         android:layout_toLeftOf="@+id/layoutCount"
-        android:layout_toEndOf="@android:id/icon">
+        android:layout_toEndOf="@id/icon_expand">
 
         <TextView
             android:id="@android:id/text1"
@@ -39,6 +57,7 @@
             android:textIsSelectable="false"/>
 
         <LinearLayout
+            android:id="@+id/layout_size"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

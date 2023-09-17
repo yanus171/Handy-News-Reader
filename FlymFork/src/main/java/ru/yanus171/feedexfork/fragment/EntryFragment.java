@@ -133,6 +133,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
+import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
 import static ru.yanus171.feedexfork.Constants.HTTPS_SCHEME;
 import static ru.yanus171.feedexfork.Constants.HTTP_SCHEME;
@@ -184,7 +185,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private long mInitialEntryId = -1;
     private Entry[] mEntriesIds = new Entry[1];
 
-    private boolean mFavorite, mIsWithTables, mIsForceLandscape = false, mIsFullTextShown = true;
+    public boolean mFavorite;
+    private boolean mIsWithTables;
+    private boolean mIsForceLandscape = false;
+    private boolean mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
@@ -1330,7 +1334,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntry( mPagerPos ).mID);
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             if ( mSetAsRead ) {
-                                if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null) > 0 )
+                                if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
                                     newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
                             }
                             cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);

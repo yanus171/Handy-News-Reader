@@ -133,7 +133,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public EntriesListFragment mEntriesFragment;
     private DrawerLayout mDrawerLayout;
     private View mLeftDrawer;
-    private ListView mDrawerList;
+    public ListView mDrawerList;
     private DrawerAdapter mDrawerAdapter = null;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mTitle;
@@ -427,7 +427,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                     PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
                     notifyDrawableAdapter();
                     if ( mDrawerAdapter != null )
-                        selectDrawerItem(DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
+                        selectDrawerItem(DrawerAdapter.getParentLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
                     mNewFeedUri = CONTENT_URI;
                 } else {
                     final long feedID;
@@ -622,7 +622,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             if ( mEntriesFragment.IsAllLabels() ) {
                 mCurrentDrawerPos = LABEL_GROUP_POS;
             } else if ( mEntriesFragment.mIsSingleLabel ) {
-                mCurrentDrawerPos = DrawerAdapter.getLabelPositionByID(mEntriesFragment.GetSingleLabelID());
+                mCurrentDrawerPos = DrawerAdapter.getParentLabelPositionByID(mEntriesFragment.GetSingleLabelID());
             } else {
                 final long feedID = GetFeedID(mNewFeedUri);
                 //Dog.v( TAG, "onLoadFinished feedID = " + feedID + ", mNewFeedUri = " + mNewFeedUri.toString() );
@@ -696,7 +696,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             default:
                 if ( DrawerAdapter.isLabelPos( position )) {
                     newUri = CONTENT_URI;
-                    mEntriesFragment.SetSingleLabel( DrawerAdapter.getLabelList().get( position - LABEL_GROUP_POS - 1 ).mID );
+                    if ( DrawerAdapter.isChildLabelPosition(position ) )
+                        mEntriesFragment.SetChildLabel( DrawerAdapter.getParentLabelID( position), DrawerAdapter.getLabelIDByPosition( position ) );
+                    else
+                        mEntriesFragment.SetSingleLabel( DrawerAdapter.getLabelIDByPosition( position ) );
                     showFeedInfo = true;
                 } else {
                     long feedOrGroupId = mDrawerAdapter.getItemId(position);

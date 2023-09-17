@@ -316,7 +316,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                 } finally {
                     SetNotifyEnabled( true );
                 }
-                if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish )
+                if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish && !mEntryFragment.mFavorite )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 ) {
                         int result = cr.update(EntryColumns.CONTENT_URI(mEntryFragment.getCurrentEntryID()), FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);

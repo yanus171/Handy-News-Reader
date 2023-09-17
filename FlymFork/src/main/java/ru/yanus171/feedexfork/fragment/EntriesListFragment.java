@@ -1334,6 +1334,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( id != NO_LABEL )
             mLabelsID.add( id );
     }
+    public void SetChildLabel( long parentLabelId, long childLabelId ) {
+        mIsSingleLabel = false;
+        mLabelsID.clear();
+        mLabelsID.add( parentLabelId );
+        mLabelsID.add( childLabelId );
+    }
 
     public boolean IsAllLabels() {
         return mIsSingleLabel && mLabelsID.contains( ALL_LABELS );
