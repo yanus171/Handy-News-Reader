@@ -334,7 +334,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 } else {
-                    SetIsRead(holder.entryID, feedId, true, true);
+                    if ( !holder.isFavorite )
+                        SetIsRead(holder.entryID, feedId, true, true);
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                     mNeedScrollToTopExpandedArticle = true;

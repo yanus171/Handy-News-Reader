@@ -14,7 +14,6 @@ import android.widget.*
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.LabelListActivity
-import ru.yanus171.feedexfork.adapter.DrawerAdapter
 import ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS
 import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
@@ -141,6 +140,7 @@ object LabelVoc {
         synchronized(mVoc) {
             mVoc[id] = Label(id, name, color, getNextOrder())
         }
+        FeedDataContentProvider.notifyChangeOnAllUris(FeedDataContentProvider.URI_FEEDS, null)
     }
 
     fun getNextID() = (mVoc.keys.maxOrNull() ?: 0) + 1
@@ -167,6 +167,7 @@ object LabelVoc {
         synchronized(mVoc) {
             mVoc[label.mID] = label
         }
+        FeedDataContentProvider.notifyChangeOnAllUris(FeedDataContentProvider.URI_FEEDS, null)
     }
     fun deleteLabel(id: Long) {
         initInThread()
@@ -175,6 +176,7 @@ object LabelVoc {
             mEntryVoc.remove(id)
             updateChildVoc()
         }
+        FeedDataContentProvider.notifyChangeOnAllUris(FeedDataContentProvider.URI_FEEDS, null)
     }
     fun setEntry(entryID: Long, labels: HashSet<Long>) {
         initInThread()
