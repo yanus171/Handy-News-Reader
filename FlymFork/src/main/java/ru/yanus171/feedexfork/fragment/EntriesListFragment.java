@@ -45,6 +45,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
@@ -328,10 +329,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( mCurrentUri != null ) {
             int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
             item.setVisible( uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
-            mMenu.findItem(R.id.menu_show_entry_text).setVisible( uriMatch != FeedDataContentProvider.URI_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES &&
-                    uriMatch != FeedDataContentProvider.URI_FAVORITES );
-            mMenu.findItem( R.id.menu_show_entry_text ).setChecked( mShowTextInEntryList );
+            mMenu.findItem(R.id.menu_show_article_text_toggle).setEnabled( !mShowTextInEntryList );
+            mMenu.findItem( R.id.menu_show_article_text_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT, false ));
         }
 
         boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !EntryColumns.LAST_READ_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
@@ -730,14 +729,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void onPrepareOptionsMenu (Menu menu) {
         menu.findItem( R.id.menu_show_article_url_toggle).setChecked(PrefUtils.getBoolean( SHOW_ARTICLE_URL, false ));
         menu.findItem( R.id.menu_show_article_category_toggle).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_CATEGORY, true ));
-        menu.findItem( R.id.menu_show_article_text_preview_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW, true ));
+        menu.findItem( R.id.menu_show_article_text_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT, false ));
+        menu.findItem( R.id.menu_show_article_text_preview_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW, false ));
         menu.findItem( R.id.menu_show_article_big_image_toggle ).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_BIG_IMAGE, false ));
         menu.findItem( R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
-        menu.findItem( R.id.menu_show_entry_text ).setVisible( IsFeedUri( mCurrentUri ) );
+        menu.findItem( R.id.menu_show_article_text_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_edit_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_full_screen ).setChecked(GetIsStatusBarEntryListHidden() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!GetIsActionBarEntryListHidden() );
+        menu.findItem( R.id.menu_show_article_text_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_big_image_toggle ).setEnabled( !mShowTextInEntryList && PrefUtils.IsShowArticleBigImagesEnabled( mCurrentUri ) );
     }
@@ -885,24 +886,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 mEntriesCursorAdapter.notifyDataSetChanged();
                 return true;
             }
+            case R.id.menu_show_article_text_toggle: {
+                PrefUtils.toggleBoolean( SHOW_ARTICLE_TEXT, false );
+                item.setChecked( PrefUtils.getBoolean( SHOW_ARTICLE_TEXT, false ) );
+                mEntriesCursorAdapter.notifyDataSetChanged();
+                return true;
+            }
             case R.id.menu_show_progress_info: {
                 PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
                 item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
                 break;
-            }
-            case R.id.menu_show_entry_text: {
-                if ( IsFeedUri( mCurrentUri) ) {
-                    mShowTextInEntryList = !mShowTextInEntryList;
-                    item.setChecked( mShowTextInEntryList );
-                    final String feedID = mCurrentUri.getPathSegments().get(1);
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
-                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
-                    setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
-                }
-                return true;
-            }
+s            }
             case R.id.menu_create_backup: {
                 OPML.OnMenuExportImportClick( getActivity(), OPML.ExportImport.Backup );
                 return true;

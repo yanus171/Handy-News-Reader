@@ -44,9 +44,9 @@
                 android:icon="@drawable/ic_sync"
                 android:title="@string/create_start_auto_refersh"/>
             <item
-                android:id="@+id/menu_show_entry_text"
+                android:id="@+id/menu_show_article_text_toggle"
                 android:icon="@drawable/ic_receipt"
-                android:visible="false"
+                android:visible="true"
                 android:checkable="true"
                 android:title="@string/menu_show_entry_text" />
             <item

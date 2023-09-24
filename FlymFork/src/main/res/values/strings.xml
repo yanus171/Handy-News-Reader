@@ -731,5 +731,7 @@
     <string name="settings_autobackup_toast_descr">Show toast message when backup file successfully was copied to Downloads</string>
     <string name="with_labels">with labels:</string>
     <string name="none">none</string>
+    <string name="show_article_text">Article text</string>
+    <string name="show_article_text_descr">Show article text in list</string>
 
 </resources>

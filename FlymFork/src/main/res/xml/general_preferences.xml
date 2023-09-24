@@ -171,6 +171,12 @@
             android:summary="@string/show_article_text_preview_descr"
             />
         <CheckBoxPreference
+            android:key="settings_show_article_text"
+            android:defaultValue="false"
+            android:title="@string/show_article_text"
+            android:summary="@string/show_article_text_descr"/>
+
+        <CheckBoxPreference
             android:key="settings_show_article_big_image"
             android:defaultValue="false"
             android:title="@string/show_article_big_image"
