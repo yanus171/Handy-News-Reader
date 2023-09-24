@@ -851,7 +851,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
                 item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
                 break;
-s            }
+            }
             case R.id.menu_create_backup: {
                 OPML.OnMenuExportImportClick( getActivity(), OPML.ExportImport.Backup );
                 return true;
@@ -1165,7 +1165,7 @@ s            }
         }
     }
 
-    private boolean IsFeedUri( Uri uri ) {
+    public static boolean IsFeedUri( Uri uri ) {
         boolean result = false;
         if ( uri != null && uri.getPathSegments().size() > 1 )
             try {
@@ -1282,5 +1282,5 @@ s            }
             }
         } );
     }
-    
+
 }

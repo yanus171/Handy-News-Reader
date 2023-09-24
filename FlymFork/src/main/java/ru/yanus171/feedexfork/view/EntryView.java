@@ -47,6 +47,7 @@ package ru.yanus171.feedexfork.view;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.IsFeedUri;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
@@ -212,7 +213,7 @@ public class EntryView extends WebView implements Handler.Callback {
             + getCustomFontClassStyle("p", url, customFontInfo)
             + getCustomFontClassStyle("span", url, customFontInfo)
             + getCustomFontClassStyle("div", url, customFontInfo)
-            + "p.subtitle {color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 }\n "
+            + "p.subtitle { text-align: center; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 }\n "
             + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em}\n "
             + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0}\n "
             + "div.bottom-page {display: block; min-height: 80vh}\n "
@@ -399,6 +400,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     @SuppressLint("Range")
     public boolean setHtml(final long entryId,
+                           Uri articleListUri,
                            Cursor newCursor,
                            FeedFilters filters,
                            boolean isFullTextShown,
@@ -481,7 +483,7 @@ public class EntryView extends WebView implements Handler.Callback {
         new Thread() {
             @Override
             public void run() {
-                final String dataWithLinks = generateHtmlContent(feedID, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
+                final String dataWithLinks = generateHtmlContent(feedID, articleListUri, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
                 final ArrayList<String> imagesToDl = new ArrayList<>();
                 final String data = HtmlUtils.replaceImageURLs( dataWithLinks, "", mEntryId, mEntryLink, false, imagesToDl, null, mMaxImageDownloadCount );
                 synchronized (EntryView.this) {
@@ -502,12 +504,13 @@ public class EntryView extends WebView implements Handler.Callback {
         mLastContentLength = 0;
     }
 
-    private String generateHtmlContent(String feedID, String title, String link, String contentText, String categories,
+    private String generateHtmlContent(String feedID, Uri articleListUri, String title, String link, String contentText, String categories,
                                        String enclosure, String author,
                                        long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS(title, link, mIsEditingMode)).append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
+        StringBuilder content = new StringBuilder(GetCSS(title, link, mIsEditingMode))
+            .append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
 
         if (link == null) {
             link = "";
@@ -519,17 +522,24 @@ public class EntryView extends WebView implements Handler.Callback {
             content.append(TITLE_START).append(title).append(TITLE_END);
 
         content.append(SUBTITLE_START);
-
         Date date = new Date(timestamp);
         Context context = getContext();
         StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
                 DateFormat.getTimeFormat(context).format(date));
-
         if (author != null && !author.isEmpty()) {
             dateStringBuilder.append(" &mdash; ").append(author);
         }
+        content.append(dateStringBuilder);
+        content.append(SUBTITLE_END);
+        if ( !feedID.equals( -1 ) && articleListUri != Uri.EMPTY && !IsFeedUri(articleListUri) ) {
+            content.append(SUBTITLE_START);
+            Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.NAME}, null, null, null );
+            cursor.moveToFirst();
+            content.append( cursor.getString( 0 ) );
+            cursor.close();
+            content.append(SUBTITLE_END);
+        }
 
-        content.append(dateStringBuilder).append(SUBTITLE_END);
         if (categories != null && !categories.isEmpty())
             content.append( CATEGORIES_START ).append( CategoriesToOutput( categories ) ).append( CATEGORIES_END );
 
@@ -1052,7 +1062,7 @@ public class EntryView extends WebView implements Handler.Callback {
         final int status = Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         AddTagButtons(doc, mEntryLink);
-        final String data = generateHtmlContent("-1", "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
+        final String data = generateHtmlContent("-1", Uri.EMPTY,"", mEntryLink, doc.toString(), "", "", "", 0, true, false);
         synchronized (EntryView.this) {
             mData = data;
         }

@@ -1824,6 +1824,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         view.InvalidateContentCache();
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
                     mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
+                                                      mBaseUri,
                                                       newCursor,
                                                       mFilters,
                                                       mIsFullTextShown,
