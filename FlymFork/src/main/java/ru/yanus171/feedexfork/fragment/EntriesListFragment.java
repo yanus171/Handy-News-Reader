@@ -146,7 +146,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
-    //private static final String STATE_LIST_DISPLAY_DATE = "STATE_LIST_DISPLAY_DATE";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST = "STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
@@ -156,7 +155,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     private static final int ENTRIES_LOADER_ID = 1;
-    //private static final int NEW_ENTRIES_NUMBER_LOADER_ID = 2;
     private static final int FILTERS_LOADER_ID = 3;
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
     public static final long ALL_LABELS = -2L;
@@ -185,8 +183,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private HashSet<Long> mLabelsID = new HashSet<Long>();
     public boolean mIsSingleLabel = false;
 
-    //private long mListDisplayDate = new Date().getTime();
-    //boolean mBottomIsReached = false;
     static class VisibleReadItem {
         final String ITEM_SEP = "__####__";
 
@@ -218,8 +214,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 Timer.Start(ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader");
 
                 String entriesOrder = IsOldestFirst() ? DB_ASC : DB_DESC;
-                //String where = "(" + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
-                String[] projection = EntryColumns.PROJECTION_WITH_TEXT;//   mShowTextInEntryList ? EntryColumns.PROJECTION_WITH_TEXT : EntryColumns.PROJECTION_WITHOUT_TEXT;
+                String[] projection = EntryColumns.PROJECTION_WITH_TEXT;
                 final String where = GetWhereSQL();
                 String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: DATE;
                 CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, orderField + entriesOrder);
@@ -232,8 +227,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 final String feedID = mCurrentUri.getPathSegments().get(1);
                 CursorLoader cursorLoader = new CursorLoader(getActivity(), FeedFilters.getCursorUri(feedID), FeedFilters.getCursorProjection(), null, null, null);
                 cursorLoader.setUpdateThrottle(150);
-                //Status().End(mStatus);
-                //mStatus = Status().Start(R.string.article_list_loading, true);
                 return cursorLoader;
             }
             return null;
@@ -395,8 +388,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         super.onStart();
         Timer timer = new Timer( "EntriesListFragment.onStart" );
 
-        //refreshUI(); // Should not be useful, but it's a security
-        //refreshSwipeProgress();
         PrefUtils.registerOnPrefChangeListener(mPrefListener);
 
         mFab = getActivity().findViewById(R.id.fab);
@@ -458,9 +449,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         //toolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
         activity.setSupportActionBar( toolbar );
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //activity.getSupportActionBar().setBackgroundDrawable( new ColorDrawable( Theme.GetColorInt("toolBarColor", R.color.light_theme_color_primary ) ) );
-//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         getBaseActivity().mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
         getBaseActivity().mProgressBarRefresh.setBackgroundColor(Theme.GetToolBarColorInt() );
@@ -518,26 +506,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         if (mEntriesCursorAdapter != null) {
             SetListViewAdapter();
-        }
-
-        if ( false /*PrefUtils.getBoolean(PrefUtils.DISPLAY_TIP, true)*/ && mListView instanceof ListView ) {
-            final TextView header = CreateTextView(mListView.getContext());
-            header.setMinimumHeight(UiUtils.dpToPixel(70));
-            int footerPadding = UiUtils.dpToPixel(10);
-            header.setPadding(footerPadding, footerPadding, footerPadding, footerPadding);
-            header.setText(R.string.tip_sentence);
-            header.setGravity(Gravity.CENTER_VERTICAL);
-            header.setCompoundDrawablePadding(UiUtils.dpToPixel(5));
-            header.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_about, 0, R.drawable.ic_action_cancel_gray, 0);
-            header.setClickable(true);
-            header.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListView.removeHeaderView(header);
-                    PrefUtils.putBoolean(PrefUtils.DISPLAY_TIP, false);
-                }
-            });
-            mListView.addHeaderView(header);
         }
 
         if ( mListView instanceof ListView )
@@ -657,24 +625,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         outState.putBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST, mOriginalUriShownEntryText);
         outState.putBoolean(STATE_SHOW_FEED_INFO, mShowFeedInfo);
         outState.putBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
-        //outState.putLong(STATE_LIST_DISPLAY_DATE, mListDisplayDate);
         outState.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
         if ( mOptions != null )
             outState.putString( STATE_OPTIONS, mOptions.toString() );
         super.onSaveInstanceState(outState);
     }
-
-    /*@Override
-    public void onRefresh() {
-        startRefresh();
-    }*/
-
-    /*@Override
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        if (id >= 0) { // should not happen, but I had a crash with this on PlayStore...
-            startActivity(new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mCurrentUri, id)));
-        }
-    }*/
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -947,12 +902,8 @@ s            }
                             name = cursor.getString(0);
                             if (!cursor.isNull(2) )
                                 feedUrl = cursor.getString( 2 );
-                            if (!cursor.isNull(1) ) {
+                            if (!cursor.isNull(1) )
                                 iconUrl = cursor.getString(1);
-//                                final Bitmap bitmap = UiUtils.getFaviconBitmap(feedID, feedUrl, cursor.getString(1) );
-//                                if ( bitmap != null )
-//                                    image = IconCompat.createWithBitmap(bitmap);
-                            }
                         }
                         cursor.close();
                     }
@@ -992,7 +943,6 @@ s            }
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {
-                //int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
                 mShowUnReadOnly = !mShowUnReadOnly;
                 setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
                 UpdateActions();
@@ -1120,11 +1070,9 @@ s            }
                 @Override
                 public void run() {
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    //String where = EntryColumns.WHERE_UNREAD + Constants.DB_AND + '(' + EntryColumns.FETCH_DATE + Constants.DB_IS_NULL + Constants.DB_OR + EntryColumns.FETCH_DATE + "<=" + mListDisplayDate + ')';
                     String where = EntryColumns.WHERE_UNREAD;
-                    if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
+                    if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed())
                         mJustMarkedAsReadEntries.close();
-                    }
                     mJustMarkedAsReadEntries = cr.query(mCurrentUri, new String[]{_ID}, where, null, null);
                     if ( mCurrentUri != null && Constants.NOTIF_MGR != null  ) {
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT );
@@ -1198,13 +1146,10 @@ s            }
 
         mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
         SetListViewAdapter();
-        //if ( mListView instanceof ListView )
-            mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
-        //mListDisplayDate = new Date().getTime();
+        mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
         if (mCurrentUri != null)
             restartLoaders();
 
-        //refreshUI();
         UpdateHeader();
         UpdateActions();
         mStatusText.SetFeedID( mCurrentUri );
@@ -1239,21 +1184,8 @@ s            }
         loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mLoader);
         if ( IsFeedUri( mCurrentUri ) )
             loaderManager.restartLoader(FILTERS_LOADER_ID, null, mLoader);
-        //Timer.Start( NEW_ENTRIES_NUMBER_LOADER_ID, "EntriesListFr.restartLoaders() mEntriesNumberLoader" );
-        //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
-
-        //loaderManager.restartLoader(ENTRIES_LOADER_ID, null, mEntriesLoader);
-        //loaderManager.restartLoader(NEW_ENTRIES_NUMBER_LOADER_ID, null, mEntriesNumberLoader);
     }
 
-    /*private void refreshUI() {
-        if (mNewEntriesNumber > 0) {
-            mRefreshListBtn.setText(getResources().getQuantityString(R.plurals.number_of_new_entries, mNewEntriesNumber, mNewEntriesNumber));
-            mRefreshListBtn.setVisibility(View.VISIBLE);
-        } else {
-            mRefreshListBtn.setVisibility(View.GONE);
-        }
-    }*/
     public static void SetVisibleItemsAsOld(HashSet<String> uriList) {
         final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
         for (String data : uriList) {
@@ -1301,8 +1233,6 @@ s            }
     }
     @Override
     public void update(Observable observable, Object o) {
-        //if ( !mShowTextInEntryList )
-        //    return;
         if ( o instanceof Entry && mEntriesCursorAdapter != null ) {
             final Entry entry = (Entry) o;
             if (entry.mRestorePosition ) {
@@ -1352,6 +1282,5 @@ s            }
             }
         } );
     }
-
-
+    
 }
