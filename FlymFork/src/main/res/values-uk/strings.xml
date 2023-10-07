@@ -149,7 +149,6 @@
     <string name="downloadOneImage">Завантажити зображення</string>
     <string name="favorites">Обране</string>
     <string name="last_read">Останні прочитані</string>
-    <string name="context_menu_share_starred">Поділитися обраними новинами</string>
     <string name="menu_star">В обране</string>
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
@@ -706,4 +705,6 @@
     <string name="settings_autobackup_toast_descr">Показувати сповіщення що спливає, коли файл резервної копії успішно скопійовано до теки завантажень</string>
     <string name="with_labels">з мітками:</string>
     <string name="none">немає</string>
+    <string name="show_article_text">Текст статті</string>
+    <string name="show_article_text_descr">Показувати текст статті у списку</string>
 </resources>
