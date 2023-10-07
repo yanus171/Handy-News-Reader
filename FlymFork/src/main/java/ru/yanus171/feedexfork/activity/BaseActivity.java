@@ -237,16 +237,16 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressBar.setScaleY( PrefUtils.getIntFromText( "article_text_footer_progress_height", 1 ) );
         } else
             mProgressBar.setVisibility( View.GONE );
-        isLayoutVisible = SetupHeaderLabel(mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible);
-        isLayoutVisible = SetupHeaderLabel(mLabelBattery, GetBatteryText(), "article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible);
-        isLayoutVisible = SetupHeaderLabel(mLabelDate, GetDateText(), "article_text_footer_show_date", isStatusBarHidden, isLayoutVisible);
-        isLayoutVisible = SetupHeaderLabel(mLabelRemaining, GetRemainingText( progress, max, step ), "article_text_footer_show_remaining", true, isLayoutVisible);
+        isLayoutVisible = SetupHeaderLabel(mLabelClock, new SimpleDateFormat("HH:mm").format(new Date()), "article_text_footer_show_clock", isStatusBarHidden, isLayoutVisible, isToolBarHidden);
+        isLayoutVisible = SetupHeaderLabel(mLabelBattery, GetBatteryText(), "article_text_footer_show_battery", isStatusBarHidden, isLayoutVisible, isToolBarHidden);
+        isLayoutVisible = SetupHeaderLabel(mLabelDate, GetDateText(), "article_text_footer_show_date", isStatusBarHidden, isLayoutVisible, isToolBarHidden);
+        isLayoutVisible = SetupHeaderLabel(mLabelRemaining, GetRemainingText( progress, max, step ), "article_text_footer_show_remaining", true, isLayoutVisible, isToolBarHidden);
         mRootView.findViewById( R.id.layoutColontitul ).setVisibility( isLayoutVisible ? View.VISIBLE : View.GONE );
         {
-            final int color = !isToolBarHidden ? Theme.GetToolBarColorInt() :Color.TRANSPARENT;
-            mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( color );
+            final int backgroundColor = getHeaderBackgroundColor(isToolBarHidden);
+            mRootView.findViewById( R.id.layoutColontitul ).setBackgroundColor( backgroundColor );
             if ( mProgressBarRefresh != null )
-                mProgressBarRefresh.setBackgroundColor( color );
+                mProgressBarRefresh.setBackgroundColor( backgroundColor );
         }
         {
             final int value = PrefUtils.getIntFromText("article_text_footer_offset", 0);
@@ -255,18 +255,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean show, boolean isLayoutVisible) {
+    private static int getHeaderBackgroundColor(boolean isToolBarHidden) {
+        return !isToolBarHidden ? Theme.GetToolBarColorInt() : Color.TRANSPARENT;
+    }
+
+    private static boolean SetupHeaderLabel( TextView textView, String text, String key, boolean show, boolean isLayoutVisible, boolean isToolBarHidden) {
         if ( PrefUtils.getBoolean(key, true ) && show ) {
             isLayoutVisible = true;
             textView.setVisibility( View.VISIBLE );
             textView.setTextSize(COMPLEX_UNIT_DIP, 8 + PrefUtils.getFontSizeFooterClock() );
             textView.setText( text );
             textView.setTextColor(Theme.GetColorInt("article_text_footer_clock_color", R.string.default_article_text_footer_color) );
-            textView.setBackgroundColor( Theme.GetColorInt( "article_text_footer_clock_color_background", R.string.transparent_color) );
-        } else {
+
+            textView.setBackgroundColor( getHeaderBackgroundColor(isToolBarHidden) );
+        } else
             textView.setVisibility( View.GONE );
-            textView.setBackgroundColor(Color.parseColor(Theme.GetBackgroundColor() ) );
-        }
         return isLayoutVisible;
     }
 

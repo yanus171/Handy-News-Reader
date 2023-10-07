@@ -1046,7 +1046,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private void markAllAsRead() {
         if (mEntriesCursorAdapter != null) {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
-                    .setActionTextColor(ContextCompat.getColor(getActivity(), R.color.light_theme_color_primary))
                     .setAction(R.string.undo, v -> new Thread() {
                         @Override
                         public void run() {
@@ -1070,7 +1069,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 @Override
                 public void run() {
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    String where = EntryColumns.WHERE_UNREAD;
+                    final String where = EntryColumns.WHERE_UNREAD;
                     if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed())
                         mJustMarkedAsReadEntries.close();
                     mJustMarkedAsReadEntries = cr.query(mCurrentUri, new String[]{_ID}, where, null, null);
@@ -1088,8 +1087,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     TakeMarkAsReadList( true );
                 }
             }.start();
-
-
         }
     }
 
@@ -1278,7 +1275,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             @Override
             public void run() {
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.update(FeedData.EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), null, null);
+                cr.update(mCurrentUri, FeedData.getUnreadContentValues(), EntryColumns.WHERE_READ, null);
             }
         } );
     }

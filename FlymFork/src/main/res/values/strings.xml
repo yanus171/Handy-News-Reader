@@ -362,7 +362,7 @@
     <string name="question_delete_entry">Delete this article?</string>
     <string name="question_mark_upper_as_read">Mark upper articles as read?</string>
     <string name="question_mark_lower_as_read">Mark lower articles as read?</string>
-    <string name="question_mark_all_as_unread">Mark all articles as unread?</string>
+    <string name="question_mark_all_as_unread">Mark all articles in selected section as unread?</string>
     <string name="share_all_text">Share whole text</string>
     <string name="group">Group</string>
     <string name="auto_image_load">Auto images load</string>

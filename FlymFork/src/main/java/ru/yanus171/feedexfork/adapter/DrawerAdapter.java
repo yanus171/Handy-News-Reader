@@ -19,15 +19,32 @@
 
 package ru.yanus171.feedexfork.adapter;
 
+import static ru.yanus171.feedexfork.Constants.DB_AND;
+import static ru.yanus171.feedexfork.Constants.DB_COUNT;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.DB_SUM;
+import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.MainApplication.getContext;
+import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
+
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +66,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.fragment.EntriesListFragment;
@@ -64,22 +82,6 @@ import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
-
-import static ru.yanus171.feedexfork.Constants.DB_AND;
-import static ru.yanus171.feedexfork.Constants.DB_COUNT;
-import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
-import static ru.yanus171.feedexfork.Constants.DB_OR;
-import static ru.yanus171.feedexfork.Constants.DB_SUM;
-import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
-import static ru.yanus171.feedexfork.MainApplication.getContext;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
-import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetSmallFont;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
-import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 
 public class DrawerAdapter extends BaseAdapter {
 
@@ -131,7 +133,7 @@ public class DrawerAdapter extends BaseAdapter {
             if ( position == result )
                 return false;
             if ( isLabelExpanded(parentLabel.mID ) )
-                for ( long childLabelID : LabelVoc.INSTANCE.getChildrenIDs( parentLabel.mID ) )  {
+                for ( long ignored : LabelVoc.INSTANCE.getChildrenIDs(parentLabel.mID ) )  {
                     result++;
                     if ( position == result )
                         return true;
@@ -146,7 +148,7 @@ public class DrawerAdapter extends BaseAdapter {
             if ( position == result )
                 return parentLabel.mID;
             if ( isLabelExpanded(parentLabel.mID ) )
-                for ( long childLabelID : LabelVoc.INSTANCE.getChildrenIDs( parentLabel.mID ) )  {
+                for ( long ignored : LabelVoc.INSTANCE.getChildrenIDs(parentLabel.mID ) )  {
                     result++;
                     if ( position == result )
                         return parentLabel.mID;
@@ -344,8 +346,6 @@ public class DrawerAdapter extends BaseAdapter {
         holder.imageSizeTxt.setVisibility(View.GONE);
         holder.tasksTxt.setVisibility(View.GONE);
         holder.layoutSize.setVisibility(View.VISIBLE);
-
-        ArrayList<Label> labelList = getLabelList();
 
         if ( position == ALL_ENTRY_POS ||
              position == UNREAD_ENTRY_POS ||
@@ -658,39 +658,40 @@ public class DrawerAdapter extends BaseAdapter {
     }
     private void updateNumbers() {
         EntriesListFragment.SetItemsAsRead( TakeMarkAsReadList( false ) );
-
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext()).edit();
         ContentResolver cr = mContext.getContentResolver();
         Timer timer = new Timer("updateNumbers()");
+        final boolean showRead = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false);
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
         Cursor numbers = cr.query(EntryColumns.CONTENT_URI,
                                   new String[]{FeedData.ALL_UNREAD_NUMBER,
-                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_READ_NUMBER : "0",
-                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
+                                      showRead ? FeedData.FAVORITES_READ_NUMBER : "0",
+                                      showRead ? FeedData.FAVORITES_UNREAD_NUMBER : FeedData.FAVORITES_NUMBER,
                                       FeedData.ALL_NUMBER,
-                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
-                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.EXTERNAL_READ_NUMBER : "0",
+                                      showRead ? FeedData.EXTERNAL_UNREAD_NUMBER : FeedData.EXTERNAL_NUMBER,
+                                      showRead ? FeedData.EXTERNAL_READ_NUMBER : "0",
                                       FeedData.ALL_IMAGESSIZE_NUMBER(),
                                       FeedData.ALL_UNREAD_IMAGESSIZE_NUMBER(),
                                       FeedData.FAVORITES_IMAGESSIZE_NUMBER(),
                                       FeedData.EXTERNAL_IMAGESSIZE_NUMBER(),
-                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.LAST_READ_READ_NUMBER : "0",
-                                      PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false) ? FeedData.LAST_READ_UNREAD_NUMBER : FeedData.LAST_READ_NUMBER,
+                                      showRead ? FeedData.LAST_READ_READ_NUMBER : "0",
+                                      showRead ? FeedData.LAST_READ_UNREAD_NUMBER : FeedData.LAST_READ_NUMBER,
                                   },
                                   null, null, null);
         if (numbers != null) {
             if (numbers.moveToFirst()) {
-                PrefUtils.putInt( KEY_AllUnreadNumber, numbers.getInt(0) );
-                PrefUtils.putInt( KEY_FavoritesReadNumber, numbers.getInt(1) );
-                PrefUtils.putInt( KEY_FavoritesUnreadNumber, numbers.getInt(2) );
-                PrefUtils.putInt( KEY_AllNumber, numbers.getInt(3) );
-                PrefUtils.putInt( KEY_ExternalUnreadNumber, numbers.getInt(4) );
-                PrefUtils.putInt( KEY_ExternalReadNumber, numbers.getInt(5) );
-                PrefUtils.putLong( KEY_AllImagesSize, numbers.getLong(6) );
-                PrefUtils.putLong( KEY_AllUnreadImagesSize, numbers.getLong(7) );
-                PrefUtils.putLong( KEY_FavoritiesImagesSize, numbers.getLong(8) );
-                PrefUtils.putLong( KEY_ExternalImagesSize, numbers.getLong(9) );
-                PrefUtils.putInt( KEY_LastReadReadNumber, numbers.getInt(10) );
-                PrefUtils.putInt( KEY_LastReadUnreadNumber, numbers.getInt(11) );
+                editor.putInt( KEY_AllUnreadNumber, numbers.getInt(0) );
+                editor.putInt( KEY_FavoritesReadNumber, numbers.getInt(1) );
+                editor.putInt( KEY_FavoritesUnreadNumber, numbers.getInt(2) );
+                editor.putInt( KEY_AllNumber, numbers.getInt(3) );
+                editor.putInt( KEY_ExternalUnreadNumber, numbers.getInt(4) );
+                editor.putInt( KEY_ExternalReadNumber, numbers.getInt(5) );
+                editor.putLong( KEY_AllImagesSize, numbers.getLong(6) );
+                editor.putLong( KEY_AllUnreadImagesSize, numbers.getLong(7) );
+                editor.putLong( KEY_FavoritiesImagesSize, numbers.getLong(8) );
+                editor.putLong( KEY_ExternalImagesSize, numbers.getLong(9) );
+                editor.putInt( KEY_LastReadReadNumber, numbers.getInt(10) );
+                editor.putInt( KEY_LastReadUnreadNumber, numbers.getInt(11) );
 
             }
             numbers.close();
@@ -701,15 +702,15 @@ public class DrawerAdapter extends BaseAdapter {
                                   new String[]{FeedData.TaskColumns.TEXT_COUNT, FeedData.TaskColumns.IMAGE_COUNT},
                                   null, null, null);
             if (cur.moveToFirst()) {
-                PrefUtils.putInt(KEY_TextTaskCount, cur.getInt(0) );
-                PrefUtils.putInt(KEY_ImageTaskCount, cur.getInt(1) );
+                editor.putInt(KEY_TextTaskCount, cur.getInt(0) );
+                editor.putInt(KEY_ImageTaskCount, cur.getInt(1) );
             }
             cur.close();
         }
 
-        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, KEY_LabelEntriesUnreadCount );
-        SetLabelsNumber(DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, KEY_LabelEntriesReadCount );
-        SetLabelsNumber(DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, KEY_LabelEntriesImagesSize );
+        SetLabelsNumber(editor, DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_UNREAD, KEY_LabelEntriesUnreadCount );
+        SetLabelsNumber(editor, DB_COUNT(EntryLabelColumns.ENTRY_ID), WHERE_READ, KEY_LabelEntriesReadCount );
+        SetLabelsNumber(editor, DB_SUM( EntryColumns.IMAGES_SIZE ), EMPTY_WHERE_SQL, KEY_LabelEntriesImagesSize );
 
         {
             Cursor cur = cr.query( FeedData.FeedColumns.GROUPED_FEEDS_CONTENT_URI,
@@ -724,18 +725,19 @@ public class DrawerAdapter extends BaseAdapter {
                                    null);
             if (cur != null) {
                 while (cur.moveToNext()) {
-                    PrefUtils.putInt(getFeedAllArticleCountKey( cur.getLong(0 ) ), cur.getInt(1));
-                    PrefUtils.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
+                    editor.putInt(getFeedAllArticleCountKey( cur.getLong(0 ) ), cur.getInt(1));
+                    editor.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
                 }
                 cur.close();
             }
         }
 
-        SetChildLabelsNumbers();
+        SetChildLabelsNumbers(editor);
+        editor.apply();
 
         timer.End();
     }
-    private void SetChildLabelsNumbers() {
+    private void SetChildLabelsNumbers(SharedPreferences.Editor editor) {
         HashSet<Long> readEntriesMap = new HashSet<>();
         {
             ContentResolver cr = mContext.getContentResolver();
@@ -747,17 +749,17 @@ public class DrawerAdapter extends BaseAdapter {
         {
             HashMap<String, Integer> map = LabelVoc.INSTANCE.GetChildLabelsNumbers(false, readEntriesMap);
             for (String key : map.keySet())
-                PrefUtils.putInt(CHILD_LABEL_KEY + key, map.get(key));
+                editor.putInt(CHILD_LABEL_KEY + key, map.get(key));
         }
         {
             HashMap<String, Integer> map = LabelVoc.INSTANCE.GetChildLabelsNumbers(true, readEntriesMap);
             for (String key : map.keySet())
-                PrefUtils.putInt(CHILD_LABEL_KEY_READ + key, map.get(key));
+                editor.putInt(CHILD_LABEL_KEY_READ + key, map.get(key));
         }
     }
-    private void SetLabelsNumber(String columnSQLFunc, String whereSQL, String key ) {
+    private void SetLabelsNumber(SharedPreferences.Editor editor, String columnSQLFunc, String whereSQL, String key ) {
         for ( Label label: LabelVoc.INSTANCE.getList() )
-            PrefUtils.putLong(key + label.mID, 0 );
+            editor.putLong(key + label.mID, 0 );
 
         ContentResolver cr = mContext.getContentResolver();
         Cursor cur = cr.query(EntryLabelColumns.WITH_ENTRIES_URI,
@@ -766,7 +768,7 @@ public class DrawerAdapter extends BaseAdapter {
         if (cur != null) {
             while (cur.moveToNext()) {
                 Label label = LabelVoc.INSTANCE.get(cur.getLong(0));
-                PrefUtils.putLong(key + label.mID, cur.isNull(1 ) ? 0 : cur.getLong(1));
+                editor.putInt(key + label.mID, cur.isNull(1 ) ? 0 : cur.getInt(1));
                 LabelVoc.INSTANCE.set(label);
             }
             cur.close();
