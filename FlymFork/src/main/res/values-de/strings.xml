@@ -147,7 +147,6 @@
     <string name="downloadOneImage">Bild herunterladen</string>
     <string name="favorites">Favoriten</string>
     <string name="last_read">Zuletzt gelesen</string>
-    <string name="context_menu_share_starred">Favoriten teilen</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
@@ -699,4 +698,9 @@
     <string name="tableOfContent">Inhaltsverzeichnis</string>
     <string name="show_notification_setup_summary">Systemdialog zur Einrichtung der App-Benachrichtigungen anzeigen</string>
     <string name="performance">Leistungsfähigkeit</string>
+    <string name="settings_autobackup_toast">Toast</string>
+    <string name="settings_autobackup_toast_descr">Toast-Nachricht anzeigen, wenn die Sicherungsdatei erfolgreich in Downloads erstellt wurde</string>
+    <string name="with_labels">mit Kategorien:</string>
+    <string name="show_article_text">Artikeltext</string>
+    <string name="show_article_text_descr">Artikeltext in Liste anzeigen</string>
 </resources>
