@@ -142,7 +142,6 @@
     <string name="no_entries">لا توجد مقالات</string>
     <string name="downloadOneImage">تحميل الصورة</string>
     <string name="favorites">المُميّزة</string>
-    <string name="context_menu_share_starred">مشاركة المقالات المُميّزة</string>
     <string name="menu_star">مُميّز</string>
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
