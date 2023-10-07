@@ -102,6 +102,7 @@ maksimum per umpan<br/>
     <string name="menu_add_feed">Cari Artikel Web</string>
     <string name="no_feeds">Tak ada umpan</string>
     <string name="no_filters">Tidak ada aturan</string>
+    <string name="context_menu_add">Tambah</string>
     <string name="context_menu_delete">Hapus</string>
     <string name="edit_feed_title">Sunting umpan</string>
     <string name="new_feed_title">Umpan baru atau artikel</string>
@@ -152,10 +153,10 @@ maksimum per umpan<br/>
     <string name="downloadOneImage">Unduh gambar</string>
     <string name="favorites">Favorit</string>
     <string name="last_read">Terakhir dibaca</string>
-    <string name="context_menu_share_starred">Bagikan entri favorit</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Batal favorit</string>
     <string name="menu_share">Bagikan</string>
+    <string name="menu_mark_all_as_unread">Tandai semua belum dibaca</string>
     <string name="menu_full_screen">Layar penuh</string>
     <string name="menu_actionbar_visible">Bilah Tindakan</string>
     <string name="menu_font_bold">Huruf tebal</string>
@@ -184,6 +185,7 @@ maksimum per umpan<br/>
     <string name="tip_sentence">Tip: geser kanan tanda sudah dibaca, geser kiri tambah ke Favorit</string>
     <string name="undo">Urung</string>
     <string name="marked_as_read">Tandai sudah dibaca</string>
+    <string name="removed_from_favorites">Dihapus dari favorit</string>
     <string name="image_count">Jumlah gambar</string>
     <!-- WIDGET -->
     <string name="red">Merah</string>
@@ -340,6 +342,7 @@ maksimum per umpan<br/>
     <string name="actionBarToggle">aktif/nonaktifkan Bilah Tindakan</string>
     <string name="standard">Standar</string>
     <string name="fontsize_entrylist">Ukuran huruf pada daftar artikel</string>
+    <string name="confirmation">Konfirmasi</string>
     <string name="question_delete_entry">Hapus artikel ini?</string>
     <string name="share_all_text">Bagikan seluruh teks</string>
     <string name="group">Grup</string>
@@ -486,6 +489,10 @@ maksimum per umpan<br/>
     <string name="article_reading_notification_hint">Tahan aplikasi di memori ketika sedang membaca sebuah artikel</string>
     <string name="auto_set_as_read">Setel otomatis artikel sudah dibaca ketika judul terlihat di senarai</string>
     <string name="removeText">Hapus teks</string>
+    <string name="set_category">Tetapkan sebagai kategori</string>
+    <string name="menu_more_options">Opsi lebih lanjut</string>
+    <string name="filter_apply_to_url">Terapkan ke URL</string>
+    <string name="show_article_category">"Tampilkan kategori artikel"</string>
     <string name="yes">Iya</string>
     <string name="no">Tidak</string>
     <plurals name="number_of_new_entries">
