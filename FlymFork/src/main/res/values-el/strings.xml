@@ -146,7 +146,6 @@
     <string name="no_entries">Χωρίς άρθρα</string>
     <string name="downloadOneImage">Κατέβασμα εικόνας</string>
     <string name="favorites">Με αστέρι</string>
-    <string name="context_menu_share_starred">Αποστολή άρθρων με αστέρι</string>
     <string name="menu_star">Αστέρι</string>
     <string name="menu_unstar">Αφαίρεση αστεριού</string>
     <string name="menu_share">Αποστολή</string>
