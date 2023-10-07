@@ -150,7 +150,8 @@
     <string name="downloadOneImage">Download the image</string>
     <string name="favorites">Starred</string>
     <string name="last_read">Last read</string>
-    <string name="context_menu_share_starred">Share starred entries</string>
+    <string name="context_menu_share_starred_via_file">Share starred entries via file</string>
+    <string name="context_menu_share_starred_via_text">Share starred entries via text</string>
     <string name="menu_star">Star</string>
     <string name="menu_unstar">Unstar</string>
     <string name="menu_share">Share</string>

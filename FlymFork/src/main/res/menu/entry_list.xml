@@ -95,10 +95,13 @@
                         android:id="@+id/menu_unstarr_articles"
                         android:title="@string/menu_unstar_articles"/>
                     <item
-                        android:id="@+id/menu_share_starred"
+                        android:id="@+id/menu_share_starred_via_file"
                         android:icon="@drawable/ic_share"
-                        android:visible="false"
-                        android:title="@string/context_menu_share_starred"/>
+                        android:title="@string/context_menu_share_starred_via_file"/>
+                    <item
+                        android:id="@+id/menu_share_starred_via_text"
+                        android:icon="@drawable/ic_share"
+                        android:title="@string/context_menu_share_starred_via_text"/>
                 </menu>
             </item>
             <item

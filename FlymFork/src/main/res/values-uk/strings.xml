@@ -149,7 +149,7 @@
     <string name="downloadOneImage">Завантажити зображення</string>
     <string name="favorites">Обране</string>
     <string name="last_read">Останні прочитані</string>
-    <string name="context_menu_share_starred">Поділитися обраними новинами</string>
+    <string name="context_menu_share_starred_via_file">Поділитися обраними новинами</string>
     <string name="menu_star">В обране</string>
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>

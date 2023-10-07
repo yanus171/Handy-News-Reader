@@ -70,7 +70,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,7 +88,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -307,8 +305,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private void UpdateActions() {
         if ( mMenu == null )
             return;
-
-        mMenu.findItem(R.id.menu_share_starred).setVisible(true);
 
         MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
         if (mShowUnReadOnly) {
@@ -712,33 +708,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 break;
             }
 
-            case R.id.menu_share_starred: {
-                if (mEntriesCursorAdapter != null) {
-                    StringBuilder starredList = new StringBuilder();
-                    final boolean temp = mShowUnReadOnly;
-                    mShowUnReadOnly = false;
-                    final HashSet<Long> tempLabelsID = mLabelsID;
-                    final HashSet<Long> labeledArticlesID = new HashSet<>();
-                    for ( Label label: LabelVoc.INSTANCE.getList() ) {
-                        starredList.append( "\n" + label.mName + ": \n" );
-                        starredList.append( "----------------------------------------\n" );
-                        SetSingleLabel( label.mID );
-                        AddAtricleLinks(starredList, labeledArticlesID);
-                    }
-                    starredList.append( "\n" + getContext().getString( R.string.withoutLabel ) + ": \n" );
-                    starredList.append( "----------------------------------------\n" );
-                    try ( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, null, null,
-                                                                                  DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ){
-                        AddAtricleLinks(cursor, starredList, null, labeledArticlesID );
-                    }
-
-                    mShowUnReadOnly = temp;
-                    mLabelsID = tempLabelsID;
-                    final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                    emailIntent.setType("plain/text");
-                    emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "shared_article_links.txt", starredList.toString()) );
-                    startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
-                }
+            case R.id.menu_share_starred_via_file: {
+                final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "shared_article_links.txt", getStarredArticlesList()) );
+                startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
+                return true;
+            }
+            case R.id.menu_share_starred_via_text: {
+                final Intent textIntent = new Intent(Intent.ACTION_SEND);
+                //textIntent.setType("plain/text");
+                textIntent.putExtra(Intent.EXTRA_TEXT, getStarredArticlesList() );
+                textIntent.setType(Constants.MIMETYPE_TEXT_PLAIN);
+                startActivity(Intent.createChooser( textIntent, getString(R.string.share_favorites_title)) );
                 return true;
             }
 
@@ -999,6 +981,40 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @NonNull
+    private String getStarredArticlesList() {
+        if (mEntriesCursorAdapter == null)
+            return "";
+        StringBuilder starredList = new StringBuilder();
+        //final boolean temp = mShowUnReadOnly;
+        //mShowUnReadOnly = false;
+        final HashSet<Long> labeledArticlesID = new HashSet<>();
+        final HashSet<Long> tempLabelsID = mLabelsID;
+        if ( mLabelsID.isEmpty() ) {
+            for (Label label : LabelVoc.INSTANCE.getList()) {
+                SetSingleLabel(label.mID);
+                StringBuilder list = new StringBuilder();
+                AddAtricleLinks(list, labeledArticlesID);
+                if ( list.length() > 0 ) {
+                    starredList.append("\n" + label.mName + ": \n");
+                    starredList.append("----------------------------------------\n");
+                    starredList.append( list );
+                }
+            }
+            starredList.append("\n" + getContext().getString(R.string.withoutLabel) + ": \n");
+            starredList.append("----------------------------------------\n");
+            try (Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, null, null,
+                                                                         DATE + (IsOldestFirst() ? DB_ASC : DB_DESC))) {
+                AddAtricleLinks(cursor, starredList, null, labeledArticlesID);
+            }
+        } else
+            AddAtricleLinks(starredList, labeledArticlesID);
+
+        //mShowUnReadOnly = temp;
+        mLabelsID = tempLabelsID;
+        return starredList.toString();
     }
 
     private void AddAtricleLinks(StringBuilder starredList, HashSet<Long> articlesID) {
