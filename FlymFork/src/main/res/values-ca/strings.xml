@@ -84,7 +84,6 @@
     <string name="all_entries">All entries</string>
     <string name="no_entries">No hi ha entrades</string>
     <string name="favorites">Destacats</string>
-    <string name="context_menu_share_starred">Comparteix entrades destacades</string>
     <string name="menu_star">Marca</string>
     <string name="menu_unstar">Treu la marca</string>
     <string name="menu_share">Comparteix</string>
