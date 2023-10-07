@@ -144,7 +144,6 @@
     <string name="no_entries">Brak artykułów</string>
     <string name="downloadOneImage">Pobierz obrazek</string>
     <string name="favorites">Ulubione</string>
-    <string name="context_menu_share_starred">Udostępnij Ulubione</string>
     <string name="menu_star">Oznacz jako Ulubione</string>
     <string name="menu_unstar">Usuń z Ulubionych</string>
     <string name="menu_share">Udostępnij</string>
