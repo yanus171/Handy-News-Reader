@@ -91,7 +91,6 @@
     <string name="all_entries">Alla</string>
     <string name="no_entries">Inga poster</string>
     <string name="favorites">Favoriter</string>
-    <string name="context_menu_share_starred">Dela favoriter</string>
     <string name="menu_star">Markera som favorit</string>
     <string name="menu_unstar">Avmarkera som favorit</string>
     <string name="menu_share">Dela</string>
