@@ -202,7 +202,12 @@ public class EntryActivity extends BaseActivity implements Observer {
             @Override
             public void run() {
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                final String anchor = finalUrl.substring(finalUrl.indexOf('#') + 1);
                 String url = finalUrl;
+                if ( !anchor.isEmpty() ) {
+                    url = url.replace("#" + anchor, "");
+                    mEntryFragment.mAnchor = anchor;
+                }
                 String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
                 if (IsLocalFile(Uri.parse(url))) {
                     Uri uri = Uri.parse(url);

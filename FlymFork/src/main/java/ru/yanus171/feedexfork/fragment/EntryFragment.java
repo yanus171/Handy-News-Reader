@@ -208,6 +208,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private String mSearchText = "";
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
+    public String mAnchor = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
@@ -1806,7 +1808,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
-            Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
+            Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos +  ", mAnchor = " + mAnchor);
 
             EntryView view = GetEntryView( pagerPos );
             if (view != null ) {

@@ -704,11 +704,13 @@ public class EntryView extends WebView implements Handler.Callback {
                 try {
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         OpenImage(url, context);
-                    } else if (url.contains("#")) {
-                        String hash = url.substring(url.indexOf('#') + 1);
-                        hash = URLDecoder.decode(hash);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
+                    } else if (url.contains("#") && ( url.contains( mEntryLink ) || !url.contains( "http" ) ) ) {
+                        String anchor = url.substring(url.indexOf('#') + 1);
+                        anchor = URLDecoder.decode(anchor);
+                        if ( anchor.isEmpty() )
+                            ScrollTo( 0 );
+                        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            moveToAnchor(view, anchor);
                             AddNavigationHistoryStep();
                         }
                     } else if (url.contains(NO_MENU)) {
@@ -786,7 +788,10 @@ public class EntryView extends WebView implements Handler.Callback {
                            {
                                if (mActivity.mEntryFragment != null)
                                    mActivity.mEntryFragment.UpdateHeader();
-                               ScrollToY();
+                               if ( mActivity.mEntryFragment != null && !mActivity.mEntryFragment.mAnchor.isEmpty() )
+                                   moveToAnchor( view, mActivity.mEntryFragment.mAnchor );
+                               else
+                                   ScrollToY();
                            });
                     if ( new Date().getTime() - startTime < 1000 )
                         PostDelayed( view, startTime );
@@ -861,6 +866,12 @@ public class EntryView extends WebView implements Handler.Callback {
 //        }
         //setNestedScrollingEnabled( true );
         timer.End();
+    }
+
+    private void moveToAnchor(WebView view, String hash) {
+        Dog.v( TAG, "EntryView.moveToAnchor " + hash );
+        view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
+        mActivity.mEntryFragment.mAnchor = "";
     }
 
     public static void ShowLinkMenu(String url, String title, Context context ) {
@@ -994,8 +1005,8 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     private void ScrollToY() {
-        Dog.v(TAG, "ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
-        if (GetScrollY() > 0)
+        Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
+        if (GetScrollY() > 0) 
             EntryView.this.scrollTo(0, GetScrollY());
     }
 
