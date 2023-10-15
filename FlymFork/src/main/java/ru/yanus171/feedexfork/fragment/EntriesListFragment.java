@@ -717,8 +717,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_share_starred_via_text: {
                 final Intent textIntent = new Intent(Intent.ACTION_SEND);
-                //textIntent.setType("plain/text");
                 textIntent.putExtra(Intent.EXTRA_TEXT, getStarredArticlesList() );
+                textIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.shared_favorities_article_list_mail_sugject);
                 textIntent.setType(Constants.MIMETYPE_TEXT_PLAIN);
                 startActivity(Intent.createChooser( textIntent, getString(R.string.share_favorites_title)) );
                 return true;

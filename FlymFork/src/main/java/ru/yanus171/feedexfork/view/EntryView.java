@@ -1006,7 +1006,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     private void ScrollToY() {
         Dog.v(TAG, "EntryView.ScrollToY() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY());
-        if (GetScrollY() > 0) 
+        if (GetScrollY() > 0)
             EntryView.this.scrollTo(0, GetScrollY());
     }
 
