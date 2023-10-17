@@ -147,6 +147,8 @@
     <string name="downloadOneImage">Bild herunterladen</string>
     <string name="favorites">Favoriten</string>
     <string name="last_read">Zuletzt gelesen</string>
+    <string name="context_menu_share_starred_via_file">Gekennzeichnete Einträge als Datei freigeben</string>
+    <string name="context_menu_share_starred_via_text">Gekennzeichnete Einträge als Text freigeben</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
