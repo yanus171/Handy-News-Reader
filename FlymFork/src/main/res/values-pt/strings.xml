@@ -146,6 +146,8 @@
     <string name="no_entries">Nenhum artigo</string>
     <string name="downloadOneImage">Baixar imagem</string>
     <string name="favorites">Favorito</string>
+    <string name="context_menu_share_starred_via_file">Compartilhar entradas favoritas via arquivo</string>
+    <string name="context_menu_share_starred_via_text">Compartilhar entradas favoritas via texto</string>
     <string name="menu_star">Estrela</string>
     <string name="menu_unstar">Desmarcar</string>
     <string name="menu_share">Compartilhar</string>
