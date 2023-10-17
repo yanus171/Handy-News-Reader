@@ -16,7 +16,6 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
-import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
@@ -60,6 +59,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         SetupZone(parentView, size, R.id.entryRightBottomBtn, size, preview, isArticleList);
         SetupZone(parentView, size, R.id.leftTopBtn, size, preview, isArticleList);
         SetupZone(parentView, size, R.id.rightTopBtn, size, preview, isArticleList);
+        SetupZone(parentView, size, R.id.backBtn, size, preview, isArticleList);
         SetupZone(parentView, size, R.id.leftTopBtnFS, size, preview, isArticleList);
         SetupZone(parentView, size, R.id.rightTopBtnFS, size, preview, isArticleList);
         if ( !preview )
@@ -67,6 +67,8 @@ public final class TapZonePreviewPreference extends DialogPreference {
     }
 
     public static boolean IsZoneEnabled(int viewID, boolean preview, boolean isArticleList) {
+        if ( isArticleList && viewID == R.id.backBtn)
+            return false;
         if ( !isArticleList && viewID == R.id.rightTopBtn && !isArticleTapEnabledTemp() )
             return true;
         boolean hideByFullScreenMode = false;
@@ -84,7 +86,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
     private static void SetupZone(View parentView, int size, int viewID, int matchParent, boolean preview, boolean isArticleList) {
         View view = parentView.findViewById( viewID );
         if ( view != null ) {
-            if ( IsZoneEnabled( viewID,preview, isArticleList ) ) {
+            if ( IsZoneEnabled( viewID, preview, isArticleList ) ) {
                 view.setVisibility(View.VISIBLE);
                 SetSize(parentView, viewID, matchParent, size);
             } else
@@ -100,6 +102,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageUpBtnFS, false);
         UiUtils.UpdateButtonVisibility(rootView, R.id.entryRightBottomBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.entryLeftBottomBtn, visible);
+        UiUtils.UpdateButtonVisibility(rootView, R.id.backBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.leftTopBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.rightTopBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.leftTopBtnFS, visible);

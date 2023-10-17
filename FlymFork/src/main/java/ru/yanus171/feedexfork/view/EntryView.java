@@ -699,14 +699,17 @@ public class EntryView extends WebView implements Handler.Callback {
                 if ( System.currentTimeMillis() - mMovedTime < MOVE_TIMEOUT  )
                     return true;
 
-
                 final Context context = getContext();
                 try {
+                    String anchor = "";
+                    if ( url.contains("#") ) {
+                        anchor = url.substring(url.indexOf('#') + 1);
+                        anchor = URLDecoder.decode(anchor);
+                    }
+
                     if (url.startsWith(Constants.FILE_SCHEME)) {
                         OpenImage(url, context);
-                    } else if (url.contains("#") && ( url.contains( mEntryLink ) || !url.contains( "http" ) ) ) {
-                        String anchor = url.substring(url.indexOf('#') + 1);
-                        anchor = URLDecoder.decode(anchor);
+                    } else if (!anchor.isEmpty() && url.replace( "#" + anchor, "" ).equals( mEntryLink ) || !url.contains( "http" ) ) {
                         if ( anchor.isEmpty() )
                             ScrollTo( 0 );
                         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -761,10 +764,8 @@ public class EntryView extends WebView implements Handler.Callback {
                             DownLoadImages();
                         ScheduleScrollTo(view, new Date().getTime());
                     }
-                } else { // anchor selected
-                    AddNavigationHistoryStep();
+                } else
                     DoNotShowMenu();
-                }
             }
 
             private void ScheduleScrollTo(final WebView view, long startTime) {
@@ -819,6 +820,7 @@ public class EntryView extends WebView implements Handler.Callback {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                mActivity.mEntryFragment.mAnchor = "";
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mPressedX = event.getX();
                     mPressedY = event.getY();
@@ -871,7 +873,7 @@ public class EntryView extends WebView implements Handler.Callback {
     private void moveToAnchor(WebView view, String hash) {
         Dog.v( TAG, "EntryView.moveToAnchor " + hash );
         view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
-        mActivity.mEntryFragment.mAnchor = "";
+        mScrollY = 0;
     }
 
     public static void ShowLinkMenu(String url, String title, Context context ) {
@@ -1132,12 +1134,13 @@ public class EntryView extends WebView implements Handler.Callback {
     }
 
     public boolean CanGoBack() {
-        return canGoBack() && !mHistoryAchorScrollY.isEmpty();
+        return !mHistoryAchorScrollY.isEmpty();
     }
 
     public void GoBack() {
         if (CanGoBack())
             scrollTo(0, mHistoryAchorScrollY.pop());
+        mActivity.mEntryFragment.SetupZones();
     }
 
     public void GoTop() {
@@ -1147,6 +1150,7 @@ public class EntryView extends WebView implements Handler.Callback {
 
     public void AddNavigationHistoryStep() {
         mHistoryAchorScrollY.push(getScrollY());
+        mActivity.mEntryFragment.SetupZones();
     }
 
 

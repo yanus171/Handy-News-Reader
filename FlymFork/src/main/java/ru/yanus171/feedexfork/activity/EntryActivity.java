@@ -202,9 +202,10 @@ public class EntryActivity extends BaseActivity implements Observer {
             @Override
             public void run() {
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
-                final String anchor = finalUrl.substring(finalUrl.indexOf('#') + 1);
+
                 String url = finalUrl;
-                if ( !anchor.isEmpty() ) {
+                if ( finalUrl.indexOf('#') > -1 ) {
+                    final String anchor = finalUrl.substring(finalUrl.indexOf('#') + 1);
                     url = url.replace("#" + anchor, "");
                     mEntryFragment.mAnchor = anchor;
                 }

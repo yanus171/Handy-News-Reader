@@ -5,16 +5,24 @@
     android:id="@+id/topBtnLayout"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
-    <TextView
-        android:id="@+id/leftTopBtn"
-        style="@style/TapZoneBtn"
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="start|top"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/fullScreenToggle" />
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/leftTopBtn"
+            style="@style/TapZoneBtn"
+            android:text="@string/fullScreenToggle" />
+        <TextView
+            android:id="@+id/backBtn"
+            style="@style/BackTapBtn"
+            android:text="" />
+    </LinearLayout>
     <LinearLayout
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

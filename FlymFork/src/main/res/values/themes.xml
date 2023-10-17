@@ -64,8 +64,12 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:textSize">10sp</item>
         <item name="android:background">@drawable/round_background</item>
-
     </style>
+
+    <style name="BackTapBtn" parent="TapZoneBtn" >
+        <item name="android:background">@drawable/arrow_back</item>
+    </style>
+
     <style name="FeedAttrEdit" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
