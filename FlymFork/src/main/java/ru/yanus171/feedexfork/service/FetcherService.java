@@ -959,7 +959,6 @@ public class FetcherService extends IntentService {
                             }
 
                             connection = new Connection(linkToLoad, OKHTTP);
-
                             Status().ChangeProgress(R.string.extractContent);
 
                             if (FetcherService.isCancelRefresh())
