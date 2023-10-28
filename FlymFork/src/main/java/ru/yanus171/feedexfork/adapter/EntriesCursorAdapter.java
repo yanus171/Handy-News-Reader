@@ -290,8 +290,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.videoImgView = view.findViewById(R.id.video_icon);
             holder.readImgView.setVisibility(PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE); //
             holder.textLayout = view.findViewById(R.id.textLayout);
-            holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
-            holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
+            holder.readToggleSwypeBtnView = view.findViewById(R.id.swipe_btn_toggle_read);
+            holder.starToggleSwypeBtnView = view.findViewById(R.id.swipe_btn_toggle_star);
             holder.newImgView = view.findViewById(R.id.new_icon);
             holder.contentImgView1 = view.findViewById(R.id.image1);
             holder.contentImgView2 = view.findViewById(R.id.image2);
@@ -352,7 +352,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
                 null;
 
-            view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
+            view.findViewById(R.id.layout_on_touch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
                 private int initialx = 0;
@@ -1190,7 +1190,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readToggleSwypeBtnView.setImageResource(holder.isRead ? R.drawable.ic_check_box_outline_blank_gray : R.drawable.ic_check_box_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
-        parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
+        parentView.findViewById(R.id.layout_vertical).setBackgroundColor(backgroundColor );
         parentView.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
         {
             final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetTextColorRead() );

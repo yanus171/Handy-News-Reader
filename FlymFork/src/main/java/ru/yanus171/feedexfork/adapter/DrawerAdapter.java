@@ -100,11 +100,13 @@ public class DrawerAdapter extends BaseAdapter {
     private static final int POS_OPTIONS = 10;
     private static final int POS_IMAGESIZE = 11;
 
-    public static final int ALL_ENTRY_POS = 0;
-    public static final int UNREAD_ENTRY_POS = 1;
-    public static final int STARRED_ENTRY_POS = 2;
-    public static final int EXTERNAL_ENTRY_POS = 3;
-    public static final int LAST_READ_ENTRY_POS = 4;
+
+    public static final int FAVORITES_DRAWER_PAS = 2;
+    public static final int LAST_READ_DRAWER_POS = 4;
+    public static final int ALL_DRAWER_POS = 0;
+    public static final int UNREAD_DRAWER_POS = 1;
+    public static final int STARRED_DRAWER_POS = 2;
+    public static final int EXTERNAL_DRAWER_POS = 3;
     public static final int LABEL_GROUP_POS = 5;
     public static final String PREF_IS_LABEL_GROUP_EXPANDED = "label_group_expanded";
     public static final String PREF_LABEL_ID_EXPANDED = "LABEL_ID_EXPANDED_";
@@ -347,19 +349,19 @@ public class DrawerAdapter extends BaseAdapter {
         holder.tasksTxt.setVisibility(View.GONE);
         holder.layoutSize.setVisibility(View.VISIBLE);
 
-        if ( position == ALL_ENTRY_POS ||
-             position == UNREAD_ENTRY_POS ||
-             position == STARRED_ENTRY_POS ||
-             position == EXTERNAL_ENTRY_POS ||
-             position == LAST_READ_ENTRY_POS ) {
+        if ( position == ALL_DRAWER_POS ||
+             position == UNREAD_DRAWER_POS ||
+             position == STARRED_DRAWER_POS ||
+             position == EXTERNAL_DRAWER_POS ||
+             position == LAST_READ_DRAWER_POS) {
             switch (position) {
-                case ALL_ENTRY_POS:
+                case ALL_DRAWER_POS:
                     holder.titleTxt.setText(R.string.unread_entries);
                     holder.iconView.setImageResource(R.drawable.cup_new_unread);
                     SetCount(KEY_AllUnreadNumber, holder.unreadTxt);
                     SetImageSizeText(holder, KEY_AllUnreadImagesSize);
                     break;
-                case UNREAD_ENTRY_POS:
+                case UNREAD_DRAWER_POS:
                     holder.titleTxt.setText(R.string.all_entries);
                     holder.iconView.setImageResource(R.drawable.cup_new_pot);
                     SetCount(KEY_AllNumber, holder.unreadTxt);
@@ -377,23 +379,23 @@ public class DrawerAdapter extends BaseAdapter {
                         holder.tasksTxt.setText(getContext().getString(R.string.tasks_to_download) + ": " + taskInfo);
                     }
                     break;
-                case STARRED_ENTRY_POS:
+                case STARRED_DRAWER_POS:
                     holder.titleTxt.setText(R.string.favorites);
-                    holder.iconView.setImageResource(R.drawable.cup_new_star);
+                    holder.iconView.setImageResource(R.drawable.star_yellow);
                     SetCount(KEY_FavoritesUnreadNumber, holder.unreadTxt);
                     SetCount(KEY_FavoritesReadNumber, holder.readTxt);
                     SetImageSizeText(holder, KEY_FavoritiesImagesSize);
                     break;
-                case EXTERNAL_ENTRY_POS:
+                case EXTERNAL_DRAWER_POS:
                     holder.titleTxt.setText(R.string.externalLinks);
-                    holder.iconView.setImageResource(R.drawable.cup_new_load_later);
+                    holder.iconView.setImageResource(R.drawable.download_gray);
                     SetCount(KEY_ExternalUnreadNumber, holder.unreadTxt);
                     SetCount(KEY_ExternalReadNumber, holder.readTxt);
                     SetImageSizeText(holder, KEY_ExternalImagesSize);
                     break;
-                case LAST_READ_ENTRY_POS:
+                case LAST_READ_DRAWER_POS:
                     holder.titleTxt.setText(R.string.last_read);
-                    holder.iconView.setImageResource(R.drawable.cup_new_load_now);
+                    holder.iconView.setImageResource(R.drawable.clock_green_filled);
                     SetCount(KEY_LastReadUnreadNumber, holder.unreadTxt);
                     SetCount(KEY_LastReadReadNumber, holder.readTxt);
                     //SetImageSizeText(holder, KEY_ExternalImagesSize);

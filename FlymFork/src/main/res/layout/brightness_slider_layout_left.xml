@@ -6,7 +6,7 @@
     android:visibility="visible"
     android:layout_width="10mm"
     android:layout_height="match_parent"
-    android:layout_alignParentLeft="true"
     android:text="@string/brightness_change"
     tools:showIn="@layout/activity_general_prefs"
+    android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />

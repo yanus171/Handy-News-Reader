@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btnLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
         android:paddingRight="5dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_keyboard_arrow_right_gray"
-        android:paddingEnd="5dp" />
+        android:paddingEnd="5dp"
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>

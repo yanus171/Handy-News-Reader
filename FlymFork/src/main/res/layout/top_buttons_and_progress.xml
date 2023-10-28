@@ -9,9 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="start|top"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_gravity="start|top">
         <TextView
             android:id="@+id/leftTopBtn"
             style="@style/TapZoneBtn"
@@ -26,9 +24,6 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         tools:showIn="@layout/fragment_entry_list">
 
         <TextView
@@ -45,7 +40,6 @@
             android:layout_gravity="top|end"
             android:layout_margin="10dp"
             android:padding="10dp"
-            android:layout_below="@id/rightTopBtn"
             android:background="@drawable/progressbar_background"
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/spinner_ring" />
@@ -54,16 +48,13 @@
             android:id="@+id/progressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/progressBarLoader"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:layout_toStartOf="@+id/progressBarLoader"
-            android:layout_toLeftOf="@+id/progressBarLoader"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:background="@drawable/progresstext_background"
+            android:background="@drawable/progress_text_background"
             android:text="info"
             android:visibility="gone"
-            tools:ignore="RtlHardcoded" />
+            tools:ignore="HardcodedText,RtlHardcoded" />
     </LinearLayout>
 </FrameLayout>

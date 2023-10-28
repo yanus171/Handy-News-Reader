@@ -31,8 +31,10 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -87,8 +89,12 @@ import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_ENTRY_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.ALL_DRAWER_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_DRAWER_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.FAVORITES_DRAWER_PAS;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LAST_READ_DRAWER_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.UNREAD_DRAWER_POS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
@@ -106,7 +112,6 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
 
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -114,9 +119,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
-
-    private static final int FAVORITES_DRAWER_PAS = 2;
-    private static final int LAST_READ_DRAWER_POS = 4;
 
     public View mPageUpBtn = null;
     public View mPageUpBtnFS = null;
@@ -682,7 +684,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 newUri = LAST_READ_CONTENT_URI;
                 mTitle = getString( R.string.last_read );
                 break;
-            case EXTERNAL_ENTRY_POS:
+            case EXTERNAL_DRAWER_POS:
                 newUri = ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() );
                 mTitle = getString( R.string.externalLinks );
                 showFeedInfo = false;
@@ -742,20 +744,20 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         if (actionBar != null) {
             getSupportActionBar().setHomeAsUpIndicator( 0 );
             switch (mCurrentDrawerPos) {
-                case 0:
+                case UNREAD_DRAWER_POS:
                     SetActionbarIndicator( R.drawable.cup_new_unread);
                     break;
-                case 1:
+                case ALL_DRAWER_POS:
                     SetActionbarIndicator( R.drawable.cup_new_pot );
                     break;
                 case FAVORITES_DRAWER_PAS:
-                    SetActionbarIndicator( R.drawable.cup_new_star);
+                    SetActionbarIndicator( R.drawable.star_yellow);
+                    break;
+                case EXTERNAL_DRAWER_POS:
+                    SetActionbarIndicator( R.drawable.download_gray);
                     break;
                 case LAST_READ_DRAWER_POS:
-                    SetActionbarIndicator( R.drawable.cup_new_load_now);
-                    break;
-                case 3:
-                    SetActionbarIndicator( R.drawable.cup_new_load_later );
+                    SetActionbarIndicator( R.drawable.clock_green_filled );
                     break;
                 default:
                     Drawable image = mDrawerAdapter.getItemIcon( position ) == null ?
@@ -781,7 +783,16 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private void SetActionbarIndicator( int imageResource) {
         Bitmap original = BitmapFactory.decodeResource(getResources(), imageResource);
         int size = UiUtils.dpToPixel( 32 );
-        Bitmap b = Bitmap.createScaledBitmap( original, size, size, false);
+        Bitmap b = null;
+        if ( original == null ) {
+            Drawable d = ContextCompat.getDrawable(MainApplication.getContext(), imageResource);
+            b = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(b);
+            d.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            d.draw(canvas);
+        } else {
+            b = Bitmap.createScaledBitmap(original, size, size, false);
+        }
         Drawable d = new BitmapDrawable(getResources(), b);
         getSupportActionBar().setHomeAsUpIndicator( d );
     }
