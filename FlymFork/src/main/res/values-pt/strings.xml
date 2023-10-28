@@ -539,4 +539,5 @@
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
     </plurals>
+    <string name="shared_favorities_article_list_mail_sugject">Lista de artigos favoritos do Handy Reader</string>
 </resources>
