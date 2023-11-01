@@ -433,7 +433,7 @@ public class DebugApp {
 
 	// ------------------------------------------------------------------------
 	public static void ShowError(String text, Exception e, Context context ) {
-		Theme.CreateDialog( context )
+		UiUtils.RunOnGuiThread(() -> Theme.CreateDialog(context )
 			.setTitle( R.string.sendErrorConfirm )
 			.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss() )
 			.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
@@ -449,7 +449,8 @@ public class DebugApp {
 					}
 				}
 				ShowSendErrorActivity(error.toString());
-			}).create().show();
+			}).create().show());
+
 	}
 
 	// --------------------------------------------------------------------------

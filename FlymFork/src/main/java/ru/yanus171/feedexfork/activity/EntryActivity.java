@@ -217,7 +217,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                     }
                     final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
                     if ( !fileInCache.exists() )
-                        FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), MainApplication.getContext());
+                        FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), EntryActivity.this);
                     url = FileUtils.INSTANCE.getUriForFile( fileInCache ).toString();
                 }
 

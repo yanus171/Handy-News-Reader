@@ -178,9 +178,11 @@ public class DrawerAdapter extends BaseAdapter {
             return -1;
         int result = LABEL_GROUP_POS;
         for ( Label label : LabelVoc.INSTANCE.getList() ) {
+            result++;
             if ( label.mID == labelID )
                 return  result;
-            result += 1 + (isLabelExpanded(label.mID) ? LabelVoc.INSTANCE.getChildrenIDs(label.mID).size() : 0);
+            if ( isLabelExpanded(label.mID) )
+                result += LabelVoc.INSTANCE.getChildrenIDs(label.mID).size();
         }
         return -1;
     }
