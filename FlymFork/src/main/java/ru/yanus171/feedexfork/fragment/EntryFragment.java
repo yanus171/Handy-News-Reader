@@ -270,6 +270,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       FetcherService.Status() );
 
         rootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
+        rootView.findViewById(R.id.backBtn).setOnLongClickListener( v -> {
+            GetSelectedEntryView().ClearHistoryAnchor();
+            return true;
+        });
 
         rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( isArticleTapEnabled() ) {

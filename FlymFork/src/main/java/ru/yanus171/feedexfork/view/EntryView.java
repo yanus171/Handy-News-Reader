@@ -1133,6 +1133,10 @@ public class EntryView extends WebView implements Handler.Callback {
         }
     }
 
+    public void ClearHistoryAnchor() {
+        mHistoryAchorScrollY.clear();
+        mActivity.mEntryFragment.SetupZones();
+    }
     public boolean CanGoBack() {
         return !mHistoryAchorScrollY.isEmpty();
     }
