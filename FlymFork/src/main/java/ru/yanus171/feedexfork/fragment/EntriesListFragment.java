@@ -1183,7 +1183,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( uri != null && uri.getPathSegments().size() > 1 )
             try {
                 long feedID = Long.parseLong(uri.getPathSegments().get(1));
-                result = feedID != Long.parseLong( FetcherService.GetExtrenalLinkFeedID() );
+                result = feedID != Long.parseLong( FetcherService.GetExtrenalLinkFeedID() ) && !uri.toString().contains( "/group" );
             } catch ( NumberFormatException ignored ) { }
         return result;
     }

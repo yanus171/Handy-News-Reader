@@ -512,9 +512,8 @@ public class EntryView extends WebView implements Handler.Callback {
         StringBuilder content = new StringBuilder(GetCSS(title, link, mIsEditingMode))
             .append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
 
-        if (link == null) {
+        if (link == null)
             link = "";
-        }
 
         if (getBoolean("entry_text_title_link", true))
             content.append(String.format(TITLE_START_WITH_LINK, link + NO_MENU)).append(title).append(TITLE_END_WITH_LINK);
