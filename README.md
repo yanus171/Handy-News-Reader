@@ -45,7 +45,7 @@
 	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">translations</a>;</li>
 </ul>
 
-<a href=" https://yoomoney.ru/to/41001574414913" target="_blank">Yoomoney money donate</a>
+<a href="https://yoomoney.ru/to/41001574414913" target="_blank">Yoomoney money donate</a>
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
