@@ -751,12 +751,12 @@ public class DrawerAdapter extends BaseAdapter {
             cur.close();
         }
         {
-            HashMap<String, Integer> map = LabelVoc.INSTANCE.GetChildLabelsNumbers(false, readEntriesMap);
+            HashMap<String, Integer> map = LabelVoc.INSTANCE.getChildLabelsNumbers(false, readEntriesMap);
             for (String key : map.keySet())
                 editor.putInt(CHILD_LABEL_KEY + key, map.get(key));
         }
         {
-            HashMap<String, Integer> map = LabelVoc.INSTANCE.GetChildLabelsNumbers(true, readEntriesMap);
+            HashMap<String, Integer> map = LabelVoc.INSTANCE.getChildLabelsNumbers(true, readEntriesMap);
             for (String key : map.keySet())
                 editor.putInt(CHILD_LABEL_KEY_READ + key, map.get(key));
         }

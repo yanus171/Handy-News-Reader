@@ -19,6 +19,39 @@
 
 package ru.yanus171.feedexfork.activity;
 
+import static ru.yanus171.feedexfork.Constants.DB_IS_FALSE;
+import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
+import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
+import static ru.yanus171.feedexfork.Constants.DB_OR;
+import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
+import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
+import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
+import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.ALL_DRAWER_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_DRAWER_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.FAVORITES_DRAWER_PAS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LAST_READ_DRAWER_POS;
+import static ru.yanus171.feedexfork.adapter.DrawerAdapter.UNREAD_DRAWER_POS;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
+import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
+import static ru.yanus171.feedexfork.parser.OPML.importFromOpml;
+import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
+import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_GROUP_EXPANDED;
+import static ru.yanus171.feedexfork.provider.FeedData.getGroupExpandedValues;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
+import static ru.yanus171.feedexfork.view.EntryView.TAG;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -34,7 +67,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -78,40 +110,6 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
-
-import static ru.yanus171.feedexfork.Constants.DB_COUNT;
-import static ru.yanus171.feedexfork.Constants.DB_IS_FALSE;
-import static ru.yanus171.feedexfork.Constants.DB_IS_NULL;
-import static ru.yanus171.feedexfork.Constants.DB_IS_TRUE;
-import static ru.yanus171.feedexfork.Constants.DB_OR;
-import static ru.yanus171.feedexfork.Constants.EXTRA_LINK;
-import static ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc;
-import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.COLLAPSED;
-import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.ALL_DRAWER_POS;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.EXTERNAL_DRAWER_POS;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.FAVORITES_DRAWER_PAS;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LABEL_GROUP_POS;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.LAST_READ_DRAWER_POS;
-import static ru.yanus171.feedexfork.adapter.DrawerAdapter.UNREAD_DRAWER_POS;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.LABEL_ID_EXTRA;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.parser.OPML.AUTO_BACKUP_OPML_FILENAME;
-import static ru.yanus171.feedexfork.parser.OPML.importFromOpml;
-import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.FAVORITES_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.UNREAD_ENTRIES_CONTENT_URI;
-import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_GROUP_EXPANDED;
-import static ru.yanus171.feedexfork.provider.FeedData.getGroupExpandedValues;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
-import static ru.yanus171.feedexfork.view.EntryView.TAG;
 
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -698,6 +696,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             default:
                 if ( DrawerAdapter.isLabelPos( position )) {
                     newUri = CONTENT_URI;
+                    //PrefUtils.putString( STATE_LABEL_FILTER_LIST + mEntriesFragment.mCurrentUri, "" );
                     if ( DrawerAdapter.isChildLabelPosition(position ) )
                         mEntriesFragment.SetChildLabel( DrawerAdapter.getParentLabelID( position), DrawerAdapter.getLabelIDByPosition( position ) );
                     else

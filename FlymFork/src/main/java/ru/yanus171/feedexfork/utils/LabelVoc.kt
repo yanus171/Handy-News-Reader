@@ -51,6 +51,7 @@ public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) 
 }
 
 object LabelVoc {
+    private val mWithoutChildVoc = HashSet<Long>()
     private var mIsInitialized = false
     private val mVoc = HashMap<Long, Label>()
     private val mEntryVoc = HashMap<Long, HashSet<Long>>()
@@ -106,8 +107,11 @@ object LabelVoc {
 
     private fun updateChildVoc() {
         mChildVoc.clear()
+        mWithoutChildVoc.clear();
         for (labelIdList in mEntryVoc.values)
-            if (labelIdList.count() > 1)
+            if (labelIdList.count() == 1)
+                mWithoutChildVoc.add( labelIdList.first() )
+            else if (labelIdList.count() > 1)
                 for (parentLabelId in labelIdList) {
                     if (!mChildVoc.containsKey(parentLabelId))
                         mChildVoc[parentLabelId] = HashSet<Long>()
@@ -118,8 +122,8 @@ object LabelVoc {
                 }
     }
 
-    fun GetChildLabelsNumbers( forReadEntries: Boolean, readEntriesMap: HashSet<Long> ): HashMap<String, Int> {
-        var result = HashMap<String, Int>()
+    fun getChildLabelsNumbers(forReadEntries: Boolean, readEntriesMap: HashSet<Long> ): HashMap<String, Int> {
+        val result = HashMap<String, Int>()
         synchronized(mVoc) {
             for ((entryID,labelIDList) in mEntryVoc)
                 for (key1 in labelIDList)
@@ -130,6 +134,14 @@ object LabelVoc {
                                 result[key] = 0
                             result[key] = result[key]!! + 1;
                         }
+
+            for ((entryID,labelIDList) in mEntryVoc)
+                if ( forReadEntries == readEntriesMap.contains( entryID ) && labelIDList.count() == 1 ) {
+                    val key = "${labelIDList.first()}_${labelIDList.first()}"
+                    if ( !result.containsKey( key ) )
+                        result[key] = 0
+                    result[key] = result[key]!! + 1;
+                }
         }
         return result
     }
@@ -376,9 +388,14 @@ object LabelVoc {
         MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
     }
 
-    fun getChildrenIDs(parentLabelID: Long): HashSet<Long> {
+    fun getChildrenIDs(parentLabelID: Long): ArrayList<Long> {
+        val result = ArrayList<Long>()
         synchronized(mVoc) {
-            return if ( mChildVoc.containsKey( parentLabelID ) ) mChildVoc[parentLabelID]!! else HashSet()
+            if ( mWithoutChildVoc.contains( parentLabelID ) )
+                result.add(parentLabelID)
+            if ( mChildVoc.containsKey( parentLabelID ) )
+                result.addAll( mChildVoc[parentLabelID]!! )
+            return result
         }
     }
 

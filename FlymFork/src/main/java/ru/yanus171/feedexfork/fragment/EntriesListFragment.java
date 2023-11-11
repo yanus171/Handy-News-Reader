@@ -149,8 +149,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
     private static final String STATE_LAST_VISIBLE_ENTRY_ID = "STATE_LAST_VISIBLE_ENTRY_ID";
     private static final String STATE_LAST_VISIBLE_OFFSET = "STATE_LAST_VISIBLE_OFFSET";
-    private static final String STATE_LABEL_FILTER_LIST = "STATE_LABEL_FILTER_LIST";
-
 
     private static final int ENTRIES_LOADER_ID = 1;
     private static final int FILTERS_LOADER_ID = 3;
@@ -180,6 +178,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     static private boolean mIsSearch = false;
     private HashSet<Long> mLabelsID = new HashSet<Long>();
     public boolean mIsSingleLabel = false;
+    public boolean mIsSingleLabelWithoutChildren = false;
 
     static class VisibleReadItem {
         final String ITEM_SEP = "__####__";
@@ -271,6 +270,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         String labelSQL = "";
         if ( mLabelsID.contains( ALL_LABELS ) )
             labelSQL = DB_AND + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
+        else if ( mIsSingleLabelWithoutChildren )
+            labelSQL = DB_AND + _ID + " IN (SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " +
+                EntryLabelColumns.LABEL_ID + " = " + GetSingleLabelID() + DB_AND +
+                EntryLabelColumns.ENTRY_ID + " NOT IN (SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " + EntryLabelColumns.LABEL_ID + " <> " + GetSingleLabelID() + "))";
         else if ( !mLabelsID.isEmpty() ) {
             ArrayList<String> listCondition = new ArrayList<>();
             for( Long item: mLabelsID )
@@ -1050,7 +1053,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             ArrayList<String> list = new ArrayList<>();
             for ( Long item: mLabelsID )
                 list.add( String.valueOf( item ) );
-            PrefUtils.putString( STATE_LABEL_FILTER_LIST + mCurrentUri, TextUtils.join( ",", list ) );
             restartLoaders();
             UpdateActions();
             return null;
@@ -1146,12 +1148,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mOriginalUriShownEntryText = showTextInEntryList;
         }
 
-        String labelFilterState = PrefUtils.getString( STATE_LABEL_FILTER_LIST + mCurrentUri, "" );
-        if ( !labelFilterState.isEmpty() ) {
-            mLabelsID.clear();
-            for (String item : TextUtils.split(labelFilterState, "," ))
-                mLabelsID.add(Long.parseLong(item));
-        }
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
 
@@ -1265,18 +1261,27 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void ClearSingleLabel() {
         mIsSingleLabel = false;
         mLabelsID.clear();
+        mIsSingleLabelWithoutChildren = false;
     }
     public void SetSingleLabel( Long id ) {
         mIsSingleLabel = id != NO_LABEL;
         mLabelsID.clear();
         if ( id != NO_LABEL )
             mLabelsID.add( id );
+        mIsSingleLabelWithoutChildren = false;
     }
     public void SetChildLabel( long parentLabelId, long childLabelId ) {
+        if ( parentLabelId == childLabelId ) {
+            SetSingleLabel( parentLabelId );
+            mIsSingleLabelWithoutChildren = parentLabelId != NO_LABEL && parentLabelId != ALL_LABELS;
+            return;
+        }
         mIsSingleLabel = false;
+        mIsSingleLabelWithoutChildren = false;
         mLabelsID.clear();
         mLabelsID.add( parentLabelId );
         mLabelsID.add( childLabelId );
+
     }
 
     public boolean IsAllLabels() {
