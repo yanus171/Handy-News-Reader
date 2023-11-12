@@ -18,9 +18,8 @@ import ru.yanus171.feedexfork.fragment.EntriesListFragment.ALL_LABELS
 import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedDataContentProvider
 import ru.yanus171.feedexfork.service.FetcherService
-import ru.yanus171.feedexfork.utils.UiUtils.*
-import java.util.*
-import kotlin.collections.ArrayList
+import ru.yanus171.feedexfork.utils.UiUtils.SetFont
+import ru.yanus171.feedexfork.utils.UiUtils.dpToPixel
 
 public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) {
 
@@ -52,15 +51,18 @@ public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) 
 }
 
 object LabelVoc {
+    private val mWithoutChildVoc = HashSet<Long>()
     private var mIsInitialized = false
     private val mVoc = HashMap<Long, Label>()
     private val mEntryVoc = HashMap<Long, HashSet<Long>>()
+    private val mChildVoc = HashMap<Long, HashSet<Long>>()
 
     private fun init_() {
         synchronized(mVoc) {
             if ( mIsInitialized )
                 return
             val status = FetcherService.Status().Start("Reading labels", true)
+
             mVoc.clear()
             run {
                 val cursor = MainApplication.getContext().contentResolver.query(
@@ -86,17 +88,62 @@ object LabelVoc {
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
                         val entryId = cursor.getLong(0)
+                        val labelId = cursor.getLong(1)
                         if ( !mEntryVoc.containsKey(entryId) )
-                            mEntryVoc[entryId] = HashSet<Long>()
-                        mEntryVoc[entryId]!!.add(cursor.getLong(1))
+                            mEntryVoc[entryId] = HashSet()
+                        mEntryVoc[entryId]!!.add(labelId)
+
                     }
                     cursor.close()
                 }
             }
 
+            updateChildVoc()
+
             FetcherService.Status().End(status)
             mIsInitialized = true
         }
+    }
+
+    private fun updateChildVoc() {
+        mChildVoc.clear()
+        mWithoutChildVoc.clear();
+        for (labelIdList in mEntryVoc.values)
+            if (labelIdList.count() == 1)
+                mWithoutChildVoc.add( labelIdList.first() )
+            else if (labelIdList.count() > 1)
+                for (parentLabelId in labelIdList) {
+                    if (!mChildVoc.containsKey(parentLabelId))
+                        mChildVoc[parentLabelId] = HashSet<Long>()
+                    for (childLabelId in labelIdList)
+                        if (parentLabelId != childLabelId) {
+                            mChildVoc[parentLabelId]!!.add(childLabelId)
+                        }
+                }
+    }
+
+    fun getChildLabelsNumbers(forReadEntries: Boolean, readEntriesMap: HashSet<Long> ): HashMap<String, Int> {
+        val result = HashMap<String, Int>()
+        synchronized(mVoc) {
+            for ((entryID,labelIDList) in mEntryVoc)
+                for (key1 in labelIDList)
+                    for (key2 in labelIDList)
+                        if ( key1 != key2 && forReadEntries == readEntriesMap.contains( entryID ) ) {
+                            val key = "${key1}_${key2}"
+                            if ( !result.containsKey( key ) )
+                                result[key] = 0
+                            result[key] = result[key]!! + 1;
+                        }
+
+            for ((entryID,labelIDList) in mEntryVoc)
+                if ( forReadEntries == readEntriesMap.contains( entryID ) && labelIDList.count() == 1 ) {
+                    val key = "${labelIDList.first()}_${labelIDList.first()}"
+                    if ( !result.containsKey( key ) )
+                        result[key] = 0
+                    result[key] = result[key]!! + 1;
+                }
+        }
+        return result
     }
 
 
@@ -105,6 +152,7 @@ object LabelVoc {
         synchronized(mVoc) {
             mVoc[id] = Label(id, name, color, getNextOrder())
         }
+        FeedDataContentProvider.notifyChangeOnAllUris(FeedDataContentProvider.URI_FEEDS, null)
     }
 
     fun getNextID() = (mVoc.keys.maxOrNull() ?: 0) + 1
@@ -130,20 +178,23 @@ object LabelVoc {
         initInThread()
         synchronized(mVoc) {
             mVoc[label.mID] = label
-
         }
+        FeedDataContentProvider.notifyChangeOnAllUris(FeedDataContentProvider.URI_FEEDS, null)
     }
     fun deleteLabel(id: Long) {
         initInThread()
         synchronized(mVoc) {
             mVoc.remove(id)
             mEntryVoc.remove(id)
+            updateChildVoc()
         }
+        FeedDataContentProvider.notifyChangeOnAllUris(FeedDataContentProvider.URI_FEEDS, null)
     }
     fun setEntry(entryID: Long, labels: HashSet<Long>) {
         initInThread()
         synchronized(mVoc) {
             mEntryVoc[entryID] = labels
+            updateChildVoc()
         }
         FeedDataContentProvider.SetNotifyEnabled(false)
         MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
@@ -335,6 +386,17 @@ object LabelVoc {
             return
         setEntry(entryID, java.util.HashSet())
         MainApplication.getContext().contentResolver.delete(EntryLabelColumns.CONTENT_URI(entryID), null, null)
+    }
+
+    fun getChildrenIDs(parentLabelID: Long): ArrayList<Long> {
+        val result = ArrayList<Long>()
+        synchronized(mVoc) {
+            if ( mWithoutChildVoc.contains( parentLabelID ) )
+                result.add(parentLabelID)
+            if ( mChildVoc.containsKey( parentLabelID ) )
+                result.addAll( mChildVoc[parentLabelID]!! )
+            return result
+        }
     }
 
 

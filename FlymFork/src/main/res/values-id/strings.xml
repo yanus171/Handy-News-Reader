@@ -153,6 +153,7 @@ maksimum per umpan<br/>
     <string name="downloadOneImage">Unduh gambar</string>
     <string name="favorites">Favorit</string>
     <string name="last_read">Terakhir dibaca</string>
+    <string name="context_menu_share_starred_via_file">Bagikan entri favorit</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Batal favorit</string>
     <string name="menu_share">Bagikan</string>

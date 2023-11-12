@@ -99,7 +99,7 @@ public class FeedDataContentProvider extends ContentProvider {
     private static final int URI_GROUPS = 2;
     private static final int URI_GROUP = 3;
     private static final int URI_FEEDS_FOR_GROUPS = 4;
-    private static final int URI_FEEDS = 5;
+    public static final int URI_FEEDS = 5;
     private static final int URI_FEED = 6;
     private static final int URI_FILTERS = 7;
     private static final int URI_FILTERS_FOR_FEED = 8;

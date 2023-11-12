@@ -146,6 +146,7 @@
     <string name="downloadOneImage">Descargar la imagen</string>
     <string name="favorites">Destacadas</string>
     <string name="last_read">Última lectura</string>
+    <string name="context_menu_share_starred_via_file">Compartir entradas seleccionadas</string>
     <string name="menu_star">Destaca</string>
     <string name="menu_unstar">No destacar</string>
     <string name="menu_share">Compartir</string>

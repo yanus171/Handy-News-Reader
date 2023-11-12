@@ -71,7 +71,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="10mm"
                     android:layout_alignParentTop="true"
-                    android:text="@string/pageUp" />
+                    android:text="@string/pageUp"
+                    tools:ignore="InOrMmUsage" />
 
                 <include layout="@layout/page_down_button_and_status" />
 

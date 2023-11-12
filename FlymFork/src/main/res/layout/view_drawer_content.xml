@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickArticleWebSearch"
-            android:src="@drawable/ic_add_circle" />
+            android:src="@drawable/web_search_white" />
 
         <ImageButton
             style="?android:attr/buttonBarButtonStyle"

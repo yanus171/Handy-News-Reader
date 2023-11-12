@@ -739,7 +739,7 @@ public class FetcherService extends IntentService {
                                     if (curEntry.moveToFirst()) {
                                         final String feedID = curEntry.getString(0);
                                         FeedFilters filters = new FeedFilters(feedID);
-                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), true, false, false, false)) {
+                                        if (mobilizeEntry(entryId, filters, ArticleTextExtractor.MobilizeType.Yes, IsAutoDownloadImages(feedID), false, false, false, false)) {
                                             ContentResolver cr = contentResolver();
                                             cr.delete(TaskColumns.CONTENT_URI(taskId), null, null);//operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                                             result.mResultCount = 1;
@@ -959,7 +959,6 @@ public class FetcherService extends IntentService {
                             }
 
                             connection = new Connection(linkToLoad, OKHTTP);
-
                             Status().ChangeProgress(R.string.extractContent);
 
                             if (FetcherService.isCancelRefresh())

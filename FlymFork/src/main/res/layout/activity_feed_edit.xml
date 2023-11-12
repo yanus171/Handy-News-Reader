@@ -21,8 +21,6 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp">
 
@@ -266,7 +264,7 @@
                                             android:id="@+id/one_webpage_layout"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginLeft="0dp"
+                                            android:layout_marginStart="0dp"
                                             android:orientation="vertical">
 
                                             <TextView

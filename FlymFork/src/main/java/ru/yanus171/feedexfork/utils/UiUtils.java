@@ -171,7 +171,7 @@ public class UiUtils {
         TextView btn = rootView.findViewById(ID);
         if ( btn != null ) {
             if (visible)
-                btn.setBackgroundResource(R.drawable.round_background);
+                btn.setBackgroundResource(ID == R.id.backBtn ? R.drawable.arrow_back : R.drawable.round_background);
             else
                 btn.setBackgroundColor(Color.TRANSPARENT);
             btn.setText("");

@@ -150,7 +150,8 @@
     <string name="downloadOneImage">Download the image</string>
     <string name="favorites">Starred</string>
     <string name="last_read">Last read</string>
-    <string name="context_menu_share_starred">Share starred entries</string>
+    <string name="context_menu_share_starred_via_file">Share starred entries via file</string>
+    <string name="context_menu_share_starred_via_text">Share starred entries via text</string>
     <string name="menu_star">Star</string>
     <string name="menu_unstar">Unstar</string>
     <string name="menu_share">Share</string>
@@ -362,7 +363,7 @@
     <string name="question_delete_entry">Delete this article?</string>
     <string name="question_mark_upper_as_read">Mark upper articles as read?</string>
     <string name="question_mark_lower_as_read">Mark lower articles as read?</string>
-    <string name="question_mark_all_as_unread">Mark all articles as unread?</string>
+    <string name="question_mark_all_as_unread">Mark all articles in selected section as unread?</string>
     <string name="share_all_text">Share whole text</string>
     <string name="group">Group</string>
     <string name="auto_image_load">Auto images load</string>
@@ -731,5 +732,8 @@
     <string name="settings_autobackup_toast_descr">Show toast message when backup file successfully was copied to Downloads</string>
     <string name="with_labels">with labels:</string>
     <string name="none">none</string>
+    <string name="show_article_text">Article text</string>
+    <string name="show_article_text_descr">Show article text in list</string>
+    <string name="shared_favorities_article_list_mail_sugject">Handy Reader favourite article list</string>
 
 </resources>

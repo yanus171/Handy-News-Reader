@@ -10,7 +10,29 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
+        android:src="@drawable/ic_photo_size_select_actual"
         android:layout_margin="5dp"/>
+    <ImageView
+        android:id="@+id/icon_small"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_toEndOf="@android:id/icon"
+        android:src="@drawable/ic_photo_size_select_actual"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="5dp"/>
+
+    <ImageView
+        android:id="@+id/icon_expand"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@id/icon_small"
+        android:src="@drawable/arrow_drop_down" />
 
 
     <!-- text -->
@@ -20,13 +42,10 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@android:id/icon"
         android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:orientation="vertical"
         android:layout_toStartOf="@+id/layoutCount"
-        android:layout_toLeftOf="@+id/layoutCount"
-        android:layout_toEndOf="@android:id/icon">
+        android:layout_toEndOf="@id/icon_expand">
 
         <TextView
             android:id="@android:id/text1"
@@ -39,6 +58,7 @@
             android:textIsSelectable="false"/>
 
         <LinearLayout
+            android:id="@+id/layout_size"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,9 +79,8 @@
                 android:textColor="#EEEEEE"
                 android:text="text2"
                 android:layout_marginStart="5dp"
-                android:layout_marginRight="5dp"
-                android:textIsSelectable="false"
-                android:layout_marginLeft="5dp" />
+                android:layout_marginEnd="5dp"
+                android:textIsSelectable="false" />
             <TextView
                 android:id="@+id/imageSize"
                 android:layout_width="wrap_content"
@@ -71,7 +90,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#EEEEEE"
                 android:layout_marginStart="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:text="ImSize"
                 android:textIsSelectable="false"/>
 
@@ -94,7 +113,6 @@
         android:id="@+id/layoutCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
@@ -106,13 +124,11 @@
             android:id="@+id/read_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
             android:alpha="0.5"
             android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:text="AC"
             android:textColor="#EEEEEE"
-            android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp" />
 
@@ -120,12 +136,11 @@
             android:id="@+id/unread_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:text="UC"
-            android:textColor="#EEEEEE"
-            android:layout_marginEnd="12dp" />
+            android:textColor="#EEEEEE" />
 
     </LinearLayout>
 

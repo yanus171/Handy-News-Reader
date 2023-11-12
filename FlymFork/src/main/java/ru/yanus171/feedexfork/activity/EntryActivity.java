@@ -202,7 +202,13 @@ public class EntryActivity extends BaseActivity implements Observer {
             @Override
             public void run() {
                 final ContentResolver cr = MainApplication.getContext().getContentResolver();
+
                 String url = finalUrl;
+                if ( finalUrl.indexOf('#') > -1 ) {
+                    final String anchor = finalUrl.substring(finalUrl.indexOf('#') + 1);
+                    url = url.replace("#" + anchor, "");
+                    mEntryFragment.mAnchor = anchor;
+                }
                 String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
                 if (IsLocalFile(Uri.parse(url))) {
                     Uri uri = Uri.parse(url);
@@ -211,7 +217,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                     }
                     final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
                     if ( !fileInCache.exists() )
-                        FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), MainApplication.getContext());
+                        FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), EntryActivity.this);
                     url = FileUtils.INSTANCE.getUriForFile( fileInCache ).toString();
                 }
 
@@ -316,7 +322,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                 } finally {
                     SetNotifyEnabled( true );
                 }
-                if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish )
+                if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish && !mEntryFragment.mFavorite )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 ) {
                         int result = cr.update(EntryColumns.CONTENT_URI(mEntryFragment.getCurrentEntryID()), FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);

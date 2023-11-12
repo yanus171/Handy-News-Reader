@@ -148,6 +148,7 @@
     <string name="no_entries">Pas d\'article</string>
     <string name="downloadOneImage">Télécharger l\'image</string>
     <string name="favorites">Favoris</string>
+    <string name="context_menu_share_starred_via_file">Partager les favoris</string>
     <string name="menu_star">Mettre en favoris</string>
     <string name="menu_unstar">Enlever des favoris</string>
     <string name="menu_share">Partager</string>

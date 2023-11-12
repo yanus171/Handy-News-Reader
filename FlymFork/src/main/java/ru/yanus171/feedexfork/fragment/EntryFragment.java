@@ -133,6 +133,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 
 import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
+import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
 import static ru.yanus171.feedexfork.Constants.HTTPS_SCHEME;
 import static ru.yanus171.feedexfork.Constants.HTTP_SCHEME;
@@ -157,6 +158,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 
@@ -184,7 +186,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private long mInitialEntryId = -1;
     private Entry[] mEntriesIds = new Entry[1];
 
-    private boolean mFavorite, mIsWithTables, mIsForceLandscape = false, mIsFullTextShown = true;
+    public boolean mFavorite;
+    private boolean mIsWithTables;
+    private boolean mIsForceLandscape = false;
+    private boolean mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
@@ -204,6 +209,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private String mSearchText = "";
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
+    public String mAnchor = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
@@ -223,8 +230,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
-    private void SetupZoneSizes() {
+    public void SetupZones() {
         TapZonePreviewPreference.SetupZones(getBaseActivity().mRootView, false, false );
+        final EntryView view = GetSelectedEntryView();
+        final boolean isBackBtnVisible = view != null && view.CanGoBack() && IsZoneEnabled(R.id.backBtn, false, false );
+        getBaseActivity().mRootView.findViewById( R.id.backBtn).setVisibility(isBackBtnVisible ? View.VISIBLE : View.GONE );
     }
 
     private boolean IsCreateViewPager( Uri uri ) {
@@ -251,13 +261,19 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         View rootView = getBaseActivity().mRootView;
-        SetupZoneSizes();
+        SetupZones();
 
         mStatusText = new StatusText( rootView.findViewById(R.id.statusText ),
                                       rootView.findViewById(R.id.errorText ),
                                       rootView.findViewById(R.id.progressBarLoader),
                                       rootView.findViewById(R.id.progressText),
                                       FetcherService.Status() );
+
+        rootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
+        rootView.findViewById(R.id.backBtn).setOnLongClickListener( v -> {
+            GetSelectedEntryView().ClearHistoryAnchor();
+            return true;
+        });
 
         rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( isArticleTapEnabled() ) {
@@ -269,7 +285,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
             if ( isArticleTapEnabled() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                SetupZoneSizes();
+                SetupZones();
                 Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
             } else
                 EnableTapActions();
@@ -465,7 +481,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private void EnableTapActions() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
-        SetupZoneSizes();
+        SetupZones();
         Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
     }
 
@@ -977,7 +993,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
                 case R.id.menu_disable_all_tap_actions: {
                     PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                    SetupZoneSizes();
+                    SetupZones();
                     Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
                     break;
                 }
@@ -1330,7 +1346,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntry( mPagerPos ).mID);
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             if ( mSetAsRead ) {
-                                if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null) > 0 )
+                                if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
                                     newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
                             }
                             cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
@@ -1802,7 +1818,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
-            Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos);
+            Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos +  ", mAnchor = " + mAnchor);
 
             EntryView view = GetEntryView( pagerPos );
             if (view != null ) {
@@ -1820,6 +1836,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         view.InvalidateContentCache();
                     //FetcherService.setCurrentEntryID( getCurrentEntryID() );
                     mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
+                                                      mBaseUri,
                                                       newCursor,
                                                       mFilters,
                                                       mIsFullTextShown,
@@ -1834,7 +1851,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     UpdateHeader();
                 }
             }
-            SetupZoneSizes();
+            SetupZones();
         }
 
         void onResume() {
@@ -2022,7 +2039,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         if ( tapActionsEnabled != isArticleTapEnabledTemp() ) {
             PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, tapActionsEnabled );
-            SetupZoneSizes();
+            SetupZones();
             Toast.makeText(MainApplication.getContext(),
                            tapActionsEnabled ?
                                getContext().getString( R.string.tap_actions_were_enabled ) :

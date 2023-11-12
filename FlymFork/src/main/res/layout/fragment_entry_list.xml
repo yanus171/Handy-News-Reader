@@ -105,7 +105,8 @@
                                 style="@style/TapZone"
                                 android:layout_width="match_parent"
                                 android:layout_height="10mm"
-                                android:text="@string/pageUp" />
+                                android:text="@string/pageUp"
+                                tools:ignore="InOrMmUsage" />
                         </LinearLayout>
 
                         <include layout="@layout/top_buttons_and_progress" />
@@ -120,7 +121,8 @@
             style="@style/TapZone"
             android:layout_width="match_parent"
             android:layout_height="10mm"
-            android:text="@string/pageUp" />
+            android:text="@string/pageUp"
+            tools:ignore="InOrMmUsage" />
         <TextView
             android:id="@+id/leftTopBtnFS"
             style="@style/TapZoneBtn"

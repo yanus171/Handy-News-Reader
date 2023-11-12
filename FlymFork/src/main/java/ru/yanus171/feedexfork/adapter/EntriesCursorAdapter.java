@@ -63,6 +63,7 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveTables;
 import static ru.yanus171.feedexfork.utils.PrefUtils.IsShowArticleBigImagesEnabled;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
+import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
@@ -173,7 +174,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final Uri mUri;
     private final Context mContext;
     private final boolean mShowFeedInfo;
-    private final boolean mShowEntryText;
+    private final boolean mShowEntryTextFromFeedSetup;
     private final boolean mShowUnread;
     private final HomeActivity mActivity;
     private boolean mIsAutoSetAsRead = false;
@@ -207,13 +208,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mNeedScrollToTopExpandedArticle = false;
     private static Cursor mCursor = null;
     HashMap<Long, Integer> mItemPositionVoc = new HashMap<>();
-    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryText, boolean showUnread, HomeActivity activity) {
+    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, HomeActivity activity) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
         mContext = context;
         mUri = uri;
         mShowFeedInfo = showFeedInfo;
-        mShowEntryText = showEntryText;
+        mShowEntryTextFromFeedSetup = showEntryTextFromFeedSetup;
         mShowUnread = showUnread;
         mIsLoadImages = true;
         mActivity = activity;
@@ -223,7 +224,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         reinit(cursor);
     }
-
+    private boolean IsShowEntryText() {
+        return getBoolean( SHOW_ARTICLE_TEXT, false ) || mShowEntryTextFromFeedSetup;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return super.getView(position, convertView, parent);
@@ -267,7 +270,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.textPreviewTextView = SetupSmallTextView(view, R.id.textTextPreview);
             holder.textTextView = SetupTextView(view, R.id.textSource);
 
-            if (mShowEntryText) {
+            if (IsShowEntryText()) {
                 holder.dateTextView = SetupSmallTextView(view, R.id.textDate);
             } else {
                 holder.dateTextView = SetupSmallTextView(view, android.R.id.text2);
@@ -287,8 +290,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.videoImgView = view.findViewById(R.id.video_icon);
             holder.readImgView.setVisibility(PrefUtils.IsShowReadCheckbox() ? View.VISIBLE : View.GONE); //
             holder.textLayout = view.findViewById(R.id.textLayout);
-            holder.readToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_read);
-            holder.starToggleSwypeBtnView = view.findViewById(R.id.swype_btn_toggle_star);
+            holder.readToggleSwypeBtnView = view.findViewById(R.id.swipe_btn_toggle_read);
+            holder.starToggleSwypeBtnView = view.findViewById(R.id.swipe_btn_toggle_star);
             holder.newImgView = view.findViewById(R.id.new_icon);
             holder.contentImgView1 = view.findViewById(R.id.image1);
             holder.contentImgView2 = view.findViewById(R.id.image2);
@@ -334,7 +337,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 } else {
-                    SetIsRead(holder.entryID, feedId, true, true);
+                    if ( !holder.isFavorite )
+                        SetIsRead(holder.entryID, feedId, true, true);
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
                     EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                     mNeedScrollToTopExpandedArticle = true;
@@ -348,7 +352,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 view1 -> LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this ) :
                 null;
 
-            view.findViewById(R.id.layout_ontouch).setOnTouchListener(new View.OnTouchListener() {
+            view.findViewById(R.id.layout_on_touch).setOnTouchListener(new View.OnTouchListener() {
                 private int paddingX = 0;
                 private int paddingY = 0;
                 private int initialx = 0;
@@ -562,7 +566,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(cursor.getLong(mDatePos));
         Calendar currentDate = Calendar.getInstance();
-        final boolean isTextShown = isExpandArticleText && isTextShown(holder);
+        final boolean isTextShown = getBoolean( SHOW_ARTICLE_TEXT, false ) || isExpandArticleText && isTextShown(holder);
         boolean isToday = currentDate.get( Calendar.DAY_OF_YEAR ) == date.get( Calendar.DAY_OF_YEAR );
         if ( getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) || isToday )
             holder.titleTextView.setText( Html.fromHtml( "<b>" + titleText + "</b>" ) );
@@ -576,7 +580,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         String feedName = cursor.getString(mFeedNamePos);
 
-        holder.collapsedBtn.setVisibility( mShowEntryText || !isExpandArticleText ? View.GONE : View.VISIBLE );
+        holder.collapsedBtn.setVisibility( IsShowEntryText() || !isExpandArticleText ? View.GONE : View.VISIBLE );
         holder.collapsedBtn.setImageResource( holder.isTextExpanded() ? R.drawable.ic_keyboard_arrow_down_gray : R.drawable.ic_keyboard_arrow_right_gray );
         SetFont(holder.titleTextView, 1 );
         final boolean showBigImage = getBoolean(SHOW_ARTICLE_BIG_IMAGE, false) && IsShowArticleBigImagesEnabled( mUri );;
@@ -744,7 +748,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.contentImgView3.setVisibility( View.GONE );
         if ( isTextShown ) {
             holder.openArticle.setVisibility(View.VISIBLE );
-            if ( !mShowEntryText )
+            if ( !IsShowEntryText() )
                 holder.collapseBtnBottom.setVisibility( View.VISIBLE );
             holder.textTextView.setVisibility(View.VISIBLE);
             final String html = abstractText == null ? "" : GetHtmlAligned(abstractText);
@@ -846,7 +850,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
 
     private boolean isTextShown(ViewHolder holder) {
-        return mShowEntryText || holder.isTextExpanded();
+        return IsShowEntryText() || holder.isTextExpanded();
     }
 
     private boolean isInMarkAsReadList(String entryUri) {
@@ -1186,7 +1190,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.readToggleSwypeBtnView.setImageResource(holder.isRead ? R.drawable.ic_check_box_outline_blank_gray : R.drawable.ic_check_box_gray);
         final int backgroundColor;
         backgroundColor = Color.parseColor( !holder.isRead ? Theme.GetColor( Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) : Theme.GetColor( Theme.TEXT_COLOR_READ_BACKGROUND, R.string.default_text_color_background )  );
-        parentView.findViewById(R.id.layout_vertval).setBackgroundColor(backgroundColor );
+        parentView.findViewById(R.id.layout_vertical).setBackgroundColor(backgroundColor );
         parentView.findViewById( R.id.entry_list_layout_root_root ).setBackgroundColor( backgroundColor );
         {
             final int color = Color.parseColor( !holder.isRead ? Theme.GetTextColor() : Theme.GetTextColorRead() );

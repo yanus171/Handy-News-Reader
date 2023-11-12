@@ -10,25 +10,16 @@
     android:paddingTop="0dp"
     android:paddingBottom="5dp"
     android:paddingStart="0dp"
-    android:paddingEnd="5dp">
+    android:paddingEnd="5dp"
+    android:paddingRight="5dp">
 
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/collapsed_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:alpha="0.5"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_keyboard_arrow_down_gray" />
-
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/collapsed_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:alpha="0.5"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_keyboard_arrow_down_gray" />
 
 
 </LinearLayout>

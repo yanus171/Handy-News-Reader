@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
@@ -48,13 +49,17 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:id="@+id/labelListCaptionTextView"
-                android:text="@string/with_labels"/>
+                android:text="@string/with_labels"
+                android:paddingStart="10dp"
+                tools:ignore="HardcodedText,RtlSymmetry"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/labelListTextView"
                 android:paddingLeft="10dp"
-                android:text="labels"/>
+                android:text="labels"
+                android:paddingStart="10dp"
+                tools:ignore="HardcodedText,RtlSymmetry" />
         </LinearLayout>
 
     </RadioGroup>
@@ -65,7 +70,8 @@
         android:hint="@string/keyword"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:importantForAutofill="no">
+        android:importantForAutofill="no"
+        android:inputType="text">
 
         <requestFocus/>
     </EditText>

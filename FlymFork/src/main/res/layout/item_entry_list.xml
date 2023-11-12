@@ -20,14 +20,15 @@
         android:text="Day"
         android:textColor="@color/dark_theme_color_unread"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        tools:ignore="HardcodedText" />
     <FrameLayout
         android:id="@+id/entry_list_layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/swype_btn_toggle_read"
+            android:id="@+id/swipe_btn_toggle_read"
             android:layout_width="@dimen/entry_img_width"
             android:layout_height="match_parent"
             android:layout_gravity="start|center_vertical"
@@ -41,7 +42,7 @@
             android:visibility="visible" />
 
         <ImageView
-            android:id="@+id/swype_btn_toggle_star"
+            android:id="@+id/swipe_btn_toggle_star"
             android:layout_width="@dimen/entry_img_width"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
@@ -54,12 +55,12 @@
             android:visibility="visible" />
 
         <FrameLayout
-            android:id="@+id/layout_ontouch"
+            android:id="@+id/layout_on_touch"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/layout_vertval"
+                android:id="@+id/layout_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -102,7 +103,7 @@
                                 android:ellipsize="end"
                                 android:gravity="start"
                                 android:maxLines="5"
-                                android:text="Title may be vvery longvery longvery longery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
+                                android:text="Title may be very longvery longvery longer longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery longvery long"
                                 android:textColor="@color/dark_theme_color_unread"
                                 android:textIsSelectable="false" />
                         </LinearLayout>
@@ -413,7 +414,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:maxLines="3"
-        android:text="text Preivew"
+        android:text="text Preview"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/dark_theme_color_unread"
         android:textIsSelectable="false" />

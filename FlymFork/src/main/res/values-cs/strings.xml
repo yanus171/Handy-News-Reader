@@ -101,7 +101,7 @@
     <string name="all_entries">All entries</string>
     <string name="no_entries">Žádné články</string>
     <string name="favorites">Označené</string>
-    <string name="context_menu_share_starred">Sdílet označené články</string>
+    <string name="context_menu_share_starred_via_file">Sdílet označené články</string>
     <string name="menu_star">Označit</string>
     <string name="menu_unstar">Odznačit</string>
     <string name="menu_share">Sdílet</string>

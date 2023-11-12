@@ -149,6 +149,7 @@
     <string name="downloadOneImage">Scarica Immagine</string>
     <string name="favorites">Preferiti</string>
     <string name="last_read">Ultimi letti</string>
+    <string name="context_menu_share_starred_via_file">Condividi Articoli Preferiti</string>
     <string name="menu_star">Aggiungi ai preferiti</string>
     <string name="menu_unstar">Rimuovi dai preferiti</string>
     <string name="menu_share">Condividi</string>

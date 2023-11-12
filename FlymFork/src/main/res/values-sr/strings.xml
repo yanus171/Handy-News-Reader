@@ -92,7 +92,7 @@
     <string name="all_entries">All entries</string>
     <string name="no_entries">Нема уноса</string>
     <string name="favorites">Омиљено</string>
-    <string name="context_menu_share_starred">Подели омиљене</string>
+    <string name="context_menu_share_starred_via_file">Подели омиљене</string>
     <string name="menu_star">Омиљено</string>
     <string name="menu_unstar">Није омиљено</string>
     <string name="menu_share">Подели</string>
