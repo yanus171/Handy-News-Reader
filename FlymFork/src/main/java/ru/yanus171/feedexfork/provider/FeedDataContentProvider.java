@@ -125,7 +125,7 @@ public class FeedDataContentProvider extends ContentProvider {
     private static final int URI_FAVORITES_ENTRY = 18;
     private static final int URI_TASKS = 19;
     private static final int URI_TASK = 20;
-    private static final int URI_SEARCH = 21;
+    //private static final int URI_SEARCH = 21;
     private static final int URI_SEARCH_ENTRY = 22;
     private static final int URI_GROUPS_AND_ROOT_FEEDS = 27;
     private static final int URI_LABELS = 29;
@@ -170,7 +170,7 @@ public class FeedDataContentProvider extends ContentProvider {
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels/#", URI_ENTRY_LABELS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels", URI_ENTRIES_LABELS);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entrylabels/with_entries", URI_ENTRIES_LABELS_WITH_ENTRIES);
-        URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*", URI_SEARCH);
+        //URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*", URI_SEARCH);
         URI_MATCHER.addURI(FeedData.AUTHORITY, "entries/search/*/#", URI_SEARCH_ENTRY);
     }
 
@@ -228,26 +228,6 @@ public class FeedDataContentProvider extends ContentProvider {
         return new Pair<>(result, added);
     }
 
-    private static String getSearchWhereClause(String uriSearchParam) {
-        uriSearchParam = Uri.decode(uriSearchParam).trim();
-        Pattern regex = Pattern.compile("\\b(?:AND|OR)\\b" );
-        Matcher matcher = regex.matcher( uriSearchParam );
-        int prevIndex = 0;
-        String where = "";
-        while (matcher.find()) {
-            final String word = uriSearchParam.substring( prevIndex, matcher.start() ).trim();
-            prevIndex = Math.min( uriSearchParam.length() - 1, matcher.end() + 1 );
-            if ( word.isEmpty() )
-                continue;
-            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%") + " " + matcher.group() + " ";
-        }
-        final String word = uriSearchParam.substring(prevIndex, uriSearchParam.length()).trim();
-        if ( !word.isEmpty() )
-            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%");
-        else if ( !where.isEmpty() )
-            where += "(1 = 2)";
-        return where;
-    }
 
     @Override
     public String getType(Uri uri) {
@@ -272,8 +252,8 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_ENTRIES:
             case URI_ENTRIES_FOR_FEED:
             case URI_ENTRIES_FOR_GROUP:
-            case URI_SEARCH:
-                return "vnd.android.cursor.dir/vnd.flymfork.entry";
+            //case URI_SEARCH:
+            //    return "vnd.android.cursor.dir/vnd.flymfork.entry";
             case URI_FAVORITES_ENTRY:
             case URI_LAST_READ_ENTRY:
             case URI_ENTRY:
@@ -403,11 +383,6 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES: {
                 queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
                 queryBuilder.appendWhere(EntryColumns.WHERE_UNREAD);
-                break;
-            }
-            case URI_SEARCH: {
-                queryBuilder.setTables(FeedData.ENTRIES_TABLE_WITH_FEED_INFO);
-                queryBuilder.appendWhere(getSearchWhereClause(uri.getPathSegments().get(2)));
                 break;
             }
             case URI_FAVORITES_ENTRY:
@@ -671,11 +646,6 @@ public class FeedDataContentProvider extends ContentProvider {
             case URI_UNREAD_ENTRIES: {
                 table = EntryColumns.TABLE_NAME;
                 where.append(EntryColumns.WHERE_UNREAD);
-                break;
-            }
-            case URI_SEARCH: {
-                table = EntryColumns.TABLE_NAME;
-                where.append(getSearchWhereClause(uri.getPathSegments().get(2)));
                 break;
             }
             case URI_FAVORITES_ENTRY:
@@ -992,8 +962,8 @@ public class FeedDataContentProvider extends ContentProvider {
             cr.notifyChange(FeedColumns.GROUPS_CONTENT_URI, null);
             cr.notifyChange(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, null);
         }
-        if ( EntriesListFragment.mSearchQueryUri != null )
-            cr.notifyChange(EntriesListFragment.mSearchQueryUri, null);
+        //if ( EntriesListFragment.mSearchQueryUri != null )
+        //    cr.notifyChange(EntriesListFragment.mSearchQueryUri, null);
 
     }
 

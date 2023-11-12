@@ -64,6 +64,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -109,6 +110,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -142,10 +145,8 @@ import ru.yanus171.feedexfork.view.StatusText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
     public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
-    private static final String STATE_ORIGINAL_URI = "STATE_ORIGINAL_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
-    private static final String STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST = "STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
     private static final String STATE_LAST_VISIBLE_ENTRY_ID = "STATE_LAST_VISIBLE_ENTRY_ID";
     private static final String STATE_LAST_VISIBLE_OFFSET = "STATE_LAST_VISIBLE_OFFSET";
@@ -159,8 +160,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public static Uri mCurrentUri = null;
 
-    private Uri mOriginalUri;
-    private boolean mOriginalUriShownEntryText = false;
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;
     public EntriesCursorAdapter mEntriesCursorAdapter = null;
@@ -175,7 +174,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private TextView mTextViewFilterLabels = null;
     private FeedFilters mFilters = null;
     private boolean mIsResumed = false;
-    static private boolean mIsSearch = false;
+    static private String mSearchText = "";
     private HashSet<Long> mLabelsID = new HashSet<Long>();
     public boolean mIsSingleLabel = false;
     public boolean mIsSingleLabelWithoutChildren = false;
@@ -281,8 +280,30 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     " WHERE " + EntryLabelColumns.LABEL_ID + " = " + item + "))" );
             labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
         }
-        final String unreadSQL = mShowUnReadOnly ? " AND " + EntryColumns.WHERE_UNREAD : "";
-        return EMPTY_WHERE_SQL + (mIsSearch ? "" : (labelSQL + unreadSQL));
+        final String unreadSQL = mShowUnReadOnly ? DB_AND + EntryColumns.WHERE_UNREAD : "";
+        final String searchSQL = mSearchText.isEmpty() ? "" : DB_AND + getSearchWhereClause( mSearchText );
+        return EMPTY_WHERE_SQL + labelSQL + unreadSQL + searchSQL;
+    }
+
+    private static String getSearchWhereClause(String uriSearchParam) {
+        uriSearchParam = Uri.decode(uriSearchParam).trim();
+        Pattern regex = Pattern.compile("\\b(?:AND|OR)\\b" );
+        Matcher matcher = regex.matcher(uriSearchParam );
+        int prevIndex = 0;
+        String where = "";
+        while (matcher.find()) {
+            final String word = uriSearchParam.substring( prevIndex, matcher.start() ).trim();
+            prevIndex = Math.min( uriSearchParam.length() - 1, matcher.end() + 1 );
+            if ( word.isEmpty() )
+                continue;
+            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%") + " " + matcher.group() + " ";
+        }
+        final String word = uriSearchParam.substring(prevIndex).trim();
+        if ( !word.isEmpty() )
+            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%");
+        else if ( !where.isEmpty() )
+            where += "(1 = 2)";
+        return where;
     }
 
     private void RestoreListScrollPosition() {
@@ -293,16 +314,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }
 
-    private final OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (PrefUtils.IS_REFRESHING.equals(key)) {
-                UpdateActions();
-            }
+    private final OnSharedPreferenceChangeListener mPrefListener = (sharedPreferences, key) -> {
+        if (PrefUtils.IS_REFRESHING.equals(key)) {
+            UpdateActions();
         }
     };
     private StatusText mStatusText = null;
-    public static Uri mSearchQueryUri = null;
     private int mStatus = 0;
 
     private void UpdateActions() {
@@ -342,7 +359,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 getBaseActivity().mProgressBarRefresh.setVisibility(View.GONE);
         }
 
-        mTextViewFilterLabels.setVisibility((mIsSingleLabel || mIsSearch || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
+        mTextViewFilterLabels.setVisibility((mIsSingleLabel || !mSearchText.isEmpty() || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
         mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
         if (mFab != null )
             mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
@@ -360,8 +377,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         if (savedInstanceState != null) {
             mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
-            mOriginalUri = savedInstanceState.getParcelable(STATE_ORIGINAL_URI);
-            mOriginalUriShownEntryText = savedInstanceState.getBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST);
             mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
             mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
             mShowUnReadOnly = savedInstanceState.getBoolean(STATE_SHOW_UNREAD_ONLY, PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false ));
@@ -374,7 +389,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             //if ( mShowTextInEntryList )
             //    mNeedSetSelection = true;
-            HomeActivity activity = (HomeActivity) getActivity();
             mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
         } else
             mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
@@ -390,12 +404,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         PrefUtils.registerOnPrefChangeListener(mPrefListener);
 
         mFab = getActivity().findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                markAllAsRead();
-            }
-        });
+        mFab.setOnClickListener(v -> markAllAsRead());
 
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
         mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
@@ -425,7 +434,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     private Uri GetUri(int pos) {
         final long id = mEntriesCursorAdapter.getItemId(pos);
-        return mEntriesCursorAdapter.EntryUri(id);
+        return EntriesCursorAdapter.EntryUri(id);
     }
 
     @Override
@@ -437,11 +446,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mTextViewFilterLabels = rootView.findViewById(R.id.filter_by_labels);
         mTextViewFilterLabels.setBackgroundColor(Theme.GetColorInt(Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) );
         mTextViewFilterLabels.setOnClickListener(view -> FilterByLabels());
-        mStatusText  = new StatusText( (TextView)rootView.findViewById( R.id.statusText ),
-                                   (TextView)rootView.findViewById( R.id.errorText ),
-                                   (ProgressBar) rootView.findViewById( R.id.progressBarLoader),
-                                   (TextView)rootView.findViewById( R.id.progressText ),
-                                   Status());
+        mStatusText  = new StatusText(rootView.findViewById(R.id.statusText ),
+                                      rootView.findViewById( R.id.errorText ),
+                                      rootView.findViewById( R.id.progressBarLoader),
+                                      rootView.findViewById( R.id.progressText ),
+                                      Status());
 
         Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
@@ -620,8 +629,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_CURRENT_URI, mCurrentUri);
-        outState.putParcelable(STATE_ORIGINAL_URI, mOriginalUri);
-        outState.putBoolean(STATE_ORIGINAL_URI_SHOW_TEXT_IN_ENTRY_LIST, mOriginalUriShownEntryText);
         outState.putBoolean(STATE_SHOW_FEED_INFO, mShowFeedInfo);
         outState.putBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST, mShowTextInEntryList);
         outState.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
@@ -645,11 +652,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         ImageView v = searchView.findViewById(searchImgId);
         v.setImageResource(R.drawable.ic_search);
 
-        if (EntryColumns.isSearchUri(mCurrentUri)) {
+        if (!mSearchText.isEmpty()) {
             searchItem.expandActionView();
             // Without that, it just does not work
             searchView.post(() -> {
-                searchView.setQuery(mCurrentUri.getLastPathSegment(), false);
+                searchView.setQuery(mSearchText, false);
                 searchView.clearFocus();
             });
         }
@@ -662,14 +669,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText)) {
-                    setData(EntryColumns.SEARCH_URI(newText), true, true, false, mOptions);
-                }
+                if (!TextUtils.isEmpty(newText))
+                    mSearchText = newText;
+                setData(mCurrentUri, true, false, mOptions);
                 return false;
             }
         });
         searchView.setOnCloseListener(() -> {
-            setData(mOriginalUri, true, false, mOriginalUriShownEntryText, mOptions);
+            mSearchText = "";
+            setData(mCurrentUri, true, false, mOptions);
             getActivity().invalidateOptionsMenu();
             return false;
         });
@@ -929,7 +937,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_toogle_toogle_unread_all: {
                 mShowUnReadOnly = !mShowUnReadOnly;
-                setData( mCurrentUri, mShowFeedInfo, false, mShowTextInEntryList, mOptions );
+                setData( mCurrentUri, mShowFeedInfo, mShowTextInEntryList, mOptions );
                 UpdateActions();
                 return true;
             }
@@ -1127,12 +1135,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     }
 
-    public Uri getUri() {
-        return mOriginalUri;
-    }
 
-    public void setData(Uri uri, boolean showFeedInfo, boolean isSearchUri, boolean showTextInEntryList, JSONObject options) {
-        mIsSearch = isSearchUri;
+    public void setData(Uri uri, boolean showFeedInfo, boolean showTextInEntryList, JSONObject options) {
         mOptions = options;
         if ( getActivity() == null ) // during configuration changes
             return;
@@ -1140,14 +1144,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         Dog.v( String.format( "EntriesListFragment.setData( %s )", uri.toString() ) );
         mCurrentUri = uri;
-        if ( isSearchUri )
-            mSearchQueryUri = uri;
-        else  {
-            mSearchQueryUri = null;
-            mOriginalUri = mCurrentUri;
-            mOriginalUriShownEntryText = showTextInEntryList;
-        }
-
         mShowFeedInfo = showFeedInfo;
         mShowTextInEntryList = showTextInEntryList;
 

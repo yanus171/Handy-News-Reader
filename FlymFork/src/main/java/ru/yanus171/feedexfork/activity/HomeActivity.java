@@ -722,7 +722,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         //if (!newUri.equals(mEntriesFragment.getUri()))
         mEntriesFragment.setData(newUri,
                 showFeedInfo,
-                false,
                 mDrawerAdapter != null && mDrawerAdapter.isShowTextInEntryList(position),
                                  mDrawerAdapter != null ? mDrawerAdapter.getOptions(position) : new JSONObject());
 

@@ -384,18 +384,18 @@ public class FeedData {
             return Uri.parse(CONTENT_AUTHORITY + path.substring(0, path.lastIndexOf('/')));
         }
 
-        public static Uri SEARCH_URI(String search) {
-            return Uri.parse(CONTENT_AUTHORITY + "/entries/search/" + (TextUtils.isEmpty(search) ? " " : Uri.encode(search))); // The space is mandatory here with empty search
-        }
+//        public static Uri SEARCH_URI(String search) {
+//            return Uri.parse(CONTENT_AUTHORITY + "/entries/search/" + (TextUtils.isEmpty(search) ? " " : Uri.encode(search))); // The space is mandatory here with empty search
+//        }
 
         public static final Uri UNREAD_ENTRIES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/unread_entries");
 
         public static final Uri FAVORITES_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/favorites");
         public static final Uri LAST_READ_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY + "/last_read");
 
-        public static boolean isSearchUri(Uri uri) {
-            return uri != null && uri.toString().startsWith(CONTENT_AUTHORITY + "/entries/search/");
-        }
+//        public static boolean isSearchUri(Uri uri) {
+//            return uri != null && uri.toString().startsWith(CONTENT_AUTHORITY + "/entries/search/");
+//        }
     }
 
     public static class LabelColumns implements BaseColumns {
