@@ -65,6 +65,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.BuildConfig;
 import ru.yanus171.feedexfork.Constants;
@@ -82,6 +84,7 @@ import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.RegexUtils;
 import ru.yanus171.feedexfork.view.LabelSelectPreference;
 
 import static android.provider.BaseColumns._ID;
@@ -227,13 +230,23 @@ public class FeedDataContentProvider extends ContentProvider {
 
     private static String getSearchWhereClause(String uriSearchParam) {
         uriSearchParam = Uri.decode(uriSearchParam).trim();
-
-        if (!uriSearchParam.isEmpty()) {
-            uriSearchParam = DatabaseUtils.sqlEscapeString("%" + Uri.decode(uriSearchParam) + "%");
-            return EntryColumns.TITLE + " LIKE " + uriSearchParam; //+ Constants.DB_OR + EntryColumns.ABSTRACT + " LIKE " + uriSearchParam + Constants.DB_OR + EntryColumns.MOBILIZED_HTML + " LIKE " + uriSearchParam;
-        } else {
-            return "1 = 2"; // to have 0 result with an empty search
+        Pattern regex = Pattern.compile("\\b(?:AND|OR)\\b" );
+        Matcher matcher = regex.matcher( uriSearchParam );
+        int prevIndex = 0;
+        String where = "";
+        while (matcher.find()) {
+            final String word = uriSearchParam.substring( prevIndex, matcher.start() ).trim();
+            prevIndex = Math.min( uriSearchParam.length() - 1, matcher.end() + 1 );
+            if ( word.isEmpty() )
+                continue;
+            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%") + " " + matcher.group() + " ";
         }
+        final String word = uriSearchParam.substring(prevIndex, uriSearchParam.length()).trim();
+        if ( !word.isEmpty() )
+            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%");
+        else if ( !where.isEmpty() )
+            where += "(1 = 2)";
+        return where;
     }
 
     @Override
