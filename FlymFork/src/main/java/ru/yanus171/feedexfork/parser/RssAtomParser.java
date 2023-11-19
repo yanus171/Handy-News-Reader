@@ -601,27 +601,31 @@ public class RssAtomParser extends DefaultHandler {
 
     public static Date parseDate(String dateStr, long now) {
         Dog.d( "parseDate " + dateStr );
-        long dateBorder = 20 * 365 * 24 * 60 * 60 * 1000L; // twenty years ago
+        long dateBorder = 30 * 365 * 24 * 60 * 60 * 1000L; // twenty years ago
         dateStr = improveDateString(dateStr);
+        Date result = new Date();
         for (DateFormat format : DATE_FORMATS ) {
             try {
-                Date result = format.parse(dateStr);
+                result = format.parse(dateStr);
                 if ( now == 0 )
                     return result;
-                if (  now - result.getTime() > dateBorder ) {
-                    Calendar today = Calendar.getInstance();
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis( result.getTime() );
-                    cal.set( today.get( Calendar.YEAR ), today.get( Calendar.MONTH ), today.get( Calendar.DATE ) );
-                    if ( cal.after( today ) )
-                        cal.add( Calendar.DATE, -1 );
-                    return new Date( cal.getTimeInMillis() );
-                }
+                if ( now - result.getTime() > dateBorder )
+                    continue;
                 if ( Math.abs( result.getTime() -  now ) < dateBorder )
                     return (result.getTime() > now ? new Date(now) : result);
             } catch (ParseException ignored) {
 
             } // just do nothing
+
+        }
+        if (  now - result.getTime() > dateBorder ) {
+            Calendar today = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis( result.getTime() );
+            cal.set( today.get( Calendar.YEAR ), today.get( Calendar.MONTH ), today.get( Calendar.DATE ) );
+            if ( cal.after( today ) )
+                cal.add( Calendar.DATE, -1 );
+            return new Date( cal.getTimeInMillis() );
         }
 
         return null;
