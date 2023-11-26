@@ -735,5 +735,7 @@
     <string name="show_article_text">Article text</string>
     <string name="show_article_text_descr">Show article text in list</string>
     <string name="shared_favorities_article_list_mail_sugject">Handy Reader favourite article list</string>
+    <string name="settings_remove_found_categories_from_text">Remove categories from text</string>
+    <string name="settings_remove_found_categories_from_text_descr">Remove found categories from article text</string>
 
 </resources>

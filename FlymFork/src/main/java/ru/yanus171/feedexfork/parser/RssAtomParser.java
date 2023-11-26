@@ -387,7 +387,8 @@ public class RssAtomParser extends DefaultHandler {
                 mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mPublishedTagEntered = false;
             } else if (TAG_LAST_BUILD_DATE.equals(localName)) {
-                mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
+                if ( mEntryTagEntered )
+                    mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);
                 mLastBuildDateTagEntered = false;
             } else if (TAG_DATE.equals(localName)) {
                 mEntryDate = parseDate(mDateStringBuilder.toString(), mNow);

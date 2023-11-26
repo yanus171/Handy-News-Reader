@@ -826,6 +826,11 @@
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_category_extract_rules"
             android:summary="@string/settings_category_extract_rules_description"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="remove_found_categories_from_text"
+            android:title="@string/settings_remove_found_categories_from_text"
+            android:summary="@string/settings_remove_found_categories_from_text_descr"/>
         <EditTextPreference
             android:key="main_image_extract_rules"
             android:inputType="text|textMultiLine"

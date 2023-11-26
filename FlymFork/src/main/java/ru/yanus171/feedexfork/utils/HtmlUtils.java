@@ -435,7 +435,7 @@ public class HtmlUtils {
         while (match.find())
             if ( !categoryList.contains(match.group(1)) )
                 categoryList.add(match.group(1));
-        return match.replaceAll("");
+        return PrefUtils.getBoolean( "remove_found_categories_from_text", false ) ? match.replaceAll("") : content;
     }
 
     private static final Pattern TITLE_PATTERN = Pattern.compile("<[^<,^/]+?>([^<]{10,})<[^<]+>");
