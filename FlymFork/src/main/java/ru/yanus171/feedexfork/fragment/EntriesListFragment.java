@@ -35,6 +35,7 @@ import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadLis
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
+import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.DATE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
@@ -61,7 +62,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -81,7 +81,6 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,6 +103,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -175,7 +175,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private FeedFilters mFilters = null;
     private boolean mIsResumed = false;
     static private String mSearchText = "";
-    private HashSet<Long> mLabelsID = new HashSet<Long>();
+    private HashSet<Long> mLabelsID = new HashSet<>();
     public boolean mIsSingleLabel = false;
     public boolean mIsSingleLabelWithoutChildren = false;
 
@@ -722,7 +722,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_share_starred_via_file: {
                 final Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "shared_article_links.txt", getStarredArticlesList()) );
+                emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(),
+                                                                                 getStarredArticlesListFileName(),
+                                                                                 getStarredArticlesList()) );
                 startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
                 return true;
             }
@@ -994,6 +996,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return super.onOptionsItemSelected(item);
     }
 
+    private String getStarredArticlesListFileName() {
+        final String dateTimeStr = new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date(System.currentTimeMillis() ) );
+        final String fileName = "shared_article_links_" + dateTimeStr + ".txt";
+        if ( !mLabelsID.isEmpty() )
+            return LabelVoc.INSTANCE.get((Long) mLabelsID.toArray()[0] ).mName + "_" + fileName;
+        else
+            return fileName;
+    }
     @NonNull
     private String getStarredArticlesList() {
         if (mEntriesCursorAdapter == null)
@@ -1007,7 +1017,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             for (Label label : LabelVoc.INSTANCE.getList()) {
                 SetSingleLabel(label.mID);
                 StringBuilder list = new StringBuilder();
-                AddAtricleLinks(list, labeledArticlesID);
+                AddArticleLinks(list, labeledArticlesID);
                 if ( list.length() > 0 ) {
                     starredList.append("\n" + label.mName + ": \n");
                     starredList.append("----------------------------------------\n");
@@ -1018,23 +1028,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             starredList.append("----------------------------------------\n");
             try (Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, null, null,
                                                                          DATE + (IsOldestFirst() ? DB_ASC : DB_DESC))) {
-                AddAtricleLinks(cursor, starredList, null, labeledArticlesID);
+                AddArticleLinks(cursor, starredList, null, labeledArticlesID);
             }
         } else
-            AddAtricleLinks(starredList, labeledArticlesID);
+            AddArticleLinks(starredList, labeledArticlesID);
 
         //mShowUnReadOnly = temp;
         mLabelsID = tempLabelsID;
         return starredList.toString();
     }
 
-    private void AddAtricleLinks(StringBuilder starredList, HashSet<Long> articlesID) {
+    private void AddArticleLinks(StringBuilder starredList, HashSet<Long> articlesID) {
         try( Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, GetWhereSQL(), null,
                                                                      DATE + (IsOldestFirst() ? DB_ASC : DB_DESC)) ) {
-            AddAtricleLinks(cursor, starredList, articlesID, null );
+            AddArticleLinks(cursor, starredList, articlesID, null );
         }
     }
-    private void AddAtricleLinks(Cursor cursor, StringBuilder starredList, HashSet<Long> articlesID, HashSet<Long> articlesToIgnoreID) {
+    private void AddArticleLinks(Cursor cursor, StringBuilder starredList, HashSet<Long> articlesID, HashSet<Long> articlesToIgnoreID) {
         int titlePos = cursor.getColumnIndex(TITLE);
         int linkPos = cursor.getColumnIndex(LINK);
         int idPos = cursor.getColumnIndex(_ID);
