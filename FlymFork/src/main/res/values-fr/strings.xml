@@ -341,7 +341,6 @@
     <string name="confirmation">Confirmation</string>
     <string name="question_delete_entry">Supprimer cet article?</string>
     <string name="question_mark_upper_as_read">Marquer les articles en haut comme lus ?</string>
-    <string name="question_mark_all_as_unread">Marquer tous les articles comme non lus ?</string>
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
     <string name="auto_image_load">Chargement des images auto</string>
