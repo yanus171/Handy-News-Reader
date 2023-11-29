@@ -341,7 +341,6 @@
     <string name="question_delete_entry">¿Eliminar este artículo?</string>
     <string name="question_mark_upper_as_read">¿Marcar artículos de encima como leídos?</string>
     <string name="question_mark_lower_as_read">¿Marcar artículos por debajo como leídos?</string>
-    <string name="question_mark_all_as_unread">¿Marcar todos los artículos como no leídos?</string>
     <string name="share_all_text">Compartir texto completo</string>
     <string name="group">Grupo</string>
     <string name="auto_image_load">Carga de imágenes automática</string>
