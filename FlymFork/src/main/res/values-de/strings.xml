@@ -346,7 +346,6 @@
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
     <string name="question_mark_upper_as_read">Alle Artikel darüber als gelesen kennzeichnen?</string>
     <string name="question_mark_lower_as_read">Alle Artikel darunter als gelesen kennzeichnen?</string>
-    <string name="question_mark_all_as_unread">Alle Artikel als „Ungelesen” kennzeichnen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
     <string name="auto_image_load">Bilder automatisch laden</string>
@@ -705,4 +704,6 @@
     <string name="with_labels">mit Kategorien:</string>
     <string name="show_article_text">Artikeltext</string>
     <string name="show_article_text_descr">Artikeltext in Liste anzeigen</string>
+    <string name="settings_remove_found_categories_from_text">Kategorien aus dem Text entfernen</string>
+    <string name="settings_remove_found_categories_from_text_descr">Gefundene Kategorien aus dem Artikeltext entfernen</string>
 </resources>
