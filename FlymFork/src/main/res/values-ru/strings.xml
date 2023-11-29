@@ -350,7 +350,6 @@
     <string name="question_delete_entry">Удалить статью?</string>
     <string name="question_mark_upper_as_read">Отметить статьи выше как прочитанные?</string>
     <string name="question_mark_lower_as_read">Отметить статьи ниже как прочитанные?</string>
-    <string name="question_mark_all_as_unread">Отметить все статьи как непрочитанные?</string>
     <string name="share_all_text">Поделиться текстом</string>
     <string name="group">Группа</string>
     <string name="auto_image_load">Загружать изображения при автоматической загрузке</string>
@@ -715,4 +714,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="show_article_text">Текст статьи</string>
     <string name="show_article_text_descr">Показывать текст статьи в списке</string>
     <string name="shared_favorities_article_list_mail_sugject">Список избранного Handy Reader</string>
+    <string name="settings_remove_found_categories_from_text">Удалить категории из текста</string>
+    <string name="settings_remove_found_categories_from_text_descr">Удалить найденные категории из текста статьи</string>
 </resources>
