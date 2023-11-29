@@ -186,6 +186,7 @@
     <string name="tip_sentence">Tip: swipe right to mark as read, swipe left to add to Favorites</string>
     <string name="undo">Undo</string>
     <string name="marked_as_read">Marked as read</string>
+    <string name="marked_as_unread">Marked as unread</string>
     <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="image_count">Image count</string>
 
@@ -363,7 +364,6 @@
     <string name="question_delete_entry">Delete this article?</string>
     <string name="question_mark_upper_as_read">Mark upper articles as read?</string>
     <string name="question_mark_lower_as_read">Mark lower articles as read?</string>
-    <string name="question_mark_all_as_unread">Mark all articles in selected section as unread?</string>
     <string name="share_all_text">Share whole text</string>
     <string name="group">Group</string>
     <string name="auto_image_load">Auto images load</string>

@@ -28,7 +28,6 @@ import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.ShowDialog;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
@@ -41,6 +40,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CO
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
@@ -163,7 +164,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;
     public EntriesCursorAdapter mEntriesCursorAdapter = null;
-    private Cursor mJustMarkedAsReadEntries;
+    private ArrayList<Integer> mEntryIdsToCancel = new ArrayList<>();
+
     private FloatingActionButton mFab;
     public ListView mListView;
     public static boolean mShowUnReadOnly = false;
@@ -211,9 +213,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
                 String entriesOrder = IsOldestFirst() ? DB_ASC : DB_DESC;
                 String[] projection = EntryColumns.PROJECTION_WITH_TEXT;
-                final String where = GetWhereSQL();
                 String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: DATE;
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, where, null, orderField + entriesOrder);
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, GetWhereSQL(), null, orderField + entriesOrder);
                 cursorLoader.setUpdateThrottle(150);
                 Status().End(mStatus);
                 mStatus = Status().Start(R.string.article_list_loading, true);
@@ -404,7 +405,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         PrefUtils.registerOnPrefChangeListener(mPrefListener);
 
         mFab = getActivity().findViewById(R.id.fab);
-        mFab.setOnClickListener(v -> markAllAsRead());
+        mFab.setOnClickListener(v -> markAllAsReadUnRead( true ));
 
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
         mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
@@ -596,11 +597,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         PrefUtils.putBoolean(STATE_SHOW_UNREAD_ONLY, mShowUnReadOnly);
         PrefUtils.putLong( STATE_LAST_VISIBLE_ENTRY_ID, mLastVisibleTopEntryID );
         PrefUtils.putInt( STATE_LAST_VISIBLE_OFFSET, mLastListViewTopOffset );
-
-
-        if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
-            mJustMarkedAsReadEntries.close();
-        }
 
         ApplyOldAndReadArticleList();
 
@@ -794,12 +790,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     }.start()).setNegativeButton(android.R.string.no, null).show();
                 return true;
             }
-            case R.id.menu_mark_all_as_read: {
-                markAllAsRead();
+            case R.id.menu_mark_all_visible_as_read: {
+                markAllAsReadUnRead( true );
                 return true;
             }
-            case R.id.menu_mark_all_as_unread: {
-                ShowMarkAllAsUnReadDialog( getContext() );
+            case R.id.menu_mark_all_visible_as_unread: {
+                markAllAsReadUnRead( false );
                 return true;
             }
             case R.id.menu_delete_old: {
@@ -1079,23 +1075,21 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     @SuppressLint("PrivateResource")
-    private void markAllAsRead() {
+    private void markAllAsReadUnRead( final boolean read ) {
+        synchronized (mEntryIdsToCancel) {
+            mEntryIdsToCancel.clear();
+        }
         if (mEntriesCursorAdapter != null) {
-            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), read ? R.string.marked_as_read : R.string.marked_as_unread, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo, v -> new Thread() {
                         @Override
                         public void run() {
-                            if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed()) {
-                                ArrayList<Integer> ids = new ArrayList<>();
-                                while (mJustMarkedAsReadEntries.moveToNext()) {
-                                    ids.add(mJustMarkedAsReadEntries.getInt(0));
-                                }
-                                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                String where = _ID + " IN (" + TextUtils.join(",", ids) + ')';
-                                cr.update(EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), where, null);
-
-                                mJustMarkedAsReadEntries.close();
+                            ContentResolver cr = MainApplication.getContext().getContentResolver();
+                            final String where;
+                            synchronized (mEntryIdsToCancel) {
+                                where = _ID + " IN (" + TextUtils.join(",", mEntryIdsToCancel) + ')';
                             }
+                            cr.update(EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), where, null);
                         }
                     }.start());
             snackbar.getView().setBackgroundResource(R.color.material_grey_900);
@@ -1104,22 +1098,21 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             new Thread() {
                 @Override
                 public void run() {
+                    final String where =  (read ? WHERE_UNREAD : WHERE_READ ) + DB_AND + GetWhereSQL();
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    final String where = EntryColumns.WHERE_UNREAD;
-                    if (mJustMarkedAsReadEntries != null && !mJustMarkedAsReadEntries.isClosed())
-                        mJustMarkedAsReadEntries.close();
-                    mJustMarkedAsReadEntries = cr.query(mCurrentUri, new String[]{_ID}, where, null, null);
+                    Cursor cursor = cr.query(mCurrentUri, new String[]{_ID}, where, null, null);
                     if ( mCurrentUri != null && Constants.NOTIF_MGR != null  ) {
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT );
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED );
-                        if ( mJustMarkedAsReadEntries.moveToFirst() )
+                        if ( cursor.moveToFirst() )
                             do {
-                                Constants.NOTIF_MGR.cancel( mJustMarkedAsReadEntries.getInt(0) );
-                            } while ( mJustMarkedAsReadEntries.moveToNext());
-                        mJustMarkedAsReadEntries.moveToFirst();
+                                synchronized (mEntryIdsToCancel) {
+                                    mEntryIdsToCancel.add(cursor.getInt(0));
+                                }
+                                Constants.NOTIF_MGR.cancel( cursor.getInt(0) );
+                            } while ( cursor.moveToNext());
                     }
-
-                    cr.update(mCurrentUri, FeedData.getReadContentValues(), where, null);
+                    cr.update(mCurrentUri, read ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), where , null);
                     TakeMarkAsReadList( true );
                 }
             }.start();
@@ -1297,14 +1290,4 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public Long GetSingleLabelID() {
         return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
     }
-    public void ShowMarkAllAsUnReadDialog(Context context) {
-        ShowDialog(context, R.string.question_mark_all_as_unread, new Runnable() {
-            @Override
-            public void run() {
-                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                cr.update(mCurrentUri, FeedData.getUnreadContentValues(), EntryColumns.WHERE_READ, null);
-            }
-        } );
-    }
-
 }

@@ -81,13 +81,13 @@
                         android:id="@+id/menu_filter_by_labels"
                         android:title="@string/filter_by_labels" />
                     <item
-                        android:id="@+id/menu_mark_all_as_read"
+                        android:id="@+id/menu_mark_all_visible_as_read"
                         android:icon="@drawable/ic_done_all"
-                        android:title="@string/markAllAsRead"/>
+                        android:title="@string/marked_as_read"/>
                     <item
-                        android:id="@+id/menu_mark_all_as_unread"
+                        android:id="@+id/menu_mark_all_visible_as_unread"
                         android:icon="@drawable/ic_done_all"
-                        android:title="@string/menu_mark_all_as_unread"/>
+                        android:title="@string/menu_mark_as_unread"/>
                     <item
                         android:id="@+id/menu_reload_all_texts"
                         android:title="@string/menu_reload_all_texts"/>
