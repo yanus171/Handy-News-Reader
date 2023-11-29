@@ -338,7 +338,6 @@
     <string name="confirmation">Potwierdzenie</string>
     <string name="question_delete_entry">Usunąć artykuł?</string>
     <string name="question_mark_upper_as_read">Czy oznaczyć powyższe jako przeczytane?</string>
-    <string name="question_mark_all_as_unread">Czy oznaczyć wszystkie artykuły jako nieczytane?</string>
     <string name="share_all_text">Udostępnij cały tekst</string>
     <string name="group">Dodaj do grupy</string>
     <string name="auto_image_load">Automatycznie wczytuj obrazki</string>
