@@ -179,6 +179,7 @@
     <string name="tip_sentence">Dica: deslize para a direita para marcar como lido, deslize para a esquerda para adicionar aos Favoritos</string>
     <string name="undo">Desfazer</string>
     <string name="marked_as_read">Marcado como lido</string>
+    <string name="marked_as_unread">Marcado como não lido</string>
     <string name="image_count">Contagem de imagens</string>
     <!-- WIDGET -->
     <string name="red">Vermelho</string>
