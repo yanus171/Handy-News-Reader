@@ -994,11 +994,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     private String getStarredArticlesListFileName() {
         final String dateTimeStr = new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date(System.currentTimeMillis() ) );
-        final String fileName = "shared_article_links_" + dateTimeStr + ".txt";
-        if ( !mLabelsID.isEmpty() )
-            return LabelVoc.INSTANCE.get((Long) mLabelsID.toArray()[0] ).mName + "_" + fileName;
-        else
-            return fileName;
+        String fileName = GetActivity().mTitle + "_shared_article_links_" + dateTimeStr + ".txt";
+        fileName = fileName.replace( " ", "_" );
+        return fileName;
     }
     @NonNull
     private String getStarredArticlesList() {

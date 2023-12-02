@@ -136,7 +136,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     public ListView mDrawerList;
     private DrawerAdapter mDrawerAdapter = null;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String mTitle;
+    public String mTitle;
     private int mCurrentDrawerPos;
     enum AppBarLayoutState {
         EXPANDED,
