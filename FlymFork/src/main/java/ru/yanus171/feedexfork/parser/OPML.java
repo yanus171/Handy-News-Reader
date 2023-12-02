@@ -679,7 +679,9 @@ public class OPML {
                 values.put(LabelColumns.ORDER, mLabelOrder);
                 Uri newUri = cr.insert(LabelColumns.CONTENT_URI, values);
                 mLabelID = newUri.getPathSegments().size() == 2 ? Long.valueOf( newUri.getLastPathSegment() ) : null;
-                LabelVoc.INSTANCE.addLabel( values.getAsString(LabelColumns.NAME), mLabelID, values.getAsString(LabelColumns.COLOR) );
+                String name = values.getAsString(LabelColumns.NAME);
+                if ( mLabelID != null && name != null )
+                    LabelVoc.INSTANCE.addLabel( name, mLabelID, values.getAsString(LabelColumns.COLOR) );
             } else if (TAG_LABEL_ENTRY.equals(localName) && mLabelID != null ) {
                 ContentValues values = new ContentValues();
                 values.put(EntryLabelColumns.ENTRY_ID, mEntryFileIDToIDVoc.get(Long.parseLong(GetText(attributes, EntryLabelColumns.ENTRY_ID))));
