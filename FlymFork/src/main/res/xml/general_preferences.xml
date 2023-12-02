@@ -442,7 +442,8 @@
             android:entries="@array/settings_volume_buttons_action"
             android:entryValues="@array/settings_volume_buttons_action_values"
             android:key="volume_buttons_action"
-            android:title="@string/settings_volume_buttons_action"/>
+            android:title="@string/settings_volume_buttons_action"
+            android:summary="@string/settings_volume_buttons_action_descr"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="page_up_down_90_pct"

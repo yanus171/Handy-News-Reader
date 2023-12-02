@@ -64,6 +64,8 @@ import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_HIDDEN;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
+import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
@@ -1128,7 +1130,7 @@ public class EntryView extends WebView implements Handler.Callback {
         mLastNotifyObserversTime.put(entryId, new Date().getTime());
         if (!mLastNotifyObserversScheduled.containsKey(entryId)) {
             mLastNotifyObserversScheduled.put(entryId, true);
-            UiUtils.RunOnGuiThread(new ScheduledEnrtyNotifyObservers(entryId, entryLink), NOTIFY_OBSERVERS_DELAY_MS);
+            UiUtils.RunOnGuiThread(new ScheduledEntryNotifyObservers(entryId, entryLink), NOTIFY_OBSERVERS_DELAY_MS);
         }
     }
 
@@ -1328,13 +1330,17 @@ public class EntryView extends WebView implements Handler.Callback {
 //            }.start();
         }
     }
+    public boolean hasVideo() {
+        return PATTERN_VIDEO.matcher(mDataWithWebLinks).find() ||
+            PATTERN_IFRAME.matcher(mDataWithWebLinks).find();
+    }
 }
 
-class ScheduledEnrtyNotifyObservers implements Runnable {
+class ScheduledEntryNotifyObservers implements Runnable {
     private final String mLink;
     private long mId = 0;
 
-    public ScheduledEnrtyNotifyObservers( long id, String link ) {
+    public ScheduledEntryNotifyObservers(long id, String link ) {
         mId = id;
         mLink = link;
     }
@@ -1348,6 +1354,5 @@ class ScheduledEnrtyNotifyObservers implements Runnable {
         else
             EntryView.ScheduledNotifyObservers( mId, mLink );
     }
-
 }
 

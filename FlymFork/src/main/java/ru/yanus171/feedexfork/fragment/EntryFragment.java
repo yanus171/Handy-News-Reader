@@ -2020,7 +2020,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
     }
 
-    private EntryView GetSelectedEntryView()  {
+    public EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
     }
 
@@ -2033,8 +2033,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         synchronized ( this ) {
             tapActionsEnabled = mIsFullTextShown ||
                 !PrefUtils.getBoolean( "disable_tap_actions_when_video", true ) ||
-                ( !PATTERN_VIDEO.matcher(view.mDataWithWebLinks).find() &&
-                  !PATTERN_IFRAME.matcher(view.mDataWithWebLinks).find() );
+                !view.hasVideo();
         }
 
         if ( tapActionsEnabled != isArticleTapEnabledTemp() ) {

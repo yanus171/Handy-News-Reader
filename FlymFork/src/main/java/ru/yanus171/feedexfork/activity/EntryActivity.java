@@ -378,7 +378,9 @@ public class EntryActivity extends BaseActivity implements Observer {
         Dog.d("onKeyDown isTracking = " + event.isTracking());
         boolean accepted = true;
         String pref = PrefUtils.getString("volume_buttons_action", PrefUtils.VOLUME_BUTTONS_ACTION_DEFAULT);
-        if (pref.equals(PrefUtils.VOLUME_BUTTONS_ACTION_PAGE_UP_DOWN)) {
+        if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().hasVideo() )
+            accepted = false;
+        else if (pref.equals(PrefUtils.VOLUME_BUTTONS_ACTION_PAGE_UP_DOWN)) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
                 mEntryFragment.PageDown();
             else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
