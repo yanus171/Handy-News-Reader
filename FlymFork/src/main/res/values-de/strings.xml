@@ -183,6 +183,7 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
+    <string name="marked_as_unread">Als ungelesen kennzeichnen</string>
     <string name="removed_from_favorites">Aus Favoriten entfernt</string>
     <string name="image_count">Anzahl Bilder</string>
     <!-- WIDGET -->
