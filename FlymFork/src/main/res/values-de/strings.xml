@@ -707,4 +707,5 @@
     <string name="show_article_text_descr">Artikeltext in Liste anzeigen</string>
     <string name="settings_remove_found_categories_from_text">Kategorien aus dem Text entfernen</string>
     <string name="settings_remove_found_categories_from_text_descr">Gefundene Kategorien aus dem Artikeltext entfernen</string>
+    <string name="settings_volume_buttons_action_descr">Es gibt nur eine Standardaktion, wenn ein Artikel ein Video enthält</string>
 </resources>
