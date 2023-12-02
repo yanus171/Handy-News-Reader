@@ -188,6 +188,7 @@
     <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
     <string name="undo">Отменить</string>
     <string name="marked_as_read">Отмечено как прочитанное</string>
+    <string name="marked_as_unread">Отмечено непрочитанным</string>
     <string name="removed_from_favorites">Удалено из избранного</string>
     <string name="image_count">Количество изображений</string>
     <!-- WIDGET -->
