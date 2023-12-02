@@ -1949,33 +1949,6 @@ public class FetcherService extends IntentService {
 
     }
 
-    public static void unstarAllFeedEntries( Uri entriesUri ){
-        int status = Status().Start("unstarAllFeedEntries", true);
-        try {
-
-            final ContentResolver cr = contentResolver();
-            try( final Cursor cursor = cr.query( entriesUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE, null, null ) ) {
-                SetNotifyEnabled( false ); try {
-                    while (cursor.moveToNext()) {
-
-                        Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
-                        ContentValues values = new ContentValues();
-                        values.putNull(EntryColumns.IS_FAVORITE);
-                        final long entryID = cursor.getLong(0);
-                        cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null);
-                        LabelVoc.INSTANCE.removeLabels(entryID);
-                    }
-                } finally {
-                    SetNotifyEnabled( true );
-                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, entriesUri );
-                }
-            }
-            Status().ChangeProgress( "" );
-        } finally {
-            Status().End(status);
-        }
-
-    }
 
 
 

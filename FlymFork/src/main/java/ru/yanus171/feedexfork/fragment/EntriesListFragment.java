@@ -39,10 +39,13 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.DATE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LAST_READ_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_UNREAD;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
@@ -405,7 +408,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         PrefUtils.registerOnPrefChangeListener(mPrefListener);
 
         mFab = getActivity().findViewById(R.id.fab);
-        mFab.setOnClickListener(v -> markAllAsReadUnRead( true ));
+        mFab.setOnClickListener(v -> markVisibleArticlesAsReadUnRead( true ));
 
         mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
         mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
@@ -760,9 +763,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         .setPositiveButton(android.R.string.yes, (dialog1, which1) -> new Thread() {
                             @Override
                             public void run() {
-                                FetcherService.unstarAllFeedEntries(mCurrentUri);
+                                unstarAllFeedEntries();
                             }
-                        }.start()).setNegativeButton(android.R.string.no, null).show()).setNegativeButton(android.R.string.no, null).show();
+                        }.start()).setNegativeButton(android.R.string.cancel, null).show()).setNegativeButton(android.R.string.cancel, null).show();
                 return true;
             }
 
@@ -791,11 +794,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_mark_all_visible_as_read: {
-                markAllAsReadUnRead( true );
+                markVisibleArticlesAsReadUnRead(true );
                 return true;
             }
             case R.id.menu_mark_all_visible_as_unread: {
-                markAllAsReadUnRead( false );
+                markVisibleArticlesAsReadUnRead(false );
                 return true;
             }
             case R.id.menu_delete_old: {
@@ -1073,7 +1076,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     @SuppressLint("PrivateResource")
-    private void markAllAsReadUnRead( final boolean read ) {
+    private void markVisibleArticlesAsReadUnRead(final boolean read ) {
         synchronized (mEntryIdsToCancel) {
             mEntryIdsToCancel.clear();
         }
@@ -1116,6 +1119,31 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }.start();
         }
     }
+    private void unstarAllFeedEntries(){
+        int status = Status().Start("unstarAllFeedEntries", true);
+        try {
+            final ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try( final Cursor cursor = cr.query( mCurrentUri, new String[] {EntryColumns._ID}, WHERE_FAVORITE + DB_AND + GetWhereSQL(), null, null ) ) {
+                SetNotifyEnabled( false ); try {
+                    while (cursor.moveToNext()) {
+                        Status().ChangeProgress(String.format("%d/%d", cursor.getPosition(), cursor.getCount()));
+                        ContentValues values = new ContentValues();
+                        values.putNull(EntryColumns.IS_FAVORITE);
+                        final long entryID = cursor.getLong(0);
+                        cr.update(EntryColumns.CONTENT_URI(entryID), values, null, null);
+                        LabelVoc.INSTANCE.removeLabels(entryID);
+                    }
+                } finally {
+                    SetNotifyEnabled( true );
+                    notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, mCurrentUri );
+                }
+            }
+            Status().ChangeProgress( "" );
+        } finally {
+            Status().End(status);
+        }
+    }
+
 
     private void startRefresh() {
         if ( mCurrentUri != null && !PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false)) {
