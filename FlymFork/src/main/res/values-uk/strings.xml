@@ -185,6 +185,7 @@
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
     <string name="undo">Скасувати</string>
     <string name="marked_as_read">Позначити як прочитане</string>
+    <string name="marked_as_unread">Позначено як непрочитане</string>
     <string name="removed_from_favorites">Вилучено з обраного</string>
     <string name="image_count">Кількість зображень</string>
     <!-- WIDGET -->
@@ -708,6 +709,7 @@
     <string name="none">немає</string>
     <string name="show_article_text">Текст статті</string>
     <string name="show_article_text_descr">Показувати текст статті у списку</string>
+    <string name="shared_favorities_article_list_mail_sugject">Список улюблених статей в Handy Reader</string>
     <string name="settings_remove_found_categories_from_text">Вилучити категорії з тексту</string>
     <string name="settings_remove_found_categories_from_text_descr">Вилучити знайдені категорії з тексту статті</string>
 </resources>
