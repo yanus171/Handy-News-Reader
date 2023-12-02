@@ -712,4 +712,5 @@
     <string name="shared_favorities_article_list_mail_sugject">Список улюблених статей в Handy Reader</string>
     <string name="settings_remove_found_categories_from_text">Вилучити категорії з тексту</string>
     <string name="settings_remove_found_categories_from_text_descr">Вилучити знайдені категорії з тексту статті</string>
+    <string name="settings_volume_buttons_action_descr">Коли стаття має відео, тоді буде виконуватись тільки дія по замовчуванню</string>
 </resources>
