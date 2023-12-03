@@ -43,7 +43,11 @@ public class Label(id: Long, name: String, var mColor: String, var mOrder: Int) 
             mColor = Theme.GetTextColorRead()
     }
 
-    constructor (cursor: Cursor) : this(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3))
+    constructor (cursor: Cursor) : this(
+            cursor.getLong(0),
+            if ( cursor.isNull(1) ) "" else cursor.getString(1),
+            cursor.getString(2),
+            cursor.getInt(3))
 
     fun colorInt(): Int {
         return Color.parseColor(mColor)
@@ -71,9 +75,8 @@ object LabelVoc {
                         null,
                         LabelColumns.ORDER)
                 if (cursor != null) {
-                    while (cursor.moveToNext()) {
+                    while (cursor.moveToNext())
                         mVoc[cursor.getLong(0)] = Label(cursor)
-                    }
                     cursor.close()
                 }
             }
