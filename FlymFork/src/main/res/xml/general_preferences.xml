@@ -645,10 +645,6 @@
                 android:title="@string/max_single_refresh_traffic_mb"
                 android:summary="@string/max_single_refresh_traffic_mb_descr"/>
 
-            <CheckBoxPreference
-                android:key="load_comments"
-                android:title="@string/settings_load_comments"
-                android:summary="@string/settings_load_comments_description"/>
             <ru.yanus171.feedexfork.view.AutoSummaryListPreference
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -858,7 +854,7 @@
         <EditTextPreference
             android:key="comments_extract_rules"
             android:inputType="text|textMultiLine"
-            android:defaultValue=""
+            android:defaultValue="@string/global_class_list_to_load_article_comments"
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_comments_extract_rules"
             android:summary="@string/settings_comments_extract_rules_description"/>

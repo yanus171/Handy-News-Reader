@@ -245,11 +245,8 @@ public class ArticleTextExtractor {
             ret.insert(0, "<img src=\"" + ogImage + "\"><br>\n");
         }
 
-        if ( mobilize == MobilizeType.Yes && PrefUtils.getBoolean(PrefUtils.LOAD_COMMENTS, false) ) {
-
+        if ( mobilize == MobilizeType.Yes ) {
             Element commentsElement = getCommentsElementFromPref(doc, url);
-            if ( commentsElement == null )
-                commentsElement = doc.getElementById( "comments" );
             if (commentsElement != null ) {
                 for (Element item : commentsElement.children()) {
                     Elements li = item.getElementsByTag("li");

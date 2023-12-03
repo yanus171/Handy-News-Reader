@@ -226,8 +226,6 @@
     <string name="settings_max_image_download_size_kb_summary">(in KB). Do not auto load images larger than</string>
     <string name="max_single_refresh_traffic_mb">Max single refresh traffic</string>
     <string name="max_single_refresh_traffic_mb_descr">The refresh will stop when traffic reaches max value (in MB) and is not over WiFi</string>
-    <string name="settings_load_comments">Load comments</string>
-    <string name="settings_load_comments_description">In article full text</string>
 
     <string name="settings_category_article_list">Article list</string>
     <string name="settings_category_article_list_summary">Appearance of article list</string>
@@ -740,5 +738,6 @@
     <string name="settings_volume_buttons_action_descr">There will be only default action when an article has video</string>
     <string name="volume_buttons_action_page_in_article_list">Scroll pages via volume buttons</string>
     <string name="volume_buttons_action_page_in_article_list_descr">In the article list</string>
+    livejournal:id-comments</string>
 
 </resources>

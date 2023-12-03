@@ -95,7 +95,6 @@ public class PrefUtils {
     public static final String MAIN_IMAGE_EXTRACT_RULES = "main_image_extract_rules";
     public static final String COMMENTS_EXTRACT_RULES = "comments_extract_rules";
     public static final String DATE_EXTRACT_RULES = "date_extract_rules";
-    public static final String LOAD_COMMENTS = "load_comments";
     public static final String REMEBER_LAST_ENTRY = "remember_last_entry";
     public static final String TAP_ZONES_VISIBLE = "settings_tap_zones_visible";
     public static final String SHOW_PROGRESS_INFO = "settings_show_progress_info";
