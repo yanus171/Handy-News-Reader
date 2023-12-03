@@ -738,5 +738,7 @@
     <string name="settings_remove_found_categories_from_text">Remove categories from text</string>
     <string name="settings_remove_found_categories_from_text_descr">Remove found categories from article text</string>
     <string name="settings_volume_buttons_action_descr">There will be only default action when an article has video</string>
+    <string name="volume_buttons_action_page_in_article_list">Scroll pages via volume buttons</string>
+    <string name="volume_buttons_action_page_in_article_list_descr">In the article list</string>
 
 </resources>

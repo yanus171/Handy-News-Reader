@@ -71,6 +71,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -830,5 +831,21 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         super.onWindowFocusChanged(hasFocus);
         if ( hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
             setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ( PrefUtils.getBoolean("volume_buttons_action_page_in_article_list", true) ) {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                PageUpDown(+1);
+                event.startTracking();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                PageUpDown(-1);
+                event.startTracking();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

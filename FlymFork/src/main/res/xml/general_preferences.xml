@@ -436,7 +436,23 @@
             android:dialogLayout="@layout/fragment_entry"
             android:dialogTitle="@string/settings_tap_zones_dialogtitle"
             android:title="@string/settings_tapZones"/>
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_article_list"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="volume_buttons_action_page_in_article_list"
+            android:summary="@string/volume_buttons_action_page_in_article_list_descr"
+            android:title="@string/volume_buttons_action_page_in_article_list"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="label_setup_by_tap_on_date"
+            android:summary="@string/label_setup_by_tap_on_date_descr"
+            android:title="@string/label_setup_by_tap_on_date"/>
 
+        <PreferenceCategory
+            android:layout="@layout/preference_category"
+            android:title="@string/settings_category_article_text"/>
         <ru.yanus171.feedexfork.view.AutoSummaryListPreference
             android:defaultValue="Default"
             android:entries="@array/settings_volume_buttons_action"
@@ -449,13 +465,6 @@
             android:key="page_up_down_90_pct"
             android:summary="@string/page_up_down_90_pct_descr"
             android:title="@string/page_up_down_90_pct"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="label_setup_by_tap_on_date"
-            android:summary="@string/label_setup_by_tap_on_date_descr"
-            android:title="@string/label_setup_by_tap_on_date"/>
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="disable_tap_actions_when_video"
@@ -465,13 +474,11 @@
         <PreferenceCategory
             android:layout="@layout/preference_category"
             android:title="@string/brightness"/>
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="brightness_gesture_enabled"
             android:summary="@string/brightness_gesture_descr"
             android:title="@string/brightness_gesture"/>
-
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="brightness_programmatic_dim_max"
             android:dependency="brightness_gesture_enabled"
@@ -479,7 +486,6 @@
             android:defaultValue="20"
             android:title="@string/brightness_programmatic_dim_max"
             android:summary="@string/brightness_programmatic_dim_max_descr"/>
-
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="settings_brightness_read_from_system_period_min"
             android:dependency="brightness_gesture_enabled"
@@ -487,8 +493,6 @@
             android:defaultValue="10"
             android:title="@string/brightness_update_from_system_period_min"
             android:summary="@string/brightness_update_from_system_period_min_descr"/>
-
-
     </PreferenceScreen>
 
     <ru.yanus171.feedexfork.view.StartActivityPreference
