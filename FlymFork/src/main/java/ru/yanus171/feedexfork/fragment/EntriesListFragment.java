@@ -1006,10 +1006,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if (mEntriesCursorAdapter == null)
             return "";
         StringBuilder starredList = new StringBuilder();
-        //final boolean temp = mShowUnReadOnly;
-        //mShowUnReadOnly = false;
         final HashSet<Long> labeledArticlesID = new HashSet<>();
-        final HashSet<Long> tempLabelsID = mLabelsID;
+        final HashSet<Long> restoreLabelsID = (HashSet<Long>) mLabelsID.clone();
         if ( mLabelsID.isEmpty() ) {
             for (Label label : LabelVoc.INSTANCE.getList()) {
                 SetSingleLabel(label.mID);
@@ -1029,9 +1027,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         } else
             AddArticleLinks(starredList, labeledArticlesID);
-
-        //mShowUnReadOnly = temp;
-        mLabelsID = tempLabelsID;
+        mLabelsID = restoreLabelsID;
         return starredList.toString();
     }
 
