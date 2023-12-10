@@ -854,7 +854,7 @@
         <EditTextPreference
             android:key="comments_extract_rules"
             android:inputType="text|textMultiLine"
-            android:defaultValue="@string/global_class_list_to_load_article_comments"
+            android:defaultValue="@string/global_class_list_to_load_article_comments_default_value"
             android:dialogTitle="site_url:class=XXX\n"
             android:title="@string/settings_comments_extract_rules"
             android:summary="@string/settings_comments_extract_rules_description"/>
