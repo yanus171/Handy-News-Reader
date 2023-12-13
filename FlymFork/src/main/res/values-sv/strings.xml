@@ -132,7 +132,6 @@
     <string name="settings_refresh_wifi_only_description">Uppdatera automatisk endast när ett Wi-Fi-nätverk är tillgänglig</string>
     <string name="settings_keep_time">Tid som inläggen behållas</string>
     <string name="settings_preload_image_mode">Förladda bilder</string>
-    <string name="settings_load_comments">Ladda kommentarer</string>
     <string name="settings_category_article_list">Artikellista</string>
     <string name="settings_font_size">Typsnittsstorlek</string>
     <string name="show_article_icon">Visa artikelikon</string>
