@@ -220,8 +220,6 @@ maksimum per umpan<br/>
     <string name="settings_max_image_download_size_kb_summary">(dalam KB). Jangan muat otomatis gambar lebih besar dari</string>
     <string name="max_single_refresh_traffic_mb">Maks data sekali penyegaran</string>
     <string name="max_single_refresh_traffic_mb_descr">Penyegaran akan berhenti saat pemakaian data mencapai batas maks (dalam MB) dan tidak sedang tersambung ke WiFi</string>
-    <string name="settings_load_comments">Muat komentar</string>
-    <string name="settings_load_comments_description">Di artikel teks lengkap</string>
     <string name="settings_category_article_list">Daftar artikel</string>
     <string name="settings_category_article_list_summary">Penampilan daftar artikel</string>
     <string name="settings_font_size">Ukuran teks</string>
