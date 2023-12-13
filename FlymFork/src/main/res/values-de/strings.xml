@@ -220,8 +220,6 @@
     <string name="settings_max_image_download_size_kb_summary">Größere Bilder werden nicht automatisch geladen</string>
     <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
     <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
-    <string name="settings_load_comments">Kommentare laden</string>
-    <string name="settings_load_comments_description">Auch Kommentare im gesamten Artikeltext laden</string>
     <string name="settings_category_article_list">Artikelliste</string>
     <string name="settings_category_article_list_summary">Aussehen der Artikelliste</string>
     <string name="settings_font_size">Schriftgröße</string>
