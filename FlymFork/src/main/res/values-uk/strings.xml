@@ -222,8 +222,6 @@
     <string name="settings_max_image_download_size_kb_summary">(в kb). Не завантажувати автоматично зображення, що мають більший розмір</string>
     <string name="max_single_refresh_traffic_mb">Max трафік оновлення</string>
     <string name="max_single_refresh_traffic_mb_descr">Оновлення зупиниться, коли трафік перевищить максимальне значення та немає WiFi (в МБ)</string>
-    <string name="settings_load_comments">Завантажувати коментарі</string>
-    <string name="settings_load_comments_description">В повних текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
     <string name="settings_category_article_list_summary">Вигляд списку статей</string>
     <string name="settings_font_size">Розмір шрифту</string>
