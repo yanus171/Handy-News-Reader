@@ -216,8 +216,6 @@
     <string name="settings_max_image_download_size_kb_summary">(en kb). Ne pas charger automatiquement les images plus grandes que</string>
     <string name="max_single_refresh_traffic_mb">Trafic maximum d\'actualisation unique</string>
     <string name="max_single_refresh_traffic_mb_descr">L\'actualisation s\'arrêtera lorsque le trafic atteint la valeur max (en MB) et n\'est pas en WiFi</string>
-    <string name="settings_load_comments">Charger les commentaires</string>
-    <string name="settings_load_comments_description">Dans tout le texte des articles</string>
     <string name="settings_category_article_list">Liste des articles</string>
     <string name="settings_category_article_list_summary">Apparence de la liste des articles</string>
     <string name="settings_font_size">Taille du texte</string>
