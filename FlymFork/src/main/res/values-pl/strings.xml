@@ -212,8 +212,6 @@
     <string name="settings_max_image_download_size_kb_summary">(w kB). Nie wczytuj obrazków większych niż</string>
     <string name="max_single_refresh_traffic_mb">Maks. ilość danych na pojedynczą aktualizację</string>
     <string name="max_single_refresh_traffic_mb_descr">Aktualizacja zostanie zatrzymana po osiągnięciu maks. wartości (poza WiFi; w MB)</string>
-    <string name="settings_load_comments">Wczytuj komentarze</string>
-    <string name="settings_load_comments_description">W pełnej treści artykułu</string>
     <string name="settings_category_article_list">Lista artykułów</string>
     <string name="settings_category_article_list_summary">Wygląd listy artykułów</string>
     <string name="settings_font_size">Rozmiar tekstu</string>
