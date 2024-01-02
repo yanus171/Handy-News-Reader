@@ -149,7 +149,6 @@
     <string name="downloadOneImage">Scarica Immagine</string>
     <string name="favorites">Preferiti</string>
     <string name="last_read">Ultimi letti</string>
-    <string name="context_menu_share_starred_via_file">Condividi Articoli Preferiti</string>
     <string name="menu_star">Aggiungi ai preferiti</string>
     <string name="menu_unstar">Rimuovi dai preferiti</string>
     <string name="menu_share">Condividi</string>
@@ -219,8 +218,6 @@
     <string name="settings_max_image_download_size_kb_summary">(in KB). Non scaricare automaticamente immagini più grandi di</string>
     <string name="max_single_refresh_traffic_mb">Traffico massimo per singolo aggiornamento</string>
     <string name="max_single_refresh_traffic_mb_descr">L\'aggiornamento si interrompe quando il traffico raggiunge il limite (in MB) e non si è connessi in Wi-Fi</string>
-    <string name="settings_load_comments">Carica commenti</string>
-    <string name="settings_load_comments_description">Testo completo nell\'articolo</string>
     <string name="settings_category_article_list">Lista articoli</string>
     <string name="settings_category_article_list_summary">Aspetto della lista degli articoli</string>
     <string name="settings_font_size">Dimensione testo</string>
@@ -345,7 +342,6 @@
     <string name="question_delete_entry">Elimina questo articolo?</string>
     <string name="question_mark_upper_as_read">Segnare gli articoli in alto come letti?</string>
     <string name="question_mark_lower_as_read">Segnare gli articoli inferiori come letti?</string>
-    <string name="question_mark_all_as_unread">Segnare tutti gli articoli come non letti?</string>
     <string name="share_all_text">Condividi tutto il testo</string>
     <string name="group">Gruppo</string>
     <string name="auto_image_load">Caricamento automatico immagini</string>

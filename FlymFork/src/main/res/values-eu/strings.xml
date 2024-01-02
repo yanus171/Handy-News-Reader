@@ -143,7 +143,6 @@
     <string name="no_entries">Artikulurik ez</string>
     <string name="downloadOneImage">Deskargatu irudia</string>
     <string name="favorites">Izarduna</string>
-    <string name="context_menu_share_starred_via_file">Partekatu sarrera izardunak</string>
     <string name="menu_star">Izarra</string>
     <string name="menu_unstar">Kendu izarra</string>
     <string name="menu_share">Partekatu</string>
@@ -209,8 +208,6 @@
     <string name="settings_max_image_download_size_kb_summary">(KB-tan). Ez deskargatu hau baino handiagoak diren irudiak:</string>
     <string name="max_single_refresh_traffic_mb">Berritze bakoitzeko gehieneko trafikoa</string>
     <string name="max_single_refresh_traffic_mb_descr">Berritzea gehieneko MB kopuru batera heltzean geldituko da wifi bidez ez bada</string>
-    <string name="settings_load_comments">Kargatu iruzkinak</string>
-    <string name="settings_load_comments_description">Artikuluen testu osoan</string>
     <string name="settings_category_article_list">Artikuluen zerrenda</string>
     <string name="settings_category_article_list_summary">Artikuluen zerrendaren itxura</string>
     <string name="settings_font_size">Testuaren tamaina</string>

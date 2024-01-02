@@ -146,7 +146,6 @@
     <string name="no_entries">Χωρίς άρθρα</string>
     <string name="downloadOneImage">Κατέβασμα εικόνας</string>
     <string name="favorites">Με αστέρι</string>
-    <string name="context_menu_share_starred_via_file">Αποστολή άρθρων με αστέρι</string>
     <string name="menu_star">Αστέρι</string>
     <string name="menu_unstar">Αφαίρεση αστεριού</string>
     <string name="menu_share">Αποστολή</string>
@@ -212,8 +211,6 @@
     <string name="settings_max_image_download_size_kb_summary">(σε kb). Μη φορτώνετε εικόνες μεγαλύτερες από</string>
     <string name="max_single_refresh_traffic_mb">Μέγιστη ταχύτητα φόρτωσης</string>
     <string name="max_single_refresh_traffic_mb_descr">Η ανανέωση θα σταματάει αν η ταχύτητα του δικτύου φτάσει τη μέγιστη τιμή (σε MB) και δεν είστε σε σύνδεση Wi-Fi</string>
-    <string name="settings_load_comments">Φόρτωση σχολίων</string>
-    <string name="settings_load_comments_description">Σε άρθρα πλήρες κείμενο</string>
     <string name="settings_category_article_list">Λίστα άρθρων</string>
     <string name="settings_category_article_list_summary">Εμφάνιση των άρθρων\' λίστα</string>
     <string name="settings_font_size">Μέγεθος γραμματοσειράς</string>

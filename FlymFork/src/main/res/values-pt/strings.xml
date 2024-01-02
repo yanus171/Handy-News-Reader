@@ -146,7 +146,8 @@
     <string name="no_entries">Nenhum artigo</string>
     <string name="downloadOneImage">Baixar imagem</string>
     <string name="favorites">Favorito</string>
-    <string name="context_menu_share_starred_via_file">Compartilhar entradas favoritas</string>
+    <string name="context_menu_share_starred_via_file">Compartilhar entradas favoritas via arquivo</string>
+    <string name="context_menu_share_starred_via_text">Compartilhar entradas favoritas via texto</string>
     <string name="menu_star">Estrela</string>
     <string name="menu_unstar">Desmarcar</string>
     <string name="menu_share">Compartilhar</string>
@@ -178,6 +179,7 @@
     <string name="tip_sentence">Dica: deslize para a direita para marcar como lido, deslize para a esquerda para adicionar aos Favoritos</string>
     <string name="undo">Desfazer</string>
     <string name="marked_as_read">Marcado como lido</string>
+    <string name="marked_as_unread">Marcado como não lido</string>
     <string name="image_count">Contagem de imagens</string>
     <!-- WIDGET -->
     <string name="red">Vermelho</string>
@@ -212,8 +214,6 @@
     <string name="settings_max_image_download_size_kb_summary">(em kb). Não carregar automaticamente imagens maiores que</string>
     <string name="max_single_refresh_traffic_mb">Máximo de tráfego em uma atualização</string>
     <string name="max_single_refresh_traffic_mb_descr">A atualização será interrompida quando o tráfego atingir o valor máximo (em MB) e não está em WiFi</string>
-    <string name="settings_load_comments">Carregar comentários</string>
-    <string name="settings_load_comments_description">No texto completo dos artigos</string>
     <string name="settings_category_article_list">Lista de Artigos</string>
     <string name="settings_category_article_list_summary">Aparência da lista de artigos</string>
     <string name="settings_font_size">Tamanho do texto</string>
@@ -538,4 +538,5 @@
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
     </plurals>
+    <string name="shared_favorities_article_list_mail_sugject">Lista de artigos favoritos do Handy Reader</string>
 </resources>

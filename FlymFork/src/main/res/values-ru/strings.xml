@@ -152,7 +152,8 @@
     <string name="downloadOneImage">Загрузить изображение</string>
     <string name="favorites">Избранное</string>
     <string name="last_read">Последнее прочитанное</string>
-    <string name="context_menu_share_starred_via_file">Поделиться избранными новостями</string>
+    <string name="context_menu_share_starred_via_file">Поделиться избранным через файл</string>
+    <string name="context_menu_share_starred_via_text">Поделиться избранным через текст</string>
     <string name="menu_star">В избранное</string>
     <string name="menu_unstar">Убрать из избранного</string>
     <string name="menu_share">Поделиться</string>
@@ -187,6 +188,7 @@
     <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
     <string name="undo">Отменить</string>
     <string name="marked_as_read">Отмечено как прочитанное</string>
+    <string name="marked_as_unread">Отмечено непрочитанным</string>
     <string name="removed_from_favorites">Удалено из избранного</string>
     <string name="image_count">Количество изображений</string>
     <!-- WIDGET -->
@@ -223,8 +225,6 @@
     <string name="settings_max_image_download_size_kb_summary">(в KБ). Не загружать автоматически изображения, имеющие больший размер</string>
     <string name="max_single_refresh_traffic_mb">Max траффик обновления</string>
     <string name="max_single_refresh_traffic_mb_descr">Обновление остановится, когда трафик превысит максимальное значение и не WiFi (в МБ)</string>
-    <string name="settings_load_comments">Загружать комментарии</string>
-    <string name="settings_load_comments_description">В полных текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
     <string name="settings_category_article_list_summary">Внешний вид списка статей</string>
     <string name="settings_font_size">Размер текста</string>
@@ -349,7 +349,6 @@
     <string name="question_delete_entry">Удалить статью?</string>
     <string name="question_mark_upper_as_read">Отметить статьи выше как прочитанные?</string>
     <string name="question_mark_lower_as_read">Отметить статьи ниже как прочитанные?</string>
-    <string name="question_mark_all_as_unread">Отметить все статьи как непрочитанные?</string>
     <string name="share_all_text">Поделиться текстом</string>
     <string name="group">Группа</string>
     <string name="auto_image_load">Загружать изображения при автоматической загрузке</string>
@@ -608,7 +607,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="settings_labels_sort_alphabetical">Сортировка меток по алфавиту</string>
     <string name="settings_labels_sort_alphabetical_descr">Сортировать метки по алфавиту. Иначе ручная сортировка</string>
     <string name="settings_feeds_sort_alphabetical">Сортировка по алфавиту</string>
-    <string name="settings_feeds_sort_alphabetical_descr">Сортировать ленты и группы по алфавиту. Иначе ручная сортировка</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Сортировать статьи и группы по алфавиту. Иначе ручная сортировка</string>
     <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
     <string name="web_search_title">Веб поиск статьи</string>
     <string name="settings_datetime_format">Формат даты и времени</string>
@@ -711,4 +710,10 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="settings_autobackup_toast_descr">Показывать всплывающее сообщение, после успешного копирования резервной копии в Загрузки</string>
     <string name="with_labels">с метками:</string>
     <string name="none">нет</string>
+    <string name="show_article_text">Текст статьи</string>
+    <string name="show_article_text_descr">Показывать текст статьи в списке</string>
+    <string name="shared_favorities_article_list_mail_sugject">Список избранного Handy Reader</string>
+    <string name="settings_remove_found_categories_from_text">Удалить категории из текста</string>
+    <string name="settings_remove_found_categories_from_text_descr">Удалить найденные категории из текста статьи</string>
+    <string name="settings_volume_buttons_action_descr">Действия по умолчанию будут выполняться только в том случае, если в статье есть видео</string>
 </resources>
