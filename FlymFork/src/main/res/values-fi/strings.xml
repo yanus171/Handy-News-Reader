@@ -91,7 +91,6 @@
     <string name="all_entries">Kaikki </string>
     <string name="no_entries">Ei artikkeleita</string>
     <string name="favorites">Tähdellä merkityt</string>
-    <string name="context_menu_share_starred_via_file">Jaa tähdellä merkityt</string>
     <string name="menu_star">Merkitse tähdellä</string>
     <string name="menu_unstar">Poista tähti</string>
     <string name="menu_share">Jaa</string>

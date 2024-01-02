@@ -149,7 +149,8 @@
     <string name="downloadOneImage">Завантажити зображення</string>
     <string name="favorites">Обране</string>
     <string name="last_read">Останні прочитані</string>
-    <string name="context_menu_share_starred_via_file">Поділитися обраними новинами</string>
+    <string name="context_menu_share_starred_via_file">Поділитись обраним за допомогою файлу</string>
+    <string name="context_menu_share_starred_via_text">Поділитись обраним за допомогою тексту</string>
     <string name="menu_star">В обране</string>
     <string name="menu_unstar">Вилучити з обраного</string>
     <string name="menu_share">Поділитися</string>
@@ -184,6 +185,7 @@
     <string name="tip_sentence">Підказка: свайп вліво помічає статтю як прочитану, свайп вправо - як обрану</string>
     <string name="undo">Скасувати</string>
     <string name="marked_as_read">Позначити як прочитане</string>
+    <string name="marked_as_unread">Позначено як непрочитане</string>
     <string name="removed_from_favorites">Вилучено з обраного</string>
     <string name="image_count">Кількість зображень</string>
     <!-- WIDGET -->
@@ -220,8 +222,6 @@
     <string name="settings_max_image_download_size_kb_summary">(в kb). Не завантажувати автоматично зображення, що мають більший розмір</string>
     <string name="max_single_refresh_traffic_mb">Max трафік оновлення</string>
     <string name="max_single_refresh_traffic_mb_descr">Оновлення зупиниться, коли трафік перевищить максимальне значення та немає WiFi (в МБ)</string>
-    <string name="settings_load_comments">Завантажувати коментарі</string>
-    <string name="settings_load_comments_description">В повних текстах статей</string>
     <string name="settings_category_article_list">Список статей</string>
     <string name="settings_category_article_list_summary">Вигляд списку статей</string>
     <string name="settings_font_size">Розмір шрифту</string>
@@ -346,7 +346,6 @@
     <string name="question_delete_entry">Вилучити статтю?</string>
     <string name="question_mark_upper_as_read">Позначити статті вгорі як прочитані?</string>
     <string name="question_mark_lower_as_read">Помітити статті, що нижче як прочитані?</string>
-    <string name="question_mark_all_as_unread">Позначити всі статті як непрочитані?</string>
     <string name="share_all_text">Поділитися текстом</string>
     <string name="group">Група</string>
     <string name="auto_image_load">Завантажувати зображення автоматично</string>
@@ -706,4 +705,10 @@
     <string name="settings_autobackup_toast_descr">Показувати сповіщення що спливає, коли файл резервної копії успішно скопійовано до теки завантажень</string>
     <string name="with_labels">з мітками:</string>
     <string name="none">немає</string>
+    <string name="show_article_text">Текст статті</string>
+    <string name="show_article_text_descr">Показувати текст статті у списку</string>
+    <string name="shared_favorities_article_list_mail_sugject">Список улюблених статей в Handy Reader</string>
+    <string name="settings_remove_found_categories_from_text">Вилучити категорії з тексту</string>
+    <string name="settings_remove_found_categories_from_text_descr">Вилучити знайдені категорії з тексту статті</string>
+    <string name="settings_volume_buttons_action_descr">Коли стаття має відео, тоді буде виконуватись тільки дія по замовчуванню</string>
 </resources>

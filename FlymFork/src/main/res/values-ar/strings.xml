@@ -142,7 +142,6 @@
     <string name="no_entries">لا توجد مقالات</string>
     <string name="downloadOneImage">تحميل الصورة</string>
     <string name="favorites">المُميّزة</string>
-    <string name="context_menu_share_starred_via_file">مشاركة المقالات المُميّزة</string>
     <string name="menu_star">مُميّز</string>
     <string name="menu_unstar">غير مُميّز</string>
     <string name="menu_share">مشاركة</string>
@@ -209,8 +208,6 @@
     <string name="settings_max_image_download_size_kb_summary">(بالكيلوبايت). لا تَقُم بتحميل الصور تلقائياً إذا كانت أكبر من</string>
     <string name="max_single_refresh_traffic_mb">الحد الأقصى لحركة التحديث الفردية</string>
     <string name="max_single_refresh_traffic_mb_descr">سيتوقف التحديث عندما تصل حركة المرور إلى أقصى قيمة (بالميغابايت)، بإستثناء الواي فاي</string>
-    <string name="settings_load_comments">تحميل التعليقات</string>
-    <string name="settings_load_comments_description">في النص الكامل للمقالات</string>
     <string name="settings_category_article_list">قائمة المقالات</string>
     <string name="settings_category_article_list_summary">كيفية ظهور قائمة المقالات</string>
     <string name="settings_font_size">حجم النص</string>

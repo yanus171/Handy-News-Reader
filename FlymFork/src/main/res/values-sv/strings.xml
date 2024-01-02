@@ -91,7 +91,6 @@
     <string name="all_entries">Alla</string>
     <string name="no_entries">Inga poster</string>
     <string name="favorites">Favoriter</string>
-    <string name="context_menu_share_starred_via_file">Dela favoriter</string>
     <string name="menu_star">Markera som favorit</string>
     <string name="menu_unstar">Avmarkera som favorit</string>
     <string name="menu_share">Dela</string>
@@ -133,7 +132,6 @@
     <string name="settings_refresh_wifi_only_description">Uppdatera automatisk endast när ett Wi-Fi-nätverk är tillgänglig</string>
     <string name="settings_keep_time">Tid som inläggen behållas</string>
     <string name="settings_preload_image_mode">Förladda bilder</string>
-    <string name="settings_load_comments">Ladda kommentarer</string>
     <string name="settings_category_article_list">Artikellista</string>
     <string name="settings_font_size">Typsnittsstorlek</string>
     <string name="show_article_icon">Visa artikelikon</string>

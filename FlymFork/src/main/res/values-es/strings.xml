@@ -146,7 +146,6 @@
     <string name="downloadOneImage">Descargar la imagen</string>
     <string name="favorites">Destacadas</string>
     <string name="last_read">Última lectura</string>
-    <string name="context_menu_share_starred_via_file">Compartir entradas seleccionadas</string>
     <string name="menu_star">Destaca</string>
     <string name="menu_unstar">No destacar</string>
     <string name="menu_share">Compartir</string>
@@ -216,8 +215,6 @@
     <string name="settings_max_image_download_size_kb_summary">(en kb). No cargue automáticamente imágenes más grandes que</string>
     <string name="max_single_refresh_traffic_mb">Máximo tráfico de actualización simple</string>
     <string name="max_single_refresh_traffic_mb_descr">La actualización se detendrá cuando el tráfico alcance el valor máximo (en MB) y no haya terminado el WiFi</string>
-    <string name="settings_load_comments">Cargar comentarios</string>
-    <string name="settings_load_comments_description">Texto completo de los artículos</string>
     <string name="settings_category_article_list">Lista de artículos</string>
     <string name="settings_category_article_list_summary">Apariencia de la lista de artículos</string>
     <string name="settings_font_size">Tamaño del texto</string>
@@ -342,7 +339,6 @@
     <string name="question_delete_entry">¿Eliminar este artículo?</string>
     <string name="question_mark_upper_as_read">¿Marcar artículos de encima como leídos?</string>
     <string name="question_mark_lower_as_read">¿Marcar artículos por debajo como leídos?</string>
-    <string name="question_mark_all_as_unread">¿Marcar todos los artículos como no leídos?</string>
     <string name="share_all_text">Compartir texto completo</string>
     <string name="group">Grupo</string>
     <string name="auto_image_load">Carga de imágenes automática</string>

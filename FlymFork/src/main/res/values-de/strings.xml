@@ -147,7 +147,8 @@
     <string name="downloadOneImage">Bild herunterladen</string>
     <string name="favorites">Favoriten</string>
     <string name="last_read">Zuletzt gelesen</string>
-    <string name="context_menu_share_starred_via_file">Favoriten teilen</string>
+    <string name="context_menu_share_starred_via_file">Gekennzeichnete Einträge als Datei freigeben</string>
+    <string name="context_menu_share_starred_via_text">Gekennzeichnete Einträge als Text freigeben</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Kein Favorit</string>
     <string name="menu_share">Teilen</string>
@@ -182,6 +183,7 @@
     <string name="tip_sentence">Tipp: Nach rechts wischen um Artikel als gelesen und nach links als Favorit zu markieren</string>
     <string name="undo">Rückgängig</string>
     <string name="marked_as_read">Als gelesen markiert</string>
+    <string name="marked_as_unread">Als ungelesen kennzeichnen</string>
     <string name="removed_from_favorites">Aus Favoriten entfernt</string>
     <string name="image_count">Anzahl Bilder</string>
     <!-- WIDGET -->
@@ -218,8 +220,6 @@
     <string name="settings_max_image_download_size_kb_summary">Größere Bilder werden nicht automatisch geladen</string>
     <string name="max_single_refresh_traffic_mb">Datenvolumenlimit</string>
     <string name="max_single_refresh_traffic_mb_descr">Die Aktualisierung wird angehalten, wenn das Datenvolumen diesen Wert (in MB) übersteigt und keine WLAN-Verbindung besteht</string>
-    <string name="settings_load_comments">Kommentare laden</string>
-    <string name="settings_load_comments_description">Auch Kommentare im gesamten Artikeltext laden</string>
     <string name="settings_category_article_list">Artikelliste</string>
     <string name="settings_category_article_list_summary">Aussehen der Artikelliste</string>
     <string name="settings_font_size">Schriftgröße</string>
@@ -345,7 +345,6 @@
     <string name="question_delete_entry">Diesen Artikel löschen?</string>
     <string name="question_mark_upper_as_read">Alle Artikel darüber als gelesen kennzeichnen?</string>
     <string name="question_mark_lower_as_read">Alle Artikel darunter als gelesen kennzeichnen?</string>
-    <string name="question_mark_all_as_unread">Alle Artikel als „Ungelesen” kennzeichnen?</string>
     <string name="share_all_text">Gesamten Text teilen</string>
     <string name="group">Gruppe</string>
     <string name="auto_image_load">Bilder automatisch laden</string>
@@ -699,4 +698,12 @@
     <string name="tableOfContent">Inhaltsverzeichnis</string>
     <string name="show_notification_setup_summary">Systemdialog zur Einrichtung der App-Benachrichtigungen anzeigen</string>
     <string name="performance">Leistungsfähigkeit</string>
+    <string name="settings_autobackup_toast">Toast</string>
+    <string name="settings_autobackup_toast_descr">Toast-Nachricht anzeigen, wenn die Sicherungsdatei erfolgreich in Downloads erstellt wurde</string>
+    <string name="with_labels">mit Kategorien:</string>
+    <string name="show_article_text">Artikeltext</string>
+    <string name="show_article_text_descr">Artikeltext in Liste anzeigen</string>
+    <string name="settings_remove_found_categories_from_text">Kategorien aus dem Text entfernen</string>
+    <string name="settings_remove_found_categories_from_text_descr">Gefundene Kategorien aus dem Artikeltext entfernen</string>
+    <string name="settings_volume_buttons_action_descr">Es gibt nur eine Standardaktion, wenn ein Artikel ein Video enthält</string>
 </resources>
