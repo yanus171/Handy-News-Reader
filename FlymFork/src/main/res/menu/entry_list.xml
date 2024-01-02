@@ -18,12 +18,6 @@
         android:icon="@drawable/ic_check_box"
         android:title="@string/menu_toogle_unread_all"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/menu_search"
-        android:icon="@drawable/ic_search"
-        android:title="@android:string/search_go"
-        app:showAsAction="always"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
     <item
         android:id="@+id/menu_more_options"
@@ -95,13 +89,25 @@
                         android:id="@+id/menu_unstarr_articles"
                         android:title="@string/menu_unstar_articles"/>
                     <item
-                        android:id="@+id/menu_share_starred_via_file"
                         android:icon="@drawable/ic_share"
-                        android:title="@string/context_menu_share_starred_via_file"/>
-                    <item
-                        android:id="@+id/menu_share_starred_via_text"
-                        android:icon="@drawable/ic_share"
-                        android:title="@string/context_menu_share_starred_via_text"/>
+                        android:title="@string/menu_share">
+                        <menu>
+                            <item
+                                android:id="@+id/menu_share_starred_articles_via_file"
+                                android:icon="@drawable/ic_star"
+                                android:title="@string/context_menu_share_starred_via_file"/>
+                            <item
+                                android:id="@+id/menu_share_starred_articles_via_text"
+                                android:icon="@drawable/ic_star"
+                                android:title="@string/context_menu_share_starred_via_text"/>
+                            <item
+                                android:id="@+id/menu_share_all_articles_via_file"
+                                android:title="@string/context_menu_share_all_via_file"/>
+                            <item
+                                android:id="@+id/menu_share_all_articles_via_text"
+                                android:title="@string/context_menu_share_all_via_text"/>
+                        </menu>
+                    </item>
                 </menu>
             </item>
             <item
@@ -159,4 +165,11 @@
             </item>
         </menu>
     </item>
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search"
+        android:title="@android:string/search_go"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
 </menu>

@@ -150,8 +150,8 @@
     <string name="downloadOneImage">Download the image</string>
     <string name="favorites">Starred</string>
     <string name="last_read">Last read</string>
-    <string name="context_menu_share_starred_via_file">Share starred entries via file</string>
-    <string name="context_menu_share_starred_via_text">Share starred entries via text</string>
+    <string name="context_menu_share_starred_via_file">Starred articles via file</string>
+    <string name="context_menu_share_starred_via_text">Starred articles via text</string>
     <string name="menu_star">Star</string>
     <string name="menu_unstar">Unstar</string>
     <string name="menu_share">Share</string>
@@ -740,5 +740,7 @@
     <string name="volume_buttons_action_page_in_article_list_descr">In the article list</string>
     <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
     livejournal:id-comments</string>
+    <string name="context_menu_share_all_via_file">"All visible articles via file "</string>
+    <string name="context_menu_share_all_via_text">All visible articles via text</string>
 
 </resources>

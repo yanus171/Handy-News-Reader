@@ -651,6 +651,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         ImageView v = searchView.findViewById(searchImgId);
         v.setImageResource(R.drawable.ic_search);
 
+//        searchView.setMaxWidth( 30 );
+
         if (!mSearchText.isEmpty()) {
             searchItem.expandActionView();
             // Without that, it just does not work
@@ -718,21 +720,20 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 break;
             }
 
-            case R.id.menu_share_starred_via_file: {
-                final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(),
-                                                                                 getStarredArticlesListFileName(),
-                                                                                 getStarredArticlesList()) );
-                startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
+            case R.id.menu_share_starred_articles_via_file: {
+                shareArticleListViaFile( true );
                 return true;
             }
-            case R.id.menu_share_starred_via_text: {
-                final Intent textIntent = new Intent(Intent.ACTION_SEND);
-                textIntent.putExtra(Intent.EXTRA_TEXT, getStarredArticlesList() );
-                textIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.shared_favorities_article_list_mail_sugject);
-                textIntent.setType(Constants.MIMETYPE_TEXT_PLAIN);
-                startActivity(Intent.createChooser( textIntent, getString(R.string.share_favorites_title)) );
+            case R.id.menu_share_starred_articles_via_text: {
+                shareArticleListViaText( true );
+                return true;
+            }
+            case R.id.menu_share_all_articles_via_file: {
+                shareArticleListViaFile( false );
+                return true;
+            }
+            case R.id.menu_share_all_articles_via_text: {
+                shareArticleListViaText( false );
                 return true;
             }
 
@@ -995,6 +996,23 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return super.onOptionsItemSelected(item);
     }
 
+    private void shareArticleListViaText( boolean starredOnly ) {
+        final Intent textIntent = new Intent(Intent.ACTION_SEND);
+        textIntent.putExtra(Intent.EXTRA_TEXT, getArticlesList( starredOnly ) );
+        textIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.shared_favorities_article_list_mail_sugject);
+        textIntent.setType(Constants.MIMETYPE_TEXT_PLAIN);
+        startActivity(Intent.createChooser( textIntent, getString(R.string.share_favorites_title)) );
+    }
+
+    private void shareArticleListViaFile( boolean starredOnly ) {
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(),
+                                                                         getStarredArticlesListFileName(),
+                                                                         getArticlesList(starredOnly)) );
+        startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
+    }
+
     private String getStarredArticlesListFileName() {
         final String dateTimeStr = new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date(System.currentTimeMillis() ) );
         String fileName = GetActivity().mTitle + "_shared_article_links_" + dateTimeStr + ".txt";
@@ -1002,7 +1020,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return fileName;
     }
     @NonNull
-    private String getStarredArticlesList() {
+    private String getArticlesList( boolean starredOnly ) {
         if (mEntriesCursorAdapter == null)
             return "";
         StringBuilder starredList = new StringBuilder();
@@ -1021,7 +1039,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             starredList.append("\n" + getContext().getString(R.string.withoutLabel) + ": \n");
             starredList.append("----------------------------------------\n");
-            try (Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, null, null,
+            SetSingleLabel( NO_LABEL );
+            String where = GetWhereSQL();
+            if ( starredOnly )
+                where += DB_AND + WHERE_FAVORITE;
+            try (Cursor cursor = getContext().getContentResolver().query(mCurrentUri, new String[]{_ID, TITLE, LINK, DATE}, where, null,
                                                                          DATE + (IsOldestFirst() ? DB_ASC : DB_DESC))) {
                 AddArticleLinks(cursor, starredList, null, labeledArticlesID);
             }
