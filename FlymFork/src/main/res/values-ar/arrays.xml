@@ -28,8 +28,8 @@
         <item>دائماً</item>
     </string-array>
     <string-array name="settings_volume_buttons_action">
-        <item>إفتراضي</item>
-        <item>إنتقال للمقال التالي | السابق</item>
+        <item>افتراضي</item>
+        <item>انتقال للمقال التالي | السابق</item>
         <item>الصفحة لأعلى | لِأسفل</item>
     </string-array>
     <string-array name="settings_preload_image_modes">
@@ -38,13 +38,17 @@
         <item>دائماً</item>
     </string-array>
     <string-array name="themeList">
-        <item>مضيء</item>
-        <item>داكن</item>
-        <item>أَسْوَدُ</item>
+        <item>فاتحة</item>
+        <item>داكنة</item>
+        <item>سوداء</item>
     </string-array>
     <string-array name="buttons_layout_captions">
-        <item>اُفُقِيٌّ</item>
-        <item>عَمودِيٌّ</item>
+        <item>افقيًا</item>
+        <item>عموديًا</item>
         <item>عَدَمُ إِظْهارِ الأَزْرارِ</item>
+    </string-array>
+    <string-array name="settings_datetime_format">
+        <item>الافتراضي للنظام</item>
+        <item>الوقت المنقضي</item>
     </string-array>
 </resources>
