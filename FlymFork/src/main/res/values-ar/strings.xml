@@ -146,8 +146,8 @@
     <string name="downloadOneImage">تحميل الصورة</string>
     <string name="favorites">المُميّزة</string>
     <string name="last_read">المقروءة موخرًا</string>
-    <string name="context_menu_share_starred_via_file">مشاركة المقالات المميزة كملف</string>
-    <string name="context_menu_share_starred_via_text">مشاركة المقالات المميزة نصيًا</string>
+    <string name="context_menu_share_starred_via_file">المقالات المميزة كملف</string>
+    <string name="context_menu_share_starred_via_text">المقالات المميزة نصيًا</string>
     <string name="menu_star">الإضافة الى المميزة</string>
     <string name="menu_unstar">الإزالة من المميزة</string>
     <string name="menu_share">مشاركة</string>
@@ -716,4 +716,6 @@
     <string name="volume_buttons_action_page_in_article_list_descr">في قوائم المقالات</string>
     <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
     livejournal:id-comments</string>
+    <string name="context_menu_share_all_via_file">"كل المقالات المرئية كملف "</string>
+    <string name="context_menu_share_all_via_text">كل المقالات المرئية نصيًا</string>
 </resources>
