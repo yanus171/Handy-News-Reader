@@ -711,4 +711,8 @@
     <string name="settings_remove_found_categories_from_text">Вилучити категорії з тексту</string>
     <string name="settings_remove_found_categories_from_text_descr">Вилучити знайдені категорії з тексту статті</string>
     <string name="settings_volume_buttons_action_descr">Коли стаття має відео, тоді буде виконуватись тільки дія по замовчуванню</string>
+    <string name="volume_buttons_action_page_in_article_list">Прокручувати сторінки за допомогою кнопок гучності</string>
+    <string name="volume_buttons_action_page_in_article_list_descr">У списку статей</string>
+    <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
+    livejournal:id-comments</string>
 </resources>

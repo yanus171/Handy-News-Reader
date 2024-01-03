@@ -706,4 +706,6 @@
     <string name="settings_remove_found_categories_from_text">Kategorien aus dem Text entfernen</string>
     <string name="settings_remove_found_categories_from_text_descr">Gefundene Kategorien aus dem Artikeltext entfernen</string>
     <string name="settings_volume_buttons_action_descr">Es gibt nur eine Standardaktion, wenn ein Artikel ein Video enthält</string>
+    <string name="volume_buttons_action_page_in_article_list">Seiten über Lautstärketasten scrollen</string>
+    <string name="volume_buttons_action_page_in_article_list_descr">In der Artikelliste</string>
 </resources>

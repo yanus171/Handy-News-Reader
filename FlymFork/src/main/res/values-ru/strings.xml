@@ -716,4 +716,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="settings_remove_found_categories_from_text">Удалить категории из текста</string>
     <string name="settings_remove_found_categories_from_text_descr">Удалить найденные категории из текста статьи</string>
     <string name="settings_volume_buttons_action_descr">Действия по умолчанию будут выполняться только в том случае, если в статье есть видео</string>
+    <string name="volume_buttons_action_page_in_article_list">Прокручивать страницы кнопками громкости</string>
+    <string name="volume_buttons_action_page_in_article_list_descr">В списке статей</string>
+    <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
+    livejournal:id-comments</string>
 </resources>
