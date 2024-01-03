@@ -715,4 +715,6 @@
     <string name="volume_buttons_action_page_in_article_list_descr">У списку статей</string>
     <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
     livejournal:id-comments</string>
+    <string name="context_menu_share_all_via_file">"Всі видимі статті через файл "</string>
+    <string name="context_menu_share_all_via_text">Всі видимі статті через текст</string>
 </resources>
