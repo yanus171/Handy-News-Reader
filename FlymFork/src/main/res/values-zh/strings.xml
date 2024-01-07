@@ -95,7 +95,7 @@
     <!-- FEEDS -->
     <string name="feeds">订阅源</string>
     <string name="menu_article_web_search">文章网页搜索</string>
-    <string name="menu_add_feed">文章网页搜索</string>
+    <string name="menu_add_feed">添加订阅源</string>
     <string name="no_feeds">未找到订阅源</string>
     <string name="no_filters">无规则</string>
     <string name="context_menu_add">添加</string>
@@ -292,7 +292,7 @@
     <string name="settings_notifications_light">浅色</string>
     <string name="settings_notifications_light_description">对新条目启用通知灯</string>
     <string name="page_up_down_90_pct">页面滚动90%</string>
-    <string name="page_up_down_90_pct_descr">(轻按屏幕顶部/底部) 为了保留上一页的几行 - 如果不选中，整个页面将会滚动</string>
+    <string name="page_up_down_90_pct_descr">(轻按屏幕顶部/底部) 保留上一页的几行 - 如果不选中，整个页面将会滚动</string>
     <string name="settings_remember_last_entry">记忆最近文章</string>
     <string name="settings_remeber_last_entry_description">启动时打开上次查看的文章，否则打开未读条目列表</string>
     <string name="auto_unstart_at_bottom">完成阅读后自动取消文章加星</string>
@@ -418,7 +418,7 @@
     <string name="custom_data_folder">自定义外部文件路径</string>
     <string name="custom_data_folder_descr">(空-使用默认) 存储下载的图像和备份文件的feedex文件夹路径</string>
     <string name="entry_text_title_link">标题链接</string>
-    <string name="entry_text_title_link_description">允许在浏览器中点击标题打开网页</string>
+    <string name="entry_text_title_link_description">允许轻按文章标题在网页浏览器中打开它</string>
     <string name="delete_read_articles">删除旧文章</string>
     <string name="delete_read_articles_descr">不论文章保留时间</string>
     <string name="data_folder">数据文件夹</string>
@@ -440,7 +440,7 @@
     <string name="menu_close">关闭</string>
     <string name="reading_file_list">阅读文件列表</string>
     <string name="add_entry_shortcut">添加桌面快捷方式</string>
-    <string name="new_entry_shortcut_added">在主屏幕上创建了新的文章快捷方式</string>
+    <string name="new_entry_shortcut_added">已在主屏幕上创建了新的文章快捷方式</string>
     <string name="menu_reload_with_tables_toggle">With tables</string>
     <string name="menu_display_options">显示选项</string>
     <string name="menu_reload">刷新</string>
