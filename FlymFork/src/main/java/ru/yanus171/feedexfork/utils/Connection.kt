@@ -68,13 +68,14 @@ class Connection(url: String, var mIsOKHttp: Boolean = true) {
             }
 
 
-            var request = Request.Builder()
-                    .url(url.trim())
-                    .header( "user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" )
-                    .build()
             val client = OkHttpClient.Builder()
                     .connectTimeout(timeout.toLong(), TimeUnit.MILLISECONDS)
                     .readTimeout(timeout.toLong(), TimeUnit.MILLISECONDS)
+            var request = Request.Builder()
+                    .url(url.trim())
+                    .header( "user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" )
+                    .header( "Accept-Encoding", "identity" )
+                    .build()
             if ( PrefUtils.getBoolean("ignore_all_ssl_errors", false) )
                 client.apply {
                     ignoreAllSSLErrors()

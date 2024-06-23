@@ -81,6 +81,9 @@ public class NetworkUtils {
         return getDownloadedImagePath(entryLink, "", imgUrl);
     }
 
+    public static String getDownloadedImageLocaLPath( String entryLink, int index ) {
+        return FileUtils.INSTANCE.GetImagesFolder().getAbsolutePath() + "/" + FileUtils.INSTANCE.getLinkHash( entryLink ) + ID_SEPARATOR + index;
+    }
 
     private static String getDownloadedImagePath( String entryLink, String prefix, String imgUrl ) {
         final String lastSegment = imgUrl.contains( "/" ) ? imgUrl.substring(imgUrl.lastIndexOf("/")) : imgUrl;

@@ -74,6 +74,7 @@ public class HtmlUtils {
             .addAttributes( "textroot", HANDY_NEWS_READER_ROOT_CLASS )
             .addTags("s")
             .addTags("time")
+            .addTags("textarea")
             .addAttributes("track", "src", "kind", "srclang", "label")
             .addAttributes("script", "src", "type")
             .addAttributes("div", "data-src", "data-id", "data-query" )

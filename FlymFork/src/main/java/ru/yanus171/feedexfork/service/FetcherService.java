@@ -91,6 +91,7 @@ import static ru.yanus171.feedexfork.utils.HtmlUtils.convertXMLSymbols;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
+import static ru.yanus171.feedexfork.utils.NetworkUtils.getDownloadedImageLocaLPath;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.NOTIFICATIONS_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
@@ -116,6 +117,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Pair;
 import android.util.Xml;
 import android.webkit.WebView;
@@ -129,6 +131,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -137,9 +140,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -806,11 +811,20 @@ public class FetcherService extends IntentService {
             SaveContentStepToFile( doc, "h1" );
 
             Status().ChangeProgress( "binary" );
+
+            int imageIndex = 0;
             for (Element el : doc.getElementsByTag("binary")) {
                 if (!el.hasAttr("content-type"))
                     continue;
                 el.tagName("img");
-                el.attr("src", "data:" + el.attr("content-type") + ";base64," + el.ownText().replace( "\n", "" ));
+                imageIndex++;
+                final String imgFilePath = getDownloadedImageLocaLPath( link, imageIndex );
+
+                byte[] data = Base64.decode(el.ownText().replace( "\n", "" ).replace( " ", "" ), Base64.DEFAULT );
+                try (OutputStream stream = new FileOutputStream(imgFilePath)) {
+                    stream.write(data);
+                }
+                el.attr("src", Constants.FILE_SCHEME + imgFilePath);
                 el.text("");
             }
             SaveContentStepToFile( doc, "binary_to_img" );
@@ -860,7 +874,7 @@ public class FetcherService extends IntentService {
             values.put(EntryColumns.TITLE, title );
             Status().ChangeProgress( "saveMobilizedHTML" );
             FileUtils.INSTANCE.saveMobilizedHTML(link, content, values);
-            contentResolver().update(EntryColumns.CONTENT_URI( entryId ), values, null, null);
+            contentResolver().update(EntryColumns.CONTENT_URI(entryId), values, null, null);
             Status().ChangeProgress("");
             result = true;
         }
