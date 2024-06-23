@@ -798,7 +798,10 @@ public class FetcherService extends IntentService {
             Elements list = doc.getElementsByTag("image");
             list.addAll( doc.getElementsByTag("img") );
             for (Element el : list ) {
-                Elements images = doc.getElementsByAttributeValue( "id", el.attr( "l:href" ).replace( "#", "" ));
+                final String id = el.attr( "l:href" ).replace( "#", "" );
+                if ( id.isEmpty() )
+                    continue;
+                Elements images = doc.getElementsByAttributeValue( "id", id );
                 if ( images.isEmpty() )
                     continue;
                 el.insertChildren( -1, images.first() );
@@ -819,8 +822,11 @@ public class FetcherService extends IntentService {
                 el.tagName("img");
                 imageIndex++;
                 final String imgFilePath = getDownloadedImageLocaLPath( link, imageIndex );
-
-                byte[] data = Base64.decode(el.ownText().replace( "\n", "" ).replace( " ", "" ), Base64.DEFAULT );
+                final String imageData = el.ownText().replace( "\n", "" ).replace( " ", "" );
+                if ( imageData.isEmpty() )
+                    continue;
+                Status().ChangeProgress( String.format( "image file %d", imageIndex ) ) ;
+                byte[] data = Base64.decode(imageData, Base64.DEFAULT );
                 try (OutputStream stream = new FileOutputStream(imgFilePath)) {
                     stream.write(data);
                 }
