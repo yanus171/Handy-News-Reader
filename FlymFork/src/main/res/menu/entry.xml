@@ -131,8 +131,13 @@
             <item
                 android:id="@+id/menu_force_landscape_orientation_toggle"
                 android:checkable="true"
-                android:icon="@drawable/ic_screen_rotation"
+                android:icon="@drawable/landscape_orientation"
                 android:title="@string/force_landscape_orientation" />
+            <item
+                android:id="@+id/menu_force_portrait_orientation_toggle"
+                android:checkable="true"
+                android:icon="@drawable/portrait_orientation"
+                android:title="@string/force_portrait_orientation" />
         </menu>
     </item>
     <item

@@ -142,11 +142,12 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
@@ -188,7 +189,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public boolean mFavorite;
     private boolean mIsWithTables;
-    private boolean mIsForceLandscape = false;
+    enum ForceOrientation {NONE, LANDSCAPE, PORTRAIT}
+    ForceOrientation ForceOrientationFromInt( int code ) {
+        return code == 1 ? LANDSCAPE : code == 2 ? PORTRAIT : NONE;
+    }
+    int ForceOrientationToInt( ForceOrientation fo ) {
+        return fo == LANDSCAPE ? 1 : fo == PORTRAIT ? 2 : 0;
+    }
+    private ForceOrientation mForceOrientation = NONE;
     private boolean mIsFullTextShown = true;
 
     private ViewPager mEntryPager;
@@ -209,6 +217,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private String mSearchText = "";
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
+    MenuItem mForceLandscapeOrientationMenuItem = null;
+    MenuItem mForcePortraitOrientationMenuItem = null;
     public String mAnchor = "";
 
     @Override
@@ -496,10 +506,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     private void SetOrientation() {
-		int or = mIsForceLandscape ?
-			   ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-			   ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-		if ( mIsForceLandscape && or != getActivity().getRequestedOrientation() )
+		int or = mForceOrientation == LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+                 mForceOrientation == PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
+			     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+		if ( or != getActivity().getRequestedOrientation() )
 			getActivity().setRequestedOrientation( or );
     }
 
@@ -576,7 +586,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onConfigurationChanged(newConfig);
         if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
             EntryView entryView = mEntryPagerAdapter.GetEntryView(mEntryPager.getCurrentItem());
-            if (entryView != null && !mIsForceLandscape && entryView.mHasScripts) {
+            if (entryView != null && mForceOrientation != LANDSCAPE && entryView.mHasScripts) {
                 mEntryPager.setAdapter(mEntryPagerAdapter); //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
                 mEntryPager.setCurrentItem(mCurrentPagerPos);
             }
@@ -662,6 +672,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mSearchNextItem.setVisible( false );
         mSearchPreviousItem.setVisible( false );
 
+        mForceLandscapeOrientationMenuItem = menu.findItem(R.id.menu_force_landscape_orientation_toggle);
+        mForcePortraitOrientationMenuItem = menu.findItem(R.id.menu_force_portrait_orientation_toggle);
+
         // Use a custom search icon for the SearchView in AppBar
         int searchImgId = androidx.appcompat.R.id.search_button;
         ImageView v = searchView.findViewById(searchImgId);
@@ -712,7 +725,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
-        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked(mIsForceLandscape);
+        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked( mForceOrientation == LANDSCAPE );
+        menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked( mForceOrientation == PORTRAIT );
 
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
@@ -969,9 +983,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
 
                 case R.id.menu_force_landscape_orientation_toggle: {
-                    SetIsLandscape( !mIsForceLandscape);
-                    item.setChecked(mIsForceLandscape);
-                    SetOrientation();
+                    item.setChecked( !item.isChecked() );
+                    SetForceOrientation( item.isChecked() ? LANDSCAPE : NONE );
+                    if ( item.isChecked() && mForcePortraitOrientationMenuItem != null)
+                        mForcePortraitOrientationMenuItem.setChecked( false );
+                    break;
+                }
+                case R.id.menu_force_portrait_orientation_toggle: {
+                    item.setChecked( !item.isChecked() );
+                    SetForceOrientation( item.isChecked() ? PORTRAIT : NONE );
+                    if ( item.isChecked() && mForceLandscapeOrientationMenuItem != null)
+                        mForceLandscapeOrientationMenuItem.setChecked( false );
                     break;
                 }
                 case R.id.menu_image_white_background: {
@@ -1120,13 +1142,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         cr.update(uri, values, null, null);
         getActivity().invalidateOptionsMenu();
     }
-    private void SetIsLandscape(final boolean isLandscape) {
-        if ( mIsForceLandscape == isLandscape )
+    private void SetForceOrientation(final ForceOrientation forceOrientation) {
+        if ( mForceOrientation == forceOrientation )
             return;
-        mIsForceLandscape = isLandscape;
+        mForceOrientation = forceOrientation;
         final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
         ContentValues values = new ContentValues();
-        values.put(EntryColumns.IS_LANDSCAPE, mIsForceLandscape ? 1 : 0);
+        values.put( EntryColumns.IS_LANDSCAPE, ForceOrientationToInt( mForceOrientation ) );
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         cr.update(uri, values, null, null);
         getActivity().invalidateOptionsMenu();
@@ -1300,8 +1322,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
                 mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
-                SetIsLandscape( entryCursor.getInt(mIsLandscapePos) == 1 );
-                //mRetrieveFullText = entryCursor.getInt( mRetrieveFullTextPos ) == 1;
+                SetForceOrientation( ForceOrientationFromInt( entryCursor.getInt(mIsLandscapePos) ) );
 
                 activity.invalidateOptionsMenu();
 
