@@ -149,6 +149,8 @@
     <string name="downloadOneImage">Scarica Immagine</string>
     <string name="favorites">Preferiti</string>
     <string name="last_read">Ultimi letti</string>
+    <string name="context_menu_share_starred_via_file">Articoli preferiti tramite file</string>
+    <string name="context_menu_share_starred_via_text">Articoli preferiti tramite testo</string>
     <string name="menu_star">Aggiungi ai preferiti</string>
     <string name="menu_unstar">Rimuovi dai preferiti</string>
     <string name="menu_share">Condividi</string>
@@ -183,6 +185,7 @@
     <string name="tip_sentence">Scorri a destra per segnare come letto, scorri a sinistra per aggiungere ai Preferiti</string>
     <string name="undo">Annulla</string>
     <string name="marked_as_read">Segnato come già letto</string>
+    <string name="marked_as_unread">Contrassegnato come non letto</string>
     <string name="removed_from_favorites">Rimosso dai Preferiti</string>
     <string name="image_count">Numero Immagini</string>
     <!-- WIDGET -->
@@ -696,4 +699,14 @@
     <string name="tableOfContent">Tabella dei contenuti</string>
     <string name="performance">Prestazioni</string>
     <string name="settings_autobackup_toast">Avviso</string>
+    <string name="with_labels">con etichette:</string>
+    <string name="none">nessuna</string>
+    <string name="show_article_text">Testo articoli</string>
+    <string name="show_article_text_descr">Mostra testo articolo nella lista</string>
+    <string name="settings_remove_found_categories_from_text">Rimuovi categorie dal testo</string>
+    <string name="settings_remove_found_categories_from_text_descr">Rimuovi le categorie trovate dal testo dell\'articolo</string>
+    <string name="volume_buttons_action_page_in_article_list">Scorri le pagine tramite i pulsanti del volume</string>
+    <string name="volume_buttons_action_page_in_article_list_descr">Nell\'elenco degli articoli</string>
+    <string name="context_menu_share_all_via_file">"Tutti gli articoli visibili tramite file "</string>
+    <string name="context_menu_share_all_via_text">Tutti gli articoli visibili tramite testo</string>
 </resources>

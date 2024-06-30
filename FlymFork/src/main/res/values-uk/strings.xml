@@ -697,6 +697,7 @@
     <string name="brightness_programmatic_dim_max">Макс. рівень затемнення</string>
     <string name="brightness_programmatic_dim_max_descr">Максимальний додатковий рівень затемнення яскравості (0-без додаткового затемнення, 100-повна темрява)</string>
     <string name="edit_feed_title_external">Редагувати</string>
+    <string name="filter_hint_external">Елементи цього глобального фільтра також додаються до любого фільтру стрічки. Відхилені елементи глобального фільтра виключають статті з результатів вебпошуку. Цей екран доступний при довгому натисканні на елементи в списках стрічок Всі, Не прочитані, Улюблені, Останні або статті без стрічки </string>
     <string name="unknown">Невідомо</string>
     <string name="tableOfContent">Зміст</string>
     <string name="show_notification_setup_summary">Показувати системний діалог для сповіщень застосунку</string>
@@ -715,4 +716,6 @@
     <string name="volume_buttons_action_page_in_article_list_descr">У списку статей</string>
     <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
     livejournal:id-comments</string>
+    <string name="context_menu_share_all_via_file">"Всі видимі статті через файл "</string>
+    <string name="context_menu_share_all_via_text">Всі видимі статті через текст</string>
 </resources>

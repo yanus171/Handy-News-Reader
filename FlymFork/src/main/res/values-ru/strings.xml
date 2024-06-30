@@ -721,4 +721,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="volume_buttons_action_page_in_article_list_descr">В списке статей</string>
     <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
     livejournal:id-comments</string>
+    <string name="context_menu_share_all_via_file">"Все видимые статьи через файл "</string>
+    <string name="context_menu_share_all_via_text">Все видимые статьи через текст</string>
 </resources>
