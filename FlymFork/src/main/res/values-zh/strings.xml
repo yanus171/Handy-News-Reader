@@ -289,7 +289,7 @@
     <string name="settings_notifications_ringtone_none">无</string>
     <string name="settings_notifications_vibrate">振动</string>
     <string name="settings_notifications_vibrate_description">对新条目响铃</string>
-    <string name="settings_notifications_light">浅色</string>
+    <string name="settings_notifications_light">亮</string>
     <string name="settings_notifications_light_description">对新条目启用通知灯</string>
     <string name="page_up_down_90_pct">页面滚动90%</string>
     <string name="page_up_down_90_pct_descr">(轻按屏幕顶部/底部) 保留上一页的几行 - 如果不选中，整个页面将会滚动</string>
