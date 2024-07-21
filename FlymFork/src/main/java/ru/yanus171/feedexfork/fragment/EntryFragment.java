@@ -925,12 +925,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                         values.put( EntryColumns.LINK, newLink );
                                         cr.update(uri, values, null, null);
                                         EntryUrlVoc.INSTANCE.set(newLink, getCurrentEntryID());
-                                        UiUtils.RunOnGuiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
-                                            }
-                                        });
+                                        UiUtils.RunOnGuiThread(() -> getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this));
                                     }
                                 }.start();
                             }
@@ -1151,6 +1146,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         values.put( EntryColumns.IS_LANDSCAPE, ForceOrientationToInt( mForceOrientation ) );
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         cr.update(uri, values, null, null);
+        getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
         getActivity().invalidateOptionsMenu();
         SetOrientation();
     }
