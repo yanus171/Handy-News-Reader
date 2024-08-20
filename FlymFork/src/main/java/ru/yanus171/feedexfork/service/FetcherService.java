@@ -1707,6 +1707,7 @@ public class FetcherService extends IntentService {
         content = content.replace("&ndash;", "-");
         content = content.replace((char) 0x1F, ' ');
         content = content.replace((char) 0x02, ' ');
+        content = content.replace((char) 0x01, ' ');
         content = content.replace(String.valueOf((char) 0x00), "");
         { // remove duplicate attrs
             Matcher matcher = Pattern.compile("xmlns:media=\"[^\"]+\"").matcher(content);

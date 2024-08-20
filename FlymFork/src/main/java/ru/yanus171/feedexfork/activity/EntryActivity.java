@@ -38,6 +38,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -54,6 +55,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
@@ -163,14 +165,25 @@ public class EntryActivity extends BaseActivity implements Observer {
         mBrightness.mTapAction = () -> mEntryFragment.PageDown();
     }
 
-    private Uri extractFileToZip(Uri sourceUri, String destFolder)
+    private Uri extractFileToZip(Uri sourceUri, String destFolder ) {
+        try {
+            return extractFileToZip( sourceUri, destFolder, null );
+         } catch ( IllegalArgumentException e ) {
+            e.printStackTrace();
+            return extractFileToZip( sourceUri, destFolder, Charset.forName("CP1251") );
+        }
+    }
+    private Uri extractFileToZip(Uri sourceUri, String destFolder, Charset charset)
     {
         InputStream is;
         ZipInputStream zis;
         try {
             String filename;
             is = MainApplication.getContext().getContentResolver().openInputStream(sourceUri);
-            zis = new ZipInputStream(new BufferedInputStream(is));
+            if (Build.VERSION.SDK_INT >= 24 && charset != null)
+                zis = new ZipInputStream(new BufferedInputStream(is), charset);
+            else
+                zis = new ZipInputStream(new BufferedInputStream(is));
             ZipEntry ze;
             byte[] buffer = new byte[1024];
             int count;
@@ -209,11 +222,13 @@ public class EntryActivity extends BaseActivity implements Observer {
                     url = url.replace("#" + anchor, "");
                     mEntryFragment.mAnchor = anchor;
                 }
-                String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
                 if (IsLocalFile(Uri.parse(url))) {
+                    final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
                     Uri uri = Uri.parse(url);
                     if ( FileSelectDialog.Companion.getFileName(uri).endsWith( ".zip" ) ) {
+                        Status().ChangeProgress( "extracting zip" );
                         uri = extractFileToZip( uri, cacheDir );
+                        Status().ChangeProgress( "" );
                     }
                     final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
                     if ( !fileInCache.exists() )
