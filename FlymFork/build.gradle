@@ -102,7 +102,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'org.jsoup:jsoup:1.17.2'
     implementation 'com.github.bumptech.glide:glide:4.10+'
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:+'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.10.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.work:work-runtime:2.7.1'
