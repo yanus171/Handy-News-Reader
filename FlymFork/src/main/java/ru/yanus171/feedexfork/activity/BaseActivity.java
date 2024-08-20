@@ -204,7 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void UpdateHeader(int max, int progress, int step, boolean isStatusBarHidden, boolean isToolBarHidden) {
         if ( mRootView == null )
             return;
-        if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null ) {
+        if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null || mLabelRemaining == null ) {
             mProgressBar = mRootView.findViewById(R.id.progressBar);
             mProgressBar.setProgress(0);
             mHeaderLayout = mRootView.findViewById(R.id.layoutColontitul);
@@ -219,7 +219,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mMarginRight = mRootView.findViewById(R.id.marginRight);
             mMarginLeft = mRootView.findViewById(R.id.marginLeft);
         }
-        if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null )
+        if ( mProgressBar == null || mLabelClock == null || mLabelBattery == null || mLabelDate == null ||  mLabelRemaining == null )
             return;
         boolean isLayoutVisible = false;
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
