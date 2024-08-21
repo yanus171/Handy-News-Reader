@@ -95,6 +95,7 @@
     <string name="drawer_close">Fermer menu de navigation</string>
     <!-- FEEDS -->
     <string name="feeds">Flux</string>
+    <string name="menu_article_web_search">Recherche Web d\'article</string>
     <string name="menu_add_feed">Ajouter un flux</string>
     <string name="no_feeds">Pas de flux</string>
     <string name="no_filters">Pas de filtres</string>
@@ -132,6 +133,7 @@
     <string name="feed_search">Recherche de flux</string>
     <string name="web_page_search_duckduckgo">Moteur de recherche (Duck Duck Go)</string>
     <string name="select_file">Sélectionner le fichier (racine SD)</string>
+    <string name="select_file_from_subfolder">Sélectionnez le dossier Téléchargements/handy_news_reader :</string>
     <string name="question_delete_feed">Voulez-vous vraiment supprimer ce flux ?</string>
     <string name="question_delete_group">Voulez-vous vraiment supprimer ce groupe et tout ses flux ?</string>
     <string name="question_delete_filter">Voulez-vous vraiment supprimer ce filtre ?</string>
@@ -148,11 +150,15 @@
     <string name="no_entries">Pas d\'article</string>
     <string name="downloadOneImage">Télécharger l\'image</string>
     <string name="favorites">Favoris</string>
+    <string name="last_read">Dernière lecture</string>
+    <string name="context_menu_share_starred_via_file">Articles favoris via un fichier</string>
+    <string name="context_menu_share_starred_via_text">Articles favoris par texte</string>
     <string name="menu_star">Mettre en favoris</string>
     <string name="menu_unstar">Enlever des favoris</string>
     <string name="menu_share">Partager</string>
     <string name="menu_mark_all_as_unread">Marquer tout comme non lus</string>
     <string name="menu_mark_upper_as_read">Marquer en haut comme lu</string>
+    <string name="menu_mark_lower_as_read">Marquer en bas comme lu</string>
     <string name="menu_full_screen">Plein écran</string>
     <string name="menu_actionbar_visible">Barre d\’actions</string>
     <string name="menu_font_bold">Gras</string>
@@ -181,6 +187,7 @@
     <string name="tip_sentence">Astuce: glisser vers la droite pour marquer comme lu et glisser vers la gauche pour ajouter aux Favoris</string>
     <string name="undo">Annuler</string>
     <string name="marked_as_read">Marqués comme lus</string>
+    <string name="marked_as_unread">Marqué comme non lu</string>
     <string name="removed_from_favorites">Enlevé des favoris</string>
     <string name="image_count">Nombre d\'images</string>
     <!-- WIDGET -->
@@ -209,6 +216,7 @@
     <string name="settings_refresh_wifi_only">Actualisation en WiFi uniquement</string>
     <string name="settings_refresh_wifi_only_description">L\'actualisation auto ne se fera que si le Wifi est activé</string>
     <string name="settings_keep_time">Délai de conservation des flux</string>
+    <string name="settings_keep_time_descr">Pendant l\'opération de rafraîchissement, ne chargez pas les articles dont la date est antérieure à cette durée</string>
     <string name="settings_preload_image_mode">Préchargement des images</string>
     <string name="settings_max_image_download_count">Nombre maximum d\'images téléchargées</string>
     <string name="settings_max_image_download_count_description">Par article</string>
@@ -339,6 +347,7 @@
     <string name="confirmation">Confirmation</string>
     <string name="question_delete_entry">Supprimer cet article?</string>
     <string name="question_mark_upper_as_read">Marquer les articles en haut comme lus ?</string>
+    <string name="question_mark_lower_as_read">Marquer les articles en bas comme lus ?</string>
     <string name="share_all_text">Partager tout le texte</string>
     <string name="group">Grouper</string>
     <string name="auto_image_load">Chargement des images auto</string>
@@ -350,6 +359,7 @@
     <string name="entry_marked_favourite">L\'article a été ajouté aux Favoris</string>
     <string name="new_feed_was_added">Nouveau flux ajouté</string>
     <string name="entry_marked_unread">L\'article a été marqué comme non lu</string>
+    <string name="force_landscape_orientation">Orientation paysage</string>
     <string name="markAsStarred">Ajouter aux favoris</string>
     <string name="markedAsStarred">L\'article a été ajouté aux favoris : </string>
     <string name="deleteAllEntries">Supprimer tous les articles non favoris ?</string>
@@ -435,6 +445,7 @@
     <string name="menu_reload_with_tables_toggle">Avec tables</string>
     <string name="menu_display_options">Options d\'affichage</string>
     <string name="menu_reload">Rechargement...</string>
+    <string name="disable_all_tap_actions">Désactiver toutes les actions de tapotement</string>
     <string name="article_tap_enabled">Appui activé</string>
     <string name="article_tap_enabled_summary">sur les zones d\'appui et les endroits sans lien (pour afficher le menu)</string>
     <string name="menu_calculate_image_sizes">Calcule la taille des images</string>
@@ -551,6 +562,8 @@
     <string name="list_was_scrolled_to_bottom">Défilé vers le bas</string>
     <string name="articleWasUnstarred">Un article a été supprimé des favoris</string>
     <string name="articleNotFound">Un article n\'a pas été trouvé :(</string>
+    <string name="article_list_size_progressbar_maxsize">"Taille maximale du texte "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">En kilooctets pour l\'indicateur horizontal (0 pour désactiver). Il est caché pour les flux avec la marque automatique des articles comme option de flux de lecture activée</string>
     <string name="setting_edit_feed_force_portrait_orientation">Modifier l\'orientation portrait du flux</string>
     <string name="setting_edit_feed_force_portrait_orientation_summary">Forcer l\'orientation de l\'écran en portrait dans la fenêtre d\'édition d\'un flux - vérifiez si votre téléphone a un écran étroit</string>
     <string name="name">Nom</string>
@@ -577,6 +590,7 @@
     <string name="menu_edit_feed">Modifier le flux</string>
     <string name="addCustomFont">Ajouter une police personnalisée …</string>
     <string name="fileCopied">Fichier %s copié</string>
+    <string name="fileCopiedToDownloadsFolder">Le fichier %s a été copié dans le sous-dossier %s des téléchargements</string>
     <string name="unableToCopyFile">Impossible de copier le fichier %s</string>
     <string name="label_setup_by_tap_on_date">Configuration du libellé en appuyant sur la date</string>
     <string name="label_setup_by_tap_on_date_descr">Auteur et URL dans la liste des articles</string>
@@ -615,6 +629,7 @@
     <string name="oneMinute">minute</string>
     <string name="twoFourMinute">minutes</string>
     <string name="fiveMinute">minutes</string>
+    <string name="yearsShort">ans</string>
     <string name="monthsShort">mois</string>
     <string name="weeksShort">s</string>
     <string name="daysShort">j</string>
@@ -623,4 +638,22 @@
     <string name="timeIntervalInFuture">dans</string>
     <string name="timeIntervalInPast">il y a</string>
     <string name="error_add_customm_font">L\'ajout de police personnalisée a échoué</string>
+    <string name="article_text_footer_show_remaining">Restant</string>
+    <string name="article_text_footer_show_remaining_description">"Afficher le nombre de pages restantes pour faire défiler vers le bas "</string>
+    <string name="open_image">Ouvrir l\'image</string>
+    <string name="copy_to_downloads">Copier vers les téléchargements</string>
+    <string name="sendErrorConfirm">Une erreur est survenue pendant l\'opération. Envoyer au développeur ?</string>
+    <string name="wrongFontFileSelected">"Le fichier de polices devrait se terminer par ttf "</string>
+    <string name="show_article_text_preview">Aperçu du texte</string>
+    <string name="show_article_text_preview_descr">Afficher plusieurs premières lignes du texte de l\'article</string>
+    <string name="show_more">Afficher plus de…</string>
+    <string name="settings_category_feed_list">Liste des flux</string>
+    <string name="settings_category_last_read">Section Dernière lecture</string>
+    <string name="setting_last_read_article_count">Nombre d\'articles</string>
+    <string name="setting_last_read_article_count_descr">Nombre d\'articles visibles dans la section Dernière lecture</string>
+    <string name="settings_category_feed_list_summary">Apparence de la liste des flux et paramètres de la section Dernière lecture</string>
+    <string name="edit_feed_title_external">Modifier</string>
+    <string name="show_notification_setup_summary">Afficher les paramètres système pour les notifications de l\'application</string>
+    <string name="context_menu_share_all_via_file">"Tous les articles visibles via un fichier "</string>
+    <string name="context_menu_share_all_via_text">Tous les articles visibles par texte</string>
 </resources>
