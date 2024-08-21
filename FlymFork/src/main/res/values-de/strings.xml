@@ -708,4 +708,6 @@
     <string name="settings_volume_buttons_action_descr">Es gibt nur eine Standardaktion, wenn ein Artikel ein Video enthält</string>
     <string name="volume_buttons_action_page_in_article_list">Seiten über Lautstärketasten scrollen</string>
     <string name="volume_buttons_action_page_in_article_list_descr">In der Artikelliste</string>
+    <string name="context_menu_share_all_via_file">"Alle sichtbaren Artikel per Datei "</string>
+    <string name="context_menu_share_all_via_text">Alle sichtbaren Artikel per Text</string>
 </resources>
