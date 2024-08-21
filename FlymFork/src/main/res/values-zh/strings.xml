@@ -83,7 +83,6 @@
     <string name="welcome_title">欢迎使用 Handy News Reader. 您想要添加一个订阅源吗?</string>
     <string name="never">从不</string>
     <string name="last_update">更新</string>
-    <string name="colon">:\u00A0</string>
     <string name="menu_settings">设置</string>
     <string name="menu_refresh">刷新</string>
     <string name="flym_feeds">Handy News Reader 订阅源</string>
@@ -243,14 +242,12 @@
     <string name="show_read_article_count">显示已读文章数量</string>
     <string name="show_read_article_count_descr">在订阅源列表中</string>
     <string name="show_group_entrries_count">组文章计数</string>
-    <string name="show_group_entries_count_descr"></string>
     <string name="textColorRead">阅读文章</string>
     <string name="textColorRead_descr">阅读文章文本和背景颜色</string>
     <string name="settings_color_text_read_sample_short">阅读</string>
     <string name="settings_color_text_read_sample_long">阅读文章</string>
     <string name="settings_category_article_text">文章内容</string>
     <string name="settings_category_article_text_summary">文章文本外观</string>
-    <string name="settings_display_text_color_description">(0..255)</string>
     <string name="settings_display_images">载入图片</string>
     <string name="settings_display_images_description">在条目中显示图片</string>
     <string name="settings_display_entries_fullscreen">自动全屏显示条目</string>
@@ -271,10 +268,8 @@
     <string name="settings_color_clock_sample_short">08:15</string>
     <string name="settings_color_clock_sample_long">08:16</string>
     <string name="article_text_show_progress">读取进度条</string>
-    <string name="article_text_show_progress_descr"></string>
     <string name="article_text_progress_height">进度条高度</string>
     <string name="article_text_progress_color">进度条颜色</string>
-    <string name="article_text_progress_color_descr"></string>
     <string name="settings_category_operation">操作</string>
     <string name="settings_category_operation_summary">操作选项</string>
     <string name="tap_zone_size">点击区域大小</string>
@@ -288,14 +283,13 @@
     <string name="brightness_with_dim_activity">软件叠加</string>
     <string name="brightness_with_dim_activity_descr">附加程序化亮度变暗 (低于 50%)</string>
     <string name="settings_category_notification">通知事项</string>
-    <string name="settings_category_notification_summary"></string>
     <string name="settings_notifications_enabled">开启推送</string>
     <string name="settings_notifications_enabled_description">启用新条目通知</string>
     <string name="settings_notifications_ringtone">铃声</string>
     <string name="settings_notifications_ringtone_none">无</string>
     <string name="settings_notifications_vibrate">振动</string>
     <string name="settings_notifications_vibrate_description">对新条目响铃</string>
-    <string name="settings_notifications_light">浅色</string>
+    <string name="settings_notifications_light">亮</string>
     <string name="settings_notifications_light_description">对新条目启用通知灯</string>
     <string name="page_up_down_90_pct">页面滚动90%</string>
     <string name="page_up_down_90_pct_descr">(轻按屏幕顶部/底部) 保留上一页的几行 - 如果不选中，整个页面将会滚动</string>
@@ -331,7 +325,6 @@
     <string name="settings_fulltext_extract_rules">全文</string>
     <string name="settings_fulltext_extract_rules_description">每行都是一条允许特定站点设置 HTML 类名称的规则以实现在文章文本中不包含不必要的元素。相应站点文章的全文以该 HTML 类开头(需要基本的 HTML 知识)。此设置在文章内容编辑模式下自动更新。</string>
     <string name="settings_category_extract_rules">类别提取规则</string>
-    <string name="settings_category_extract_rules_description"></string>
     <string name="settings_date_extract_rules_description">为每个站点设置规则 (需要基本的HTML知识)</string>
     <string name="settings_tap_zones_dialogtitle">仅用于信息，更改不可用</string>
     <string name="downloadNext">"，下一个 "</string>
@@ -366,6 +359,7 @@
     <string name="new_feed_was_added">添加了新订阅源</string>
     <string name="entry_marked_unread">文章被标记为未读</string>
     <string name="force_landscape_orientation">横向</string>
+    <string name="force_portrait_orientation">竖屏</string>
     <string name="markAsStarred">添加星标</string>
     <string name="markedAsStarred">文章被标为加星: </string>
     <string name="deleteAllEntries">删除所有未加星标显示的文章吗？</string>
@@ -498,7 +492,6 @@
     <string name="reading_notification_descr">启用持续状态栏通知防止应用被系统杀死-在长时间延迟后加速启动应用</string>
     <string name="feed_list_loading">加载订阅源列表中</string>
     <string name="article_text_show_battery">显示电池电量</string>
-    <string name="article_text_show_battery_description"></string>
     <string name="settings_category_header_descr">文章文本和文章列表屏幕</string>
     <string name="article_text_buttons_layout">按钮布局</string>
     <string name="article_text_buttons_layout_descr">本文结尾处按钮的方向和可见性</string>
