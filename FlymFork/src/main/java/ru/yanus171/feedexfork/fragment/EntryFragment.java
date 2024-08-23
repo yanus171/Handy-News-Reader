@@ -485,7 +485,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         SetStarFrameWidth(0);
         UpdateHeader();
-        SetOrientation();
 
         return rootView;
     }
@@ -584,6 +583,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         UpdateTapZonesTextAndVisibility(getView().getRootView());
+        SetOrientation();
         refreshUI( null );
     }
 
@@ -989,6 +989,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
                     if ( mForceOrientation == NONE )
                         getBaseActivity().applyBaseOrientation();
+                    break;
+                }
+                case R.id.menu_force_landscape_orientation_toggle: {
+                    item.setChecked( !item.isChecked() );
+                    SetForceOrientation( item.isChecked() ? LANDSCAPE : NONE );
+                    if ( item.isChecked() && mForceLandscapeOrientationMenuItem != null)
+                        mForcePortraitOrientationMenuItem.setChecked( false );
                     break;
                 }
                 case R.id.menu_force_portrait_orientation_toggle: {

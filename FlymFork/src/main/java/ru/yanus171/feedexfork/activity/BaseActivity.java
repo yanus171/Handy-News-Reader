@@ -65,14 +65,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
         StartReadingServiceIfNeeded();
-        applyBaseOrientation();
     }
 
     public void applyBaseOrientation() {
-        if ( PrefUtils.isForceOrientationBySensor() )
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR );
-        else
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER );
+        final int newOr = PrefUtils.isForceOrientationBySensor() ?
+            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR :
+            ActivityInfo.SCREEN_ORIENTATION_USER;
+        if ( getRequestedOrientation() != newOr )
+            setRequestedOrientation( newOr );
     }
 
     @Override
@@ -117,6 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS );
             getWindow().setStatusBarColor(GetToolBarColorInt());
         }
+        applyBaseOrientation();
         Status().UpdateText();
     }
 

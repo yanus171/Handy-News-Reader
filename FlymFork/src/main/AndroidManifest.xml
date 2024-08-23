@@ -83,6 +83,7 @@
             android:alwaysRetainTaskState="false"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Dark"
+            android:screenOrientation="fullSensor"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -104,6 +105,7 @@
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Dark"
+            android:screenOrientation="fullSensor"
             android:exported="true" />
 
         <activity
@@ -137,6 +139,7 @@
             android:label="@string/feeds"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.Dark" />
         <activity
             android:name=".activity.EntryActivity"
@@ -145,6 +148,7 @@
             android:theme="@style/Theme.Dark"
             android:parentActivityName=".activity.HomeActivity"
             tools:targetApi="jelly_bean"
+            android:screenOrientation="fullSensor"
             android:exported="true" >
             <intent-filter android:scheme="http">
                 <action android:name="android.intent.action.VIEW" />

@@ -134,15 +134,22 @@
                 android:icon="@drawable/orientation_by_sensor"
                 android:title="@string/menu_force_orientation_by_sensor" />
             <item
-                android:id="@+id/menu_force_landscape_orientation_toggle"
-                android:checkable="true"
-                android:icon="@drawable/landscape_orientation"
-                android:title="@string/force_landscape_orientation" />
-            <item
-                android:id="@+id/menu_force_portrait_orientation_toggle"
-                android:checkable="true"
-                android:icon="@drawable/portrait_orientation"
-                android:title="@string/force_portrait_orientation" />
+                android:icon="@drawable/ic_visibility"
+                android:title="@string/menu_article_orientation"
+                app:showAsAction="never">
+                <menu>
+                    <item
+                    android:id="@+id/menu_force_landscape_orientation_toggle"
+                    android:checkable="true"
+                    android:icon="@drawable/landscape_orientation"
+                    android:title="@string/force_landscape_orientation" />
+                <item
+                    android:id="@+id/menu_force_portrait_orientation_toggle"
+                    android:checkable="true"
+                    android:icon="@drawable/portrait_orientation"
+                    android:title="@string/force_portrait_orientation" />
+                </menu>
+            </item>
         </menu>
     </item>
     <item
