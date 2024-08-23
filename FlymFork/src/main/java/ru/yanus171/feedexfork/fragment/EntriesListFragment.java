@@ -31,6 +31,7 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
@@ -48,6 +49,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIE
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_CATEGORY;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT;
@@ -700,6 +702,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_copy_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_edit_feed ).setVisible( IsFeedUri( mCurrentUri ) );
         menu.findItem( R.id.menu_full_screen ).setChecked(GetIsStatusBarEntryListHidden() );
+        menu.findItem( R.id.menu_force_orientation_by_sensor ).setChecked( PrefUtils.isForceOrientationBySensor() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!GetIsActionBarEntryListHidden() );
         menu.findItem( R.id.menu_show_article_text_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
@@ -942,6 +945,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 setData( mCurrentUri, mShowFeedInfo, mShowTextInEntryList, mOptions );
                 UpdateActions();
                 return true;
+            }
+            case R.id.menu_force_orientation_by_sensor: {
+                item.setChecked( !item.isChecked() );
+                PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
+                getBaseActivity().applyBaseOrientation();
+                break;
             }
             case R.id.menu_full_screen: {
                 HomeActivity activity1 = (HomeActivity) getActivity();

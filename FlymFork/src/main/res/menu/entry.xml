@@ -129,6 +129,11 @@
                 android:visible="true"
                 app:showAsAction="never" />
             <item
+                android:id="@+id/menu_force_orientation_by_sensor"
+                android:checkable="true"
+                android:icon="@drawable/orientation_by_sensor"
+                android:title="@string/menu_force_orientation_by_sensor" />
+            <item
                 android:id="@+id/menu_force_landscape_orientation_toggle"
                 android:checkable="true"
                 android:icon="@drawable/landscape_orientation"

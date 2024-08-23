@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -64,6 +65,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
         StartReadingServiceIfNeeded();
+        applyBaseOrientation();
+    }
+
+    public void applyBaseOrientation() {
+        if ( PrefUtils.isForceOrientationBySensor() )
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR );
+        else
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER );
     }
 
     @Override

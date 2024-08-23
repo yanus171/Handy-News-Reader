@@ -152,6 +152,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
@@ -506,10 +507,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     private void SetOrientation() {
-		int or = mForceOrientation == LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+        if ( mForceOrientation == NONE && PrefUtils.isForceOrientationBySensor() ) {
+            getBaseActivity().applyBaseOrientation();
+            return;
+        }
+        int or = mForceOrientation == LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
                  mForceOrientation == PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
 			     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-		if ( or != getActivity().getRequestedOrientation() )
+
+        if ( or != getActivity().getRequestedOrientation() )
 			getActivity().setRequestedOrientation( or );
     }
 
@@ -727,6 +733,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
         menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked( mForceOrientation == LANDSCAPE );
         menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked( mForceOrientation == PORTRAIT );
+        menu.findItem(R.id.menu_force_orientation_by_sensor).setChecked( PrefUtils.isForceOrientationBySensor() );
 
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
@@ -977,11 +984,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     break;
                 }
 
-                case R.id.menu_force_landscape_orientation_toggle: {
+                case R.id.menu_force_orientation_by_sensor: {
                     item.setChecked( !item.isChecked() );
-                    SetForceOrientation( item.isChecked() ? LANDSCAPE : NONE );
-                    if ( item.isChecked() && mForcePortraitOrientationMenuItem != null)
-                        mForcePortraitOrientationMenuItem.setChecked( false );
+                    PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
+                    if ( mForceOrientation == NONE )
+                        getBaseActivity().applyBaseOrientation();
                     break;
                 }
                 case R.id.menu_force_portrait_orientation_toggle: {

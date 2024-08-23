@@ -149,6 +149,11 @@
                         android:icon="@drawable/ic_import_from_backup"
                         android:title="@string/menu_import_from_backup_file"/>
                     <item
+                        android:id="@+id/menu_force_orientation_by_sensor"
+                        android:checkable="true"
+                        android:icon="@drawable/orientation_by_sensor"
+                        android:title="@string/menu_force_orientation_by_sensor" />
+                    <item
                         android:id="@+id/menu_full_screen"
                         android:checkable="true"
                         android:icon="@drawable/ic_fullscreen"

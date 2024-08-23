@@ -743,5 +743,8 @@
     livejournal:id-comments</string>
     <string name="context_menu_share_all_via_file">"All visible articles via file "</string>
     <string name="context_menu_share_all_via_text">All visible articles via text</string>
+    <string name="settings_force_orientation_by_sensor">Orientation by sensor</string>
+    <string name="settings_force_orientation_by_sensor_descr">Force orientation by sensor to override system settings</string>
+    <string name="menu_force_orientation_by_sensor">Orientation by sensor</string>
 
 </resources>

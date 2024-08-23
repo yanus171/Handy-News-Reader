@@ -476,7 +476,6 @@ public class EntryView extends WebView implements Handler.Callback {
             getSettings().setTextZoom(100);
         //}
 
-
         final String finalContentText = contentText;
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;

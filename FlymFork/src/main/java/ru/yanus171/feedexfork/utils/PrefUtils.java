@@ -100,6 +100,7 @@ public class PrefUtils {
     public static final String SHOW_PROGRESS_INFO = "settings_show_progress_info";
     public static final String VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE = "vibrate_on_article_list_entry_swype";
     public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";
+    public static final String PREF_FORCE_ORIENTATION_BY_SENSOR = "force_orientation_by_sensor";
 
     public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
 
@@ -145,6 +146,9 @@ public class PrefUtils {
     public static final String STATE_IMAGE_WHITE_BACKGROUND = "STATE_IMAGE_WHITE_BACKGROUND";
     public static Boolean isImageWhiteBackground() {
         return PrefUtils.getBoolean( STATE_IMAGE_WHITE_BACKGROUND, false );
+    }
+    public static Boolean isForceOrientationBySensor() {
+        return getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, false);
     }
 
     public static final String PREF_TAP_ENABLED = "article_tap_enabled";

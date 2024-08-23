@@ -408,12 +408,6 @@
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_operation"/>
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="article_tap_enabled"
-            android:title="@string/article_tap_enabled"
-            android:summary="@string/article_tap_enabled_summary"/>
-
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="tap_zone_size"
             android:inputType="number"
@@ -749,6 +743,11 @@
             android:defaultValue="false"
             android:title="@string/show_navigation_bar_in_fullscreen"
             android:summary="@string/show_navigation_bar_in_fullscreen_summary"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="force_orientation_by_sensor"
+            android:summary="@string/settings_force_orientation_by_sensor_descr"
+            android:title="@string/settings_force_orientation_by_sensor" />
 
         <PreferenceCategory
             android:layout="@layout/preference_category"
