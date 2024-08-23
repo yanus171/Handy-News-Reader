@@ -229,22 +229,22 @@ public class NetworkUtils {
         return downloadPictures;
     }
 
-//    public static String getBaseUrl(String link) {
-//        String baseUrl = link;
-//        Pattern p = Pattern.compile("(http?.://[^/]+)");
-//        Matcher m = p.matcher(baseUrl);
-//        if (m.find())
-//            baseUrl = m.group(1);  // The matched substring
-//        else {
-//            if ( link.endsWith( "/" ) )
-//                link = link.substring(0, link.length() - 1 );
-//            int index = link.lastIndexOf('/'); // this also covers https://
-//            if (index > -1) {
-//                baseUrl = link.substring(0, index + 1);
-//            }
-//        }
-//        return baseUrl;
-//    }
+    public static String getBaseUrl(String link) {
+        String baseUrl = link;
+        Pattern p = Pattern.compile("(http?.://[^/]+)");
+        Matcher m = p.matcher(baseUrl);
+        if (m.find())
+            baseUrl = m.group(1);  // The matched substring
+        else {
+            if ( link.endsWith( "/" ) )
+                link = link.substring(0, link.length() - 1 );
+            int index = link.lastIndexOf('/'); // this also covers https://
+            if (index > -1) {
+                baseUrl = link.substring(0, index + 1);
+            }
+        }
+        return baseUrl;
+    }
 
     public static String getUrlDomain(String link) {
         String result = link;
