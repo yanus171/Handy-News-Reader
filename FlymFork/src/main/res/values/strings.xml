@@ -747,5 +747,6 @@
     <string name="settings_force_orientation_by_sensor_descr">Force orientation by sensor to override system settings</string>
     <string name="menu_force_orientation_by_sensor">App orientation by sensor</string>
     <string name="menu_article_orientation">Article orientation</string>
+    <string name="settings_autobackup_requires_charging">Only when charging</string>
 
 </resources>

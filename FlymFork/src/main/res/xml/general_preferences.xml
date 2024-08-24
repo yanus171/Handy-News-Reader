@@ -806,6 +806,10 @@
             android:key="autobackup.toast"
             android:title="@string/settings_autobackup_toast"
             android:summary="@string/settings_autobackup_toast_descr"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autobackup_requires_charging"
+            android:title="@string/settings_autobackup_requires_charging"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

@@ -142,8 +142,10 @@ class AutoWorker(context: Context, workerParams: WorkerParameters) : Worker(cont
         }
 
         private fun ExecuteAutoBackup() {
-            if (Build.VERSION.SDK_INT < 26 && FetcherService.isBatteryLow()) return
-            if (System.currentTimeMillis() - getLong(FIRST_LAUNCH_TIME, System.currentTimeMillis()) < 1000 * 60 * 60 * 1) return
+            if (Build.VERSION.SDK_INT < 26 && FetcherService.isBatteryLow())
+                return
+            if (System.currentTimeMillis() - getLong(FIRST_LAUNCH_TIME, System.currentTimeMillis()) < 1000 * 60 * 60 * 1)
+                return
             FetcherService.Process(FetcherService.GetIntent(Constants.FROM_AUTO_BACKUP), null)
         }
 
@@ -157,7 +159,7 @@ class AutoWorker(context: Context, workerParams: WorkerParameters) : Worker(cont
             if (Build.VERSION.SDK_INT >= 21) {
                 initAutoJob(context, REFRESH_INTERVAL, REFRESH_ENABLED, getMinCustomRefreshInterval(), AUTO_REFRESH_JOB_ID, true, getBoolean("auto_refresh_requires_charging", false))
                 initAutoJob(context, DELETE_OLD_INTERVAL, REFRESH_ENABLED, -1, DELETE_OLD_JOB_ID, false, getBoolean("delete_old_requires_charging", true))
-                initAutoJob(context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, -1, AUTO_BACKUP_JOB_ID, false, false)
+                initAutoJob(context, AUTO_BACKUP_INTERVAL, AUTO_BACKUP_ENABLED, -1, AUTO_BACKUP_JOB_ID, false, getBoolean("autobackup_requires_charging", true))
             }
         }
         @JvmName("getMinCustomRefreshInterval1")
