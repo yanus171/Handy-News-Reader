@@ -408,6 +408,12 @@
             android:layout="@layout/preference_category"
             android:title="@string/settings_category_operation"/>
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="article_tap_enabled"
+            android:title="@string/article_tap_enabled"
+            android:summary="@string/article_tap_enabled_summary"/>
+
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="tap_zone_size"
             android:inputType="number"
