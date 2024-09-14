@@ -425,7 +425,7 @@ public class OPML {
                 WriteBoolValue(writer, cur, IS_WAS_AUTO_UNSTAR, 13);
                 WriteBoolValue(writer, cur, IS_WITH_TABLES, 14);
                 WriteText(writer, cur, READ_DATE, 15);
-                WriteBoolValue(writer, cur, IS_LANDSCAPE, 16);
+                WriteText(writer, cur, IS_LANDSCAPE, 16);
                 final boolean isFavourite = cur.getInt( 10 ) == 1;
                 final String link = cur.getString( 1 );
                 if ( cur.getInt( 10 ) == 1 && FileUtils.INSTANCE.isMobilized( link, cur, 17, 18 ) ) {

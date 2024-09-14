@@ -260,7 +260,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             IsLocalFile( uri );
     }
     public static boolean IsLocalFile(Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) && ( uri.toString().contains( "document" ) ||uri.toString().contains( "media" ) ) ||
+        return uri.toString().startsWith( CONTENT_SCHEME ) &&
+            ( uri.toString().contains( "document" ) || uri.toString().contains( "media" )  || uri.toString().contains( "storage" ) ) ||
             uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
     }
 
