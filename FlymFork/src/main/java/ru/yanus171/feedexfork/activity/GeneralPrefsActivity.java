@@ -68,7 +68,7 @@ import static ru.yanus171.feedexfork.view.FontSelectPreference.cAddFontFileResul
 public class GeneralPrefsActivity extends BaseActivity {
 
     @SuppressLint("StaticFieldLeak")
-    public static Activity mActivity;
+    public static Activity mActivity = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

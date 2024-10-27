@@ -699,6 +699,8 @@ public class EntryView extends WebView implements Handler.Callback {
                 if ( System.currentTimeMillis() - mMovedTime < MOVE_TIMEOUT  )
                     return true;
 
+                toggleTapZoneVisibility();
+
                 final Context context = getContext();
                 try {
                     String anchor = "";
@@ -851,7 +853,7 @@ public class EntryView extends WebView implements Handler.Callback {
                             !mActivity.mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
-                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 300);
+                        mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 0);
                     }
                 }
                 return false;
@@ -1000,10 +1002,15 @@ public class EntryView extends WebView implements Handler.Callback {
             return true;
         }
         if (msg.what == CLICK_ON_WEBVIEW) {
-            mActivity.openOptionsMenu();
+            toggleTapZoneVisibility();
             return true;
         }
         return false;
+    }
+
+    private void toggleTapZoneVisibility() {
+        if ( mActivity != null && mActivity.mEntryFragment != null )
+            mActivity.mEntryFragment.toggleTapZoneVisibility();
     }
 
     private void ScrollToY() {

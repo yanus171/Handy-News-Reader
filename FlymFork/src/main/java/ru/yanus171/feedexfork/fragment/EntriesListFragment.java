@@ -56,10 +56,12 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.utils.StringUtils.DATE_FORMAT;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
+import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.SetupZones;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -71,6 +73,7 @@ import android.content.Intent;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -147,6 +150,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
+import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
@@ -530,18 +534,39 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mListView.setEmptyView( emptyView );
 
         UpdateHeader();
+        UpdateTopTapZoneVisibility();
         timer.End();
         return rootView;
     }
 
-    public void UpdateTopTapZoneVisibility() {
-        final boolean atTop = mListView.getFirstVisiblePosition() == 0;
-        if ( GetActivity().mPageUpBtn != null )
-            GetActivity().mPageUpBtn.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtn, false, true )  ? View.VISIBLE : View.GONE );
-        if ( GetActivity().mPageUpBtnFS != null )
-            GetActivity().mPageUpBtnFS.setVisibility( !atTop && IsZoneEnabled( R.id.pageUpBtnFS, false, true ) ? View.VISIBLE : View.GONE );
+    public static void UpdateTapZoneButtonEnable(View rootView, int ID, boolean enable) {
+        TextView btn = rootView.findViewById(ID);
+        if ( btn != null ) {
+            btn.setBackgroundColor(Color.TRANSPARENT);
+            btn.setVisibility( enable ? View.VISIBLE : View.GONE );
+        }
+    }
+    private void UpdateTapZoneButton( int viewID, boolean enabled ) {
+        UpdateTapZoneButtonEnable( getBaseActivity().mRootView, viewID, enabled );
     }
 
+    public void UpdateTopTapZoneVisibility() {
+        final boolean atTop = mListView.getFirstVisiblePosition() == 0;
+        SetupZones(getBaseActivity().mRootView, false );
+        UpdateTapZoneButton( R.id.pageUpBtn, !atTop );
+        UpdateTapZoneButton( R.id.pageUpBtnFS, !atTop );
+        UpdateTapZoneButton( R.id.pageDownBtn, true );
+        UpdateTapZoneButton( R.id.brightnessSliderLeft, true );
+        UpdateTapZoneButton( R.id.brightnessSliderRight, true );
+        UpdateTapZoneButton( R.id.entryLeftBottomBtn, true );
+        UpdateTapZoneButton( R.id.entryRightBottomBtn, true );
+        UpdateTapZoneButton( R.id.leftTopBtn, !atTop );
+        UpdateTapZoneButton( R.id.rightTopBtn, !atTop );
+        UpdateTapZoneButton( R.id.backBtn, false );
+        UpdateTapZoneButton( R.id.leftTopBtnFS, !atTop );
+        UpdateTapZoneButton( R.id.rightTopBtnFS, !atTop );
+        UpdateTapZoneButton( R.id.entryCenterBtn, false );
+    }
 
     private HomeActivity GetActivity() {
         return (HomeActivity)getActivity();

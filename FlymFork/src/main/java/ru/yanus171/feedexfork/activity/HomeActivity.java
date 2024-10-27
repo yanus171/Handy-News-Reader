@@ -265,7 +265,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
-        TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false, true);
+        TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
 
         {
             final View.OnClickListener listener = view -> {
@@ -367,7 +367,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
         setFullScreen( statusBarHidden, actionBarHidden, STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
-        TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false, true);
     }
 
     private void PageUpDown( int downOrUp ) {
@@ -458,7 +457,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         if ( GeneralPrefsFragment.mSetupChanged ) {
             Timer.Start( LOADER_ID, "HomeActivity.restartLoader LOADER_ID" );
             getLoaderManager().restartLoader(LOADER_ID, null, this);
-            TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false, true);
+            TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
         }
         //if ( mDrawerAdapter != null  )
         //    selectDrawerItem( mCurrentDrawerPos );

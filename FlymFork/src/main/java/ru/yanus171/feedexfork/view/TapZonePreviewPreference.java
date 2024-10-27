@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -32,7 +33,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
     protected View onCreateDialogView () {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_entry, null, false);
-        SetupZones(view, true, false);
+        SetupZones( view, true );
         view.findViewById( R.id.btnEndEditing ).setVisibility( View.GONE );
         view.findViewById( R.id.progressText ).setVisibility( View.GONE );
         view.findViewById( R.id.progressBarLoader ).setVisibility( View.GONE );
@@ -48,22 +49,21 @@ public final class TapZonePreviewPreference extends DialogPreference {
         b.setVisibility(View.GONE);
     }
 
-    public static void SetupZones(View parentView, boolean preview, boolean isArticleList) {
+    public static void SetupZones(View parentView, boolean showText) {
         final int size = GetTapZoneSize();
-        SetupZone(parentView, size, R.id.pageUpBtn, MATCH_PARENT, preview, isArticleList);
-        SetupZone(parentView, size, R.id.pageDownBtn, MATCH_PARENT, preview, isArticleList);
-        //SetupZone(parentView, MATCH_PARENT, R.id.pageDownBtnVert, size, preview);
-        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderLeft, size, preview, isArticleList);
-        SetupZone(parentView, MATCH_PARENT, R.id.brightnessSliderRight, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.entryLeftBottomBtn, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.entryRightBottomBtn, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.leftTopBtn, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.rightTopBtn, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.backBtn, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.leftTopBtnFS, size, preview, isArticleList);
-        SetupZone(parentView, size, R.id.rightTopBtnFS, size, preview, isArticleList);
-        if ( !preview )
-            UpdateTapZonesTextAndVisibility(parentView.getRootView());
+        SetupZone(parentView, R.id.pageUpBtn, MATCH_PARENT, size, showText);
+        SetupZone(parentView, R.id.pageUpBtnFS, MATCH_PARENT, size, showText);
+        SetupZone(parentView, R.id.pageDownBtn, MATCH_PARENT, size, showText);
+        SetupZone(parentView, R.id.brightnessSliderLeft, size, MATCH_PARENT, showText);
+        SetupZone(parentView, R.id.brightnessSliderRight, size, MATCH_PARENT, showText);
+        SetupZone(parentView, R.id.entryLeftBottomBtn, size, size, showText );
+        SetupZone(parentView, R.id.entryRightBottomBtn, size, size, showText);
+        SetupZone(parentView, R.id.leftTopBtn, size, size, showText);
+        SetupZone(parentView, R.id.rightTopBtn, size, size, showText);
+        SetupZone(parentView, R.id.backBtn, size, size, showText);
+        SetupZone(parentView, R.id.leftTopBtnFS, size, size, showText);
+        SetupZone(parentView, R.id.rightTopBtnFS, size, size, showText);
+        SetupZone(parentView, R.id.entryCenterBtn, size, size, showText);
     }
 
     public static boolean IsZoneEnabled(int viewID, boolean preview, boolean isArticleList) {
@@ -83,20 +83,16 @@ public final class TapZonePreviewPreference extends DialogPreference {
                  isArticleList && getBoolean( PREF_TAP_ENABLED, true ) ||
                  !isArticleList && isArticleTapEnabled() );
     }
-    private static void SetupZone(View parentView, int size, int viewID, int matchParent, boolean preview, boolean isArticleList) {
-        View view = parentView.findViewById( viewID );
-        if ( view != null ) {
-            if ( IsZoneEnabled( viewID, preview, isArticleList ) ) {
-                view.setVisibility(View.VISIBLE);
-                SetSize(parentView, viewID, matchParent, size);
-            } else
-                view.setVisibility(View.GONE);
-        }
+    private static void SetupZone(View parentView, int viewID, int width, int height, boolean showText) {
+        TextView view = parentView.findViewById(viewID );
+        if ( view == null )
+            return;
+        SetSize(parentView, viewID, width, height);
+        if ( !showText )
+            view.setText( "" );
     }
 
-    static public void UpdateTapZonesTextAndVisibility( View rootView ) {
-        final boolean visible = getBoolean(PrefUtils.TAP_ZONES_VISIBLE, true );
-        //UiUtils.HideButtonText(rootView, R.id.pageDownBtnVert, true);
+    static public void UpdateTapZonesTextAndVisibility( View rootView, boolean visible ) {
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageDownBtn, false);
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageUpBtn, false);
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageUpBtnFS, false);
@@ -107,6 +103,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
         UiUtils.UpdateButtonVisibility(rootView, R.id.rightTopBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.leftTopBtnFS, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.rightTopBtnFS, visible);
+        UiUtils.UpdateButtonVisibility(rootView, R.id.entryCenterBtn, visible);
     }
 
 }

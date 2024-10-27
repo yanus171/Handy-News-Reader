@@ -51,6 +51,7 @@ import ru.yanus171.feedexfork.view.FontSelectPreference;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.GetImageFileUri;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 
 public class UiUtils {
     private static Typeface mCachedTypeFace = null;
@@ -177,6 +178,24 @@ public class UiUtils {
             btn.setText("");
         }
     }
+
+    public static void UpdateTapZoneButton(View rootView, int ID, boolean visible) {
+        TextView btn = rootView.findViewById(ID);
+        if ( btn != null ) {
+            if (!isArticleTapEnabledTemp())
+                btn.setVisibility( View.GONE );
+            else {
+                btn.setVisibility( View.VISIBLE );
+                if (visible)
+                    btn.setBackgroundResource(R.drawable.round_background);
+                else
+                    btn.setBackgroundColor(Color.TRANSPARENT);
+            }
+            btn.setText("");
+        }
+    }
+
+
 
     public static void SetSize( View parent, int ID, int width, int height ) {
         View view = parent.findViewById( ID );

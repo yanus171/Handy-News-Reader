@@ -66,6 +66,12 @@
 <!--                    android:layout_alignParentEnd="true" />-->
 
                 <TextView
+                    android:id="@+id/entryCenterBtn"
+                    style="@style/TapZoneBtn"
+                    android:layout_centerInParent="true"
+                    android:text="@string/entry_show_menu" />
+
+                <TextView
                     android:id="@+id/pageUpBtn"
                     style="@style/TapZone"
                     android:layout_width="match_parent"

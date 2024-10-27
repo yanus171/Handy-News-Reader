@@ -460,5 +460,4 @@ public class EntryActivity extends BaseActivity implements Observer {
         view.UpdateImages( false );
         Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
     }
-
 }

@@ -96,7 +96,7 @@ public class PrefUtils {
     public static final String COMMENTS_EXTRACT_RULES = "comments_extract_rules";
     public static final String DATE_EXTRACT_RULES = "date_extract_rules";
     public static final String REMEBER_LAST_ENTRY = "remember_last_entry";
-    public static final String TAP_ZONES_VISIBLE = "settings_tap_zones_visible";
+    //public static final String TAP_ZONES_VISIBLE = "settings_tap_zones_visible";
     public static final String SHOW_PROGRESS_INFO = "settings_show_progress_info";
     public static final String VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE = "vibrate_on_article_list_entry_swype";
     public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";

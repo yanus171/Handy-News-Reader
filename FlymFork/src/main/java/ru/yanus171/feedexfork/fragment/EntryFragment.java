@@ -19,6 +19,8 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -151,6 +153,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotificati
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
+import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
@@ -159,6 +162,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENT
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
+import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
+import static ru.yanus171.feedexfork.utils.UiUtils.UpdateTapZoneButton;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
@@ -190,6 +195,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public boolean mFavorite;
     private boolean mIsWithTables;
+    private boolean mIsTapZoneVisible = false;
+
     enum ForceOrientation {NONE, LANDSCAPE, PORTRAIT}
     ForceOrientation ForceOrientationFromInt( int code ) {
         return code == 1 ? LANDSCAPE : code == 2 ? PORTRAIT : NONE;
@@ -241,11 +248,33 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
+    private void UpdateTapZoneButton( int viewID, boolean visible ) {
+        UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );
+    }
+
     public void SetupZones() {
-        TapZonePreviewPreference.SetupZones(getBaseActivity().mRootView, false, false );
+        final boolean visible = mIsTapZoneVisible;
+        UpdateTapZoneButton( R.id.pageUpBtn, false );
+        UpdateTapZoneButton( R.id.pageDownBtn, false );
+        UpdateTapZoneButton( R.id.brightnessSliderLeft, false );
+        UpdateTapZoneButton( R.id.brightnessSliderRight, false );
+        UpdateTapZoneButton( R.id.entryLeftBottomBtn, visible );
+        UpdateTapZoneButton( R.id.entryRightBottomBtn, visible );
+        UpdateTapZoneButton( R.id.leftTopBtn, visible );
+        UpdateTapZoneButton( R.id.rightTopBtn, visible );
+        UpdateTapZoneButton( R.id.backBtn, visible );
+        UpdateTapZoneButton( R.id.leftTopBtnFS, visible );
+        UpdateTapZoneButton( R.id.rightTopBtnFS, visible );
+        UpdateTapZoneButton( R.id.entryCenterBtn, visible );
+
         final EntryView view = GetSelectedEntryView();
-        final boolean isBackBtnVisible = view != null && view.CanGoBack() && IsZoneEnabled(R.id.backBtn, false, false );
-        getBaseActivity().mRootView.findViewById( R.id.backBtn).setVisibility(isBackBtnVisible ? View.VISIBLE : View.GONE );
+        final boolean isBackBtnVisible = view != null && view.CanGoBack() && visible; //&& IsZoneEnabled( R.id.backBtn, false, false );
+        getBaseActivity().mRootView.findViewById( R.id.backBtn ).setVisibility(isBackBtnVisible ? View.VISIBLE : View.GONE );
+
+        if ( !isArticleTapEnabledTemp() ) {
+            UpdateTapZoneButton(R.id.rightTopBtn, true);
+            getBaseActivity().mRootView.findViewById(R.id.rightTopBtn).setVisibility( View.VISIBLE );
+        }
     }
 
     private boolean IsCreateViewPager( Uri uri ) {
@@ -484,7 +513,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
 
-        SetStarFrameWidth(0);
+        rootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> getEntryActivity().openOptionsMenu());
+
+            SetStarFrameWidth(0);
         UpdateHeader();
 
         return rootView;
@@ -583,7 +614,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
-        UpdateTapZonesTextAndVisibility(getView().getRootView());
+        UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
         SetOrientation();
         refreshUI( null );
     }
@@ -2078,6 +2109,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                            Toast.LENGTH_LONG ).show();
         }
     }
-
+    public void toggleTapZoneVisibility() {
+        mIsTapZoneVisible = !mIsTapZoneVisible;
+        SetupZones();
+    }
 }
 
