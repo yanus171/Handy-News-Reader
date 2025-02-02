@@ -93,7 +93,7 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
         }
         fun copyFile( source: String, destFileName: String, isSourceUri: Boolean, context: Context ): Boolean {
             return if (isSourceUri)
-                copyFile(Uri.parse(source), destFileName, context)
+                copyFile(Uri.parse(source), destFileName, context, true)
             else
                 copyFile(source, destFileName, context)
         }
@@ -123,7 +123,7 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
         }
 
         // ----------------------------------------------------------------
-        fun copyFile(sourceUri: Uri, destPath: String?, context: Context): Boolean {
+        fun copyFile(sourceUri: Uri, destPath: String?, context: Context, showError: Boolean): Boolean {
             var result = false
             try {
                 MainApplication.getContext().contentResolver.openInputStream(sourceUri).use { inputStream ->
@@ -141,12 +141,14 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
                     }
                 }
             } catch (e: IOException) {
-                DebugApp.ShowError( null, e, context )
+                if ( showError )
+                    DebugApp.ShowError( null, e, context )
             }
             UiUtils.RunOnGuiThread {
-                Toast.makeText(MainApplication.getContext(),
-                        String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),
-                        Toast.LENGTH_LONG).show()
+                if ( showError )
+                    Toast.makeText(MainApplication.getContext(),
+                            String.format(MainApplication.getContext().getString(if (result) R.string.fileCopied else R.string.unableToCopyFile), sourceUri.toString()),
+                            Toast.LENGTH_LONG).show()
             }
             return result
         }

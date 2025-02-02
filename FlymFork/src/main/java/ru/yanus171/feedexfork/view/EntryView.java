@@ -157,6 +157,7 @@ public class EntryView extends WebView implements Handler.Callback {
     public static final String BASE_URL = "";
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
+    private static final int TOGGLE_TAP_ZONE_VISIBIILTY = 3;
     public static final int TOUCH_PRESS_POS_DELTA = 5;
     public boolean mWasAutoUnStar = false;
 
@@ -695,11 +696,9 @@ public class EntryView extends WebView implements Handler.Callback {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-                DoNotShowMenu();
+                DoNotShowMenu(true);
                 if ( System.currentTimeMillis() - mMovedTime < MOVE_TIMEOUT  )
                     return true;
-
-                toggleTapZoneVisibility();
 
                 final Context context = getContext();
                 try {
@@ -709,9 +708,9 @@ public class EntryView extends WebView implements Handler.Callback {
                         anchor = URLDecoder.decode(anchor);
                     }
 
-                    if (url.startsWith(Constants.FILE_SCHEME)) {
+                    if (url.startsWith(Constants.FILE_SCHEME))
                         OpenImage(url, context);
-                    } else if (!anchor.isEmpty() && url.replace( "#" + anchor, "" ).equals( mEntryLink ) || !url.contains( "http" ) ) {
+                    else if (!anchor.isEmpty() && url.replace( "#" + anchor, "" ).equals( mEntryLink ) || !url.contains( "http" ) ) {
                         if ( anchor.isEmpty() )
                             ScrollTo( 0 );
                         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -767,7 +766,7 @@ public class EntryView extends WebView implements Handler.Callback {
                         ScheduleScrollTo(view, new Date().getTime());
                     }
                 } else
-                    DoNotShowMenu();
+                    DoNotShowMenu(false);
             }
 
             private void ScheduleScrollTo(final WebView view, long startTime) {
@@ -854,6 +853,7 @@ public class EntryView extends WebView implements Handler.Callback {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
                         mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 0);
+                        mHandler.sendEmptyMessageDelayed(TOGGLE_TAP_ZONE_VISIBIILTY, 150);
                     }
                 }
                 return false;
@@ -1001,10 +1001,12 @@ public class EntryView extends WebView implements Handler.Callback {
             mActivity.closeContextMenu();
             return true;
         }
-        if (msg.what == CLICK_ON_WEBVIEW) {
+        if ( msg.what == TOGGLE_TAP_ZONE_VISIBIILTY ) {
             toggleTapZoneVisibility();
             return true;
         }
+        if (msg.what == CLICK_ON_WEBVIEW)
+            return true;
         return false;
     }
 
@@ -1200,37 +1202,39 @@ public class EntryView extends WebView implements Handler.Callback {
 
         @JavascriptInterface
         public void onClickOriginalText() {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.onClickOriginalText();
         }
 
         @JavascriptInterface
         public void onClickFullText() {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.onClickFullText();
         }
 
         @JavascriptInterface
         public void onClickEnclosure() {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.onClickEnclosure();
         }
 
         @JavascriptInterface
         public void onReloadFullText() {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.onReloadFullText();
         }
 
         @JavascriptInterface
         public void onClose() {
-            DoNotShowMenu();
+            DoNotShowMenu(false);
             mEntryViewMgr.onClose();
         }
     }
 
-    private void DoNotShowMenu() {
+    private void DoNotShowMenu( boolean hideTapZones  ) {
         mHandler.sendEmptyMessage(CLICK_ON_URL);
+        if ( hideTapZones )
+            mHandler.removeMessages( TOGGLE_TAP_ZONE_VISIBIILTY );
         mActivity.closeOptionsMenu();
     }
 
@@ -1243,27 +1247,27 @@ public class EntryView extends WebView implements Handler.Callback {
 
         @JavascriptInterface
         public void downloadImage(String url) {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.downloadImage(url);
         }
 
         @JavascriptInterface
         public void downloadNextImages() {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.downloadNextImages();
 
         }
 
         @JavascriptInterface
         public void downloadAllImages() {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.downloadAllImages();
 
         }
 
         @JavascriptInterface
         public void openTagMenu(String className, String baseUrl, String paramValue) {
-            DoNotShowMenu();
+            DoNotShowMenu(true);
             mEntryViewMgr.openTagMenu(className, baseUrl, paramValue);
         }
     }

@@ -944,6 +944,10 @@ public class FetcherService extends IntentService {
         try ( Cursor entryCursor = cr.query(entryUri, null, null, null, null) ) {
 
             if (entryCursor.moveToFirst()) {
+                final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
+                String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
+                int status = Status().Start( title, false );
+
                 int linkPos = entryCursor.getColumnIndex(LINK);
                 String link = entryCursor.getString(linkPos);
                 try {
@@ -1003,8 +1007,6 @@ public class FetcherService extends IntentService {
 
                         ClearContentStepToFile();
                         SaveContentStepToFile(doc, "Jsoup.parse.connection.getInputStream");
-                        final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
-                        String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
                         //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
                         if (isCorrectTitle) {
                             Elements titleEls = doc.getElementsByTag("title");
@@ -1076,16 +1078,18 @@ public class FetcherService extends IntentService {
                         //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                     }
                 } catch (Exception e) {
+                    Status().End( status );
                     e.printStackTrace();
                     if (isShowError && !feedId.isEmpty() ) {
-                        String title = "";
+                        String title_ = "";
                         Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
                         if (cursor.moveToFirst() && cursor.isNull(0))
-                            title = cursor.getString(0);
+                            title_ = cursor.getString(0);
                         cursor.close();
-                        Status().SetError(title + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
+                        Status().SetError(title_ + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
                     }
                 }
+                Status().End( status );
             }
         }
         return success;
