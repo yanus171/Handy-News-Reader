@@ -73,7 +73,7 @@
     </style>
 
     <style name="BackTapBtn" parent="TapZoneBtn" >
-        <item name="android:background">@drawable/arrow_back</item>
+        <item name="android:background">@drawable/arrow_back_tap_zone</item>
     </style>
 
     <style name="FeedAttrEdit" >
