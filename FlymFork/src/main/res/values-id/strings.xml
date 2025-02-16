@@ -153,10 +153,14 @@ maksimum per umpan<br/>
     <string name="downloadOneImage">Unduh gambar</string>
     <string name="favorites">Favorit</string>
     <string name="last_read">Terakhir dibaca</string>
+    <string name="context_menu_share_starred_via_file">Artikel kesukaan dengan berkas</string>
+    <string name="context_menu_share_starred_via_text">Artikel kesukaan dengan teks</string>
     <string name="menu_star">Favorit</string>
     <string name="menu_unstar">Batal favorit</string>
     <string name="menu_share">Bagikan</string>
     <string name="menu_mark_all_as_unread">Tandai semua belum dibaca</string>
+    <string name="menu_mark_upper_as_read">Tandai yang atas sudah baca</string>
+    <string name="menu_mark_lower_as_read">Tandai yang bawah sudah baca</string>
     <string name="menu_full_screen">Layar penuh</string>
     <string name="menu_actionbar_visible">Bilah Tindakan</string>
     <string name="menu_font_bold">Huruf tebal</string>
@@ -185,6 +189,7 @@ maksimum per umpan<br/>
     <string name="tip_sentence">Tip: geser kanan tanda sudah dibaca, geser kiri tambah ke Favorit</string>
     <string name="undo">Urung</string>
     <string name="marked_as_read">Tandai sudah dibaca</string>
+    <string name="marked_as_unread">Tandai sudah baca</string>
     <string name="removed_from_favorites">Dihapus dari favorit</string>
     <string name="image_count">Jumlah gambar</string>
     <!-- WIDGET -->
@@ -289,7 +294,7 @@ maksimum per umpan<br/>
     <string name="settings_notifications_light">Terang</string>
     <string name="settings_notifications_light_description">Aktifkan lampu notifikasi saat ada entri baru</string>
     <string name="page_up_down_90_pct">Gulir halaman 90%</string>
-    <string name="page_up_down_90_pct_descr">(Dengan cara menyentuh atas|bawah layar) Untuk mempertahankan beberapa baris dari halaman sebelumnya - jika tidak dicentang, seluruh halaman akan bergulir</string>
+    <string name="page_up_down_90_pct_descr">(Dengan menyentuh layar atas|bawah) Ini mempertahankan beberapa baris halaman sebelumnya - jika tidak dicentang, seluruh halaman akan bergulir</string>
     <string name="settings_remember_last_entry">Ingat artikel terakhir</string>
     <string name="settings_remeber_last_entry_description">Buka artikel terakhir dilihat saat mulai, atau buka daftar artikel belum dibaca</string>
     <string name="auto_unstart_at_bottom">Otomatis buang tanda favorit setelah selesai membaca</string>
@@ -318,7 +323,7 @@ maksimum per umpan<br/>
     <string name="extractContent">Mengekstrak konten</string>
     <string name="improveHtmlContent">Menyempurnakan konten HTML</string>
     <string name="parseXml">Mengurai XML</string>
-    <string name="setupConnection">Persiapkan koneksi</string>
+    <string name="setupConnection">Penyiapan sambungan</string>
     <string name="settings_fulltext_extract_rules">Pangkal teks lengkap</string>
     <string name="settings_fulltext_extract_rules_description">Setiap baris adalah aturan yang memungkinkan situs tertentu mengatur nama kelas HTML, sebagai tanda awal teks lengkap dari artikel (membutuhkan pengetahuan dasar tentang HTML) agar tidak menyertakan elemen yang tidak perlu dalam teks artikel. Pengaturan ini secara otomatis diperbarui dalam mode penyuntingan konten artikel</string>
     <string name="settings_category_extract_rules">Kategori artikel</string>
@@ -400,7 +405,7 @@ maksimum per umpan<br/>
     <string name="global_class_list_to_remove_from_article_text_summary">nama kelas per baris</string>
     <string name="hide">Sembunyikan</string>
     <string name="show">Tampilkan</string>
-    <string name="setFullTextRoot">Pilih sebagai pangkal teks lengkap</string>
+    <string name="setFullTextRoot">Pilih sebagai akar teks lengkap</string>
     <string name="fullTextRoot">Pangkal teks lengkap</string>
     <string name="fullTextReloadStarted">Pemuatan teks lengkap dimulai</string>
     <string name="brightness_update_from_system_period_min">Waktu pembaruan kecerahan</string>
@@ -487,13 +492,37 @@ maksimum per umpan<br/>
     <string name="article_reading_notification_hint">Tahan aplikasi di memori ketika sedang membaca sebuah artikel</string>
     <string name="auto_set_as_read">Setel otomatis artikel sudah dibaca ketika judul terlihat di senarai</string>
     <string name="removeText">Hapus teks</string>
-    <string name="set_category">Tetapkan sebagai kategori</string>
+    <string name="set_category">Atur sebagai kategori</string>
     <string name="menu_more_options">Opsi lebih lanjut</string>
     <string name="filter_apply_to_url">Terapkan ke URL</string>
     <string name="show_article_category">"Tampilkan kategori artikel"</string>
+    <string name="set_date">Atur sebagai tanggal</string>
     <string name="yes">Iya</string>
     <string name="no">Tidak</string>
+    <string name="fontFamilySummary">Keluarga font untuk keseluruhan teks di aplikasi. Pilih butir paling bawah di daftar font untuk menambah TTF kustom </string>
+    <string name="kilobytes">KB</string>
+    <string name="megabytes">MB</string>
+    <string name="filter_by_labels">Saring sesuai label</string>
+    <string name="label_setup_by_tap_on_date">Siapkan label dengan sentuh tanggal</string>
+    <string name="label_setup_by_tap_on_date_descr">Penulis dan URL di daftar artikel</string>
     <plurals name="number_of_new_entries">
         <item quantity="other">%d artikel-artikel baru.</item>
     </plurals>
+    <string name="settings_category_last_read">Bagian terakhir baca</string>
+    <string name="setting_last_read_hide_label_list">Daftar label tersembunyi</string>
+    <string name="setting_last_read_article_count">Jumlah artikel</string>
+    <string name="setting_last_read_article_count_descr">Jumlah artikel terlihat di Terakhir Baca</string>
+    <string name="settings_category_feed_list_summary">Tampilan daftar umpan dan pengaturan di terakhir baca</string>
+    <string name="filter_hint_external">Butir dari saring global ini ditambahkan ke semua saring umpan berita. Menolak butir saring global akan mengabaikan artikel dari pencarian web. Ini bisa diakses dengan menyentuh lama butir \'Semua\', \'Belum baca\', \'Kesukaan\', \'Terakhir baca\', atau \'Tanpa umpan\' di daftar umpan) </string>
+    <string name="tableOfContent">Daftar isi</string>
+    <string name="settings_autobackup_toast">Pemberitahuan</string>
+    <string name="settings_autobackup_toast_descr">Menampilkan pesan pemberitahuan saat cadangan disalin ke Downloads</string>
+    <string name="with_labels">berlabel:</string>
+    <string name="none">tak ada</string>
+    <string name="show_article_text">Teks artikel</string>
+    <string name="settings_volume_buttons_action_descr">Tindakan bawaan hanya tersedia jika artikel ada video</string>
+    <string name="settings_force_orientation_by_sensor">Orientasi sesuai pengindra</string>
+    <string name="settings_force_orientation_by_sensor_descr">Paksa orientasi sesuai pengindra, menimpa pengaturan sistem</string>
+    <string name="menu_force_orientation_by_sensor">Orientasi aplikasi sesuai pengindra</string>
+    <string name="menu_article_orientation">Orientasi artikel</string>
 </resources>
