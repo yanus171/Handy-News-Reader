@@ -723,4 +723,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     livejournal:id-comments</string>
     <string name="context_menu_share_all_via_file">"Все видимые статьи через файл "</string>
     <string name="context_menu_share_all_via_text">Все видимые статьи через текст</string>
+    <string name="settings_force_orientation_by_sensor">Ориентация по датчику</string>
+    <string name="settings_force_orientation_by_sensor_descr">Принудительная ориентация по датчику, отменяющая настройки системы</string>
+    <string name="menu_force_orientation_by_sensor">Ориентация приложения по датчику</string>
 </resources>
