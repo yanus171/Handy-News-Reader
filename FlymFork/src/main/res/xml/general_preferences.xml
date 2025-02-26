@@ -422,12 +422,12 @@
             android:title="@string/tap_zone_size"
             android:summary="@string/tap_zone_size_descr"/>
 
-        <CheckBoxPreference
-            android:key="settings_tap_zones_visible"
-            android:dependency="article_tap_enabled"
-            android:defaultValue="true"
-            android:title="@string/settings_show_tap_zones"
-            android:summary="@string/settings_show_tap_zone_description"/>
+<!--        <CheckBoxPreference-->
+<!--            android:key="settings_tap_zones_visible"-->
+<!--            android:dependency="article_tap_enabled"-->
+<!--            android:defaultValue="true"-->
+<!--            android:title="@string/settings_show_tap_zones"-->
+<!--            android:summary="@string/settings_show_tap_zone_description"/>-->
 
         <ru.yanus171.feedexfork.view.TapZonePreviewPreference
             android:key="settings_tap_zones"

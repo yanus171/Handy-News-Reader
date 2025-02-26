@@ -284,7 +284,7 @@
     <string name="settings_category_operation_summary">Operational settings</string>
     <string name="tap_zone_size">Tap Zone size</string>
     <string name="tap_zone_size_descr">Height and width of all Tap Zones in millimeters</string>
-    <string name="settings_show_tap_zones">Tap Zones are visible</string>
+<!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">As transparent squares</string>
     <string name="settings_tapZones">Tap Zones preview</string>
     <string name="settings_volume_buttons_action">Action by volume buttons</string>

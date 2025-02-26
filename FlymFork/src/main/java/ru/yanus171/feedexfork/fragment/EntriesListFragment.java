@@ -552,19 +552,22 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     public void UpdateTopTapZoneVisibility() {
         final boolean atTop = mListView.getFirstVisiblePosition() == 0;
+        final boolean isActionBar = !GetIsActionBarEntryListHidden();
+        final boolean topBtnVisibleFullScreen = !isActionBar && !atTop;
+        final boolean topBntVisibleActionBar = isActionBar && !atTop;
         SetupZones(getBaseActivity().mRootView, false );
-        UpdateTapZoneButton( R.id.pageUpBtn, !atTop );
-        UpdateTapZoneButton( R.id.pageUpBtnFS, !atTop );
+        UpdateTapZoneButton( R.id.pageUpBtn, topBntVisibleActionBar );
+        UpdateTapZoneButton( R.id.leftTopBtn, topBntVisibleActionBar );
+        UpdateTapZoneButton( R.id.rightTopBtn, topBntVisibleActionBar );
+        UpdateTapZoneButton( R.id.pageUpBtnFS, topBtnVisibleFullScreen  );
+        UpdateTapZoneButton( R.id.leftTopBtnFS, topBtnVisibleFullScreen );
+        UpdateTapZoneButton( R.id.rightTopBtnFS, topBtnVisibleFullScreen );
         UpdateTapZoneButton( R.id.pageDownBtn, true );
         UpdateTapZoneButton( R.id.brightnessSliderLeft, true );
         UpdateTapZoneButton( R.id.brightnessSliderRight, true );
         UpdateTapZoneButton( R.id.entryLeftBottomBtn, true );
         UpdateTapZoneButton( R.id.entryRightBottomBtn, true );
-        UpdateTapZoneButton( R.id.leftTopBtn, !atTop );
-        UpdateTapZoneButton( R.id.rightTopBtn, !atTop );
         UpdateTapZoneButton( R.id.backBtn, false );
-        UpdateTapZoneButton( R.id.leftTopBtnFS, !atTop );
-        UpdateTapZoneButton( R.id.rightTopBtnFS, !atTop );
         UpdateTapZoneButton( R.id.entryCenterBtn, false );
     }
 
