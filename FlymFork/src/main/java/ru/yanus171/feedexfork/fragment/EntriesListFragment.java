@@ -248,8 +248,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     if (mNeedSetSelection) {
                         mNeedSetSelection = false;
                         mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
-                    }
-                    RestoreListScrollPosition();
+                    } else
+                        RestoreListScrollPosition();
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
                 UpdateTopTapZoneVisibility();
