@@ -247,7 +247,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     mEntriesCursorAdapter.changeCursor(data);
                     if (mNeedSetSelection) {
                         mNeedSetSelection = false;
-                        mListView.setSelection(IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos());
+                        mListView.setSelection(getInitialPosition());
                     } else
                         RestoreListScrollPosition();
 
@@ -261,6 +261,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 mFilters = new FeedFilters(data);
                 mEntriesCursorAdapter.setFilter(mFilters);
             }
+        }
+
+        private int getInitialPosition() {
+            if ( PrefUtils.getBoolean("show_new_icon", true) )
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
+            else
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopPos() : mEntriesCursorAdapter.GetBottomPos();
         }
 
         @Override

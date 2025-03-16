@@ -1458,6 +1458,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     }
 
+    public int GetTopPos() {
+        return isEmpty() ? - 1 : 0;
+    }
+    public int GetBottomPos() {
+        return getCount() - 1;
+    }
     public int GetTopNewPos() {
         try {
             for (int i = 0; i < getCount(); i++) {
