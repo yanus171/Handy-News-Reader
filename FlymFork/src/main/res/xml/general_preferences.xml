@@ -189,11 +189,6 @@
             android:summary="@string/article_text_expand_controls_descr"
             />
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="display_oldest_first"
-            android:summary="@string/settings_display_oldest_first_description"
-            android:title="@string/settings_display_oldest_first"/>
-        <CheckBoxPreference
             android:defaultValue="true"
             android:key="show_mark_all_as_read_button"
             android:summary="@string/show_mark_all_as_read_button_summary"
@@ -213,19 +208,28 @@
             android:key="show_full_text_indicator"
             android:summary="@string/show_full_text_indicator_descr"
             android:title="@string/show_full_text_indicator"/>
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="show_new_icon"
             android:summary="@string/show_new_icon_descr"
             android:title="@string/show_new_icon"/>
-
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="display_oldest_first"
+            android:summary="@string/settings_display_oldest_first_description"
+            android:title="@string/settings_display_oldest_first"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="new"
+            android:entries="@array/article_list_restore_type_captions"
+            android:entryValues="@array/article_list_restore_type"
+            android:key="article_list_restore_type"
+            android:title="@string/article_list_restore_type"
+            android:summary="@string/article_list_restore_type_summary"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="vibrate_on_article_list_entry_swype"
             android:summary="@string/vibrate_on_article_list_entry_swype_summary"
             android:title="@string/vibrate_on_article_list_entry_swype"/>
-
         <ru.yanus171.feedexfork.view.AutoSummaryEditPreference
             android:key="article_list_size_progressbar_maxsize"
             android:inputType="number"

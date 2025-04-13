@@ -264,10 +264,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
 
         private int getInitialPosition() {
-            if ( PrefUtils.getBoolean("show_new_icon", true) )
+            final String restoreType = PrefUtils.getString( "article_list_restore_type", "new" );
+            if (restoreType.equals("new"))
                 return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
+            else if (restoreType.equals("top_bottom"))
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomPos() : mEntriesCursorAdapter.GetTopPos();
             else
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopPos() : mEntriesCursorAdapter.GetBottomPos();
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
         }
 
         @Override

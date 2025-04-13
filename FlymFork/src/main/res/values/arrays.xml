@@ -93,6 +93,18 @@
         <item>Do not show the buttons</item>
     </string-array>
 
+    <string-array name="article_list_restore_type"  translatable="false">
+        <item>top_bottom</item>
+        <item>new</item>
+        <item>unread</item>
+    </string-array>
+
+    <string-array name="article_list_restore_type_captions">
+        <item>Top | Bottom (depending on order setting)</item>
+        <item>To the oldest new article</item>
+        <item>To the oldest unread article</item>
+    </string-array>
+
     <string-array name="settings_datetime_format">
         <item>System default</item>
         <item>Remaining time</item>

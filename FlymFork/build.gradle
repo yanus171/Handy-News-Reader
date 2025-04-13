@@ -13,8 +13,9 @@ android {
         applicationId 'ru.yanus171.feedexfork'
         minSdkVersion 14
         targetSdkVersion 31
-        versionCode 328
-        versionName '0.19.18'
+        versionCode 330
+        versionName '0.19.20'
+        multiDexEnabled true
     }
     lintOptions {
         checkReleaseBuilds false
@@ -107,6 +108,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.work:work-runtime:2.7.1'
     googleImplementation "com.google.android.gms:play-services-safetynet:17+"
+    implementation "androidx.multidex:multidex:2.0.1"
 }
 repositories {
     mavenCentral()

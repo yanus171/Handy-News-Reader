@@ -242,7 +242,7 @@
     <string name="show_full_text_indicator">Full text indicator</string>
     <string name="show_full_text_indicator_descr">Show small diskette icon to indicate that article full text has been loaded</string>
     <string name="show_new_icon">New article icon</string>
-    <string name="show_new_icon_descr">Little plus icon on new articles (which had never be seen). If enabled then article list would restore position to then last new article otherwise to top|bottom article (regardless of sort order setting)"</string>
+    <string name="show_new_icon_descr">Little plus icon on new articles (which had never be seen).</string>
     <string name="show_read_article_count">Show read articles count</string>
     <string name="show_read_article_count_descr">In feed list</string>
     <string name="show_group_entrries_count">Group articles count</string>
@@ -749,5 +749,7 @@
     <string name="menu_article_orientation">Article orientation</string>
     <string name="settings_autobackup_requires_charging">Only when charging</string>
     <string name="entry_show_menu">Show menu</string>
+    <string name="article_list_restore_type">Restore list position type</string>
+    <string name="article_list_restore_type_summary">To what position scroll the article list when its first opened</string>
 
 </resources>
