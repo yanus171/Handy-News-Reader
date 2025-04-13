@@ -125,6 +125,7 @@
     <string name="settings_display_oldest_first_description">오래된 항목을 먼저 표시</string>
     <string name="settings_display_images">이미지 표시</string>
     <string name="settings_display_images_description">항목에서 이미지 표시</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_notifications_enabled">알림 사용</string>
     <string name="settings_notifications_enabled_description">새 항목에 대한 알림을 사용</string>
     <string name="settings_notifications_ringtone">벨소리</string>
