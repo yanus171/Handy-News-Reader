@@ -276,7 +276,7 @@
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
     <string name="tap_zone_size_descr">Ширина и высота зон нажатий в миллиметрах</string>
-    <string name="settings_show_tap_zones">Зоны нажатий видимы</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Показывать полупрозрачные квадратики на месте тап зон</string>
     <string name="settings_tapZones">Зоны нажатий (предпросмотр)</string>
     <string name="settings_volume_buttons_action">Действие кнопок громкости</string>

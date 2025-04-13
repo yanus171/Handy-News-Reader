@@ -275,7 +275,7 @@
     <string name="settings_category_operation_summary">Paramètres de fonctionnement</string>
     <string name="tap_zone_size">Taille de la zone d\'appui</string>
     <string name="tap_zone_size_descr">Hauteur ou largeur de toutes les zones d\'appui en millimètres (vue d\'entrée)</string>
-    <string name="settings_show_tap_zones">Les zones d\'appui sont visibles</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">En tant que carrés transparents dans la vue d\'entrée</string>
     <string name="settings_tapZones">Aperçu des zones d\'appui</string>
     <string name="settings_volume_buttons_action">Action des boutons de volume</string>

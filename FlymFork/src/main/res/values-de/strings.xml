@@ -272,7 +272,7 @@
     <string name="settings_category_operation_summary">Einstellungen zur Bedienung</string>
     <string name="tap_zone_size">Tipp-Zonen-Größe</string>
     <string name="tap_zone_size_descr">Höhe und Breite der Tipp-Zonen in Millimeter (Artikelansicht)</string>
-    <string name="settings_show_tap_zones">Tipp-Zonen anzeigen</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">als transparente Quadrate in der Artikelansicht</string>
     <string name="settings_tapZones">Tipp-Zonen-Vorschau</string>
     <string name="settings_volume_buttons_action">Funktion der Lautstärketasten</string>
@@ -704,6 +704,7 @@
     <string name="with_labels">mit Kategorien:</string>
     <string name="show_article_text">Artikeltext</string>
     <string name="show_article_text_descr">Artikeltext in Liste anzeigen</string>
+    <string name="shared_favorities_article_list_mail_sugject">Handy Reader Liste der bevorzugten Artikel</string>
     <string name="settings_remove_found_categories_from_text">Kategorien aus dem Text entfernen</string>
     <string name="settings_remove_found_categories_from_text_descr">Gefundene Kategorien aus dem Artikeltext entfernen</string>
     <string name="settings_volume_buttons_action_descr">Es gibt nur eine Standardaktion, wenn ein Artikel ein Video enthält</string>
@@ -715,4 +716,6 @@
     <string name="settings_force_orientation_by_sensor_descr">Ausrichtung nach Sensor erzwingen, Systemeinstellungen überschreiben</string>
     <string name="menu_force_orientation_by_sensor">App-Ausrichtung nach Sensor</string>
     <string name="menu_article_orientation">Artikel-Ausrichtung</string>
+    <string name="settings_autobackup_requires_charging">Nur beim Laden</string>
+    <string name="entry_show_menu">Menü anzeigen</string>
 </resources>

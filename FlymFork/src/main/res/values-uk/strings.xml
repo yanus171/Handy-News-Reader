@@ -273,7 +273,7 @@
     <string name="settings_category_operation_summary">Налаштування</string>
     <string name="tap_zone_size">Розмір зони натискань</string>
     <string name="tap_zone_size_descr">Ширина або висота зон натискань в міліметрах</string>
-    <string name="settings_show_tap_zones">Зони натискань видно</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Напівпрозорі квадратики у вікні читання статті</string>
     <string name="settings_tapZones">Зони натискань (попередній показ)</string>
     <string name="settings_volume_buttons_action">Дія кнопок гучності</string>
@@ -723,4 +723,6 @@
     <string name="settings_force_orientation_by_sensor_descr">Примусова орієнтація по датчику не зважаючи на систему</string>
     <string name="menu_force_orientation_by_sensor">Орієнтація застосунку по датчику</string>
     <string name="menu_article_orientation">Орієнтація статті</string>
+    <string name="settings_autobackup_requires_charging">Лише під час зарядження</string>
+    <string name="entry_show_menu">Показати меню</string>
 </resources>
