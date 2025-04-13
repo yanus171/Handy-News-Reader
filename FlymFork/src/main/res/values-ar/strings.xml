@@ -356,6 +356,7 @@
     <string name="new_feed_was_added">تمت إضافة تغذية جديدة</string>
     <string name="entry_marked_unread">تمَّ تحديد المقال كغير مقروء</string>
     <string name="force_landscape_orientation">الوضع الأفقي</string>
+    <string name="force_portrait_orientation">اتجاه عمودي</string>
     <string name="markAsStarred">تَحْديدٌ كَمُمَيَّزٍ</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
     <string name="deleteAllEntries">حذف كل المقالات المعروضة، عدا المميزة بنجمة؟</string>
