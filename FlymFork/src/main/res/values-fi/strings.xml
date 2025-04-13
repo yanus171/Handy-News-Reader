@@ -131,6 +131,7 @@
     <string name="settings_display_images">Näytä kuvat</string>
     <string name="settings_display_images_description">Näytä kuvat artikkeleissa</string>
     <string name="settings_display_entries_fullscreen">Automaattinen kokoruututila</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_notifications_enabled">Näytä ilmoitukset</string>
     <string name="settings_notifications_enabled_description">Näytä ilmoitus kun syötteissä on uusia artikkeleita</string>
     <string name="settings_notifications_ringtone">Soittoääni</string>
