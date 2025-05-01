@@ -81,9 +81,9 @@ object FileUtils {
                                 MediaStore.MediaColumns.RELATIVE_PATH + " LIKE '" + relPath + "%' ", null, null)
                 if ( cursor!!.moveToFirst() ) {
                     val uri = Uri.withAppendedPath(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cursor.getString(0))
-                    cursor.close()
                     resolver.delete(uri, null, null)
                 }
+                cursor.close()
 
             }
             try {
