@@ -260,6 +260,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                 } else {
                     SetEntryID(entryUri, url);
                 }
+                mEntryFragment.SetEntryReadTime( entryUri );
                 RestartLoadersOnGUI();
             }
 

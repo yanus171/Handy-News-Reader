@@ -1282,9 +1282,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 Timer timer = new Timer( "EntryFr.setData" );
                 Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
 
-
                 //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
                 if ( !IsExternalLink( uri ) ) {
+                    SetEntryReadTime( uri );
                     mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
                     if ( mBaseUri.toString().endsWith( "-1" ) )
                         mBaseUri = Uri.parse(mBaseUri.toString().replace("-1", "" ));
@@ -1338,6 +1338,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 }
             }
         }.execute();
+    }
+
+    public void SetEntryReadTime(Uri entryUri) {
+        ContentValues values = new ContentValues();
+        values.put(EntryColumns.READ_DATE, new Date().getTime());
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
+        cr.update( entryUri, values, null, null );
     }
 
     private boolean IsFeedUri( Uri uri ) {
