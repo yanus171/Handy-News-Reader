@@ -821,6 +821,8 @@ public class EntryView extends WebView implements Handler.Callback {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if ( mActivity == null || mActivity.mEntryFragment == null )
+                    return false;
                 mActivity.mEntryFragment.mAnchor = "";
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mPressedX = event.getX();
