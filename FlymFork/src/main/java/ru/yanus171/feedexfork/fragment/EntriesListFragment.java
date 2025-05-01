@@ -497,10 +497,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if ( mEntriesCursorAdapter == null || !mIsResumed )
                     return;
-                for ( int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++ ) {
-                    String item = new VisibleReadItem( GetUri( i ).toString(), false ).ToString();
-                    mWasVisibleList.add(item);
-                }
+                String item = new VisibleReadItem( GetUri(firstVisibleItem).toString(), false ).ToString();
+                mWasVisibleList.add(item);
                 if ( mShowTextInEntryList || isAlsoSetAsRead() ) {
                     final int pos = firstVisibleItem - 2;
                     final Uri uri = GetUri( pos );
