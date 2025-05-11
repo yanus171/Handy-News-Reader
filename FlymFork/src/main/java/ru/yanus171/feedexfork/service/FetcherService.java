@@ -993,10 +993,12 @@ public class FetcherService extends IntentService {
                                     el.hasAttr("http-equiv") &&
                                     el.attr("http-equiv").equals("refresh")) {
                                     String s = el.attr("content");
-                                    link = s.replaceFirst("\\d+;URL=", "");
-                                    connection.disconnect();
-                                    connection = new Connection(link, OKHTTP);
-                                    doc = Jsoup.parse(connection.getInputStream(), null, "");
+                                    if ( s.contains( "http" ) ) {
+                                        link = s.replaceFirst("\\d+;URL=", "");
+                                        connection.disconnect();
+                                        connection = new Connection(link, OKHTTP);
+                                        doc = Jsoup.parse(connection.getInputStream(), null, "");
+                                    }
                                     break;
                                 }
                             }
