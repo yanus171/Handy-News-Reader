@@ -22,6 +22,7 @@ package ru.yanus171.feedexfork.utils;
 import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
@@ -144,8 +145,10 @@ public class HtmlUtils {
         SaveContentStepToFile( content, "improveHtmlContent 9" );
         content = ReplaceImagesWithDataOriginal(content, "<a.+?background-image.+?url.+?(http.+?)('|.quot)(.|\\n|\\t|\\s)+?a>");
         SaveContentStepToFile( content, "improveHtmlContent 10" );
-        content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
-        SaveContentStepToFile( content, "improveHtmlContent 11" );
+        if ( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, true ) ) {
+            content = ReplaceImagesWithDataOriginal(content, "<a.+?href=\"([^\"]+?(jpg|png))\"(.|\\n|\\t|\\s)+?a>");
+            SaveContentStepToFile(content, "improveHtmlContent 11");
+        }
 
         // clean by JSoup
         final Safelist whiteList =
@@ -318,6 +321,8 @@ public class HtmlUtils {
     }
 
     private static String ReplaceImagesWithALink(String content) {
+        if ( !PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, true ) )
+            return content;
         // <img> in <a> tag
         final Pattern A_HREF_WITH_IMG = Pattern.compile("href=(.[^>]+\\.(jpeg|jpg|png).)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = A_IMG_PATTERN.matcher(content);

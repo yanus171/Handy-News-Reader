@@ -181,6 +181,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
     public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
+
+    public static final String STATE_RELOAD_IMG_WITH_A_LINK = "STATE_REPLACE_IMG_WITH_A_LINK";
     public static final String STATE_RELOAD_WITH_DEBUG = "STATE_RELOAD_WITH_DEBUG";
     public boolean mIgnoreNextLoading = false;
 
@@ -195,6 +197,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public boolean mFavorite;
     private boolean mIsWithTables;
+    private boolean mIsReplaceImgWithALink;
     private boolean mIsTapZoneVisible = false;
 
     enum ForceOrientation {NONE, LANDSCAPE, PORTRAIT}
@@ -770,7 +773,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
+        menu.findItem(R.id.menu_replace_img_with_a_link_toggle).setChecked( mIsReplaceImgWithALink );
         menu.findItem(R.id.menu_reload_full_text_with_debug_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
+        menu.findItem(R.id.menu_replace_img_with_a_link_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
 
         EntryView view = GetSelectedEntryView();
         menu.findItem(R.id.menu_go_back).setVisible( view != null && view.CanGoBack() );
@@ -911,6 +916,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     } finally { FetcherService.Status().End( status ); }
                     break;
                 }
+
+                case R.id.menu_replace_img_with_a_link_toggle: {
+                    int status = FetcherService.Status().Start("Replace img with a link", true); try {
+                        PrefUtils.toggleBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false );
+                        item.setChecked( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
+                        getActivity().invalidateOptionsMenu();
+                    } finally { FetcherService.Status().End( status ); }
+                    break;
+                }
+
                 case R.id.menu_reload_full_text_with_debug_toggle: {
                     int status = FetcherService.Status().Start("Reload with|out debug", true); try {
                         PrefUtils.toggleBoolean( STATE_RELOAD_WITH_DEBUG, false );

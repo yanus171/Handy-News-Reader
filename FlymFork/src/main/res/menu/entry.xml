@@ -198,6 +198,11 @@
                 android:icon="@drawable/ic_view_module"
                 android:title="@string/menu_reload_with_tables_toggle" />
             <item
+                android:id="@+id/menu_replace_img_with_a_link_toggle"
+                android:checkable="true"
+                android:icon="@drawable/ic_view_module"
+                android:title="@string/menu_replace_img_with_a_link_toggle" />
+            <item
                 android:id="@+id/menu_reload_full_text_with_debug_toggle"
                 android:checkable="true"
                 android:icon="@drawable/ic_developer_mode"

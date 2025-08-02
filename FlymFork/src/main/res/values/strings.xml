@@ -751,5 +751,6 @@
     <string name="entry_show_menu">Show menu</string>
     <string name="article_list_restore_type">Restore list position type</string>
     <string name="article_list_restore_type_summary">To what position scroll the article list when its first opened</string>
+    <string name="menu_replace_img_with_a_link_toggle">Replace img with A link</string>
 
 </resources>

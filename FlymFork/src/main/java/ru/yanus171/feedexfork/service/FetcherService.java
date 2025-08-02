@@ -65,6 +65,7 @@ import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
