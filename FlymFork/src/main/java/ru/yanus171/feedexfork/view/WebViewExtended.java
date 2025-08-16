@@ -48,9 +48,7 @@ import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.IsFeedUri;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
-import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
@@ -65,17 +63,17 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
-import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.FontSelectPreference.DefaultFontFamily;
 import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalUrl;
-import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+import static ru.yanus171.feedexfork.view.WebEntryView.OpenImage;
+import static ru.yanus171.feedexfork.view.WebEntryView.ShowImageMenu;
+import static ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -101,13 +99,10 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 
-import java.io.File;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.regex.Matcher;
@@ -116,13 +111,9 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.EntryActivity;
-import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.FileUtils;
-import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -290,7 +281,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                         OpenImage(url, context);
                     else if (!anchor.isEmpty() && url.replace( "#" + anchor, "" ).equals( mEntryView.mEntryLink ) || !url.contains( "http" ) ) {
                         if ( anchor.isEmpty() )
-                            ScrollTo( 0 );
+                            ScrollSmoothTo( 0 );
                         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             mEntryView.moveToAnchor(view, anchor);
                             mEntryView.AddNavigationHistoryStep();
@@ -742,88 +733,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         return content.toString();
     }
 
-    public static void ShowLinkMenu(String url, String title, Context context ) {
-        final MenuItem itemTitle = new MenuItem(url);
-        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)) );
-        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
-        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
-            LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<>(), null, (checkedLabels) -> {
-                Intent intent_ = new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
-                ArrayList<String> list = new ArrayList<>();
-                for (long labelID : checkedLabels)
-                    list.add(String.valueOf(labelID));
-                intent_.putStringArrayListExtra(EXTRA_LABEL_ID_LIST, list);
-                context.startActivity(intent_);
-                return null;
-            }));
-        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(url) );
-        final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
-            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
-                .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share)) );
-        final MenuItem[] items = { itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare };
-        final MenuItem[] itemsNoRead = { itemTitle, itemOpenLink, itemShare };
 
-        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context);
-    }
-
-    public static String sanitizeFilename(String inputName) {
-        return inputName.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
-    }
-    @SuppressLint("SimpleDateFormat")
-    public static String getDestFileName(String title) {
-        return sanitizeFilename( title ) + "_" + new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date());
-    }
-    public static void ShowImageMenu(String url, String title, Context context) {
-        final MenuItem[] items = {
-            new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
-            new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
-                File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-                FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title), true );
-            }),
-            new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
-        };
-        ShowMenu(items, null, context );
-    }
-
-
-
-
-    public static void OpenImage( String url, Context context ) {
-        try {
-            File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-            File extTmpFile = new File(context.getCacheDir(), file.getName());
-            FileUtils.INSTANCE.copy(file, extTmpFile);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri contentUri = FileUtils.INSTANCE.getUriForFile( extTmpFile );
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(contentUri, "image/*");
-            final String packageName = GetPackageNameForAction( "openImageTapAction" );
-            if ( packageName != null )
-                intent.setPackage(packageName);
-            context.startActivity(intent);
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
-        }
-    }
-
-    public static void ShareImage( String url, Context context ) {
-        try {
-            File file = new File(url.replace(Constants.FILE_SCHEME, ""));
-            File extTmpFile = new File(context.getCacheDir(), file.getName());
-            FileUtils.INSTANCE.copy(file, extTmpFile);
-            Uri contentUri = FileUtils.INSTANCE.getUriForFile( extTmpFile );
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_STREAM, contentUri);
-            intent.setType("image/jpeg");
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            context.startActivity(intent);
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
-        }
-    }
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -852,20 +762,9 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             scrollTo( 0, mEntryView.GetScrollY() );
     }
 
-    /*@Override
-    public void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-        super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
-        if ( scrollY > 50 && clampedY ) {
-            mActivity.setFullScreen(false, EntryActivity.GetIsActionBarHidden());
-        }
-
-    }*/
-
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         Status().HideByScroll();
-        //int contentHeight = (int) Math.floor(GetContentHeight());
-        //int webViewHeight = getMeasuredHeight();
         if ( mEntryView.mActivity != null && mEntryView.mActivity.mEntryFragment != null )
             mEntryView.mActivity.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
@@ -876,9 +775,6 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     public boolean IsScrollAtBottom() {
         return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight()) - getMeasuredHeight() * 0.4;
     }
-
-
-
 
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
 
@@ -893,9 +789,6 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             UiUtils.RunOnGuiThread(new ScheduledEntryNotifyObservers(entryId, entryLink), NOTIFY_OBSERVERS_DELAY_MS);
         }
     }
-
-
-
 
     public interface EntryViewManager {
         void onClickOriginalText();
@@ -1010,20 +903,17 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     }
 
 
-
-
     public double GetContentHeight() {
         return getContentHeight() * getScale();
     }
 
 
-    public void ScrollTo(int y) {
+    public void ScrollSmoothTo(int y) {
         ObjectAnimator anim = ObjectAnimator.ofInt(this, "scrollY", getScrollY(), y);
         anim.setDuration(PAGE_SCROLL_DURATION_MSEC);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
     }
-
 
     @Override
     public void onPause() {

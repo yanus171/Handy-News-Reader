@@ -1,20 +1,28 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
+import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
+import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
+import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
 import static ru.yanus171.feedexfork.view.WebViewExtended.BASE_URL;
 import static ru.yanus171.feedexfork.view.WebViewExtended.TEXT_HTML;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -28,12 +36,16 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -41,6 +53,7 @@ import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -76,7 +89,7 @@ public class WebEntryView extends EntryView {
 
     @Override
     protected void ScrollTo( int y) {
-        mWebView.ScrollTo( y );
+        mWebView.ScrollSmoothTo( y );
     }
 
     @Override
@@ -315,6 +328,90 @@ public class WebEntryView extends EntryView {
             Dog.v( EntryView.TAG, String.format( "NotifyToUpdate( %d )", entryId ) );
             WebViewExtended.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink, restorePosition) );
         }, 0 );//NOTIFY_OBSERVERS_DELAY_MS);
+    }
+
+    public static void ShowLinkMenu(String url, String title, Context context ) {
+        final MenuItem itemTitle = new MenuItem(url);
+        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)) );
+        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
+        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
+                LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<>(), null, (checkedLabels) -> {
+                    Intent intent_ = new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
+                    ArrayList<String> list = new ArrayList<>();
+                    for (long labelID : checkedLabels)
+                        list.add(String.valueOf(labelID));
+                    intent_.putStringArrayListExtra(EXTRA_LABEL_ID_LIST, list);
+                    context.startActivity(intent_);
+                    return null;
+                }));
+        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(url) );
+        final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
+                new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
+                        .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share)) );
+        final MenuItem[] items = { itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare };
+        final MenuItem[] itemsNoRead = { itemTitle, itemOpenLink, itemShare };
+
+        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context);
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getDestFileName(String title) {
+        return sanitizeFilename( title ) + "_" + new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date());
+    }
+    public static String sanitizeFilename(String inputName) {
+        return inputName.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+    }
+
+    public static void ShowImageMenu(String url, String title, Context context) {
+        final MenuItem[] items = {
+                new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context) ),
+                new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
+                    File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+                    FileUtils.INSTANCE.copyFileToDownload( file.getAbsolutePath(), getDestFileName(title), true );
+                }),
+                new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context) )
+        };
+        ShowMenu(items, null, context );
+    }
+
+
+
+
+    public static void OpenImage( String url, Context context ) {
+        try {
+            File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+            File extTmpFile = new File(context.getCacheDir(), file.getName());
+            FileUtils.INSTANCE.copy(file, extTmpFile);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri contentUri = FileUtils.INSTANCE.getUriForFile( extTmpFile );
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(contentUri, "image/*");
+            final String packageName = GetPackageNameForAction( "openImageTapAction" );
+            if ( packageName != null )
+                intent.setPackage(packageName);
+            context.startActivity(intent);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
+        }
+    }
+
+    public static void ShareImage( String url, Context context ) {
+        try {
+            File file = new File(url.replace(Constants.FILE_SCHEME, ""));
+            File extTmpFile = new File(context.getCacheDir(), file.getName());
+            FileUtils.INSTANCE.copy(file, extTmpFile);
+            Uri contentUri = FileUtils.INSTANCE.getUriForFile( extTmpFile );
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            intent.setType("image/jpeg");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            context.startActivity(intent);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
+        }
     }
 
 }
