@@ -30,7 +30,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
-import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
+import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservable;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -46,11 +46,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -82,6 +80,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
+import ru.yanus171.feedexfork.view.WebEntryView;
 
 public class EntryActivity extends BaseActivity implements Observer {
 
@@ -389,12 +388,15 @@ public class EntryActivity extends BaseActivity implements Observer {
         if (mEntryFragment != null)
             mEntryFragment.UpdateHeader();
     }
+
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Dog.d("onKeyDown isTracking = " + event.isTracking());
         boolean accepted = true;
         String pref = PrefUtils.getString("volume_buttons_action", PrefUtils.VOLUME_BUTTONS_ACTION_DEFAULT);
-        if ( mEntryFragment.GetSelectedEntryView() != null && mEntryFragment.GetSelectedEntryView().hasVideo() )
+        if ( mEntryFragment.hasVideo() )
             accepted = false;
         else if (pref.equals(PrefUtils.VOLUME_BUTTONS_ACTION_PAGE_UP_DOWN)) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
@@ -458,7 +460,9 @@ public class EntryActivity extends BaseActivity implements Observer {
         EntryView view = mEntryFragment.mEntryPagerAdapter.GetEntryView( (Entry) data );
         if ( view == null )
             return;
-        view.UpdateImages( false );
+        if ( !(view instanceof WebEntryView ) )
+            return;
+        ((WebEntryView)view).UpdateImages( false );
         Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
     }
 }

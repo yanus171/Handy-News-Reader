@@ -52,6 +52,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.view.EntryView;
+import ru.yanus171.feedexfork.view.WebEntryView;
 
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 
@@ -177,7 +178,7 @@ public class NetworkUtils {
             }
 
             if ( result && !abort && notify && entryId > 0 )
-                EntryView.NotifyToUpdate( entryId, entryUrl, true );
+                WebEntryView.NotifyToUpdate( entryId, entryUrl, true );
         }
         return result;
     }

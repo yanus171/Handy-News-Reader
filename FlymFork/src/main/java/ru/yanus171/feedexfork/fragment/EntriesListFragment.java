@@ -31,7 +31,6 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
@@ -56,12 +55,10 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_TEXT_PREVIEW;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.utils.StringUtils.DATE_FORMAT;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
-import static ru.yanus171.feedexfork.view.EntryView.mImageDownloadObservable;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.IsZoneEnabled;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.SetupZones;
+import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservable;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -150,7 +147,6 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.Entry;
-import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {

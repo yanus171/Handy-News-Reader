@@ -76,10 +76,13 @@ import static ru.yanus171.feedexfork.utils.UiUtils.SetFont;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupSmallTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
-import static ru.yanus171.feedexfork.view.EntryView.ShowLinkMenu;
-import static ru.yanus171.feedexfork.view.EntryView.getAlign;
-import static ru.yanus171.feedexfork.view.EntryView.isTextRTL;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+import static ru.yanus171.feedexfork.view.WebViewExtended.OpenImage;
+import static ru.yanus171.feedexfork.view.WebViewExtended.ShowImageMenu;
+import static ru.yanus171.feedexfork.view.WebViewExtended.ShowLinkMenu;
+import static ru.yanus171.feedexfork.view.WebViewExtended.getAlign;
+import static ru.yanus171.feedexfork.view.WebViewExtended.isTextRTL;
+import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservable;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -163,6 +166,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.MenuItem;
+import ru.yanus171.feedexfork.view.WebEntryView;
 
 public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
@@ -335,12 +339,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 holder.textTextView.setMaxLines( MAX_LINES_STEP );
                 if (shownId == holder.entryID) {
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, 0);
-                    EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+                    mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                 } else {
                     if ( !holder.isFavorite )
                         SetIsRead(holder.entryID, feedId, true, true);
                     PrefUtils.putLong(STATE_TEXTSHOWN_ENTRY_ID, holder.entryID);
-                    EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+                    mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
                     mNeedScrollToTopExpandedArticle = true;
                 }
                 MainApplication.getContext().getContentResolver().notifyChange(mUri, null );
@@ -767,7 +771,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
                     if ( mNeedScrollToTopExpandedArticle ) {
                         mNeedScrollToTopExpandedArticle = false;
-                        UiUtils.RunOnGuiThread(() -> EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID))), 100);
+                        UiUtils.RunOnGuiThread(() -> mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID))), 100);
                     }
                 } else if ( content == null ) {
                     content = new EntryContent();
@@ -842,9 +846,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     static private void setupImageViewClick(ImageView view, String feedTitle, String mainImgUrl) {
         String finalMainImgUrl = mainImgUrl;
-        view.setOnClickListener(v_ -> EntryView.OpenImage(finalMainImgUrl, v_.getContext() ));
+        view.setOnClickListener(v_ -> OpenImage(finalMainImgUrl, v_.getContext() ));
         view.setOnLongClickListener(v_ -> {
-            EntryView.ShowImageMenu(finalMainImgUrl, feedTitle, v_.getContext() );
+            ShowImageMenu(finalMainImgUrl, feedTitle, v_.getContext() );
             return true;
         });
     }
@@ -962,7 +966,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             synchronized ( this ) {
                 mIsLoaded = true;
             }
-            EntryView.NotifyToUpdate( mID, mLink, false );
+            WebEntryView.NotifyToUpdate( mID, mLink, false );
         }
         private String removeLast(String string, String from) {
             int lastIndex = string.lastIndexOf(from);
@@ -984,7 +988,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                    .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
                                    .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
         if( isTextShown( holder )) {
-            EntryView.mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
+            mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );
         }
     }

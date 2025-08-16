@@ -200,6 +200,7 @@ import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
+import ru.yanus171.feedexfork.view.WebEntryView;
 
 @SuppressLint("Range")
 public class FetcherService extends IntentService {
@@ -1419,7 +1420,7 @@ public class FetcherService extends IntentService {
                 executor.shutdown();
             }
             if ( downloadedCount > 0 )
-                EntryView.NotifyToUpdate( entryId, entryLink, false );
+                WebEntryView.NotifyToUpdate( entryId, entryLink, false );
         } catch ( Exception e ) {
             obs.SetError(null, "", String.valueOf(entryId), e);
         } finally {
