@@ -265,7 +265,7 @@ public class EntryActivity extends BaseActivity implements Observer {
 
             private void SetEntryID(Uri entryUri, String entryLink) {
                 final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
-                mEntryFragment.SetEntryID( 0, entryID, entryLink );
+                mEntryFragment.mEntryPagerAdapter.SetEntryID( 0, entryID, entryLink );
                 FetcherService.addActiveEntryID(entryID);
             }
         }).start();

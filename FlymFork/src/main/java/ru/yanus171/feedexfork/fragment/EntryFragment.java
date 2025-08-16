@@ -185,10 +185,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
-    private int mCurrentPagerPos = -1, mLastPagerPos = -1;
     private Uri mBaseUri;
+    private int mCurrentPagerPos = -1;
+    private int mLastPagerPos = -1;
     private long mInitialEntryId = -1;
-    private Entry[] mEntriesIds = new Entry[1];
 
     public boolean mFavorite;
     private boolean mIsWithTables;
@@ -231,9 +231,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
         if ( IsExternalLink( getActivity().getIntent().getData() ) )
-            mEntryPagerAdapter = new SingleEntryPagerAdapter();
+            mEntryPagerAdapter = new SingleEntryPagerAdapter( this );
         else
-            mEntryPagerAdapter = new EntryPagerAdapter();
+            mEntryPagerAdapter = new EntryPagerAdapter( this );
 
         mWhereSQL = getActivity().getIntent().getStringExtra( WHERE_SQL_EXTRA );
         if ( savedInstanceState != null ) {
@@ -778,365 +778,363 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mEntriesIds != null) {
-            Activity activity = getActivity();
+        Activity activity = getActivity();
 
-            switch (item.getItemId()) {
+        switch (item.getItemId()) {
 
-                case R.id.menu_close: {
-                    onClose();
-                    break;
-                }
+            case R.id.menu_close: {
+                onClose();
+                break;
+            }
 
-                case R.id.menu_star: {
+            case R.id.menu_star: {
 
-                    SetIsFavorite( !mFavorite, true );
-                    break;
-                }
-                case R.id.menu_share: {
-                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-                    String link = cursor.getString(mLinkPos);
+                SetIsFavorite( !mFavorite, true );
+                break;
+            }
+            case R.id.menu_share: {
+                Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                String link = cursor.getString(mLinkPos);
 
-                    if (link != null) {
-                        String title = cursor.getString(mTitlePos);
-
-                        startActivity(Intent.createChooser(
-                            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, link)
-                                .setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)));
-                    }
-                    break;
-                }
-
-                case R.id.menu_toggle_theme: {
-                    mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos();
-                    PrefUtils.ToogleTheme(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
-                    return true;
-                }
-
-                case R.id.menu_full_screen: {
-                    EntryActivity activity1 = (EntryActivity) getActivity();
-                    activity1.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden() );
-                    item.setChecked( GetIsStatusBarHidden() );
-                    break;
-                }
-                case R.id.menu_actionbar_visible: {
-                    EntryActivity activity1 = (EntryActivity) getActivity();
-                    activity1.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
-                    item.setChecked( !GetIsActionBarHidden() );
-                    break;
-                }
-
-                case R.id.menu_copy_clipboard: {
-                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-                    String link = cursor.getString(mLinkPos);
-                    ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("Copied Text 1", link);
-                    clipboard.setPrimaryClip(clip);
-
-                    UiUtils.toast( getActivity(), R.string.link_was_copied_to_clipboard);
-                    break;
-                }
-                case R.id.menu_mark_as_unread: {
-                    mMarkAsUnreadOnFinish = true;
-                    CloseEntry();
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            cr.update(uri, FeedData.getUnreadContentValues(), null, null);
-                        }
-                    }.start();
-                    UiUtils.toast( getActivity(), R.string.entry_marked_unread );
-                    break;
-                }
-                case R.id.menu_load_all_images: {
-                    DownloadAllImages();
-                    break;
-                }
-                case R.id.menu_labels: {
-                    OpenLabelSetup();
-                    break;
-                }
-                case R.id.menu_go_back: {
-                    GetSelectedEntryView().GoBack();
-                    break;
-                }
-                case R.id.menu_share_all_text: {
-                    if ( mCurrentPagerPos != -1 ) {
-                        Spanned spanned = Html.fromHtml(GetSelectedEntryWebView().GetData());
-                        char[] chars = new char[spanned.length()];
-                        TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
-                        String plainText = new String(chars);
-                        plainText = plainText.replaceAll( "body(.)*", "" );
-                        startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
-                                        .putExtra(Intent.EXTRA_TEXT, plainText)
-                                        .setType(Constants.MIMETYPE_TEXT_PLAIN),
-                                getString(R.string.menu_share)));
-                    }
-                    break;
-                }
-                case R.id.menu_cancel_refresh: {
-                    FetcherService.cancelRefresh();
-                    break;
-                }
-                case R.id.menu_setting: {
-                    startActivity(new Intent(getContext(), GeneralPrefsActivity.class));
-                    break;
-                }
-                case R.id.menu_open_link: {
-                    getActivity().startActivity(GetShowInBrowserIntent( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) ));
-                    break;
-                }
-
-                case R.id.menu_reload_full_text:
-                case R.id.menu_reload_full_text_toolbar: {
-
-                    ReloadFullText();
-                    break;
-                }
-                case R.id.menu_reload_full_text_without_mobilizer: {
-
-                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
-                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
-                    } finally { FetcherService.Status().End( status ); }
-                    break;
-                }
-
-                case R.id.menu_reload_with_tables_toggle: {
-                    int status = FetcherService.Status().Start("Reload with|out tables", true); try {
-                        SetIsWithTables( !mIsWithTables );
-                        item.setChecked( mIsWithTables );
-                        LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
-                    } finally { FetcherService.Status().End( status ); }
-                    break;
-                }
-
-                case R.id.menu_replace_img_with_a_link_toggle: {
-                    int status = FetcherService.Status().Start("Replace img with a link", true); try {
-                        PrefUtils.toggleBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false );
-                        item.setChecked( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
-                        getActivity().invalidateOptionsMenu();
-                    } finally { FetcherService.Status().End( status ); }
-                    break;
-                }
-
-                case R.id.menu_reload_full_text_with_debug_toggle: {
-                    int status = FetcherService.Status().Start("Reload with|out debug", true); try {
-                        PrefUtils.toggleBoolean( STATE_RELOAD_WITH_DEBUG, false );
-                        item.setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
-                        getActivity().invalidateOptionsMenu();
-                    } finally { FetcherService.Status().End( status ); }
-                    break;
-                }
-
-                case R.id.menu_reload_full_text_with_tags: {
-                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
-                        GetSelectedEntryWebView().mIsEditingMode = true;
-                        LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true, false );
-                    } finally { FetcherService.Status().End( status ); }
-                    break;
-                }
-
-                case R.id.menu_reload_full_text_with_scripts: {
-
-                    int status = FetcherService.Status().Start("Reload fulltext", true); try {
-                        LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true, true );
-                    } finally { FetcherService.Status().End( status ); }
-                    break;
-                }
-
-                case R.id.menu_edit_article_url: {
-                    final EditText editText = new EditText(getContext());
-                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-                    String link = cursor.getString(mLinkPos);
-                    editText.setText( link );
-                    final AlertDialog d = new AlertDialog.Builder( getContext() )
-                        .setView( editText )
-                        .setTitle( R.string.menu_edit_article_url )
-                        .setIcon( R.drawable.ic_edit )
-                        .setMessage( Html.fromHtml( getContext().getString( R.string.edit_article_url_title_message ) ) )
-                        .setNegativeButton( android.R.string.cancel, null )
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                                if ( !getEntryActivity().mIsNewTask )
-                                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
-                                new Thread() {
-                                    @Override
-                                    public void run() {
-                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                        ContentValues values = new ContentValues();
-                                        final String newLink = editText.getText().toString();
-                                        values.put( EntryColumns.LINK, newLink );
-                                        cr.update(uri, values, null, null);
-                                        EntryUrlVoc.INSTANCE.set(newLink, getCurrentEntryID());
-                                        UiUtils.RunOnGuiThread(() -> getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this));
-                                    }
-                                }.start();
-                            }
-                        }).create();
-                    d.show();
-                    final TextView tv = d.findViewById(android.R.id.message);//.setMovementMethod(LinkMovementMethod.getInstance());
-                    tv.setAutoLinkMask(Linkify.ALL);
-                    tv.setTextIsSelectable(true);
-                    break;
-                }
-
-                case R.id.menu_edit_article_title: {
-                    final EditText editText = new EditText(getContext());
-                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                if (link != null) {
                     String title = cursor.getString(mTitlePos);
-                    editText.setText( title );
-                    final AlertDialog d = new AlertDialog.Builder( getContext() )
-                        .setView( editText )
-                        .setTitle( R.string.menu_edit_article_title )
-                        .setIcon( R.drawable.ic_edit )
-                        .setNegativeButton( android.R.string.cancel, null )
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                                if ( !getEntryActivity().mIsNewTask )
-                                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
-                                new Thread() {
-                                    @Override
-                                    public void run() {
-                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                        ContentValues values = new ContentValues();
-                                        final String newTitle = editText.getText().toString();
-                                        values.put( EntryColumns.TITLE, newTitle );
-                                        cr.update(uri, values, null, null);
-                                        UiUtils.RunOnGuiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
-                                                GetSelectedEntryView().InvalidateContentCache();
-                                                //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
-                                            }
-                                        });
-                                    }
-                                }.start();
-                            }
-                        }).create();
-                    d.show();
-                    break;
-                }
 
-                case R.id.menu_force_orientation_by_sensor: {
-                    item.setChecked( !item.isChecked() );
-                    PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
-                    if ( mForceOrientation == NONE )
-                        getBaseActivity().applyBaseOrientation();
-                    break;
+                    startActivity(Intent.createChooser(
+                        new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, link)
+                            .setType(Constants.MIMETYPE_TEXT_PLAIN), getString(R.string.menu_share)));
                 }
-                case R.id.menu_force_landscape_orientation_toggle: {
-                    item.setChecked( !item.isChecked() );
-                    SetForceOrientation( item.isChecked() ? LANDSCAPE : NONE );
-                    if ( item.isChecked() && mForceLandscapeOrientationMenuItem != null)
-                        mForcePortraitOrientationMenuItem.setChecked( false );
-                    break;
-                }
-                case R.id.menu_force_portrait_orientation_toggle: {
-                    item.setChecked( !item.isChecked() );
-                    SetForceOrientation( item.isChecked() ? PORTRAIT : NONE );
-                    if ( item.isChecked() && mForceLandscapeOrientationMenuItem != null)
-                        mForceLandscapeOrientationMenuItem.setChecked( false );
-                    break;
-                }
-                case R.id.menu_image_white_background: {
-                    PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
-                    item.setChecked( PrefUtils.isImageWhiteBackground() );
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
-                    break;
-                }
-                case R.id.menu_font_bold: {
-                    PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
-                    item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
-                    break;
-                }
-                case R.id.menu_show_progress_info: {
-                    PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
-                    item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
-                    break;
-                }
-                case R.id.menu_disable_all_tap_actions: {
-                    PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                    SetupZones();
-                    Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
-                    break;
-                }
+                break;
+            }
 
-                case R.id.menu_show_html: {
-                    showHTML();
-                    break;
-                }
-                case R.id.menu_article_web_search: {
-                    startActivity( new Intent(Intent.ACTION_WEB_SEARCH)
-                                .setPackage(getContext().getPackageName())
-                                .setClass(getContext(), ArticleWebSearchActivity.class) );
-                    break;
-                }
-                case R.id.menu_edit_feed: {
-                    final String feedId = getCurrentFeedID();
-                    if (!feedId.isEmpty() && !feedId.equals(FetcherService.GetExtrenalLinkFeedID()))
-                        startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedId)));
-                    break;
-                }
+            case R.id.menu_toggle_theme: {
+                mEntryPagerAdapter.GetEntryView( mCurrentPagerPos ).SaveScrollPos();
+                PrefUtils.ToogleTheme(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID())));
+                return true;
+            }
 
-                case R.id.menu_search_next: {
-                    GetSelectedEntryWebViewExtended().findNext( true );
-                    break;
+            case R.id.menu_full_screen: {
+                EntryActivity activity1 = (EntryActivity) getActivity();
+                activity1.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden() );
+                item.setChecked( GetIsStatusBarHidden() );
+                break;
+            }
+            case R.id.menu_actionbar_visible: {
+                EntryActivity activity1 = (EntryActivity) getActivity();
+                activity1.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+                item.setChecked( !GetIsActionBarHidden() );
+                break;
+            }
+
+            case R.id.menu_copy_clipboard: {
+                Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                String link = cursor.getString(mLinkPos);
+                ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Copied Text 1", link);
+                clipboard.setPrimaryClip(clip);
+
+                UiUtils.toast( getActivity(), R.string.link_was_copied_to_clipboard);
+                break;
+            }
+            case R.id.menu_mark_as_unread: {
+                mMarkAsUnreadOnFinish = true;
+                CloseEntry();
+                final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                new Thread() {
+                    @Override
+                    public void run() {
+                        ContentResolver cr = MainApplication.getContext().getContentResolver();
+                        cr.update(uri, FeedData.getUnreadContentValues(), null, null);
+                    }
+                }.start();
+                UiUtils.toast( getActivity(), R.string.entry_marked_unread );
+                break;
+            }
+            case R.id.menu_load_all_images: {
+                DownloadAllImages();
+                break;
+            }
+            case R.id.menu_labels: {
+                OpenLabelSetup();
+                break;
+            }
+            case R.id.menu_go_back: {
+                GetSelectedEntryView().GoBack();
+                break;
+            }
+            case R.id.menu_share_all_text: {
+                if ( mCurrentPagerPos != -1 ) {
+                    Spanned spanned = Html.fromHtml(GetSelectedEntryWebView().GetData());
+                    char[] chars = new char[spanned.length()];
+                    TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
+                    String plainText = new String(chars);
+                    plainText = plainText.replaceAll( "body(.)*", "" );
+                    startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                                    .putExtra(Intent.EXTRA_TEXT, plainText)
+                                    .setType(Constants.MIMETYPE_TEXT_PLAIN),
+                            getString(R.string.menu_share)));
                 }
+                break;
+            }
+            case R.id.menu_cancel_refresh: {
+                FetcherService.cancelRefresh();
+                break;
+            }
+            case R.id.menu_setting: {
+                startActivity(new Intent(getContext(), GeneralPrefsActivity.class));
+                break;
+            }
+            case R.id.menu_open_link: {
+                getActivity().startActivity(GetShowInBrowserIntent( mEntryPagerAdapter.getCursor(mCurrentPagerPos).getString(mLinkPos) ));
+                break;
+            }
 
-                case R.id.menu_search_previous: {
-                    GetSelectedEntryWebViewExtended().findNext( false );
-                    break;
-                }
+            case R.id.menu_reload_full_text:
+            case R.id.menu_reload_full_text_toolbar: {
 
-                case R.id.menu_add_entry_shortcut: {
-                    if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
-                        //Adding shortcut for MainActivity on Home screen
-                        Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-                        if (cursor != null) {
-                            final String name = cursor.getString(mTitlePos);
-                            final long entryID = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
-                            //final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-                            final Uri uri = Uri.parse( cursor.getString(mLinkPos) );
-                            final String iconUrl = cursor.getString(cursor.getColumnIndex( EntryColumns.IMAGE_URL ));
+                ReloadFullText();
+                break;
+            }
+            case R.id.menu_reload_full_text_without_mobilizer: {
 
-                            new WaitDialog(getActivity(), R.string.downloadImage, new Runnable() {
+                int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                    LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
+                } finally { FetcherService.Status().End( status ); }
+                break;
+            }
+
+            case R.id.menu_reload_with_tables_toggle: {
+                int status = FetcherService.Status().Start("Reload with|out tables", true); try {
+                    SetIsWithTables( !mIsWithTables );
+                    item.setChecked( mIsWithTables );
+                    LoadFullText( ArticleTextExtractor.MobilizeType.No, true, false );
+                } finally { FetcherService.Status().End( status ); }
+                break;
+            }
+
+            case R.id.menu_replace_img_with_a_link_toggle: {
+                int status = FetcherService.Status().Start("Replace img with a link", true); try {
+                    PrefUtils.toggleBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false );
+                    item.setChecked( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
+                    getActivity().invalidateOptionsMenu();
+                } finally { FetcherService.Status().End( status ); }
+                break;
+            }
+
+            case R.id.menu_reload_full_text_with_debug_toggle: {
+                int status = FetcherService.Status().Start("Reload with|out debug", true); try {
+                    PrefUtils.toggleBoolean( STATE_RELOAD_WITH_DEBUG, false );
+                    item.setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
+                    getActivity().invalidateOptionsMenu();
+                } finally { FetcherService.Status().End( status ); }
+                break;
+            }
+
+            case R.id.menu_reload_full_text_with_tags: {
+                int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                    GetSelectedEntryWebView().mIsEditingMode = true;
+                    LoadFullText( ArticleTextExtractor.MobilizeType.Tags, true, false );
+                } finally { FetcherService.Status().End( status ); }
+                break;
+            }
+
+            case R.id.menu_reload_full_text_with_scripts: {
+
+                int status = FetcherService.Status().Start("Reload fulltext", true); try {
+                    LoadFullText( ArticleTextExtractor.MobilizeType.Yes, true, true );
+                } finally { FetcherService.Status().End( status ); }
+                break;
+            }
+
+            case R.id.menu_edit_article_url: {
+                final EditText editText = new EditText(getContext());
+                Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                String link = cursor.getString(mLinkPos);
+                editText.setText( link );
+                final AlertDialog d = new AlertDialog.Builder( getContext() )
+                    .setView( editText )
+                    .setTitle( R.string.menu_edit_article_url )
+                    .setIcon( R.drawable.ic_edit )
+                    .setMessage( Html.fromHtml( getContext().getString( R.string.edit_article_url_title_message ) ) )
+                    .setNegativeButton( android.R.string.cancel, null )
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                            if ( !getEntryActivity().mIsNewTask )
+                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                            new Thread() {
                                 @Override
                                 public void run() {
+                                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                    ContentValues values = new ContentValues();
+                                    final String newLink = editText.getText().toString();
+                                    values.put( EntryColumns.LINK, newLink );
+                                    cr.update(uri, values, null, null);
+                                    EntryUrlVoc.INSTANCE.set(newLink, getCurrentEntryID());
+                                    UiUtils.RunOnGuiThread(() -> getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this));
+                                }
+                            }.start();
+                        }
+                    }).create();
+                d.show();
+                final TextView tv = d.findViewById(android.R.id.message);//.setMovementMethod(LinkMovementMethod.getInstance());
+                tv.setAutoLinkMask(Linkify.ALL);
+                tv.setTextIsSelectable(true);
+                break;
+            }
 
-                                    final IconCompat icon = LoadIcon(iconUrl);
-                                    getEntryActivity().runOnUiThread(() -> {
-                                        final Intent intent = new Intent(getContext(), EntryActivityNewTask.class)
-                                            .setAction(Intent.ACTION_VIEW)
-                                            .setData(uri)
-                                            .putExtra( NEW_TASK_EXTRA, true );
-                                        ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getEntryActivity(), String.valueOf(entryID))
-                                                .setIcon(icon)
-                                                .setShortLabel(name)
-                                                .setIntent( intent )
-                                                .build();
-
-
-                                        ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
-                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-                                            Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
+            case R.id.menu_edit_article_title: {
+                final EditText editText = new EditText(getContext());
+                Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                String title = cursor.getString(mTitlePos);
+                editText.setText( title );
+                final AlertDialog d = new AlertDialog.Builder( getContext() )
+                    .setView( editText )
+                    .setTitle( R.string.menu_edit_article_title )
+                    .setIcon( R.drawable.ic_edit )
+                    .setNegativeButton( android.R.string.cancel, null )
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                            if ( !getEntryActivity().mIsNewTask )
+                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                    ContentValues values = new ContentValues();
+                                    final String newTitle = editText.getText().toString();
+                                    values.put( EntryColumns.TITLE, newTitle );
+                                    cr.update(uri, values, null, null);
+                                    UiUtils.RunOnGuiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
+                                            GetSelectedEntryView().InvalidateContentCache();
+                                            //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                                        }
                                     });
                                 }
-                            }).execute();
+                            }.start();
                         }
-                    } else
-                        Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
-                    break;
-                }
-
+                    }).create();
+                d.show();
+                break;
             }
+
+            case R.id.menu_force_orientation_by_sensor: {
+                item.setChecked( !item.isChecked() );
+                PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
+                if ( mForceOrientation == NONE )
+                    getBaseActivity().applyBaseOrientation();
+                break;
+            }
+            case R.id.menu_force_landscape_orientation_toggle: {
+                item.setChecked( !item.isChecked() );
+                SetForceOrientation( item.isChecked() ? LANDSCAPE : NONE );
+                if ( item.isChecked() && mForceLandscapeOrientationMenuItem != null)
+                    mForcePortraitOrientationMenuItem.setChecked( false );
+                break;
+            }
+            case R.id.menu_force_portrait_orientation_toggle: {
+                item.setChecked( !item.isChecked() );
+                SetForceOrientation( item.isChecked() ? PORTRAIT : NONE );
+                if ( item.isChecked() && mForceLandscapeOrientationMenuItem != null)
+                    mForceLandscapeOrientationMenuItem.setChecked( false );
+                break;
+            }
+            case R.id.menu_image_white_background: {
+                PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
+                item.setChecked( PrefUtils.isImageWhiteBackground() );
+                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                break;
+            }
+            case R.id.menu_font_bold: {
+                PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
+                item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
+                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                break;
+            }
+            case R.id.menu_show_progress_info: {
+                PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
+                item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
+                break;
+            }
+            case R.id.menu_disable_all_tap_actions: {
+                PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
+                SetupZones();
+                Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+                break;
+            }
+
+            case R.id.menu_show_html: {
+                showHTML();
+                break;
+            }
+            case R.id.menu_article_web_search: {
+                startActivity( new Intent(Intent.ACTION_WEB_SEARCH)
+                            .setPackage(getContext().getPackageName())
+                            .setClass(getContext(), ArticleWebSearchActivity.class) );
+                break;
+            }
+            case R.id.menu_edit_feed: {
+                final String feedId = getCurrentFeedID();
+                if (!feedId.isEmpty() && !feedId.equals(FetcherService.GetExtrenalLinkFeedID()))
+                    startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedId)));
+                break;
+            }
+
+            case R.id.menu_search_next: {
+                GetSelectedEntryWebViewExtended().findNext( true );
+                break;
+            }
+
+            case R.id.menu_search_previous: {
+                GetSelectedEntryWebViewExtended().findNext( false );
+                break;
+            }
+
+            case R.id.menu_add_entry_shortcut: {
+                if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
+                    //Adding shortcut for MainActivity on Home screen
+                    Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
+                    if (cursor != null) {
+                        final String name = cursor.getString(mTitlePos);
+                        final long entryID = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
+                        //final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+                        final Uri uri = Uri.parse( cursor.getString(mLinkPos) );
+                        final String iconUrl = cursor.getString(cursor.getColumnIndex( EntryColumns.IMAGE_URL ));
+
+                        new WaitDialog(getActivity(), R.string.downloadImage, new Runnable() {
+                            @Override
+                            public void run() {
+
+                                final IconCompat icon = LoadIcon(iconUrl);
+                                getEntryActivity().runOnUiThread(() -> {
+                                    final Intent intent = new Intent(getContext(), EntryActivityNewTask.class)
+                                        .setAction(Intent.ACTION_VIEW)
+                                        .setData(uri)
+                                        .putExtra( NEW_TASK_EXTRA, true );
+                                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getEntryActivity(), String.valueOf(entryID))
+                                            .setIcon(icon)
+                                            .setShortLabel(name)
+                                            .setIntent( intent )
+                                            .build();
+
+
+                                    ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+                                        Toast.makeText(getContext(), R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
+                                });
+                            }
+                        }).execute();
+                    }
+                } else
+                    Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
+                break;
+            }
+
         }
 
         return true;
@@ -1245,7 +1243,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 //        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
 //    }
 
-    private EntryActivity getEntryActivity() {
+    public EntryActivity getEntryActivity() {
         return (EntryActivity) getActivity();
     }
 
@@ -1256,7 +1254,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public long getCurrentEntryID() {
-        Entry entry = GetEntry( mCurrentPagerPos );
+        Entry entry = mEntryPagerAdapter.GetEntry( mCurrentPagerPos );
         if ( entry != null )
             return entry.mID;
         else
@@ -1271,7 +1269,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     private String getCurrentEntryLink() {
-        Entry entry = GetEntry( mCurrentPagerPos );
+        Entry entry = mEntryPagerAdapter.GetEntry( mCurrentPagerPos );
         if ( entry != null )
             return entry.mLink;
         else
@@ -1302,34 +1300,30 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     } catch (Exception unused) {
                         mInitialEntryId = -1;
                     }
-                    String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
-
                     final ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    String entriesOrder = PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false) ? Constants.DB_ASC : Constants.DB_DESC;
                     // Load the entriesIds list. Should be in a loader... but I was too lazy to do so
-                    try ( Cursor entriesCursor = cr.query( mBaseUri, EntryColumns.PROJECTION_ID, mWhereSQL, null, EntryColumns.DATE + entriesOrder) ) {
-                        if (entriesCursor != null && entriesCursor.getCount() > 0) {
-                            synchronized (this) {
-                                mEntriesIds = new Entry[entriesCursor.getCount()];
-                            }
-                            int i = 0;
-                            while (entriesCursor.moveToNext()) {
-                                SetEntryID(i, entriesCursor.getLong(0), entriesCursor.getString(1));
-                                if (GetEntry(i).mID == mInitialEntryId) {
-                                    mCurrentPagerPos = i; // To immediately display the good entry
-                                    mLastPagerPos = i;
-                                    CancelStarNotification(getCurrentEntryID());
-                                }
-                                i++;
-                            }
-                        }
+                    try ( Cursor entriesCursor = cr.query( mBaseUri, FeedData.EntryColumns.PROJECTION_ID, mWhereSQL, null, FeedData.EntryColumns.DATE + entriesOrder) ) {
+                        mEntryPagerAdapter.setData(entriesCursor );
                     }
-                    if ( getCurrentEntryID() != -1 )
+                    {
+                        final int index = mEntryPagerAdapter.GetEntryIndexByID( mInitialEntryId );
+                        if ( index >= 0 ) {
+                            mCurrentPagerPos = index;
+                            mLastPagerPos = index;
+                        }
+
+                    }
+
+                    if ( getCurrentEntryID() != -1 ) {
+                        CancelStarNotification(getCurrentEntryID());
                         try (Cursor curEntry = cr.query(EntryColumns.CONTENT_URI(getCurrentEntryID()), new String[]{EntryColumns.FEED_ID}, null, null, null)) {
                             if (curEntry.moveToFirst()) {
                                 final String feedID = curEntry.getString(0);
                                 mFilters = new FeedFilters(feedID);
                             }
                         }
+                    }
                 } else if ( mEntryPagerAdapter instanceof SingleEntryPagerAdapter ) {
                     mBaseUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() );
                     mCurrentPagerPos = 0;
@@ -1337,6 +1331,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 timer.End();
                 return null;
             }
+
+
             @Override
             protected void onPostExecute(Void result) {
                 if ( mEntryPager.getAdapter() == null )
@@ -1422,7 +1418,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         }
 					    @Override
                         public void run() {
-                            final Uri uri = ContentUris.withAppendedId(mBaseUri, GetEntry( mPagerPos ).mID);
+                            final Uri uri = ContentUris.withAppendedId(mBaseUri, mEntryPagerAdapter.GetEntry( mPagerPos ).mID);
                             ContentResolver cr = MainApplication.getContext().getContentResolver();
                             if ( mSetAsRead ) {
                                 if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
@@ -1794,7 +1790,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Timer.Start( id, "EntryFr.onCreateLoader" );
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(GetEntry( id ).mID), null, null, null, null);
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(mEntryPagerAdapter.GetEntry( id ).mID), null, null, null, null);
         cursorLoader.setUpdateThrottle(100);
         return cursorLoader;
     }
@@ -1868,169 +1864,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         // Nothing to do
     }*/
 
-    public abstract class BaseEntryPagerAdapter extends PagerAdapter {
-        final SparseArray<EntryView> mEntryViews = new SparseArray<>();
-
-        Cursor getCursor(int pagerPos) {
-            EntryView view = GetEntryView( pagerPos );
-            if (view != null ) {
-                return view.mCursor;
-            }
-            return null;
-        }
-        void setUpdatedCursor(int pagerPos, Cursor newCursor) {
-            EntryView view = GetEntryView( pagerPos );
-            if (view != null ) {
-                Cursor previousUpdatedOne = view.mCursor;
-                if (previousUpdatedOne != null) {
-                    previousUpdatedOne.close();
-                }
-                view.mCursor = newCursor;
-            }
-        }
-        @Override
-        public boolean isViewFromObject(@NotNull View view, Object object) {
-            return view == object;
-        }
-
-        void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
-            Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos +  ", mAnchor = " + mAnchor);
-
-            EntryView view = GetEntryView( pagerPos );
-            if (view != null ) {
-                view.StatusStartPageLoading();
-                if ( invalidateCache )
-                    view.InvalidateContentCache();
-                if (newCursor == null)
-                    newCursor = view.mCursor; // get the old one
-
-                if (newCursor != null && newCursor.moveToFirst()) {
-                    view.mCursor = newCursor;
-
-                    if ( mSetupChanged )
-                        view.InvalidateContentCache();
-                    //FetcherService.setCurrentEntryID( getCurrentEntryID() );
-                    mIsFullTextShown =  view.setHtml( GetEntry( pagerPos ).mID,
-                                                      mBaseUri,
-                                                      newCursor,
-                                                      mFilters,
-                                                      mIsFullTextShown,
-                                                      forceUpdate,
-                                                      (EntryActivity) getActivity() );
-                    if (pagerPos == mCurrentPagerPos) {
-                        refreshUI(newCursor);
-                        Dog.v( String.format( "displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(),  view.mScrollPartY ) );
-                    }
-                    UpdateHeader();
-                }
-            }
-            SetupZones();
-        }
-
-        void onResume() {
-            for (int i = 0; i < mEntryViews.size(); i++)
-                mEntryViews.valueAt(i).onResume();
-        }
-
-        void onPause() {
-            for (int i = 0; i < mEntryViews.size(); i++)
-                mEntryViews.valueAt(i).onPause();
-        }
-
-        EntryView GetEntryView(int pagerPos) {
-            return mEntryViews.get(pagerPos);
-        }
-        public EntryView GetEntryView( Entry entry ) {
-            for(int i = 0; i < mEntryViews.size(); i++) {
-                EntryView view = mEntryViews.get(mEntryViews.keyAt(i));
-                if ( view.mEntryId == entry.mID )
-                    return view;
-            }
-            return null;
-        }
-
-
-        @Override
-        public void destroyItem(ViewGroup container, final int position, @NotNull Object object) {
-            Dog.d( "EntryPagerAdapter.destroyItem " + position );
-            assert GetEntry(position) != null;
-            FetcherService.removeActiveEntryID( GetEntry( position ).mID );
-            getLoaderManager().destroyLoader(position);
-            container.removeView((View) object);
-            mEntryViews.delete(position);
-        }
-
-        @NotNull
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-            final EntryView view = CreateWebEntryView( getEntryActivity(), container );
-            mEntryViews.put(position, view);
-
-//            NestedScrollView sv = new NestedScrollView( getContext() );
-//            sv.addView( view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
-//            sv.setFillViewport( true );
-//            container.addView(sv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            view.mLoadTitleOnly = true;
-            Entry entry = GetEntry( position );
-            if ( entry != null ) {
-                FetcherService.addActiveEntryID(entry.mID);
-                getLoaderManager().restartLoader(position, null, EntryFragment.this);
-            }
-
-            return view.mView;
-        }
-    }
-
-    public class EntryPagerAdapter extends BaseEntryPagerAdapter {
-
-
-        EntryPagerAdapter() { }
-
-        @Override
-        public int getCount() {
-            synchronized ( this ) {
-                return mEntriesIds != null ? mEntriesIds.length : 0;
-            }
-        }
-
-
-        void setUpdatedCursor(int pagerPos, Cursor newCursor) {
-            EntryView view = mEntryViews.get(pagerPos);
-            if (view != null ) {
-                    Cursor previousUpdatedOne = view.mCursor;
-                    if (previousUpdatedOne != null) {
-                        previousUpdatedOne.close();
-                    }
-                view.mCursor = newCursor;
-            }
-        }
-
-    }
-
-    public class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
-        SingleEntryPagerAdapter() {
-
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-
-
-        @NotNull
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            final WebViewExtended view = (WebViewExtended) super.instantiateItem(container, position);
-            view.mEntryView.mLoadTitleOnly = false;
-            return view;
-        }
-    }
 
     @NonNull
-    private EntryView CreateWebEntryView(EntryActivity activity, ViewGroup container ) {
+    public EntryView CreateWebEntryView(EntryActivity activity, ViewGroup container ) {
         final WebEntryView view = new WebEntryView( activity, container );
 
         if ( mLeakEntryView == null )
@@ -2076,19 +1912,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return view;
     }
 
-    public void SetEntryID( int position, long entryID, String entryLink )  {
-        synchronized ( this ) {
-            mEntriesIds[position] = new Entry(entryID, entryLink );
-        }
-    }
-    private Entry GetEntry(int position)  {
-        synchronized ( this ) {
-            if ( position >= 0 && position < mEntriesIds.length )
-                return mEntriesIds[position];
-            else
-                return null;
-        }
-    }
 
     public EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
@@ -2139,6 +1962,22 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( view != null )
             return view.hasVideo();
         return false;
+    }
+
+    void displayEntry( EntryView view, int pagerPos, boolean forceUpdate ) {
+        mIsFullTextShown = view.setHtml(
+                view.mEntryId,
+                mBaseUri,
+                view.mCursor,
+                mFilters,
+                mIsFullTextShown,
+                forceUpdate,
+                (EntryActivity) getActivity());
+        if (pagerPos == mCurrentPagerPos) {
+            refreshUI(view.mCursor);
+            Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(), view.mScrollPartY));
+        }
+        UpdateHeader();
     }
 }
 
