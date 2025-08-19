@@ -46,6 +46,7 @@ import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
+import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -62,9 +63,6 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 public class WebEntryView extends EntryView {
     public WebViewExtended mWebView = null;
     public int mLastContentLength = 0;
-    public long mLastSetHTMLTime = 0;
-    public String mEntryLink = "";
-    public boolean mWasAutoUnStar = false;
     boolean mIsAutoMarkVisibleAsRead = false;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
     String mData = "";
@@ -78,6 +76,7 @@ public class WebEntryView extends EntryView {
         mWebView = new WebViewExtended( activity, this );
         container.addView(mWebView);
         mView = mWebView;
+        mWebView.setListener(mActivity.mEntryFragment);
     }
 
     @Override
@@ -88,20 +87,23 @@ public class WebEntryView extends EntryView {
     }
 
     @Override
-    protected void ScrollTo( int y) {
-        mWebView.ScrollSmoothTo( y );
+    protected void ScrollTo( int y, boolean smooth) {
+        if ( smooth )
+            mWebView.ScrollSmoothTo( y );
+        else
+            mWebView.scrollTo( 0, y );
     }
 
     @Override
     public void ScrollToBottom() {
         AddNavigationHistoryStep();
-        ScrollTo((int) mWebView.GetContentHeight() - mWebView.getHeight() );
+        ScrollTo((int) mWebView.GetContentHeight() - mWebView.getHeight(), false );
     }
 
     @Override
     public void PageChange(int delta, StatusText statusText) {
         ScrollTo((int) (mWebView.getScrollY() + delta * (mWebView.getHeight() - statusText.GetHeight()) *
-                (getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)));
+                (getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)), true);
     }
 
     @Override
@@ -137,7 +139,6 @@ public class WebEntryView extends EntryView {
         Timer timer = new Timer("EntryView.setHtml");
         mLastSetHTMLTime = new Date().getTime();
 
-        mEntryLink = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.LINK));
 
         final String feedID = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
@@ -413,6 +414,12 @@ public class WebEntryView extends EntryView {
             UiUtils.toast( context, context.getString( R.string.cant_open_image ) + ": " + e.getLocalizedMessage() );
         }
     }
+
+    @Override
+    public boolean IsScrollAtBottom() {
+        return mWebView.getScrollY() + mWebView.getMeasuredHeight() >= (int) Math.floor(mWebView.GetContentHeight()) - mWebView.getMeasuredHeight() * 0.4;
+    }
+
 
 }
 

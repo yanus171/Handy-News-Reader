@@ -130,7 +130,6 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     private static final int TOGGLE_TAP_ZONE_VISIBIILTY = 3;
     public static final int TOUCH_PRESS_POS_DELTA = 5;
 
-    public Runnable mScrollChangeListener = null;
     private final Handler mHandler = new Handler(this);
     public double mLastContentHeight = 0;
     private long mLastTimeScrolled = 0;
@@ -768,12 +767,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         if ( mEntryView.mActivity != null && mEntryView.mActivity.mEntryFragment != null )
             mEntryView.mActivity.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
-        if (mScrollChangeListener != null)
-            mScrollChangeListener.run();
-    }
-
-    public boolean IsScrollAtBottom() {
-        return getScrollY() + getMeasuredHeight() >= (int) Math.floor(GetContentHeight()) - getMeasuredHeight() * 0.4;
+        if (mEntryView.mScrollChangeListener != null)
+            mEntryView.mScrollChangeListener.run();
     }
 
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;

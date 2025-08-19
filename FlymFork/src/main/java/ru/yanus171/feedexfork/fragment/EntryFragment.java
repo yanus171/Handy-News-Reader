@@ -1866,15 +1866,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     @NonNull
-    public EntryView CreateWebEntryView(EntryActivity activity, ViewGroup container ) {
-        final WebEntryView view = new WebEntryView( activity, container );
+    public EntryView CreateWebEntryView(EntryActivity activity, int position, ViewGroup container ) {
+        final EntryView view = EntryView.Create( mEntryPagerAdapter.GetEntry(position).mLink, activity, container );
+        view.mView.setTag(view);
 
         if ( mLeakEntryView == null )
             mLeakEntryView  = view;
-        view.mWebView.setListener(EntryFragment.this);
         view.mCursor = null;
 
-        view.mWebView.mScrollChangeListener = () -> {
+        view.mScrollChangeListener = () -> {
             if ( !mFavorite )
                 return;
             if ( mRetrieveFullText && !mIsFullTextShown )
@@ -1885,7 +1885,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return;
             if ( !view.mContentWasLoaded )
                 return;
-            if ( view.mWebView.IsScrollAtBottom() && new Date().getTime() - view.mLastSetHTMLTime > MILLS_IN_SECOND * 5 ) {
+            if ( view.IsScrollAtBottom() && new Date().getTime() - view.mLastSetHTMLTime > MILLS_IN_SECOND * 5 ) {
                 final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
                 view.mWasAutoUnStar = true;
                 new Thread() {
@@ -1901,13 +1901,15 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         };
 
-        if (Build.VERSION.SDK_INT >= 16)
-            view.mWebView.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
-                if ( mSearchNextItem == null || mSearchPreviousItem == null )
+        final WebViewExtended webView = GetSelectedEntryWebViewExtended();
+        if (Build.VERSION.SDK_INT >= 16 && webView != null ) {
+            webView.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
+                if (mSearchNextItem == null || mSearchPreviousItem == null)
                     return;
-                mSearchNextItem.setVisible( numberOfMatches > 1 );
-                mSearchPreviousItem.setVisible( numberOfMatches > 1 );
+                mSearchNextItem.setVisible(numberOfMatches > 1);
+                mSearchPreviousItem.setVisible(numberOfMatches > 1);
             });
+        }
         view.StatusStartPageLoading();
         return view;
     }
@@ -1966,7 +1968,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     void displayEntry( EntryView view, int pagerPos, boolean forceUpdate ) {
         mIsFullTextShown = view.setHtml(
-                view.mEntryId,
+                mEntryPagerAdapter.GetEntry(pagerPos).mID,
                 mBaseUri,
                 view.mCursor,
                 mFilters,

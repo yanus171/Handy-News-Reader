@@ -104,6 +104,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         FetcherService.removeActiveEntryID( GetEntry( position ).mID );
         mEntryFragment.getLoaderManager().destroyLoader(position);
         container.removeView((View) object);
+        GetEntryView(position).Destroy();
         mEntryViews.delete(position);
     }
 
@@ -111,7 +112,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-        final EntryView view = mEntryFragment.CreateWebEntryView( mEntryFragment.getEntryActivity(), container );
+        final EntryView view = mEntryFragment.CreateWebEntryView( mEntryFragment.getEntryActivity(), position, container );
         mEntryViews.put(position, view);
 
 //            NestedScrollView sv = new NestedScrollView( getContext() );
@@ -206,8 +207,9 @@ class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
     @NotNull
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        final WebViewExtended view = (WebViewExtended) super.instantiateItem(container, position);
-        view.mEntryView.mLoadTitleOnly = false;
+        final View view = (View)super.instantiateItem(container, position);
+        final EntryView entryView = (EntryView)view.getTag();
+        entryView.mLoadTitleOnly = false;
         return view;
     }
 }

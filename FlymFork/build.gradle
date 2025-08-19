@@ -109,7 +109,8 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     googleImplementation "com.google.android.gms:play-services-safetynet:17+"
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation 'com.github.barteksc:android-pdf-viewer:2+'
 }
-repositories {
-    mavenCentral()
-}
+//repositories {
+//    mavenCentral()
+//}

@@ -7,15 +7,19 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Stack;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.fragment.PDFEntryView;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.utils.Dog;
 
 public abstract class EntryView {
     EntryActivity mActivity = null;
@@ -23,15 +27,19 @@ public abstract class EntryView {
     public boolean mContentWasLoaded = false;
     public double mScrollPartY = 0;
     public Cursor mCursor = null;
-    private int mStatus = 0;
+    protected int mStatus = 0;
     public String mTitle;
     public static final String TAG = "EntryView";
+    public boolean mWasAutoUnStar = false;
+    public long mLastSetHTMLTime = 0;
 
     private final Stack<Integer> mHistoryAnchorScrollY = new Stack<>();
     public long mEntryId = -1;
+    public String mEntryLink = "";
     public View mView = null;
+    public Runnable mScrollChangeListener = null;
 
-    EntryView( EntryActivity activity ) {
+    protected EntryView(EntryActivity activity) {
         mActivity = activity;
     }
 
@@ -45,13 +53,13 @@ public abstract class EntryView {
 
     public void GoBack() {
         if (CanGoBack())
-            ScrollTo(mHistoryAnchorScrollY.pop());
+            ScrollTo(mHistoryAnchorScrollY.pop(), false);
         mActivity.mEntryFragment.SetupZones();
     }
 
     public void GoTop() {
         AddNavigationHistoryStep();
-        ScrollTo(0 );
+        ScrollTo(0, false );
     }
 
     public void AddNavigationHistoryStep() {
@@ -60,7 +68,7 @@ public abstract class EntryView {
     }
 
     protected abstract int GetScrollY();
-    protected abstract void ScrollTo( int y );
+    protected abstract void ScrollTo( int y, boolean smooth );
     public abstract void ScrollToBottom();
     public abstract void PageChange(int delta, StatusText statusText);
     protected abstract double GetViewScrollPartY();
@@ -81,8 +89,12 @@ public abstract class EntryView {
             }
         }
     }
-
+    public abstract boolean IsScrollAtBottom();
     public abstract ProgressInfo getProgressInfo( int statusHeight );
+
+    public void Destroy() {
+
+    }
 
     static public class ProgressInfo {
         public int max;
@@ -122,12 +134,22 @@ public abstract class EntryView {
                            EntryActivity activity) {
         mActivity = activity;
         mEntryId = entryId;
+        mEntryLink = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.LINK));
         return true;
     }
     public void onResume() {
 
     }
     public void onPause() {
+
+    }
+
+    public static EntryView Create(String link, EntryActivity activity, ViewGroup container) {
+        Dog.v( TAG, "EntryView.Create link = " + link);
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && link.endsWith( "pdf" ) )
+            return new PDFEntryView( activity, container );
+        else
+            return new WebEntryView( activity, container );
 
     }
 }
