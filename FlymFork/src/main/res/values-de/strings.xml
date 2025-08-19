@@ -695,6 +695,7 @@
     <string name="brightness_programmatic_dim_max">Dimmer-Höchstwert</string>
     <string name="brightness_programmatic_dim_max_descr">Höchstwert für zusätzlichen Dimmer (0 - nicht zusätzlich gedimmt, 100 - komplett verdunkelt)</string>
     <string name="edit_feed_title_external">Bearbeiten</string>
+    <string name="filter_hint_external">Die Artikel dieses globalen Filters werden zu jedem Feed-Filter hinzugefügt. Abgelehnte Artikel des globalen Filters schließen die ausgelösten Artikel aus den Ergebnissen der Websuche aus. Dieser Bildschirm ist auch durch langes Tippen auf „Alle“, „Ungelesen“, „Favoriten“, „Zuletzt gelesen“ oder „Ohne Feed-Elemente“ in der Feed-Liste zugänglich) </string>
     <string name="unknown">Unbekannt</string>
     <string name="tableOfContent">Inhaltsverzeichnis</string>
     <string name="show_notification_setup_summary">Systemdialog zur Einrichtung der App-Benachrichtigungen anzeigen</string>
@@ -702,6 +703,7 @@
     <string name="settings_autobackup_toast">Toast</string>
     <string name="settings_autobackup_toast_descr">Toast-Nachricht anzeigen, wenn die Sicherungsdatei erfolgreich in Downloads erstellt wurde</string>
     <string name="with_labels">mit Kategorien:</string>
+    <string name="none">Keine</string>
     <string name="show_article_text">Artikeltext</string>
     <string name="show_article_text_descr">Artikeltext in Liste anzeigen</string>
     <string name="shared_favorities_article_list_mail_sugject">Handy Reader Liste der bevorzugten Artikel</string>
@@ -710,6 +712,8 @@
     <string name="settings_volume_buttons_action_descr">Es gibt nur eine Standardaktion, wenn ein Artikel ein Video enthält</string>
     <string name="volume_buttons_action_page_in_article_list">Seiten über Lautstärketasten scrollen</string>
     <string name="volume_buttons_action_page_in_article_list_descr">In der Artikelliste</string>
+    <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
+    livejournal:id-comments</string>
     <string name="context_menu_share_all_via_file">"Alle sichtbaren Artikel per Datei "</string>
     <string name="context_menu_share_all_via_text">Alle sichtbaren Artikel per Text</string>
     <string name="settings_force_orientation_by_sensor">Ausrichtung nach Sensor</string>
@@ -718,4 +722,6 @@
     <string name="menu_article_orientation">Artikel-Ausrichtung</string>
     <string name="settings_autobackup_requires_charging">Nur beim Laden</string>
     <string name="entry_show_menu">Menü anzeigen</string>
+    <string name="article_list_restore_type">Art der Listenposition wiederherstellen</string>
+    <string name="article_list_restore_type_summary">An welche Position die Artikelliste beim ersten Öffnen blättern soll</string>
 </resources>
