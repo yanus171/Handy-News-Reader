@@ -129,9 +129,9 @@ public class RssAtomParser extends DefaultHandler {
     private static final DateFormat[] DATE_FORMATS = {
         new SimpleDateFormat("MM/dd/yyyy", Locale.US),
         new SimpleDateFormat("HH:mm' 'dd.MM.yyyy", Locale.US),
-        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US),
-        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
-        new SimpleDateFormat("EEE,' 'd' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
+        new SimpleDateFormat("EEE' 'd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("EEE' 'd' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
+        new SimpleDateFormat("EEE' 'd' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'Z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss' 'z", Locale.US),
         new SimpleDateFormat("d' 'MMM' 'yy' 'HH:mm:ss", Locale.US),
@@ -147,7 +147,7 @@ public class RssAtomParser extends DefaultHandler {
         new SimpleDateFormat("dd.MM.yyyy", Locale.US),
         new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US),
         new SimpleDateFormat("HH:mm", Locale.US),
-        new SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
+        new SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.getDefault())
 
     };
     private static final String TAG_CATEGORY = "category";
@@ -646,6 +646,7 @@ public class RssAtomParser extends DefaultHandler {
         dateStr = dateStr.replaceAll("([0-9])T([0-9])", "$1 $2")
                 .replaceAll("Z$", "")
                 .replaceAll("  ", " ")
+                .replaceAll(",", "")
                 .trim(); // fix useless char
 
         // Replace bad timezones
