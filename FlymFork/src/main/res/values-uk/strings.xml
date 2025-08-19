@@ -725,4 +725,6 @@
     <string name="menu_article_orientation">Орієнтація статті</string>
     <string name="settings_autobackup_requires_charging">Лише під час зарядження</string>
     <string name="entry_show_menu">Показати меню</string>
+    <string name="article_list_restore_type">Відновити тип позиції списку</string>
+    <string name="article_list_restore_type_summary">При першому відкритті до якого місця прокручувати список статей</string>
 </resources>
