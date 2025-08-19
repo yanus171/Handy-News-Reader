@@ -114,6 +114,7 @@
     <string name="settings_keep_time">Temps de conservació d\'entrades</string>
     <string name="settings_font_size">Mida del text</string>
     <string name="settings_display_oldest_first">Entries order</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_notifications_enabled">Activa les notificacions</string>
     <string name="settings_notifications_enabled_description">Notifica les noves entrades.</string>
     <string name="settings_notifications_ringtone">So</string>
