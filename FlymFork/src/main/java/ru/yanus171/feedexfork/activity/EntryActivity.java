@@ -234,8 +234,9 @@ public class EntryActivity extends BaseActivity implements Observer {
 
         String finalUrl = url;
         Uri entryUri = GetEntryUri(finalUrl);
+        boolean needToLoadLink = false;
+        final String feedID = GetExtrenalLinkFeedID();
         if (entryUri == null) {
-            final String feedID = GetExtrenalLinkFeedID();
             Timer timer = new Timer("LoadAndOpenLink insert");
             ContentValues values = new ContentValues();
             values.put(EntryColumns.TITLE, title);
@@ -252,13 +253,21 @@ public class EntryActivity extends BaseActivity implements Observer {
             if ( !mIsNewTask )
                 PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
             timer.End();
-
-             FetcherService.LoadLink(feedID, finalUrl, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.No, true, false);
+            needToLoadLink = true;
         } else {
             SetEntryID(entryUri, finalUrl);
         }
         mEntryFragment.SetEntryReadTime( entryUri );
-        RestartLoadersOnGUI();
+        if ( needToLoadLink ) {
+            new Thread() {
+                @Override
+                public void run() {
+                    FetcherService.LoadLink(feedID, finalUrl, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.No, true, false);
+                    RestartLoadersOnGUI();
+                }
+            }.start();
+        } else
+            RestartLoadersOnGUI();
     }
 
 
