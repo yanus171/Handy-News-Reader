@@ -209,67 +209,63 @@ public class EntryActivity extends BaseActivity implements Observer {
         return Uri.EMPTY;
     }
 
-    private void LoadAndOpenLink(final String finalUrl, final String title, final String text) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final ContentResolver cr = MainApplication.getContext().getContentResolver();
+    private void LoadAndOpenLink(final String urlParam, final String title, final String text) {
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
 
-                String url = finalUrl;
-                if ( finalUrl.indexOf('#') > -1 ) {
-                    final String anchor = finalUrl.substring(finalUrl.indexOf('#') + 1);
-                    url = url.replace("#" + anchor, "");
-                    mEntryFragment.mAnchor = anchor;
-                }
-                if (IsLocalFile(Uri.parse(url))) {
-                    final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
-                    Uri uri = Uri.parse(url);
-                    if ( FileSelectDialog.Companion.getFileName(uri).endsWith( ".zip" ) ) {
-                        Status().ChangeProgress( "extracting zip" );
-                        uri = extractFileToZip( uri, cacheDir );
-                        Status().ChangeProgress( "" );
-                    }
-                    final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
-                    if ( !fileInCache.exists() )
-                        FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), EntryActivity.this, false);
-                    url = FileUtils.INSTANCE.getUriForFile( fileInCache ).toString();
-                }
-
-                Uri entryUri = GetEntryUri(url);
-                if (entryUri == null) {
-                    final String feedID = GetExtrenalLinkFeedID();
-                    Timer timer = new Timer("LoadAndOpenLink insert");
-                    ContentValues values = new ContentValues();
-                    values.put(EntryColumns.TITLE, title);
-                    values.put(EntryColumns.SCROLL_POS, 0);
-                    values.put(EntryColumns.DATE, (new Date()).getTime());
-                    values.put(EntryColumns.ABSTRACT, text);
-                    values.put(EntryColumns.IS_WITH_TABLES, 1);
-                    values.put(EntryColumns.IMAGES_SIZE, 0);
-                    FileUtils.INSTANCE.saveMobilizedHTML( url, text, values );
-                    entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
-                    SetEntryID(entryUri, url);
-                    EntryUrlVoc.INSTANCE.set( url, entryUri );
-                    entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
-                    if ( !mIsNewTask )
-                        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
-                    timer.End();
-
-                    FetcherService.LoadLink(feedID, url, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.No, true, false);
-                } else {
-                    SetEntryID(entryUri, url);
-                }
-                mEntryFragment.SetEntryReadTime( entryUri );
-                RestartLoadersOnGUI();
+        String url = urlParam;
+        if ( urlParam.indexOf('#') > -1 ) {
+            final String anchor = urlParam.substring(urlParam.indexOf('#') + 1);
+            url = url.replace("#" + anchor, "");
+            mEntryFragment.mAnchor = anchor;
+        }
+        if (IsLocalFile(Uri.parse(url))) {
+            final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
+            Uri uri = Uri.parse(url);
+            if ( FileSelectDialog.Companion.getFileName(uri).endsWith( ".zip" ) ) {
+                Status().ChangeProgress( "extracting zip" );
+                uri = extractFileToZip( uri, cacheDir );
+                Status().ChangeProgress( "" );
             }
+            final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
+            if ( !fileInCache.exists() || fileInCache.length() == 0 )
+                FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), EntryActivity.this, false);
+            url = FileUtils.INSTANCE.getUriForFile( fileInCache ).toString();
+        }
 
-            private void SetEntryID(Uri entryUri, String entryLink) {
-                final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
-                mEntryFragment.mEntryPagerAdapter.SetEntryID( 0, entryID, entryLink );
-                FetcherService.addActiveEntryID(entryID);
-            }
-        }).start();
-        setIntent( getIntent().putExtra( NO_DB_EXTRA, true ) );
+        String finalUrl = url;
+        Uri entryUri = GetEntryUri(finalUrl);
+        if (entryUri == null) {
+            final String feedID = GetExtrenalLinkFeedID();
+            Timer timer = new Timer("LoadAndOpenLink insert");
+            ContentValues values = new ContentValues();
+            values.put(EntryColumns.TITLE, title);
+            values.put(EntryColumns.SCROLL_POS, 0);
+            values.put(EntryColumns.DATE, (new Date()).getTime());
+            values.put(EntryColumns.ABSTRACT, text);
+            values.put(EntryColumns.IS_WITH_TABLES, 1);
+            values.put(EntryColumns.IMAGES_SIZE, 0);
+            FileUtils.INSTANCE.saveMobilizedHTML(finalUrl, text, values );
+            entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);
+            SetEntryID(entryUri, finalUrl);
+            EntryUrlVoc.INSTANCE.set(finalUrl, entryUri );
+            entryUri = Uri.withAppendedPath(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), entryUri.getLastPathSegment());
+            if ( !mIsNewTask )
+                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
+            timer.End();
+
+             FetcherService.LoadLink(feedID, finalUrl, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.No, true, false);
+        } else {
+            SetEntryID(entryUri, finalUrl);
+        }
+        mEntryFragment.SetEntryReadTime( entryUri );
+        RestartLoadersOnGUI();
+    }
+
+
+    private void SetEntryID(Uri entryUri, String entryLink) {
+        final long entryID = Long.parseLong( entryUri.getLastPathSegment() );
+        mEntryFragment.mEntryPagerAdapter.SetEntryID( 0, entryID, entryLink );
+        FetcherService.addActiveEntryID(entryID);
     }
 
     private void RestartLoadersOnGUI() {
@@ -278,7 +274,7 @@ public class EntryActivity extends BaseActivity implements Observer {
                 mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
         });
     }
-
+    
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus)

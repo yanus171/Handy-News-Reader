@@ -127,13 +127,14 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
             var result = false
             try {
                 MainApplication.getContext().contentResolver.openInputStream(sourceUri).use { inputStream ->
-                    BufferedReader(
-                            InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
+                    InputStreamReader(inputStream).use { reader ->
                         val selectedFileOutPutStream: OutputStream = FileOutputStream(destPath)
-                        val buffer = ByteArray(1024)
-                        var length: Int
-                        while (inputStream?.read(buffer).also { length = it!! }!! > 0) {
-                            selectedFileOutPutStream.write(buffer, 0, length)
+                        val buffer = ByteArray(4 * 1024)
+                        while (true) {
+                            val byteCount = inputStream!!.read(buffer)
+                            if ( byteCount < 0 )
+                                break
+                            selectedFileOutPutStream.write(buffer, 0, byteCount)
                         }
                         selectedFileOutPutStream.flush()
                         selectedFileOutPutStream.close()
@@ -155,17 +156,18 @@ public class FileSelectDialog(private val mAction: ActionWithFileName,
         // ----------------------------------------------------------------
         fun copyFile(sourceUri: Uri, destUri: Uri) {
             MainApplication.getContext().contentResolver.openInputStream(sourceUri).use { inputStream ->
-                BufferedReader(
-                        InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
-                            val selectedFileOutPutStream: OutputStream = MainApplication.getContext().contentResolver.openOutputStream( destUri )!!
-                            val buffer = ByteArray(1024)
-                            var length: Int
-                            while (inputStream?.read(buffer).also { length = it!! }!! > 0) {
-                                selectedFileOutPutStream.write(buffer, 0, length)
-                            }
-                            selectedFileOutPutStream.flush()
-                            selectedFileOutPutStream.close()
-                        }
+                InputStreamReader(inputStream).use { reader ->
+                    val selectedFileOutPutStream: OutputStream = MainApplication.getContext().contentResolver.openOutputStream( destUri )!!
+                    val buffer = ByteArray(4 * 1024)
+                    while (true) {
+                        val byteCount = inputStream!!.read(buffer)
+                        if ( byteCount < 0 )
+                            break
+                        selectedFileOutPutStream.write(buffer, 0, byteCount)
+                    }
+                    selectedFileOutPutStream.flush()
+                    selectedFileOutPutStream.close()
+                }
             }
         }
 

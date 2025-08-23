@@ -28,7 +28,7 @@ import java.io.IOException
 import java.net.URI
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class PDFEntryView(activity: EntryActivity, val mContainer: ViewGroup) : EntryView(activity) {
+class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryView(activity) {
     var mRenderer: PdfRenderer? = null
     val mListView = ListView(activity)
     init {

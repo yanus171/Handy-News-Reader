@@ -17,6 +17,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.fragment.PDFEntryView;
+import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -147,7 +148,7 @@ public abstract class EntryView {
     public static EntryView Create(String link, EntryActivity activity, ViewGroup container) {
         Dog.v( TAG, "EntryView.Create link = " + link);
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && link.endsWith( "pdf" ) )
-            return new PDFEntryView( activity, container );
+            return new PDFViewEntryView( activity, container );
         else
             return new WebEntryView( activity, container );
 

@@ -93,6 +93,7 @@ object FileUtils {
                 val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)!!
                 copyFile( getUriForFile( File(fileName) ), uri)
             } catch ( e: IllegalStateException ) {
+                e.printStackTrace()
                 UiUtils.RunOnGuiThread {
                     Toast.makeText( MainApplication.getContext(),
                                     String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$destName"),
@@ -100,6 +101,7 @@ object FileUtils {
                 }
                 return
             } catch ( e: NullPointerException ) {
+                e.printStackTrace()
                 UiUtils.RunOnGuiThread {
                     Toast.makeText( MainApplication.getContext(),
                             String.format(MainApplication.getContext().getString(R.string.unableToCopyFile), "$relPath/$destName"),
