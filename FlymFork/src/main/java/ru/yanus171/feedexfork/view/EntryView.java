@@ -136,6 +136,8 @@ public abstract class EntryView {
         mActivity = activity;
         mEntryId = entryId;
         mEntryLink = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.LINK));
+        mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
+                newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
         return true;
     }
     public void onResume() {

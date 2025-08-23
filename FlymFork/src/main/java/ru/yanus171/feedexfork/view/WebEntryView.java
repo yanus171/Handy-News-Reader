@@ -151,8 +151,6 @@ public class WebEntryView extends EntryView {
             title = filters.removeText(title, DB_APPLIED_TO_TITLE );
         final String enclosure = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
         mWasAutoUnStar = newCursor.getInt(newCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
-        mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
-                newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
         boolean hasOriginal = !feedID.equals(GetExtrenalLinkFeedID());
         mIsAutoMarkVisibleAsRead = false;
         try {
