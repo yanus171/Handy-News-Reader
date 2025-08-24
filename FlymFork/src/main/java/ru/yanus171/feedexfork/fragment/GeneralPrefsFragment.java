@@ -185,17 +185,21 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
     private void setRingtoneSummary() {
         if ( Build.VERSION.SDK_INT >= 26 )
             return;
-        Preference ringtone_preference = findPreference(PrefUtils.NOTIFICATIONS_RINGTONE);
-        Uri ringtoneUri = Uri.parse(PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, ""));
-        if (TextUtils.isEmpty(ringtoneUri.toString())) {
-            ringtone_preference.setSummary(R.string.settings_notifications_ringtone_none);
-        } else {
-            Ringtone ringtone = RingtoneManager.getRingtone(MainApplication.getContext(), ringtoneUri);
-            if (ringtone == null) {
+        try {
+            Preference ringtone_preference = findPreference(PrefUtils.NOTIFICATIONS_RINGTONE);
+            Uri ringtoneUri = Uri.parse(PrefUtils.getString(PrefUtils.NOTIFICATIONS_RINGTONE, ""));
+            if (TextUtils.isEmpty(ringtoneUri.toString())) {
                 ringtone_preference.setSummary(R.string.settings_notifications_ringtone_none);
             } else {
-                ringtone_preference.setSummary(ringtone.getTitle(MainApplication.getContext()));
+                Ringtone ringtone = RingtoneManager.getRingtone(MainApplication.getContext(), ringtoneUri);
+                if (ringtone == null) {
+                    ringtone_preference.setSummary(R.string.settings_notifications_ringtone_none);
+                } else {
+                    ringtone_preference.setSummary(ringtone.getTitle(MainApplication.getContext()));
+                }
             }
+        } catch ( NullPointerException e ) {
+            e.printStackTrace();
         }
     }
 

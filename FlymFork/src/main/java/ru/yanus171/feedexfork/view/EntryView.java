@@ -26,7 +26,7 @@ public abstract class EntryView {
     EntryActivity mActivity = null;
     public boolean mLoadTitleOnly = false;
     public boolean mContentWasLoaded = false;
-    public double mScrollPartY = 0;
+    public double mScrollPartY = -1;
     public Cursor mCursor = null;
     protected int mStatus = 0;
     public String mTitle;
@@ -136,8 +136,9 @@ public abstract class EntryView {
         mActivity = activity;
         mEntryId = entryId;
         mEntryLink = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.LINK));
-        mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
-                newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
+        if ( mScrollPartY == -1 )
+            mScrollPartY = !newCursor.isNull(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
+                            newCursor.getDouble(newCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
         return true;
     }
     public void onResume() {
@@ -150,7 +151,7 @@ public abstract class EntryView {
     public static EntryView Create(String link, EntryActivity activity, ViewGroup container) {
         Dog.v( TAG, "EntryView.Create link = " + link);
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && link.endsWith( "pdf" ) )
-            return new PDFViewEntryView( activity, container );
+            return new PDFViewEntryView( activity, container );//PDFEntryView
         else
             return new WebEntryView( activity, container );
 

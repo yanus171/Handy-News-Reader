@@ -5,8 +5,12 @@ import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
+import com.github.barteksc.pdfviewer.util.FitPolicy
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.parser.FeedFilters
@@ -42,10 +46,11 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
         //.enableSwipe(true) // allows to block changing pages using swipe
         .swipeHorizontal(false)
         .defaultPage( mScrollPartY.toInt() )
-        //.enableDoubletap(true)
-        .defaultPage(mScrollPartY.toInt())
-        //.enableDoubletap(true)
+        .enableDoubletap(false)
         .enableAntialiasing(true)
+        .pageFitPolicy(FitPolicy.WIDTH)
+        .spacing(5)
+        .nightMode(true)
         .onError{
             Status().SetError( null, null, mEntryId.toString(), it as Exception )
             EndStatus()
@@ -56,15 +61,16 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
             //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
             EndStatus()
         }
-
-
+        .onPageChange( object : OnPageChangeListener {
+            override fun onPageChanged( page: Int, pageCount: Int ){
+                mScrollPartY = GetViewScrollPartY()
+            }
+        })
 //            .pageFitPolicy(FitPolicy.WIDTH) // mode to fit pages in the view
 //            .fitEachPage(false) // fit each page to the view, else smaller pages are scaled relative to largest page.
 //            .pageSnap(false) // snap pages to screen boundaries
 //            .pageFling(false) // make a fling change only a single page like ViewPager
-//            .nightMode(false)
         .load()
-        //EndStatus()
         return true
     }
 
@@ -93,13 +99,12 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
     private fun getPageFloatSize() : Float {
         return 1F / mPDFView.pageCount
     }
-
     override fun onResume() {
         super.onResume()
         mPDFView.jumpTo(mScrollPartY.toInt(), false );
     }
     override fun GetViewScrollPartY(): Double {
-        return mPDFView.positionOffset.toDouble()
+        return mPDFView.currentPage.toDouble()
     }
 
     override fun IsScrollAtBottom(): Boolean {
