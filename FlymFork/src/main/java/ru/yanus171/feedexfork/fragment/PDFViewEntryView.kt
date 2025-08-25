@@ -1,23 +1,24 @@
 package ru.yanus171.feedexfork.fragment
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.util.FitPolicy
 import ru.yanus171.feedexfork.R
+import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.parser.FeedFilters
 import ru.yanus171.feedexfork.service.FetcherService.Status
-import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
+import kotlin.times
 
 class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryView(activity)
 {
@@ -79,29 +80,39 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
     }
 
     override fun ScrollTo(y: Int, smooth: Boolean) {
-        //mPDFView.scrollTo( 0, y );
+
+    }
+
+    fun ScrollTo(scrollPart: Float, smooth: Boolean) {
+        if (smooth ) {
+            val anim = ObjectAnimator.ofFloat( mPDFView, "positionOffset", mPDFView.positionOffset,  scrollPart )
+            anim.duration = BaseActivity.PAGE_SCROLL_DURATION_MSEC.toLong()
+            anim.interpolator = AccelerateDecelerateInterpolator()
+            anim.start();
+        } else
+            mPDFView.positionOffset = scrollPart
     }
 
     override fun ScrollToBottom() {
+        mPDFView.positionOffset = 1F
+    }
 
+
+    override fun GoTop() {
+        mPDFView.positionOffset = 0F
     }
 
     override fun PageChange(delta: Int, statusText: StatusText) {
-        mScrollPartY = mScrollPartY + delta
-        mPDFView.jumpTo(mScrollPartY.toInt(), true)
-        //mPDFView.moveTo(mPDFView.currentXOffset, mPDFView.currentYOffset - delta * mPDFView.height.toFloat(), true);
-        //mPDFView.setPositionOffset(mPDFView.positionOffset + getPageFloatSize() )
-        //mPDFView.moveTo(0F, (delta * (mPDFView.height - statusText.GetHeight())).toFloat())
-//        ScrollTo(((mPDFView.scrollY + delta * (mPDFView.height - statusText.GetHeight()) *
-//                (if (getBoolean("page_up_down_90_pct", false) ) 0.9 else 0.98)).toInt()), true);
+        ScrollTo( mPDFView.positionOffset + delta * getPageFloatSize(), true )
     }
 
     private fun getPageFloatSize() : Float {
-        return 1F / mPDFView.pageCount
+        val pixDoc = mPDFView.getPageSize(0).height * mPDFView.zoom *  mPDFView.pageCount - mPDFView.height
+        return mPDFView.height / pixDoc
     }
     override fun onResume() {
         super.onResume()
-        mPDFView.jumpTo(mScrollPartY.toInt(), false );
+        mPDFView.jumpTo(mScrollPartY.toInt(), false )
     }
     override fun GetViewScrollPartY(): Double {
         return mPDFView.currentPage.toDouble()

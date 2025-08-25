@@ -3,6 +3,7 @@ package ru.yanus171.feedexfork.view;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
+import android.animation.ObjectAnimator;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -156,5 +157,6 @@ public abstract class EntryView {
             return new WebEntryView( activity, container );
 
     }
+
 }
 
