@@ -105,10 +105,11 @@ public abstract class EntryView {
     }
 
     public void StatusStartPageLoading() {
-        synchronized (this) {
-            if (mStatus == 0)
-                mStatus = Status().Start(R.string.web_page_loading, true);
-        }
+        if ( !mContentWasLoaded )
+            synchronized (this) {
+                if (mStatus == 0)
+                    mStatus = Status().Start(R.string.web_page_loading, true);
+            }
     }
     public void EndStatus() {
         synchronized (this) {

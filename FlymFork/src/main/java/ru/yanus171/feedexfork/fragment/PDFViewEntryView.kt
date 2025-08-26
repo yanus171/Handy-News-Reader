@@ -44,6 +44,10 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
                           isFullTextShown: Boolean,
                           forceUpdate: Boolean,
                           activity: EntryActivity ): Boolean {
+        if ( mContentWasLoaded ) {
+            EndStatus()
+            return true
+        }
         super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         //Dog.v( TAG, "file =" + mEntryLink )
         val title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
