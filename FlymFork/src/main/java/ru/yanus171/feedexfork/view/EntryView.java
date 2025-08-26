@@ -24,7 +24,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.Dog;
 
 public abstract class EntryView {
-    EntryActivity mActivity = null;
+    protected EntryActivity mActivity = null;
     public boolean mLoadTitleOnly = false;
     public boolean mContentWasLoaded = false;
     public double mScrollPartY = -1;

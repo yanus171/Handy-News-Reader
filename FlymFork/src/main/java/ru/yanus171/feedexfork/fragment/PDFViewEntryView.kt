@@ -1,6 +1,7 @@
 package ru.yanus171.feedexfork.fragment
 
 import android.animation.ObjectAnimator
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Color
@@ -15,7 +16,11 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.parser.FeedFilters
+import ru.yanus171.feedexfork.parser.FileSelectDialog
+import ru.yanus171.feedexfork.provider.FeedData
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE
 import ru.yanus171.feedexfork.service.FetcherService.Status
+import ru.yanus171.feedexfork.utils.FileUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
 import kotlin.times
@@ -41,6 +46,8 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
                           activity: EntryActivity ): Boolean {
         super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         //Dog.v( TAG, "file =" + mEntryLink )
+        val title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+
         mPDFView.setBackgroundColor(Color.LTGRAY)
         mPDFView.fromUri( Uri.parse(mEntryLink) )
         //.pages(0, 2, 1, 3, 3, 3)
@@ -53,13 +60,16 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
         .spacing(5)
         .nightMode(true)
         .onError{
-            Status().SetError( null, null, mEntryId.toString(), it as Exception )
+            mContentWasLoaded = true
+            Status().SetError( mEntryLink, null, mEntryId.toString(), it as Exception )
             EndStatus()
         }
         .onLoad {
             mContentWasLoaded = true;
             mPDFView.jumpTo( mScrollPartY.toInt() )
             //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
+            if ( title.isEmpty() || title.startsWith( "content://") )
+                updateTitle()
             EndStatus()
         }
         .onPageChange( object : OnPageChangeListener {
@@ -75,6 +85,22 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
         return true
     }
 
+    fun extractTitle(): String? {
+        var result = mPDFView.documentMeta.title
+        if (result.isNotEmpty() )
+            return result
+        return FileSelectDialog.Companion.getFileName(Uri.parse(mEntryLink))
+    }
+
+    fun updateTitle() {
+        val title = extractTitle()
+        if ( title != null && title.isNotEmpty() )
+            Thread {
+                val values = ContentValues()
+                values.put( TITLE, title )
+                mActivity.contentResolver.update(FeedData.EntryColumns.CONTENT_URI( mEntryId), values, null, null )
+            }.start()
+    }
     override fun GetScrollY(): Int {
         return 0
     }
