@@ -742,17 +742,12 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             return true;
         }
         if ( msg.what == TOGGLE_TAP_ZONE_VISIBIILTY ) {
-            toggleTapZoneVisibility();
+            mEntryView.toggleTapZoneVisibility();
             return true;
         }
         if (msg.what == CLICK_ON_WEBVIEW)
             return true;
         return false;
-    }
-
-    private void toggleTapZoneVisibility() {
-        if ( mEntryView.mActivity != null && mEntryView.mActivity.mEntryFragment != null )
-            mEntryView.mActivity.mEntryFragment.toggleTapZoneVisibility();
     }
 
     private void ScrollToY() {

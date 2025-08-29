@@ -54,7 +54,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -85,7 +84,6 @@ import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -325,6 +323,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             if ( isArticleTapEnabled() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
+                GetSelectedEntryView().UpdateGUI();
                 Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
             } else
                 EnableTapActions();
@@ -521,6 +520,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private void EnableTapActions() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         SetupZones();
+        GetSelectedEntryView().UpdateGUI();
         Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
     }
 
@@ -1065,6 +1065,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
                 Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+                GetSelectedEntryView().UpdateGUI();
                 break;
             }
 
@@ -1981,5 +1982,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         UpdateHeader();
     }
+
 }
 

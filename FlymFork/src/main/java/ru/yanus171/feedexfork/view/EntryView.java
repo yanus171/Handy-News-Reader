@@ -98,6 +98,9 @@ public abstract class EntryView {
 
     }
 
+    public void UpdateGUI() {
+    }
+
     static public class ProgressInfo {
         public int max;
         public int progress;
@@ -158,6 +161,12 @@ public abstract class EntryView {
             return new WebEntryView( activity, container );
 
     }
+
+    protected void toggleTapZoneVisibility() {
+        if ( mActivity != null && mActivity.mEntryFragment != null )
+            mActivity.mEntryFragment.toggleTapZoneVisibility();
+    }
+
 
 }
 
