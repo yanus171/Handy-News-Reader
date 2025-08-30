@@ -534,7 +534,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
 
-    private void SetOrientation() {
+    private void applyOrientation() {
         if ( mForceOrientation == NONE && PrefUtils.isForceOrientationBySensor() ) {
             getBaseActivity().applyBaseOrientation();
             return;
@@ -612,8 +612,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
-        SetOrientation();
         refreshUI( null );
+        applyOrientation();
     }
 
     @Override
@@ -1199,9 +1199,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         values.put( EntryColumns.IS_LANDSCAPE, ForceOrientationToInt( mForceOrientation ) );
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         cr.update(uri, values, null, null);
+        GetSelectedEntryView().InvalidateContentCache();
         UiUtils.RunOnGuiThread( () -> getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this) );
         getActivity().invalidateOptionsMenu();
-        SetOrientation();
     }
     private void SetIsFavorite(final boolean favorite, boolean showToast) {
         if ( mFavorite == favorite )
@@ -1378,7 +1378,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
                 mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
                 SetForceOrientation( ForceOrientationFromInt( entryCursor.getInt(mIsLandscapePos) ) );
-
+                applyOrientation();
                 activity.invalidateOptionsMenu();
 
 				final long currentEntryID = getCurrentEntryID();

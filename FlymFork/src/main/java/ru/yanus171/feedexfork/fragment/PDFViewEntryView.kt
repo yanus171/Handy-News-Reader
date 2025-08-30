@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
+import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.github.barteksc.pdfviewer.util.FitPolicy
@@ -21,15 +22,21 @@ import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.parser.FeedFilters
 import ru.yanus171.feedexfork.parser.FileSelectDialog
 import ru.yanus171.feedexfork.provider.FeedData
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.X_OFFSET
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
 
-class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryView(activity)
+class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryView(activity)
 {
     lateinit var mPDFView: PDFView
+    var mXOffset: Float = 0.0F
+    var mZoom: Float = 1.0F
+
     init {
         var inflater  = activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater;
         var rootView = inflater.inflate( R.layout.pdfview, null )
@@ -52,25 +59,45 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
         }
         super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         //Dog.v( TAG, "file =" + mEntryLink )
-        val title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
-
+        val title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE))
+        if ( mScrollPartY == -1.0 )
+            mScrollPartY = readDouble( newCursor, SCROLL_POS, 0.0)
+        mZoom = readFloat( newCursor, ZOOM, mZoom )
+        mXOffset = readFloat( newCursor, X_OFFSET, mXOffset )
         load(title)
 
         return true
     }
 
+    private fun readFloat(cursor: Cursor, fieldName: String, defaultValue: Float): Float {
+        return if ( !cursor.isNull(cursor.getColumnIndex(fieldName)) )
+        cursor.getFloat(cursor.getColumnIndex(fieldName)) else defaultValue
+    }
+    private fun readDouble(cursor: Cursor, fieldName: String, defaultValue: Double): Double {
+        return if ( !cursor.isNull(cursor.getColumnIndex(fieldName)) )
+            cursor.getDouble(cursor.getColumnIndex(fieldName)) else defaultValue
+    }
     private fun load(title: String) {
+        mContentWasLoaded = true;
         mPDFView.setBackgroundColor(if (PrefUtils.isImageWhiteBackground()) Color.LTGRAY else Color.BLACK )
         mPDFView.fromUri(Uri.parse(mEntryLink))
             //.pages(0, 2, 1, 3, 3, 3)
-            //.enableSwipe(true) // allows to block changing pages using swipe
+            //.enableSwipe(false) // allows to block changing pages using swipe
             .swipeHorizontal(false)
             .defaultPage(mScrollPartY.toInt())
             .enableDoubletap(false)
             .enableAntialiasing(true)
-            .pageFitPolicy(FitPolicy.WIDTH)
+            //.pageFitPolicy(FitPolicy.WIDTH)
             .spacing(5)
             .nightMode(!PrefUtils.isImageWhiteBackground())
+            .onPageChange(object : OnPageChangeListener {
+                override fun onPageChanged(page: Int, pageCount: Int) {
+                }
+            })
+            .onPageScroll( object: OnPageScrollListener {
+                override fun onPageScrolled(page: Int, positionOffset: Float) {
+                }
+            })
             .onTap( object : OnTapListener {
                 override fun onTap(e: MotionEvent): Boolean {
                     toggleTapZoneVisibility()
@@ -85,19 +112,17 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
                 Status().SetError(mEntryLink, null, mEntryId.toString(), it as Exception)
                 EndStatus()
             }
+            .onRender {
+            }
             .onLoad {
-                mContentWasLoaded = true;
                 mPDFView.jumpTo(mScrollPartY.toInt())
+                RestoreState()
                 //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
                 if (title.isEmpty() || title.startsWith("content://"))
                     updateTitle()
                 EndStatus()
             }
-            .onPageChange(object : OnPageChangeListener {
-                override fun onPageChanged(page: Int, pageCount: Int) {
-                    mScrollPartY = GetViewScrollPartY()
-                }
-            })
+
     //            .pageFitPolicy(FitPolicy.WIDTH) // mode to fit pages in the view
     //            .fitEachPage(false) // fit each page to the view, else smaller pages are scaled relative to largest page.
     //            .pageSnap(false) // snap pages to screen boundaries
@@ -158,7 +183,24 @@ class PDFViewEntryView( activity: EntryActivity, mContainer: ViewGroup) : EntryV
     }
     override fun onResume() {
         super.onResume()
-        mPDFView.jumpTo(mScrollPartY.toInt(), false )
+        RestoreState()
+    }
+    fun saveState(){
+        mXOffset = mPDFView.currentXOffset
+        mZoom = mPDFView.zoom
+    }
+    fun RestoreState(){
+        mPDFView.zoomTo( mZoom )
+        mPDFView.moveTo( mXOffset, mPDFView.currentYOffset )
+    }
+    override fun SaveStateToDB( values: ContentValues ){
+        saveState()
+        values.put( ZOOM, mZoom )
+        values.put( X_OFFSET, mXOffset )
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
     override fun GetViewScrollPartY(): Double {
         return mPDFView.currentPage.toDouble()

@@ -122,6 +122,7 @@ public class FeedData {
     private static final String TYPE_TEXT_UNIQUE = "TEXT UNIQUE";
     static final String TYPE_DATE_TIME = "DATETIME";
     static final String TYPE_INT = "INT";
+    static final String TYPE_FLOAT = "FLOAT";
     static final String TYPE_BOOLEAN = "INTEGER(1)";
 
     public static ContentValues getReadContentValues() {
@@ -275,6 +276,8 @@ public class FeedData {
         public static final String IS_LANDSCAPE = "landscape";
         public static final String IMAGES_SIZE = "images_size";
         public static final String CATEGORIES = "categories";
+        public static final String ZOOM = "zoom";
+        public static final String X_OFFSET = "x_offset";
 
         public static final String CATEGORY_LIST_SEP = ";";
 
@@ -333,6 +336,8 @@ public class FeedData {
                         FeedColumns.OPTIONS,
                         TEXT_LEN_EXPR,
                         EntryColumns.CATEGORIES,
+                        EntryColumns.ZOOM,
+                        EntryColumns.X_OFFSET,
                         FeedColumns.IS_IMAGE_AUTO_LOAD,
                         EntryColumns.READ_DATE};
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
@@ -356,7 +361,7 @@ public class FeedData {
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
                 {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN}, {IS_LANDSCAPE, TYPE_BOOLEAN},
-                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT},  {READ_DATE, TYPE_DATE_TIME} };
+                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT}, {READ_DATE, TYPE_DATE_TIME}, {ZOOM, TYPE_FLOAT}, {X_OFFSET, TYPE_FLOAT} };
 
         public static Uri ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/entries");

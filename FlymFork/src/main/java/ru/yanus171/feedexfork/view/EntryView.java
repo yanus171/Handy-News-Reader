@@ -3,7 +3,6 @@ package ru.yanus171.feedexfork.view;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
-import android.animation.ObjectAnimator;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -17,7 +16,6 @@ import java.util.Stack;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
-import ru.yanus171.feedexfork.fragment.PDFEntryView;
 import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -83,6 +81,7 @@ public abstract class EntryView {
             //Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
             ContentValues values = new ContentValues();
             values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
+            SaveStateToDB( values );
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             SetNotifyEnabled(false ); try {
                 cr.update(FeedData.EntryColumns.CONTENT_URI(mEntryId), values, null, null);
@@ -91,6 +90,10 @@ public abstract class EntryView {
             }
         }
     }
+    protected void SaveStateToDB( ContentValues values ) {
+
+    }
+
     public abstract boolean IsScrollAtBottom();
     public abstract ProgressInfo getProgressInfo( int statusHeight );
 
@@ -156,7 +159,7 @@ public abstract class EntryView {
     public static EntryView Create(String link, EntryActivity activity, ViewGroup container) {
         Dog.v( TAG, "EntryView.Create link = " + link);
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && link.endsWith( "pdf" ) )
-            return new PDFViewEntryView( activity, container );//PDFEntryView
+            return new PDFViewEntryView( activity, container);//PDFEntryView
         else
             return new WebEntryView( activity, container );
 

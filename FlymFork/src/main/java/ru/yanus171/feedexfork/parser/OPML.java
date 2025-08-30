@@ -118,6 +118,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HT
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.READ_DATE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.X_OFFSET;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI;
 import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.FETCH_MODE;
@@ -380,7 +382,7 @@ public class OPML {
             IS_NEW, IS_READ, SCROLL_POS, ABSTRACT,
             AUTHOR, DATE, FETCH_DATE, IMAGE_URL,
             IS_FAVORITE, EntryColumns._ID, GUID, IS_WAS_AUTO_UNSTAR,
-            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE, MOBILIZED_HTML, _ID };
+            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE, MOBILIZED_HTML, _ID, ZOOM, X_OFFSET };
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -432,6 +434,8 @@ public class OPML {
                     writer.write(String.format(ATTR_VALUE, MOBILIZED_HTML));
                     writer.write(TextUtils.htmlEncode(FileUtils.INSTANCE.loadMobilizedHTML(link, cur)));
                 }
+                WriteText(writer, cur, ZOOM, 19);
+                WriteText(writer, cur, X_OFFSET, 20);
 
                 writer.write(CLOSING);
             }
@@ -665,6 +669,7 @@ public class OPML {
                 putString( values, IS_WAS_AUTO_UNSTAR, attributes, IS_WAS_AUTO_UNSTAR);
                 putString( values, IS_WITH_TABLES, attributes, IS_WITH_TABLES);
                 putString( values, IS_LANDSCAPE, attributes, IS_LANDSCAPE);
+                putString( values, ZOOM, attributes, ZOOM);
                 if ( attributes.getIndex( MOBILIZED_HTML ) >= 0 )
                     FileUtils.INSTANCE.saveMobilizedHTML(link, attributes.getValue(MOBILIZED_HTML), values);
 
