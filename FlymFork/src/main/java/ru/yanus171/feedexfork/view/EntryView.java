@@ -101,7 +101,7 @@ public abstract class EntryView {
 
     }
 
-    public void UpdateGUI() {
+    public void refreshUI() {
     }
 
     static public class ProgressInfo {

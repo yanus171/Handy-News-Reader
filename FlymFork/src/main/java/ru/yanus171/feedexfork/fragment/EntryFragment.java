@@ -147,6 +147,7 @@ import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.POR
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
@@ -180,7 +181,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public boolean mIgnoreNextLoading = false;
 
 
-    private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos, mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    private int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos,
+            mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
 
 
     private Uri mBaseUri;
@@ -323,7 +325,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             if ( isArticleTapEnabled() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
-                GetSelectedEntryView().UpdateGUI();
+                GetSelectedEntryView().refreshUI();
                 Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
             } else
                 EnableTapActions();
@@ -520,7 +522,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private void EnableTapActions() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         SetupZones();
-        GetSelectedEntryView().UpdateGUI();
+        GetSelectedEntryView().refreshUI();
         Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
     }
 
@@ -608,12 +610,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mMarkAsUnreadOnFinish = false;
         if ( mSetupChanged ) {
             mSetupChanged = false;
-            mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, false);
+            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, null, true, false);
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
         refreshUI( null );
-        applyOrientation();
     }
 
     @Override
@@ -1047,13 +1048,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             case R.id.menu_image_white_background: {
                 PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
                 item.setChecked( PrefUtils.isImageWhiteBackground() );
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                GetSelectedEntryView().refreshUI();
+                mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, null, true, true);
                 break;
             }
             case R.id.menu_font_bold: {
                 PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
                 item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, null, true, true);
                 break;
             }
             case R.id.menu_show_progress_info: {
@@ -1065,7 +1067,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
                 Toast.makeText( getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
-                GetSelectedEntryView().UpdateGUI();
+                GetSelectedEntryView().refreshUI();
                 break;
             }
 
@@ -1364,6 +1366,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private void refreshUI(Cursor entryCursor) {
         final EntryView view = GetSelectedEntryView();
         if ( view != null ) {
+            //view.refreshUI();
             WebEntryView webView = GetSelectedEntryWebView();
             mBtnEndEditing.setVisibility(webView != null && webView.mIsEditingMode ? View.VISIBLE : View.GONE);
             getBaseActivity().SetTaskTitle( view.mTitle );
@@ -1371,75 +1374,90 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         try {
 			if (entryCursor != null ) {
-				//String feedTitle = entryCursor.isNull(mFeedNamePos) ? entryCursor.getString(mFeedUrlPos) : entryCursor.getString(mFeedNamePos);
-				EntryActivity activity = (EntryActivity) getActivity();
-				activity.setTitle("");//activity.setTitle(feedTitle);
-
+                getActivity().setTitle(getTitle(entryCursor));
 				mFavorite = entryCursor.getInt(mIsFavoritePos) == 1;
                 mIsWithTables = entryCursor.getInt(mIsWithTablePos) == 1;
                 SetForceOrientation( ForceOrientationFromInt( entryCursor.getInt(mIsLandscapePos) ) );
-                applyOrientation();
-                activity.invalidateOptionsMenu();
+                getActivity().invalidateOptionsMenu();
 
 				final long currentEntryID = getCurrentEntryID();
 				mStatusText.SetEntryID( String.valueOf( currentEntryID ) );
-				// Listen the mobilizing task
 
-                new Thread() {
-                    long mID;
-                    @Override
-                    public void run() {
-                        if (FetcherService.hasMobilizationTask( currentEntryID )) {
-                            //--showSwipeProgress();
-                            // If the service is not started, start it here to avoid an infinite loading
-                            if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
-                                FetcherService.Start(new Intent(MainApplication.getContext(), FetcherService.class)
-                                        .setAction(FetcherService.ACTION_MOBILIZE_FEEDS), true);
-                        }
+                startMobilizationTask(currentEntryID);
+                markPrevArticleAsRead();
+            }
+            applyOrientation();
+        } catch ( IllegalStateException e ) {
+			e.printStackTrace();
+		}
+	}
+
+    private String getTitle(Cursor entryCursor) {
+        if (GetExtrenalLinkFeedID().equals(entryCursor.getString(mFeedIDPos))) {
+            if (!entryCursor.isNull(mTitlePos))
+                return entryCursor.getString(mTitlePos);
+            else
+                return "";
+        }
+        if ( !entryCursor.isNull(mFeedNamePos) )
+            return entryCursor.getString(mFeedNamePos);
+        if ( !entryCursor.isNull(mFeedUrlPos) )
+            return entryCursor.getString(mFeedUrlPos);
+        return "";
+    }
+
+    private void markPrevArticleAsRead() {
+        // Mark the previous opened article as read
+        //if (entryCursor.getInt(mIsReadPos) != 1) {
+        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 ) {
+            new Thread() {
+                private String mFeedID;
+                private boolean mSetAsRead;
+                private int mPagerPos;
+                private Thread init(int pagerPos, boolean setAsRead, String feedID) {
+                    mPagerPos = pagerPos;
+                    mSetAsRead = setAsRead;
+                    mFeedID = feedID;
+                    return this;
+                }
+                @Override
+                public void run() {
+                    final Uri uri = ContentUris.withAppendedId(mBaseUri, mEntryPagerAdapter.GetEntry( mPagerPos ).mID);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    if ( mSetAsRead ) {
+                        if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
+                            newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
                     }
-                    Thread SetID( long id ) {
-                        mID = id;
-                        return this;
-                    }
-                }.SetID( currentEntryID ).start();
-
-
-				// Mark the previous opened article as read
-				//if (entryCursor.getInt(mIsReadPos) != 1) {
-				if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 ) {
-                    new Thread() {
-                        private String mFeedID;
-                        private boolean mSetAsRead;
-                        private int mPagerPos;
-                        private Thread init(int pagerPos, boolean setAsRead, String feedID) {
-                            mPagerPos = pagerPos;
-                            mSetAsRead = setAsRead;
-                            mFeedID = feedID;
-                            return this;
-                        }
-					    @Override
-                        public void run() {
-                            final Uri uri = ContentUris.withAppendedId(mBaseUri, mEntryPagerAdapter.GetEntry( mPagerPos ).mID);
-                            ContentResolver cr = MainApplication.getContext().getContentResolver();
-                            if ( mSetAsRead ) {
-                                if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
-                                    newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
-                            }
-                            cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
+                    cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
                             /*// Update the cursor
                             Cursor updatedCursor = cr.query(uri, null, null, null, null);
                             updatedCursor.moveToFirst();
                             mEntryPagerAdapter.setUpdatedCursor(mPagerPos, updatedCursor);*/
-                        }
-                    }.init( mLastPagerPos,
-                            mEntryPagerAdapter.getCursor(mLastPagerPos).getInt(mIsReadPos) != 1,
-                            getCurrentFeedID() ).start();
+                }
+            }.init( mLastPagerPos,
+                    mEntryPagerAdapter.getCursor(mLastPagerPos).getInt(mIsReadPos) != 1,
+                    getCurrentFeedID() ).start();
+        }
+    }
+    private void startMobilizationTask(long currentEntryID) {
+        new Thread() {
+            long mID;
+            @Override
+            public void run() {
+                if (FetcherService.hasMobilizationTask(currentEntryID)) {
+                    //--showSwipeProgress();
+                    // If the service is not started, start it here to avoid an infinite loading
+                    if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
+                        FetcherService.Start(new Intent(MainApplication.getContext(), FetcherService.class)
+                                .setAction(FetcherService.ACTION_MOBILIZE_FEEDS), true);
                 }
             }
-		} catch ( IllegalStateException e ) {
-			e.printStackTrace();
-		}
-	}
+            Thread SetID( long id ) {
+                mID = id;
+                return this;
+            }
+        }.SetID(currentEntryID).start();
+    }
 
     private void showEnclosure(Uri uri, String enclosure, int position1, int position2) {
         try {
@@ -1481,7 +1499,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                 mIsFullTextShown = false;
-                mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, null, true, true);
             }
         });
     }
@@ -1498,7 +1516,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 @Override
                 public void run() {
                     mIsFullTextShown = true;
-                    mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
+                    mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, null, true, true);
                 }
             });
         } else /*--if (!isRefreshing())*/ {
@@ -1833,9 +1851,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     int position = loader.getId();
                     if (position != -1) {
                         FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-                        mEntryPagerAdapter.displayEntry(position, cursor, false, false);
+                        mEntryPagerAdapter.generateArticleContent(position, cursor, false, false);
                         mRetrieveFullText = cursor.getInt(mRetrieveFullTextPos) == 1;
-                        //if (getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
+                        //if getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
                         //    activity.setFullScreen(true, true);
                         if ( position == mCurrentPagerPos ) {
                             EntryView view = mEntryPagerAdapter.GetEntryView( position );
@@ -1967,15 +1985,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return false;
     }
 
-    void displayEntry( EntryView view, int pagerPos, boolean forceUpdate ) {
-        mIsFullTextShown = view.setHtml(
-                mEntryPagerAdapter.GetEntry(pagerPos).mID,
-                mBaseUri,
-                view.mCursor,
-                mFilters,
-                mIsFullTextShown,
-                forceUpdate,
-                (EntryActivity) getActivity());
+    void generateArticleContent(EntryView view, int pagerPos, boolean forceUpdate ) {
+        mIsFullTextShown = view.setHtml( mEntryPagerAdapter.GetEntry(pagerPos).mID,
+                                         mBaseUri,
+                                         view.mCursor,
+                                         mFilters,
+                                         mIsFullTextShown,
+                                         forceUpdate,
+                                         (EntryActivity) getActivity() );
         if (pagerPos == mCurrentPagerPos) {
             refreshUI(view.mCursor);
             Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", getCurrentEntryID(), view.mScrollPartY));

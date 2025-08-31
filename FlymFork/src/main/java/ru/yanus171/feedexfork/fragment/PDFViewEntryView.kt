@@ -15,7 +15,6 @@ import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import com.github.barteksc.pdfviewer.util.FitPolicy
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.activity.EntryActivity
@@ -92,10 +91,12 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
             .nightMode(!PrefUtils.isImageWhiteBackground())
             .onPageChange(object : OnPageChangeListener {
                 override fun onPageChanged(page: Int, pageCount: Int) {
+                    mScrollPartY = GetViewScrollPartY()
                 }
             })
             .onPageScroll( object: OnPageScrollListener {
                 override fun onPageScrolled(page: Int, positionOffset: Float) {
+                    mScrollPartY = GetViewScrollPartY()
                 }
             })
             .onTap( object : OnTapListener {
@@ -116,7 +117,7 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
             }
             .onLoad {
                 mPDFView.jumpTo(mScrollPartY.toInt())
-                RestoreState()
+                restoreState()
                 //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
                 if (title.isEmpty() || title.startsWith("content://"))
                     updateTitle()
@@ -183,13 +184,13 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
     }
     override fun onResume() {
         super.onResume()
-        RestoreState()
+        restoreState()
     }
     fun saveState(){
         mXOffset = mPDFView.currentXOffset
         mZoom = mPDFView.zoom
     }
-    fun RestoreState(){
+    fun restoreState(){
         mPDFView.zoomTo( mZoom )
         mPDFView.moveTo( mXOffset, mPDFView.currentYOffset )
     }
@@ -214,7 +215,7 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
         return ProgressInfo()
     }
 
-    override fun UpdateGUI() {
+    override fun refreshUI() {
         load("")
     }
 

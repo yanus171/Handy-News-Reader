@@ -2,9 +2,7 @@ package ru.yanus171.feedexfork.fragment;
 
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 
-import android.content.ContentResolver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,10 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.yanus171.feedexfork.Constants;
-import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
-import ru.yanus171.feedexfork.view.WebViewExtended;
 
 public abstract class BaseEntryPagerAdapter extends PagerAdapter {
     final SparseArray<EntryView> mEntryViews = new SparseArray<>();
@@ -53,8 +46,8 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    void displayEntry(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
-        Dog.d( "EntryPagerAdapter.displayEntry" + pagerPos +  ", mAnchor = " + mEntryFragment.mAnchor);
+    void generateArticleContent(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
+        Dog.d( "EntryPagerAdapter.articleDataWasLoaded" + pagerPos +  ", mAnchor = " + mEntryFragment.mAnchor);
 
         EntryView view = GetEntryView( pagerPos );
         if (view != null ) {
@@ -68,7 +61,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
                 view.mCursor = newCursor;
                 if ( mSetupChanged )
                     view.InvalidateContentCache();
-                mEntryFragment.displayEntry( view, pagerPos, forceUpdate );
+                mEntryFragment.generateArticleContent( view, pagerPos, forceUpdate );
             }
         }
         mEntryFragment.SetupZones();
