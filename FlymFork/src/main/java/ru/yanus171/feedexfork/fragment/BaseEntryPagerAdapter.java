@@ -61,7 +61,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
                 view.mCursor = newCursor;
                 if ( mSetupChanged )
                     view.InvalidateContentCache();
-                mEntryFragment.generateArticleContent( view, pagerPos, forceUpdate );
+                view.generateArticleContent( view.mCursor, forceUpdate );
             }
         }
         mEntryFragment.SetupZones();
@@ -203,6 +203,7 @@ class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
         final View view = (View)super.instantiateItem(container, position);
         final EntryView entryView = (EntryView)view.getTag();
         entryView.mLoadTitleOnly = false;
+        //entryView.mActivity.mEntryFragment.refreshUI();
         return view;
     }
 }

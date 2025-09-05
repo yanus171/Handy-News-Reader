@@ -1,6 +1,7 @@
 package ru.yanus171.feedexfork.fragment
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -30,12 +31,13 @@ import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
 
-class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryView(activity)
+class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup, entryID: Long) : EntryView(activity, entryID)
 {
     lateinit var mPDFView: PDFView
     var mXOffset: Float = 0.0F
     var mZoom: Float = 1.0F
-
+    var mTitleWasUpdated = false
+    var mIsLoaded = false
     init {
         var inflater  = activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater;
         var rootView = inflater.inflate( R.layout.pdfview, null )
@@ -45,25 +47,14 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
         mContainer.addView( mPDFView )
         mView = mPDFView
     }
-    override fun setHtml( entryId: Long,
+    fun setHtml( entryId: Long,
                           articleListUri: Uri,
                           newCursor: Cursor,
                           filters: FeedFilters?,
                           isFullTextShown: Boolean,
                           forceUpdate: Boolean,
                           activity: EntryActivity ): Boolean {
-        if ( mContentWasLoaded ) {
-            EndStatus()
-            return true
-        }
-        super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
-        //Dog.v( TAG, "file =" + mEntryLink )
-        val title = newCursor.getString(newCursor.getColumnIndex(FeedData.EntryColumns.TITLE))
-        if ( mScrollPartY == -1.0 )
-            mScrollPartY = readDouble( newCursor, SCROLL_POS, 0.0)
-        mZoom = readFloat( newCursor, ZOOM, mZoom )
-        mXOffset = readFloat( newCursor, X_OFFSET, mXOffset )
-        load(title)
+
 
         return true
     }
@@ -109,18 +100,19 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
                 if (PrefUtils.isArticleTapEnabledTemp()) null else DefaultScrollHandle( mActivity, true )
             )
             .onError {
-                mContentWasLoaded = true
                 Status().SetError(mEntryLink, null, mEntryId.toString(), it as Exception)
                 EndStatus()
             }
             .onRender {
             }
             .onLoad {
+                mIsLoaded = true
                 mPDFView.jumpTo(mScrollPartY.toInt())
                 restoreState()
                 //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
                 if (title.isEmpty() || title.startsWith("content://"))
                     updateTitle()
+                //refreshUI();
                 EndStatus()
             }
 
@@ -139,6 +131,9 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
     }
 
     fun updateTitle() {
+        if ( mTitleWasUpdated )
+            return
+        mTitleWasUpdated = true
         val title = extractTitle()
         if ( title != null && title.isNotEmpty() )
             Thread {
@@ -184,13 +179,15 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
     }
     override fun onResume() {
         super.onResume()
-        restoreState()
+
     }
     fun saveState(){
         mXOffset = mPDFView.currentXOffset
         mZoom = mPDFView.zoom
     }
     fun restoreState(){
+        if ( !mIsLoaded )
+            return
         mPDFView.zoomTo( mZoom )
         mPDFView.moveTo( mXOffset, mPDFView.currentYOffset )
     }
@@ -215,13 +212,31 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryVi
         return ProgressInfo()
     }
 
-    override fun refreshUI() {
-        load("")
+    override fun refreshUI(){
+        super.refreshUI()
+        restoreState();
     }
 
-    override fun InvalidateContentCache() {
-        mContentWasLoaded = false
+    @SuppressLint("Range")
+    override fun generateArticleContent( cursor: Cursor, forceUpdate: Boolean) {
+        if ( mContentWasLoaded ) {
+            EndStatus()
+            return
+        }
+        super.generateArticleContent( cursor, forceUpdate)
+        //setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
+        //Dog.v( TAG, "file =" + mEntryLink )
+        val title = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.TITLE))
+        if ( mScrollPartY == -1.0 )
+            mScrollPartY = readDouble( mCursor, SCROLL_POS, 0.0)
+        mZoom = readFloat( mCursor, ZOOM, mZoom )
+        mXOffset = readFloat( mCursor, X_OFFSET, mXOffset )
+        load(title)
     }
 
-
+    override fun loadingDataFinished(  loader: androidx.loader.content.Loader<Cursor?>?, cursor: Cursor? ) {
+        super.loadingDataFinished(loader, cursor)
+        mActivity.mEntryFragment.refreshUI()
+        generateArticleContent( mCursor, false )
+    }
 }

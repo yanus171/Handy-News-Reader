@@ -47,7 +47,6 @@ package ru.yanus171.feedexfork.view;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.IsFeedUri;
-import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
@@ -100,7 +99,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -327,7 +325,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     if (!mEntryView.mLoadTitleOnly)
                         mEntryView.mContentWasLoaded = true;
                     if (mEntryView.mActivity.mEntryFragment != null)
-                        mEntryView.mActivity.mEntryFragment.DisableTapActionsIfVideo( mEntryView );
+                        mEntryView.DisableTapActionsIfVideo( mEntryView );
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
                             mEntryView.DownLoadImages();

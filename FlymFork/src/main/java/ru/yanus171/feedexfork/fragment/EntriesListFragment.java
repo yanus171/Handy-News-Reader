@@ -31,7 +31,6 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.TakeMarkAsReadList;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.getItemIsRead;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.mMarkAsReadList;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.LoadIcon;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
@@ -57,6 +56,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_URL;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.StringUtils.DATE_FORMAT;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
+import static ru.yanus171.feedexfork.view.EntryView.LoadIcon;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.SetupZones;
 import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservable;
 

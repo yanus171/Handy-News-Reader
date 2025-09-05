@@ -20,6 +20,7 @@
 package ru.yanus171.feedexfork.activity;
 
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
@@ -342,7 +343,8 @@ public class EntryActivity extends BaseActivity implements Observer {
                 } finally {
                     SetNotifyEnabled( true );
                 }
-                if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish && !mEntryFragment.mFavorite )
+                EntryView view = mEntryFragment.GetSelectedEntryView();
+                if ( mEntryFragment != null && !mEntryFragment.mMarkAsUnreadOnFinish && view != null && !view.mFavorite )
                     //mark as read
                     if ( mEntryFragment.getCurrentEntryID() != -1 ) {
                         int result = cr.update(EntryColumns.CONTENT_URI(mEntryFragment.getCurrentEntryID()), FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD, null);
@@ -469,5 +471,12 @@ public class EntryActivity extends BaseActivity implements Observer {
             return;
         ((WebEntryView)view).UpdateImages( false );
         Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
+    }
+    @Override
+    public void applyBaseOrientation() {
+        if ( mEntryFragment.mForceOrientation == NONE && PrefUtils.isForceOrientationBySensor() )
+            super.applyBaseOrientation();
+        else
+            mEntryFragment.applyOrientation();
     }
 }

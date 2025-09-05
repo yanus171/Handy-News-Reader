@@ -34,7 +34,7 @@ import java.io.IOException
 import java.net.URI
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryView(activity) {
+class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long) : EntryView(activity, entryId) {
     var mRenderer: PdfRenderer? = null
     val mListView = ListView(activity)
     init {
@@ -44,17 +44,11 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup) : EntryView(a
 
     }
 
-    override fun setHtml( entryId: Long,
-                          articleListUri: Uri,
-                          newCursor: Cursor,
-                          filters: FeedFilters?,
-                          isFullTextShown: Boolean,
-                          forceUpdate: Boolean,
-                          activity: EntryActivity ): Boolean {
-        super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
+    override fun generateArticleContent( cursor: Cursor, forceUpdate: Boolean) {
+        super.generateArticleContent( cursor, forceUpdate)
+        //super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         openRenderer( mEntryLink )
         mListView.adapter = ListAdapter(mRenderer)
-        return true
     }
 
     fun openRenderer(link: String) {
