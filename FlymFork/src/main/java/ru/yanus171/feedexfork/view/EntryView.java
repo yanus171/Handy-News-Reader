@@ -164,6 +164,9 @@ public abstract class EntryView {
         mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
     }
 
+    public void onStart() {
+    }
+
     static public class ProgressInfo {
         public int max;
         public int progress;

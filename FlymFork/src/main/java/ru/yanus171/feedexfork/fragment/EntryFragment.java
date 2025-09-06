@@ -543,7 +543,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void onResume() {
         mIsFinishing = false;
         super.onResume();
-        //mEntryPagerAdapter.onResume();
+        mEntryPagerAdapter.onResume();
         mMarkAsUnreadOnFinish = false;
         if ( mSetupChanged ) {
             mSetupChanged = false;
@@ -552,6 +552,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
         refreshUI();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (GetSelectedEntryView() != null )
+            GetSelectedEntryView().onStart();
     }
 
     @Override
@@ -923,7 +930,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         // Mark the previous opened article as read
         //if (entryCursor.getInt(mIsReadPos) != 1) {
         EntryView view = GetSelectedEntryView();
-        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 && view != null ) {
+        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 && view != null && view.mCursor != null ) {
             new Thread() {
                 private String mFeedID;
                 private boolean mSetAsRead;
@@ -1022,10 +1029,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mEntryPagerAdapter.setUpdatedCursor(loader.getId(), null);
+        //mEntryPagerAdapter.setUpdatedCursor(loader.getId(), null);
+        if ( hasEntryView() )
+            GetSelectedEntryView().mCursor = null;
     }
 
-
+    private boolean hasEntryView() {
+        return GetSelectedEntryView() != null;
+    }
 
     /*@Override
     public void onRefresh() {

@@ -185,6 +185,9 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
     override fun onResume() {
         super.onResume()
+    }
+    override fun onStart() {
+        super.onStart()
         load("")
     }
     fun saveState(){
