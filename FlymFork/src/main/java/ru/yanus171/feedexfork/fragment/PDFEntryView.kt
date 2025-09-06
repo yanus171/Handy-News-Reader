@@ -1,13 +1,11 @@
 package ru.yanus171.feedexfork.fragment
 
 import android.annotation.SuppressLint
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.graphics.Matrix
 import android.os.Build
-import android.os.ParcelFileDescriptor
 import android.util.SparseArray
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -18,20 +16,13 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.activity.EntryActivity
-import ru.yanus171.feedexfork.activity.GeneralPrefsActivity.mActivity
-import ru.yanus171.feedexfork.parser.FeedFilters
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.Dog
-import ru.yanus171.feedexfork.utils.FileUtils
-import ru.yanus171.feedexfork.utils.FileUtils.LinkToFile
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
-import java.io.File
 import java.io.IOException
-import java.net.URI
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long) : EntryView(activity, entryId) {
@@ -44,8 +35,8 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
 
     }
 
-    override fun generateArticleContent( cursor: Cursor, forceUpdate: Boolean) {
-        super.generateArticleContent( cursor, forceUpdate)
+    override fun generateArticleContent(forceUpdate: Boolean) {
+        super.generateArticleContent(forceUpdate)
         //super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         openRenderer( mEntryLink )
         mListView.adapter = ListAdapter(mRenderer)

@@ -31,37 +31,22 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         }
         return null;
     }
-    void setUpdatedCursor(int pagerPos, Cursor newCursor) {
-        EntryView view = GetEntryView( pagerPos );
-        if (view != null ) {
-            Cursor previousUpdatedOne = view.mCursor;
-            if (previousUpdatedOne != null) {
-                previousUpdatedOne.close();
-            }
-            view.mCursor = newCursor;
-        }
-    }
     @Override
     public boolean isViewFromObject(@NotNull View view, Object object) {
         return view == object;
     }
 
-    void generateArticleContent(int pagerPos, Cursor newCursor, boolean forceUpdate, boolean invalidateCache ) {
+    void generateArticleContent(int pagerPos, boolean forceUpdate, boolean invalidateCache ) {
         Dog.d( "EntryPagerAdapter.articleDataWasLoaded" + pagerPos +  ", mAnchor = " + mEntryFragment.mAnchor);
 
         EntryView view = GetEntryView( pagerPos );
         if (view != null ) {
             view.StatusStartPageLoading();
-            if ( invalidateCache )
+            if ( invalidateCache ) {
                 view.InvalidateContentCache();
-            if (newCursor == null)
-                newCursor = view.mCursor; // get the old one
-
-            if (newCursor != null && newCursor.moveToFirst()) {
-                view.mCursor = newCursor;
                 if ( mSetupChanged )
                     view.InvalidateContentCache();
-                view.generateArticleContent( view.mCursor, forceUpdate );
+                view.generateArticleContent(forceUpdate );
             }
         }
         mEntryFragment.SetupZones();
@@ -171,19 +156,6 @@ class EntryPagerAdapter extends BaseEntryPagerAdapter {
             return mEntriesIds != null ? mEntriesIds.length : 0;
         }
     }
-
-
-    void setUpdatedCursor(int pagerPos, Cursor newCursor) {
-        EntryView view = mEntryViews.get(pagerPos);
-        if (view != null ) {
-            Cursor previousUpdatedOne = view.mCursor;
-            if (previousUpdatedOne != null) {
-                previousUpdatedOne.close();
-            }
-            view.mCursor = newCursor;
-        }
-    }
-
 }
 
 class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {

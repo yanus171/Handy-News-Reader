@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.github.barteksc.pdfviewer.PDFView
@@ -229,12 +228,12 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
 
     @SuppressLint("Range")
-    override fun generateArticleContent( cursor: Cursor, forceUpdate: Boolean) {
+    override fun generateArticleContent(forceUpdate: Boolean) {
         if ( mContentWasLoaded ) {
             EndStatus()
             return
         }
-        super.generateArticleContent( cursor, forceUpdate)
+        super.generateArticleContent(forceUpdate)
         //setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         //Dog.v( TAG, "file =" + mEntryLink )
         val title = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.TITLE))
@@ -245,9 +244,9 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         load(title)
     }
 
-    override fun loadingDataFinished(  loader: androidx.loader.content.Loader<Cursor?>?, cursor: Cursor? ) {
-        super.loadingDataFinished(loader, cursor)
+    override fun loadingDataFinished() {
+        super.loadingDataFinished()
         mActivity.mEntryFragment.refreshUI()
-        generateArticleContent( mCursor, false )
+        generateArticleContent(false)
     }
 }

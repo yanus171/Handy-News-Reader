@@ -1,19 +1,13 @@
 package ru.yanus171.feedexfork.view;
 
-import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
-import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 
@@ -32,9 +26,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.BaseColumns;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,7 +38,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.loader.content.Loader;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -59,11 +49,9 @@ import java.util.Stack;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
-import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -71,7 +59,6 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
@@ -161,7 +148,7 @@ public abstract class EntryView {
     }
 
     public void refreshUI() {
-        mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
+
     }
 
     public void onStart() {
@@ -217,50 +204,43 @@ public abstract class EntryView {
         if ( mActivity != null && mActivity.mEntryFragment != null )
             mActivity.mEntryFragment.toggleTapZoneVisibility();
     }
-    @SuppressLint("Range")
-    public void generateArticleContent( Cursor cursor, boolean forceUpdate ) {
+    public void setCursor( Cursor cursor ) {
         mCursor = cursor;
+    }
+    @SuppressLint("Range")
+    public void generateArticleContent( boolean forceUpdate ) {
         mEntryLink = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.LINK));
         if ( mScrollPartY == -1 )
             mScrollPartY = !mCursor.isNull(mCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
                     mCursor.getDouble(mCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
-
+        mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
         //refreshUI();
         Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
         mActivity.mEntryFragment.UpdateHeader();
     }
 
-    public void loadingDataFinished(Loader<Cursor> loader, Cursor cursor){
-        mCursor = cursor;
-        Timer.End( loader.getId() );
-        if (cursor != null) { // can be null if we do a setData(null) before
-            try {
-                if ( cursor.moveToFirst() ) {
-
-                    if (mTitlePos == -1) {
-                        mTitlePos = cursor.getColumnIndex(FeedData.EntryColumns.TITLE);
-                        mDatePos = cursor.getColumnIndex(FeedData.EntryColumns.DATE);
-                        mAbstractPos = cursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT);
-                        mLinkPos = cursor.getColumnIndex(FeedData.EntryColumns.LINK);
-                        mIsFavoritePos = cursor.getColumnIndex(FeedData.EntryColumns.IS_FAVORITE);
-                        mIsWithTablePos= cursor.getColumnIndex(FeedData.EntryColumns.IS_WITH_TABLES);
-                        mIsLandscapePos= cursor.getColumnIndex(FeedData.EntryColumns.IS_LANDSCAPE);
-                        mIsReadPos = cursor.getColumnIndex(FeedData.EntryColumns.IS_READ);
-                        mIsNewPos = cursor.getColumnIndex(FeedData.EntryColumns.IS_NEW);
-                        mIsWasAutoUnStarPos = cursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR);
-                        mEnclosurePos = cursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE);
-                        mFeedIDPos = cursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
-                        mAuthorPos = cursor.getColumnIndex(FeedData.EntryColumns.AUTHOR);
-                        mScrollPosPos = cursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS);
-                        mFeedNamePos = cursor.getColumnIndex(FeedData.FeedColumns.NAME);
-                        mFeedUrlPos = cursor.getColumnIndex(FeedData.FeedColumns.URL);
-                        mFeedIconUrlPos = cursor.getColumnIndex(FeedData.FeedColumns.ICON_URL);
-                        mRetrieveFullTextPos = cursor.getColumnIndex(FeedData.FeedColumns.RETRIEVE_FULLTEXT);
-                    }
-                }
-            } catch ( IllegalStateException e ) {
-                FetcherService.Status().SetError( e.getMessage(), "", String.valueOf( mEntryId ), e );
-                Dog.e("Error", e);
+    public void loadingDataFinished(){
+        //Timer.End( loader.getId() );
+        if (mCursor != null && mCursor.moveToFirst() ) {
+            if (mTitlePos == -1) {
+                mTitlePos = mCursor.getColumnIndex(FeedData.EntryColumns.TITLE);
+                mDatePos = mCursor.getColumnIndex(FeedData.EntryColumns.DATE);
+                mAbstractPos = mCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT);
+                mLinkPos = mCursor.getColumnIndex(FeedData.EntryColumns.LINK);
+                mIsFavoritePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_FAVORITE);
+                mIsWithTablePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_WITH_TABLES);
+                mIsLandscapePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_LANDSCAPE);
+                mIsReadPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_READ);
+                mIsNewPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_NEW);
+                mIsWasAutoUnStarPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR);
+                mEnclosurePos = mCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE);
+                mFeedIDPos = mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
+                mAuthorPos = mCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR);
+                mScrollPosPos = mCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS);
+                mFeedNamePos = mCursor.getColumnIndex(FeedData.FeedColumns.NAME);
+                mFeedUrlPos = mCursor.getColumnIndex(FeedData.FeedColumns.URL);
+                mFeedIconUrlPos = mCursor.getColumnIndex(FeedData.FeedColumns.ICON_URL);
+                mRetrieveFullTextPos = mCursor.getColumnIndex(FeedData.FeedColumns.RETRIEVE_FULLTEXT);
             }
         }
         //refreshUI();
@@ -351,7 +331,7 @@ public abstract class EntryView {
                 PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
                 item.setChecked( PrefUtils.isImageWhiteBackground() );
                 refreshUI();
-                generateArticleContent( mCursor, true);
+                generateArticleContent(true);
                 break;
             }
             case R.id.menu_disable_all_tap_actions: {
@@ -473,19 +453,19 @@ public abstract class EntryView {
         menu.findItem(R.id.menu_go_back).setVisible( CanGoBack() );
     }
 
-    private String getTitle() {
-        if (GetExtrenalLinkFeedID().equals(mCursor.getString(mFeedIDPos))) {
-            if (!mCursor.isNull(mTitlePos))
-                return mCursor.getString(mTitlePos);
-            else
-                return "";
-        }
-        if ( !mCursor.isNull(mFeedNamePos) )
-            return mCursor.getString(mFeedNamePos);
-        if ( !mCursor.isNull(mFeedUrlPos) )
-            return mCursor.getString(mFeedUrlPos);
-        return "";
-    }
+//    private String getTitle() {
+//        if (GetExtrenalLinkFeedID().equals(mCursor.getString(mFeedIDPos))) {
+//            if (!mCursor.isNull(mTitlePos))
+//                return mCursor.getString(mTitlePos);
+//            else
+//                return "";
+//        }
+//        if ( !mCursor.isNull(mFeedNamePos) )
+//            return mCursor.getString(mFeedNamePos);
+//        if ( !mCursor.isNull(mFeedUrlPos) )
+//            return mCursor.getString(mFeedUrlPos);
+//        return "";
+//    }
 
 
 }

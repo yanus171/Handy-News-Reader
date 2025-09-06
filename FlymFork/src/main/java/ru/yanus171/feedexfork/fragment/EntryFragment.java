@@ -547,7 +547,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mMarkAsUnreadOnFinish = false;
         if ( mSetupChanged ) {
             mSetupChanged = false;
-            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, null, true, false);
+            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, true, false);
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
@@ -1021,7 +1021,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mIgnoreNextLoading = false;
             return;
         }
-        mEntryPagerAdapter.GetEntryView(loader.getId() ).loadingDataFinished( loader, cursor );
+        final EntryView view = mEntryPagerAdapter.GetEntryView(loader.getId() );
+        if ( view != null ) {
+            view.setCursor( cursor );
+            view.loadingDataFinished();
+        }
         //refreshUI();
     }
 
@@ -1029,9 +1033,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        //mEntryPagerAdapter.setUpdatedCursor(loader.getId(), null);
-        if ( hasEntryView() )
-            GetSelectedEntryView().mCursor = null;
+        final EntryView view = mEntryPagerAdapter.GetEntryView( loader.getId() );
+        if (view != null )
+            view.setCursor(null);
     }
 
     private boolean hasEntryView() {
@@ -1052,8 +1056,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         if ( mLeakEntryView == null )
             mLeakEntryView  = view;
-        view.mCursor = null;
-
 
         final WebViewExtended webView = GetSelectedEntryWebViewExtended();
         if (Build.VERSION.SDK_INT >= 16 && webView != null ) {

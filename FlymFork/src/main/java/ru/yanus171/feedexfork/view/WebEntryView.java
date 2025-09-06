@@ -2,9 +2,6 @@ package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
-import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
@@ -32,17 +29,14 @@ import static ru.yanus171.feedexfork.view.WebViewExtended.BASE_URL;
 import static ru.yanus171.feedexfork.view.WebViewExtended.TEXT_HTML;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -68,9 +62,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.loader.content.Loader;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -91,7 +82,6 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
-import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -216,14 +206,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         Timer timer = new Timer("EntryView.setHtml");
         mLastSetHTMLTime = new Date().getTime();
 
-
         final String feedID = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
         final String author = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
         final String categories = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
         final long timestamp = mCursor.getLong(mCursor.getColumnIndex(FeedData.EntryColumns.DATE));
         //final String feedTitle = filters.removeTextFromTitle( mCursor.getString(mCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
-        String title =
-                mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+        String title = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
         if (filters != null)
             title = filters.removeText(title, DB_APPLIED_TO_TITLE);
         final String enclosure = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
@@ -502,12 +490,13 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void generateArticleContent( Cursor cursor, boolean forceUpdate) {
-        super.generateArticleContent( cursor, forceUpdate);
+    public void generateArticleContent( boolean forceUpdate) {
+        super.generateArticleContent(forceUpdate);
         mIsFullTextShown = setHtml(mActivity.mEntryFragment.mBaseUri,
                 mActivity.mEntryFragment.mFilters,
                 mIsFullTextShown,
                 forceUpdate);
+        mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
         refreshUI();
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
         mActivity.mEntryFragment.UpdateHeader();
@@ -519,7 +508,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             @Override
             public void run() {
                 mIsFullTextShown = false;
-                generateArticleContent( mCursor, true);
+                generateArticleContent(true);
             }
         });
     }
@@ -536,7 +525,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 @Override
                 public void run() {
                     mIsFullTextShown = true;
-                    generateArticleContent( mCursor, true);
+                    generateArticleContent(true);
                 }
             });
         } else /*--if (!isRefreshing())*/ {
@@ -852,13 +841,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void loadingDataFinished(Loader<Cursor> loader, Cursor cursor) {
-        super.loadingDataFinished(loader, cursor);
-        int position = loader.getId();
-        if (position != -1) {
+    public void loadingDataFinished() {
+        super.loadingDataFinished();
+        if (mCursor != null) {
             FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-            generateArticleContent( mCursor, false);
-            mRetrieveFullText = cursor.getInt(mRetrieveFullTextPos) == 1;
+            generateArticleContent(false);
+            mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
             //if getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
             //    activity.setFullScreen(true, true);
             if (mLoadTitleOnly) {
@@ -1036,7 +1024,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             case R.id.menu_font_bold: {
                 PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
                 item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
-                generateArticleContent( mCursor, true);
+                generateArticleContent(true);
                 break;
             }
             case R.id.menu_show_html: {
@@ -1108,6 +1096,5 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void refreshUI() {
         mActivity.mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
-        mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
     }
 }
