@@ -574,6 +574,8 @@
     <string name="unstarAllArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
     <string name="tap_actions_were_enabled">Tap actions were enabled</string>
     <string name="tap_actions_were_disabled">All tap actions were temporary disabled! Tap top right to enable</string>
+    <string name="zoom_scroll_were_disabled">Zoom and scroll actions were disabled</string>
+    <string name="zoom_scroll_were_enable">Zoom and scroll actions were enabled</string>
     <string name="list_was_scrolled_to_top">Scrolled to the top</string>
     <string name="list_was_scrolled_to_bottom">Scrolled to the bottom</string>
     <string name="articleWasUnstarred">An article has been unstarred</string>
@@ -752,5 +754,6 @@
     <string name="article_list_restore_type">Restore list position type</string>
     <string name="article_list_restore_type_summary">To what position scroll the article list when its first opened</string>
     <string name="menu_replace_img_with_a_link_toggle">Replace img with A link</string>
+    <string name="scroll_zoom_enabled">Horizontal scroll</string>
 
 </resources>

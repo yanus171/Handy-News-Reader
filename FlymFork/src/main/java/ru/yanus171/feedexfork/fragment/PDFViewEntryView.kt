@@ -8,9 +8,11 @@ import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
@@ -19,7 +21,6 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.activity.EntryActivity
-import ru.yanus171.feedexfork.parser.FeedFilters
 import ru.yanus171.feedexfork.parser.FileSelectDialog
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS
@@ -28,6 +29,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.X_OFFSET
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
+import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SCROLL_ENABLED
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
 
@@ -38,6 +40,8 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     var mZoom: Float = 1.0F
     var mTitleWasUpdated = false
     var mIsLoaded = false
+    var mIsBlockScroll = false
+
     init {
         createView()
     }
@@ -50,18 +54,6 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             (mPDFView.parent as ViewGroup).removeView(mPDFView)
         mContainer.addView(mPDFView)
         mView = mPDFView
-    }
-
-    fun setHtml( entryId: Long,
-                          articleListUri: Uri,
-                          newCursor: Cursor,
-                          filters: FeedFilters?,
-                          isFullTextShown: Boolean,
-                          forceUpdate: Boolean,
-                          activity: EntryActivity ): Boolean {
-
-
-        return true
     }
 
     private fun readFloat(cursor: Cursor, fieldName: String, defaultValue: Float): Float {
@@ -92,7 +84,18 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             })
             .onPageScroll( object: OnPageScrollListener {
                 override fun onPageScrolled(page: Int, positionOffset: Float) {
+                    if ( !mIsLoaded )
+                        return
                     mScrollPartY = GetViewScrollPartY()
+                    if (!PrefUtils.getBoolean( PREF_ZOOM_SCROLL_ENABLED, true ) ) {
+                        if ( !mIsBlockScroll ) {
+                            mIsBlockScroll = true
+                            //mPDFView.zoomTo(mZoom)
+                            mPDFView.moveTo(mXOffset, mPDFView.currentYOffset)
+                            mIsBlockScroll = false
+                        }
+                    }
+                    saveState()
                 }
             })
             .onTap( object : OnTapListener {
@@ -112,7 +115,9 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             }
             .onLoad {
                 mIsLoaded = true
+                mIsBlockScroll = true
                 mPDFView.jumpTo(mScrollPartY.toInt())
+                mIsBlockScroll = false
                 restoreState()
                 //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
                 if (title.isEmpty() || title.startsWith("content://"))
@@ -190,6 +195,10 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         load("")
     }
     fun saveState(){
+        if ( mIsBlockScroll )
+            return
+        if ( !PrefUtils.getBoolean( PREF_ZOOM_SCROLL_ENABLED, true ) )
+            return
         mXOffset = mPDFView.currentXOffset
         mZoom = mPDFView.zoom
     }
@@ -222,9 +231,9 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
 
     override fun refreshUI(){
         super.refreshUI()
-        //restoreState();
-        if ( mIsLoaded )
-            load("")
+        if ( !mIsLoaded )
+            return
+        load("")
     }
 
     @SuppressLint("Range")
@@ -248,5 +257,21 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         super.loadingDataFinished()
         mActivity.mEntryFragment.refreshUI()
         generateArticleContent(false)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu ) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem( R.id.menu_scroll_zoom_enabled ).isVisible = true
+        menu.findItem( R.id.menu_scroll_zoom_enabled ).isChecked = PrefUtils.getBoolean( PREF_ZOOM_SCROLL_ENABLED, true )
+    }
+    override fun onOptionsItemSelected(item: android.view.MenuItem ) {
+        super.onOptionsItemSelected(item);
+        if (item.itemId == R.id.menu_scroll_zoom_enabled ) {
+            saveState();
+            PrefUtils.toggleBoolean( PREF_ZOOM_SCROLL_ENABLED, item.isChecked );
+            mActivity.mEntryFragment.SetupZones();
+            Toast.makeText( mActivity, if (item.isChecked) R.string.tap_actions_were_enabled else R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+            refreshUI();
+        }
     }
 }

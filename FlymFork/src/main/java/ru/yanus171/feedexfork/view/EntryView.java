@@ -451,6 +451,7 @@ public abstract class EntryView {
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
 
         menu.findItem(R.id.menu_go_back).setVisible( CanGoBack() );
+        menu.findItem( R.id.menu_scroll_zoom_enabled ).setVisible( false );
     }
 
 //    private String getTitle() {
