@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.github.barteksc.pdfviewer.PDFView
@@ -31,7 +32,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
 
-class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup, entryID: Long) : EntryView(activity, entryID)
+class PDFViewEntryView(private val activity: EntryActivity, private val mContainer: ViewGroup, entryID: Long) : EntryView(activity, entryID)
 {
     lateinit var mPDFView: PDFView
     var mXOffset: Float = 0.0F
@@ -39,14 +40,19 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup, entryID: 
     var mTitleWasUpdated = false
     var mIsLoaded = false
     init {
+        createView()
+    }
+
+    private fun createView() {
         var inflater  = activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater;
         var rootView = inflater.inflate( R.layout.pdfview, null )
-        mPDFView = rootView.findViewById<PDFView>( R.id.pdfView )!!
-        if ( mPDFView.parent != null )
-            (mPDFView.parent as ViewGroup ).removeView( mPDFView )
-        mContainer.addView( mPDFView )
+        mPDFView = rootView.findViewById<PDFView>(R.id.pdfView)!!
+        if (mPDFView.parent != null)
+            (mPDFView.parent as ViewGroup).removeView(mPDFView)
+        mContainer.addView(mPDFView)
         mView = mPDFView
     }
+
     fun setHtml( entryId: Long,
                           articleListUri: Uri,
                           newCursor: Cursor,
@@ -179,7 +185,7 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup, entryID: 
     }
     override fun onResume() {
         super.onResume()
-
+        load("")
     }
     fun saveState(){
         mXOffset = mPDFView.currentXOffset
@@ -214,7 +220,9 @@ class PDFViewEntryView(activity: EntryActivity, mContainer: ViewGroup, entryID: 
 
     override fun refreshUI(){
         super.refreshUI()
-        restoreState();
+        //restoreState();
+        if ( mIsLoaded )
+            load("")
     }
 
     @SuppressLint("Range")
