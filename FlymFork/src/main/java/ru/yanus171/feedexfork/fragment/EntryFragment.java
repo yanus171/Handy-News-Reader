@@ -266,7 +266,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             if ( isArticleTapEnabled() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
-                GetSelectedEntryView().refreshUI();
+                GetSelectedEntryView().refreshUI( true );
                 Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
             } else
                 EnableTapActions();
@@ -345,7 +345,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     CancelStarNotification( getCurrentEntryID() );
 
                     mLastPagerPos = i;
-                    refreshUI();
+                    refreshUI(false);
 
                     EntryView view = mEntryPagerAdapter.GetEntryView( i );
                     if ( view != null && GetSelectedEntryWebView() != null ) {
@@ -467,7 +467,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private void EnableTapActions() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         SetupZones();
-        GetSelectedEntryView().refreshUI();
+        GetSelectedEntryView().refreshUI( true );
         Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
     }
 
@@ -551,7 +551,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         mLastScreenState = getActivity().getResources().getConfiguration().orientation;
         UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
-        refreshUI();
+        refreshUI(false);
     }
 
     @Override
@@ -1106,7 +1106,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         else if ( orientation == PORTRAIT && mForceLandscapeOrientationMenuItem != null)
             mForceLandscapeOrientationMenuItem.setChecked( false );
     }
-    public void refreshUI() {
+    public void refreshUI( boolean invalidateContent ) {
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         EntryView view = GetSelectedEntryView();
@@ -1115,7 +1115,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             SetForceOrientation(ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos)));
             applyOrientation();
             getEntryActivity().invalidateOptionsMenu();
-            view.refreshUI();
+            view.refreshUI( invalidateContent );
 
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
 

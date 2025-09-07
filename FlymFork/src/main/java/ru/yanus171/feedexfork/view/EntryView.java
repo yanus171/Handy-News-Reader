@@ -145,8 +145,9 @@ public abstract class EntryView {
 
     }
 
-    public void refreshUI() {
-
+    public void refreshUI( boolean invalidateContent ) {
+        if ( invalidateContent )
+            InvalidateContentCache();
     }
 
     public void onStart() {
@@ -180,7 +181,7 @@ public abstract class EntryView {
         }
     }
     public void InvalidateContentCache() {
-
+        mContentWasLoaded = false;
     }
     public void onResume() {
 
@@ -328,7 +329,7 @@ public abstract class EntryView {
             case R.id.menu_image_white_background: {
                 PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
                 item.setChecked( PrefUtils.isImageWhiteBackground() );
-                refreshUI();
+                refreshUI(true);
                 generateArticleContent(true);
                 break;
             }
@@ -336,7 +337,7 @@ public abstract class EntryView {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 mActivity.mEntryFragment.SetupZones();
                 Toast.makeText( mActivity, R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
-                refreshUI();
+                refreshUI(true);
                 break;
             }
 

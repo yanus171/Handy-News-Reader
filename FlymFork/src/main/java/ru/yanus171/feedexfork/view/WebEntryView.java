@@ -497,7 +497,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 mIsFullTextShown,
                 forceUpdate);
         mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
-        refreshUI();
+        refreshUI(false);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
         mActivity.mEntryFragment.UpdateHeader();
     }
@@ -1094,7 +1094,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void refreshUI() {
+    public void refreshUI(boolean invalidateContent) {
+        super.refreshUI( invalidateContent );
         mActivity.mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
     }
 }

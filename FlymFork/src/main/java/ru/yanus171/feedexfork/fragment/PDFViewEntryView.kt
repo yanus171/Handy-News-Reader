@@ -30,6 +30,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SCROLL_ENABLED
+import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
 
@@ -195,10 +196,11 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
     override fun onResume() {
         super.onResume()
+        generateArticleContent( false )
     }
     override fun onStart() {
         super.onStart()
-        load("")
+        generateArticleContent( false )
     }
     fun saveState(){
         if ( mIsBlockScroll )
@@ -235,11 +237,11 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         return ProgressInfo()
     }
 
-    override fun refreshUI(){
-        super.refreshUI()
+    override fun refreshUI(invalidateContent: Boolean){
+        super.refreshUI(invalidateContent)
         if ( !mIsLoaded )
             return
-        load("")
+        generateArticleContent(false)
     }
 
     @SuppressLint("Range")
@@ -251,18 +253,25 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         super.generateArticleContent(forceUpdate)
         //setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         //Dog.v( TAG, "file =" + mEntryLink )
-        val title = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.TITLE))
-        if ( mScrollPartY == -1.0 )
-            mScrollPartY = readDouble( mCursor, SCROLL_POS, 0.0)
-        mZoom = readFloat( mCursor, ZOOM, mZoom )
-        mXOffset = readFloat( mCursor, X_OFFSET, mXOffset )
-        load(title)
+        load(mTitle)
     }
 
+    @SuppressLint("Range")
     override fun loadingDataFinished() {
         super.loadingDataFinished()
-        mActivity.mEntryFragment.refreshUI()
-        generateArticleContent(false)
+        mActivity.mEntryFragment.refreshUI(false)
+        if ( mCursor != null && !mContentWasLoaded ) {
+            mTitle = mCursor.getString(mCursor.getColumnIndex(TITLE))
+            if ( mScrollPartY == -1.0 )
+                mScrollPartY = readDouble( mCursor, SCROLL_POS, 0.0)
+            mZoom = readFloat( mCursor, ZOOM, mZoom )
+            mXOffset = readFloat( mCursor, X_OFFSET, mXOffset )
+        }
+        UiUtils.RunOnGuiThread(object: Runnable {
+            override fun run(){
+                generateArticleContent(false)
+            }
+        }, 1000 )
     }
 
     override fun onPrepareOptionsMenu(menu: Menu ) {
@@ -277,7 +286,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             PrefUtils.toggleBoolean( PREF_ZOOM_SCROLL_ENABLED, item.isChecked );
             mActivity.mEntryFragment.SetupZones();
             Toast.makeText( mActivity, if (item.isChecked) R.string.tap_actions_were_enabled else R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
-            refreshUI();
+            refreshUI(true);
         }
     }
 }
