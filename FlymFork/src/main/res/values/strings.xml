@@ -755,5 +755,7 @@
     <string name="article_list_restore_type_summary">To what position scroll the article list when its first opened</string>
     <string name="menu_replace_img_with_a_link_toggle">Replace img with A link</string>
     <string name="scroll_zoom_enabled">Horizontal scroll</string>
+    <string name="scroll_to_bottom_disabled_for_pdf">Scroll to bottom disabled for PDF</string>
+    <string name="scroll_to_top_disabled_for_pdf">Scroll to top disabled for PDF</string>
 
 </resources>

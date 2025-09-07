@@ -171,12 +171,14 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
 
     override fun ScrollToBottom() {
-        mPDFView.positionOffset = 1F
+        //mPDFView.positionOffset = 1F
+        Toast.makeText( mActivity, R.string.scroll_to_bottom_disabled_for_pdf, Toast.LENGTH_LONG ).show()
     }
 
 
     override fun GoTop() {
-        mPDFView.positionOffset = 0F
+        //mPDFView.positionOffset = 0F
+        Toast.makeText( mActivity, R.string.scroll_to_top_disabled_for_pdf, Toast.LENGTH_LONG ).show()
     }
 
     override fun PageChange(delta: Int, statusText: StatusText) {
