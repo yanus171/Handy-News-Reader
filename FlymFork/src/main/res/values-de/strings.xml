@@ -724,4 +724,5 @@
     <string name="entry_show_menu">Menü anzeigen</string>
     <string name="article_list_restore_type">Art der Listenposition wiederherstellen</string>
     <string name="article_list_restore_type_summary">An welche Position die Artikelliste beim ersten Öffnen blättern soll</string>
+    <string name="menu_replace_img_with_a_link_toggle">Grafik durch einen Link ersetzen</string>
 </resources>
