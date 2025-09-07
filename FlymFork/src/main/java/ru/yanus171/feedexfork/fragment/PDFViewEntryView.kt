@@ -97,6 +97,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
                         }
                     }
                     saveState()
+                    mActivity.mEntryFragment.UpdateHeader();
                 }
             })
             .onTap( object : OnTapListener {
@@ -234,7 +235,11 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
 
     override fun getProgressInfo(statusHeight: Int): ProgressInfo? {
-        return ProgressInfo()
+        val result = ProgressInfo()
+        result.max = mPDFView.pageCount
+        result.progress = mPDFView.currentPage
+        result.step = 1
+        return result
     }
 
     override fun refreshUI(invalidateContent: Boolean){
