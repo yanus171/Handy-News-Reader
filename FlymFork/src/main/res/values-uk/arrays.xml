@@ -47,6 +47,11 @@
         <item>Вертикально</item>
         <item>Не показувати кнопки</item>
     </string-array>
+    <string-array name="article_list_restore_type_captions">
+        <item>Верх | Низ (залежить від налаштувань порядку)</item>
+        <item>До найдавнішої нової статті</item>
+        <item>До найдавнішої непрочитаної статті</item>
+    </string-array>
     <string-array name="settings_datetime_format">
         <item>Типово</item>
         <item>Залишилось</item>
