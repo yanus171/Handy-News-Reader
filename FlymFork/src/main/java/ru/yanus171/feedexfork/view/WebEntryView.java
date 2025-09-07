@@ -173,7 +173,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void PageChange(int delta, StatusText statusText) {
         ScrollTo((int) (mWebView.getScrollY() + delta * (mWebView.getHeight() - statusText.GetHeight()) *
-                (getBoolean("page_up_down_90_pct", false) ? 0.9 : 0.98)), true);
+                getPageChangeMultiplier()), true);
     }
 
     @Override

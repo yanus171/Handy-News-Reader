@@ -5,7 +5,6 @@ import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LAN
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
@@ -59,7 +58,6 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 
@@ -467,6 +465,10 @@ public abstract class EntryView {
 //            return mCursor.getString(mFeedUrlPos);
 //        return "";
 //    }
+
+    protected static float getPageChangeMultiplier() {
+        return PrefUtils.isPageUpDown90Pct() ? 0.9F : 0.98F;
+    }
 
 
 }

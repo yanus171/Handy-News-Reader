@@ -182,10 +182,14 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     override fun PageChange(delta: Int, statusText: StatusText) {
         ScrollTo( mPDFView.positionOffset + delta * getPageFloatSize(), true )
     }
-
+    private fun getScreenHeight() : Int {
+        var result = mPDFView.height;
+        result -= mActivity.mEntryFragment.mStatusText.GetHeight()
+        return result
+    }
     private fun getPageFloatSize() : Float {
-        val pixDoc = mPDFView.getPageSize(0).height * mPDFView.zoom *  mPDFView.pageCount - mPDFView.height
-        return mPDFView.height / pixDoc
+        val pixDoc = mPDFView.getPageSize(0).height * mPDFView.zoom *  mPDFView.pageCount - getScreenHeight()
+        return (getScreenHeight() / pixDoc) * getPageChangeMultiplier()
     }
     override fun onResume() {
         super.onResume()

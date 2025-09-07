@@ -185,6 +185,10 @@ public class PrefUtils {
         return getBoolean( "show_unstarred_checkbox", true );
     }
 
+    public static boolean isPageUpDown90Pct() {
+        return getBoolean("page_up_down_90_pct", false);
+    }
+
     public static boolean getBoolean(String key, boolean defValue) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainApplication.getContext());
         return settings.getBoolean(key, defValue);
