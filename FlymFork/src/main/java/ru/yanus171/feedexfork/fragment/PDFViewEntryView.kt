@@ -18,6 +18,7 @@ import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.activity.EntryActivity
@@ -57,22 +58,15 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         mView = mPDFView
     }
 
-    private fun readFloat(cursor: Cursor, fieldName: String, defaultValue: Float): Float {
-        return if ( !cursor.isNull(cursor.getColumnIndex(fieldName)) )
-        cursor.getFloat(cursor.getColumnIndex(fieldName)) else defaultValue
-    }
-    private fun readDouble(cursor: Cursor, fieldName: String, defaultValue: Double): Double {
-        return if ( !cursor.isNull(cursor.getColumnIndex(fieldName)) )
-            cursor.getDouble(cursor.getColumnIndex(fieldName)) else defaultValue
-    }
     private fun load(title: String) {
         mContentWasLoaded = true;
+        mIsLoaded = false
         mPDFView.setBackgroundColor(if (PrefUtils.isImageWhiteBackground()) Color.LTGRAY else Color.BLACK )
         mPDFView.fromUri(Uri.parse(mEntryLink))
             //.pages(0, 2, 1, 3, 3, 3)
             //.enableSwipe(false) // allows to block changing pages using swipe
             .swipeHorizontal(false)
-            .defaultPage(mScrollPartY.toInt())
+            //.defaultPage(mScrollPartY.toInt())
             .enableDoubletap(false)
             .enableAntialiasing(true)
             //.pageFitPolicy(FitPolicy.WIDTH)
@@ -80,7 +74,8 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             .nightMode(!PrefUtils.isImageWhiteBackground())
             .onPageChange(object : OnPageChangeListener {
                 override fun onPageChanged(page: Int, pageCount: Int) {
-                    mScrollPartY = GetViewScrollPartY()
+                    if (mIsLoaded )
+                        mScrollPartY = GetViewScrollPartY()
                 }
             })
             .onPageScroll( object: OnPageScrollListener {
@@ -116,15 +111,16 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             .onRender {
             }
             .onLoad {
-                mIsLoaded = true
-                mIsBlockScroll = true
-                mPDFView.jumpTo(mScrollPartY.toInt())
-                mIsBlockScroll = false
-                restoreState()
-                //mPDFView.setPositionOffset(mScrollPartY.toFloat(), true)
                 if (title.isEmpty() || title.startsWith("content://"))
                     updateTitle()
-                //refreshUI();
+                val scrollPart = mScrollPartY.toFloat()
+                UiUtils.RunOnGuiThread(object: Runnable {
+                    override fun run(){
+                        mIsLoaded = true
+                        restoreState()
+                        mPDFView.positionOffset = scrollPart
+                    }
+                }, 0 )
                 EndStatus()
             }
 
@@ -227,7 +223,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         super.onPause()
     }
     override fun GetViewScrollPartY(): Double {
-        return mPDFView.currentPage.toDouble()
+        return mPDFView.positionOffset.toDouble()
     }
 
     override fun IsScrollAtBottom(): Boolean {
@@ -266,17 +262,14 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         super.loadingDataFinished()
         mActivity.mEntryFragment.refreshUI(false)
         if ( mCursor != null && !mContentWasLoaded ) {
-            mTitle = mCursor.getString(mCursor.getColumnIndex(TITLE))
-            if ( mScrollPartY == -1.0 )
-                mScrollPartY = readDouble( mCursor, SCROLL_POS, 0.0)
-            mZoom = readFloat( mCursor, ZOOM, mZoom )
-            mXOffset = readFloat( mCursor, X_OFFSET, mXOffset )
+            mZoom = readFloat( ZOOM, mZoom )
+            mXOffset = readFloat( X_OFFSET, mXOffset )
         }
         UiUtils.RunOnGuiThread(object: Runnable {
             override fun run(){
                 generateArticleContent(false)
             }
-        }, 1000 )
+        }, 500 )
     }
 
     override fun onPrepareOptionsMenu(menu: Menu ) {
@@ -290,7 +283,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             saveState();
             PrefUtils.toggleBoolean( PREF_ZOOM_SCROLL_ENABLED, item.isChecked );
             mActivity.mEntryFragment.SetupZones();
-            Toast.makeText( mActivity, if (item.isChecked) R.string.tap_actions_were_enabled else R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+            Toast.makeText(MainApplication.getContext(), if (item.isChecked) R.string.zoom_scroll_were_enable else R.string.zoom_scroll_were_disabled, Toast.LENGTH_LONG ).show();
             refreshUI(true);
         }
     }

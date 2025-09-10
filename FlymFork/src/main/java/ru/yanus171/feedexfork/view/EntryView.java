@@ -3,6 +3,8 @@ package ru.yanus171.feedexfork.view;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -124,7 +126,7 @@ public abstract class EntryView {
         if ( mScrollPartY > 0.0001 ) {
             //Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
             ContentValues values = new ContentValues();
-            values.put(FeedData.EntryColumns.SCROLL_POS, mScrollPartY);
+            values.put(SCROLL_POS, mScrollPartY);
             SaveStateToDB( values );
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             SetNotifyEnabled(false ); try {
@@ -208,21 +210,17 @@ public abstract class EntryView {
     }
     @SuppressLint("Range")
     public void generateArticleContent( boolean forceUpdate ) {
-        mEntryLink = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.LINK));
-        if ( mScrollPartY == -1 )
-            mScrollPartY = !mCursor.isNull(mCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) ?
-                    mCursor.getDouble(mCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS)) : 0;
-        mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
         //refreshUI();
         Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
         mActivity.mEntryFragment.UpdateHeader();
     }
 
+    @SuppressLint("Range")
     public void loadingDataFinished(){
         //Timer.End( loader.getId() );
         if (mCursor != null && mCursor.moveToFirst() ) {
             if (mTitlePos == -1) {
-                mTitlePos = mCursor.getColumnIndex(FeedData.EntryColumns.TITLE);
+                mTitlePos = mCursor.getColumnIndex(TITLE);
                 mDatePos = mCursor.getColumnIndex(FeedData.EntryColumns.DATE);
                 mAbstractPos = mCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT);
                 mLinkPos = mCursor.getColumnIndex(FeedData.EntryColumns.LINK);
@@ -235,14 +233,30 @@ public abstract class EntryView {
                 mEnclosurePos = mCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE);
                 mFeedIDPos = mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
                 mAuthorPos = mCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR);
-                mScrollPosPos = mCursor.getColumnIndex(FeedData.EntryColumns.SCROLL_POS);
+                mScrollPosPos = mCursor.getColumnIndex(SCROLL_POS);
                 mFeedNamePos = mCursor.getColumnIndex(FeedData.FeedColumns.NAME);
                 mFeedUrlPos = mCursor.getColumnIndex(FeedData.FeedColumns.URL);
                 mFeedIconUrlPos = mCursor.getColumnIndex(FeedData.FeedColumns.ICON_URL);
                 mRetrieveFullTextPos = mCursor.getColumnIndex(FeedData.FeedColumns.RETRIEVE_FULLTEXT);
             }
+            mEntryLink = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.LINK));
+            mScrollPartY = readDouble( SCROLL_POS, 0);
+            mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
+            mTitle = mCursor.getString(mCursor.getColumnIndex(TITLE));
         }
-        //refreshUI();
+    }
+
+    @SuppressLint("Range")
+    protected float readFloat( String fieldName, float defaultValue) {
+        return !mCursor.isNull(mCursor.getColumnIndex(fieldName)) ?
+            mCursor.getFloat(mCursor.getColumnIndex(fieldName)) :
+            defaultValue;
+    }
+    @SuppressLint("Range")
+    protected double readDouble( String fieldName, double defaultValue) {
+        return !mCursor.isNull(mCursor.getColumnIndex(fieldName)) ?
+                mCursor.getDouble( mCursor.getColumnIndex(fieldName)) :
+                defaultValue;
     }
 
     @SuppressLint("Range")
@@ -308,7 +322,7 @@ public abstract class EntryView {
                                         ContentResolver cr = MainApplication.getContext().getContentResolver();
                                         ContentValues values = new ContentValues();
                                         final String newTitle = editText.getText().toString();
-                                        values.put( FeedData.EntryColumns.TITLE, newTitle );
+                                        values.put( TITLE, newTitle );
                                         cr.update(uri, values, null, null);
                                         UiUtils.RunOnGuiThread(new Runnable() {
                                             @Override
