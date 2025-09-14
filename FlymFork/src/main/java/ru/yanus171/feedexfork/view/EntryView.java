@@ -70,7 +70,7 @@ public abstract class EntryView {
     public double mScrollPartY = -1;
     public Cursor mCursor = null;
     protected int mStatus = 0;
-    public String mTitle;
+    public String mTitle = "";
     public static final String TAG = "EntryView";
     public boolean mWasAutoUnStar = false;
     public boolean mFavorite;
@@ -464,7 +464,7 @@ public abstract class EntryView {
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
 
         menu.findItem(R.id.menu_go_back).setVisible( CanGoBack() );
-        menu.findItem( R.id.menu_scroll_zoom_enabled ).setVisible( false );
+        menu.findItem( R.id.menu_zoom_shift_enabled).setVisible( false );
     }
 
 //    private String getTitle() {

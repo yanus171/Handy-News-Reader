@@ -151,7 +151,7 @@ public class PrefUtils {
         return getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, false);
     }
 
-    public static final String PREF_ZOOM_SCROLL_ENABLED = "article_zoom_scroll_enabled";
+    public static final String PREF_ZOOM_SHIFT_ENABLED = "article_zoom_scroll_enabled";
 
     public static final String PREF_TAP_ENABLED = "article_tap_enabled";
     public static final String PREF_ARTICLE_TAP_ENABLED_TEMP = "article_tap_enabled_temp";

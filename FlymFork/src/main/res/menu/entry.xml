@@ -56,9 +56,9 @@
         android:icon="@drawable/ic_touch_app"
         android:title="@string/disable_all_tap_actions" />
     <item
-        android:id="@+id/menu_scroll_zoom_enabled"
+        android:id="@+id/menu_zoom_shift_enabled"
         android:icon="@drawable/arrow_left_right"
-        android:title="@string/scroll_zoom_enabled"
+        android:title="@string/zoom_shift_enabled"
         android:checkable="true"/>
     <item
         android:id="@+id/menu_share_group"
