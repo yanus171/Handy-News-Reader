@@ -1028,7 +1028,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                             cr.insert(FeedColumns.CONTENT_URI, values);
                         }
                         cursor.close();
-                        UiUtils.toast( getActivity(), R.string.feed_copied );
+                        UiUtils.toast( R.string.feed_copied );
                     }
                 }
                 return true;

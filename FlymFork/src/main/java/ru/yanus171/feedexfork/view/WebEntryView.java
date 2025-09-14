@@ -168,12 +168,21 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void LongClickOnBottom() {
         AddNavigationHistoryStep();
         ScrollTo((int) mWebView.GetContentHeight() - mWebView.getHeight(), false);
-        Toast.makeText( mActivity, R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
+        UiUtils.toastShort( R.string.list_was_scrolled_to_bottom );
     }
 
     @Override
-    public void PageChange(int delta, StatusText statusText) {
-        ScrollTo((int) (mWebView.getScrollY() + delta * (mWebView.getHeight() - statusText.GetHeight()) *
+    public void leftBottomBtnClick() {
+        mActivity.mEntryFragment.PreviousEntry();
+    }
+    @Override
+    public void rightBottomBtnClick() {
+        mActivity.mEntryFragment.NextEntry();
+    }
+
+    @Override
+    public void PageChange(int delta) {
+        ScrollTo((int) (mWebView.getScrollY() + delta * (mWebView.getHeight() - mActivity.mEntryFragment.mStatusText.GetHeight()) *
                 getPageChangeMultiplier()), true);
     }
 
@@ -463,7 +472,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-            UiUtils.toast(context, context.getString(R.string.cant_open_image) + ": " + e.getLocalizedMessage());
+            UiUtils.toast( context.getString(R.string.cant_open_image) + ": " + e.getLocalizedMessage());
         }
     }
 
@@ -481,7 +490,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-            UiUtils.toast(context, context.getString(R.string.cant_open_image) + ": " + e.getLocalizedMessage());
+            UiUtils.toast( context.getString(R.string.cant_open_image) + ": " + e.getLocalizedMessage());
         }
     }
 

@@ -729,7 +729,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                         mIsAutoImageLoadCb.isChecked,
                         optionsJsonString)
                 if (result.second) {
-                    UiUtils.toast(this@EditFeedActivity, R.string.new_feed_was_added)
+                    UiUtils.toast( R.string.new_feed_was_added )
                     FetcherService.Start(Intent(this@EditFeedActivity, FetcherService::class.java)
                             .setAction(FetcherService.ACTION_REFRESH_FEEDS)
                             .putExtra(Constants.FEED_ID, result.first.lastPathSegment), true)

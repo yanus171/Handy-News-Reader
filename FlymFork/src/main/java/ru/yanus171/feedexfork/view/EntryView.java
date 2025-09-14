@@ -116,7 +116,7 @@ public abstract class EntryView {
     protected abstract int GetScrollY();
     protected abstract void ScrollTo( int y, boolean smooth );
     public abstract void LongClickOnBottom();
-    public abstract void PageChange(int delta, StatusText statusText);
+    public abstract void PageChange(int delta);
     protected abstract double GetViewScrollPartY();
 
     public void SaveScrollPos() {
@@ -291,7 +291,7 @@ public abstract class EntryView {
                 ClipData clip = ClipData.newPlainText("Copied Text 1", mEntryLink);
                 clipboard.setPrimaryClip(clip);
 
-                UiUtils.toast( mActivity, R.string.link_was_copied_to_clipboard);
+                UiUtils.toast( R.string.link_was_copied_to_clipboard);
                 break;
             }
             case R.id.menu_go_back: {
@@ -351,7 +351,7 @@ public abstract class EntryView {
             case R.id.menu_disable_all_tap_actions: {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 mActivity.mEntryFragment.SetupZones();
-                Toast.makeText( mActivity, R.string.tap_actions_were_disabled, Toast.LENGTH_LONG ).show();
+                UiUtils.toast( R.string.tap_actions_were_disabled );
                 refreshUI(true);
                 break;
             }
@@ -385,13 +385,13 @@ public abstract class EntryView {
 
                                     ShortcutManagerCompat.requestPinShortcut(mActivity, pinShortcutInfo, null);
                                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-                                        Toast.makeText(mActivity, R.string.new_entry_shortcut_added, Toast.LENGTH_LONG).show();
+                                        UiUtils.toast( R.string.new_entry_shortcut_added );
                                 });
                             }
                         }).execute();
                     }
                 } else
-                    Toast.makeText( mActivity, R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
+                    UiUtils.toast( R.string.new_feed_shortcut_add_failed );
                 break;
             }
 
@@ -403,7 +403,7 @@ public abstract class EntryView {
     public static IconCompat LoadIcon(String iconUrl) {
         Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
         if ( bitmap == null )
-            UiUtils.RunOnGuiThread(() -> Toast.makeText(MainApplication.getContext(), R.string.unable_to_load_article_icon, Toast.LENGTH_LONG ).show());
+            UiUtils.RunOnGuiThread(() -> UiUtils.toast( R.string.unable_to_load_article_icon ));
         else
             bitmap = UiUtils.getScaledBitmap( bitmap, 32 );
         return (bitmap == null) ?
@@ -415,6 +415,9 @@ public abstract class EntryView {
     public void OpenLabelSetup() {
         LabelVoc.INSTANCE.showDialogToSetArticleLabels(mActivity, mEntryId, null);
     }
+
+    public abstract void leftBottomBtnClick();
+    public abstract void rightBottomBtnClick();
 
     public void SetIsFavorite(final boolean favorite, boolean showToast) {
         if ( mFavorite == favorite )
@@ -437,7 +440,7 @@ public abstract class EntryView {
         mActivity.invalidateOptionsMenu();
         if ( mFavorite ) {
             if ( showToast )
-                Toast.makeText(mActivity, R.string.entry_marked_favourite, Toast.LENGTH_LONG).show();
+                UiUtils.toast( R.string.entry_marked_favourite );
         } else {
             Snackbar snackbar = Snackbar.make(mActivity.mEntryFragment.getView().getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
                     .setActionTextColor(ContextCompat.getColor(mActivity.mEntryFragment.getView().getContext(), R.color.light_theme_color_primary))

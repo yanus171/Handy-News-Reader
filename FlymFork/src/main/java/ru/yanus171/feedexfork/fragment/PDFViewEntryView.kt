@@ -32,7 +32,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SHIFT_ENABLED
 import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
-import ru.yanus171.feedexfork.view.StatusText
 import java.util.Date
 
 class PDFViewEntryView(private val activity: EntryActivity, private val mContainer: ViewGroup, entryID: Long) : EntryView(activity, entryID)
@@ -223,7 +222,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         Toast.makeText( mActivity, R.string.scroll_to_top_disabled_for_pdf, Toast.LENGTH_LONG ).show()
     }
 
-    override fun PageChange(delta: Int, statusText: StatusText) {
+    override fun PageChange(delta: Int) {
         ScrollTo( mPDFView.positionOffset + delta * getPageFloatSize(), true )
     }
     private fun getScreenHeight() : Int {
@@ -326,9 +325,17 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         if (item.itemId == R.id.menu_zoom_shift_enabled ) {
             saveState();
             PrefUtils.toggleBoolean( PREF_ZOOM_SHIFT_ENABLED, item.isChecked )
-            mActivity.mEntryFragment.SetupZones();
-            Toast.makeText(MainApplication.getContext(), if (item.isChecked) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled, Toast.LENGTH_LONG ).show();
-            refreshUI(true);
+            mActivity.mEntryFragment.SetupZones()
+            UiUtils.toast( if (PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled )
+            refreshUI(true)
         }
+    }
+
+    override fun leftBottomBtnClick() {
+        PageChange(+1)
+    }
+
+    override fun rightBottomBtnClick() {
+        PageChange(+1)
     }
 }

@@ -45,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.view.FontSelectPreference;
 
@@ -86,12 +87,15 @@ public class UiUtils {
         showMessage(activity, activity.getString(messageId));
     }
 
-    static public void toast(@NonNull Context context, @StringRes int messageId) {
-        Toast.makeText(context, messageId, Toast.LENGTH_LONG).show();
+    static public void toast( @StringRes int messageId) {
+        Toast.makeText(MainApplication.getContext(), messageId, Toast.LENGTH_LONG).show();
+    }
+    static public void toastShort( @StringRes int messageId) {
+        Toast.makeText(MainApplication.getContext(), messageId, Toast.LENGTH_SHORT).show();
     }
 
-    static public void toast(@NonNull Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    static public void toast( String message) {
+        Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     public static void SetTypeFace(TextView textView) {

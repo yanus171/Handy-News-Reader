@@ -21,7 +21,6 @@ import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.Dog
 import ru.yanus171.feedexfork.view.EntryView
-import ru.yanus171.feedexfork.view.StatusText
 import java.io.IOException
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -40,6 +39,14 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
         //super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         openRenderer( mEntryLink )
         mListView.adapter = ListAdapter(mRenderer)
+    }
+
+    override fun leftBottomBtnClick() {
+        PageChange(+1)
+    }
+
+    override fun rightBottomBtnClick() {
+        PageChange(+1)
     }
 
     fun openRenderer(link: String) {
@@ -66,7 +73,7 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
     override fun LongClickOnBottom() {
     }
 
-    override fun PageChange(delta: Int, statusText: StatusText?) {
+    override fun PageChange(delta: Int) {
     }
 
     override fun GetViewScrollPartY(): Double {

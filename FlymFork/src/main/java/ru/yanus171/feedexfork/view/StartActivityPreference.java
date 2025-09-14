@@ -77,7 +77,7 @@ public class StartActivityPreference extends Preference {
 				values.put( IS_AUTO_REFRESH, 1 );
 				int affected = getContext().getContentResolver()
 					.update(FeedData.FeedColumns.CONTENT_URI, values, IS_AUTO_REFRESH + DB_IS_NULL + DB_OR + IS_AUTO_REFRESH + "=0", null );
-				UiUtils.toast( getContext(), String.format( "%d %s", affected, getContext().getString( R.string.feed_count_were_edited) ) );
+				UiUtils.toast(  String.format( "%d %s", affected, getContext().getString( R.string.feed_count_were_edited) ) );
 			})
 			.setNegativeButton( android.R.string.no, null )
 			.create().show();
@@ -92,7 +92,7 @@ public class StartActivityPreference extends Preference {
 				values.putNull( IS_AUTO_REFRESH );
 				int affected = getContext().getContentResolver()
 					.update(FeedData.FeedColumns.CONTENT_URI, values, IS_AUTO_REFRESH + DB_IS_NOT_NULL + DB_AND + IS_AUTO_REFRESH + "=1", null );
-				UiUtils.toast( getContext(), String.format( "%d %s", affected, getContext().getString( R.string.feed_count_were_edited) ) );
+				UiUtils.toast( String.format( "%d %s", affected, getContext().getString( R.string.feed_count_were_edited) ) );
 			})
 			.setNegativeButton( android.R.string.no, null )
 			.create().show();

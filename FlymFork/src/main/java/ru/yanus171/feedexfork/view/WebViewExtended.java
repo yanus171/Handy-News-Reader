@@ -302,7 +302,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                         ShowLinkMenu(url, title, context);
                     }
                 } catch ( ActivityNotFoundException e ) {
-                    Toast.makeText(context, R.string.cant_open_link, Toast.LENGTH_SHORT).show();
+                    UiUtils.toast( R.string.cant_open_link);
                 }
                 return true;
             }
@@ -764,6 +764,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             mEntryView.mScrollChangeListener.run();
     }
 
+
     static int NOTIFY_OBSERVERS_DELAY_MS = 1000;
 
 
@@ -777,6 +778,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             UiUtils.RunOnGuiThread(new ScheduledEntryNotifyObservers(entryId, entryLink), NOTIFY_OBSERVERS_DELAY_MS);
         }
     }
+
 
     public interface EntryViewManager {
         void onClickOriginalText();

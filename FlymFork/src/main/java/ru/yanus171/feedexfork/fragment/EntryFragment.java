@@ -267,7 +267,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
                 GetSelectedEntryView().refreshUI( true );
-                Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_disabled, Toast.LENGTH_LONG).show();
+                UiUtils.toast( R.string.tap_actions_were_disabled );
             } else
                 EnableTapActions();
             return true;
@@ -284,25 +284,25 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return true;
         });
 
-        rootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> mEntryPager.setCurrentItem(mEntryPager.getCurrentItem() - 1, true ));
+        rootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> GetSelectedEntryView().leftBottomBtnClick());
         rootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
                 return true;
             if ( GetSelectedEntryWebView() == null )
                 return true;
             GetSelectedEntryWebView().DownloadAllImages();
-            Toast.makeText(getContext(), R.string.downloadAllImagesStarted, Toast.LENGTH_LONG).show();
+            UiUtils.toast( R.string.downloadAllImagesStarted );
             return true;
         });
 
-        rootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> mEntryPager.setCurrentItem(mEntryPager.getCurrentItem() + 1, true ));
+        rootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> GetSelectedEntryView().rightBottomBtnClick());
         rootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
                 return true;
             if ( GetSelectedEntryWebView() == null )
                 return true;
             GetSelectedEntryWebView().ReloadFullText();
-            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
+            UiUtils.toast( R.string.fullTextReloadStarted );
             return true;
         });
 
@@ -310,7 +310,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setOnClickListener(view -> {
             GetSelectedEntryWebView().ReloadFullText();
-            Toast.makeText(getContext(), R.string.fullTextReloadStarted, Toast.LENGTH_LONG).show();
+            UiUtils.toast( R.string.fullTextReloadStarted );
         });
 
         mEntryPager = rootView.findViewById(R.id.pager);
@@ -413,7 +413,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         public void run() {
                             if (!wasUp && !mWasSwipe) {
                                 GetSelectedEntryView().GoTop();
-                                Toast.makeText(MainApplication.getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT).show();
+                                UiUtils.toast( R.string.list_was_scrolled_to_top );
                             }
                         }
                     }, ViewConfiguration.getLongPressTimeout() );
@@ -466,7 +466,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         SetupZones();
         GetSelectedEntryView().refreshUI( true );
-        Toast.makeText(MainApplication.getContext(), R.string.tap_actions_were_enabled, Toast.LENGTH_LONG ).show();
+        UiUtils.toast( R.string.tap_actions_were_enabled );
     }
 
 
@@ -485,20 +485,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void PageUp() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1, mStatusText);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1);
     }
 
     public void PageDown() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1, mStatusText);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1);
     }
 
     public void NextEntry() {
         if ( mEntryPager.getCurrentItem() < mEntryPager.getAdapter().getCount() - 1  )
-            mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1 );
+            mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() + 1, true );
     }
     public void PreviousEntry() {
         if ( mEntryPager.getCurrentItem() > 0  )
-            mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1 );
+            mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, true );
     }
 
 
@@ -732,7 +732,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         cr.update(uri, FeedData.getUnreadContentValues(), null, null);
                     }
                 }.start();
-                UiUtils.toast( mActivity, R.string.entry_marked_unread );
+                UiUtils.toast( R.string.entry_marked_unread );
                 break;
             }
 
