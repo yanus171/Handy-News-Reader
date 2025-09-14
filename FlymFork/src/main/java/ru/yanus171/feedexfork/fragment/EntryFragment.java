@@ -378,9 +378,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         rootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
             if ( !isArticleTapEnabled() )
                 return true;
-            final EntryView view = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
-            view.ScrollToBottom();
-            Toast.makeText( v.getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
+            GetSelectedEntryView().LongClickOnBottom();
             return true;
         });
 

@@ -29,6 +29,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SHIFT_ENABLED
+import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.StatusText
@@ -210,9 +211,10 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             mPDFView.positionOffset = scrollPart
     }
 
-    override fun ScrollToBottom() {
-        //mPDFView.positionOffset = 1F
-        Toast.makeText( mActivity, R.string.scroll_to_bottom_disabled_for_pdf, Toast.LENGTH_LONG ).show()
+    override fun LongClickOnBottom() {
+        PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false);
+        refreshUI(true);
+        generateArticleContent(true);
     }
 
 

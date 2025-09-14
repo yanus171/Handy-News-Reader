@@ -63,7 +63,7 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
     override fun ScrollTo(y: Int, smooth: Boolean) {
     }
 
-    override fun ScrollToBottom() {
+    override fun LongClickOnBottom() {
     }
 
     override fun PageChange(delta: Int, statusText: StatusText?) {

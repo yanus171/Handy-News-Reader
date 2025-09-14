@@ -115,7 +115,7 @@ public abstract class EntryView {
 
     protected abstract int GetScrollY();
     protected abstract void ScrollTo( int y, boolean smooth );
-    public abstract void ScrollToBottom();
+    public abstract void LongClickOnBottom();
     public abstract void PageChange(int delta, StatusText statusText);
     protected abstract double GetViewScrollPartY();
 
