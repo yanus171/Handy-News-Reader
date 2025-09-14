@@ -325,15 +325,10 @@ public abstract class EntryView {
                                         final String newTitle = editText.getText().toString();
                                         values.put( TITLE, newTitle );
                                         cr.update(uri, values, null, null);
-                                        UiUtils.RunOnGuiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mActivity.mEntryFragment.getLoaderManager().restartLoader(mActivity.mEntryFragment.mCurrentPagerPos, null, mActivity.mEntryFragment);
-                                                InvalidateContentCache();
-                                                //mEntryPagerAdapter.displayEntry(mCurrentPagerPos, null, true, true);
-                                            }
-                                        });
+                                        mActivity.mEntryFragment.restartCurrentEntryLoader();
                                     }
+
+
                                 }.start();
                             }
                         }).create();
@@ -434,7 +429,7 @@ public abstract class EntryView {
                 cr.update(uri, values, null, null);
                 if ( !mFavorite )
                     LabelVoc.INSTANCE.removeLabels( mEntryId );
-                UiUtils.RunOnGuiThread( ()-> mActivity.mEntryFragment.getLoaderManager().restartLoader(mActivity.mEntryFragment.mCurrentPagerPos, null, mActivity.mEntryFragment) );
+                mActivity.mEntryFragment.restartCurrentEntryLoader();
             }
         }.start();
         mActivity.invalidateOptionsMenu();

@@ -132,7 +132,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     public Uri mBaseUri;
-    public int mCurrentPagerPos = -1;
+    private int mCurrentPagerPos = -1;
     private int mLastPagerPos = -1;
     private long mInitialEntryId = -1;
 
@@ -160,7 +160,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private static EntryView mLeakEntryView = null;
     private String mWhereSQL;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
-    public int mLastScreenState = -1;
+    private int mLastScreenState = -1;
     private String mSearchText = "";
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
@@ -1125,6 +1125,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
         applyOrientation();
         markPrevArticleAsRead();
+    }
+    public void restartCurrentEntryLoader() {
+        UiUtils.RunOnGuiThread(() -> {
+            getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
+            GetSelectedEntryView().InvalidateContentCache();
+        });
     }
 }
 

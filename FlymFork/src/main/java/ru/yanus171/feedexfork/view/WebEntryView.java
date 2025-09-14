@@ -861,7 +861,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             //    activity.setFullScreen(true, true);
             if (mLoadTitleOnly) {
                 mLoadTitleOnly = false;
-                restartLoader();
+                mActivity.mEntryFragment.restartCurrentEntryLoader();
             }
         }
     }
@@ -1003,7 +1003,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                                         values.put(FeedData.EntryColumns.LINK, newLink);
                                         cr.update(uri, values, null, null);
                                         EntryUrlVoc.INSTANCE.set(newLink, mEntryId);
-                                        restartLoader();
+                                        mActivity.mEntryFragment.restartCurrentEntryLoader();
                                     }
                                 }.start();
                             }
@@ -1079,10 +1079,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             MessageBox.Show(htmlFormatted);
         }
     }
-    private void restartLoader() {
-        UiUtils.RunOnGuiThread(() -> mActivity.mEntryFragment.getLoaderManager().restartLoader(mActivity.mEntryFragment.mCurrentPagerPos, null, mActivity.mEntryFragment));
-    }
-
     private void SetIsWithTables(final boolean withTables) {
         if ( mIsWithTables == withTables )
             return;
