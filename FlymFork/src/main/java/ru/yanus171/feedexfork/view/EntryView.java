@@ -150,6 +150,7 @@ public abstract class EntryView {
     public void refreshUI( boolean invalidateContent ) {
         if ( invalidateContent )
             InvalidateContentCache();
+        mActivity.mEntryFragment.hideTapZones();
     }
 
     public void onStart() {

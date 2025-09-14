@@ -1091,6 +1091,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mIsTapZoneVisible = !mIsTapZoneVisible;
         SetupZones();
     }
+    public void hideTapZones() {
+        mIsTapZoneVisible = false;
+        SetupZones();
+    }
     public boolean hasVideo() {
         final WebEntryView view = GetSelectedEntryWebView();
         if ( view != null )
