@@ -948,152 +948,154 @@ public class FetcherService extends IntentService {
             if (entryCursor.moveToFirst()) {
                 final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
                 String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
-                int status = Status().Start( title, false );
+                int status = Status().Start( title, false ); try {
 
-                int linkPos = entryCursor.getColumnIndex(LINK);
-                String link = entryCursor.getString(linkPos);
-                try {
-                    feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+                    int linkPos = entryCursor.getColumnIndex(LINK);
+                    String link = entryCursor.getString(linkPos);
+                    try {
+                        feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
 
-                    if (IsLocalFile(Uri.parse(link)))
-                        return loadFB2LocalFile(entryId, link);
-                    String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
-                    String contentIndicator = null;
-                    {
-                        Pattern rx = Pattern.compile("\\{(.+)\\}");
-                        final Matcher matcher = rx.matcher(linkToLoad);
-
-                        if (matcher.find()) {
-                            Calendar date = Calendar.getInstance();
-                            linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
-                        }
-                    }
-
-                    if (isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor))) { // If we didn't already mobilized it
-                        int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
-
-                        Connection connection = null;
-                        Document doc = null;
-                        try {
-                            // Try to find a text indicator for better content extraction
-                            String text = entryCursor.getString(abstractHtmlPos);
-                            if (!TextUtils.isEmpty(text)) {
-                                text = Html.fromHtml(text).toString();
-                                if (text.length() > 60) {
-                                    contentIndicator = text.substring(20, 40);
-                                }
-                            }
-
-                            connection = new Connection(linkToLoad, OKHTTP);
-                            Status().ChangeProgress(R.string.extractContent);
-
-                            if (FetcherService.isCancelRefresh())
-                                return false;
-                            doc = Jsoup.parse(connection.getInputStream(), null, "");
-                            for (Element el : doc.getElementsByTag("meta")) {
-                                if (el.hasAttr("content") &&
-                                    el.hasAttr("http-equiv") &&
-                                    el.attr("http-equiv").equals("refresh")) {
-                                    String s = el.attr("content");
-                                    if ( s.contains( "http" ) ) {
-                                        link = s.replaceFirst("\\d+;URL=", "");
-                                        connection.disconnect();
-                                        connection = new Connection(link, OKHTTP);
-                                        doc = Jsoup.parse(connection.getInputStream(), null, "");
-                                    }
-                                    break;
-                                }
-                            }
-                        } finally {
-                            if (connection != null)
-                                connection.disconnect();
-                        }
-
-                        ClearContentStepToFile();
-                        SaveContentStepToFile(doc, "Jsoup.parse.connection.getInputStream");
-                        //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
-                        if (isCorrectTitle) {
-                            Elements titleEls = doc.getElementsByTag("title");
-                            if (!titleEls.isEmpty())
-                                title = titleEls.first().text();
-                        }
-
-                        ContentValues values = new ContentValues();
-
-                        setDate(entryId, feedId, entryCursor, link, doc, values);
-
-                        if (isCorrectTitle && title.isEmpty())
-                            title = extractTitle(doc.toString());
-
-                        ArrayList<String> categoryList = new ArrayList<>();
-                        String mobilizedHtml = ArticleTextExtractor.extractContent(doc,
-                                                                                   link,
-                                                                                   contentIndicator,
-                                                                                   filters,
-                                                                                   mobilize,
-                                                                                   categoryList,
-                                                                                   !feedId.equals(GetExtrenalLinkFeedID()),
-                                                                                   entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
-                                                                                   withScripts);
-                        Status().ChangeProgress("");
-
-                        if (mobilizedHtml != null) {
-
-                            if (!categoryList.isEmpty())
-                                values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));
-                            else
-                                values.putNull(EntryColumns.CATEGORIES);
-
-                        }
-                        FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
-
+                        if (IsLocalFile(Uri.parse(link)))
+                            return loadFB2LocalFile(entryId, link);
+                        String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
+                        String contentIndicator = null;
                         {
-                            final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
-                            final boolean isFavorite = !entryCursor.isNull(favCol) && entryCursor.getInt(favCol) == 1;
-                            if ( !title.isEmpty() &&
-                                ( entryCursor.isNull(titleCol) || isCorrectTitle || ( !isFavorite && !isOptionsAttrOn(entryCursor, IS_ONE_WEB_PAGE) ) ) )
-                                values.put(EntryColumns.TITLE, title);
+                            Pattern rx = Pattern.compile("\\{(.+)\\}");
+                            final Matcher matcher = rx.matcher(linkToLoad);
+
+                            if (matcher.find()) {
+                                Calendar date = Calendar.getInstance();
+                                linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+                            }
                         }
-                        ArrayList<String> imgUrlsToDownload = new ArrayList<>();
-                        if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
-                            HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
 
-                        String mainImgUrl;
-                        if (!imgUrlsToDownload.isEmpty())
-                            mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
-                        else
-                            mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
+                        if (isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor))) { // If we didn't already mobilized it
+                            int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
 
-                        if (mainImgUrl != null)
-                            values.put(EntryColumns.IMAGE_URL, mainImgUrl);
+                            Connection connection = null;
+                            Document doc = null;
+                            try {
+                                // Try to find a text indicator for better content extraction
+                                String text = entryCursor.getString(abstractHtmlPos);
+                                if (!TextUtils.isEmpty(text)) {
+                                    text = Html.fromHtml(text).toString();
+                                    if (text.length() > 60) {
+                                        contentIndicator = text.substring(20, 40);
+                                    }
+                                }
 
-                        if (filters != null && filters.isEntryFiltered(title, "", link, mobilizedHtml, categoryList.toArray(new String[0]))) {
-                            cr.delete(entryUri, null, null);
-                        } else {
-                            if (filters != null && filters.isMarkAsStarred(title, "", link, mobilizedHtml, categoryList.toArray(new String[0])))
-                                PutFavorite(values, true);
-                            cr.update(entryUri, values, null, null);
+                                connection = new Connection(linkToLoad, OKHTTP);
+                                Status().ChangeProgress(R.string.extractContent);
+
+                                if (FetcherService.isCancelRefresh())
+                                    return false;
+                                doc = Jsoup.parse(connection.getInputStream(), null, "");
+                                for (Element el : doc.getElementsByTag("meta")) {
+                                    if (el.hasAttr("content") &&
+                                            el.hasAttr("http-equiv") &&
+                                            el.attr("http-equiv").equals("refresh")) {
+                                        String s = el.attr("content");
+                                        if (s.contains("http")) {
+                                            link = s.replaceFirst("\\d+;URL=", "");
+                                            connection.disconnect();
+                                            connection = new Connection(link, OKHTTP);
+                                            doc = Jsoup.parse(connection.getInputStream(), null, "");
+                                        }
+                                        break;
+                                    }
+                                }
+                            } finally {
+                                if (connection != null)
+                                    connection.disconnect();
+                            }
+
+                            ClearContentStepToFile();
+                            SaveContentStepToFile(doc, "Jsoup.parse.connection.getInputStream");
+                            //if ( entryCursor.isNull( titlePos ) || title == null || title.isEmpty() || title.startsWith("http")  ) {
+                            if (isCorrectTitle) {
+                                Elements titleEls = doc.getElementsByTag("title");
+                                if (!titleEls.isEmpty())
+                                    title = titleEls.first().text();
+                            }
+
+                            ContentValues values = new ContentValues();
+
+                            setDate(entryId, feedId, entryCursor, link, doc, values);
+
+                            if (isCorrectTitle && title.isEmpty())
+                                title = extractTitle(doc.toString());
+
+                            ArrayList<String> categoryList = new ArrayList<>();
+                            String mobilizedHtml = ArticleTextExtractor.extractContent(doc,
+                                    link,
+                                    contentIndicator,
+                                    filters,
+                                    mobilize,
+                                    categoryList,
+                                    !feedId.equals(GetExtrenalLinkFeedID()),
+                                    entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
+                                    withScripts);
+                            Status().ChangeProgress("");
+
+                            if (mobilizedHtml != null) {
+
+                                if (!categoryList.isEmpty())
+                                    values.put(EntryColumns.CATEGORIES, TextUtils.join(CATEGORY_LIST_SEP, categoryList));
+                                else
+                                    values.putNull(EntryColumns.CATEGORIES);
+
+                            }
+                            FileUtils.INSTANCE.saveMobilizedHTML(link, mobilizedHtml, values);
+
+                            {
+                                final int favCol = entryCursor.getColumnIndex(IS_FAVORITE);
+                                final boolean isFavorite = !entryCursor.isNull(favCol) && entryCursor.getInt(favCol) == 1;
+                                if (!title.isEmpty() &&
+                                        (entryCursor.isNull(titleCol) || isCorrectTitle || (!isFavorite && !isOptionsAttrOn(entryCursor, IS_ONE_WEB_PAGE))))
+                                    values.put(EntryColumns.TITLE, title);
+                            }
+                            ArrayList<String> imgUrlsToDownload = new ArrayList<>();
+                            if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
+                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
+
+                            String mainImgUrl;
                             if (!imgUrlsToDownload.isEmpty())
-                                addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
+                                mainImgUrl = HtmlUtils.getMainImageURL(imgUrlsToDownload);
+                            else
+                                mainImgUrl = HtmlUtils.getMainImageURL(mobilizedHtml);
+
+                            if (mainImgUrl != null)
+                                values.put(EntryColumns.IMAGE_URL, mainImgUrl);
+
+                            if (filters != null && filters.isEntryFiltered(title, "", link, mobilizedHtml, categoryList.toArray(new String[0]))) {
+                                cr.delete(entryUri, null, null);
+                            } else {
+                                if (filters != null && filters.isMarkAsStarred(title, "", link, mobilizedHtml, categoryList.toArray(new String[0])))
+                                    PutFavorite(values, true);
+                                cr.update(entryUri, values, null, null);
+                                if (!imgUrlsToDownload.isEmpty())
+                                    addImagesToDownload(String.valueOf(entryId), imgUrlsToDownload);
+                            }
+                            success = true;
+                        } else { // We already mobilized it
+                            success = true;
+                            //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
                         }
-                        success = true;
-                    } else { // We already mobilized it
-                        success = true;
-                        //operations.add(ContentProviderOperation.newDelete(TaskColumns.CONTENT_URI(taskId)).build());
+                    } catch (Exception e) {
+                        Status().End(status);
+                        e.printStackTrace();
+                        if (isShowError && !feedId.isEmpty()) {
+                            String title_ = "";
+                            Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
+                            if (cursor.moveToFirst() && cursor.isNull(0))
+                                title_ = cursor.getString(0);
+                            cursor.close();
+                            Status().SetError(title_ + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
+                        }
                     }
-                } catch (Exception e) {
+                } finally {
                     Status().End( status );
-                    e.printStackTrace();
-                    if (isShowError && !feedId.isEmpty() ) {
-                        String title_ = "";
-                        Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.NAME}, null, null, null);
-                        if (cursor.moveToFirst() && cursor.isNull(0))
-                            title_ = cursor.getString(0);
-                        cursor.close();
-                        Status().SetError(title_ + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
-                    }
                 }
-                Status().End( status );
             }
         }
         return success;
