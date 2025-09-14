@@ -574,8 +574,8 @@
     <string name="unstarAllArtcilesComfirm2">All visible starred articles will be unstarred. Are you REALLY sure?</string>
     <string name="tap_actions_were_enabled">Tap actions were enabled</string>
     <string name="tap_actions_were_disabled">All tap actions were temporary disabled! Tap top right to enable</string>
-    <string name="zoom_shift_were_disabled">Zoom and shift actions were disabled</string>
-    <string name="zoom_shift_were_enabled">Zoom and shift actions were enabled</string>
+    <string name="zoom_shift_were_disabled">Zoom &amp; shift actions were disabled</string>
+    <string name="zoom_shift_were_enabled">Zoom &amp; shift actions were enabled</string>
     <string name="list_was_scrolled_to_top">Scrolled to the top</string>
     <string name="list_was_scrolled_to_bottom">Scrolled to the bottom</string>
     <string name="articleWasUnstarred">An article has been unstarred</string>
@@ -757,6 +757,6 @@
     <string name="zoom_shift_enabled">Zoom &amp; shift</string>
     <string name="scroll_to_bottom_disabled_for_pdf">Scroll to bottom disabled for PDF</string>
     <string name="scroll_to_top_disabled_for_pdf">Scroll to top disabled for PDF</string>
-    <string name="zoom_is_disabled">Zoom disabled mode</string>
+    <string name="zoom_is_disabled">Zoom &amp; shift are disabled</string>
 
 </resources>
