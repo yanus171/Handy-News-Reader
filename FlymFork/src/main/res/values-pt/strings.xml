@@ -265,7 +265,7 @@
     <string name="settings_category_operation_summary">Configurações de operações</string>
     <string name="tap_zone_size">Tamanho da Zona de Toque</string>
     <string name="tap_zone_size_descr">Altura ou largura de todas as Zonas de Toque em milímetros (visualização de entradas)</string>
-    <string name="settings_show_tap_zones">Zonas de Toque visíveis</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Como quadrados transparentes na visualização de entrada</string>
     <string name="settings_tapZones">Prever Zonas de Toque</string>
     <string name="settings_volume_buttons_action">Ação dos botões de volume</string>
@@ -539,4 +539,6 @@
         <item quantity="other">%d artigos novos.</item>
     </plurals>
     <string name="shared_favorities_article_list_mail_sugject">Lista de artigos favoritos do Handy Reader</string>
+    <string name="settings_autobackup_requires_charging">Somente quando carregando</string>
+    <string name="entry_show_menu">Mostrar Menu</string>
 </resources>

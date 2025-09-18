@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2010-2012 Stefan Handschuh
+ Copyright (c) 2012-2015 Frederic Julian
+ Copyright (c) 2018- Thomas Leigh (en+pl)
+ Copyright (c) 2014-2016 Matthias Dill (de)
+ Copyright (c) 2018- Ronny Steiner (de)
+ Copyright (c) 2014-2014 Jaroslav Lichtblau (cs)
+ Copyright (c) 2013-2014 Danilo Treffiletti (it)
+ Copyright (c) 2014 Changwoo Ryu (ko)
+ Copyright (c) 2014-2015 Jozef Jaroščiak (sk)
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+-->
+<resources>
+    <string name="about_us_content" translatable="true"><![CDATA[<h2>Litsents ja teave</h2> 
+<p>See programm on vaba/avatud lähtekoodiga tarkvara: sa võid seda levitada ja/või muuta GNU Üldise Avaliku Litsentsi tingimustel, mille on avaldanud Vaba Tarkvara Fond, kas litsentsi versioon 3 või (sinu valikul) mis tahes hilisem versioon. Vaata <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p> 
+<p>See rakendus põhineb \'Flym RSS Reader\'il, autoriõigus 2013–2016 Frédéric Julian. Sellele harule lisatud funktsioonide hulgas on:</p>
+
+• kanalite grupi laiendamine<br/> 
+• nähtamatud täisekraani lehekülje üles|alla nupud<br/> 
+• maksimaalne piltide allalaadimise arv voo kohta<br/> 
+• värskendamise protsessi katkestamise võimalus<br/> 
+• ja palju muud 
+
+<h2>Sa leiad meid siit:</h2> 
+
+• meie <b><a href=\"https://handynewsreader.blogspot.com\">veebisait</a></b> (uudised ja info)<br/> 
+• <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play pood</a><br/> 
+• <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/> 
+• <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA foorum</a><br/> 
+• <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a> 
+
+<h2>Meie tugi</h2> 
+<p>Kui sa satud rakendusega probleemi ette, siis sa saad:</p> 
+• kontrollida, kas seda probleemi on käsitletud meie <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">KKK-s</a><br/> 
+• avada teema <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubi probleemide lehel</a><br/> 
+• <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">saata arendajale e-kiri</a><br/> 	 
+
+<h2>Sinu toetus</h2> 
+<p>Kui sul on idee uue funktsiooni jaoks, siis sa saad:</p> 
+• avada teema <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHubi probleemide lehel</a><br/> 
+• <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">saata arendajale e-kiri</a> 	
+
+<p>Kui sa leiad, et see rakendus on kasulik, siis palun hinda seda <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Plays</a></p> 
+Sa võid ka <a href=\"https://github.com/yanus171/Handy-News-Reader\">annetuse teha</a> </b> (link kirjelduse lõpus) 
+
+<h2>Tõlked</h2> 	
+<p>Sa saad aidata tõlkimisel oma keelde <b><a href="https://crowdin.com/project/handy-news-reader">Crowdinis</a></b> Kui sinu keel pole saadaval, siis palun saada <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">arendajale e-kiri</a></b></p> 
+
+<h2>Tänusõnad</h2> 
+<h3>Arendajad:</h3> 
+***developerList*** 
+<br/><br/> 	
+<h3>Tõlkijad:</h3> 
+***translatorList***
+<br/>    ]]></string>
+    <string name="app_name">Käepärane lugemine</string>
+    <string name="about_title_version">versioon</string>
+    <string name="about_handy_news_reader">Sellsest äppist info</string>
+    <string name="about_handy_news_reader_descr">Litsents, tugi, tõlked jne.</string>
+    <string name="welcome_title">Tere tulemast Handy Reading\'usse. Kas sa sooviksid lisada kanalit?</string>
+    <string name="never">mitte kunagi</string>
+    <string name="last_update">Värskenda</string>
+    <string name="menu_settings">Sätted</string>
+    <string name="menu_refresh">Värskenda nüüd</string>
+    <string name="flym_feeds">Handy Reading\'u ksnalid</string>
+    <string name="error">Tõrge</string>
+    <string name="network_error">Sa oled võrguühenduseta</string>
+    <string name="loading">Laadimine…</string>
+    <string name="no_result">Tulemused puuduvad</string>
+    <string name="drawer_open">Ava navigatsiooni riba</string>
+    <string name="drawer_close">Sulge navigatsiooni riba</string>
+    <!-- FEEDS -->
+    <string name="feeds">Kanalid</string>
+    <string name="menu_article_web_search">Artikli veebiotsing</string>
+    <string name="menu_add_feed">Lisa kanal</string>
+    <string name="no_feeds">Kanaleid pole</string>
+    <string name="no_filters">Reegleid pole</string>
+    <string name="context_menu_add">Lisa</string>
+    <string name="context_menu_delete">Kustuta</string>
+    <string name="edit_feed_title">Muuda kanalit</string>
+    <string name="new_feed_title">Lisa voog</string>
+    <string name="context_menu_edit">Muuda</string>
+    <string name="menu_add_group">Lisa grupp</string>
+    <string name="menu_import_export">Ekspordi ja impordi</string>
+    <string name="menu_import">Impordi .opml failist</string>
+    <string name="menu_export">Ekspordi .opml faili</string>
+    <string name="storage_request_explanation">Kanalite ja rakenduse seadete failist importimiseks või faili eksportimiseks peate lubama rakendusel juurdepääsu salvestusmälule</string>
+    <string name="error_feed_error">Kanali veebisait pole kättesaadav</string>
+    <string name="error_feed_process">Kanali ei saa töödelda</string>
+    <string name="error_feed_url_exists">Aadress on juba olemas</string>
+    <string name="error_feed_import">Valitud faili ei õnnestunud importida</string>
+    <string name="error_feed_export">Eksport ebaõnnestus. Veenduge, et teil on paigaldatud kirjutatav SD-kaart</string>
+    <string name="error_external_storage_not_available">Väline salvestusruum (nt SD-kaart) ei ole saadaval</string>
+    <string name="feed_url">URL-aadress</string>
+    <string name="optional">(valikuline)</string>
+    <string name="website_or_feed">(kanali URL või otsingusõna)</string>
+    <string name="tab_feed_title">Kanal</string>
+    <string name="tab_filters_title">Filter</string>
+    <string name="feed_title">PEALKIRI</string>
+    <string name="feed_filters">FILTREERIMISREEGLID</string>
+    <string name="filter_add_title">Lisa reegel</string>
+    <string name="filter_delete_title">Kustuta reegel</string>
+    <string name="filter_edit_title">Muuda reeglit</string>
+    <string name="filter_is_regex">&#8230;on regulaaravaldis</string>
+    <string name="filter_apply_to_title">Rakenda pealkirjale</string>
+    <string name="filter_apply_to_content">Rakenda sisule</string>
+    <string name="accept">KINNITA</string>
+    <string name="reject">Hülka</string>
+    <string name="feed_search">Kanaliotsing</string>
+    <string name="web_page_search_duckduckgo">Otsi veebist (DuckDuckGo)</string>
+    <string name="select_file">Vali fail kaustast Allalaadimised:</string>
+    <string name="select_file_from_subfolder">Vali fail kaustast Allalaadimised/handy_news_reader:</string>
+    <string name="question_delete_feed">Kas sa tõesti soovid selle kanali kustutada?</string>
+    <string name="question_delete_group">Kas sa tõesti soovid selle grupi ja kõik selle kanalid kustutada?</string>
+    <string name="question_delete_filter">Kas soovite kindlasti selle filtri kustutada?</string>
+    <string name="add_group_title">Vali grupi nimi</string>
+    <string name="edit_group_title">Vali grupi nimi</string>
+    <string name="to_group_title">Kanali teisaldamise toiming</string>
+    <string name="to_group_message">Kas sa soovid selle kanali paigutada sellesse gruppi või väljapoole seda gruppi?</string>
+    <string name="to_group_above">Väljaspool gruppi</string>
+    <string name="to_group_into">Grupi sisse</string>
+    <string name="add_custom_feed">Lisa kohandatud kanal või otsi kanal</string>
+    <!-- ENTRIES -->
+    <string name="unread_entries">Lugemata</string>
+    <string name="all_entries">Kõik artiklid</string>
+    <string name="no_entries">Artikleid pole</string>
+    <string name="downloadOneImage">Laadi pilt alla</string>
+    <string name="favorites">Tärniga</string>
+    <string name="last_read">Viimati loetud</string>
+    <string name="context_menu_share_starred_via_file">Tärniga märgitud artiklid faili kaudu</string>
+    <string name="context_menu_share_starred_via_text">Tärniga märgitud artiklid teksti kaudu</string>
+    <string name="menu_star">Märgi lemmikuks</string>
+    <string name="menu_unstar">Võta lemmikust maha</string>
+    <string name="menu_share">Jaga</string>
+    <string name="menu_mark_all_as_unread">Märgi kõik loetuks</string>
+    <string name="menu_mark_upper_as_read">Märgi ülemised loetuks</string>
+    <string name="menu_mark_lower_as_read">Märgi alumised loetuks</string>
+    <string name="menu_full_screen">Täisekraan</string>
+    <string name="menu_actionbar_visible">Tegevuste riba</string>
+    <string name="menu_font_bold">Rasvane kiri</string>
+    <string name="menu_copy_clipboard">Kopeeri link</string>
+    <string name="menu_cancel_refresh">Katkesta uuendamine</string>
+    <string name="menu_delete_non_starred">Lähtesta kanal</string>
+    <string name="menu_toogle_unread_all">Lugemata|Kõik</string>
+    <string name="menu_load_all_images">Kõik pildid</string>
+    <string name="menu_mark_as_favorite">Märgi lemmikuks</string>
+    <string name="menu_mark_as_unfavorite">Eemalda lemmikitest</string>
+    <string name="menu_mark_as_unread">Märgi mitteloetuks</string>
+    <string name="menu_reload_full_text">Täistekst</string>
+    <string name="menu_reload_full_text_without_mobilizer">Ilma Mobilizerita</string>
+    <string name="share_favorites_title">Handy Reading: tärniga märgitud</string>
+    <string name="link_was_copied_to_clipboard">Link kopeeritud</string>
+    <string name="get_full_text">Laadi täisartikkel</string>
+    <string name="show_text_in_entry_list">Kuva originaaltekst artikliloendis</string>
+    <string name="original_text">Kuva originaaltekst</string>
+    <string name="see_enclosure">Laadi manus</string>
+    <string name="see_link">View in browser</string>
+    <string name="cant_open_link">Selle lingi jaoks ei leitud ühtegi rakendust</string>
+    <string name="open_enclosure">Ava manus</string>
+    <string name="file">Fail</string>
+    <string name="download_and_save">Laadi alla ja salvesta</string>
+    <string name="open_link">Ava link</string>
+    <string name="tip_sentence">Vihje: loetuks märkimiseks pühkige paremale, lemmikutesse lisamiseks pühkige vasakule</string>
+    <string name="undo">Võta tagasi</string>
+    <string name="marked_as_read">Märgitud loetuks</string>
+    <string name="marked_as_unread">Märgi mitteloetuks</string>
+    <string name="removed_from_favorites">Eemaldatud lemmikutest</string>
+    <string name="image_count">Piltide arv</string>
+    <!-- WIDGET -->
+    <string name="red">Punane</string>
+    <string name="green">Roheline</string>
+    <string name="blue">Sinine</string>
+    <string name="transparency">Läbipaistvus</string>
+    <!-- SETTINGS -->
+    <string name="settings_category_common">Üldised seaded</string>
+    <string name="settings_category_common_summary">Teema</string>
+    <string name="theme">Teema</string>
+    <string name="customColors">Kohanda värvid</string>
+    <string name="fontColorsNotFromThemeSummary">muidu kasuta teemavärve</string>
+    <string name="textColor">Teksti ja taustavärv</string>
+    <string name="settings_color_text_sample_short">Tekst</string>
+    <string name="settings_color_text_sample_long">\u201cKui sa kurameerid kena tüdrukuga, tundub tund nagu sekund. Kui sa istud tulikuuma süsi peal, tundub sekund nagu tund. See on relatiivsus.\u201d\n(Albert Einstein)</string>
+    <string name="settings_category_refresh">Artikli värskendamine</string>
+    <string name="settings_category_refresh_summary">Automaatne värskendamine ja artiklite säilitamise aeg</string>
+    <string name="settings_refresh_enabled">Luba automaatne värskendamine</string>
+    <string name="settings_refresh_interval">Värskendamise intervall</string>
+    <string name="settings_min_update_battery_level">Min. aku tase</string>
+    <string name="settings_refresh_only_selected">Ainult valitud</string>
+    <string name="settings_refresh_only_selected_summary">Automaatne värskendamine ainult märgitud kanalitel</string>
+    <string name="settings_refresh_on_open">Värskenda kanaleid avamisel</string>
+    <string name="settings_refresh_on_open_description">Värskendab kõiki kanaleid pärast rakenduse avamist</string>
+    <string name="settings_refresh_wifi_only">Värskenda ainult Wi-Fi kaudu</string>
+    <string name="settings_refresh_wifi_only_description">Automaatne värskendamine toimub ainult siis, kui on saadaval Wi-Fi ühendus</string>
+    <string name="settings_keep_time">Artiklite säilitamise aeg</string>
+    <string name="settings_keep_time_descr">Värskendamise ajal ei laadita artikleid, mille kuupäev on vanem kui see kestus</string>
+    <string name="settings_preload_image_mode">Laadi pildid eellaadimisega</string>
+    <string name="settings_max_image_download_count">Maksimaalne piltide allalaadimise arv</string>
+    <string name="settings_max_image_download_count_description">Ühe artikli kohta</string>
+    <string name="settings_max_image_download_size_kb">Maks. pildi suurus</string>
+    <string name="settings_max_image_download_size_kb_summary">(KB-des). Ära laadi automaatselt suuremaid pilte kui</string>
+    <string name="max_single_refresh_traffic_mb">Suurem üksiku värskenduse maht</string>
+    <string name="max_single_refresh_traffic_mb_descr">Värskendamine peatub, kui maht jõuab maksimaalse väärtuseni (MB-des) ja ei ole Wi-Fi kaudu</string>
+    <string name="settings_category_article_list">Artiklite nimekiri</string>
+    <string name="settings_category_article_list_summary">Artikliloendi välimus</string>
+    <string name="settings_font_size">Teksti suurus</string>
+    <string name="show_article_icon">Kuva artikli ikoon</string>
+    <string name="show_article_icon_descr">Lülita välja, et ekraanil rohkem ruumi saada</string>
+    <string name="show_article_url">Kuva artikli aadress</string>
+    <string name="settings_display_oldest_first">Artiklite järjestus</string>
+    <string name="settings_display_oldest_first_description">Kuva vanimad kirjed ees</string>
+    <string name="show_mark_all_as_read_button">Märgi kõik loetuks nupp</string>
+    <string name="show_mark_all_as_read_button_summary">Näita nuppu \"Märgi kõik artiklid loetuks\" - muidu leiad selle valiku menüüst</string>
+    <string name="show_read_checkbox">Loetud märkeruut</string>
+    <string name="show_read_checkbox_descr">Kuva väike märkeruut, et näidata, et artikkel on loetud</string>
+    <string name="show_full_text_indicator">Täisteksti indikaator</string>
+    <string name="show_full_text_indicator_descr">Kuva väike disketikoon, mis näitab, et artikli täistekst on laaditud</string>
+    <string name="show_new_icon">Uue artikli ikoon</string>
+    <string name="show_new_icon_descr">Väike plussikoon uutel artiklitel (mida pole kunagi varem nähtud)</string>
+    <string name="show_read_article_count">Kuva loetud artiklite arv</string>
+    <string name="show_read_article_count_descr">Kanalite loendis</string>
+    <string name="show_group_entrries_count">Artiklite arv gruppides</string>
+    <string name="textColorRead">Loetud artiklite värv</string>
+    <string name="textColorRead_descr">Tekst ja taust</string>
+    <string name="settings_color_text_read_sample_short">Loetud</string>
+    <string name="settings_color_text_read_sample_long">Loetud artiklid</string>
+    <string name="settings_category_article_text">Artiklite tekstid</string>
+    <string name="settings_category_article_text_summary">Artikli teksti välimus</string>
+    <string name="settings_display_images">Laadi pildid</string>
+    <string name="settings_display_images_description">Kuva pildid tekstis</string>
+    <string name="settings_display_entries_fullscreen">Ava artiklid täisekraanil</string>
+    <string name="settings_entry_margins">Vahed</string>
+    <string name="settings_entry_margins_description">Vasak | parem</string>
+    <string name="entry_text_align_justify">Joondatud tekst</string>
+    <string name="entry_text_align_justify_description">Muidu joonda tekst vasakule</string>
+    <string name="linkColor">Lingi värv</string>
+    <string name="linkColor_descr">Tekst ja taust</string>
+    <string name="settings_color_link_sample_short">Lingid</string>
+    <string name="settings_color_link_sample_long">Linkide värv</string>
+    <string name="underline_links">Allajoonitud lingid</string>
+    <string name="article_text_show_clock">Näita kella</string>
+    <string name="article_text_show_clock_description">Kuvab kellaaja täisekraanrežiimis paremas ülanurgas</string>
+    <string name="settings_informations_size">Lisateabe teksti suurus</string>
+    <string name="article_text_information_color">Värv</string>
+    <string name="article_text_information_color_descr">Tekst ja taust</string>
+    <string name="settings_color_clock_sample_short">08:15</string>
+    <string name="settings_color_clock_sample_long">08:16</string>
+    <string name="article_text_show_progress">Näita</string>
+    <string name="article_text_progress_height">Kõrgus</string>
+    <string name="article_text_progress_color">Värv</string>
+    <string name="settings_category_operation">Tehingud</string>
+    <string name="settings_category_operation_summary">Helitugevuse nupud. Puutealad. Heleduse muutmine</string>
+    <string name="tap_zone_size">Puuteala suurus</string>
+    <string name="tap_zone_size_descr">Kõikide puutealade kõrgus ja laius millimeetrites</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
+    <string name="settings_show_tap_zone_description">Läbipaistvate ruutudena</string>
+    <string name="settings_tapZones">Vajutusalade eelvaade</string>
+    <string name="settings_volume_buttons_action">Helitugevusnuppude tegevus</string>
+    <string name="brightness_gesture">Heleduse muutmise viipe</string>
+    <string name="brightness_gesture_descr">Märgi see, et reguleerida heledust ekraani vasakust servast üles/alla libistades</string>
+    <string name="brightness_with_dim_activity">Tarkvara heleduse vähendamine</string>
+    <string name="brightness_with_dim_activity_descr">Lülitage sisse, kui heleduse muutmine muidu ei toimi</string>
+    <string name="settings_category_notification">Teavitused</string>
+    <string name="settings_notifications_enabled">Luba teavitused</string>
+    <string name="settings_notifications_enabled_description">Luba äppi teavitused</string>
+    <string name="settings_notifications_ringtone">Helin</string>
+    <string name="settings_notifications_ringtone_none">Puuduv</string>
+    <string name="settings_notifications_vibrate">Värin</string>
+    <string name="settings_notifications_vibrate_description">Lülita uute artiklite vibro sisse</string>
+    <string name="settings_notifications_light">Valgus</string>
+    <string name="settings_notifications_light_description">Luba märguandetuli uute artiklite puhul</string>
+    <string name="page_up_down_90_pct">Lehe kerimine 90%</string>
+    <string name="page_up_down_90_pct_descr">(puudutades ekraani üla- või alaosa), et näha eelmisest lehelt mitu rida. Kui linnuke puudub, siis kogu leht libistatakse läbi</string>
+    <string name="settings_remember_last_entry">Pida meeles artiklit</string>
+    <string name="settings_remeber_last_entry_description">Alustades avatakse viimane vaadatud artikkel, muidu lugemata artiklite loend</string>
+    <string name="auto_unstart_at_bottom">Kui lugemine on lõpuni viidud, siis täht eemaldatakse</string>
+    <string name="auto_unstart_at_bottom_descr">Artikli automaatne eemaldamine lemmikutest selle lõppu jõudmisel</string>
+    <string name="settings_category_advanced">Lisavalikud</string>
+    <string name="settings_category_advanced_summary">Lisafunktsioonid (nt varundus, filtrid ja muu)</string>
+    <string name="settings_autobackup_enabled">Lülita automaatne varundamine</string>
+    <string name="settings_autobackup_enabled_descr">Kanalite ja lemmikartiklite loendi perioodiline salvestamine varundusfaili</string>
+    <string name="settings_category_content_presentation">Sisu esitlus</string>
+    <string name="settings_display_text_color">Teksti heledus</string>
+    <string name="settings_visible_feeds">Nähtavad kanalid</string>
+    <string name="settings_widget_background">Taust</string>
+    <string name="settings_widget_background_description">Vidinatausta värv ja läbipaistvus</string>
+    <string name="all_feeds">Kõik kanalid (sh tulevased)</string>
+    <string name="downloadImage">Piltide allalaadimine</string>
+    <string name="loadFullText">Täisteksti laadimine</string>
+    <string name="deleteOldEntries">Vanade artiklite kustutamine</string>
+    <string name="deleting_ghost_entries">Vanade failide kustutamine</string>
+    <string name="AllImages">Kõik pildid</string>
+    <string name="article_images_downloading">Artiklite piltide allalaadimine</string>
+    <string name="mobilizeAll">Täistekstide laadimine</string>
+    <string name="RefreshFeeds">Kanalite uuendamine</string>
+    <string name="deleteImages">Piltide kustutamine:</string>
+    <string name="deleteFullTexts">Täistekstide kustutamine:</string>
+    <string name="applyOperations">Toimingute lõpetamine</string>
+    <string name="extractContent">Sisu eraldamine</string>
+    <string name="improveHtmlContent">HTML-sisu täiustamine</string>
+    <string name="parseXml">XML-i parsimine</string>
+    <string name="setupConnection">Seadista ühendus</string>
+    <string name="settings_fulltext_extract_rules">Täistekst</string>
+    <string name="settings_fulltext_extract_rules_description">Iga rida on reegel, mis võimaldab konkreetsel saidil määrata HTML-klassi nime, millega artikli täistekst algab (vajalikud on HTML-i põhiteadmised), et artikli teksti ei kaasataks tarbetuid elemente. See säte uuendatakse automaatselt artikli sisu redigeerimise režiimis</string>
+    <string name="settings_category_extract_rules">Artikli kategooriad</string>
+    <string name="settings_date_extract_rules_description">Seadistatakse iga veebilehe jaoks (HTML-i baasteadmised vajalikud)</string>
+    <string name="settings_tap_zones_dialogtitle">ainult info, muudatused pole saadaval</string>
+    <string name="downloadNext">", Järgmine "</string>
+    <string name="downloadAll">", Kõik"</string>
+    <string name="loadingLink">Lingi laadimine</string>
+    <string name="loadLink">Loe kohe</string>
+    <string name="loadLinkLater">Loe hiljem</string>
+    <string name="loadLinkLaterStarred">Salvesta lemmikutesse lugemiseks hiljem</string>
+    <string name="addFeed">Lisa kanal</string>
+    <string name="externalLinks">Ilma kanalita</string>
+    <string name="markAllAsRead">Märgi kõik loetuks</string>
+    <string name="pageUp">lehekülg üles (pikk vajutus - üles) või\nlibista alla, et (tühistada) tärn</string>
+    <string name="pageDown">lehekülg alla (pikk vajutus - alla)</string>
+    <string name="fullScreenToggle">lülita täisekraan | kõik pildid)</string>
+    <string name="auto_refresh_feed">Värskenda automaatselt</string>
+    <string name="actionBarToggle">lülita toiminguriba | laadi tekst uuesti)</string>
+    <string name="standard">Standard</string>
+    <string name="fontsize_entrylist">Fondi suurus artikliloendis</string>
+    <string name="confirmation">Okay</string>
+    <string name="question_delete_entry">Kustuta see artikkel?</string>
+    <string name="question_mark_upper_as_read">Märgi ülemised artiklid loetuks?</string>
+    <string name="question_mark_lower_as_read">Märgi alumised artiklid loetuks?</string>
+    <string name="share_all_text">Jaga kogu teksti</string>
+    <string name="group">Grupp</string>
+    <string name="auto_image_load">Piltide automaatne laadimine</string>
+    <string name="show_progress_info">Üksikasjalik tehniline edenemise info</string>
+    <string name="show_progress_info_descr">Näita üksikasjalikku infot praeguse toimingu kohta (artikli värskendamise, piltide allalaadimise, artikli teksti avamise jne ajal)</string>
+    <string name="vibrate_on_article_list_entry_swype">Vibreeri libistamisel</string>
+    <string name="vibrate_on_article_list_entry_swype_summary">Artikliloendis ja artikli teksti aknas tärnimisel</string>
+    <string name="entry_marked_unfavourite">Artikkel on lemmikutest eemaldatud</string>
+    <string name="entry_marked_favourite">Artikkel on lisatud lemmikute hulka</string>
+    <string name="new_feed_was_added">Uus kanal lisati</string>
+    <string name="entry_marked_unread">Artikkel on märgitud lugemata</string>
+    <string name="force_landscape_orientation">Maastikuformaat</string>
+    <string name="force_portrait_orientation">Püstformaat</string>
+    <string name="markAsStarred">Märgi tärniga</string>
+    <string name="markedAsStarred">Artikkel on tähistatud tärniga: </string>
+    <string name="deleteAllEntries">Kas kustutada kõik tärniga tähistamata kuvatavad artiklid?</string>
+    <string name="question">Küsimus</string>
+    <string name="reload_full_text_with_tags">Redigeeri sisu</string>
+    <string name="filter_hint">Filtri toiming käivitatakse, kui on täidetud vähemalt üks tingimus (reegel). „Nõustu” tühistab „Keeldu” valiku</string>
+    <string name="keyword">märksõna(d)</string>
+    <string name="loadTypeWeb"><b>Veebileht - Lingid</b> <font color="gray">(laadi kõik lingid lehelt erinevate artiklitena)</font></string>
+    <string name="loadTypeRSS"><b>RSS</b> <font color="gray">(kanali või saidi aadress või märksõna)</font></string>
+    <string name="loadTypeWebPageSearch"><b>Otsi veebist </b> <font color="gray"> (DuckDuckGo – leia ja laadi üks artikkel)</font></string>
+    <string name="loadTypeOneWebPage"><b>Veebileht - Jaga</b><font color="gray"> (jaga ühe veebilehe sisu mitmeks artikliks HTML-siltide klassinimede abil)</font></string>
+    <string name="loadType">Allalaadimise tüüp:</string>
+    <string name="global_filter">Globaalne filter &#8230;</string>
+    <string name="global_filter_descr">Filter, mis kehtib igale kanalile</string>
+    <string name="global_marks_as_star_filter_apply_to_title_descr">muul juhul rakenda sisule</string>
+    <string name="rule_text">Reegli tekst</string>
+    <string name="global_marks_as_star_filter_rule_descr">reegel rea kohta</string>
+    <string name="customKeepTime">Artiklite eriline säilitusaeg</string>
+    <string name="custom_refresh_interval">Eriline värskendusintervall</string>
+    <string name="menu_toggle_theme">Teema muutmine</string>
+    <string name="turnOn">Lülita sisse</string>
+    <string name="brightness">Heledus</string>
+    <string name="brightness_change">heleduse muutmine</string>
+    <string name="criticalErrorOccured">Äppis tekkis kriitiline viga. Palun saatke see tekst autorile</string>
+    <string name="criticalErrorSending">Veaaruande esitamine…</string>
+    <string name="copyToClipboard">Lõikelauale</string>
+    <string name="sendEmail">Saada email</string>
+    <string name="toastAppCrashed">Rakenduse ootamatu töö nurjus: (Palun saatke arendajale e-kiri)</string>
+    <string name="exportingToFile">Faili eksportimine</string>
+    <string name="importingFromFile">Failist importimine</string>
+    <string name="autobackup_interval">Automaatse varundamise intervall</string>
+    <string name="autobackup_interval_descr">Kui tihti varufail luuakse</string>
+    <string name="create_auto_backup">Tee kohe automaatne varukoopia</string>
+    <string name="use_standard_file_manager">Kasuta tavalist failihaldurit</string>
+    <string name="use_standard_file_manager_descr">muidu vali imporditav .opml fail - ainult feedex kaustast (sisemise dialoogi kaudu). Android 10+ võimatu</string>
+    <string name="settings">Sätted</string>
+    <string name="entry_go_prev">Eelmine artikkel | loobu</string>
+    <string name="entry_go_next">Järgmine artikkel | sildid</string>
+    <string name="colorSlotSaveLongTapHint">Nipp: praeguse värvi salvestamiseks tee ühel lahtril pikk vajutus</string>
+    <string name="colorSlotSaved">Värv salvestati lahtrisse</string>
+    <string name="text">Tekst</string>
+    <string name="background1">Taust</string>
+    <string name="auto_refresh_requires_charging">Ainult laadimisel</string>
+    <string name="global_class_list_to_remove_from_article_text">Eemalda tekst</string>
+    <string name="global_class_list_to_remove_from_article_text_summary">Erinevalt teistest, need reeglid on seatud kõikidele saitidele. Iga rida sisaldab ainult klassi nime</string>
+    <string name="global_date_class_list_summary">Klassi nimi igal real. Nende klasside elemente käsitletakse artikli kuupäevana veebilehe-linkide tüüpi kanalites</string>
+    <string name="hide">Peida</string>
+    <string name="show">Kuva</string>
+    <string name="setFullTextRoot">Vali täisteksti juur</string>
+    <string name="fullTextRoot">Täistekst</string>
+    <string name="fullTextReloadStarted">Täisteksti uuesti laadimine on alanud</string>
+    <string name="brightness_update_from_system_period_min">Heleduse uuendamise aeg</string>
+    <string name="brightness_update_from_system_period_min_descr">(minutites, 0 = välja lülitatud) Pärast seda ajavahemikku kohandatakse heledustase praegusele süsteemi tasemele (libistamisega)</string>
+    <string name="menu_add_feed_shortcut">Loo otsetee avakuval</string>
+    <string name="new_feed_shortcut_added">Uus otsetee on loodud avakuval</string>
+    <string name="new_feed_shortcut_add_failed">Sinu käivitaja ei suuda otseteed luua</string>
+    <string name="custom_data_folder">Kohandatud väliste failide asukoht</string>
+    <string name="custom_data_folder_descr">(tühi - kasuta vaikimisi) feedex kausta asukoht allalaaditud piltide ja varukoopiate salvestamiseks</string>
+    <string name="entry_text_title_link">Pealkirja link</string>
+    <string name="entry_text_title_link_description">võimaldab artikli pealkirjal klõpsates seda veebibrauseris avada</string>
+    <string name="delete_read_articles">Kustuta kõik loetud artiklid</string>
+    <string name="delete_read_articles_descr">hoolimata artiklite säilitusajast</string>
+    <string name="data_folder">Andmete kaust</string>
+    <string name="data_folder_descr">Kuhu salvestada allalaaditud artiklite tekst ja pildid</string>
+    <string name="internalMemoryCache">Sisemälu (Vahemälu)</string>
+    <string name="internalMemoryData">Sisemälu (Vahemälu)</string>
+    <string name="externalMemory">Välimine Salvestusruum</string>
+    <string name="show_html">Näita HTML</string>
+    <string name="image_white_background">Pildid valgel taustal</string>
+    <string name="reload_fulltext_after_tag_editing">Laadi tekst uuesti pärast sildistamist</string>
+    <string name="reload_fulltext_after_tag_editing_descr">kui see on märkimata, siis täisteksti ei laadita iga sildistamise (näita|peida|täistekst) järel uuesti, seega saad mitu muudatust lihtsamalt teha (sellisel juhul pead täisteksti käsitsi uuesti laadima, kui oled redigeerimise lõpetanud)</string>
+    <string name="article_menu_show_by_tap">Näita artikli menüüd artikli tekstil vajutades</string>
+    <string name="article_list_loading">Artikliloendi laadimine</string>
+    <string name="article_opening">Artikli avamine</string>
+    <string name="web_page_loading">Lehe laadimine</string>
+    <string name="article_menu_show_by_tap_descr">Kui toiminguriba on peidetud - muidu leiad menüü ainult toiminguribalt</string>
+    <string name="menu_go_back">Tagasi</string>
+    <string name="menu_go_top">Ülesse</string>
+    <string name="menu_close">Kinni</string>
+    <string name="reading_file_list">Faililoendi lugemine</string>
+    <string name="add_entry_shortcut">Lisa artikli otsetee</string>
+    <string name="new_entry_shortcut_added">Uus otsetee on loodud avakuval</string>
+    <string name="menu_reload_with_tables_toggle">Koos tabelitega</string>
+    <string name="menu_display_options">Kuvamise sätted</string>
+    <string name="menu_reload">Uuenda</string>
+    <string name="disable_all_tap_actions">Keela kõik puudutusega tehtavad toimingud</string>
+    <string name="article_tap_enabled">Puudutusega tehtavad toimingud on lubatud</string>
+    <string name="article_tap_enabled_summary">puudutusega tsoonil ja artikli tekstil (menüü kuvamiseks) </string>
+    <string name="menu_calculate_image_sizes">Arvuta piltide suurus</string>
+    <string name="setting_calculate_image_sizes">Piltide suurus salvestusruumis</string>
+    <string name="setting_calculate_image_sizes_descr">Samuti arvuta ja näita vanade artiklite kustutamisel mälukaardil olevate allalaaditud piltide kogumahtu artiklite, kanalite, gruppide jne jaoks. Neid andmeid uuendatakse vanade artiklite kustutamise ajal - see võib oluliselt pikendada selle toimingu aega</string>
+    <string name="settings_category_theme">Teema</string>
+    <string name="settings_category_header">Lehekülje päis</string>
+    <string name="tasks_to_download">Laadimiseks</string>
+    <string name="settings_current_setting">Praegune seadistus</string>
+    <string name="unable_to_load_article_icon">Artikli ikooni laadimine ebaõnnestus</string>
+    <string name="settings_delete_old_interval">Artiklite vanuse kontrollimise intervall</string>
+    <string name="settings_delete_old_interval_descr">Kui tihti kontrollida ja kustutada vanu (ka juba loetud) artikleid</string>
+    <string name="menu_delete_old">Kustuta vanad artiklid</string>
+    <string name="settings_category_delete_old">Vanade artiklite kustutamine</string>
+    <string name="tool_bar_color">Tööriistariba värv</string>
+    <string name="tool_bar_color_desc">Seda värvi kasutatakse artiklisiseselt nuppudel ja olekuribal</string>
+    <string name="one_webpage_hint">Vihje: selle laadimistüübi puhul jagatakse veebilehe sisu artikliteks kanali seadetes määratud HTML-elementide klassinimede järgi. Sa peaksid määrama ka artikli pealkirja, kuupäeva ja pildi URL-i klassinimed. Vajalike klassinimede leidmiseks peaksid sa selle lehe laadima (Loe kohe) ja lülituma Sisu redigeerimise vaatesse, kust saad vajalike elementide klassinimed leida ja kopeerida</string>
+    <string name="one_webpage_article_classname_label">Artikli juurelement</string>
+    <string name="one_webpage_edittext_classname_hint">Klassi nimi</string>
+    <string name="one_webpage_url_classname_label">Artikli unikaalne URL</string>
+    <string name="one_webpage_text_classname_label">Tekst</string>
+    <string name="one_webpage_author_classname_label">Autor</string>
+    <string name="one_webpage_image_url_classname_label">Pildi URL</string>
+    <string name="one_webpage_date_classname_label">Kuupäev (võib olla mitu, eraldatud tühikuga)</string>
+    <string name="copyClassNameToClipboard">Kopeeri klassi nimi</string>
+    <string name="text_was_copied_to_clipboard">Tekst kopeeriti lõikepuhvrisse</string>
+    <string name="next_page_classname">Järgmise lehe klassi nimi (rekursiivseks laadimiseks)</string>
+    <string name="articleCountLoaded">artiklid on laaditud</string>
+    <string name="next_page_max_count_classname">Maksimaalne töödeldavate lehekülgede arv</string>
+    <string name="menu_copy_feed">Kopeeri see kanal</string>
+    <string name="feed_copied">Kanal kopeeritud</string>
+    <string name="menu_show_entry_text">Artiklite tekstid</string>
+    <string name="cant_open_image">Pilti näitamine ebaõnnestus</string>
+    <string name="parsing_one_web_page">Lehekülg</string>
+    <string name="end_editing">Lõpeta korrigeerima</string>
+    <string name="open_article">Näita artikkel</string>
+    <string name="search_in_browser">Otsi brauseris</string>
+    <string name="search_in_yandex">Otsi Yandex\'i abil</string>
+    <string name="search_in_google">Otsi Google abil</string>
+    <string name="long_operation">Pikk operatsioon</string>
+    <string name="unread_article">Lugemata artiklid</string>
+    <string name="reading_article">Artikli lugemine</string>
+    <string name="reading_notification">Artikli lugemise teatis</string>
+    <string name="reading_notification_descr">Püsiv olekuriba teatis, et takistada süsteemil rakenduse sulgemist - rakenduse käivitamise kiirendamiseks pärast pikka viivitust</string>
+    <string name="feed_list_loading">Kanalite loendi laadimine</string>
+    <string name="article_text_show_battery">Aku tase</string>
+    <string name="settings_category_header_descr">Artikli teksti ja artikliloendi ekraanide jaoks </string>
+    <string name="article_text_buttons_layout">Nuppude asetus</string>
+    <string name="article_text_buttons_layout_descr">Artikli lõpus olevate nuppude orientatsioon ja nähtavus</string>
+    <string name="article_reading_notification_hint">Rakenduse mälus hoidmiseks, et kiirendada külmkäivitust</string>
+    <string name="auto_set_as_read">Märgi artikkel automaatselt loetuks, kui selle pealkiri on loendis nähtav</string>
+    <string name="removeText">Eemalda tekst</string>
+    <string name="set_category">Määra kategooriaks</string>
+    <string name="menu_more_options">Rohkem valikuid</string>
+    <string name="reset_feed_and_delete_all_articles">Lähtesta kanal ja kustuta tärnimärgita artiklid</string>
+    <string name="filter_apply_to_author">Rakenda autorile</string>
+    <string name="filter_apply_to_category">Rakenda kategooriale</string>
+    <string name="filter_apply_to_url">Rakenda URL-ile</string>
+    <string name="open_tag_menu_hint">Vali URL-i osa, mida reegli võtmena kasutada</string>
+    <string name="open_tag_menu_dialog_title">"Klassi jaoks reegli seadmine "</string>
+    <string name="show_article_category">"Näita artikli kategooriat"</string>
+    <string name="article_text_information">Lisainformatsioon päises</string>
+    <string name="article_text_progress">Lugemise edenemisriba</string>
+    <string name="global_removeText_filter_rule_descr">Regulaaravaldised (üks rida rea kohta), mida rakendatakse kogu artikli sisule</string>
+    <string name="parsing_web_page_links">Lehekülg</string>
+    <string name="global_date_class_list">Kuupäeva klasside loend</string>
+    <string name="settings_date_extract_rules">Kuupäev</string>
+    <string name="set_date">Määra kuupäevaks</string>
+    <string name="clearingWebViewChache">WebView vahemälu tühjendamine</string>
+    <string name="article_text_show_date">Kuupäev</string>
+    <string name="article_text_show_date_description">Kuupäev ja nädalapäev</string>
+    <string name="remove_existing_feeds_question">Eemalda olemasolevad kanalid enne importimist?</string>
+    <string name="yes">Jah</string>
+    <string name="no">Ei</string>
+    <string name="remove_existing_feeds_confirmation">See eemaldab KÕIK olemasolevad artiklid KÕIKIDEST kanalidest (välja arvatud \"Loe hiljem\"), ka tärnimärgiga artiklid. Oled sa kindel?</string>
+    <string name="yes_I_realize_btn_caption">Jah, ma saan aru!</string>
+    <string name="sorry_I_was_wrong_btn_caption">Oii... ma eksisin. Kanaleid ja artikleid pole vaja kustutada!</string>
+    <string name="create_backup">Loo varufail eraldi</string>
+    <string name="defaultFontFamily">Süsteemi vaikimisi</string>
+    <string name="fontTextSample">Tekst</string>
+    <string name="fontFamily">Font</string>
+    <string name="fontFamilySummary">Peaaegu kogu rakenduse teksti fondiperekond. Sa saad lisada kohandatud ttf-failidega fonte, valides fondiloendi alumise elemendi </string>
+    <string name="settings_font_rules">Kohandatud font</string>
+    <string name="settings_font_rules_description">Kohandatud fontide määramiseks eraldi klassidele artiklite tekstides domeeni kohta. Jäta klassinimi tühjaks, et rakendada fonti kogu tekstile. Vorming: veebisaidi_aadress:klass=Fondi failinimi=CSS-tekst (nt font-weight: 400; font-size: 12; letter-spacing: 0.1em)</string>
+    <string name="bold">Rasvane</string>
+    <string name="font_rules_dialog_title">site_url:class=Fondi faili nimi=CSS text. Näide: font-weight: 400; font-size: 12; letter-spacing: 0.1em</string>
+    <string name="settings_main_image_extract_rules">Peamine pilt</string>
+    <string name="settings_main_image_extract_rules_description">"Klassinimi, kust leida artikli peamist pilti, et kasutada seda artikli ikoonina ja lisada artikli algusesse (og:image asemel) domeeni kohta. See võib aidata, kui artikli pilt asub väljaspool täisteksti artikli osa "</string>
+    <string name="settings_category_content_extract_rules">Sisu eraldamise reeglid</string>
+    <string name="settings_category_content_extract_rules_summary">HTML-klassinimed, mis aitavad leida artikli erinevaid osi. Mõned neist sätetest uuendatakse automaatselt artikli sisu redigeerimise vaates</string>
+    <string name="settings_category_other">Muu</string>
+    <string name="settings_category_storage">Salvestusruum</string>
+    <string name="settings_category_autobackup">Automaatne varundamine</string>
+    <string name="settings_show_circle_progress">Näita artikli laadimise ringikujulist indikaatorit</string>
+    <string name="settings_show_circle_progress_summary">Rakenduse kõrge protsessori koormuse ajal</string>
+    <string name="kilobytes">KB</string>
+    <string name="megabytes">MB</string>
+    <string name="create_start_auto_refersh">Käivita automaatne värskendamine</string>
+    <string name="settings_thread_count">Lõimede arv</string>
+    <string name="settings_thread_count_description">(1-100) Samaaegselt artiklite värskendamise ajal täidetavate operatsioonide arv. Mida väiksem number, seda väiksem protsessori aktiivsus ja mälukasutus värskendamise ajal. Mida suurem, seda kiirem see on. Optimaalne number sõltub seadme protsessori tuumade arvust</string>
+    <string name="main_font_css_text_title">Peamise fondi CSS-stiil</string>
+    <string name="main_font_css_text_title_description">artikli teksti fondi paksuse, tähevahe jms määramiseks</string>
+    <string name="btn_reload_full_text">Laadi täistekst uuesti</string>
+    <string name="article_text_information_summary">See tekst on nähtav ainult siis, kui olekuriba on peidetud</string>
+    <string name="menu_reload_all_texts">Laadi kõik tekstid uuesti</string>
+    <string name="reloading_all_texts">Käib tekstide laadimine</string>
+    <string name="menu_visible_articles_action">Nähtavad artiklid</string>
+    <string name="menu_unstar_articles">Eemalda lemmikutest</string>
+    <string name="unstarAllArtcilesComfirm">Eemalda KÕIK nähtavad artiklid lemmikutest. Oled sa kindel?</string>
+    <string name="unstarAllArtcilesComfirm2">Kõik nähtavad artiklid eemaldatakse lemmikutest. Oled sa TÄIELIKULT kindel?</string>
+    <string name="tap_actions_were_enabled">Puudutuse toimingud on lubatud</string>
+    <string name="tap_actions_were_disabled">Kõik puudutuse toimingud on ajutiselt keelatud! Puuduta lubamiseks paremas ülanurgas</string>
+    <string name="list_was_scrolled_to_top">Keriti üles</string>
+    <string name="list_was_scrolled_to_bottom">Keriti alla</string>
+    <string name="articleWasUnstarred">Artikkel on lemmikutest eemaldatud</string>
+    <string name="articleNotFound">Artiklit ei leitud :(</string>
+    <string name="article_list_size_progressbar_maxsize">"Maksimaalne teksti suurus "</string>
+    <string name="article_list_size_progressbar_maxsize_descr">kB horisontaalse indikaatori jaoks (0 keelamiseks). See on peidetud kanalite jaoks, millel on lubatud valik \"Märgi artiklid automaatselt loetuks\"</string>
+    <string name="setting_edit_feed_force_portrait_orientation">Redigeerimisakna portreeorientatsioon</string>
+    <string name="setting_edit_feed_force_portrait_orientation_summary">Sunni portreeekraani orientatsioon redigeerimisaknas – kontrolli, kas sinu telefonil on kitsas ekraan</string>
+    <string name="name">Pealkiri</string>
+    <string name="remove_label_confirmation">"Eemalda silt? "</string>
+    <string name="setting_label_list">Siltide loend</string>
+    <string name="tag_list">Siltide loend</string>
+    <string name="menu_edit_labels">Sildid</string>
+    <string name="manage_labels">Seadista</string>
+    <string name="article_labels_setup_title">Siltide seadistamine</string>
+    <string name="labels_group_title">Sildid</string>
+    <string name="color">Värv</string>
+    <string name="label_color_dialog_title">Sildi värv</string>
+    <string name="menu_labels">Sildid</string>
+    <string name="menu_edit_article_url">Muuda URL</string>
+    <string name="edit_article_url_title_message">URL-is saad kasutada praeguse kuupäeva mustrit {…}, näiteks http://test.org/{yyyy-MM-dd}. Kuupäeva vormingu reegleid on kirjeldatud siin: https://developer.android.com/reference/java/text/SimpleDateFormat </string>
+    <string name="menu_edit_article_title">Muuda pealkirja</string>
+    <string name="import_completed">Importimine on lõpetatud</string>
+    <string name="settings_comments_extract_rules">Kommentaarid</string>
+    <string name="settings_comments_extract_rules_description">Reeglid artiklite kommentaaride sektsioonide leidmiseks</string>
+    <string name="filter_by_labels">Filtreeri siltide järgi</string>
+    <string name="all">Kõik</string>
+    <string name="all_labels">Kõik sildid</string>
+    <string name="filter_label_title">Filter</string>
+    <string name="menu_edit_feed">Muuda kanalit</string>
+    <string name="addCustomFont">Lisa kohandatud font …</string>
+    <string name="fileCopied">Fail %s kopeeritud</string>
+    <string name="fileCopiedToDownloadsFolder">Fail %s kopeeritud allkausta %s Allalaadimised</string>
+    <string name="unableToCopyFile">Faili %s ei saa kopeerida</string>
+    <string name="label_setup_by_tap_on_date">Siltide seadistamine kuupäeval klõpsamisel</string>
+    <string name="label_setup_by_tap_on_date_descr">Autor ja URL artiklite loendis</string>
+    <string name="downloadAllImagesStarted">Kõikide piltide allalaadimine on alanud</string>
+    <string name="operationCanceled">Toiming on tühistatud</string>
+    <string name="comments">Kommentaarid: </string>
+    <string name="video_tag_found_in_article">Artikli tekstist leiti video</string>
+    <string name="disable_tap_actions_when_video">Keela puudutuse toimingud videoga</string>
+    <string name="disable_tap_actions_when_video_descr">Keela ajutiselt puudutuse toimingud artikli kokkuvõtte tekstis, kui see sisaldab videot</string>
+    <string name="addFeedTelegramPatternFound">See Url näib olevat Telegrami oma. Kas sa soovid Telegrami kanali voo seaded automaatselt seadistada?</string>
+    <string name="feedWasAutoConfigured">Kanal seadistati automaatselt</string>
+    <string name="settings_labels_sort_alphabetical">Siltide sorteerimine tähestiku järgi</string>
+    <string name="settings_labels_sort_alphabetical_descr">Siltide sorteerimine tähestiku järgi. Muidu käsitsi sortimine</string>
+    <string name="settings_feeds_sort_alphabetical">Kanalite sorteerimine tähestiku järgi</string>
+    <string name="settings_feeds_sort_alphabetical_descr">Kanalite sorteerimine tähestiku järgi. Muidu käsitsi sortimine</string>
+    <string name="web_search_keyword">Märksõna või veebisaidi URL</string>
+    <string name="web_search_title">Artikli otsing veebis</string>
+    <string name="settings_datetime_format">Kuupäeva/kellaaja fromaat</string>
+    <plurals name="number_of_new_entries">
+        <item quantity="one">Üks uus artikkel</item>
+        <item quantity="other">%d uut artiklit</item>
+    </plurals>
+    <string name="rightNow">just praegu</string>
+    <string name="oneWeek">nädal</string>
+    <string name="twoFourWeek">nädalad</string>
+    <string name="fiveWeek">nädalat</string>
+    <string name="oneMonth">kuu</string>
+    <string name="twoFourMonth">kuud</string>
+    <string name="fiveMonth">kuud</string>
+    <string name="oneDay">päev</string>
+    <string name="twoFourDay">päevad</string>
+    <string name="fiveDay">päeva</string>
+    <string name="oneHour">tund</string>
+    <string name="twoFourHour">tundi</string>
+    <string name="fiveHour">tunde</string>
+    <string name="oneMinute">minuti</string>
+    <string name="twoFourMinute">minutid</string>
+    <string name="fiveMinute">min.</string>
+    <string name="yearsShort">a.</string>
+    <string name="monthsShort">k.</string>
+    <string name="weeksShort">n.</string>
+    <string name="daysShort">p.</string>
+    <string name="hoursShort">t.</string>
+    <string name="minutesShort">m.</string>
+    <string name="timeIntervalInFuture">aja pärast</string>
+    <string name="timeIntervalInPast">aja tagasi </string>
+    <string name="error_add_customm_font">Kohandatud fondi lisamine ebaõnnestus</string>
+    <string name="article_text_footer_show_remaining">Veel jäänud</string>
+    <string name="article_text_footer_show_remaining_description">"Alla kerimiseks kuva järelejäänud lehekülgede arv "</string>
+    <string name="open_image">Ava pilt</string>
+    <string name="copy_to_downloads">Kopeeri allalaadimiste hulka</string>
+    <string name="sendErrorConfirm">Toimingu ajal ilmnes viga. Kas saata sellest teade arendajale?</string>
+    <string name="wrongFontFileSelected">"Fondifailil peab olema ttf-laiend "</string>
+    <string name="show_article_text_preview">Teksti eelvaade</string>
+    <string name="show_article_text_preview_descr">Kuva artikli teksti esimesed read</string>
+    <string name="show_more">Näita rohkem…</string>
+    <string name="appListLoading">Rakenduste loendi laadimine</string>
+    <string name="open_image_tap_action">Pildivaaturi rakendus</string>
+    <string name="open_link_in_browser_tap_action">Brauserirakendus</string>
+    <string name="open_image_tap_action_descr">Kuvatakse otse kasutatav pildirakendus, et mitte raisata aega süsteemirakenduse valimise dialoogile</string>
+    <string name="open_link_in_browser_tap_action_descr">Otse kasutatav brauserirakendus, et mitte raisata aega süsteemirakenduse valimise dialoogile</string>
+    <string name="not_selected">Pole valitud</string>
+    <string name="setting_ignore_all_ssl_errors">Ignoreeri kõiki SSL-i vigu</string>
+    <string name="setting_setting_ignore_all_ssl_errors_summary">Märgi see, kui sul on veebisisu laadimisel sertifikaadiprobleeme. !!! TÄHELEPANU !!! See võib muuta sinu seadme ebaturvaliseks :(</string>
+    <string name="connection_timeout">Ühenduse ajalõpp</string>
+    <string name="connection_timeout_summary">Millisekundites. Kui kaua internetiühendust oodata</string>
+    <string name="settings_category_connection">Ühendus</string>
+    <string name="couldNotCreateDownloadsSubfolder">Allalaadimiste kausta alamkausta loomine ebaõnnestus</string>
+    <string name="article_text_expand_controls">Artikli tekst laieneb</string>
+    <string name="article_text_expand_controls_descr">Võimalus artikli teksti loendis laiendada. Kui see on märgitud, laiendavad või ahendavad kõik puudutustoimingud peale artikli pealkirja artikli teksti, selle asemel et seda eraldi aknas avada</string>
+    <string name="settings_category_labels">Sildid</string>
+    <string name="settings_category_feed_list">Kanalite loend</string>
+    <string name="settings_category_last_read">Viimane loetud osa</string>
+    <string name="setting_last_read_hide_label_list">Peidetud siltide loend</string>
+    <string name="setting_last_read_hide_label_list_summary">Ära kuva valitud silte viimase lugemise jaotises</string>
+    <string name="setting_last_read_article_count">Artiklite arv</string>
+    <string name="setting_last_read_article_count_descr">Nähtavate artiklite arv jaotises Viimati loetud</string>
+    <string name="settings_category_feed_list_summary">Viimase loetud jaotise kanaliteloendi välimus ja sätted</string>
+    <string name="menu_reload_full_text_with_scripts">Skriptidega</string>
+    <string name="setting_custom_css_text">Kohandatud CSS-tekst</string>
+    <string name="setting_custom_css_text_description">Tekst, mis lisatakse mis tahes artikli HTML-i ja CSS-i jaotisse. Selle abil saate artikli teksti vormingut mis tahes viisil kohandada. Alustamiseks vaadake https://www.w3schools.com/css/css_intro.asp</string>
+    <string name="menu_reload_full_text_with_debug">Silumisega</string>
+    <string name="show_article_big_image">Artikli suur pilt</string>
+    <string name="show_article_big_image_descr">Näita väikese ikooni asemel täisekraani laiusega artiklipilti</string>
+    <string name="withoutLabel">Ilma sildita</string>
+    <string name="article_text_footer_margin">Servanihe</string>
+    <string name="article_text_footer_margin_summary">Vasaku ja parema serva veerised (mm-des) ekraani ümarate nurkadega võitlemiseks</string>
+    <string name="refresh_only_selected_select_all">Vali kõik</string>
+    <string name="refresh_only_selected_select_all_summary">Vali kõik kanalid automaatseks värskendamiseks</string>
+    <string name="refresh_only_selected_select_none">Lähtesta kõik</string>
+    <string name="refresh_only_selected_select_none_summary">Eemalda automaatse värskendamise märkeruut kõikidelt kanalidelt</string>
+    <string name="feed_count_were_edited">kanaleid redigeeriti</string>
+    <string name="show_navigation_bar_in_fullscreen">Näita navigeerimist täisekraanil</string>
+    <string name="show_navigation_bar_in_fullscreen_summary">Näita navigeerimisriba täisekraani režiimis</string>
+    <string name="show_unstarred_checkbox">Tärnikoon puudub</string>
+    <string name="show_unstarred_checkbox_descr">Näita väikest tühja tärnikooni, et näidata, et artikkel pole lemmikutes</string>
+    <string name="debug">Silumine</string>
+    <string name="send_debug_info_on_crash">Saada silumisinfo krahhi korral</string>
+    <string name="send_debug_info_on_crash_summary">Paku välja saata e-kiri silumisinfoga arendajale, kui rakendus kokku jookseb</string>
+    <string name="copy_debug_info_to_clipboard">Kopeeri silumisinfo lõikelauale</string>
+    <string name="copy_debug_info_to_clipboard_summary">Kui rakendus kokku jookseb</string>
+    <string name="import_from_backup_after_permission_granted">Kas sa soovid importida kanalid ja rakenduse seaded automaatsest varundusfailist?</string>
+    <string name="menu_import_from_backup_file">Importimine varundusfailist</string>
+    <string name="brightness_programmatic_dim_max">Täiendav tumendamine</string>
+    <string name="brightness_programmatic_dim_max_descr">Maksimaalne täiendav tarkvaraline heleduse vähendamise väärtus (0 - lisavähendus puudub, 100 - täielik pimedus)</string>
+    <string name="edit_feed_title_external">Redigeeri</string>
+    <string name="filter_hint_external">Selle globaalse filtri üksused lisatakse igale kanali filtrile. Globaalse filtri välistamise käivitanud üksused jäetakse veebiotsingu tulemustest välja. Sellele ekraanile pääseb ligi ka pika vajutusega valikutel Kõik, Lugemata, Lemmikud, Viimati loetud või Ilma vooüksusteta kanalite loendis) </string>
+    <string name="unknown">Teadmatu</string>
+    <string name="tableOfContent">Sisukord</string>
+    <string name="show_notification_setup_summary">Näita rakenduse teavituste süsteemi seadistamise dialoogi</string>
+    <string name="performance">Jõudlus</string>
+    <string name="settings_autobackup_toast">Hüpikteade</string>
+    <string name="settings_autobackup_toast_descr">Näita teavitussõnumit pärast varukoopia edukat kopeerimist kausta Allalaadimised</string>
+    <string name="with_labels">siltidega:</string>
+    <string name="none">pole</string>
+    <string name="show_article_text">Artikli tekst</string>
+    <string name="show_article_text_descr">Näita artikli teksti loendis</string>
+    <string name="shared_favorities_article_list_mail_sugject">Handy Readeri lemmikartiklite loend</string>
+    <string name="settings_remove_found_categories_from_text">Eemalda kategooriad tekstist</string>
+    <string name="settings_remove_found_categories_from_text_descr">Eemalda leitud kategooriad artikli tekstist</string>
+    <string name="settings_volume_buttons_action_descr">Kui artiklis on video, siis toimub ainult vaikimisi toiming</string>
+    <string name="volume_buttons_action_page_in_article_list">Lehekülgede kerimine helitugevuse nuppudega</string>
+    <string name="volume_buttons_action_page_in_article_list_descr">Artiklite loendis</string>
+    <string name="global_class_list_to_load_article_comments_default_value">habr:class=tm-article-comments
+    livejournal:id-comments</string>
+    <string name="context_menu_share_all_via_file">"Kõik nähtavad artiklid faili kaudu "</string>
+    <string name="context_menu_share_all_via_text">Kõik nähtavad artiklid tekstina</string>
+    <string name="settings_force_orientation_by_sensor">Orientatsioon anduri järgi</string>
+    <string name="settings_force_orientation_by_sensor_descr">Sundida orientatsiooni anduri järgi, et süsteemi seaded alistada</string>
+    <string name="menu_force_orientation_by_sensor">Rakenduse orientatsioon anduri abil</string>
+    <string name="menu_article_orientation">Artikli orientatsioon</string>
+    <string name="settings_autobackup_requires_charging">Ainult aku laadimise ajal</string>
+    <string name="entry_show_menu">Kuva menüü</string>
+    <string name="article_list_restore_type">Taasta loendi positsiooni seisund</string>
+    <string name="article_list_restore_type_summary">Millisele positsioonile artiklite loendit selle esmakordsel avamisel kerida</string>
+</resources>
