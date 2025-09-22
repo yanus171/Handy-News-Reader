@@ -556,6 +556,8 @@
     <string name="unstarAllArtcilesComfirm2">Möchten Sie wirklich alle sichtbaren favorisierten Artikel aus den Favoriten entfernen?</string>
     <string name="tap_actions_were_enabled">Tipp-Aktionen wurden aktiviert</string>
     <string name="tap_actions_were_disabled">Tipp-Aktionen wurden deaktiviert! Oben-rechts antippen, um sie wieder zu aktivieren</string>
+    <string name="zoom_shift_were_disabled">Vergrößern- und Verschieben-Aktionen wurden deaktiviert</string>
+    <string name="zoom_shift_were_enabled">Vergrößern- und Verschieben-Aktionen wurden aktiviert</string>
     <string name="list_was_scrolled_to_top">Listenanfang erreicht</string>
     <string name="list_was_scrolled_to_bottom">Listenende erreicht</string>
     <string name="articleWasUnstarred">Kennzeichnung eines Artikels wurde entfernt</string>
@@ -725,4 +727,6 @@
     <string name="article_list_restore_type">Art der Listenposition wiederherstellen</string>
     <string name="article_list_restore_type_summary">An welche Position die Artikelliste beim ersten Öffnen blättern soll</string>
     <string name="menu_replace_img_with_a_link_toggle">Grafik durch einen Link ersetzen</string>
+    <string name="zoom_shift_enabled">Vergrößern &amp; Verschieben</string>
+    <string name="zoom_is_disabled">Vergrößerungsmodus deaktiviert</string>
 </resources>
