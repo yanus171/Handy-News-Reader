@@ -557,6 +557,8 @@
     <string name="unstarAllArtcilesComfirm2">Всі видимі обрані статті будуть вилучені з обраного. Добре подумали?</string>
     <string name="tap_actions_were_enabled">Дії дотиком увімкнено</string>
     <string name="tap_actions_were_disabled">Дії дотиком були вимкнуті! Натисніть верхній правий кут щоб увімкнути</string>
+    <string name="zoom_shift_were_disabled">Масштабування &amp; та зміщення вимкнуті</string>
+    <string name="zoom_shift_were_enabled">Масштабування &amp; та зміщення увімкнуті</string>
     <string name="list_was_scrolled_to_top">Прокрутити на початок</string>
     <string name="list_was_scrolled_to_bottom">Прокрутити до самого низу</string>
     <string name="articleWasUnstarred">Стаття вилучена з обраного</string>
@@ -728,6 +730,7 @@
     <string name="article_list_restore_type">Відновити тип позиції списку</string>
     <string name="article_list_restore_type_summary">При першому відкритті до якого місця прокручувати список статей</string>
     <string name="menu_replace_img_with_a_link_toggle">Замінити мал. на А посилання</string>
+    <string name="zoom_shift_enabled">Масштабування &amp; зміщення</string>
     <string name="scroll_to_bottom_disabled_for_pdf">Прокручування до низу вимкнуто для PDF</string>
     <string name="scroll_to_top_disabled_for_pdf">Прокручування вгору вимкнуто для PDF</string>
 </resources>
