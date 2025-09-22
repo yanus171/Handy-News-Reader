@@ -152,7 +152,7 @@
     <string name="downloadOneImage">Загрузить изображение</string>
     <string name="favorites">Избранное</string>
     <string name="last_read">Последнее прочитанное</string>
-    <string name="context_menu_share_starred_via_file">Поделиться избранным через файл</string>
+    <string name="context_menu_share_starred_via_file">Записать избранные статьи в файл и поделиться</string>
     <string name="context_menu_share_starred_via_text">Поделиться избранным через текст</string>
     <string name="menu_star">В избранное</string>
     <string name="menu_unstar">Убрать из избранного</string>
@@ -276,7 +276,7 @@
     <string name="settings_category_operation_summary">Кнопки громкости, зоны нажатий, измение яркости</string>
     <string name="tap_zone_size">Размер зоны нажатий</string>
     <string name="tap_zone_size_descr">Ширина и высота зон нажатий в миллиметрах</string>
-    <string name="settings_show_tap_zones">Зоны нажатий видимы</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Показывать полупрозрачные квадратики на месте тап зон</string>
     <string name="settings_tapZones">Зоны нажатий (предпросмотр)</string>
     <string name="settings_volume_buttons_action">Действие кнопок громкости</string>
@@ -726,4 +726,11 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="settings_force_orientation_by_sensor">Ориентация по датчику</string>
     <string name="settings_force_orientation_by_sensor_descr">Принудительная ориентация по датчику, отменяющая настройки системы</string>
     <string name="menu_force_orientation_by_sensor">Ориентация приложения по датчику</string>
+    <string name="menu_article_orientation">Ориентация статьи</string>
+    <string name="settings_autobackup_requires_charging">Только во время зарядки</string>
+    <string name="entry_show_menu">Показать меню</string>
+    <string name="article_list_restore_type">Восстановить тип позиции списка</string>
+    <string name="article_list_restore_type_summary">На какую позицию прокручивать список статей при первом открытии</string>
+    <string name="scroll_to_bottom_disabled_for_pdf">Прокрутка вниз отключена для PDF</string>
+    <string name="scroll_to_top_disabled_for_pdf">Прокрутка вверх отключена для PDF</string>
 </resources>

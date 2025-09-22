@@ -276,7 +276,7 @@ maksimum per umpan<br/>
     <string name="settings_category_operation_summary">Pengaturan proses</string>
     <string name="tap_zone_size">Ukuran Zona Sentuh</string>
     <string name="tap_zone_size_descr">Tinggi atau lebar semua Zona Sentuh dalam milimeter</string>
-    <string name="settings_show_tap_zones">Zona Sentuh terlihat</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Sebagai kotak transparan</string>
     <string name="settings_tapZones">Pratinjau Zona Sentuh</string>
     <string name="settings_volume_buttons_action">Tindakan tombol volume</string>

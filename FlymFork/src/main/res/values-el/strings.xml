@@ -262,7 +262,7 @@
     <string name="settings_category_operation_summary">Ρυθμίσεις λειτουργικότητας</string>
     <string name="tap_zone_size">Μέγεθος ζώνης αφής</string>
     <string name="tap_zone_size_descr">Ύψος ή πλάτος όλων των ζωνών αφής σε χιλιοστά (προβολή καταχώρησης)</string>
-    <string name="settings_show_tap_zones">Οι ζώνες αφής είναι ορατές</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Ως διαφανή τετράγωνα</string>
     <string name="settings_tapZones">Προεπισκόπηση ζωνών αφής</string>
     <string name="settings_volume_buttons_action">Ενέργειες των πλαϊνών κουμπιών έντασης</string>

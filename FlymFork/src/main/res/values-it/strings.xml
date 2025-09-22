@@ -272,7 +272,7 @@
     <string name="settings_category_operation_summary">Impostazioni operazioni</string>
     <string name="tap_zone_size">Dimensione zone tocco</string>
     <string name="tap_zone_size_descr">Altezza/larghezza in millimetri delle zone di tocco</string>
-    <string name="settings_show_tap_zones">Zone tocco visibili</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Saranno identificabili tramite dei quadrati semitrasparenti</string>
     <string name="settings_tapZones">Anteprima zone tocco</string>
     <string name="settings_volume_buttons_action">Azione pulsanti volume</string>

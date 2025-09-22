@@ -47,6 +47,11 @@
         <item>Vertikal</item>
         <item>Tasten nicht anzeigen</item>
     </string-array>
+    <string-array name="article_list_restore_type_captions">
+        <item>Oben | Unten (je nach Einstellung der Reihenfolge)</item>
+        <item>Zum ältesten neuen Artikel</item>
+        <item>Zum ältesten ungelesenen Artikel</item>
+    </string-array>
     <string-array name="settings_datetime_format">
         <item>Systemvorgabe</item>
         <item>Verbleibende Zeit</item>

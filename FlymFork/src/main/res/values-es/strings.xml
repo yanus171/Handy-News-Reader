@@ -270,7 +270,7 @@
     <string name="settings_category_operation_summary">Configuración operacional</string>
     <string name="tap_zone_size">Tamaño de la zona de toque</string>
     <string name="tap_zone_size_descr">Alto o ancho de todas las Zonas de toque en milímetros (vista de artículo)</string>
-    <string name="settings_show_tap_zones">Las Zonas de toque son visibles</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_show_tap_zone_description">Como cuadrados transparentes en la vista de artículo</string>
     <string name="settings_tapZones">Vista previa de Zonas de toque</string>
     <string name="settings_volume_buttons_action">Acción de los botones de volumen</string>
