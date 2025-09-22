@@ -42,11 +42,11 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
     }
 
     override fun leftBottomBtnClick() {
-        PageChange(+1)
+        ScrollOneScreen(+1)
     }
 
     override fun rightBottomBtnClick() {
-        PageChange(+1)
+        ScrollOneScreen(+1)
     }
 
     fun openRenderer(link: String) {
@@ -73,7 +73,7 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
     override fun LongClickOnBottom() {
     }
 
-    override fun PageChange(delta: Int) {
+    override fun ScrollOneScreen(direction: Int) {
     }
 
     override fun GetViewScrollPartY(): Double {
@@ -84,13 +84,18 @@ class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long
         return false
     }
 
-    override fun getProgressInfo(statusHeight: Int): ProgressInfo? {
+    override fun getProgressInfo(): ProgressInfo? {
         return ProgressInfo()
     }
 
     override fun Destroy() {
         mRenderer?.close()
     }
+
+    override fun ScrollToPage(page: Int) {
+        //TODO("Not yet implemented")
+    }
+
     internal inner class ListAdapter(private val mRenderer: PdfRenderer?) : BaseAdapter() {
         private val mBitmapCache = SparseArray<Bitmap?>()
         val mScaleDetector = ScaleGestureDetector( mListView.context, ScaleListener() )

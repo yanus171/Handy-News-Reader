@@ -305,11 +305,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             return "";
         if ( value < 0 )
             return "";
-        final int result = (max - value) / step;
+        final int result = Math.min(value  + 1, max) / step;
         if ( result <= 0 )
             return "";
         final int maxSteps = max / step;
-        return maxSteps == result ? String.format("+%d", result) : String.format("+%d/%d", result, maxSteps);
+        return String.format("%d/%d", result, maxSteps);
     }
     protected TextView SetupTextView(int id) {
         TextView result = findViewById(id);

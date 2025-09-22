@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
@@ -17,7 +18,6 @@ import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.activity.EntryActivity
@@ -30,6 +30,7 @@ import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SHIFT_ENABLED
 import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
+import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
 import java.util.Date
@@ -222,8 +223,8 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         Toast.makeText( mActivity, R.string.scroll_to_top_disabled_for_pdf, Toast.LENGTH_LONG ).show()
     }
 
-    override fun PageChange(delta: Int) {
-        ScrollTo( mPDFView.positionOffset + delta * getPageFloatSize(), true )
+    override fun ScrollOneScreen(direction: Int) {
+        ScrollTo( mPDFView.positionOffset + direction * getPageFloatSize(), true )
     }
     private fun getScreenHeight() : Int {
         var result = mPDFView.height;
@@ -273,7 +274,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         return false
     }
 
-    override fun getProgressInfo(statusHeight: Int): ProgressInfo? {
+    override fun getProgressInfo(): ProgressInfo? {
         val result = ProgressInfo()
         result.max = mPDFView.pageCount
         result.progress = mPDFView.currentPage
@@ -322,20 +323,46 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
     override fun onOptionsItemSelected(item: android.view.MenuItem ) {
         super.onOptionsItemSelected(item);
-        if (item.itemId == R.id.menu_zoom_shift_enabled ) {
-            saveState();
-            PrefUtils.toggleBoolean( PREF_ZOOM_SHIFT_ENABLED, item.isChecked )
-            mActivity.mEntryFragment.SetupZones()
-            UiUtils.toast( if (PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled )
-            refreshUI(true)
-        }
+        if (item.itemId == R.id.menu_zoom_shift_enabled )
+            toggleZoomShiftEnabled()
+        else if ( item.itemId == R.id.menu_share )
+            share()
+    }
+
+    private fun share() {
+        mActivity.startActivity(Intent.createChooser( Intent(Intent.ACTION_SEND)
+                .setData(Uri.parse(mEntryLink)),
+            mActivity.getString(R.string.menu_share)))
+    }
+
+    private fun toggleZoomShiftEnabled() {
+        saveState();
+        PrefUtils.toggleBoolean(PREF_ZOOM_SHIFT_ENABLED, true )
+        mActivity.mEntryFragment.SetupZones()
+        UiUtils.toast(if (PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
+        refreshUI(true)
     }
 
     override fun leftBottomBtnClick() {
-        PageChange(+1)
+        ScrollOneScreen(+1)
     }
 
     override fun rightBottomBtnClick() {
-        PageChange(+1)
+        ScrollOneScreen(+1)
+    }
+
+    override fun setupControlPanelButtonActions() {
+        super.setupControlPanelButtonActions()
+        setupButtonAction( R.id.btn_share, false) { share() }
+        setupButtonAction( R.id.btn_zoom_shift_enabled, getBoolean(PREF_ZOOM_SHIFT_ENABLED, true)) {
+            toggleZoomShiftEnabled()
+        }
+        setupButtonAction( R.id.btn_image_white_background, getBoolean(STATE_IMAGE_WHITE_BACKGROUND, false)) {
+            toggleImageWhiteBackground()
+        }
+    }
+
+    override fun ScrollToPage(page: Int) {
+        mPDFView.jumpTo(page)
     }
 }

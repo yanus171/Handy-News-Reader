@@ -181,9 +181,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void PageChange(int delta) {
-        ScrollTo((int) (mWebView.getScrollY() + delta * (mWebView.getHeight() - mActivity.mEntryFragment.mStatusText.GetHeight()) *
-                getPageChangeMultiplier()), true);
+    public void ScrollOneScreen(int direction) {
+        ScrollTo((int) (mWebView.getScrollY() + direction * mWebView.getPageHeight() * getPageChangeMultiplier()), true);
     }
 
     @Override
@@ -192,13 +191,14 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public ProgressInfo getProgressInfo(int statusHeight) {
+    public ProgressInfo getProgressInfo() {
         int webViewHeight = mWebView.getMeasuredHeight();
-        int contentHeight = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale());
+        int contentHeight = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale()) - webViewHeight;
         ProgressInfo result = new ProgressInfo();
-        result.max = contentHeight - webViewHeight;
-        result.progress = mWebView.getScrollY();
-        result.step = mWebView.getHeight() - statusHeight;
+        final int screenCount = contentHeight / mWebView.getPageHeight();
+        result.max = screenCount;
+        result.progress = (int) ((screenCount * mWebView.getScrollY()) / (float)contentHeight);
+        result.step = 1;
         return result;
     }
 
@@ -1057,10 +1057,25 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 mWebView.findNext( false );
                 break;
             }
+            case R.id.menu_share: {
+                share();
+                break;
+            }
+
 
         }
 
 
+    }
+
+    private void share() {
+        if (mEntryLink != null) {
+            String title = mCursor.getString(mTitlePos);
+
+            mActivity.startActivity(Intent.createChooser(
+                    new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, mEntryLink)
+                            .setType(Constants.MIMETYPE_TEXT_PLAIN), mActivity.getString(R.string.menu_share)));
+        }
     }
 
     private void showHTML() {
@@ -1097,6 +1112,22 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         menu.findItem(R.id.menu_replace_img_with_a_link_toggle).setChecked( mIsReplaceImgWithALink );
         menu.findItem(R.id.menu_reload_full_text_with_debug_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
         menu.findItem(R.id.menu_replace_img_with_a_link_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
+    }
+
+    @Override
+    public void setupControlPanelButtonActions() {
+        super.setupControlPanelButtonActions();
+        setupButtonAction(R.id.btn_share, false, v -> {
+            share();
+            mActivity.mEntryFragment.hideControlPanel();
+            mActivity.mEntryFragment.hideTapZones();;
+        });
+    }
+
+    @Override
+    public void ScrollToPage(int page) {
+        mScrollPartY = (double) page / mWebView.getPageCount();
+        mWebView.ScrollToY();
     }
 
     @Override

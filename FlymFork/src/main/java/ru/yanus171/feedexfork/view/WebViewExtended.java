@@ -748,7 +748,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         return false;
     }
 
-    private void ScrollToY() {
+    void ScrollToY() {
         Dog.v(EntryView.TAG, "EntryView.ScrollToY() mEntryID = " + mEntryView.mEntryId + ", mScrollPartY=" + mEntryView.mScrollPartY + ", GetScrollY() = " + mEntryView.GetScrollY());
         if ( mEntryView.GetScrollY() > 0 )
             scrollTo( 0, mEntryView.GetScrollY() );
@@ -912,6 +912,14 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         mEntryView.SaveScrollPos();
         mEntryView.EndStatus();
     }
+    int getPageHeight() {
+        return getHeight() - mEntryView.mActivity.mEntryFragment.mStatusText.GetHeight();
+    }
+    int getPageCount() {
+        return (int) (GetContentHeight() / getPageHeight());
+    }
+
+
 }
 
 class ScheduledEntryNotifyObservers implements Runnable {
@@ -932,5 +940,6 @@ class ScheduledEntryNotifyObservers implements Runnable {
         else
             WebViewExtended.ScheduledNotifyObservers( mId, mLink );
     }
+
 }
 

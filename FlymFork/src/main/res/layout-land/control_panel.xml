@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/control_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
+    android:paddingBottom="10dp"
+    android:layout_gravity="center_horizontal|bottom">
+    <TextView
+        android:id="@+id/seekbar_text"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="6 from 16"/>
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|bottom">
+        <ImageButton
+            android:id="@+id/btn_zoom_shift_enabled"
+            android:src="@drawable/arrow_left_right"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_image_white_background"
+            android:src="@drawable/ic_photo_size_select_actual"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_share"
+            android:src="@drawable/ic_share"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_menu"
+            android:src="@drawable/arrow_drop_down"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_force_landscape_orientation_toggle"
+            android:src="@drawable/landscape_orientation"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_force_portrait_orientation_toggle"
+            android:src="@drawable/portrait_orientation"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_force_orientation_by_sensor"
+            android:src="@drawable/orientation_by_sensor"
+            style="@style/ControlButton"/>
+    </LinearLayout>
+
+</LinearLayout>

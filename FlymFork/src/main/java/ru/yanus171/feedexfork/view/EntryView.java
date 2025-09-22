@@ -9,8 +9,11 @@ import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.PrefUtils.toggleBoolean;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -32,7 +35,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -47,7 +52,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Stack;
 
-import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
@@ -60,10 +64,12 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 
 public abstract class EntryView {
+    private final View mRootView;
     public EntryActivity mActivity = null;
     public boolean mLoadTitleOnly = false;
     public boolean mContentWasLoaded = false;
@@ -87,6 +93,7 @@ public abstract class EntryView {
     protected EntryView(EntryActivity activity, long entryId) {
         mActivity = activity;
         mEntryId = entryId;
+        mRootView = mActivity.mEntryFragment.mRootView;
     }
 
     public boolean CanGoBack() {
@@ -116,7 +123,7 @@ public abstract class EntryView {
     protected abstract int GetScrollY();
     protected abstract void ScrollTo( int y, boolean smooth );
     public abstract void LongClickOnBottom();
-    public abstract void PageChange(int delta);
+    public abstract void ScrollOneScreen(int direction);
     protected abstract double GetViewScrollPartY();
 
     public void SaveScrollPos() {
@@ -141,7 +148,7 @@ public abstract class EntryView {
     }
 
     public abstract boolean IsScrollAtBottom();
-    public abstract ProgressInfo getProgressInfo( int statusHeight );
+    public abstract ProgressInfo getProgressInfo( );
 
     public void Destroy() {
 
@@ -150,11 +157,33 @@ public abstract class EntryView {
     public void refreshUI( boolean invalidateContent ) {
         if ( invalidateContent )
             InvalidateContentCache();
+        setupControlPanelButtonActions();
         mActivity.mEntryFragment.hideTapZones();
+        mActivity.mEntryFragment.hideControlPanel();
+
     }
 
     public void onStart() {
     }
+
+    public void setupControlPanelButtonActions() {
+        setupPageSeekbar();
+
+        setupButtonAction(R.id.btn_menu, false, v -> {
+            mActivity.openOptionsMenu();
+            mActivity.mEntryFragment.hideControlPanel();
+        });
+        setupButtonAction(R.id.btn_force_landscape_orientation_toggle, mActivity.mEntryFragment.mForceOrientation == LANDSCAPE, v ->
+                mActivity.mEntryFragment.changeOrientation(LANDSCAPE));
+        setupButtonAction(R.id.btn_force_portrait_orientation_toggle, mActivity.mEntryFragment.mForceOrientation == PORTRAIT, v ->
+                mActivity.mEntryFragment.changeOrientation(PORTRAIT));
+        setupButtonAction(R.id.btn_force_orientation_by_sensor, getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true), v -> {
+            toggleBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, true );
+            mActivity.mEntryFragment.setOrientationBySensor(getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true));
+        });
+    }
+
+    public abstract void ScrollToPage(int page);
 
     static public class ProgressInfo {
         public int max;
@@ -269,17 +298,6 @@ public abstract class EntryView {
                 SetIsFavorite( !mFavorite, true );
                 break;
             }
-            case R.id.menu_share: {
-
-                if (mEntryLink != null) {
-                    String title = mCursor.getString(mTitlePos);
-
-                    mActivity.startActivity(Intent.createChooser(
-                            new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, mEntryLink)
-                                    .setType(Constants.MIMETYPE_TEXT_PLAIN), mActivity.getString(R.string.menu_share)));
-                }
-                break;
-            }
 
             case R.id.menu_toggle_theme: {
                 SaveScrollPos();
@@ -337,10 +355,8 @@ public abstract class EntryView {
             }
 
             case R.id.menu_image_white_background: {
-                PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
+                toggleImageWhiteBackground();
                 item.setChecked( PrefUtils.isImageWhiteBackground() );
-                refreshUI(true);
-                generateArticleContent(true);
                 break;
             }
             case R.id.menu_disable_all_tap_actions: {
@@ -392,6 +408,12 @@ public abstract class EntryView {
 
         }
 
+    }
+
+    protected void toggleImageWhiteBackground() {
+        PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
+        refreshUI(true);
+        generateArticleContent(true);
     }
 
     @NotNull
@@ -485,5 +507,48 @@ public abstract class EntryView {
     }
 
 
+    protected void setupButtonAction( int viewId, boolean checked, View.OnClickListener click ) {
+        View rootView = mActivity.mEntryFragment.mRootView;
+        ImageButton btn = rootView.findViewById(viewId);
+        btn.setOnClickListener( v -> { click.onClick( btn ); } );
+        if ( checked )
+            btn.setBackgroundColor( Theme.GetToolBarColorInt() );
+        else
+            btn.setBackgroundResource( android.R.drawable.screen_background_dark );
+    }
+
+    private void setupPageSeekbar() {
+        SeekBar seekBar = mRootView.findViewById(R.id.seekbar);
+        ProgressInfo info = getProgressInfo();
+        seekBar.setOnSeekBarChangeListener( null );
+        seekBar.setMax( info.max );
+        seekBar.setProgress( info.progress );
+        updatePageSeekbarLabel(seekBar);
+        setupPageSeekbarOnChangeListener(seekBar);
+    }
+
+    private void updatePageSeekbarLabel(SeekBar seekBar) {
+        mRootView.<TextView>findViewById(R.id.seekbar_text).setText( mActivity.getString(R.string.page_number_from_count, seekBar.getProgress(), seekBar.getMax() ) );
+    }
+
+    private void setupPageSeekbarOnChangeListener(SeekBar seekBar) {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                ScrollToPage( i );
+                updatePageSeekbarLabel( seekBar );
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
 }
 

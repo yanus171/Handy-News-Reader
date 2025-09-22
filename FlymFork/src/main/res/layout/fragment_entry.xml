@@ -148,5 +148,6 @@
             android:visibility="visible" />
     </LinearLayout>
 
+    <include layout="@layout/control_panel" />
 
 </FrameLayout>

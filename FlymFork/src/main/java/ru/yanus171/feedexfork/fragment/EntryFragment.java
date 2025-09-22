@@ -96,7 +96,6 @@ import static ru.yanus171.feedexfork.Constants.HTTP_SCHEME;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
-import static ru.yanus171.feedexfork.activity.GeneralPrefsActivity.mActivity;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
@@ -168,6 +167,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public MenuItem mForcePortraitOrientationMenuItem = null;
     public String mAnchor = "";
 
+    public View mRootView = null;
+    public View mControlPanel = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
@@ -216,11 +218,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
     }
 
-    private boolean IsCreateViewPager( Uri uri ) {
-        return PrefUtils.getBoolean( "change_articles_by_swipe", false ) &&
-                !IsExternalLink( uri );
-    }
-
     public static boolean IsExternalLink( Uri uri ) {
         return uri == null ||
             uri.toString().startsWith( HTTP_SCHEME ) ||
@@ -240,29 +237,73 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
-        View rootView = getBaseActivity().mRootView;
+        mRootView = getBaseActivity().mRootView;
+        mControlPanel = mRootView.findViewById(R.id.control_panel);
         SetupZones();
 
-        mStatusText = new StatusText( rootView.findViewById(R.id.statusText ),
-                                      rootView.findViewById(R.id.errorText ),
-                                      rootView.findViewById(R.id.progressBarLoader),
-                                      rootView.findViewById(R.id.progressText),
+        mStatusText = new StatusText( mRootView.findViewById(R.id.statusText ),
+                                      mRootView.findViewById(R.id.errorText ),
+                                      mRootView.findViewById(R.id.progressBarLoader),
+                                      mRootView.findViewById(R.id.progressText),
                                       FetcherService.Status() );
 
-        rootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
-        rootView.findViewById(R.id.backBtn).setOnLongClickListener( v -> {
+        setupTapZoneButtonActions();
+        setupEndEditingButton();
+
+        mEntryPager = mRootView.findViewById(R.id.pager);
+        if (savedInstanceState != null) {
+            mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
+            mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID);
+            mLastPagerPos = mCurrentPagerPos;
+        }
+
+        if ( mEntryPagerAdapter instanceof EntryPagerAdapter )
+            setupPageChangeListener();
+
+        mRootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
+        mRootView.findViewById(R.id.statusText).setVisibility(View.GONE);
+
+        setupUpStarSwipe();
+
+        mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
+            hideTapZones();
+            hideControlPanel();
+            showControlPanel();
+        });
+
+        hideControlPanel();
+        SetStarFrameWidth(0);
+        UpdateHeader();
+
+        return mRootView;
+    }
+
+    private void setupEndEditingButton() {
+        mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
+        mBtnEndEditing.setVisibility( View.GONE );
+        mBtnEndEditing.setOnClickListener(view -> {
+            GetSelectedEntryWebView().ReloadFullText();
+            UiUtils.toast( R.string.fullTextReloadStarted );
+            hideControlPanel();
+        });
+    }
+
+    private void setupTapZoneButtonActions() {
+        mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
+        mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {
             GetSelectedEntryView().ClearHistoryAnchor();
             return true;
         });
 
-        rootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
+        mRootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( isArticleTapEnabled() ) {
                 EntryActivity activity = (EntryActivity) getActivity();
                 activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
             } else
                 EnableTapActions();
+            hideControlPanel();
         });
-        rootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
+        mRootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
             if ( isArticleTapEnabled() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 SetupZones();
@@ -273,19 +314,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return true;
         });
 
-        rootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
+        mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
             EntryActivity activity = (EntryActivity) getActivity();
             activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+            hideControlPanel();
         });
-        rootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
+        mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
                 return true;
             GetSelectedEntryView().OpenLabelSetup();
             return true;
         });
 
-        rootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> GetSelectedEntryView().leftBottomBtnClick());
-        rootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
+        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
+            GetSelectedEntryView().leftBottomBtnClick();
+            hideControlPanel();
+        });
+        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
                 return true;
             if ( GetSelectedEntryWebView() == null )
@@ -295,8 +340,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return true;
         });
 
-        rootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> GetSelectedEntryView().rightBottomBtnClick());
-        rootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
+        mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
+            GetSelectedEntryView().rightBottomBtnClick();
+            hideControlPanel();
+        });
+        mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
                 return true;
             if ( GetSelectedEntryWebView() == null )
@@ -306,90 +354,74 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return true;
         });
 
-        mBtnEndEditing = rootView.findViewById(R.id.btnEndEditing);
-        mBtnEndEditing.setVisibility( View.GONE );
-        mBtnEndEditing.setOnClickListener(view -> {
-            GetSelectedEntryWebView().ReloadFullText();
-            UiUtils.toast( R.string.fullTextReloadStarted );
-        });
+        TextView.OnClickListener listener = view -> {
+            PageDown();
+            hideControlPanel();
+        };
 
-        mEntryPager = rootView.findViewById(R.id.pager);
-        //mEntryPager.setPageTransformer(true, new DepthPageTransformer());
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        //    mEntryPager.setNestedScrollingEnabled( true );
-        if (savedInstanceState != null) {
-            mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
-            //mEntriesIds = savedInstanceState.getLongArray(STATE_ENTRIES_IDS);
-            mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID);
-            //mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS);
-            mLastPagerPos = mCurrentPagerPos;
-        }
-
-        if ( mEntryPagerAdapter instanceof EntryPagerAdapter )
-            mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-                @Override
-                public void onPageScrolled(int i, float v, int i2) {
-                }
-
-                @SuppressLint("DefaultLocale")
-                @Override
-                public void onPageSelected(int i) {
-                    final boolean isForward = mCurrentPagerPos < i;
-                    mCurrentPagerPos = i;
-                    mEntryPagerAdapter.onPause(); // pause all webviews
-                    mEntryPagerAdapter.onResume(); // resume the current webview
-                    if ( !getEntryActivity().mIsNewTask )
-                        PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
-
-                    CancelStarNotification( getCurrentEntryID() );
-
-                    mLastPagerPos = i;
-                    refreshUI(false);
-
-                    EntryView view = mEntryPagerAdapter.GetEntryView( i );
-                    if ( view != null && GetSelectedEntryWebView() != null ) {
-                        if ( view.mLoadTitleOnly )
-                            getLoaderManager().restartLoader(i, null, EntryFragment.this);
-                        else
-                            GetSelectedEntryWebView().DisableTapActionsIfVideo( view );
-                        view.mLoadTitleOnly = false;
-                    }
-                    final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
-                    Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
-                    TextView textView = new TextView(getContext());
-                    textView.setText( text );
-                    textView.setPadding( 10, 10, 10, 10 );
-                    if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
-                        textView.setBackgroundResource( R.drawable.toast_background );
-                    toast.setView( textView );
-                    toast.show();
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int i) {
-                }
-            });
-
-        TextView.OnClickListener listener = view -> PageDown();
-
-        rootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
+        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
         //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
-        rootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
+        mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
             if ( !isArticleTapEnabled() )
                 return true;
             GetSelectedEntryView().LongClickOnBottom();
             return true;
         });
+    }
 
-        rootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
-        rootView.findViewById(R.id.statusText).setVisibility(View.GONE);
+    private void setupPageChangeListener() {
+        mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+            }
+
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onPageSelected(int i) {
+                final boolean isForward = mCurrentPagerPos < i;
+                mCurrentPagerPos = i;
+                mEntryPagerAdapter.onPause(); // pause all webviews
+                mEntryPagerAdapter.onResume(); // resume the current webview
+                if ( !getEntryActivity().mIsNewTask )
+                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+
+                CancelStarNotification( getCurrentEntryID() );
+
+                mLastPagerPos = i;
+                refreshUI(false);
+
+                EntryView view = mEntryPagerAdapter.GetEntryView( i );
+                if ( view != null && GetSelectedEntryWebView() != null ) {
+                    if ( view.mLoadTitleOnly )
+                        getLoaderManager().restartLoader(i, null, EntryFragment.this);
+                    else
+                        GetSelectedEntryWebView().DisableTapActionsIfVideo( view );
+                    view.mLoadTitleOnly = false;
+                }
+                final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
+                Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
+                TextView textView = new TextView(getContext());
+                textView.setText( text );
+                textView.setPadding( 10, 10, 10, 10 );
+                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+                    textView.setBackgroundResource( R.drawable.toast_background );
+                toast.setView( textView );
+                toast.show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+    }
+
+    private void setupUpStarSwipe() {
         final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
-        mStarFrame = rootView.findViewById(R.id.frameStar);
-        final ImageView frameStarImage  = rootView.findViewById(R.id.frameStarImage);
+        mStarFrame = mRootView.findViewById(R.id.frameStar);
+        final ImageView frameStarImage  = mRootView.findViewById(R.id.frameStarImage);
         final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
-        rootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
+        mRootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
             private int initialY = 0;
             private boolean mWasVibrate = false;
             private boolean mWasSwipe = false;
@@ -453,13 +485,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
             }
         });
+    }
 
-        rootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> getEntryActivity().openOptionsMenu());
+    public void showControlPanel() {
+        mControlPanel.setVisibility( View.VISIBLE );
+        mControlPanel.setBackgroundColor( Theme.GetMenuBackgroundColor() );
+        EntryView view = GetSelectedEntryView();
+        if ( view != null )
+            view.setupControlPanelButtonActions();
+    }
 
-            SetStarFrameWidth(0);
-        UpdateHeader();
-
-        return rootView;
+    public void hideControlPanel() {
+        mControlPanel.setVisibility( View.GONE );
     }
 
     private void EnableTapActions() {
@@ -485,11 +522,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void PageUp() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(-1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).ScrollOneScreen(-1);
     }
 
     public void PageDown() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).PageChange(1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).ScrollOneScreen(1);
     }
 
     public void NextEntry() {
@@ -738,9 +775,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             case R.id.menu_force_orientation_by_sensor: {
                 item.setChecked( !item.isChecked() );
-                PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
-                if ( mForceOrientation == NONE )
-                    getEntryActivity().applyBaseOrientation();
+                setOrientationBySensor(item.isChecked());
                 break;
             }
             case R.id.menu_force_landscape_orientation_toggle: {
@@ -759,9 +794,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 break;
             }
             case R.id.menu_article_web_search: {
-                mActivity.startActivity( new Intent(Intent.ACTION_WEB_SEARCH)
-                        .setPackage(mActivity.getPackageName())
-                        .setClass(mActivity, ArticleWebSearchActivity.class) );
+                getActivity().startActivity( new Intent(Intent.ACTION_WEB_SEARCH)
+                        .setPackage(getActivity().getPackageName())
+                        .setClass(getActivity(), ArticleWebSearchActivity.class) );
                 break;
             }
 
@@ -772,6 +807,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return true;
     }
 
+    public void setOrientationBySensor(boolean value) {
+        PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, value );
+        if ( mForceOrientation == NONE )
+            getEntryActivity().applyBaseOrientation();
+    }
 
 
     public void close() {
@@ -992,7 +1032,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         EntryView entryView = GetSelectedEntryView();
         EntryView.ProgressInfo info = new EntryView.ProgressInfo();
         if (entryView != null)
-            info = entryView.getProgressInfo( mStatusText.GetHeight() );
+            info = entryView.getProgressInfo();
         getBaseActivity().UpdateHeader(info.max,
                                        info.progress,
                                        info.step,
@@ -1024,10 +1064,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             view.setCursor( cursor );
             view.loadingDataFinished();
         }
-        //refreshUI();
     }
-
-
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -1088,7 +1125,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void toggleTapZoneVisibility() {
-        mIsTapZoneVisible = !mIsTapZoneVisible;
+        if ( mControlPanel.getVisibility() == View.VISIBLE ) {
+            mIsTapZoneVisible = false;
+            hideControlPanel();
+        } else
+            mIsTapZoneVisible = !mIsTapZoneVisible;
         SetupZones();
     }
     public void hideTapZones() {
@@ -1123,6 +1164,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
             startMobilizationTask(view.mEntryId);
         }
+
         applyOrientation();
         markPrevArticleAsRead();
     }

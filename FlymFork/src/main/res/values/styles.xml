@@ -16,4 +16,12 @@
     <style name="styleApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="styleApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ControlButton">
+        <item name="android:layout_width">@dimen/entry_img_height</item>
+        <item name="android:layout_height">@dimen/entry_img_height</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">3dp</item>
+    </style>
+
 </resources>
