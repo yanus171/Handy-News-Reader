@@ -157,7 +157,6 @@ public abstract class EntryView {
     public void refreshUI( boolean invalidateContent ) {
         if ( invalidateContent )
             InvalidateContentCache();
-        setupControlPanelButtonActions();
         mActivity.mEntryFragment.hideTapZones();
         mActivity.mEntryFragment.hideControlPanel();
 

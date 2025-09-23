@@ -148,6 +148,13 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <include layout="@layout/control_panel" />
+<!--    <include layout="@layout/control_panel" />-->
+    <LinearLayout
+        android:id="@+id/control_panel_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:orientation="vertical">
+    </LinearLayout>
 
 </FrameLayout>

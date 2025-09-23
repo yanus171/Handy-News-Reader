@@ -238,7 +238,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         mRootView = getBaseActivity().mRootView;
-        mControlPanel = mRootView.findViewById(R.id.control_panel);
         SetupZones();
 
         mStatusText = new StatusText( mRootView.findViewById(R.id.statusText ),
@@ -267,8 +266,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
             hideTapZones();
-            hideControlPanel();
-            showControlPanel();
+            if ( mControlPanel != null && mControlPanel.getVisibility() == View.VISIBLE )
+                hideControlPanel();
+            else
+                showControlPanel();
         });
 
         hideControlPanel();
@@ -488,6 +489,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void showControlPanel() {
+        LayoutInflater inflater  = (LayoutInflater) getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        mControlPanel = inflater.inflate( R.layout.control_panel, null );
+        ViewGroup controlPanelRoot = mRootView.findViewById( R.id.control_panel_root );
+        controlPanelRoot.removeAllViews();
+        controlPanelRoot.addView( mControlPanel );
         mControlPanel.setVisibility( View.VISIBLE );
         mControlPanel.setBackgroundColor( Theme.GetMenuBackgroundColor() );
         EntryView view = GetSelectedEntryView();
@@ -496,7 +502,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void hideControlPanel() {
-        mControlPanel.setVisibility( View.GONE );
+        if ( mControlPanel != null )
+            mControlPanel.setVisibility( View.GONE );
     }
 
     private void EnableTapActions() {
@@ -1125,7 +1132,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void toggleTapZoneVisibility() {
-        if ( mControlPanel.getVisibility() == View.VISIBLE ) {
+        if ( mControlPanel != null && mControlPanel.getVisibility() == View.VISIBLE ) {
             mIsTapZoneVisible = false;
             hideControlPanel();
         } else
