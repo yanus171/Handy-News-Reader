@@ -82,6 +82,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.ControlPanel;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
@@ -168,7 +169,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public String mAnchor = "";
 
     public View mRootView = null;
-    public View mControlPanel = null;
+    public ControlPanel mControlPanel = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -238,6 +239,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         mRootView = getBaseActivity().mRootView;
+        mControlPanel = new ControlPanel( mRootView, this );
         SetupZones();
 
         mStatusText = new StatusText( mRootView.findViewById(R.id.statusText ),
@@ -266,13 +268,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
             hideTapZones();
-            if ( mControlPanel != null && mControlPanel.getVisibility() == View.VISIBLE )
-                hideControlPanel();
+            if ( mControlPanel.isVisible() )
+                mControlPanel.hide();
             else
-                showControlPanel();
+                mControlPanel.show( GetSelectedEntryView() );
         });
 
-        hideControlPanel();
         SetStarFrameWidth(0);
         UpdateHeader();
 
@@ -285,7 +286,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mBtnEndEditing.setOnClickListener(view -> {
             GetSelectedEntryWebView().ReloadFullText();
             UiUtils.toast( R.string.fullTextReloadStarted );
-            hideControlPanel();
+            mControlPanel.hide();
         });
     }
 
@@ -302,7 +303,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
             } else
                 EnableTapActions();
-            hideControlPanel();
+            mControlPanel.hide();
         });
         mRootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
             if ( isArticleTapEnabled() ) {
@@ -318,7 +319,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
             EntryActivity activity = (EntryActivity) getActivity();
             activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
-            hideControlPanel();
+            mControlPanel.hide();
         });
         mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
@@ -329,7 +330,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
             GetSelectedEntryView().leftBottomBtnClick();
-            hideControlPanel();
+            mControlPanel.hide();
         });
         mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
@@ -343,7 +344,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
             GetSelectedEntryView().rightBottomBtnClick();
-            hideControlPanel();
+            mControlPanel.hide();
         });
         mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
             if ( !isArticleTapEnabled() )
@@ -357,7 +358,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         TextView.OnClickListener listener = view -> {
             PageDown();
-            hideControlPanel();
+            mControlPanel.hide();
         };
 
         mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
@@ -486,24 +487,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
             }
         });
-    }
-
-    public void showControlPanel() {
-        LayoutInflater inflater  = (LayoutInflater) getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        mControlPanel = inflater.inflate( R.layout.control_panel, null );
-        ViewGroup controlPanelRoot = mRootView.findViewById( R.id.control_panel_root );
-        controlPanelRoot.removeAllViews();
-        controlPanelRoot.addView( mControlPanel );
-        mControlPanel.setVisibility( View.VISIBLE );
-        mControlPanel.setBackgroundColor( Theme.GetMenuBackgroundColor() );
-        EntryView view = GetSelectedEntryView();
-        if ( view != null )
-            view.setupControlPanelButtonActions();
-    }
-
-    public void hideControlPanel() {
-        if ( mControlPanel != null )
-            mControlPanel.setVisibility( View.GONE );
     }
 
     private void EnableTapActions() {
@@ -1132,9 +1115,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void toggleTapZoneVisibility() {
-        if ( mControlPanel != null && mControlPanel.getVisibility() == View.VISIBLE ) {
+        if ( mControlPanel.isVisible() ) {
             mIsTapZoneVisible = false;
-            hideControlPanel();
+            mControlPanel.hide();
         } else
             mIsTapZoneVisible = !mIsTapZoneVisible;
         SetupZones();

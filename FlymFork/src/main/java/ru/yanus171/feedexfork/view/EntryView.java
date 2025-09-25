@@ -9,11 +9,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.toggleBoolean;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -35,9 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -64,7 +58,6 @@ import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.utils.WaitDialog;
 
@@ -158,29 +151,13 @@ public abstract class EntryView {
         if ( invalidateContent )
             InvalidateContentCache();
         mActivity.mEntryFragment.hideTapZones();
-        mActivity.mEntryFragment.hideControlPanel();
+        mActivity.mEntryFragment.mControlPanel.hide();
 
     }
 
     public void onStart() {
     }
 
-    public void setupControlPanelButtonActions() {
-        setupPageSeekbar();
-
-        setupButtonAction(R.id.btn_menu, false, v -> {
-            mActivity.openOptionsMenu();
-            mActivity.mEntryFragment.hideControlPanel();
-        });
-        setupButtonAction(R.id.btn_force_landscape_orientation_toggle, mActivity.mEntryFragment.mForceOrientation == LANDSCAPE, v ->
-                mActivity.mEntryFragment.changeOrientation(LANDSCAPE));
-        setupButtonAction(R.id.btn_force_portrait_orientation_toggle, mActivity.mEntryFragment.mForceOrientation == PORTRAIT, v ->
-                mActivity.mEntryFragment.changeOrientation(PORTRAIT));
-        setupButtonAction(R.id.btn_force_orientation_by_sensor, getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true), v -> {
-            toggleBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, true );
-            mActivity.mEntryFragment.setOrientationBySensor(getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true));
-        });
-    }
 
     public abstract void ScrollToPage(int page);
 
@@ -506,48 +483,10 @@ public abstract class EntryView {
     }
 
 
-    protected void setupButtonAction( int viewId, boolean checked, View.OnClickListener click ) {
-        View rootView = mActivity.mEntryFragment.mRootView;
-        ImageButton btn = rootView.findViewById(viewId);
-        btn.setOnClickListener( v -> { click.onClick( btn ); } );
-        if ( checked )
-            btn.setBackgroundColor( Theme.GetToolBarColorInt() );
-        else
-            btn.setBackgroundResource( android.R.drawable.screen_background_dark );
+    public void setupControlPanelButtonActions() {
     }
-
-    private void setupPageSeekbar() {
-        SeekBar seekBar = mRootView.findViewById(R.id.seekbar);
-        ProgressInfo info = getProgressInfo();
-        seekBar.setOnSeekBarChangeListener( null );
-        seekBar.setMax( info.max );
-        seekBar.setProgress( info.progress );
-        updatePageSeekbarLabel(seekBar);
-        setupPageSeekbarOnChangeListener(seekBar);
-    }
-
-    private void updatePageSeekbarLabel(SeekBar seekBar) {
-        mRootView.<TextView>findViewById(R.id.seekbar_text).setText( mActivity.getString(R.string.page_number_from_count, seekBar.getProgress(), seekBar.getMax() ) );
-    }
-
-    private void setupPageSeekbarOnChangeListener(SeekBar seekBar) {
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                ScrollToPage( i );
-                updatePageSeekbarLabel( seekBar );
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+    protected void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
+        mActivity.mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );
     }
 }
 

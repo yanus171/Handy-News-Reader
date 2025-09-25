@@ -1119,7 +1119,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         super.setupControlPanelButtonActions();
         setupButtonAction(R.id.btn_share, false, v -> {
             share();
-            mActivity.mEntryFragment.hideControlPanel();
+            mActivity.mEntryFragment.mControlPanel.hide();
             mActivity.mEntryFragment.hideTapZones();;
         });
     }
