@@ -67,10 +67,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         StartReadingServiceIfNeeded();
     }
 
-    public void applyBaseOrientation() {
+    public void applyOrientation() {
         final int newOr = PrefUtils.isForceOrientationBySensor() ?
             ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR :
-            ActivityInfo.SCREEN_ORIENTATION_USER;
+            ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
         if ( getRequestedOrientation() != newOr )
             setRequestedOrientation( newOr );
     }
@@ -117,7 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS );
             getWindow().setStatusBarColor(GetToolBarColorInt());
         }
-        applyBaseOrientation();
+        applyOrientation();
         Status().UpdateText();
     }
 

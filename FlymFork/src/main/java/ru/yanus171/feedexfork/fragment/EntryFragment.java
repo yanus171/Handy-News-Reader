@@ -502,7 +502,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
 
-    public void applyOrientation() {
+    public void applyForceOrientation() {
         int or = mForceOrientation == LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
                  mForceOrientation == PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
 			     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
@@ -799,8 +799,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     public void setOrientationBySensor(boolean value) {
         PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, value );
-        if ( mForceOrientation == NONE )
-            getEntryActivity().applyBaseOrientation();
+        getEntryActivity().applyOrientation();
     }
 
 
@@ -1134,6 +1133,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
     public void changeOrientation(EntryFragment.ForceOrientation orientation) {
         SetForceOrientation( orientation );
+        getEntryActivity().applyOrientation();
         if ( orientation == LANDSCAPE && mForcePortraitOrientationMenuItem != null)
             mForcePortraitOrientationMenuItem.setChecked( false );
         else if ( orientation == PORTRAIT && mForceLandscapeOrientationMenuItem != null)
@@ -1146,7 +1146,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if (view != null && view.mCursor != null ) {
             getEntryActivity().SetTaskTitle( view.mTitle );
             SetForceOrientation(ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos)));
-            applyOrientation();
+            getEntryActivity().applyOrientation();
             getEntryActivity().invalidateOptionsMenu();
             view.refreshUI( invalidateContent );
 
@@ -1155,7 +1155,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             startMobilizationTask(view.mEntryId);
         }
 
-        applyOrientation();
+        getEntryActivity().applyOrientation();
         markPrevArticleAsRead();
     }
     public void restartCurrentEntryLoader() {

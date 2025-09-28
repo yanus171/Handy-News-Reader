@@ -982,7 +982,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             case R.id.menu_force_orientation_by_sensor: {
                 item.setChecked( !item.isChecked() );
                 PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, item.isChecked() );
-                getBaseActivity().applyBaseOrientation();
+                getBaseActivity().applyOrientation();
                 break;
             }
             case R.id.menu_full_screen: {

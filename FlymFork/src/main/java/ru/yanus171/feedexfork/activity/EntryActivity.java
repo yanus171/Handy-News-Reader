@@ -24,7 +24,6 @@ import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NON
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NO_DB_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
@@ -473,10 +472,10 @@ public class EntryActivity extends BaseActivity implements Observer {
         Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
     }
     @Override
-    public void applyBaseOrientation() {
-        if ( mEntryFragment.mForceOrientation == NONE && PrefUtils.isForceOrientationBySensor() )
-            super.applyBaseOrientation();
+    public void applyOrientation() {
+        if ( mEntryFragment.mForceOrientation == NONE )
+            super.applyOrientation();
         else
-            mEntryFragment.applyOrientation();
+            mEntryFragment.applyForceOrientation();
     }
 }
