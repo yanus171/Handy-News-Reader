@@ -152,13 +152,10 @@ public abstract class EntryView {
             InvalidateContentCache();
         mActivity.mEntryFragment.hideTapZones();
         mActivity.mEntryFragment.mControlPanel.hide();
-
     }
 
     public void onStart() {
     }
-
-
     public abstract void ScrollToPage(int page);
 
     static public class ProgressInfo {

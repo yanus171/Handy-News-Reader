@@ -52,7 +52,6 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     fun setupControlPanelButtonActions() {
         setupButtonAction(R.id.btn_menu, false) {
             mEntryFragment.activity?.openOptionsMenu()
-            hide()
         }
         setupButtonAction(R.id.btn_force_landscape_orientation_toggle, mEntryFragment.mForceOrientation == LANDSCAPE) {
             mEntryFragment.changeOrientation(LANDSCAPE)
@@ -68,7 +67,11 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
 
     fun setupButtonAction(viewId: Int, checked: Boolean, click: View.OnClickListener) {
         val btn = mView!!.findViewById<ImageButton>(viewId)
-        btn.setOnClickListener { click.onClick(btn) }
+        btn.setOnClickListener {
+            click.onClick(btn)
+            mEntryFragment.mControlPanel.hide()
+            mEntryFragment.hideTapZones()
+        }
         btn.visibility = View.VISIBLE
         if (checked)
             btn.setBackgroundColor(Theme.GetToolBarColorInt())

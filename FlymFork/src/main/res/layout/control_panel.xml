@@ -24,6 +24,10 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal|bottom">
         <ImageButton
+            android:id="@+id/btn_reload"
+            android:src="@drawable/ic_sync"
+            style="@style/ControlButton"/>
+        <ImageButton
             android:id="@+id/btn_zoom_shift_enabled"
             android:src="@drawable/arrow_left_right"
             style="@style/ControlButton"/>
