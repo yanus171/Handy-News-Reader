@@ -89,6 +89,7 @@ public class HtmlUtils {
     private static final Pattern TEMPLATE_PATTERN = Pattern.compile("<template(.|\\s)+?/template>", Pattern.CASE_INSENSITIVE);
     //private static final Pattern LAZY_LOADING_PATTERN = Pattern.compile("\\s+src=[^>]+\\s+original[-]*src=(\"|')", Pattern.CASE_INSENSITIVE);
     private static final Pattern LAZY_LOADING_PATTERN2 = Pattern.compile("src=\"[^\"]+?lazy[^\"]+\"", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SCRIPT_PATTERN = Pattern.compile("<script>(.|\\n)+?</script>", Pattern.CASE_INSENSITIVE);
     //private static final Pattern DATA_SRC_PATTERN = Pattern.compile("data-src=\"([^\"]+)\"", Pattern.CASE_INSENSITIVE);
     private static final Pattern EMPTY_IMAGE_PATTERN = Pattern.compile("<img\\s+(height=['\"]1['\"]\\s+width=['\"]1['\"]|width=['\"]1['\"]\\s+height=['\"]1['\"])\\s+[^>]*src=\\s*['\"]([^'\"]+)['\"][^>]*>", Pattern.CASE_INSENSITIVE);
     private static final Pattern NON_HTTP_IMAGE_PATTERN = Pattern.compile("\\s+(href|src)=(\"|')//", Pattern.CASE_INSENSITIVE);
@@ -202,6 +203,7 @@ public class HtmlUtils {
         SaveContentStepToFile( content, "improveHtmlContent VIDEO_CHANNEL_URL" );
 
         content = extractCategoryList( content, categoryList );
+        content = SCRIPT_PATTERN.matcher(content).replaceAll("");
         SaveContentStepToFile( content, "improveHtmlContent extractCategoryList end" );
 
         return content;
