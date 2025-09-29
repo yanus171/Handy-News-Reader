@@ -116,60 +116,44 @@ import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZone
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String STATE_BASE_URI = "STATE_BASE_URI";
-    private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
-    //private static final String STATE_ENTRIES_IDS = "STATE_ENTRIES_IDS";
-    private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
-    private static final String STATE_LOCK_LAND_ORIENTATION = "STATE_LOCK_LAND_ORIENTATION";
-
-    public static final String NO_DB_EXTRA = "NO_DB_EXTRA";
-    public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
-
-    public static final String STATE_RELOAD_IMG_WITH_A_LINK = "STATE_REPLACE_IMG_WITH_A_LINK";
-    public static final String STATE_RELOAD_WITH_DEBUG = "STATE_RELOAD_WITH_DEBUG";
-    public boolean mIgnoreNextLoading = false;
-
-
 
     public Uri mBaseUri;
-    private int mCurrentPagerPos = -1;
-    private int mLastPagerPos = -1;
-    private long mInitialEntryId = -1;
-
-    private boolean mIsTapZoneVisible = false;
-
     public enum ForceOrientation {NONE, LANDSCAPE, PORTRAIT}
-    public ForceOrientation ForceOrientationFromInt(int code) {
-        return code == 1 ? LANDSCAPE : code == 2 ? PORTRAIT : NONE;
-    }
-    int ForceOrientationToInt( ForceOrientation fo ) {
-        return fo == LANDSCAPE ? 1 : fo == PORTRAIT ? 2 : 0;
-    }
     public ForceOrientation mForceOrientation = NONE;
-
-    private ViewPager mEntryPager;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
-
-    private View mStarFrame = null;
     public StatusText mStatusText = null;
-
     public boolean mMarkAsUnreadOnFinish = false;
     public boolean mIsFinishing = false;
     public View mBtnEndEditing = null;
     public FeedFilters mFilters = null;
-    private static EntryView mLeakEntryView = null;
-    private String mWhereSQL;
-    static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
-    private int mLastScreenState = -1;
-    private String mSearchText = "";
+    public MenuItem mForcePortraitOrientationMenuItem = null;
+    public String mAnchor = "";
+    public View mRootView = null;
+    public ControlPanel mControlPanel = null;
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
     MenuItem mForceLandscapeOrientationMenuItem = null;
-    public MenuItem mForcePortraitOrientationMenuItem = null;
-    public String mAnchor = "";
 
-    public View mRootView = null;
-    public ControlPanel mControlPanel = null;
+    static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
+    public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
+    public static final String STATE_RELOAD_IMG_WITH_A_LINK = "STATE_REPLACE_IMG_WITH_A_LINK";
+    public static final String STATE_RELOAD_WITH_DEBUG = "STATE_RELOAD_WITH_DEBUG";
+
+    private boolean mIgnoreNextLoading = false;
+    private int mCurrentPagerPos = -1;
+    private int mLastPagerPos = -1;
+    private long mInitialEntryId = -1;
+    private boolean mIsTapZoneVisible = false;
+    private ViewPager mEntryPager;
+    private View mStarFrame = null;
+    private static EntryView mLeakEntryView = null;
+    private String mWhereSQL;
+    private int mLastScreenState = -1;
+    private String mSearchText = "";
+
+    private static final String STATE_BASE_URI = "STATE_BASE_URI";
+    private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
+    private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,8 +174,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
-    private void UpdateTapZoneButton( int viewID, boolean visible ) {
-        UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );
+    public ForceOrientation ForceOrientationFromInt(int code) {
+        return code == 1 ? LANDSCAPE : code == 2 ? PORTRAIT : NONE;
     }
 
     public void SetupZones() {
@@ -280,235 +264,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return mRootView;
     }
 
-    private void setupEndEditingButton() {
-        mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
-        mBtnEndEditing.setVisibility( View.GONE );
-        mBtnEndEditing.setOnClickListener(view -> {
-            GetSelectedEntryWebView().ReloadFullText();
-            UiUtils.toast( R.string.fullTextReloadStarted );
-            mControlPanel.hide();
-        });
-    }
-
-    private void setupTapZoneButtonActions() {
-        mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
-        mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {
-            GetSelectedEntryView().ClearHistoryAnchor();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
-            if ( isArticleTapEnabled() ) {
-                EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
-            } else
-                EnableTapActions();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
-            if ( isArticleTapEnabled() ) {
-                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                SetupZones();
-                GetSelectedEntryView().refreshUI( true );
-                UiUtils.toast( R.string.tap_actions_were_disabled );
-            } else
-                EnableTapActions();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
-            EntryActivity activity = (EntryActivity) getActivity();
-            activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            GetSelectedEntryView().OpenLabelSetup();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
-            GetSelectedEntryView().leftBottomBtnClick();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            if ( GetSelectedEntryWebView() == null )
-                return true;
-            GetSelectedEntryWebView().DownloadAllImages();
-            UiUtils.toast( R.string.downloadAllImagesStarted );
-            return true;
-        });
-
-        mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
-            GetSelectedEntryView().rightBottomBtnClick();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            if ( GetSelectedEntryWebView() == null )
-                return true;
-            GetSelectedEntryWebView().ReloadFullText();
-            UiUtils.toast( R.string.fullTextReloadStarted );
-            return true;
-        });
-
-        TextView.OnClickListener listener = view -> {
-            PageDown();
-            mControlPanel.hide();
-        };
-
-        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
-        mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            GetSelectedEntryView().LongClickOnBottom();
-            return true;
-        });
-    }
-
-    private void setupPageChangeListener() {
-        mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-            }
-
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void onPageSelected(int i) {
-                final boolean isForward = mCurrentPagerPos < i;
-                mCurrentPagerPos = i;
-                mEntryPagerAdapter.onPause(); // pause all webviews
-                mEntryPagerAdapter.onResume(); // resume the current webview
-                if ( !getEntryActivity().mIsNewTask )
-                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
-
-                CancelStarNotification( getCurrentEntryID() );
-
-                mLastPagerPos = i;
-                refreshUI(false);
-
-                EntryView view = mEntryPagerAdapter.GetEntryView( i );
-                if ( view != null && GetSelectedEntryWebView() != null ) {
-                    if ( view.mLoadTitleOnly )
-                        getLoaderManager().restartLoader(i, null, EntryFragment.this);
-                    else
-                        GetSelectedEntryWebView().DisableTapActionsIfVideo( view );
-                    view.mLoadTitleOnly = false;
-                }
-                final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
-                Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
-                TextView textView = new TextView(getContext());
-                textView.setText( text );
-                textView.setPadding( 10, 10, 10, 10 );
-                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
-                    textView.setBackgroundResource( R.drawable.toast_background );
-                toast.setView( textView );
-                toast.show();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-            }
-        });
-    }
-
-    private void setupUpStarSwipe() {
-        final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
-        mStarFrame = mRootView.findViewById(R.id.frameStar);
-        final ImageView frameStarImage  = mRootView.findViewById(R.id.frameStarImage);
-        final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
-        mRootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
-            private int initialY = 0;
-            private boolean mWasVibrate = false;
-            private boolean mWasSwipe = false;
-            private final int MAX_HEIGHT = UiUtils.mmToPixel( 12 );
-            private final int MIN_HEIGHT = UiUtils.mmToPixel( 1 );
-            private long downTime = 0;
-            private boolean wasUp = false;
-
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(final View view, MotionEvent event) {
-                if ( event.getAction() == MotionEvent.ACTION_DOWN) {
-                    //Dog.v( "onTouch ACTION_DOWN " );
-                    initialY = (int) event.getY();
-                    mWasVibrate = false;
-                    mWasSwipe = false;
-                    downTime = SystemClock.elapsedRealtime();
-                    wasUp = false;
-                    UiUtils.RunOnGuiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!wasUp && !mWasSwipe) {
-                                GetSelectedEntryView().GoTop();
-                                UiUtils.toast( R.string.list_was_scrolled_to_top );
-                            }
-                        }
-                    }, ViewConfiguration.getLongPressTimeout() );
-                    return true;
-                } else if ( event.getAction() == MotionEvent.ACTION_MOVE) {
-                    //Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
-                    int w = Math.max(0, (int) (event.getY() - initialY));
-                    SetStarFrameWidth(Math.min(w, MAX_HEIGHT));
-                    if (prefVibrate && w >= MAX_HEIGHT && !mWasVibrate) {
-                        mWasVibrate = true;
-                        vibrator.vibrate(VIBRATE_DURATION);
-                    } else if (w < MAX_HEIGHT)
-                        mWasVibrate = false;
-                    if (w >= MIN_HEIGHT) {
-                        mWasSwipe = true;
-                        downTime = SystemClock.elapsedRealtime();
-                    }
-                    frameStarImage.setImageResource((w >= MAX_HEIGHT) == GetSelectedEntryView().mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow);
-                    return true;
-                } else if ( event.getAction() == MotionEvent.ACTION_UP) {
-                    //Dog.v( "onTouch ACTION_UP " );
-                    if ( !mWasSwipe ) {
-                        if ( !IsLong() )
-                            PageUp();
-                    } else if ( event.getY() - initialY >= MAX_HEIGHT ) {
-                        GetSelectedEntryView().SetIsFavorite( !GetSelectedEntryView().mFavorite, true );
-                    }
-                    SetStarFrameWidth(0);
-                    wasUp = true;
-                    return true;
-                } else
-                    SetStarFrameWidth(0);
-                return false;
-            }
-
-            private boolean IsLong() {
-                return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
-            }
-        });
-    }
-
-    private void EnableTapActions() {
-        PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
-        SetupZones();
-        GetSelectedEntryView().refreshUI( true );
-        UiUtils.toast( R.string.tap_actions_were_enabled );
-    }
-
-
-    private void SetStarFrameWidth(int w) {
-        mStarFrame.setLayoutParams( new FrameLayout.LayoutParams( FrameLayout.LayoutParams.FILL_PARENT, w));
-    }
-
-
     public void applyForceOrientation() {
         int or = mForceOrientation == LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-                 mForceOrientation == PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
-			     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+                mForceOrientation == PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
+                        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 
         if ( or != getActivity().getRequestedOrientation() )
-			getActivity().setRequestedOrientation( or );
+            getActivity().setRequestedOrientation( or );
     }
 
     public void PageUp() {
@@ -592,7 +354,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
             EntryView entryView = GetSelectedEntryView();
             if ( entryView != null && mForceOrientation != LANDSCAPE &&
-                 entryView instanceof WebEntryView && ((WebEntryView)entryView).mHasScripts ) {
+                    entryView instanceof WebEntryView && ((WebEntryView)entryView).mHasScripts ) {
                 mEntryPager.setAdapter(mEntryPagerAdapter);
                 mEntryPager.setCurrentItem(mCurrentPagerPos);
             }
@@ -611,38 +373,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mEntryPagerAdapter.onPause();
         super.onPause();
-    }
-
-
-    /**
-     * Updates a menu item in the dropdown to show it's icon that was declared in XML.
-     *
-     * @param item
-     *         the item to update
-     */
-    private static void updateMenuWithIcon(@NonNull final MenuItem item) {
-        SpannableStringBuilder builder = new SpannableStringBuilder()
-                .append("*") // the * will be replaced with the icon via ImageSpan
-                .append("    ") // This extra space acts as padding. Adjust as you wish
-                .append(item.getTitle());
-
-
-
-        // Retrieve the icon that was declared in XML and assigned during inflation
-        if (item.getIcon() != null && item.getIcon().getConstantState() != null) {
-            Drawable drawable = item.getIcon().getConstantState().newDrawable();
-
-            // Mutate this drawable so the tint only applies here
-            // drawable.mutate().setTint(color);
-
-            // Needs bounds, or else it won't show up (doesn't know how big to be)
-            //drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            drawable.setBounds(0, 0, DpToPx( 30 ), DpToPx( 30 ) );
-            //drawable.setBounds(-DpToPx( 30 ), 0, 0, 0 );
-            ImageSpan imageSpan = new ImageSpan(drawable);
-            builder.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            item.setTitle(builder);
-        }
     }
 
     // -------------------------------------------------------------------------
@@ -859,15 +589,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         else
             return "";
     }
-
-    private String getCurrentEntryLink() {
-        Entry entry = mEntryPagerAdapter.GetEntry( mCurrentPagerPos );
-        if ( entry != null )
-            return entry.mLink;
-        else
-            return "";
-    }
-
     @SuppressLint("StaticFieldLeak")
     public void setData(final Uri uri) {
         mCurrentPagerPos = -1;
@@ -943,90 +664,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         cr.update( entryUri, values, null, null );
     }
 
-    private boolean IsFeedUri( Uri uri ) {
-        boolean result = false;
-        if ( uri != null && uri.getPathSegments().size() > 1 )
-            try {
-                Long.parseLong(uri.getPathSegments().get(1));
-                result = true;
-            } catch ( NumberFormatException ignored ) { }
-        return result;
-    }
-
-    private void markPrevArticleAsRead() {
-        // Mark the previous opened article as read
-        //if (entryCursor.getInt(mIsReadPos) != 1) {
-        EntryView view = GetSelectedEntryView();
-        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 && view != null && view.mCursor != null ) {
-            new Thread() {
-                private String mFeedID;
-                private boolean mSetAsRead;
-                private int mPagerPos;
-                private Thread init(int pagerPos, boolean setAsRead, String feedID) {
-                    mPagerPos = pagerPos;
-                    mSetAsRead = setAsRead;
-                    mFeedID = feedID;
-                    return this;
-                }
-                @Override
-                public void run() {
-                    final Uri uri = ContentUris.withAppendedId(mBaseUri, mEntryPagerAdapter.GetEntry( mPagerPos ).mID);
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    if ( mSetAsRead ) {
-                        if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
-                            newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
-                    }
-                    cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
-                            /*// Update the cursor
-                            Cursor updatedCursor = cr.query(uri, null, null, null, null);
-                            updatedCursor.moveToFirst();
-                            mEntryPagerAdapter.setUpdatedCursor(mPagerPos, updatedCursor);*/
-                }
-            }.init( mLastPagerPos,
-                    view.mCursor.getInt(view.mIsReadPos) != 1,
-                    getCurrentFeedID() ).start();
-        }
-    }
-    private void startMobilizationTask(long currentEntryID) {
-        new Thread() {
-            long mID;
-            @Override
-            public void run() {
-                if (FetcherService.hasMobilizationTask(currentEntryID)) {
-                    //--showSwipeProgress();
-                    // If the service is not started, start it here to avoid an infinite loading
-                    if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
-                        FetcherService.Start(new Intent(MainApplication.getContext(), FetcherService.class)
-                                .setAction(FetcherService.ACTION_MOBILIZE_FEEDS), true);
-                }
-            }
-            Thread SetID( long id ) {
-                mID = id;
-                return this;
-            }
-        }.SetID(currentEntryID).start();
-    }
-
-
-    /*private void setImmersiveFullScreen(boolean fullScreen) {
-        BaseActivity activity = (BaseActivity) getActivity();
-        if ( fullScreen )
-            mToggleStatusBarVisbleBtn.setVisibility(View.VISIBLE);
-        else
-            mToggleStatusBarVisbleBtn.setVisibility(View.GONE);
-        activity.setImmersiveFullScreen(fullScreen);
-    }*/
-
     public void UpdateHeader() {
         EntryView entryView = GetSelectedEntryView();
         EntryView.ProgressInfo info = new EntryView.ProgressInfo();
         if (entryView != null)
             info = entryView.getProgressInfo();
         getBaseActivity().UpdateHeader(info.max,
-                                       info.progress,
-                                       info.step,
-                                       GetIsStatusBarHidden(),
-                                       GetIsActionBarHidden());
+                info.progress,
+                info.step,
+                GetIsStatusBarHidden(),
+                GetIsActionBarHidden());
     }
 
 
@@ -1040,6 +687,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return cursorLoader;
     }
 
+    public void onNewIntent() {
+        mIgnoreNextLoading = true;
+    }
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if ( mIsFinishing )
@@ -1061,39 +711,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if (view != null )
             view.setCursor(null);
     }
-
-    private boolean hasEntryView() {
-        return GetSelectedEntryView() != null;
-    }
-
-    /*@Override
-    public void onRefresh() {
-        // Nothing to do
-    }*/
-
-
-    @NonNull
-    public EntryView CreateWebEntryView(EntryActivity activity, int position, ViewGroup container ) {
-        final Entry entry = mEntryPagerAdapter.GetEntry(position);
-        final EntryView view = EntryView.Create( entry.mLink, entry.mID, activity, container );
-        view.mView.setTag(view);
-
-        if ( mLeakEntryView == null )
-            mLeakEntryView  = view;
-
-        final WebViewExtended webView = GetSelectedEntryWebViewExtended();
-        if (Build.VERSION.SDK_INT >= 16 && webView != null ) {
-            webView.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
-                if (mSearchNextItem == null || mSearchPreviousItem == null)
-                    return;
-                mSearchNextItem.setVisible(numberOfMatches > 1);
-                mSearchPreviousItem.setVisible(numberOfMatches > 1);
-            });
-        }
-        view.StatusStartPageLoading();
-        return view;
-    }
-
 
     public EntryView GetSelectedEntryView()  {
         return mEntryPagerAdapter.GetEntryView(mCurrentPagerPos);
@@ -1164,5 +781,363 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             GetSelectedEntryView().InvalidateContentCache();
         });
     }
+
+    @NonNull
+    public EntryView CreateWebEntryView(EntryActivity activity, int position, ViewGroup container ) {
+        final Entry entry = mEntryPagerAdapter.GetEntry(position);
+        final EntryView view = EntryView.Create( entry.mLink, entry.mID, activity, container );
+        view.mView.setTag(view);
+
+        if ( mLeakEntryView == null )
+            mLeakEntryView  = view;
+
+        final WebViewExtended webView = GetSelectedEntryWebViewExtended();
+        if (Build.VERSION.SDK_INT >= 16 && webView != null ) {
+            webView.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
+                if (mSearchNextItem == null || mSearchPreviousItem == null)
+                    return;
+                mSearchNextItem.setVisible(numberOfMatches > 1);
+                mSearchPreviousItem.setVisible(numberOfMatches > 1);
+            });
+        }
+        view.StatusStartPageLoading();
+        return view;
+    }
+    private void setupEndEditingButton() {
+        mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
+        mBtnEndEditing.setVisibility( View.GONE );
+        mBtnEndEditing.setOnClickListener(view -> {
+            GetSelectedEntryWebView().ReloadFullText();
+            UiUtils.toast( R.string.fullTextReloadStarted );
+            mControlPanel.hide();
+        });
+    }
+
+    private void setupTapZoneButtonActions() {
+        mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
+        mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {
+            GetSelectedEntryView().ClearHistoryAnchor();
+            return true;
+        });
+
+        mRootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
+            if ( isArticleTapEnabled() ) {
+                EntryActivity activity = (EntryActivity) getActivity();
+                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
+            } else
+                EnableTapActions();
+            mControlPanel.hide();
+        });
+        mRootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
+            if ( isArticleTapEnabled() ) {
+                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
+                SetupZones();
+                GetSelectedEntryView().refreshUI( true );
+                UiUtils.toast( R.string.tap_actions_were_disabled );
+            } else
+                EnableTapActions();
+            return true;
+        });
+
+        mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
+            EntryActivity activity = (EntryActivity) getActivity();
+            activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+            mControlPanel.hide();
+        });
+        mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            GetSelectedEntryView().OpenLabelSetup();
+            return true;
+        });
+
+        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
+            GetSelectedEntryView().leftBottomBtnClick();
+            mControlPanel.hide();
+        });
+        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            if ( GetSelectedEntryWebView() == null )
+                return true;
+            GetSelectedEntryWebView().DownloadAllImages();
+            UiUtils.toast( R.string.downloadAllImagesStarted );
+            return true;
+        });
+
+        mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
+            GetSelectedEntryView().rightBottomBtnClick();
+            mControlPanel.hide();
+        });
+        mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            if ( GetSelectedEntryWebView() == null )
+                return true;
+            GetSelectedEntryWebView().ReloadFullText();
+            UiUtils.toast( R.string.fullTextReloadStarted );
+            return true;
+        });
+
+        TextView.OnClickListener listener = view -> {
+            PageDown();
+            mControlPanel.hide();
+        };
+
+        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
+        //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+        mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
+            if ( !isArticleTapEnabled() )
+                return true;
+            GetSelectedEntryView().LongClickOnBottom();
+            return true;
+        });
+    }
+
+    private int ForceOrientationToInt( ForceOrientation fo ) {
+        return fo == LANDSCAPE ? 1 : fo == PORTRAIT ? 2 : 0;
+    }
+    private void UpdateTapZoneButton( int viewID, boolean visible ) {
+        UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );
+    }
+
+    private void setupPageChangeListener() {
+        mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+            }
+
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onPageSelected(int i) {
+                final boolean isForward = mCurrentPagerPos < i;
+                mCurrentPagerPos = i;
+                mEntryPagerAdapter.onPause(); // pause all webviews
+                mEntryPagerAdapter.onResume(); // resume the current webview
+                if ( !getEntryActivity().mIsNewTask )
+                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
+
+                CancelStarNotification( getCurrentEntryID() );
+
+                mLastPagerPos = i;
+                refreshUI(false);
+
+                EntryView view = mEntryPagerAdapter.GetEntryView( i );
+                if ( view != null && GetSelectedEntryWebView() != null ) {
+                    if ( view.mLoadTitleOnly )
+                        getLoaderManager().restartLoader(i, null, EntryFragment.this);
+                    else
+                        GetSelectedEntryWebView().DisableTapActionsIfVideo( view );
+                    view.mLoadTitleOnly = false;
+                }
+                final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
+                Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
+                TextView textView = new TextView(getContext());
+                textView.setText( text );
+                textView.setPadding( 10, 10, 10, 10 );
+                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+                    textView.setBackgroundResource( R.drawable.toast_background );
+                toast.setView( textView );
+                toast.show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+    }
+
+    private void setupUpStarSwipe() {
+        final Vibrator vibrator = (Vibrator) getContext().getSystemService( Context.VIBRATOR_SERVICE );
+        mStarFrame = mRootView.findViewById(R.id.frameStar);
+        final ImageView frameStarImage  = mRootView.findViewById(R.id.frameStarImage);
+        final boolean prefVibrate = getBoolean(VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE, true);
+        mRootView.findViewById(R.id.pageUpBtn).setOnTouchListener(new View.OnTouchListener() {
+            private int initialY = 0;
+            private boolean mWasVibrate = false;
+            private boolean mWasSwipe = false;
+            private final int MAX_HEIGHT = UiUtils.mmToPixel( 12 );
+            private final int MIN_HEIGHT = UiUtils.mmToPixel( 1 );
+            private long downTime = 0;
+            private boolean wasUp = false;
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(final View view, MotionEvent event) {
+                if ( event.getAction() == MotionEvent.ACTION_DOWN) {
+                    //Dog.v( "onTouch ACTION_DOWN " );
+                    initialY = (int) event.getY();
+                    mWasVibrate = false;
+                    mWasSwipe = false;
+                    downTime = SystemClock.elapsedRealtime();
+                    wasUp = false;
+                    UiUtils.RunOnGuiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!wasUp && !mWasSwipe) {
+                                GetSelectedEntryView().GoTop();
+                                UiUtils.toast( R.string.list_was_scrolled_to_top );
+                            }
+                        }
+                    }, ViewConfiguration.getLongPressTimeout() );
+                    return true;
+                } else if ( event.getAction() == MotionEvent.ACTION_MOVE) {
+                    //Dog.v("onTouch ACTION_MOVE " + (event.getY() - initialY));
+                    int w = Math.max(0, (int) (event.getY() - initialY));
+                    SetStarFrameWidth(Math.min(w, MAX_HEIGHT));
+                    if (prefVibrate && w >= MAX_HEIGHT && !mWasVibrate) {
+                        mWasVibrate = true;
+                        vibrator.vibrate(VIBRATE_DURATION);
+                    } else if (w < MAX_HEIGHT)
+                        mWasVibrate = false;
+                    if (w >= MIN_HEIGHT) {
+                        mWasSwipe = true;
+                        downTime = SystemClock.elapsedRealtime();
+                    }
+                    frameStarImage.setImageResource((w >= MAX_HEIGHT) == GetSelectedEntryView().mFavorite ? R.drawable.ic_star_border_yellow : R.drawable.ic_star_yellow);
+                    return true;
+                } else if ( event.getAction() == MotionEvent.ACTION_UP) {
+                    //Dog.v( "onTouch ACTION_UP " );
+                    if ( !mWasSwipe ) {
+                        if ( !IsLong() )
+                            PageUp();
+                    } else if ( event.getY() - initialY >= MAX_HEIGHT ) {
+                        GetSelectedEntryView().SetIsFavorite( !GetSelectedEntryView().mFavorite, true );
+                    }
+                    SetStarFrameWidth(0);
+                    wasUp = true;
+                    return true;
+                } else
+                    SetStarFrameWidth(0);
+                return false;
+            }
+
+            private boolean IsLong() {
+                return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
+            }
+        });
+    }
+
+    private void EnableTapActions() {
+        PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
+        SetupZones();
+        GetSelectedEntryView().refreshUI( true );
+        UiUtils.toast( R.string.tap_actions_were_enabled );
+    }
+
+
+    private void SetStarFrameWidth(int w) {
+        mStarFrame.setLayoutParams( new FrameLayout.LayoutParams( FrameLayout.LayoutParams.FILL_PARENT, w));
+    }
+
+
+
+    /**
+     * Updates a menu item in the dropdown to show it's icon that was declared in XML.
+     *
+     * @param item
+     *         the item to update
+     */
+    private static void updateMenuWithIcon(@NonNull final MenuItem item) {
+        SpannableStringBuilder builder = new SpannableStringBuilder()
+                .append("*") // the * will be replaced with the icon via ImageSpan
+                .append("    ") // This extra space acts as padding. Adjust as you wish
+                .append(item.getTitle());
+
+
+
+        // Retrieve the icon that was declared in XML and assigned during inflation
+        if (item.getIcon() != null && item.getIcon().getConstantState() != null) {
+            Drawable drawable = item.getIcon().getConstantState().newDrawable();
+
+            // Mutate this drawable so the tint only applies here
+            // drawable.mutate().setTint(color);
+
+            // Needs bounds, or else it won't show up (doesn't know how big to be)
+            //drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+            drawable.setBounds(0, 0, DpToPx( 30 ), DpToPx( 30 ) );
+            //drawable.setBounds(-DpToPx( 30 ), 0, 0, 0 );
+            ImageSpan imageSpan = new ImageSpan(drawable);
+            builder.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            item.setTitle(builder);
+        }
+    }
+
+
+    private String getCurrentEntryLink() {
+        Entry entry = mEntryPagerAdapter.GetEntry( mCurrentPagerPos );
+        if ( entry != null )
+            return entry.mLink;
+        else
+            return "";
+    }
+
+    private boolean IsFeedUri( Uri uri ) {
+        boolean result = false;
+        if ( uri != null && uri.getPathSegments().size() > 1 )
+            try {
+                Long.parseLong(uri.getPathSegments().get(1));
+                result = true;
+            } catch ( NumberFormatException ignored ) { }
+        return result;
+    }
+
+    private void markPrevArticleAsRead() {
+        // Mark the previous opened article as read
+        //if (entryCursor.getInt(mIsReadPos) != 1) {
+        EntryView view = GetSelectedEntryView();
+        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 && view != null && view.mCursor != null ) {
+            new Thread() {
+                private String mFeedID;
+                private boolean mSetAsRead;
+                private int mPagerPos;
+                private Thread init(int pagerPos, boolean setAsRead, String feedID) {
+                    mPagerPos = pagerPos;
+                    mSetAsRead = setAsRead;
+                    mFeedID = feedID;
+                    return this;
+                }
+                @Override
+                public void run() {
+                    final Uri uri = ContentUris.withAppendedId(mBaseUri, mEntryPagerAdapter.GetEntry( mPagerPos ).mID);
+                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                    if ( mSetAsRead ) {
+                        if ( cr.update(uri, FeedData.getReadContentValues(), EntryColumns.WHERE_UNREAD + DB_AND + EntryColumns.WHERE_NOT_FAVORITE , null) > 0 )
+                            newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
+                    }
+                    cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
+                            /*// Update the cursor
+                            Cursor updatedCursor = cr.query(uri, null, null, null, null);
+                            updatedCursor.moveToFirst();
+                            mEntryPagerAdapter.setUpdatedCursor(mPagerPos, updatedCursor);*/
+                }
+            }.init( mLastPagerPos,
+                    view.mCursor.getInt(view.mIsReadPos) != 1,
+                    getCurrentFeedID() ).start();
+        }
+    }
+    private void startMobilizationTask(long currentEntryID) {
+        new Thread() {
+            long mID;
+            @Override
+            public void run() {
+                if (FetcherService.hasMobilizationTask(currentEntryID)) {
+                    //--showSwipeProgress();
+                    // If the service is not started, start it here to avoid an infinite loading
+                    if (!PrefUtils.getBoolean(PrefUtils.IS_REFRESHING, false))
+                        FetcherService.Start(new Intent(MainApplication.getContext(), FetcherService.class)
+                                .setAction(FetcherService.ACTION_MOBILIZE_FEEDS), true);
+                }
+            }
+            Thread SetID( long id ) {
+                mID = id;
+                return this;
+            }
+        }.SetID(currentEntryID).start();
+    }
+
+
+
 }
 

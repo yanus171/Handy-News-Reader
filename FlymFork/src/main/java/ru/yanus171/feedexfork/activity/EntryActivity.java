@@ -310,7 +310,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mEntryFragment.mIgnoreNextLoading = true;
+        mEntryFragment.onNewIntent();
     }
 
     @Override
