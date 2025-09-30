@@ -11,12 +11,6 @@ import android.widget.TextView
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.fragment.EntryFragment
-import ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE
-import ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE
-import ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT
-import ru.yanus171.feedexfork.utils.PrefUtils
-import ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR
-import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
 import ru.yanus171.feedexfork.utils.Theme
 
 class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
@@ -53,16 +47,6 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     fun setupControlPanelButtonActions() {
         setupButtonAction(R.id.btn_menu, false) {
             mEntryFragment.activity?.openOptionsMenu()
-        }
-        setupButtonAction(R.id.btn_force_landscape_orientation_toggle, mEntryFragment.mForceOrientation == LANDSCAPE) {
-            mEntryFragment.changeOrientation( if (mEntryFragment.mForceOrientation == LANDSCAPE) { NONE } else { LANDSCAPE } )
-        }
-        setupButtonAction(R.id.btn_force_portrait_orientation_toggle, mEntryFragment.mForceOrientation == PORTRAIT) {
-            mEntryFragment.changeOrientation( if (mEntryFragment.mForceOrientation == PORTRAIT) { NONE } else { PORTRAIT } )
-        }
-        setupButtonAction(R.id.btn_force_orientation_by_sensor, getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true)) {
-            PrefUtils.toggleBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true)
-            mEntryFragment.setOrientationBySensor(getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true))
         }
     }
 

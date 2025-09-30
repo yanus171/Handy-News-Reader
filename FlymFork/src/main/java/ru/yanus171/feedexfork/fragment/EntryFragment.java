@@ -98,9 +98,6 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
@@ -118,8 +115,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     public Uri mBaseUri;
-    public enum ForceOrientation {NONE, LANDSCAPE, PORTRAIT}
-    public ForceOrientation mForceOrientation = NONE;
     public BaseEntryPagerAdapter mEntryPagerAdapter;
     public StatusText mStatusText = null;
     public boolean mMarkAsUnreadOnFinish = false;
@@ -133,14 +128,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
     MenuItem mForceLandscapeOrientationMenuItem = null;
-
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
+
     public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
     public static final String STATE_RELOAD_IMG_WITH_A_LINK = "STATE_REPLACE_IMG_WITH_A_LINK";
     public static final String STATE_RELOAD_WITH_DEBUG = "STATE_RELOAD_WITH_DEBUG";
 
+    private enum Orientation {NONE, LANDSCAPE, PORTRAIT;}
+    private Orientation mForceOrientation = Orientation.NONE;
     private boolean mIgnoreNextLoading = false;
-    private int mCurrentPagerPos = -1;
+    private int mCurrentPagerPos = 0;
     private int mLastPagerPos = -1;
     private long mInitialEntryId = -1;
     private boolean mIsTapZoneVisible = false;
@@ -165,7 +162,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mWhereSQL = getActivity().getIntent().getStringExtra( WHERE_SQL_EXTRA );
         if ( savedInstanceState != null ) {
-            mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS, -1);
+            mCurrentPagerPos = savedInstanceState.getInt(STATE_CURRENT_PAGER_POS, 0);
             mBaseUri = savedInstanceState.getParcelable(STATE_BASE_URI);
             //outState.putLongArray(STATE_ENTRIES_IDS, mEntriesIds);
             mInitialEntryId = savedInstanceState.getLong(STATE_INITIAL_ENTRY_ID, -1);
@@ -174,8 +171,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
-    public ForceOrientation ForceOrientationFromInt(int code) {
-        return code == 1 ? LANDSCAPE : code == 2 ? PORTRAIT : NONE;
+    public Orientation ForceOrientationFromInt(int code) {
+        return code == 1 ? Orientation.LANDSCAPE : code == 2 ? Orientation.PORTRAIT : Orientation.NONE;
     }
 
     public void SetupZones() {
@@ -254,8 +251,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             hideTapZones();
             if ( mControlPanel.isVisible() )
                 mControlPanel.hide();
-            else
-                mControlPanel.show( GetSelectedEntryView() );
+            else {
+                mControlPanel.show(GetSelectedEntryView());
+                setupControlPanelButtonActions();
+            }
         });
 
         SetStarFrameWidth(0);
@@ -264,13 +263,32 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return mRootView;
     }
 
-    public void applyForceOrientation() {
-        int or = mForceOrientation == LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-                mForceOrientation == PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
+    private void setupControlPanelButtonActions() {
+        mControlPanel.setupButtonAction(R.id.btn_force_landscape_orientation_toggle, mForceOrientation == Orientation.LANDSCAPE,
+                v-> changeOrientation( mForceOrientation == Orientation.LANDSCAPE ? Orientation.NONE : Orientation.LANDSCAPE )
+        );
+        mControlPanel.setupButtonAction(R.id.btn_force_portrait_orientation_toggle, mForceOrientation == Orientation.PORTRAIT,
+                      v-> changeOrientation( mForceOrientation == Orientation.PORTRAIT ?  Orientation.NONE : Orientation.PORTRAIT )
+        );
+        mControlPanel.setupButtonAction(R.id.btn_force_orientation_by_sensor, getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true),
+            v -> {
+                PrefUtils.toggleBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true);
+                setOrientationBySensor(getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true));
+            }
+        );
+    }
+
+    public boolean applyForceOrientation() {
+        if ( mForceOrientation == Orientation.NONE )
+            return false;
+
+        int or = mForceOrientation == Orientation.LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+                mForceOrientation == Orientation.PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
                         ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 
         if ( or != getActivity().getRequestedOrientation() )
             getActivity().setRequestedOrientation( or );
+        return true;
     }
 
     public void PageUp() {
@@ -353,7 +371,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onConfigurationChanged(newConfig);
         if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
             EntryView entryView = GetSelectedEntryView();
-            if ( entryView != null && mForceOrientation != LANDSCAPE &&
+            if ( entryView != null && mForceOrientation != Orientation.LANDSCAPE &&
                     entryView instanceof WebEntryView && ((WebEntryView)entryView).mHasScripts ) {
                 mEntryPager.setAdapter(mEntryPagerAdapter);
                 mEntryPager.setCurrentItem(mCurrentPagerPos);
@@ -459,6 +477,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
+        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked( mForceOrientation == Orientation.LANDSCAPE );
+        menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked( mForceOrientation == Orientation.PORTRAIT );
         if ( GetSelectedEntryView() != null )
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
     }
@@ -500,12 +520,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
             case R.id.menu_force_landscape_orientation_toggle: {
                 item.setChecked( !item.isChecked() );
-                changeOrientation(item.isChecked() ? LANDSCAPE : NONE);
+                changeOrientation(item.isChecked() ? Orientation.LANDSCAPE : Orientation.NONE);
                 break;
             }
             case R.id.menu_force_portrait_orientation_toggle: {
                 item.setChecked( !item.isChecked() );
-                changeOrientation(item.isChecked() ? PORTRAIT : NONE );
+                changeOrientation(item.isChecked() ? Orientation.PORTRAIT : Orientation.NONE );
                 break;
             }
             case R.id.menu_show_progress_info: {
@@ -546,7 +566,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
 
-    public void SetForceOrientation(final ForceOrientation forceOrientation) {
+    public void SetForceOrientation(final Orientation forceOrientation) {
         if ( mForceOrientation == forceOrientation )
             return;
         mForceOrientation = forceOrientation;
@@ -591,7 +611,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
     @SuppressLint("StaticFieldLeak")
     public void setData(final Uri uri) {
-        mCurrentPagerPos = -1;
+        mCurrentPagerPos = 0;
         mBaseUri = null;
         Dog.v( TAG, "setData " + uri );
 
@@ -682,7 +702,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Timer.Start( id, "EntryFr.onCreateLoader" );
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(mEntryPagerAdapter.GetEntry( id ).mID), null, null, null, null);
+        Entry entry = mEntryPagerAdapter.GetEntry( id );
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), EntryColumns.CONTENT_URI(entry.mID), null, null, null, null);
         cursorLoader.setUpdateThrottle(100);
         return cursorLoader;
     }
@@ -748,12 +769,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return view.hasVideo();
         return false;
     }
-    public void changeOrientation(EntryFragment.ForceOrientation orientation) {
+    public void changeOrientation(Orientation orientation) {
         SetForceOrientation( orientation );
         getEntryActivity().applyOrientation();
-        if ( orientation == LANDSCAPE && mForcePortraitOrientationMenuItem != null)
+        if ( orientation == Orientation.LANDSCAPE && mForcePortraitOrientationMenuItem != null)
             mForcePortraitOrientationMenuItem.setChecked( false );
-        else if ( orientation == PORTRAIT && mForceLandscapeOrientationMenuItem != null)
+        else if ( orientation == Orientation.PORTRAIT && mForceLandscapeOrientationMenuItem != null)
             mForceLandscapeOrientationMenuItem.setChecked( false );
     }
     public void refreshUI( boolean invalidateContent ) {
@@ -894,8 +915,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         });
     }
 
-    private int ForceOrientationToInt( ForceOrientation fo ) {
-        return fo == LANDSCAPE ? 1 : fo == PORTRAIT ? 2 : 0;
+    private int ForceOrientationToInt( Orientation fo ) {
+        return fo == Orientation.LANDSCAPE ? 1 : fo == Orientation.PORTRAIT ? 2 : 0;
     }
     private void UpdateTapZoneButton( int viewID, boolean visible ) {
         UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );

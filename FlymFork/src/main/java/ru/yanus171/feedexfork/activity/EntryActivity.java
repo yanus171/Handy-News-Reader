@@ -20,7 +20,6 @@
 package ru.yanus171.feedexfork.activity;
 
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.NONE;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
@@ -473,9 +472,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     }
     @Override
     public void applyOrientation() {
-        if ( mEntryFragment.mForceOrientation == NONE )
+        if ( !mEntryFragment.applyForceOrientation() )
             super.applyOrientation();
-        else
-            mEntryFragment.applyForceOrientation();
     }
 }

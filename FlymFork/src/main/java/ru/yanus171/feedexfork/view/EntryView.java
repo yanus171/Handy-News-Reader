@@ -1,8 +1,6 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.LANDSCAPE;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.ForceOrientation.PORTRAIT;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -450,8 +448,6 @@ public abstract class EntryView {
     public void onPrepareOptionsMenu (Menu menu) {
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
-        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked( mActivity.mEntryFragment.mForceOrientation == LANDSCAPE );
-        menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked( mActivity.mEntryFragment.mForceOrientation == PORTRAIT );
         menu.findItem(R.id.menu_force_orientation_by_sensor).setChecked( PrefUtils.isForceOrientationBySensor() );
 
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
