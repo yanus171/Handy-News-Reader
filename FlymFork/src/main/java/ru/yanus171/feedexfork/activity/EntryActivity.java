@@ -472,7 +472,6 @@ public class EntryActivity extends BaseActivity implements Observer {
     }
     @Override
     public void applyOrientation() {
-        if ( !mEntryFragment.applyForceOrientation() )
-            super.applyOrientation();
+        super.applyOrientation();
     }
 }

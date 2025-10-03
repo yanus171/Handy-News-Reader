@@ -26,7 +26,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -101,7 +100,6 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
@@ -121,21 +119,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public boolean mIsFinishing = false;
     public View mBtnEndEditing = null;
     public FeedFilters mFilters = null;
-    public MenuItem mForcePortraitOrientationMenuItem = null;
     public String mAnchor = "";
     public View mRootView = null;
     public ControlPanel mControlPanel = null;
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
-    MenuItem mForceLandscapeOrientationMenuItem = null;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
 
     public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
     public static final String STATE_RELOAD_IMG_WITH_A_LINK = "STATE_REPLACE_IMG_WITH_A_LINK";
     public static final String STATE_RELOAD_WITH_DEBUG = "STATE_RELOAD_WITH_DEBUG";
 
-    private enum Orientation {NONE, LANDSCAPE, PORTRAIT;}
-    private Orientation mForceOrientation = Orientation.NONE;
     private boolean mIgnoreNextLoading = false;
     private int mCurrentPagerPos = 0;
     private int mLastPagerPos = -1;
@@ -143,18 +137,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private boolean mIsTapZoneVisible = false;
     private ViewPager mEntryPager;
     private View mStarFrame = null;
+    @SuppressLint("StaticFieldLeak")
     private static EntryView mLeakEntryView = null;
     private String mWhereSQL;
-    private int mLastScreenState = -1;
     private String mSearchText = "";
-
+    private EntryOrientation mOrientation;
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
+        mOrientation = new EntryOrientation( this );
         if ( IsExternalLink( getActivity().getIntent().getData() ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter( this );
         else
@@ -169,10 +165,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         }
 
         super.onCreate(savedInstanceState);
-    }
-
-    public Orientation ForceOrientationFromInt(int code) {
-        return code == 1 ? Orientation.LANDSCAPE : code == 2 ? Orientation.PORTRAIT : Orientation.NONE;
     }
 
     public void SetupZones() {
@@ -264,31 +256,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     private void setupControlPanelButtonActions() {
-        mControlPanel.setupButtonAction(R.id.btn_force_landscape_orientation_toggle, mForceOrientation == Orientation.LANDSCAPE,
-                v-> changeOrientation( mForceOrientation == Orientation.LANDSCAPE ? Orientation.NONE : Orientation.LANDSCAPE )
-        );
-        mControlPanel.setupButtonAction(R.id.btn_force_portrait_orientation_toggle, mForceOrientation == Orientation.PORTRAIT,
-                      v-> changeOrientation( mForceOrientation == Orientation.PORTRAIT ?  Orientation.NONE : Orientation.PORTRAIT )
-        );
-        mControlPanel.setupButtonAction(R.id.btn_force_orientation_by_sensor, getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true),
-            v -> {
-                PrefUtils.toggleBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true);
-                setOrientationBySensor(getBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, true));
-            }
-        );
-    }
-
-    public boolean applyForceOrientation() {
-        if ( mForceOrientation == Orientation.NONE )
-            return false;
-
-        int or = mForceOrientation == Orientation.LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-                mForceOrientation == Orientation.PORTRAIT ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT :
-                        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-
-        if ( or != getActivity().getRequestedOrientation() )
-            getActivity().setRequestedOrientation( or );
-        return true;
+        mOrientation.setupControlPanelButtonActions( mControlPanel, getUri() );
     }
 
     public void PageUp() {
@@ -354,7 +322,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mSetupChanged = false;
             mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, true, false);
         }
-        mLastScreenState = getActivity().getResources().getConfiguration().orientation;
+        mOrientation.onResume();
         UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
         refreshUI(false);
     }
@@ -369,17 +337,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if ( newConfig.orientation != mLastScreenState && mCurrentPagerPos != -1) {
-            EntryView entryView = GetSelectedEntryView();
-            if ( entryView != null && mForceOrientation != Orientation.LANDSCAPE &&
-                    entryView instanceof WebEntryView && ((WebEntryView)entryView).mHasScripts ) {
-                mEntryPager.setAdapter(mEntryPagerAdapter);
-                mEntryPager.setCurrentItem(mCurrentPagerPos);
-            }
+        if ( mOrientation.onConfigurationChanged( newConfig, GetSelectedEntryView() ) ) {
+            mEntryPager.setAdapter(mEntryPagerAdapter);
+            mEntryPager.setCurrentItem(mCurrentPagerPos);
         }
-        mLastScreenState = newConfig.orientation;
     }
 
+
+    Uri getUri(){
+        return ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
+    }
 
     @Override
     public void onPause() {
@@ -427,8 +394,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mSearchNextItem.setVisible( false );
         mSearchPreviousItem.setVisible( false );
 
-        mForceLandscapeOrientationMenuItem = menu.findItem(R.id.menu_force_landscape_orientation_toggle);
-        mForcePortraitOrientationMenuItem = menu.findItem(R.id.menu_force_portrait_orientation_toggle);
+        mOrientation.onCreateOptionsMenu( menu );
 
         // Use a custom search icon for the SearchView in AppBar
         int searchImgId = androidx.appcompat.R.id.search_button;
@@ -477,8 +443,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked( mForceOrientation == Orientation.LANDSCAPE );
-        menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked( mForceOrientation == Orientation.PORTRAIT );
+        mOrientation.onPrepareOptionsMenu( menu );
         if ( GetSelectedEntryView() != null )
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
     }
@@ -513,21 +478,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 break;
             }
 
-            case R.id.menu_force_orientation_by_sensor: {
-                item.setChecked( !item.isChecked() );
-                setOrientationBySensor(item.isChecked());
-                break;
-            }
-            case R.id.menu_force_landscape_orientation_toggle: {
-                item.setChecked( !item.isChecked() );
-                changeOrientation(item.isChecked() ? Orientation.LANDSCAPE : Orientation.NONE);
-                break;
-            }
-            case R.id.menu_force_portrait_orientation_toggle: {
-                item.setChecked( !item.isChecked() );
-                changeOrientation(item.isChecked() ? Orientation.PORTRAIT : Orientation.NONE );
-                break;
-            }
             case R.id.menu_show_progress_info: {
                 PrefUtils.toggleBoolean( SHOW_PROGRESS_INFO, false ) ;
                 item.setChecked( PrefUtils.getBoolean( SHOW_PROGRESS_INFO, false ) );
@@ -539,17 +489,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         .setClass(getActivity(), ArticleWebSearchActivity.class) );
                 break;
             }
-
-
         }
+        mOrientation.onOptionsItemSelected( item, getUri());
         GetSelectedEntryView().onOptionsItemSelected(item);
 
         return true;
-    }
-
-    public void setOrientationBySensor(boolean value) {
-        PrefUtils.putBoolean( PREF_FORCE_ORIENTATION_BY_SENSOR, value );
-        getEntryActivity().applyOrientation();
     }
 
 
@@ -562,24 +506,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         });
     }
-
-
-
-
-    public void SetForceOrientation(final Orientation forceOrientation) {
-        if ( mForceOrientation == forceOrientation )
-            return;
-        mForceOrientation = forceOrientation;
-        final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
-        ContentValues values = new ContentValues();
-        values.put( EntryColumns.IS_LANDSCAPE, ForceOrientationToInt( mForceOrientation ) );
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
-        cr.update(uri, values, null, null);
-        GetSelectedEntryView().InvalidateContentCache();
-        UiUtils.RunOnGuiThread( () -> getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this) );
-        getActivity().invalidateOptionsMenu();
-    }
-
 
 //    private void DeleteMobilized() {
 //        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
@@ -769,31 +695,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return view.hasVideo();
         return false;
     }
-    public void changeOrientation(Orientation orientation) {
-        SetForceOrientation( orientation );
-        getEntryActivity().applyOrientation();
-        if ( orientation == Orientation.LANDSCAPE && mForcePortraitOrientationMenuItem != null)
-            mForcePortraitOrientationMenuItem.setChecked( false );
-        else if ( orientation == Orientation.PORTRAIT && mForceLandscapeOrientationMenuItem != null)
-            mForceLandscapeOrientationMenuItem.setChecked( false );
-    }
     public void refreshUI( boolean invalidateContent ) {
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         EntryView view = GetSelectedEntryView();
         if (view != null && view.mCursor != null ) {
             getEntryActivity().SetTaskTitle( view.mTitle );
-            SetForceOrientation(ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos)));
-            getEntryActivity().applyOrientation();
             getEntryActivity().invalidateOptionsMenu();
             view.refreshUI( invalidateContent );
 
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
 
             startMobilizationTask(view.mEntryId);
+            mOrientation.refreshUI( view, getUri() );
         }
-
-        getEntryActivity().applyOrientation();
         markPrevArticleAsRead();
     }
     public void restartCurrentEntryLoader() {
@@ -915,9 +830,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         });
     }
 
-    private int ForceOrientationToInt( Orientation fo ) {
-        return fo == Orientation.LANDSCAPE ? 1 : fo == Orientation.PORTRAIT ? 2 : 0;
-    }
     private void UpdateTapZoneButton( int viewID, boolean visible ) {
         UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );
     }
@@ -1161,4 +1073,3 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
 }
-
