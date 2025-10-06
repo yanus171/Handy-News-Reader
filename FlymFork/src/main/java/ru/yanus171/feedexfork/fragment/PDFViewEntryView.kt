@@ -232,7 +232,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         return result
     }
     private fun getPageFloatSize() : Float {
-        val pixDoc = mPDFView.getPageSize(0).height * mPDFView.zoom *  mPDFView.pageCount - getScreenHeight()
+        val pixDoc = mPDFView.getPageSize(mPDFView.pageCount - 1).height * mPDFView.zoom *  mPDFView.pageCount - getScreenHeight()
         return (getScreenHeight() / pixDoc) * getPageChangeMultiplier()
     }
     override fun onResume() {
