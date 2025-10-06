@@ -351,10 +351,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onPause() {
         EntryView entryView = mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() );
-        if (entryView != null) {
-            //PrefUtils.putInt(PrefUtils.LAST_ENTRY_SCROLL_Y, entryView.getScrollY());
+        if (entryView != null)
             entryView.SaveScrollPos();
-        }
 
         mEntryPagerAdapter.onPause();
         super.onPause();
@@ -448,6 +446,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -498,18 +497,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
     public void close() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if ( getActivity() != null )
-                    getActivity().onBackPressed();
-            }
+        getActivity().runOnUiThread(() -> {
+            if ( getActivity() != null )
+                getActivity().onBackPressed();
         });
     }
-
-//    private void DeleteMobilized() {
-//        FileUtils.INSTANCE.deleteMobilized( ContentUris.withAppendedId(mBaseUri, getCurrentEntryID() ) );
-//    }
 
     public EntryActivity getEntryActivity() {
         return (EntryActivity) getActivity();
@@ -622,9 +614,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 GetIsActionBarHidden());
     }
 
-
-
-
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Timer.Start( id, "EntryFr.onCreateLoader" );
@@ -638,7 +628,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mIgnoreNextLoading = true;
     }
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if ( mIsFinishing )
             return;
         if ( mIgnoreNextLoading ) {
