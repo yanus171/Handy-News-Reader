@@ -13,8 +13,8 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
-import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
+import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
@@ -44,6 +44,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     var mIsLoaded = false
     var mIsBlockScroll = false
     val mRestoreZoom = RestoreZoom()
+    var mLastTimeScrolled = 0L
 
     init {
         createView()
@@ -84,7 +85,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
                     if ( !mIsLoaded )
                         return
                     mScrollPartY = GetViewScrollPartY()
-                    if (!PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) ) {
+                    if (!getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) ) {
                         if ( !mIsBlockScroll ) {
                             mIsBlockScroll = true
                             if ( mPDFView.zoom == mZoom )
@@ -93,13 +94,15 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
                             mIsBlockScroll = false
                         }
                     }
+                    mLastTimeScrolled = Date().time
                     saveState()
                     mActivity.mEntryFragment.UpdateHeader();
                 }
             })
             .onTap( object : OnTapListener {
                 override fun onTap(e: MotionEvent): Boolean {
-                    toggleTapZoneVisibility()
+                    if ( Date().time - mLastTimeScrolled > TAP_TIMEOUT )
+                        toggleTapZoneVisibility()
                     return true
                 }
             })

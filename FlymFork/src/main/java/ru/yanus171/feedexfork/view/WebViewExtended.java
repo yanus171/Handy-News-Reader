@@ -63,6 +63,7 @@ import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
+import static ru.yanus171.feedexfork.view.EntryView.TAP_TIMEOUT;
 import static ru.yanus171.feedexfork.view.FontSelectPreference.DefaultFontFamily;
 import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalUrl;
 import static ru.yanus171.feedexfork.view.WebEntryView.OpenImage;
@@ -638,7 +639,6 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     private static final String LINK_BUTTON_MIDDLE = "'>";
     private static final String LINK_BUTTON_END = "</a></p>";
     private static final String IMAGE_ENCLOSURE = "[@]image/";
-    private static final long TAP_TIMEOUT = 1000;
     private static final long MOVE_TIMEOUT = 800;
 
     private final JavaScriptObject mInjectedJSObject = new JavaScriptObject();

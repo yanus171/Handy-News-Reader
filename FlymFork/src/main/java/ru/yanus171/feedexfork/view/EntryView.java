@@ -81,6 +81,8 @@ public abstract class EntryView {
     public View mView = null;
     public Runnable mScrollChangeListener = null;
 
+    public static final long TAP_TIMEOUT = 1000;
+
     protected EntryView(EntryActivity activity, long entryId) {
         mActivity = activity;
         mEntryId = entryId;
