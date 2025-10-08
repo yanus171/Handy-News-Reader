@@ -151,6 +151,19 @@ import ru.yanus171.feedexfork.view.StatusText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
     public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
+    public static final String LABEL_ID_EXTRA = "LABEL_ID";
+    public static Uri mCurrentUri = null;
+    public static final long ALL_LABELS = -2L;
+    public EntriesCursorAdapter mEntriesCursorAdapter = null;
+    public ListView mListView;
+    public static boolean mShowUnReadOnly = false;
+    static private String mSearchText = "";
+    public boolean mIsSingleLabel = false;
+    public boolean mIsSingleLabelWithoutChildren = false;
+    public static final HashSet<String> mWasVisibleList = new HashSet<>();
+    public boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
+
+
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
@@ -160,20 +173,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static final int ENTRIES_LOADER_ID = 1;
     private static final int FILTERS_LOADER_ID = 3;
     private static final String STATE_OPTIONS = "STATE_OPTIONS";
-    public static final long ALL_LABELS = -2L;
     private static final long NO_LABEL = -1L;
-    public static final String LABEL_ID_EXTRA = "LABEL_ID";
-
-    public static Uri mCurrentUri = null;
 
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;
-    public EntriesCursorAdapter mEntriesCursorAdapter = null;
     private ArrayList<Integer> mEntryIdsToCancel = new ArrayList<>();
 
     private FloatingActionButton mFab;
-    public ListView mListView;
-    public static boolean mShowUnReadOnly = false;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
     private int mLastListViewTopOffset = 0;
@@ -181,10 +187,96 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private TextView mTextViewFilterLabels = null;
     private FeedFilters mFilters = null;
     private boolean mIsResumed = false;
-    static private String mSearchText = "";
     private HashSet<Long> mLabelsID = new HashSet<>();
-    public boolean mIsSingleLabel = false;
-    public boolean mIsSingleLabelWithoutChildren = false;
+    private JSONObject mOptions;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Timer timer = new Timer( "EntriesListFragment.onCreate" );
+
+        setHasOptionsMenu(true);
+
+        Dog.v( "EntriesListFragment.onCreate" );
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
+            mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
+            mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
+            mShowUnReadOnly = savedInstanceState.getBoolean(STATE_SHOW_UNREAD_ONLY, PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false ));
+            try {
+                mOptions = savedInstanceState.containsKey( STATE_OPTIONS ) ? new JSONObject( savedInstanceState.getString( STATE_OPTIONS ) ) : new JSONObject();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Dog.v( String.format("EntriesListFragment.onCreate mShowUnRead = %b", mShowUnReadOnly) );
+
+            //if ( mShowTextInEntryList )
+            //    mNeedSetSelection = true;
+            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
+        } else
+            mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
+
+        timer.End();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Timer timer = new Timer( "EntriesListFragment.onStart" );
+
+        PrefUtils.registerOnPrefChangeListener(mPrefListener);
+
+        mFab = getActivity().findViewById(R.id.fab);
+        mFab.setOnClickListener(v -> markVisibleArticlesAsReadUnRead( true ));
+
+        mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
+        mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
+        UpdateActions();
+        timer.End();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, true );
+        mImageDownloadObservable.addObserver(this);
+        mIsResumed = true;
+    }
+
+    @Override
+    public void onPause() {
+        mIsResumed = false;
+        mImageDownloadObservable.deleteObserver( this);
+        super.onPause();
+    }
+
+    @NotNull
+    public String GetWhereSQL() {
+        String labelSQL = "";
+        if ( mLabelsID.contains( ALL_LABELS ) )
+            labelSQL = DB_AND + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
+        else if ( mIsSingleLabelWithoutChildren )
+            labelSQL = DB_AND + _ID + " IN (SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " +
+                    EntryLabelColumns.LABEL_ID + " = " + GetSingleLabelID() + DB_AND +
+                    EntryLabelColumns.ENTRY_ID + " NOT IN (SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " + EntryLabelColumns.LABEL_ID + " <> " + GetSingleLabelID() + "))";
+        else if ( !mLabelsID.isEmpty() ) {
+            ArrayList<String> listCondition = new ArrayList<>();
+            for( Long item: mLabelsID )
+                listCondition.add( "(" + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
+                        " WHERE " + EntryLabelColumns.LABEL_ID + " = " + item + "))" );
+            labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
+        }
+        final String unreadSQL = mShowUnReadOnly ? DB_AND + EntryColumns.WHERE_UNREAD : "";
+        final String searchSQL = mSearchText.isEmpty() ? "" : DB_AND + getSearchWhereClause( mSearchText );
+        return EMPTY_WHERE_SQL + labelSQL + unreadSQL + searchSQL;
+    }
 
     static class VisibleReadItem {
         final String ITEM_SEP = "__####__";
@@ -204,10 +296,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             return mIsRead.toString() + ITEM_SEP + mUri;
         }
     }
-    public static final HashSet<String> mWasVisibleList = new HashSet<>();
-    private JSONObject mOptions;
-
-    public boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
 
     private final LoaderManager.LoaderCallbacks<Cursor> mLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
         @NonNull
@@ -280,26 +368,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     };
 
-    @NotNull
-    public String GetWhereSQL() {
-        String labelSQL = "";
-        if ( mLabelsID.contains( ALL_LABELS ) )
-            labelSQL = DB_AND + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + ")";
-        else if ( mIsSingleLabelWithoutChildren )
-            labelSQL = DB_AND + _ID + " IN (SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " +
-                EntryLabelColumns.LABEL_ID + " = " + GetSingleLabelID() + DB_AND +
-                EntryLabelColumns.ENTRY_ID + " NOT IN (SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME + " WHERE " + EntryLabelColumns.LABEL_ID + " <> " + GetSingleLabelID() + "))";
-        else if ( !mLabelsID.isEmpty() ) {
-            ArrayList<String> listCondition = new ArrayList<>();
-            for( Long item: mLabelsID )
-                listCondition.add( "(" + _ID + " IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
-                    " WHERE " + EntryLabelColumns.LABEL_ID + " = " + item + "))" );
-            labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
-        }
-        final String unreadSQL = mShowUnReadOnly ? DB_AND + EntryColumns.WHERE_UNREAD : "";
-        final String searchSQL = mSearchText.isEmpty() ? "" : DB_AND + getSearchWhereClause( mSearchText );
-        return EMPTY_WHERE_SQL + labelSQL + unreadSQL + searchSQL;
-    }
 
     private static String getSearchWhereClause(String uriSearchParam) {
         uriSearchParam = Uri.decode(uriSearchParam).trim();
@@ -381,77 +449,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Timer timer = new Timer( "EntriesListFragment.onCreate" );
-
-        setHasOptionsMenu(true);
-
-        Dog.v( "EntriesListFragment.onCreate" );
-
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
-            mShowFeedInfo = savedInstanceState.getBoolean(STATE_SHOW_FEED_INFO);
-            mShowTextInEntryList = savedInstanceState.getBoolean(STATE_SHOW_TEXT_IN_ENTRY_LIST);
-            mShowUnReadOnly = savedInstanceState.getBoolean(STATE_SHOW_UNREAD_ONLY, PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false ));
-            try {
-                mOptions = savedInstanceState.containsKey( STATE_OPTIONS ) ? new JSONObject( savedInstanceState.getString( STATE_OPTIONS ) ) : new JSONObject();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Dog.v( String.format("EntriesListFragment.onCreate mShowUnRead = %b", mShowUnReadOnly) );
-
-            //if ( mShowTextInEntryList )
-            //    mNeedSetSelection = true;
-            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
-        } else
-            mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
-
-        timer.End();
+    public void FilterByLabels() {
+        LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
+            mLabelsID = checkedLabels;
+            ArrayList<String> list = new ArrayList<>();
+            for ( Long item: mLabelsID )
+                list.add( String.valueOf( item ) );
+            restartLoaders();
+            UpdateActions();
+            return null;
+        } );
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Timer timer = new Timer( "EntriesListFragment.onStart" );
 
-        PrefUtils.registerOnPrefChangeListener(mPrefListener);
-
-        mFab = getActivity().findViewById(R.id.fab);
-        mFab.setOnClickListener(v -> markVisibleArticlesAsReadUnRead( true ));
-
-        mLastVisibleTopEntryID = PrefUtils.getLong( STATE_LAST_VISIBLE_ENTRY_ID, -1 );
-        mLastListViewTopOffset = PrefUtils.getInt( STATE_LAST_VISIBLE_OFFSET, 0 );
-        UpdateActions();
-        timer.End();
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, true );
-        mImageDownloadObservable.addObserver(this);
-        mIsResumed = true;
-    }
-
-    @Override
-    public void onPause() {
-        mIsResumed = false;
-        mImageDownloadObservable.deleteObserver( this);
-        super.onPause();
-    }
-
-    private Uri GetUri(int pos) {
-        final long id = mEntriesCursorAdapter.getItemId(pos);
-        return EntriesCursorAdapter.EntryUri(id);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -550,10 +560,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             btn.setVisibility( enable ? View.VISIBLE : View.GONE );
         }
     }
-    private void UpdateTapZoneButton( int viewID, boolean enabled ) {
-        UpdateTapZoneButtonEnable( getBaseActivity().mRootView, viewID, enabled );
-    }
-
     public void UpdateTopTapZoneVisibility() {
         final boolean atTop = mListView.getFirstVisiblePosition() == 0;
         final boolean isActionBar = !GetIsActionBarEntryListHidden();
@@ -575,10 +581,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         UpdateTapZoneButton( R.id.entryCenterBtn, false );
     }
 
-    private HomeActivity GetActivity() {
-        return (HomeActivity)getActivity();
+    private Uri GetUri(int pos) {
+        final long id = mEntriesCursorAdapter.getItemId(pos);
+        return EntriesCursorAdapter.EntryUri(id);
     }
 
+    private void UpdateTapZoneButton( int viewID, boolean enabled ) {
+        UpdateTapZoneButtonEnable( getBaseActivity().mRootView, viewID, enabled );
+    }
 
     public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
@@ -592,19 +602,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                        getHeaderStep(),
                                        GetIsStatusBarEntryListHidden(),
                                        GetIsActionBarEntryListHidden());
-    }
-
-    private int getHeaderStep() {
-        return 1;
-    }
-
-    private BaseActivity getBaseActivity() {
-        return (BaseActivity) getActivity();
-    }
-
-    private void SetListViewAdapter() {
-        mListView.setAdapter(mEntriesCursorAdapter);
-        mNeedSetSelection = true;
     }
 
     public static void ShowDeleteDialog(Context context, final String title, final long id, final String entryLink) {
@@ -621,8 +618,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     }
                 }.start()).setNegativeButton(android.R.string.no, null).create();
         dialog.getWindow().setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         dialog.show();
     }
 
@@ -640,23 +637,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mFab = null;
 
         super.onStop();
-    }
-
-    private void ApplyOldAndReadArticleList() {
-        new Thread() {
-            HashSet<String> mVisibleList = null;
-            ArrayList<String> mMarkAsReadList = null;
-            Thread init( HashSet<String> wasVisibleList, ArrayList<String> markAsReadList ) {
-                mVisibleList = (HashSet<String>) wasVisibleList.clone();
-                mMarkAsReadList = markAsReadList;
-                return this;
-            }
-            @Override public void run() {
-                EntriesListFragment.SetVisibleItemsAsOld( mVisibleList );
-                EntriesListFragment.SetItemsAsRead( mMarkAsReadList );
-            }
-        }.init( mWasVisibleList, TakeMarkAsReadList( true ) ).start();
-        mWasVisibleList.clear();
     }
 
     @Override
@@ -747,8 +727,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         switch (item.getItemId()) {
             case R.id.menu_article_web_search: {
                 startActivity(new Intent( Intent.ACTION_WEB_SEARCH )
-                                  .setPackage( getContext().getPackageName() )
-                                  .setClass(getContext(), ArticleWebSearchActivity.class));
+                        .setPackage( getContext().getPackageName() )
+                        .setClass(getContext(), ArticleWebSearchActivity.class));
                 break;
             }
             case R.id.menu_add_feed: {
@@ -790,44 +770,44 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             case R.id.menu_unstarr_articles: {
                 new AlertDialog.Builder(getContext())
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle( R.string.question )
-                    .setMessage( R.string.unstarAllArtcilesComfirm)
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle(R.string.question)
-                        .setMessage(R.string.unstarAllArtcilesComfirm2)
-                        .setPositiveButton(android.R.string.yes, (dialog1, which1) -> new Thread() {
-                            @Override
-                            public void run() {
-                                unstarAllFeedEntries();
-                            }
-                        }.start()).setNegativeButton(android.R.string.cancel, null).show()).setNegativeButton(android.R.string.cancel, null).show();
+                        .setTitle( R.string.question )
+                        .setMessage( R.string.unstarAllArtcilesComfirm)
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> new AlertDialog.Builder(getContext())
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle(R.string.question)
+                                .setMessage(R.string.unstarAllArtcilesComfirm2)
+                                .setPositiveButton(android.R.string.yes, (dialog1, which1) -> new Thread() {
+                                    @Override
+                                    public void run() {
+                                        unstarAllFeedEntries();
+                                    }
+                                }.start()).setNegativeButton(android.R.string.cancel, null).show()).setNegativeButton(android.R.string.cancel, null).show();
                 return true;
             }
 
             case R.id.menu_reset_feed_and_delete_all_articles: {
                 new AlertDialog.Builder(getContext()) //
-                    .setIcon(android.R.drawable.ic_dialog_alert) //
-                    .setTitle( R.string.question ) //
-                    .setMessage( R.string.deleteAllEntries ) //
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> new Thread() {
-                        @Override
-                        public void run() {
-                            FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
-                            // reset feed
-                            if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
-                                final String feedID = mCurrentUri.getPathSegments().get( 1 );
-                                ContentValues values = new ContentValues();
-                                values.putNull(FeedColumns.LAST_UPDATE);
-                                values.putNull(FeedColumns.ICON_URL);
-                                values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                                final ContentResolver cr = getContext().getContentResolver();
-                                cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                        .setIcon(android.R.drawable.ic_dialog_alert) //
+                        .setTitle( R.string.question ) //
+                        .setMessage( R.string.deleteAllEntries ) //
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> new Thread() {
+                            @Override
+                            public void run() {
+                                FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
+                                // reset feed
+                                if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
+                                    final String feedID = mCurrentUri.getPathSegments().get( 1 );
+                                    ContentValues values = new ContentValues();
+                                    values.putNull(FeedColumns.LAST_UPDATE);
+                                    values.putNull(FeedColumns.ICON_URL);
+                                    values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                                    final ContentResolver cr = getContext().getContentResolver();
+                                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                                }
+                                UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
                             }
-                            UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
-                        }
-                    }.start()).setNegativeButton(android.R.string.no, null).show();
+                        }.start()).setNegativeButton(android.R.string.no, null).show();
                 return true;
             }
             case R.id.menu_mark_all_visible_as_read: {
@@ -844,8 +824,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
             case R.id.menu_reload_all_texts: {
                 FetcherService.Start(FetcherService.GetIntent(Constants.FROM_RELOAD_ALL_TEXT )
-                                                 .setData( mCurrentUri )
-                                                 .putExtra( WHERE_SQL_EXTRA, GetWhereSQL() ), false );
+                        .setData( mCurrentUri )
+                        .putExtra( WHERE_SQL_EXTRA, GetWhereSQL() ), false );
                 return true;
             }
             case R.id.menu_show_article_url_toggle: {
@@ -927,8 +907,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     } else {
                         long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
                         Cursor cursor = getContext().getContentResolver().query(FeedColumns.CONTENT_URI(feedID),
-                                                                                new String[]{FeedColumns.NAME, FeedColumns.ICON_URL },
-                                                                                null, null, null);
+                                new String[]{FeedColumns.NAME, FeedColumns.ICON_URL },
+                                null, null, null);
                         if (cursor.moveToFirst()) {
                             name = cursor.getString(0);
                             if (!cursor.isNull(2) )
@@ -940,10 +920,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     }
 
                     final Intent intent =
-                        new Intent(getContext(), HomeActivityNewTask.class)
-                            .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK )
-                            .setAction(Intent.ACTION_MAIN).setData( mCurrentUri )
-                            .putExtra( NEW_TASK_EXTRA, true );
+                            new Intent(getContext(), HomeActivityNewTask.class)
+                                    .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK )
+                                    .setAction(Intent.ACTION_MAIN).setData( mCurrentUri )
+                                    .putExtra( NEW_TASK_EXTRA, true );
 
                     if ( !feedUrl.isEmpty() )
                         intent.putExtra( Constants.EXTRA_LINK, feedUrl );
@@ -957,16 +937,16 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         getActivity().runOnUiThread(() -> {
 
                             ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
-                                .setIcon(icon)
-                                .setShortLabel(finalName)
-                                .setIntent(intent)
-                                .setLongLived()
-                                .build();
+                                    .setIcon(icon)
+                                    .setShortLabel(finalName)
+                                    .setIntent(intent)
+                                    .setLongLived()
+                                    .build();
                             ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
                             if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
                                 Toast.makeText(
 
-                            getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
+                                        getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
                         });
                     }).execute();
                 } else
@@ -1036,6 +1016,172 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setData(Uri uri, boolean showFeedInfo, boolean showTextInEntryList, JSONObject options) {
+        mOptions = options;
+        if ( getActivity() == null ) // during configuration changes
+            return;
+        Timer timer = new Timer( "EntriesListFragment.setData" );
+
+        Dog.v( String.format( "EntriesListFragment.setData( %s )", uri.toString() ) );
+        mCurrentUri = uri;
+        mShowFeedInfo = showFeedInfo;
+        mShowTextInEntryList = showTextInEntryList;
+
+        ApplyOldAndReadArticleList();
+
+        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
+        SetListViewAdapter();
+        mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
+        if (mCurrentUri != null)
+            restartLoaders();
+
+        UpdateHeader();
+        UpdateActions();
+        mStatusText.SetFeedID( mCurrentUri );
+        timer.End();
+    }
+
+    public static boolean IsFeedUri( Uri uri ) {
+        boolean result = false;
+        if ( uri != null && uri.getPathSegments().size() > 1 )
+            try {
+                long feedID = Long.parseLong(uri.getPathSegments().get(1));
+                result = feedID != Long.parseLong( FetcherService.GetExtrenalLinkFeedID() ) && !uri.toString().contains( "/group" );
+            } catch ( NumberFormatException ignored ) { }
+        return result;
+    }
+
+    public static void SetVisibleItemsAsOld(HashSet<String> uriList) {
+        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
+        for (String data : uriList) {
+            VisibleReadItem item = new VisibleReadItem( data );
+            updates.add(
+                    ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
+                            .withValues(FeedData.getOldContentValues())
+                            .withSelection(EntryColumns.WHERE_NEW, null)
+                            .build());
+            if ( item.mIsRead )
+                updates.add(
+                        ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
+                                .withValues(FeedData.getReadContentValues())
+                                .withSelection(EntryColumns.WHERE_UNREAD, null)
+                                .build());
+        }
+        if (!updates.isEmpty()) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try {
+                cr.applyBatch(FeedData.AUTHORITY, updates);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public static void SetItemsAsRead(ArrayList<String> uriList) {
+        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
+        for (String data : uriList) {
+            updates.add(
+                    ContentProviderOperation.newUpdate(Uri.parse(data))
+                            .withValues(FeedData.getReadContentValues())
+                            .withSelection(EntryColumns.WHERE_UNREAD, null)
+                            .build());
+        }
+        if (!updates.isEmpty()) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try {
+                cr.applyBatch(FeedData.AUTHORITY, updates);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public void update(Observable observable, Object o) {
+        if ( o instanceof Entry && mEntriesCursorAdapter != null ) {
+            final Entry entry = (Entry) o;
+            if (entry.mRestorePosition ) {
+                final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
+                if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
+                    mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
+                    mEntriesCursorAdapter.notifyDataSetChanged();
+                    RestoreListScrollPosition();
+                }
+            } else
+                mEntriesCursorAdapter.notifyDataSetChanged();
+        } else if ( o instanceof EntriesCursorAdapter.ListViewTopPos) {
+            mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
+        }
+    }
+
+    public void ClearSingleLabel() {
+        mIsSingleLabel = false;
+        mLabelsID.clear();
+        mIsSingleLabelWithoutChildren = false;
+    }
+    public void SetSingleLabel( Long id ) {
+        mIsSingleLabel = id != NO_LABEL;
+        mLabelsID.clear();
+        if ( id != NO_LABEL )
+            mLabelsID.add( id );
+        mIsSingleLabelWithoutChildren = false;
+    }
+    public void SetChildLabel( long parentLabelId, long childLabelId ) {
+        if ( parentLabelId == childLabelId ) {
+            SetSingleLabel( parentLabelId );
+            mIsSingleLabelWithoutChildren = parentLabelId != NO_LABEL && parentLabelId != ALL_LABELS;
+            return;
+        }
+        mIsSingleLabel = false;
+        mIsSingleLabelWithoutChildren = false;
+        mLabelsID.clear();
+        mLabelsID.add( parentLabelId );
+        mLabelsID.add( childLabelId );
+
+    }
+
+    public boolean IsAllLabels() {
+        return mIsSingleLabel && mLabelsID.contains( ALL_LABELS );
+    }
+
+    public Long GetSingleLabelID() {
+        return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
+    }
+
+    private HomeActivity GetActivity() {
+        return (HomeActivity)getActivity();
+    }
+
+    private int getHeaderStep() {
+        return 1;
+    }
+
+    private BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
+    }
+
+    private void SetListViewAdapter() {
+        mListView.setAdapter(mEntriesCursorAdapter);
+        mNeedSetSelection = true;
+    }
+
+    private void ApplyOldAndReadArticleList() {
+        new Thread() {
+            HashSet<String> mVisibleList = null;
+            ArrayList<String> mMarkAsReadList = null;
+            Thread init( HashSet<String> wasVisibleList, ArrayList<String> markAsReadList ) {
+                mVisibleList = (HashSet<String>) wasVisibleList.clone();
+                mMarkAsReadList = markAsReadList;
+                return this;
+            }
+            @Override public void run() {
+                EntriesListFragment.SetVisibleItemsAsOld( mVisibleList );
+                EntriesListFragment.SetItemsAsRead( mMarkAsReadList );
+            }
+        }.init( mWasVisibleList, TakeMarkAsReadList( true ) ).start();
+        mWasVisibleList.clear();
     }
 
     private void shareArticleListViaText( boolean starredOnly ) {
@@ -1121,19 +1267,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 articlesID.add( id );
         }
     }
-
-    public void FilterByLabels() {
-        LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
-            mLabelsID = checkedLabels;
-            ArrayList<String> list = new ArrayList<>();
-            for ( Long item: mLabelsID )
-                list.add( String.valueOf( item ) );
-            restartLoaders();
-            UpdateActions();
-            return null;
-        } );
-    }
-
 
     @SuppressLint("PrivateResource")
     private void markVisibleArticlesAsReadUnRead(final boolean read ) {
@@ -1225,31 +1358,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
 
-    public void setData(Uri uri, boolean showFeedInfo, boolean showTextInEntryList, JSONObject options) {
-        mOptions = options;
-        if ( getActivity() == null ) // during configuration changes
-            return;
-        Timer timer = new Timer( "EntriesListFragment.setData" );
-
-        Dog.v( String.format( "EntriesListFragment.setData( %s )", uri.toString() ) );
-        mCurrentUri = uri;
-        mShowFeedInfo = showFeedInfo;
-        mShowTextInEntryList = showTextInEntryList;
-
-        ApplyOldAndReadArticleList();
-
-        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
-        SetListViewAdapter();
-        mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
-        if (mCurrentUri != null)
-            restartLoaders();
-
-        UpdateHeader();
-        UpdateActions();
-        mStatusText.SetFeedID( mCurrentUri );
-        timer.End();
-    }
-
     private boolean isAlsoSetAsRead() {
         try {
             return mOptions.has( AUTO_SET_AS_READ ) && mOptions.getBoolean( AUTO_SET_AS_READ );
@@ -1257,16 +1365,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             e.printStackTrace();
             return false;
         }
-    }
-
-    public static boolean IsFeedUri( Uri uri ) {
-        boolean result = false;
-        if ( uri != null && uri.getPathSegments().size() > 1 )
-            try {
-                long feedID = Long.parseLong(uri.getPathSegments().get(1));
-                result = feedID != Long.parseLong( FetcherService.GetExtrenalLinkFeedID() ) && !uri.toString().contains( "/group" );
-            } catch ( NumberFormatException ignored ) { }
-        return result;
     }
 
     private void restartLoaders() {
@@ -1280,100 +1378,4 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             loaderManager.restartLoader(FILTERS_LOADER_ID, null, mLoader);
     }
 
-    public static void SetVisibleItemsAsOld(HashSet<String> uriList) {
-        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
-        for (String data : uriList) {
-            VisibleReadItem item = new VisibleReadItem( data );
-            updates.add(
-                ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
-                    .withValues(FeedData.getOldContentValues())
-                    .withSelection(EntryColumns.WHERE_NEW, null)
-                    .build());
-            if ( item.mIsRead )
-                updates.add(
-                    ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
-                        .withValues(FeedData.getReadContentValues())
-                        .withSelection(EntryColumns.WHERE_UNREAD, null)
-                        .build());
-        }
-        if (!updates.isEmpty()) {
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
-            try {
-                cr.applyBatch(FeedData.AUTHORITY, updates);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    public static void SetItemsAsRead(ArrayList<String> uriList) {
-        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
-        for (String data : uriList) {
-            updates.add(
-                ContentProviderOperation.newUpdate(Uri.parse(data))
-                    .withValues(FeedData.getReadContentValues())
-                    .withSelection(EntryColumns.WHERE_UNREAD, null)
-                    .build());
-        }
-        if (!updates.isEmpty()) {
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
-            try {
-                cr.applyBatch(FeedData.AUTHORITY, updates);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    @Override
-    public void update(Observable observable, Object o) {
-        if ( o instanceof Entry && mEntriesCursorAdapter != null ) {
-            final Entry entry = (Entry) o;
-            if (entry.mRestorePosition ) {
-                final int pos = mEntriesCursorAdapter.GetPosByID(entry.mID);
-                if (pos >= mListView.getFirstVisiblePosition() && pos <= mListView.getLastVisiblePosition()) {
-                    mEntriesCursorAdapter.mIgnoreClearContentVocOnCursorChange = true;
-                    mEntriesCursorAdapter.notifyDataSetChanged();
-                    RestoreListScrollPosition();
-                }
-            } else
-                mEntriesCursorAdapter.notifyDataSetChanged();
-        } else if ( o instanceof EntriesCursorAdapter.ListViewTopPos) {
-            mListView.setSelectionFromTop( ((EntriesCursorAdapter.ListViewTopPos)o).mPos, 0 );
-        }
-    }
-
-    public void ClearSingleLabel() {
-        mIsSingleLabel = false;
-        mLabelsID.clear();
-        mIsSingleLabelWithoutChildren = false;
-    }
-    public void SetSingleLabel( Long id ) {
-        mIsSingleLabel = id != NO_LABEL;
-        mLabelsID.clear();
-        if ( id != NO_LABEL )
-            mLabelsID.add( id );
-        mIsSingleLabelWithoutChildren = false;
-    }
-    public void SetChildLabel( long parentLabelId, long childLabelId ) {
-        if ( parentLabelId == childLabelId ) {
-            SetSingleLabel( parentLabelId );
-            mIsSingleLabelWithoutChildren = parentLabelId != NO_LABEL && parentLabelId != ALL_LABELS;
-            return;
-        }
-        mIsSingleLabel = false;
-        mIsSingleLabelWithoutChildren = false;
-        mLabelsID.clear();
-        mLabelsID.add( parentLabelId );
-        mLabelsID.add( childLabelId );
-
-    }
-
-    public boolean IsAllLabels() {
-        return mIsSingleLabel && mLabelsID.contains( ALL_LABELS );
-    }
-
-    public Long GetSingleLabelID() {
-        return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
-    }
 }
