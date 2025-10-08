@@ -150,20 +150,13 @@ import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.StatusText;
 
 public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements Observer {
-    public static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     public static final String LABEL_ID_EXTRA = "LABEL_ID";
     public static Uri mCurrentUri = null;
     public static final long ALL_LABELS = -2L;
-    public EntriesCursorAdapter mEntriesCursorAdapter = null;
     public ListView mListView;
-    public static boolean mShowUnReadOnly = false;
-    static private String mSearchText = "";
     public boolean mIsSingleLabel = false;
-    public boolean mIsSingleLabelWithoutChildren = false;
-    public static final HashSet<String> mWasVisibleList = new HashSet<>();
-    public boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
 
-
+    private static final String STATE_CURRENT_URI = "STATE_CURRENT_URI";
     private static final String STATE_SHOW_FEED_INFO = "STATE_SHOW_FEED_INFO";
     private static final String STATE_SHOW_TEXT_IN_ENTRY_LIST = "STATE_SHOW_TEXT_IN_ENTRY_LIST";
     private static final String STATE_SHOW_UNREAD_ONLY = "STATE_SHOW_UNREAD";
@@ -178,7 +171,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private boolean mShowFeedInfo = false;
     private boolean mShowTextInEntryList = false;
     private ArrayList<Integer> mEntryIdsToCancel = new ArrayList<>();
-
     private FloatingActionButton mFab;
     private boolean mNeedSetSelection = false;
     private long mLastVisibleTopEntryID = 0;
@@ -189,6 +181,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private boolean mIsResumed = false;
     private HashSet<Long> mLabelsID = new HashSet<>();
     private JSONObject mOptions;
+    private EntriesCursorAdapter mEntriesCursorAdapter = null;
+    private static boolean mShowUnReadOnly = false;
+    private static private String mSearchText = "";
+    private boolean mIsSingleLabelWithoutChildren = false;
+    private static final HashSet<String> mWasVisibleList = new HashSet<>();
+    private boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
