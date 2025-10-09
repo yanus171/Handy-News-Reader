@@ -183,10 +183,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private JSONObject mOptions;
     private EntriesCursorAdapter mEntriesCursorAdapter = null;
     private static boolean mShowUnReadOnly = false;
-    private static private String mSearchText = "";
+    private static String mSearchText = "";
     private boolean mIsSingleLabelWithoutChildren = false;
     private static final HashSet<String> mWasVisibleList = new HashSet<>();
     private boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
+    private StatusText mStatusText = null;
+    private int mStatus = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -276,177 +279,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return EMPTY_WHERE_SQL + labelSQL + unreadSQL + searchSQL;
     }
 
-    static class VisibleReadItem {
-        final String ITEM_SEP = "__####__";
-
-        String mUri;
-        Boolean mIsRead = false;
-        public VisibleReadItem( String uri, boolean isRead ) {
-            mUri = uri;
-            mIsRead = isRead;
-        }
-        public VisibleReadItem( String data ) {
-            String[] list = TextUtils.split( data, ITEM_SEP );
-            mIsRead = Boolean.parseBoolean( list[0] );
-            mUri = list[1];
-        }
-        String ToString() {
-            return mIsRead.toString() + ITEM_SEP + mUri;
-        }
-    }
-
-    private final LoaderManager.LoaderCallbacks<Cursor> mLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
-        @NonNull
-        @Override
-        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            if ( id == ENTRIES_LOADER_ID ) {
-                Timer.Start(ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader");
-
-                String entriesOrder = IsOldestFirst() ? DB_ASC : DB_DESC;
-                String[] projection = EntryColumns.PROJECTION_WITH_TEXT;
-                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: DATE;
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, GetWhereSQL(), null, orderField + entriesOrder);
-                cursorLoader.setUpdateThrottle(150);
-                Status().End(mStatus);
-                mStatus = Status().Start(R.string.article_list_loading, true);
-                return cursorLoader;
-            } else if ( id == FILTERS_LOADER_ID) {
-                Timer.Start(FILTERS_LOADER_ID, "EntriesListFr.Filters.onCreateLoader");
-                final String feedID = mCurrentUri.getPathSegments().get(1);
-                CursorLoader cursorLoader = new CursorLoader(getActivity(), FeedFilters.getCursorUri(feedID), FeedFilters.getCursorProjection(), null, null, null);
-                cursorLoader.setUpdateThrottle(150);
-                return cursorLoader;
-            }
-            return null;
-        }
-
-        @Override
-        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-            if (loader.getId() == ENTRIES_LOADER_ID) {
-                Timer.End(ENTRIES_LOADER_ID);
-                Timer timer = new Timer("EntriesListFragment.onCreateLoader");
-
-                    mEntriesCursorAdapter.changeCursor(data);
-                    if (mNeedSetSelection) {
-                        mNeedSetSelection = false;
-                        mListView.setSelection(getInitialPosition());
-                    } else
-                        RestoreListScrollPosition();
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
-                UpdateTopTapZoneVisibility();
-                UiUtils.RunOnGuiThread( () -> UpdateHeader(), 1000 );
-
-                Status().End(mStatus);
-                timer.End();
-            } else if (loader.getId() == FILTERS_LOADER_ID && mEntriesCursorAdapter != null ) {
-                mFilters = new FeedFilters(data);
-                mEntriesCursorAdapter.setFilter(mFilters);
-            }
-        }
-
-        private int getInitialPosition() {
-            final String restoreType = PrefUtils.getString( "article_list_restore_type", "new" );
-            if (restoreType.equals("new"))
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
-            else if (restoreType.equals("top_bottom"))
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomPos() : mEntriesCursorAdapter.GetTopPos();
-            else
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
-        }
-
-        @Override
-        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-            if ( loader.getId() == ENTRIES_LOADER_ID ) {
-                Status().End( mStatus );
-                //getActivity().setProgressBarIndeterminateVisibility( true );
-                mEntriesCursorAdapter.changeCursor(Constants.EMPTY_CURSOR);
-            }
-        }
-
-    };
-
-
-    private static String getSearchWhereClause(String uriSearchParam) {
-        uriSearchParam = Uri.decode(uriSearchParam).trim();
-        Pattern regex = Pattern.compile("\\b(?:AND|OR)\\b" );
-        Matcher matcher = regex.matcher(uriSearchParam );
-        int prevIndex = 0;
-        String where = "";
-        while (matcher.find()) {
-            final String word = uriSearchParam.substring( prevIndex, matcher.start() ).trim();
-            prevIndex = Math.min( uriSearchParam.length() - 1, matcher.end() + 1 );
-            if ( word.isEmpty() )
-                continue;
-            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%") + " " + matcher.group() + " ";
-        }
-        final String word = uriSearchParam.substring(prevIndex).trim();
-        if ( !word.isEmpty() )
-            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%");
-        else if ( !where.isEmpty() )
-            where += "(1 = 2)";
-        return where;
-    }
-
-    private void RestoreListScrollPosition() {
-        if ( mLastVisibleTopEntryID != -1 ) {
-            int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
-            if ( pos != -1 )
-                mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
-        }
-    }
-
-    private final OnSharedPreferenceChangeListener mPrefListener = (sharedPreferences, key) -> {
-        if (PrefUtils.IS_REFRESHING.equals(key)) {
-            UpdateActions();
-        }
-    };
-    private StatusText mStatusText = null;
-    private int mStatus = 0;
-
-    private void UpdateActions() {
-        if ( mMenu == null )
-            return;
-
-        MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
-        if (mShowUnReadOnly) {
-            item.setTitle(R.string.all_entries);
-            item.setIcon(R.drawable.ic_check_box_outline_blank);
-        } else {
-            item.setTitle(R.string.unread_entries);
-            item.setIcon(R.drawable.ic_check_box);
-        }
-
-        if ( mCurrentUri != null ) {
-            int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
-            item.setVisible( uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
-            mMenu.findItem(R.id.menu_show_article_text_toggle).setEnabled( !mShowTextInEntryList );
-            mMenu.findItem( R.id.menu_show_article_text_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT, false ));
-        }
-
-        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !EntryColumns.LAST_READ_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
-        if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
-            String feedID = mCurrentUri.getPathSegments().get(1);
-            isCanRefresh = !feedID.equals(FetcherService.GetExtrenalLinkFeedID());
-        }
-        boolean isRefresh = PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false );
-        mMenu.findItem(R.id.menu_cancel_refresh).setVisible( isRefresh );
-        mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
-        mMenu.findItem(R.id.menu_filter_by_labels).setVisible( !mIsSingleLabel );
-
-        if ( getBaseActivity().mProgressBarRefresh != null ) {
-            if (isRefresh)
-                getBaseActivity().mProgressBarRefresh.setVisibility(View.VISIBLE);
-            else
-                getBaseActivity().mProgressBarRefresh.setVisibility(View.GONE);
-        }
-
-        mTextViewFilterLabels.setVisibility((mIsSingleLabel || !mSearchText.isEmpty() || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
-        mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
-        if (mFab != null )
-            mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
-    }
-
     public void FilterByLabels() {
         LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
             mLabelsID = checkedLabels;
@@ -471,10 +303,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mTextViewFilterLabels.setBackgroundColor(Theme.GetColorInt(Theme.TEXT_COLOR_BACKGROUND, R.string.default_text_color_background ) );
         mTextViewFilterLabels.setOnClickListener(view -> FilterByLabels());
         mStatusText  = new StatusText(rootView.findViewById(R.id.statusText ),
-                                      rootView.findViewById( R.id.errorText ),
-                                      rootView.findViewById( R.id.progressBarLoader),
-                                      rootView.findViewById( R.id.progressText ),
-                                      Status());
+                rootView.findViewById( R.id.errorText ),
+                rootView.findViewById( R.id.progressBarLoader),
+                rootView.findViewById( R.id.progressText ),
+                Status());
 
         Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
@@ -506,7 +338,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 if ( mShowTextInEntryList || isAlsoSetAsRead() ) {
                     final int pos = firstVisibleItem - 2;
                     final Uri uri = GetUri( pos );
-                    
+
                     synchronized( EntriesCursorAdapter.class ) {
                         if (mMarkAsReadList.add(uri.toString()) && !getItemIsRead(pos)) {
                             newNumber(mCurrentUri.getPathSegments().get(1), DrawerAdapter.NewNumberOperType.Update, true);
@@ -551,13 +383,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         return rootView;
     }
 
-    public static void UpdateTapZoneButtonEnable(View rootView, int ID, boolean enable) {
-        TextView btn = rootView.findViewById(ID);
-        if ( btn != null ) {
-            btn.setBackgroundColor(Color.TRANSPARENT);
-            btn.setVisibility( enable ? View.VISIBLE : View.GONE );
-        }
-    }
     public void UpdateTopTapZoneVisibility() {
         final boolean atTop = mListView.getFirstVisiblePosition() == 0;
         final boolean isActionBar = !GetIsActionBarEntryListHidden();
@@ -579,15 +404,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         UpdateTapZoneButton( R.id.entryCenterBtn, false );
     }
 
-    private Uri GetUri(int pos) {
-        final long id = mEntriesCursorAdapter.getItemId(pos);
-        return EntriesCursorAdapter.EntryUri(id);
-    }
-
-    private void UpdateTapZoneButton( int viewID, boolean enabled ) {
-        UpdateTapZoneButtonEnable( getBaseActivity().mRootView, viewID, enabled );
-    }
-
     public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
         if ( mListView == null )
@@ -596,10 +412,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( getActivity() == null )
             return;
         getBaseActivity().UpdateHeader(max,
-                                       value,
-                                       getHeaderStep(),
-                                       GetIsStatusBarEntryListHidden(),
-                                       GetIsActionBarEntryListHidden());
+                value,
+                getHeaderStep(),
+                GetIsStatusBarEntryListHidden(),
+                GetIsActionBarEntryListHidden());
     }
 
     public static void ShowDeleteDialog(Context context, final String title, final long id, final String entryLink) {
@@ -767,45 +583,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_unstarr_articles: {
-                new AlertDialog.Builder(getContext())
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle( R.string.question )
-                        .setMessage( R.string.unstarAllArtcilesComfirm)
-                        .setPositiveButton(android.R.string.yes, (dialog, which) -> new AlertDialog.Builder(getContext())
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setTitle(R.string.question)
-                                .setMessage(R.string.unstarAllArtcilesComfirm2)
-                                .setPositiveButton(android.R.string.yes, (dialog1, which1) -> new Thread() {
-                                    @Override
-                                    public void run() {
-                                        unstarAllFeedEntries();
-                                    }
-                                }.start()).setNegativeButton(android.R.string.cancel, null).show()).setNegativeButton(android.R.string.cancel, null).show();
+                unstarArticles();
                 return true;
             }
 
             case R.id.menu_reset_feed_and_delete_all_articles: {
-                new AlertDialog.Builder(getContext()) //
-                        .setIcon(android.R.drawable.ic_dialog_alert) //
-                        .setTitle( R.string.question ) //
-                        .setMessage( R.string.deleteAllEntries ) //
-                        .setPositiveButton(android.R.string.yes, (dialog, which) -> new Thread() {
-                            @Override
-                            public void run() {
-                                FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
-                                // reset feed
-                                if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
-                                    final String feedID = mCurrentUri.getPathSegments().get( 1 );
-                                    ContentValues values = new ContentValues();
-                                    values.putNull(FeedColumns.LAST_UPDATE);
-                                    values.putNull(FeedColumns.ICON_URL);
-                                    values.putNull(FeedColumns.REAL_LAST_UPDATE);
-                                    final ContentResolver cr = getContext().getContentResolver();
-                                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
-                                }
-                                UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
-                            }
-                        }.start()).setNegativeButton(android.R.string.no, null).show();
+                resetFeedAndDeleteAllArticles();
                 return true;
             }
             case R.id.menu_mark_all_visible_as_read: {
@@ -874,81 +657,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return true;
             }
             case R.id.menu_add_feed_shortcut: {
-                if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
-                    //Adding shortcut for MainActivity on Home screen
-
-                    String name = "";
-                    IconCompat image = null;
-                    String feedUrl = "";
-                    String iconUrl = "";
-                    if ( IsAllLabels() ) {
-                        name = getContext().getString( R.string.labels_group_title );
-                        image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
-                    } else if ( mIsSingleLabel ) {
-                        name = LabelVoc.INSTANCE.get(GetSingleLabelID()).mName;
-                        image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
-                    } else if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
-                        name = getContext().getString(R.string.all_entries);
-                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_pot);
-                    } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
-                        name = getContext().getString(R.string.favorites);
-                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
-                    } else if ( EntryColumns.LAST_READ_CONTENT_URI.equals(mCurrentUri) ) {
-                        name = getContext().getString(R.string.last_read);
-                        image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_load_now );
-                    } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
-                        name = getContext().getString( R.string.unread_entries );
-                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_unread);
-                    } else if ( EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
-                        name = getContext().getString( R.string.externalLinks );
-                        image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_load_later);
-                    } else {
-                        long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
-                        Cursor cursor = getContext().getContentResolver().query(FeedColumns.CONTENT_URI(feedID),
-                                new String[]{FeedColumns.NAME, FeedColumns.ICON_URL },
-                                null, null, null);
-                        if (cursor.moveToFirst()) {
-                            name = cursor.getString(0);
-                            if (!cursor.isNull(2) )
-                                feedUrl = cursor.getString( 2 );
-                            if (!cursor.isNull(1) )
-                                iconUrl = cursor.getString(1);
-                        }
-                        cursor.close();
-                    }
-
-                    final Intent intent =
-                            new Intent(getContext(), HomeActivityNewTask.class)
-                                    .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK )
-                                    .setAction(Intent.ACTION_MAIN).setData( mCurrentUri )
-                                    .putExtra( NEW_TASK_EXTRA, true );
-
-                    if ( !feedUrl.isEmpty() )
-                        intent.putExtra( Constants.EXTRA_LINK, feedUrl );
-                    if ( mIsSingleLabel )
-                        intent.putExtra(LABEL_ID_EXTRA, GetSingleLabelID());
-                    final String finalIconUrl = iconUrl;
-                    final String finalName = name;
-                    final IconCompat finalImage = image;
-                    new WaitDialog(getActivity(), R.string.downloadImage, () -> {
-                        final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl) : finalImage;
-                        getActivity().runOnUiThread(() -> {
-
-                            ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
-                                    .setIcon(icon)
-                                    .setShortLabel(finalName)
-                                    .setIntent(intent)
-                                    .setLongLived()
-                                    .build();
-                            ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
-                            if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
-                                Toast.makeText(
-
-                                        getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
-                        });
-                    }).execute();
-                } else
-                    Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
+                addShortcut();
                 return true;
             }
             case R.id.menu_toogle_toogle_unread_all: {
@@ -987,34 +696,14 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 break;
             }
             case R.id.menu_copy_feed: {
-                if ( IsFeedUri( mCurrentUri) ) {
-                    final String feedID = mCurrentUri.getPathSegments().get(1);
-                    ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedID ), null, null, null, null );
-                    if ( cursor != null ) {
-                        if ( cursor.moveToFirst() ) {
-                            ContentValues values = new ContentValues();
-                            values.put(FeedColumns.GROUP_ID, cursor.getLong( cursor.getColumnIndex( FeedColumns.GROUP_ID )) );
-                            values.put(FeedColumns.ICON_URL, cursor.getString( cursor.getColumnIndex( FeedColumns.ICON_URL )) );
-                            values.put(FeedColumns.IS_AUTO_REFRESH, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_AUTO_REFRESH )) );
-                            values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_IMAGE_AUTO_LOAD )) );
-                            values.put(FeedColumns.NAME, cursor.getString( cursor.getColumnIndex( FeedColumns.NAME )) );
-                            values.put(FeedColumns.OPTIONS, cursor.getString( cursor.getColumnIndex( FeedColumns.OPTIONS )) );
-                            values.put(FeedColumns.RETRIEVE_FULLTEXT, cursor.getLong( cursor.getColumnIndex( FeedColumns.RETRIEVE_FULLTEXT )) );
-                            values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, cursor.getLong( cursor.getColumnIndex( FeedColumns.SHOW_TEXT_IN_ENTRY_LIST )) );
-                            values.put(FeedColumns.URL, cursor.getString( cursor.getColumnIndex( FeedColumns.URL )) + "/" );
-                            cr.insert(FeedColumns.CONTENT_URI, values);
-                        }
-                        cursor.close();
-                        UiUtils.toast( R.string.feed_copied );
-                    }
-                }
+                copyFeed();
                 return true;
             }
 
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public void setData(Uri uri, boolean showFeedInfo, boolean showTextInEntryList, JSONObject options) {
         mOptions = options;
@@ -1049,33 +738,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 result = feedID != Long.parseLong( FetcherService.GetExtrenalLinkFeedID() ) && !uri.toString().contains( "/group" );
             } catch ( NumberFormatException ignored ) { }
         return result;
-    }
-
-    public static void SetVisibleItemsAsOld(HashSet<String> uriList) {
-        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
-        for (String data : uriList) {
-            VisibleReadItem item = new VisibleReadItem( data );
-            updates.add(
-                    ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
-                            .withValues(FeedData.getOldContentValues())
-                            .withSelection(EntryColumns.WHERE_NEW, null)
-                            .build());
-            if ( item.mIsRead )
-                updates.add(
-                        ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
-                                .withValues(FeedData.getReadContentValues())
-                                .withSelection(EntryColumns.WHERE_UNREAD, null)
-                                .build());
-        }
-        if (!updates.isEmpty()) {
-            ContentResolver cr = MainApplication.getContext().getContentResolver();
-            try {
-                cr.applyBatch(FeedData.AUTHORITY, updates);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     public static void SetItemsAsRead(ArrayList<String> uriList) {
@@ -1147,6 +809,299 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public Long GetSingleLabelID() {
         return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
     }
+    //============END OF PUBLIC ===========================================================
+
+    private void addShortcut() {
+        if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
+            //Adding shortcut for MainActivity on Home screen
+
+            String name = "";
+            IconCompat image = null;
+            String feedUrl = "";
+            String iconUrl = "";
+            if ( IsAllLabels() ) {
+                name = getContext().getString( R.string.labels_group_title );
+                image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
+            } else if ( mIsSingleLabel ) {
+                name = LabelVoc.INSTANCE.get(GetSingleLabelID()).mName;
+                image = IconCompat.createWithResource(getContext(), R.drawable.label_brown_small);
+            } else if ( EntryColumns.CONTENT_URI.equals(mCurrentUri) ) {
+                name = getContext().getString(R.string.all_entries);
+                image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_pot);
+            } else if ( EntryColumns.FAVORITES_CONTENT_URI.equals(mCurrentUri) ) {
+                name = getContext().getString(R.string.favorites);
+                image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_star );
+            } else if ( EntryColumns.LAST_READ_CONTENT_URI.equals(mCurrentUri) ) {
+                name = getContext().getString(R.string.last_read);
+                image = IconCompat.createWithResource( getContext(), R.drawable.cup_new_load_now );
+            } else if ( EntryColumns.UNREAD_ENTRIES_CONTENT_URI.equals(mCurrentUri) ) {
+                name = getContext().getString( R.string.unread_entries );
+                image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_unread);
+            } else if ( EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ).equals(mCurrentUri) ) {
+                name = getContext().getString( R.string.externalLinks );
+                image = IconCompat.createWithResource(getContext(), R.drawable.cup_new_load_later);
+            } else {
+                long feedID = Long.parseLong( mCurrentUri.getPathSegments().get(1) );
+                Cursor cursor = getContext().getContentResolver().query(FeedColumns.CONTENT_URI(feedID),
+                        new String[]{FeedColumns.NAME, FeedColumns.ICON_URL },
+                        null, null, null);
+                if (cursor.moveToFirst()) {
+                    name = cursor.getString(0);
+                    if (!cursor.isNull(2) )
+                        feedUrl = cursor.getString( 2 );
+                    if (!cursor.isNull(1) )
+                        iconUrl = cursor.getString(1);
+                }
+                cursor.close();
+            }
+
+            final Intent intent =
+                    new Intent(getContext(), HomeActivityNewTask.class)
+                            .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK )
+                            .setAction(Intent.ACTION_MAIN).setData( mCurrentUri )
+                            .putExtra( NEW_TASK_EXTRA, true );
+
+            if ( !feedUrl.isEmpty() )
+                intent.putExtra( Constants.EXTRA_LINK, feedUrl );
+            if ( mIsSingleLabel )
+                intent.putExtra(LABEL_ID_EXTRA, GetSingleLabelID());
+            final String finalIconUrl = iconUrl;
+            final String finalName = name;
+            final IconCompat finalImage = image;
+            new WaitDialog(getActivity(), R.string.downloadImage, () -> {
+                final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl) : finalImage;
+                getActivity().runOnUiThread(() -> {
+
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
+                            .setIcon(icon)
+                            .setShortLabel(finalName)
+                            .setIntent(intent)
+                            .setLongLived()
+                            .build();
+                    ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
+                    if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
+                        Toast.makeText(
+
+                                getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
+                });
+            }).execute();
+        } else
+            Toast.makeText( getContext(), R.string.new_feed_shortcut_add_failed, Toast.LENGTH_LONG ).show();
+    }
+
+    private Uri GetUri(int pos) {
+        final long id = mEntriesCursorAdapter.getItemId(pos);
+        return EntriesCursorAdapter.EntryUri(id);
+    }
+
+    private void UpdateTapZoneButton( int viewID, boolean enabled ) {
+        UpdateTapZoneButtonEnable( getBaseActivity().mRootView, viewID, enabled );
+    }
+
+    private static void UpdateTapZoneButtonEnable(View rootView, int ID, boolean enable) {
+        TextView btn = rootView.findViewById(ID);
+        if ( btn != null ) {
+            btn.setBackgroundColor(Color.TRANSPARENT);
+            btn.setVisibility( enable ? View.VISIBLE : View.GONE );
+        }
+    }
+
+    private static void SetVisibleItemsAsOld(HashSet<String> uriList) {
+        final ArrayList<ContentProviderOperation> updates = new ArrayList<>();
+        for (String data : uriList) {
+            VisibleReadItem item = new VisibleReadItem( data );
+            updates.add(
+                    ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
+                            .withValues(FeedData.getOldContentValues())
+                            .withSelection(EntryColumns.WHERE_NEW, null)
+                            .build());
+            if ( item.mIsRead )
+                updates.add(
+                        ContentProviderOperation.newUpdate(Uri.parse(item.mUri))
+                                .withValues(FeedData.getReadContentValues())
+                                .withSelection(EntryColumns.WHERE_UNREAD, null)
+                                .build());
+        }
+        if (!updates.isEmpty()) {
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            try {
+                cr.applyBatch(FeedData.AUTHORITY, updates);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static class VisibleReadItem {
+        final String ITEM_SEP = "__####__";
+
+        String mUri;
+        Boolean mIsRead = false;
+        public VisibleReadItem( String uri, boolean isRead ) {
+            mUri = uri;
+            mIsRead = isRead;
+        }
+        public VisibleReadItem( String data ) {
+            String[] list = TextUtils.split( data, ITEM_SEP );
+            mIsRead = Boolean.parseBoolean( list[0] );
+            mUri = list[1];
+        }
+        String ToString() {
+            return mIsRead.toString() + ITEM_SEP + mUri;
+        }
+    }
+
+    private final LoaderManager.LoaderCallbacks<Cursor> mLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
+        @NonNull
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            if ( id == ENTRIES_LOADER_ID ) {
+                Timer.Start(ENTRIES_LOADER_ID, "EntriesListFr.onCreateLoader");
+
+                String entriesOrder = IsOldestFirst() ? DB_ASC : DB_DESC;
+                String[] projection = EntryColumns.PROJECTION_WITH_TEXT;
+                String orderField = mCurrentUri == LAST_READ_CONTENT_URI ? EntryColumns.READ_DATE: DATE;
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), mCurrentUri, projection, GetWhereSQL(), null, orderField + entriesOrder);
+                cursorLoader.setUpdateThrottle(150);
+                Status().End(mStatus);
+                mStatus = Status().Start(R.string.article_list_loading, true);
+                return cursorLoader;
+            } else if ( id == FILTERS_LOADER_ID) {
+                Timer.Start(FILTERS_LOADER_ID, "EntriesListFr.Filters.onCreateLoader");
+                final String feedID = mCurrentUri.getPathSegments().get(1);
+                CursorLoader cursorLoader = new CursorLoader(getActivity(), FeedFilters.getCursorUri(feedID), FeedFilters.getCursorProjection(), null, null, null);
+                cursorLoader.setUpdateThrottle(150);
+                return cursorLoader;
+            }
+            return null;
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+            if (loader.getId() == ENTRIES_LOADER_ID) {
+                Timer.End(ENTRIES_LOADER_ID);
+                Timer timer = new Timer("EntriesListFragment.onCreateLoader");
+
+                    mEntriesCursorAdapter.changeCursor(data);
+                    if (mNeedSetSelection) {
+                        mNeedSetSelection = false;
+                        mListView.setSelection(getInitialPosition());
+                    } else
+                        RestoreListScrollPosition();
+
+                getActivity().setProgressBarIndeterminateVisibility(false);
+                UpdateTopTapZoneVisibility();
+                UiUtils.RunOnGuiThread( () -> UpdateHeader(), 1000 );
+
+                Status().End(mStatus);
+                timer.End();
+            } else if (loader.getId() == FILTERS_LOADER_ID && mEntriesCursorAdapter != null ) {
+                mFilters = new FeedFilters(data);
+                mEntriesCursorAdapter.setFilter(mFilters);
+            }
+        }
+
+        private int getInitialPosition() {
+            final String restoreType = PrefUtils.getString( "article_list_restore_type", "new" );
+            if (restoreType.equals("new"))
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
+            else if (restoreType.equals("top_bottom"))
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomPos() : mEntriesCursorAdapter.GetTopPos();
+            else
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+            if ( loader.getId() == ENTRIES_LOADER_ID ) {
+                Status().End( mStatus );
+                //getActivity().setProgressBarIndeterminateVisibility( true );
+                mEntriesCursorAdapter.changeCursor(Constants.EMPTY_CURSOR);
+            }
+        }
+
+    };
+
+
+    private static String getSearchWhereClause(String uriSearchParam) {
+        uriSearchParam = Uri.decode(uriSearchParam).trim();
+        Pattern regex = Pattern.compile("\\b(?:AND|OR)\\b" );
+        Matcher matcher = regex.matcher(uriSearchParam );
+        int prevIndex = 0;
+        String where = "";
+        while (matcher.find()) {
+            final String word = uriSearchParam.substring( prevIndex, matcher.start() ).trim();
+            prevIndex = Math.min( uriSearchParam.length() - 1, matcher.end() + 1 );
+            if ( word.isEmpty() )
+                continue;
+            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%") + " " + matcher.group() + " ";
+        }
+        final String word = uriSearchParam.substring(prevIndex).trim();
+        if ( !word.isEmpty() )
+            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%");
+        else if ( !where.isEmpty() )
+            where += "(1 = 2)";
+        return where;
+    }
+
+    private void RestoreListScrollPosition() {
+        if ( mLastVisibleTopEntryID != -1 ) {
+            int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
+            if ( pos != -1 )
+                mListView.setSelectionFromTop(pos, mLastListViewTopOffset);
+        }
+    }
+
+    private final OnSharedPreferenceChangeListener mPrefListener = (sharedPreferences, key) -> {
+        if (PrefUtils.IS_REFRESHING.equals(key)) {
+            UpdateActions();
+        }
+    };
+
+    private void UpdateActions() {
+        if ( mMenu == null )
+            return;
+
+        MenuItem item = mMenu.findItem( R.id.menu_toogle_toogle_unread_all );
+        if (mShowUnReadOnly) {
+            item.setTitle(R.string.all_entries);
+            item.setIcon(R.drawable.ic_check_box_outline_blank);
+        } else {
+            item.setTitle(R.string.unread_entries);
+            item.setIcon(R.drawable.ic_check_box);
+        }
+
+        if ( mCurrentUri != null ) {
+            int uriMatch = FeedDataContentProvider.URI_MATCHER.match(mCurrentUri);
+            item.setVisible( uriMatch != FeedDataContentProvider.URI_UNREAD_ENTRIES );
+            mMenu.findItem(R.id.menu_show_article_text_toggle).setEnabled( !mShowTextInEntryList );
+            mMenu.findItem( R.id.menu_show_article_text_toggle).setChecked( PrefUtils.getBoolean( PrefUtils.SHOW_ARTICLE_TEXT, false ));
+        }
+
+        boolean isCanRefresh = !EntryColumns.FAVORITES_CONTENT_URI.equals( mCurrentUri ) && !EntryColumns.LAST_READ_CONTENT_URI.equals( mCurrentUri ) && !mIsSingleLabel;
+        if ( mCurrentUri != null && mCurrentUri.getPathSegments().size() > 1 ) {
+            String feedID = mCurrentUri.getPathSegments().get(1);
+            isCanRefresh = !feedID.equals(FetcherService.GetExtrenalLinkFeedID());
+        }
+        boolean isRefresh = PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false );
+        mMenu.findItem(R.id.menu_cancel_refresh).setVisible( isRefresh );
+        mMenu.findItem(R.id.menu_refresh).setVisible( !isRefresh && isCanRefresh );
+        mMenu.findItem(R.id.menu_filter_by_labels).setVisible( !mIsSingleLabel );
+
+        if ( getBaseActivity().mProgressBarRefresh != null ) {
+            if (isRefresh)
+                getBaseActivity().mProgressBarRefresh.setVisibility(View.VISIBLE);
+            else
+                getBaseActivity().mProgressBarRefresh.setVisibility(View.GONE);
+        }
+
+        mTextViewFilterLabels.setVisibility((mIsSingleLabel || !mSearchText.isEmpty() || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
+        mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
+        if (mFab != null )
+            mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
+    }
+
 
     private HomeActivity GetActivity() {
         return (HomeActivity)getActivity();
@@ -1175,8 +1130,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 return this;
             }
             @Override public void run() {
-                EntriesListFragment.SetVisibleItemsAsOld( mVisibleList );
-                EntriesListFragment.SetItemsAsRead( mMarkAsReadList );
+                SetVisibleItemsAsOld( mVisibleList );
+                SetItemsAsRead( mMarkAsReadList );
             }
         }.init( mWasVisibleList, TakeMarkAsReadList( true ) ).start();
         mWasVisibleList.clear();
@@ -1376,4 +1331,70 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             loaderManager.restartLoader(FILTERS_LOADER_ID, null, mLoader);
     }
 
+
+    private void unstarArticles() {
+        new AlertDialog.Builder(getContext())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle( R.string.question )
+                .setMessage( R.string.unstarAllArtcilesComfirm)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> new AlertDialog.Builder(getContext())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(R.string.question)
+                        .setMessage(R.string.unstarAllArtcilesComfirm2)
+                        .setPositiveButton(android.R.string.yes, (dialog1, which1) -> new Thread() {
+                            @Override
+                            public void run() {
+                                unstarAllFeedEntries();
+                            }
+                        }.start()).setNegativeButton(android.R.string.cancel, null).show()).setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    private void resetFeedAndDeleteAllArticles() {
+        new AlertDialog.Builder(getContext()) //
+                .setIcon(android.R.drawable.ic_dialog_alert) //
+                .setTitle( R.string.question ) //
+                .setMessage( R.string.deleteAllEntries ) //
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> new Thread() {
+                    @Override
+                    public void run() {
+                        FetcherService.deleteAllFeedEntries(mCurrentUri, WHERE_NOT_FAVORITE + DB_AND +  GetWhereSQL());
+                        // reset feed
+                        if ( FeedDataContentProvider.URI_MATCHER.match(mCurrentUri) == URI_ENTRIES_FOR_FEED ) {
+                            final String feedID = mCurrentUri.getPathSegments().get( 1 );
+                            ContentValues values = new ContentValues();
+                            values.putNull(FeedColumns.LAST_UPDATE);
+                            values.putNull(FeedColumns.ICON_URL);
+                            values.putNull(FeedColumns.REAL_LAST_UPDATE);
+                            final ContentResolver cr = getContext().getContentResolver();
+                            cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null);
+                        }
+                        UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
+                    }
+                }.start()).setNegativeButton(android.R.string.no, null).show();
+    }
+
+    private static void copyFeed() {
+        if ( IsFeedUri( mCurrentUri) ) {
+            final String feedID = mCurrentUri.getPathSegments().get(1);
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            Cursor cursor = cr.query( FeedColumns.CONTENT_URI( feedID ), null, null, null, null );
+            if ( cursor != null ) {
+                if ( cursor.moveToFirst() ) {
+                    ContentValues values = new ContentValues();
+                    values.put(FeedColumns.GROUP_ID, cursor.getLong( cursor.getColumnIndex( FeedColumns.GROUP_ID )) );
+                    values.put(FeedColumns.ICON_URL, cursor.getString( cursor.getColumnIndex( FeedColumns.ICON_URL )) );
+                    values.put(FeedColumns.IS_AUTO_REFRESH, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_AUTO_REFRESH )) );
+                    values.put(FeedColumns.IS_IMAGE_AUTO_LOAD, cursor.getLong( cursor.getColumnIndex( FeedColumns.IS_IMAGE_AUTO_LOAD )) );
+                    values.put(FeedColumns.NAME, cursor.getString( cursor.getColumnIndex( FeedColumns.NAME )) );
+                    values.put(FeedColumns.OPTIONS, cursor.getString( cursor.getColumnIndex( FeedColumns.OPTIONS )) );
+                    values.put(FeedColumns.RETRIEVE_FULLTEXT, cursor.getLong( cursor.getColumnIndex( FeedColumns.RETRIEVE_FULLTEXT )) );
+                    values.put(FeedColumns.SHOW_TEXT_IN_ENTRY_LIST, cursor.getLong( cursor.getColumnIndex( FeedColumns.SHOW_TEXT_IN_ENTRY_LIST )) );
+                    values.put(FeedColumns.URL, cursor.getString( cursor.getColumnIndex( FeedColumns.URL )) + "/" );
+                    cr.insert(FeedColumns.CONTENT_URI, values);
+                }
+                cursor.close();
+                UiUtils.toast( R.string.feed_copied );
+            }
+        }
+    }
 }
