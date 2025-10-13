@@ -179,7 +179,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowFeedInfo;
     private final boolean mShowEntryTextFromFeedSetup;
     private final boolean mShowUnread;
-    private final HomeActivity mActivity;
+    private final EntriesListFragment mEntriesListFragment;
     private boolean mIsAutoSetAsRead = false;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
@@ -211,7 +211,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mNeedScrollToTopExpandedArticle = false;
     private static Cursor mCursor = null;
     HashMap<Long, Integer> mItemPositionVoc = new HashMap<>();
-    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, HomeActivity activity) {
+    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, EntriesListFragment entriesListFragment) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
         mContext = context;
@@ -220,7 +220,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mShowEntryTextFromFeedSetup = showEntryTextFromFeedSetup;
         mShowUnread = showUnread;
         mIsLoadImages = true;
-        mActivity = activity;
+        mEntriesListFragment = entriesListFragment;
         //SetIsReadMakredList();
 
         TakeMarkAsReadList( true );
@@ -821,7 +821,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
 
         holder.dayTextView.setVisibility( View.GONE );
-        if ( !mActivity.mEntriesFragment.mIsSingleLabel ) {
+        if ( !mEntriesListFragment.mIsSingleLabel ) {
             if ( cursor.isFirst() ) {
                 holder.dayTextView.setVisibility(View.VISIBLE);
                 holder.dayTextView.setText(DATE_FORMAT.format(new Date(date.getTimeInMillis())));
@@ -984,8 +984,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private void OpenArticle( ViewHolder holder ) {
         holder.textTextView.getContext().startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, holder.entryID))
                                    .putExtra( "SCROLL_TEXT", holder.getSearchText() )
-                                   .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
-                                   .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
+                                   .putExtra( NEW_TASK_EXTRA, false )
+                                   .putExtra( EntryFragment.WHERE_SQL_EXTRA, mEntriesListFragment.GetWhereSQL() ));
         if( isTextShown( holder )) {
             mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );

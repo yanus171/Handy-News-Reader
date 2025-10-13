@@ -24,6 +24,7 @@ import static ru.yanus171.feedexfork.Constants.DB_AND;
 import static ru.yanus171.feedexfork.Constants.DB_ASC;
 import static ru.yanus171.feedexfork.Constants.DB_DESC;
 import static ru.yanus171.feedexfork.Constants.EMPTY_WHERE_SQL;
+import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
@@ -57,7 +58,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.StringUtils.DATE_FORMAT;
 import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 import static ru.yanus171.feedexfork.view.EntryView.LoadIcon;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.SetupZones;
 import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservable;
 
 import android.annotation.SuppressLint;
@@ -70,7 +70,6 @@ import android.content.Intent;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -102,6 +101,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -124,6 +124,7 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
+import ru.yanus171.feedexfork.activity.EntriesListTapActions;
 import ru.yanus171.feedexfork.activity.HomeActivity;
 import ru.yanus171.feedexfork.activity.HomeActivityNewTask;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
@@ -186,15 +187,17 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static String mSearchText = "";
     private boolean mIsSingleLabelWithoutChildren = false;
     private static final HashSet<String> mWasVisibleList = new HashSet<>();
+    public EntriesListTapActions mTapActions = null;
+
     private boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
     private StatusText mStatusText = null;
     private int mStatus = 0;
-
+    private HomeActivity mActivity = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Timer timer = new Timer( "EntriesListFragment.onCreate" );
-
+        mActivity = (HomeActivity) getActivity();
         setHasOptionsMenu(true);
 
         Dog.v( "EntriesListFragment.onCreate" );
@@ -215,7 +218,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
             //if ( mShowTextInEntryList )
             //    mNeedSetSelection = true;
-            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
+            mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, this);
         } else
             mShowUnReadOnly = PrefUtils.getBoolean(STATE_SHOW_UNREAD_ONLY, false );
 
@@ -282,9 +285,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public void FilterByLabels() {
         LabelVoc.INSTANCE.showDialog(getContext(), R.string.filter_by_labels, true, mLabelsID, mEntriesCursorAdapter, (checkedLabels) -> {
             mLabelsID = checkedLabels;
-            ArrayList<String> list = new ArrayList<>();
-            for ( Long item: mLabelsID )
-                list.add( String.valueOf( item ) );
             restartLoaders();
             UpdateActions();
             return null;
@@ -324,7 +324,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if ( scrollState != SCROLL_STATE_IDLE )
                     return;
-                UpdateTopTapZoneVisibility();
+                mTapActions.UpdateTopTapZoneVisibility();
                 UpdateHeader();
                 //Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d) last=%d count=%d", scrollState, mListView.getLastVisiblePosition(), mListView.getCount() ) );
             }
@@ -378,31 +378,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         mListView.setEmptyView( emptyView );
 
         UpdateHeader();
-        UpdateTopTapZoneVisibility();
         timer.End();
         return rootView;
     }
 
-    public void UpdateTopTapZoneVisibility() {
-        final boolean atTop = mListView.getFirstVisiblePosition() == 0;
-        final boolean isActionBar = !GetIsActionBarEntryListHidden();
-        final boolean topBtnVisibleFullScreen = !isActionBar && !atTop;
-        final boolean topBntVisibleActionBar = isActionBar && !atTop;
-        SetupZones(getBaseActivity().mRootView, false );
-        UpdateTapZoneButton( R.id.pageUpBtn, topBntVisibleActionBar );
-        UpdateTapZoneButton( R.id.leftTopBtn, topBntVisibleActionBar );
-        UpdateTapZoneButton( R.id.rightTopBtn, topBntVisibleActionBar );
-        UpdateTapZoneButton( R.id.pageUpBtnFS, topBtnVisibleFullScreen  );
-        UpdateTapZoneButton( R.id.leftTopBtnFS, topBtnVisibleFullScreen );
-        UpdateTapZoneButton( R.id.rightTopBtnFS, topBtnVisibleFullScreen );
-        UpdateTapZoneButton( R.id.pageDownBtn, true );
-        UpdateTapZoneButton( R.id.brightnessSliderLeft, true );
-        UpdateTapZoneButton( R.id.brightnessSliderRight, true );
-        UpdateTapZoneButton( R.id.entryLeftBottomBtn, true );
-        UpdateTapZoneButton( R.id.entryRightBottomBtn, true );
-        UpdateTapZoneButton( R.id.backBtn, false );
-        UpdateTapZoneButton( R.id.entryCenterBtn, false );
-    }
 
     public void UpdateHeader() {
         int max = mEntriesCursorAdapter == null ? 0 : mEntriesCursorAdapter.getCount();
@@ -673,14 +652,12 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 break;
             }
             case R.id.menu_full_screen: {
-                HomeActivity activity1 = (HomeActivity) getActivity();
-                activity1.setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+                mActivity.setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
                 item.setChecked( GetIsStatusBarEntryListHidden() );
                 break;
             }
             case R.id.menu_actionbar_visible: {
-                HomeActivity activity1 = (HomeActivity) getActivity();
-                activity1.setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
+                mActivity.setFullScreen( GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden() );
                 item.setChecked( !GetIsActionBarEntryListHidden() );
                 break;
             }
@@ -718,7 +695,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         ApplyOldAndReadArticleList();
 
-        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, GetActivity());
+        mEntriesCursorAdapter = new EntriesCursorAdapter(getActivity(), mCurrentUri, Constants.EMPTY_CURSOR, mShowFeedInfo, mShowTextInEntryList, mShowUnReadOnly, this);
         SetListViewAdapter();
         mListView.setDividerHeight( mShowTextInEntryList ? 10 : 0 );
         if (mCurrentUri != null)
@@ -809,6 +786,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     public Long GetSingleLabelID() {
         return mLabelsID.size() == 1 && mIsSingleLabel ? (Long) mLabelsID.toArray()[0] : NO_LABEL;
     }
+
     //============END OF PUBLIC ===========================================================
 
     private void addShortcut() {
@@ -892,18 +870,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private Uri GetUri(int pos) {
         final long id = mEntriesCursorAdapter.getItemId(pos);
         return EntriesCursorAdapter.EntryUri(id);
-    }
-
-    private void UpdateTapZoneButton( int viewID, boolean enabled ) {
-        UpdateTapZoneButtonEnable( getBaseActivity().mRootView, viewID, enabled );
-    }
-
-    private static void UpdateTapZoneButtonEnable(View rootView, int ID, boolean enable) {
-        TextView btn = rootView.findViewById(ID);
-        if ( btn != null ) {
-            btn.setBackgroundColor(Color.TRANSPARENT);
-            btn.setVisibility( enable ? View.VISIBLE : View.GONE );
-        }
     }
 
     private static void SetVisibleItemsAsOld(HashSet<String> uriList) {
@@ -991,7 +957,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         RestoreListScrollPosition();
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
-                UpdateTopTapZoneVisibility();
+                mTapActions.UpdateTopTapZoneVisibility();
                 UiUtils.RunOnGuiThread( () -> UpdateHeader(), 1000 );
 
                 Status().End(mStatus);
@@ -1103,10 +1069,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     }
 
 
-    private HomeActivity GetActivity() {
-        return (HomeActivity)getActivity();
-    }
-
     private int getHeaderStep() {
         return 1;
     }
@@ -1156,7 +1118,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
     private String getStarredArticlesListFileName() {
         final String dateTimeStr = new SimpleDateFormat(FILENAME_DATETIME_FORMAT).format(new Date(System.currentTimeMillis() ) );
-        String fileName = GetActivity().mTitle + "_shared_article_links_" + dateTimeStr + ".txt";
+        String fileName = mActivity.mTitle + "_shared_article_links_" + dateTimeStr + ".txt";
         fileName = fileName.replace( " ", "_" );
         return fileName;
     }
@@ -1373,6 +1335,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 }.start()).setNegativeButton(android.R.string.no, null).show();
     }
 
+    @SuppressLint("Range")
     private static void copyFeed() {
         if ( IsFeedUri( mCurrentUri) ) {
             final String feedID = mCurrentUri.getPathSegments().get(1);
@@ -1397,4 +1360,38 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         }
     }
+    public boolean atTop() {
+        return mListView.getFirstVisiblePosition() == 0;
+    }
+    public View.OnLongClickListener getOnPageUpLongClickListener() {
+        return view -> {
+            if (mListView.getCount() == 0)
+                return false;
+            mListView.setSelection(0);
+            mTapActions.UpdateTopTapZoneVisibility();
+            Toast.makeText(getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT).show();
+            return true;
+        };
+    }
+
+    public View.OnLongClickListener getOnPageDownLongClickListener() {
+        return view -> {
+            if (mListView.getCount() == 0)
+                return false;
+            mListView.setSelection(mListView.getCount() - 1);
+            mTapActions.UpdateTopTapZoneVisibility();
+            Toast.makeText(getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT).show();
+            return true;
+        };
+    }
+
+    public void PageUpDown(int downOrUp) {
+        View statusView =  mActivity.findViewById(R.id.statusLayout);
+        final int statusHeight = statusView.isShown() ? statusView.getHeight() : 0;
+        final float coeff = PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9F : 0.98F;
+        mListView.smoothScrollBy((int) (downOrUp * ( mListView.getHeight() - mActivity.getAppBarHeight() - statusHeight) * coeff), PAGE_SCROLL_DURATION_MSEC * 2 );
+        if ( downOrUp > 0 )
+            ( (AppBarLayout)mActivity.findViewById(R.id.appbar) ).setExpanded( false );
+    }
+
 }

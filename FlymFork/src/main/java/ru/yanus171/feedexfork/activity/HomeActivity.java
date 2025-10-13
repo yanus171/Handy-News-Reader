@@ -115,40 +115,118 @@ import ru.yanus171.feedexfork.view.TapZonePreviewPreference;
 @SuppressWarnings("ConstantConditions")
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public boolean mIsNewTask = false;
+    public EntriesListFragment mEntriesFragment;
+    public ListView mDrawerList;
+    public String mTitle;
+    public AppBarLayoutState mAppBarLayoutState = AppBarLayoutState.IDLE;
+
     private static final String STATE_CURRENT_DRAWER_POS = "STATE_CURRENT_DRAWER_POS";
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
-
-    public View mPageUpBtn = null;
-    public View mPageUpBtnFS = null;
     private int mStatus = 0;
-    public boolean mIsNewTask = false;
+    private EntriesListTapActions mTapActions = null;
 
     //private static final String FEED_ALL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
     //        EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
 
-
     private static final int LOADER_ID = 0;
     private static final int PERMISSIONS_REQUEST_IMPORT_FROM_OPML = 1;
-
-    public EntriesListFragment mEntriesFragment;
     private DrawerLayout mDrawerLayout;
     private View mLeftDrawer;
-    public ListView mDrawerList;
     private DrawerAdapter mDrawerAdapter = null;
     private ActionBarDrawerToggle mDrawerToggle;
-    public String mTitle;
     private int mCurrentDrawerPos;
     enum AppBarLayoutState {
         EXPANDED,
         COLLAPSED,
         IDLE
-    };
 
-    private AppBarLayoutState mAppBarLayoutState = AppBarLayoutState.IDLE;
+    }
 
-    private boolean IsRememberLast() {
-        return !mIsNewTask && PrefUtils.getBoolean( PrefUtils.REMEBER_LAST_ENTRY, true );
+    static public boolean GetIsActionBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN, false);
+    }
+    static public boolean GetIsStatusBarEntryListHidden() {
+        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, false);
+    }
+
+    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
+        setFullScreen( statusBarHidden, actionBarHidden, STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
+    }
+
+    @Override
+    public void onPause() {
+        //EntriesCursorAdapter.mMarkAsReadList.clear();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Timer timer = new Timer("HomeActivity.onResume");
+        final Intent intent = getIntent();
+        setIntent( new Intent() );
+
+        if ( intent.getData() != null ) {
+            mEntriesFragment.ClearSingleLabel();
+            if ( intent.hasExtra(LABEL_ID_EXTRA) ) {
+                mEntriesFragment.SetSingleLabel(intent.getLongExtra(LABEL_ID_EXTRA, 0));
+                PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
+                notifyDrawableAdapter();
+            }
+            if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
+                selectDrawerItem(FAVORITES_DRAWER_PAS);
+            else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
+                selectDrawerItem( 0 );
+            else if ( !mEntriesFragment.mIsSingleLabel && intent.getData().equals(CONTENT_URI ) )
+                selectDrawerItem( 1 );
+            else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
+                selectDrawerItem( 3 );
+            else if ( intent.getData().equals( LAST_READ_CONTENT_URI ) )
+                selectDrawerItem( LAST_READ_DRAWER_POS );
+            else {
+                if ( mEntriesFragment.mIsSingleLabel ) {
+                    PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
+                    notifyDrawableAdapter();
+                    if ( mDrawerAdapter != null )
+                        selectDrawerItem(DrawerAdapter.getParentLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
+                    mNewFeedUri = CONTENT_URI;
+                } else {
+                    final long feedID;
+                    if ( intent.hasExtra( EXTRA_LINK ) ) {
+                        feedID = EntryUrlVoc.INSTANCE.get( intent.getStringExtra( EXTRA_LINK ) );
+                    } else
+                        feedID = GetFeedID(intent.getData());
+                    Log.v( TAG, "HomeActivity feedID = "  + feedID );
+                    if ( expandFeedGroup(feedID) )
+                        getLoaderManager().restartLoader(LOADER_ID, null, this);
+                    else if ( mDrawerAdapter != null )
+                        selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
+                    if ( mDrawerAdapter == null )
+                        mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID);
+                }
+
+            }
+            if ( IsRememberLast()  )
+                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
+        } else if ( IsRememberLast()  ) {
+            String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
+            if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
+                startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, Uri.parse(lastUri) ));
+            }
+        }
+
+        if ( GeneralPrefsFragment.mSetupChanged ) {
+            Timer.Start( LOADER_ID, "HomeActivity.restartLoader LOADER_ID" );
+            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
+        }
+        setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+        if ( mDrawerLayout != null )
+            mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
+        SetTaskTitle( mTitle );
+        timer.End();
     }
 
     @Override
@@ -167,7 +245,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             PrefUtils.putLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() );
 
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
-
+        mTapActions = new EntriesListTapActions( mEntriesFragment, this );
         mTitle = getTitle().toString();
 
         mLeftDrawer = findViewById(R.id.left_drawer);
@@ -265,75 +343,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             }
         }
 
-        TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
-
-        {
-            final View.OnClickListener listener = view -> {
-                setFullScreen(GetIsStatusBarEntryListHidden(), !GetIsActionBarEntryListHidden());
-                AppBarLayout appBar = mEntriesFragment.getView().findViewById(R.id.appbar);
-
-                if (!GetIsActionBarEntryListHidden())
-                    appBar.setExpanded(true);
-                UpdateHeader();
-            };
-            findViewById(R.id.rightTopBtn).setOnClickListener(listener);
-            findViewById(R.id.rightTopBtnFS).setOnClickListener(listener);
-        }
-        {
-            final View.OnLongClickListener listener = view -> {
-                mEntriesFragment.FilterByLabels();
-                return true;
-            };
-            findViewById(R.id.rightTopBtn).setOnLongClickListener(listener);
-            findViewById(R.id.rightTopBtnFS).setOnLongClickListener(listener);
-        }
-        {
-            final View.OnClickListener listener = view -> {
-                setFullScreen(!GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden());
-            };
-            findViewById(R.id.leftTopBtn).setOnClickListener( listener );
-            findViewById(R.id.leftTopBtnFS).setOnClickListener( listener );
-        }
-
-        mPageUpBtn = findViewById( R.id.pageUpBtn );
-        mPageUpBtnFS = findViewById( R.id.pageUpBtnFS );
-
-        {
-            View.OnClickListener listener = (view -> PageUpDown(-1));
-            mPageUpBtn.setOnClickListener(listener);
-            mPageUpBtnFS.setOnClickListener(listener);
-        }
-        {
-            View.OnLongClickListener listener = (view -> {
-                if ( mEntriesFragment.mListView.getCount() == 0 )
-                    return false;
-                mEntriesFragment.mListView.setSelection( 0 );
-                mEntriesFragment.UpdateTopTapZoneVisibility();
-                Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT ).show();
-                return true;
-            });
-
-            mPageUpBtn.setOnLongClickListener(listener);
-            mPageUpBtnFS.setOnLongClickListener(listener);
-        }
-
-        findViewById(R.id.pageDownBtn).setOnClickListener(new TextView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PageUpDown( 1 );
-            }
-        });
-        findViewById(R.id.pageDownBtn).setOnLongClickListener(new TextView.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if ( mEntriesFragment.mListView.getCount() == 0 )
-                    return false;
-                mEntriesFragment.mListView.setSelection( mEntriesFragment.mListView.getCount() - 1 );
-                mEntriesFragment.UpdateTopTapZoneVisibility();
-                Toast.makeText( HomeActivity.this, R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT ).show();
-                return true;
-            }
-        });
 
         ( (AppBarLayout)mEntriesFragment.getView().findViewById(R.id.appbar) ).addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             // State
@@ -352,149 +361,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         });
         timer.End();
     }
-
-    private void UpdateHeader() {
-        if (mEntriesFragment != null)
-            mEntriesFragment.UpdateHeader();
-    }
-
-    static public boolean GetIsActionBarEntryListHidden() {
-        return PrefUtils.getBoolean(STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN, false);
-    }
-    static public boolean GetIsStatusBarEntryListHidden() {
-        return PrefUtils.getBoolean(STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, false);
-    }
-
-    public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
-        setFullScreen( statusBarHidden, actionBarHidden, STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
-    }
-
-    private void PageUpDown( int downOrUp ) {
-        int appBarHeight = ( mAppBarLayoutState == EXPANDED ) ? mEntriesFragment.getView().findViewById(R.id.appbar).getHeight() : 0;
-        View statusView =  mEntriesFragment.getView().findViewById(R.id.statusLayout);
-        if ( GetIsActionBarEntryListHidden() )
-            appBarHeight = getSupportActionBar().getHeight();
-        final int statusHeight = statusView.isShown() ? statusView.getHeight() : 0;
-        final float coeff = PrefUtils.getBoolean("page_up_down_90_pct", false) ? 0.9F : 0.98F;
-        mEntriesFragment.mListView.smoothScrollBy((int) (downOrUp * ( mEntriesFragment.mListView.getHeight() - appBarHeight - statusHeight) * coeff), PAGE_SCROLL_DURATION_MSEC * 2 );
-        if ( downOrUp > 0 )
-            ( (AppBarLayout)mRootView.findViewById(R.id.appbar) ).setExpanded( false );
-    }
-
-    private void CloseDrawer() {
-        if (mDrawerLayout != null) {
-            mDrawerLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDrawerLayout.closeDrawer(mLeftDrawer);
-                }
-            }, 50);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        //EntriesCursorAdapter.mMarkAsReadList.clear();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Timer timer = new Timer("HomeActivity.onResume");
-        final Intent intent = getIntent();
-        setIntent( new Intent() );
-
-        if ( intent.getData() != null ) {
-            mEntriesFragment.ClearSingleLabel();
-            if ( intent.hasExtra(LABEL_ID_EXTRA) ) {
-                mEntriesFragment.SetSingleLabel(intent.getLongExtra(LABEL_ID_EXTRA, 0));
-                PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
-                notifyDrawableAdapter();
-            }
-            if ( intent.getData().equals( FAVORITES_CONTENT_URI ) )
-                selectDrawerItem(FAVORITES_DRAWER_PAS);
-            else if ( intent.getData().equals( UNREAD_ENTRIES_CONTENT_URI ) )
-                selectDrawerItem( 0 );
-            else if ( !mEntriesFragment.mIsSingleLabel && intent.getData().equals(CONTENT_URI ) )
-                selectDrawerItem( 1 );
-            else if ( intent.getData().equals( ENTRIES_FOR_FEED_CONTENT_URI( FetcherService.GetExtrenalLinkFeedID() ) ) )
-                selectDrawerItem( 3 );
-            else if ( intent.getData().equals( LAST_READ_CONTENT_URI ) )
-                selectDrawerItem( LAST_READ_DRAWER_POS );
-            else {
-                if ( mEntriesFragment.mIsSingleLabel ) {
-                    PrefUtils.putBoolean( DrawerAdapter.PREF_IS_LABEL_GROUP_EXPANDED, true );
-                    notifyDrawableAdapter();
-                    if ( mDrawerAdapter != null )
-                        selectDrawerItem(DrawerAdapter.getParentLabelPositionByID(mEntriesFragment.GetSingleLabelID()));
-                    mNewFeedUri = CONTENT_URI;
-                } else {
-                    final long feedID;
-                    if ( intent.hasExtra( EXTRA_LINK ) ) {
-                        feedID = EntryUrlVoc.INSTANCE.get( intent.getStringExtra( EXTRA_LINK ) );
-                    } else
-                        feedID = GetFeedID(intent.getData());
-                    Log.v( TAG, "HomeActivity feedID = "  + feedID );
-                    if ( expandFeedGroup(feedID) )
-                        getLoaderManager().restartLoader(LOADER_ID, null, this);
-                    else if ( mDrawerAdapter != null )
-                        selectDrawerItem(mDrawerAdapter.getItemPosition(feedID));
-                    if ( mDrawerAdapter == null )
-                        mNewFeedUri = FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID);
-                }
-
-            }
-            if ( IsRememberLast()  )
-                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, "");
-        } else if ( IsRememberLast()  ) {
-            String lastUri = PrefUtils.getString(PrefUtils.LAST_ENTRY_URI, "");
-            if (!lastUri.isEmpty() && !lastUri.contains("-1")) {
-                startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, Uri.parse(lastUri) ));
-            }
-        }
-
-        if ( GeneralPrefsFragment.mSetupChanged ) {
-            Timer.Start( LOADER_ID, "HomeActivity.restartLoader LOADER_ID" );
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
-            TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
-        }
-        //if ( mDrawerAdapter != null  )
-        //    selectDrawerItem( mCurrentDrawerPos );
-        setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
-        if ( mDrawerLayout != null )
-            mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
-        SetTaskTitle( mTitle );
-        timer.End();
-    }
-
-    private boolean expandFeedGroup(long feedID) {
-        boolean result = false;
-        Cursor cur = getContentResolver().query(FeedColumns.CONTENT_URI(feedID), new String[]{ FeedColumns.GROUP_ID }, null, null, null );
-        if ( cur.moveToNext() ) {
-            final long groupID = cur.getLong(0 );
-            if ( groupID > 0 ) {
-                int records = getContentResolver().update( FeedColumns.CONTENT_URI(groupID),
-                                                           getGroupExpandedValues(),
-                                                           IS_GROUP_EXPANDED + DB_IS_FALSE  + DB_OR + IS_GROUP_EXPANDED + DB_IS_NULL,
-                                                           null);
-                result = records > 0;
-            }
-        }
-        cur.close();
-        return result;
-    }
-
-    private void notifyDrawableAdapter() {
-        if ( mDrawerAdapter != null )
-            mDrawerAdapter.notifyDataSetChanged();
-    }
-
-    private long GetFeedID(Uri uri) {
-        final String result = GetSecondLastSegment(uri);
-        return Long.parseLong( result );
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //outState.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);
@@ -535,8 +401,8 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
     public void onClickArticleWebSearch(View view) {
         startActivity( new Intent( Intent.ACTION_WEB_SEARCH )
-                       .setPackage( this.getPackageName() )
-                       .setClass( this, ArticleWebSearchActivity.class) );
+                .setPackage( this.getPackageName() )
+                .setClass( this, ArticleWebSearchActivity.class) );
     }
 
     public void onClickAdd(View view) {
@@ -583,9 +449,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                                 FeedColumns.ERROR, FeedColumns.SHOW_TEXT_IN_ENTRY_LIST,
                                 IS_GROUP_EXPANDED, FeedColumns.IS_AUTO_REFRESH, FeedColumns.OPTIONS, FeedColumns.IMAGES_SIZE},
                         "(" + FeedColumns.WHERE_GROUP + DB_OR +
-                                     FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
-                                     FeedColumns.GROUP_ID + "=0" + DB_OR +
-                                     FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
+                                FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
+                                FeedColumns.GROUP_ID + "=0" + DB_OR +
+                                FeedColumns.GROUP_ID + " IN (SELECT " + FeedColumns._ID +
                                 " FROM " + FeedColumns.TABLE_NAME +
                                 " WHERE " + IS_GROUP_EXPANDED + DB_IS_TRUE + "))" + FeedData.getWhereNotExternal(),
                         null,
@@ -645,6 +511,115 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         Status().End( mStatus );
     }
 
+    public int getAppBarHeight() {
+        int appBarHeight = (mAppBarLayoutState == EXPANDED) ? findViewById(R.id.appbar).getHeight() : 0;
+        if (GetIsActionBarEntryListHidden())
+            appBarHeight = getSupportActionBar().getHeight();
+        return appBarHeight;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        mDrawerAdapter.setCursor(null);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mImageFileVoc.init1();
+        mHTMLFileVoc.init1();
+        //OPML.OnRequestPermissionResult(this, requestCode, grantResults);
+
+        //if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
+        // If request is cancelled, the result arrays are empty.
+        if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                new File(FileSelectDialog.Companion.getPublicDir().getAbsolutePath() + "/" + SUB_FOLDER, AUTO_BACKUP_OPML_FILENAME).exists() )
+            Theme.CreateDialog( this )
+                    .setMessage( R.string.import_from_backup_after_permission_granted )
+                    .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> importFromOpml( HomeActivity.this ) )
+                    .setNegativeButton(android.R.string.no, null )
+                    .create().show();
+        //}
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBrightness.mTapAction = () -> mEntriesFragment.PageUpDown(1);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if ( hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+            setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ( PrefUtils.getBoolean("volume_buttons_action_page_in_article_list", true) ) {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                mEntriesFragment.PageUpDown(+1);
+                event.startTracking();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                mEntriesFragment.PageUpDown(-1);
+                event.startTracking();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    //-----------------------PRIVATE MEMBERS----------------------------
+
+    private boolean IsRememberLast() {
+        return !mIsNewTask && PrefUtils.getBoolean( PrefUtils.REMEBER_LAST_ENTRY, true );
+    }
+
+    private void CloseDrawer() {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerLayout.closeDrawer(mLeftDrawer);
+                }
+            }, 50);
+        }
+    }
+
+
+    private boolean expandFeedGroup(long feedID) {
+        boolean result = false;
+        Cursor cur = getContentResolver().query(FeedColumns.CONTENT_URI(feedID), new String[]{ FeedColumns.GROUP_ID }, null, null, null );
+        if ( cur.moveToNext() ) {
+            final long groupID = cur.getLong(0 );
+            if ( groupID > 0 ) {
+                int records = getContentResolver().update( FeedColumns.CONTENT_URI(groupID),
+                                                           getGroupExpandedValues(),
+                                                           IS_GROUP_EXPANDED + DB_IS_FALSE  + DB_OR + IS_GROUP_EXPANDED + DB_IS_NULL,
+                                                           null);
+                result = records > 0;
+            }
+        }
+        cur.close();
+        return result;
+    }
+
+    private void notifyDrawableAdapter() {
+        if ( mDrawerAdapter != null )
+            mDrawerAdapter.notifyDataSetChanged();
+    }
+
+    private long GetFeedID(Uri uri) {
+        final String result = GetSecondLastSegment(uri);
+        return Long.parseLong( result );
+    }
+
+
     private String GetSecondLastSegment( final Uri uri) {
         List<String> list = uri.getPathSegments();
         if ( list.size() == 3 )
@@ -653,10 +628,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             return "";
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mDrawerAdapter.setCursor(null);
-    }
 
     private void selectDrawerItem(int position) {
         Timer timer = new Timer( "HomeActivity.selectDrawerItem" );
@@ -795,56 +766,4 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         getSupportActionBar().setHomeAsUpIndicator( d );
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mImageFileVoc.init1();
-        mHTMLFileVoc.init1();
-        //OPML.OnRequestPermissionResult(this, requestCode, grantResults);
-
-        //if (requestCode == PERMISSIONS_REQUEST_IMPORT_FROM_OPML ) {
-            // If request is cancelled, the result arrays are empty.
-            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                 new File(FileSelectDialog.Companion.getPublicDir().getAbsolutePath() + "/" + SUB_FOLDER, AUTO_BACKUP_OPML_FILENAME).exists() )
-                Theme.CreateDialog( this )
-                    .setMessage( R.string.import_from_backup_after_permission_granted )
-                    .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> importFromOpml( HomeActivity.this ) )
-                    .setNegativeButton(android.R.string.no, null )
-                    .create().show();
-        //}
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mBrightness.mTapAction = () -> PageUpDown(1);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if ( hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
-            setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ( PrefUtils.getBoolean("volume_buttons_action_page_in_article_list", true) ) {
-            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-                PageUpDown(+1);
-                event.startTracking();
-                return true;
-            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-                PageUpDown(-1);
-                event.startTracking();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }
