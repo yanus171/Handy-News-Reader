@@ -24,6 +24,10 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal|bottom">
         <ImageButton
+            android:id="@+id/btn_label_setup"
+            android:src="@drawable/ic_label"
+            style="@style/ControlButton"/>
+        <ImageButton
             android:id="@+id/btn_reload"
             android:src="@drawable/ic_sync"
             style="@style/ControlButton"/>
@@ -60,6 +64,10 @@
         <ImageButton
             android:id="@+id/btn_force_orientation_by_sensor"
             android:src="@drawable/orientation_by_sensor"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:src="@drawable/ic_settings"
             style="@style/ControlButton"/>
     </LinearLayout>
 

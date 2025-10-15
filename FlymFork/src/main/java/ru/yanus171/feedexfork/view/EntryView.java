@@ -290,7 +290,7 @@ public abstract class EntryView {
                 break;
             }
             case R.id.menu_setting: {
-                mActivity.startActivity(new Intent(mActivity, GeneralPrefsActivity.class));
+                OpenSettings();
                 break;
             }
 
@@ -381,6 +381,10 @@ public abstract class EntryView {
 
         }
 
+    }
+
+    private void OpenSettings() {
+        mActivity.startActivity(new Intent(mActivity, GeneralPrefsActivity.class));
     }
 
     protected void toggleImageWhiteBackground() {
@@ -479,6 +483,8 @@ public abstract class EntryView {
 
 
     public void setupControlPanelButtonActions() {
+        setupButtonAction(R.id.btn_label_setup, false, v -> OpenLabelSetup());
+        setupButtonAction(R.id.btn_settings, false, v -> OpenSettings());
     }
     protected void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
         mActivity.mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );
