@@ -82,6 +82,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             })
             .onPageScroll( object: OnPageScrollListener {
                 override fun onPageScrolled(page: Int, positionOffset: Float) {
+                    mActivity.mEntryFragment.hideTapZones();
                     if ( !mIsLoaded )
                         return
                     mScrollPartY = GetViewScrollPartY()

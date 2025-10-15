@@ -134,6 +134,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     private long mLastTimeScrolled = 0;
     private boolean mIsScrollScheduled = false;
     public WebEntryView mEntryView = null;
+    public Runnable mScrollChangeListener = null;
 
     public WebViewExtended( Context context, WebEntryView entryView ) {
         super(context);
@@ -760,8 +761,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         if ( mEntryView.mActivity != null && mEntryView.mActivity.mEntryFragment != null )
             mEntryView.mActivity.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
-        if (mEntryView.mScrollChangeListener != null)
-            mEntryView.mScrollChangeListener.run();
+        if (mScrollChangeListener != null)
+            mScrollChangeListener.run();
     }
 
 

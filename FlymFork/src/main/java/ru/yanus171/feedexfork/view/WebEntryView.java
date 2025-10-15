@@ -120,7 +120,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         container.addView(mWebView);
         mView = mWebView;
         mWebView.setListener(this);
-        mScrollChangeListener = () -> {
+        mWebView.mScrollChangeListener = () -> {
+            mActivity.mEntryFragment.hideTapZones();
             if (!mFavorite)
                 return;
             if (mRetrieveFullText && !mIsFullTextShown)

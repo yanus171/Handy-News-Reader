@@ -79,7 +79,6 @@ public abstract class EntryView {
     public long mEntryId = -1;
     public String mEntryLink = "";
     public View mView = null;
-    public Runnable mScrollChangeListener = null;
 
     public static final long TAP_TIMEOUT = 1000;
 
