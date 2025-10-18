@@ -212,9 +212,9 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if ( mEntryView.mActivity == null || mEntryView.mActivity.mEntryFragment == null )
+                if ( mEntryView.mEntryFragment == null )
                     return false;
-                mEntryView.mActivity.mEntryFragment.mAnchor = "";
+                mEntryView.mEntryFragment.mAnchor = "";
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mPressedX = event.getX();
                     mPressedY = event.getY();
@@ -242,7 +242,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                             System.currentTimeMillis() - mLastTimeScrolled > 500 &&
                             isArticleTapEnabledTemp() &&
                             //EntryActivity.GetIsActionBarHidden() &&
-                            !mEntryView.mActivity.mHasSelection) {
+                            !mEntryView.mEntryFragment.getEntryActivity().mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
                         mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 0);
@@ -326,7 +326,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     Status().ChangeProgress("finished.");
                     if (!mEntryView.mLoadTitleOnly)
                         mEntryView.mContentWasLoaded = true;
-                    if (mEntryView.mActivity.mEntryFragment != null)
+                    if (mEntryView.mEntryFragment != null)
                         mEntryView.DisableTapActionsIfVideo( mEntryView );
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
@@ -340,7 +340,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             private void ScheduleScrollTo(final WebView view, long startTime) {
                 //Dog.v(TAG, "ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
-                final String searchText = mEntryView.mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
+                final String searchText = mEntryView.mEntryFragment.getActivity().getIntent().getStringExtra( "SCROLL_TEXT" );
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
                 if ( !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                     if ( isSearch ) {
@@ -356,10 +356,10 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     } else
                         UiUtils.RunOnGuiThread(() ->
                         {
-                            if (mEntryView.mActivity.mEntryFragment != null)
-                                mEntryView.mActivity.mEntryFragment.UpdateHeader();
-                            if ( mEntryView.mActivity.mEntryFragment != null && !mEntryView.mActivity.mEntryFragment.mAnchor.isEmpty() )
-                                mEntryView.moveToAnchor( view, mEntryView.mActivity.mEntryFragment.mAnchor );
+                            if (mEntryView.mEntryFragment != null)
+                                mEntryView.mEntryFragment.UpdateHeader();
+                            if ( mEntryView.mEntryFragment != null && !mEntryView.mEntryFragment.mAnchor.isEmpty() )
+                                mEntryView.moveToAnchor( view, mEntryView.mEntryFragment.mAnchor );
                             else
                                 ScrollToY();
                         });
@@ -737,7 +737,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     public boolean handleMessage(Message msg) {
         if (msg.what == CLICK_ON_URL) {
             mHandler.removeMessages(CLICK_ON_WEBVIEW);
-            mEntryView.mActivity.closeContextMenu();
+            mEntryView.mEntryFragment.getActivity().closeContextMenu();
             return true;
         }
         if ( msg.what == TOGGLE_TAP_ZONE_VISIBIILTY ) {
@@ -758,8 +758,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         Status().HideByScroll();
-        if ( mEntryView.mActivity != null && mEntryView.mActivity.mEntryFragment != null )
-            mEntryView.mActivity.mEntryFragment.UpdateHeader();
+        if ( mEntryView.mEntryFragment != null )
+            mEntryView.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
         if (mScrollChangeListener != null)
             mScrollChangeListener.run();
@@ -849,7 +849,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         mHandler.sendEmptyMessage(CLICK_ON_URL);
         if ( hideTapZones )
             mHandler.removeMessages( TOGGLE_TAP_ZONE_VISIBIILTY );
-        mEntryView.mActivity.closeOptionsMenu();
+        mEntryView.mEntryFragment.getActivity().closeOptionsMenu();
     }
 
     private class ImageDownloadJavaScriptObject {
@@ -914,7 +914,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         mEntryView.EndStatus();
     }
     int getPageHeight() {
-        return getHeight() - mEntryView.mActivity.mEntryFragment.mStatusText.GetHeight();
+        return getHeight() - mEntryView.mEntryFragment.mStatusText.GetHeight();
     }
     int getPageCount() {
         return (int) (GetContentHeight() / getPageHeight());

@@ -709,9 +709,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     @NonNull
-    public EntryView CreateWebEntryView(EntryActivity activity, int position, ViewGroup container ) {
+    public EntryView CreateWebEntryView(int position, ViewGroup container ) {
         final Entry entry = mEntryPagerAdapter.GetEntry(position);
-        final EntryView view = EntryView.Create( entry.mLink, entry.mID, activity, container );
+        final EntryView view = EntryView.Create( entry.mLink, entry.mID, this, container );
         view.mView.setTag(view);
 
         if ( mLeakEntryView == null )

@@ -90,7 +90,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-        final EntryView view = mEntryFragment.CreateWebEntryView( mEntryFragment.getEntryActivity(), position, container );
+        final EntryView view = mEntryFragment.CreateWebEntryView( position, container );
         mEntryViews.put(position, view);
 
 //            NestedScrollView sv = new NestedScrollView( getContext() );

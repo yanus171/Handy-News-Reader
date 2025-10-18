@@ -82,6 +82,7 @@ import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
+import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -113,15 +114,16 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public long mLastSetHTMLTime = 0;
     private boolean mIsWithTables;
     private boolean mIsReplaceImgWithALink;
+    private boolean mWasAutoUnStar = false;
 
-    public WebEntryView(EntryActivity activity, ViewGroup container, long entryId) {
-        super(activity, entryId);
-        mWebView = new WebViewExtended(activity, this);
+    public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId) {
+        super(fragment, entryId);
+        mWebView = new WebViewExtended(getContext(), this);
         container.addView(mWebView);
         mView = mWebView;
         mWebView.setListener(this);
         mWebView.mScrollChangeListener = () -> {
-            mActivity.mEntryFragment.hideTapZones();
+            mEntryFragment.hideTapZones();
             if (!mFavorite)
                 return;
             if (mRetrieveFullText && !mIsFullTextShown)
@@ -174,11 +176,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void leftBottomBtnClick() {
-        mActivity.mEntryFragment.PreviousEntry();
+        mEntryFragment.PreviousEntry();
     }
     @Override
     public void rightBottomBtnClick() {
-        mActivity.mEntryFragment.NextEntry();
+        mEntryFragment.NextEntry();
     }
 
     @Override
@@ -238,7 +240,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
         String contentText;
         if (mLoadTitleOnly)
-            contentText = mActivity.getString(R.string.loading);
+            contentText = getContext().getString(R.string.loading);
         else {
             try {
                 if (!feedID.equals(GetExtrenalLinkFeedID()) &&
@@ -393,7 +395,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     public void UpdateTags() {
-        final int status = Status().Start(mActivity.getString(R.string.last_update), true);
+        final int status = Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         AddTagButtons(doc, mEntryLink);
         final String data = mWebView.generateHtmlContent("-1", Uri.EMPTY, "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
@@ -503,19 +505,19 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void generateArticleContent( boolean forceUpdate) {
         super.generateArticleContent(forceUpdate);
-        mIsFullTextShown = setHtml(mActivity.mEntryFragment.mBaseUri,
-                mActivity.mEntryFragment.mFilters,
+        mIsFullTextShown = setHtml(mEntryFragment.mBaseUri,
+                mEntryFragment.mFilters,
                 mIsFullTextShown,
                 forceUpdate);
         mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
         refreshUI(false);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
-        mActivity.mEntryFragment.UpdateHeader();
+        mEntryFragment.UpdateHeader();
     }
 
     @Override
     public void onClickOriginalText() {
-        mActivity.runOnUiThread(new Runnable() {
+        mEntryFragment.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mIsFullTextShown = false;
@@ -532,7 +534,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor);
 
         if (alreadyMobilized) {
-            mActivity.runOnUiThread(new Runnable() {
+            mEntryFragment.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     mIsFullTextShown = true;
@@ -546,7 +548,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     public void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize, final boolean isForceReload, final boolean withScripts) {
         //final BaseActivity activity = (BaseActivity) getActivity();
-        ConnectivityManager connectivityManager = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         // since we have acquired the networkInfo, we use it for basic checks
@@ -555,10 +557,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             new Thread() {
                 @Override
                 public void run() {
-                    int status = FetcherService.Status().Start(mActivity.getString(R.string.loadFullText), true);
+                    int status = FetcherService.Status().Start(getContext().getString(R.string.loadFullText), true);
                     try {
                         FetcherService.mobilizeEntry(mEntryId,
-                                mActivity.mEntryFragment.mFilters,
+                                mEntryFragment.mFilters,
                                 mobilize,
                                 FetcherService.AutoDownloadEntryImages.Yes,
                                 false,
@@ -570,14 +572,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                     }
                 }
             }.start();
-        } else {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    UiUtils.showMessage(mActivity, R.string.network_error);
-                }
-            });
-        }
+        } else
+            UiUtils.RunOnGuiThread(() -> UiUtils.showMessage(mEntryFragment.getActivity(), R.string.network_error));
     }
 
     @Override
@@ -597,12 +593,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void onClose() {
-        mActivity.mEntryFragment.close();
+        mEntryFragment.close();
     }
 
     @Override
     public void onClickEnclosure() {
-        mActivity.runOnUiThread(new Runnable() {
+        mEntryFragment.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 final String enclosure = mCursor.getString(mEnclosurePos);
@@ -613,9 +609,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 final Uri uri = Uri.parse(enclosure.substring(0, position1));
                 final String filename = uri.getLastPathSegment();
 
-                new AlertDialog.Builder(mActivity)
+                new AlertDialog.Builder(getContext())
                         .setTitle(R.string.open_enclosure)
-                        .setMessage(mActivity.getString(R.string.file) + ": " + filename)
+                        .setMessage(getContext().getString(R.string.file) + ": " + filename)
                         .setPositiveButton(R.string.open_link, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -632,7 +628,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                                     DownloadManager dm = (DownloadManager) MainApplication.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
                                     dm.enqueue(r);
                                 } catch (Exception e) {
-                                    UiUtils.showMessage(mActivity, R.string.error);
+                                    UiUtils.showMessage(mEntryFragment.getActivity(), R.string.error);
                                 }
                             }
                         }).show();
@@ -642,12 +638,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     private void showEnclosure(Uri uri, String enclosure, int position1, int position2) {
         try {
-            mActivity.startActivityForResult(new Intent(Intent.ACTION_VIEW).setDataAndType(uri, enclosure.substring(position1 + DrawerAdapter.FIRST_ENTRY_POS(), position2)), 0);
+            mEntryFragment.getActivity().startActivityForResult(new Intent(Intent.ACTION_VIEW).setDataAndType(uri, enclosure.substring(position1 + DrawerAdapter.FIRST_ENTRY_POS(), position2)), 0);
         } catch (Exception e) {
             try {
-                mActivity.startActivityForResult(new Intent(Intent.ACTION_VIEW, uri), 0); // fallbackmode - let the browser handle this
+                mEntryFragment.getActivity().startActivityForResult(new Intent(Intent.ACTION_VIEW, uri), 0); // fallbackmode - let the browser handle this
             } catch (Throwable t) {
-                UiUtils.showMessage(mActivity, t.getMessage());
+                UiUtils.showMessage(mEntryFragment.getActivity(), t.getMessage());
             }
         }
     }
@@ -673,12 +669,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void openTagMenu(final String className, final String baseUrl, final String paramValue) {
-        ScrollView scroll = new ScrollView(mActivity);
-        final LinearLayout parent = new LinearLayout(mActivity);
+        ScrollView scroll = new ScrollView(getContext());
+        final LinearLayout parent = new LinearLayout(getContext());
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setGravity(Gravity.CENTER);
-        UiUtils.AddText(parent, null, mActivity.getString(R.string.open_tag_menu_hint)).setTextColor(Theme.GetTextColorReadInt());
-        final RadioGroup groupUrl = new RadioGroup(mActivity);
+        UiUtils.AddText(parent, null, getContext().getString(R.string.open_tag_menu_hint)).setTextColor(Theme.GetTextColorReadInt());
+        final RadioGroup groupUrl = new RadioGroup(getContext());
         //groupUrl.setGravity( Gravity.CENTER );
         parent.addView(groupUrl);
         int id = 0;
@@ -688,7 +684,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         while (keyUrl.contains("/")) {
             keyUrl = keyUrl.substring(0, keyUrl.lastIndexOf("/"));
             id++;
-            RadioButton btn = new RadioButton(mActivity);
+            RadioButton btn = new RadioButton(getContext());
             btn.setText(keyUrl);
             btn.setTag(keyUrl);
             btn.setId(id);
@@ -699,9 +695,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         scroll.addView(parent);
         scroll.setPadding(0, 0, 0, 20);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(scroll);
-        builder.setTitle(mActivity.getString(R.string.open_tag_menu_dialog_title) + className);
+        builder.setTitle(getContext().getString(R.string.open_tag_menu_dialog_title) + className);
 
         final AlertDialog dialog = builder.show();
         AddActionButton(parent, R.string.setFullTextRoot, view -> {
@@ -738,7 +734,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(20, 20, 20, 20);
         lp.gravity = Gravity.CENTER;
-        TextView view = UiUtils.AddText(parent, lp, mActivity.getString(captionID));
+        TextView view = UiUtils.AddText(parent, lp, getContext().getString(captionID));
         view.setBackgroundResource(R.drawable.btn_background);
         view.setOnClickListener(listener);
     }
@@ -748,12 +744,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     private void copyToClipboard(String text) {
-        ((android.text.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE)).setText(text);
-        Toast.makeText(mActivity, mActivity.getString(R.string.text_was_copied_to_clipboard) + ": " + text, Toast.LENGTH_LONG).show();
+        ((android.text.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE)).setText(text);
+        Toast.makeText(getContext(), getContext().getString(R.string.text_was_copied_to_clipboard) + ": " + text, Toast.LENGTH_LONG).show();
     }
 
     private void setFullTextRoot(String baseUrl, String className) {
-        setClassObject(baseUrl, className, CONTENT_TEXT_ROOT_EXTRACT_RULES, mActivity.getString(R.string.full_text_root_default));
+        setClassObject(baseUrl, className, CONTENT_TEXT_ROOT_EXTRACT_RULES, getContext().getString(R.string.full_text_root_default));
     }
 
     private void setCategory(String baseUrl, String className) {
@@ -794,12 +790,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     private void ActionAfterRulesEditing() {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                UpdateTags();
-            }
-        });
+        UiUtils.RunOnGuiThread(() -> UpdateTags());
     }
 
     public void returnClass(String classNameList) {
@@ -820,7 +811,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void downloadImage(final String url) {
         new Thread(() -> {
             FetcherService.mCancelRefresh = false;
-            int status = FetcherService.Status().Start(mActivity.getString(R.string.downloadImage), true);
+            int status = FetcherService.Status().Start(getContext().getString(R.string.downloadImage), true);
             try {
                 NetworkUtils.downloadImage(mEntryId, mEntryLink, url, false, true);
             } catch (IOException e) {
@@ -834,7 +825,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void downloadNextImages() {
-        mActivity.runOnUiThread(() -> {
+        UiUtils.RunOnGuiThread(() -> {
             FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
             UpdateImages(true);
         });
@@ -843,7 +834,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void downloadAllImages() {
-        mActivity.runOnUiThread(() -> DownloadAllImages());
+        UiUtils.RunOnGuiThread(this::DownloadAllImages);
     }
 
     public void DownloadAllImages() {
@@ -862,7 +853,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             //    activity.setFullScreen(true, true);
             if (mLoadTitleOnly) {
                 mLoadTitleOnly = false;
-                mActivity.mEntryFragment.restartCurrentEntryLoader();
+                mEntryFragment.restartCurrentEntryLoader();
             }
         }
     }
@@ -881,11 +872,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
         if (tapActionsEnabled != isArticleTapEnabledTemp()) {
             PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, tapActionsEnabled);
-            mActivity.mEntryFragment.SetupZones();
+            mEntryFragment.SetupZones();
             Toast.makeText(MainApplication.getContext(),
                     tapActionsEnabled ?
-                            mActivity.getString(R.string.tap_actions_were_enabled) :
-                            mActivity.getString(R.string.video_tag_found_in_article) + ". " + mActivity.getString(R.string.tap_actions_were_disabled),
+                            getContext().getString(R.string.tap_actions_were_enabled) :
+                            getContext().getString(R.string.video_tag_found_in_article) + ". " + getContext().getString(R.string.tap_actions_were_disabled),
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -903,7 +894,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 break;
             }
             case R.id.menu_open_link: {
-                mActivity.startActivity(GetShowInBrowserIntent(mEntryLink));
+                getContext().startActivity(GetShowInBrowserIntent(mEntryLink));
                 break;
             }
 
@@ -940,7 +931,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 try {
                     PrefUtils.toggleBoolean(STATE_RELOAD_IMG_WITH_A_LINK, false);
                     item.setChecked(PrefUtils.getBoolean(STATE_RELOAD_IMG_WITH_A_LINK, false));
-                    mActivity.invalidateOptionsMenu();
+                    mEntryFragment.getActivity().invalidateOptionsMenu();
                 } finally {
                     FetcherService.Status().End(status);
                 }
@@ -952,7 +943,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 try {
                     PrefUtils.toggleBoolean(STATE_RELOAD_WITH_DEBUG, false);
                     item.setChecked(PrefUtils.getBoolean(STATE_RELOAD_WITH_DEBUG, false));
-                    mActivity.invalidateOptionsMenu();
+                    mEntryFragment.getActivity().invalidateOptionsMenu();
                 } finally {
                     FetcherService.Status().End(status);
                 }
@@ -981,19 +972,19 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             }
 
             case R.id.menu_edit_article_url: {
-                final EditText editText = new EditText(mActivity);
+                final EditText editText = new EditText(getContext());
                 editText.setText(mEntryLink);
-                final AlertDialog d = new AlertDialog.Builder(mActivity)
+                final AlertDialog d = new AlertDialog.Builder(getContext())
                         .setView(editText)
                         .setTitle(R.string.menu_edit_article_url)
                         .setIcon(R.drawable.ic_edit)
-                        .setMessage(Html.fromHtml(mActivity.getString(R.string.edit_article_url_title_message)))
+                        .setMessage(Html.fromHtml(getContext().getString(R.string.edit_article_url_title_message)))
                         .setNegativeButton(android.R.string.cancel, null)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 final Uri uri = getUri();
-                                if (!mActivity.mIsNewTask)
+                                if (!mEntryFragment.getEntryActivity().mIsNewTask)
                                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, getUri().toString());
                                 new Thread() {
                                     @Override
@@ -1004,7 +995,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                                         values.put(FeedData.EntryColumns.LINK, newLink);
                                         cr.update(uri, values, null, null);
                                         EntryUrlVoc.INSTANCE.set(newLink, mEntryId);
-                                        mActivity.mEntryFragment.restartCurrentEntryLoader();
+                                        mEntryFragment.restartCurrentEntryLoader();
                                     }
                                 }.start();
                             }
@@ -1021,10 +1012,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
                 String plainText = new String(chars);
                 plainText = plainText.replaceAll( "body(.)*", "" );
-                mActivity.startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                getContext().startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                 .putExtra(Intent.EXTRA_TEXT, plainText)
                                 .setType(Constants.MIMETYPE_TEXT_PLAIN),
-                        mActivity.getString(R.string.menu_share)));
+                        getContext().getString(R.string.menu_share)));
                 break;
             }
             case R.id.menu_cancel_refresh: {
@@ -1043,9 +1034,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 break;
             }
             case R.id.menu_edit_feed: {
-                final String feedId = mActivity.mEntryFragment.getCurrentFeedID();
+                final String feedId = mEntryFragment.getCurrentFeedID();
                 if (!feedId.isEmpty() && !feedId.equals(FetcherService.GetExtrenalLinkFeedID()))
-                    mActivity.startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedData.FeedColumns.CONTENT_URI(feedId)));
+                    getContext().startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedData.FeedColumns.CONTENT_URI(feedId)));
                 break;
             }
 
@@ -1073,9 +1064,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         if (mEntryLink != null) {
             String title = mCursor.getString(mTitlePos);
 
-            mActivity.startActivity(Intent.createChooser(
+            getContext().startActivity(Intent.createChooser(
                     new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, mEntryLink)
-                            .setType(Constants.MIMETYPE_TEXT_PLAIN), mActivity.getString(R.string.menu_share)));
+                            .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share)));
         }
     }
 
@@ -1084,13 +1075,13 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             return;
         final String html = "<root>" + GetDataWithLinks() + "</root>";
         String htmlFormatted = NetworkUtils.formatXML( html );
-        Uri fileUri = DebugApp.CreateFileUri(mActivity.getCacheDir().getAbsolutePath(), "html.html", html);
-        FileUtils.INSTANCE.copyFileToDownload( new File(mActivity.getCacheDir().getAbsolutePath(), "html.html" ).getPath(), true );
+        Uri fileUri = DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(), "html.html", html);
+        FileUtils.INSTANCE.copyFileToDownload( new File(getContext().getCacheDir().getAbsolutePath(), "html.html" ).getPath(), true );
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(fileUri);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         try {
-            mActivity.startActivity(intent);
+            getContext().startActivity(intent);
         } catch ( ActivityNotFoundException ignored ) {
             MessageBox.Show(htmlFormatted);
         }
@@ -1104,7 +1095,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         values.put(FeedData.EntryColumns.IS_WITH_TABLES, mIsWithTables? 1 : 0);
         ContentResolver cr = MainApplication.getContext().getContentResolver();
         cr.update(uri, values, null, null);
-        mActivity.invalidateOptionsMenu();
+        mEntryFragment.getActivity().invalidateOptionsMenu();
     }
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
@@ -1135,6 +1126,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void refreshUI(boolean invalidateContent) {
         super.refreshUI( invalidateContent );
-        mActivity.mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
+        mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
     }
 }

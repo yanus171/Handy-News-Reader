@@ -17,16 +17,15 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import ru.yanus171.feedexfork.MainApplication
-import ru.yanus171.feedexfork.activity.EntryActivity
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.Dog
 import ru.yanus171.feedexfork.view.EntryView
 import java.io.IOException
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class PDFEntryView(activity: EntryActivity, mContainer: ViewGroup, entryId: Long) : EntryView(activity, entryId) {
+class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long) : EntryView(fragment, entryId) {
     var mRenderer: PdfRenderer? = null
-    val mListView = ListView(activity)
+    val mListView = ListView(getContext())
     init {
         mView = mListView
         mContainer.addView(mListView)
